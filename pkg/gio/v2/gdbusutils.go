@@ -79,12 +79,12 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	return _utf8
 }
 
-// DBusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
+// DBusGenerateGUID: generate a D-Bus GUID that can be used with e.g.
 // g_dbus_connection_new().
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusGenerateGuid() string {
+func DBusGenerateGUID() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_generate_guid()
@@ -180,11 +180,11 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	return _outGvalue
 }
 
-// DBusIsGuid checks if string is a D-Bus GUID.
+// DBusIsGUID checks if string is a D-Bus GUID.
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusIsGuid(_string string) bool {
+func DBusIsGUID(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 

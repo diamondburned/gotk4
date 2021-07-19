@@ -85,12 +85,12 @@ type Accessibler interface {
 	ResetRelation(relation AccessibleRelation)
 	// ResetState resets the accessible state to its default value.
 	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible properties.
-	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
-	// UpdateRelationValue updates an array of accessible relations.
-	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
-	// UpdateStateValue updates an array of accessible states.
-	UpdateStateValue(states []AccessibleState, values []externglib.Value)
+	// UpdateProperty updates an array of accessible properties.
+	UpdateProperty(properties []AccessibleProperty, values []externglib.Value)
+	// UpdateRelation updates an array of accessible relations.
+	UpdateRelation(relations []AccessibleRelation, values []externglib.Value)
+	// UpdateState updates an array of accessible states.
+	UpdateState(states []AccessibleState, values []externglib.Value)
 }
 
 var _ Accessibler = (*Accessible)(nil)
@@ -156,13 +156,13 @@ func (self *Accessible) ResetState(state AccessibleState) {
 	C.gtk_accessible_reset_state(_arg0, _arg1)
 }
 
-// UpdatePropertyValue updates an array of accessible properties.
+// UpdateProperty updates an array of accessible properties.
 //
 // This function should be called by GtkWidget types whenever an accessible
 // property change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
-func (self *Accessible) UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value) {
+func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleProperty
 	var _arg1 C.int
@@ -189,13 +189,13 @@ func (self *Accessible) UpdatePropertyValue(properties []AccessibleProperty, val
 	C.gtk_accessible_update_property_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// UpdateRelationValue updates an array of accessible relations.
+// UpdateRelation updates an array of accessible relations.
 //
 // This function should be called by GtkWidget types whenever an accessible
 // relation change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
-func (self *Accessible) UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value) {
+func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleRelation
 	var _arg1 C.int
@@ -222,13 +222,13 @@ func (self *Accessible) UpdateRelationValue(relations []AccessibleRelation, valu
 	C.gtk_accessible_update_relation_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// UpdateStateValue updates an array of accessible states.
+// UpdateState updates an array of accessible states.
 //
 // This function should be called by GtkWidget types whenever an accessible
 // state change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
-func (self *Accessible) UpdateStateValue(states []AccessibleState, values []externglib.Value) {
+func (self *Accessible) UpdateState(states []AccessibleState, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleState
 	var _arg1 C.int

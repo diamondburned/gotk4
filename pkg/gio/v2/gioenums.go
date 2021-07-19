@@ -2205,8 +2205,8 @@ const (
 	AppInfoCreateNone AppInfoCreateFlags = 0b0
 	// AppInfoCreateNeedsTerminal: application opens in a terminal window.
 	AppInfoCreateNeedsTerminal AppInfoCreateFlags = 0b1
-	// AppInfoCreateSupportsUris: application supports URI arguments.
-	AppInfoCreateSupportsUris AppInfoCreateFlags = 0b10
+	// AppInfoCreateSupportsURIs: application supports URI arguments.
+	AppInfoCreateSupportsURIs AppInfoCreateFlags = 0b10
 	// AppInfoCreateSupportsStartupNotification: application supports startup
 	// notification. Since 2.26
 	AppInfoCreateSupportsStartupNotification AppInfoCreateFlags = 0b100
@@ -2234,8 +2234,8 @@ func (a AppInfoCreateFlags) String() string {
 			builder.WriteString("None|")
 		case AppInfoCreateNeedsTerminal:
 			builder.WriteString("NeedsTerminal|")
-		case AppInfoCreateSupportsUris:
-			builder.WriteString("SupportsUris|")
+		case AppInfoCreateSupportsURIs:
+			builder.WriteString("SupportsURIs|")
 		case AppInfoCreateSupportsStartupNotification:
 			builder.WriteString("SupportsStartupNotification|")
 		default:

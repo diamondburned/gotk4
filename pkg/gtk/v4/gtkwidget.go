@@ -558,9 +558,9 @@ type Widgetter interface {
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
 	Activate() bool
-	// ActivateActionVariant looks up the action in the action groups associated
-	// with widget and its ancestors, and activates it.
-	ActivateActionVariant(name string, args *glib.Variant) bool
+	// ActivateAction looks up the action in the action groups associated with
+	// widget and its ancestors, and activates it.
+	ActivateAction(name string, args *glib.Variant) bool
 	// ActivateDefault activates the default.activate action from widget.
 	ActivateDefault()
 	// AddController adds controller to widget so that it will receive events.
@@ -1012,8 +1012,8 @@ func (widget *Widget) Activate() bool {
 	return _ok
 }
 
-// ActivateActionVariant looks up the action in the action groups associated
-// with widget and its ancestors, and activates it.
+// ActivateAction looks up the action in the action groups associated with
+// widget and its ancestors, and activates it.
 //
 // If the action is in an action group added with
 // gtk.Widget.InsertActionGroup(), the name is expected to be prefixed with the
@@ -1021,7 +1021,7 @@ func (widget *Widget) Activate() bool {
 //
 // The arguments must match the actions expected parameter type, as returned by
 // g_action_get_parameter_type().
-func (widget *Widget) ActivateActionVariant(name string, args *glib.Variant) bool {
+func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.GVariant  // out

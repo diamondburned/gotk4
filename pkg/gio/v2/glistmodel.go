@@ -110,8 +110,8 @@ type ListModeller interface {
 	ItemType() externglib.Type
 	// NItems gets the number of items in list.
 	NItems() uint
-	// GetObject: get the item at position.
-	GetObject(position uint) *externglib.Object
+	// Item: get the item at position.
+	Item(position uint) *externglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
 	ItemsChanged(position uint, removed uint, added uint)
 }
@@ -170,12 +170,12 @@ func (list *ListModel) NItems() uint {
 	return _guint
 }
 
-// GetObject: get the item at position. If position is greater than the number
-// of items in list, NULL is returned.
+// Item: get the item at position. If position is greater than the number of
+// items in list, NULL is returned.
 //
 // NULL is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
-func (list *ListModel) GetObject(position uint) *externglib.Object {
+func (list *ListModel) Item(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in

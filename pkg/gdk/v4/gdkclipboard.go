@@ -350,8 +350,8 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	return _ok
 }
 
-// SetValue sets the clipboard to contain the given value.
-func (clipboard *Clipboard) SetValue(value *externglib.Value) {
+// Set sets the clipboard to contain the given value.
+func (clipboard *Clipboard) Set(value *externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
 

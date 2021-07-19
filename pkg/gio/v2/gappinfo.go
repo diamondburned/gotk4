@@ -97,8 +97,8 @@ type AppInfoOverrider interface {
 	// associations added with g_app_info_add_supports_type(), but only those
 	// exported directly by the application.
 	SupportedTypes() []string
-	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResulter) error
+	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
+	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
 	// possible.
 	RemoveSupportsType(contentType string) error
@@ -118,9 +118,9 @@ type AppInfoOverrider interface {
 	ShouldShow() bool
 	// SupportsFiles checks if the application accepts files as arguments.
 	SupportsFiles() bool
-	// SupportsUris checks if the application supports reading files and
+	// SupportsURIs checks if the application supports reading files and
 	// directories from URIs.
-	SupportsUris() bool
+	SupportsURIs() bool
 }
 
 // AppInfo and LaunchContext are used for describing and launching applications
@@ -207,8 +207,8 @@ type AppInfor interface {
 	// SupportedTypes retrieves the list of content types that app_info claims
 	// to support.
 	SupportedTypes() []string
-	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResulter) error
+	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
+	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
 	// possible.
 	RemoveSupportsType(contentType string) error
@@ -226,9 +226,9 @@ type AppInfor interface {
 	ShouldShow() bool
 	// SupportsFiles checks if the application accepts files as arguments.
 	SupportsFiles() bool
-	// SupportsUris checks if the application supports reading files and
+	// SupportsURIs checks if the application supports reading files and
 	// directories from URIs.
-	SupportsUris() bool
+	SupportsURIs() bool
 }
 
 var _ AppInfor = (*AppInfo)(nil)
@@ -516,8 +516,8 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 	return _utf8s
 }
 
-// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-func (appinfo *AppInfo) LaunchUrisFinish(result AsyncResulter) error {
+// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
+func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -648,9 +648,9 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 	return _ok
 }
 
-// SupportsUris checks if the application supports reading files and directories
+// SupportsURIs checks if the application supports reading files and directories
 // from URIs.
-func (appinfo *AppInfo) SupportsUris() bool {
+func (appinfo *AppInfo) SupportsURIs() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 

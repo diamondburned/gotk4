@@ -435,9 +435,8 @@ type TreeModeller interface {
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
-	// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
-	// tree_model.
-	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
+	// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 }
@@ -942,11 +941,10 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	C.gtk_tree_model_row_inserted(_arg0, _arg1, _arg2)
 }
 
-// RowsReorderedWithLength emits the TreeModel::rows-reordered signal on
-// tree_model.
+// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
 //
 // This should be called by models when their rows have been reordered.
-func (treeModel *TreeModel) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -1098,8 +1096,8 @@ func NewTreePathFirst() *TreePath {
 	return _treePath
 }
 
-// NewTreePathFromIndicesv constructs a struct TreePath.
-func NewTreePathFromIndicesv(indices []int) *TreePath {
+// NewTreePathFromIndices constructs a struct TreePath.
+func NewTreePathFromIndices(indices []int) *TreePath {
 	var _arg1 *C.gint
 	var _arg2 C.gsize
 	var _cret *C.GtkTreePath // in

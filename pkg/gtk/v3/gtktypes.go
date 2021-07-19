@@ -860,8 +860,8 @@ func (selectionData *SelectionData) Text() string {
 	return _utf8
 }
 
-// Uris gets the contents of the selection data as array of URIs.
-func (selectionData *SelectionData) Uris() []string {
+// URIs gets the contents of the selection data as array of URIs.
+func (selectionData *SelectionData) URIs() []string {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret **C.gchar
 
@@ -932,9 +932,9 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 	return _ok
 }
 
-// SetUris sets the contents of the selection from a list of URIs. The string is
+// SetURIs sets the contents of the selection from a list of URIs. The string is
 // converted to the form determined by selection_data->target.
-func (selectionData *SelectionData) SetUris(uris []string) bool {
+func (selectionData *SelectionData) SetURIs(uris []string) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 **C.gchar
 	var _cret C.gboolean // in

@@ -7,6 +7,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -38,6 +39,8 @@ func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix 
 	}
 
 	if prefix != "" {
+		prefix = strcases.Go(prefix)
+
 		// Check if this function is actually a constructor.
 		if strings.HasPrefix(callableGen.Name, "New") {
 			callableGen.Name = strings.TrimPrefix(callableGen.Name, "New")

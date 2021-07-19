@@ -302,14 +302,14 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	C.gtk_clipboard_request_text(_arg0, _arg1, _arg2)
 }
 
-// RequestUris requests the contents of the clipboard as URIs. When the URIs are
+// RequestURIs requests the contents of the clipboard as URIs. When the URIs are
 // later received callback will be called.
 //
 // The uris parameter to callback will contain the resulting array of URIs if
 // the request succeeded, or NULL if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of the
 // clipboard could not be converted into URI form.
-func (clipboard *Clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
+func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 	var _arg0 *C.GtkClipboard               // out
 	var _arg1 C.GtkClipboardURIReceivedFunc // out
 	var _arg2 C.gpointer
@@ -427,10 +427,10 @@ func (clipboard *Clipboard) WaitForText() string {
 	return _utf8
 }
 
-// WaitForUris requests the contents of the clipboard as URIs. This function
+// WaitForURIs requests the contents of the clipboard as URIs. This function
 // waits for the data to be received using the main loop, so events, timeouts,
 // etc, may be dispatched during the wait.
-func (clipboard *Clipboard) WaitForUris() []string {
+func (clipboard *Clipboard) WaitForURIs() []string {
 	var _arg0 *C.GtkClipboard // out
 	var _cret **C.gchar
 
@@ -534,7 +534,7 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	return _ok
 }
 
-// WaitIsUrisAvailable: test to see if there is a list of URIs available to be
+// WaitIsURIsAvailable: test to see if there is a list of URIs available to be
 // pasted This is done by requesting the TARGETS atom and checking if it
 // contains the URI targets. This function waits for the data to be received
 // using the main loop, so events, timeouts, etc, may be dispatched during the
@@ -542,7 +542,7 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 //
 // This function is a little faster than calling gtk_clipboard_wait_for_uris()
 // since it doesn’t need to retrieve the actual URI data.
-func (clipboard *Clipboard) WaitIsUrisAvailable() bool {
+func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
 	var _cret C.gboolean      // in
 

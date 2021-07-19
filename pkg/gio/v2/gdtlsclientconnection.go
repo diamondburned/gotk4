@@ -136,7 +136,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 // NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
 // which is assumed to communicate with the server identified by
 // server_identity.
-func NewDtlsClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
+func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GDatagramBased     // in

@@ -253,13 +253,20 @@ func bodgeClassCtor(class *gir.Class, ctor gir.Constructor) gir.Constructor {
 	retVal.AnyType.Type = &retTyp
 	ctor.ReturnValue = &retVal
 
-	ctor.Name = strings.TrimPrefix(ctor.Name, "new")
-	ctor.Name = strings.TrimPrefix(ctor.Name, "_")
-	if ctor.Name != "" {
-		ctor.Name = "_" + ctor.Name
+	name := ctor.Name
+	if ctor.Shadows != "" {
+		name = ctor.Shadows
+		ctor.Shadows = "" // prevent callable from changing
 	}
 
-	ctor.Name = "new_" + class.Name + ctor.Name
+	name = strings.TrimPrefix(name, "new")
+	name = strings.TrimPrefix(name, "_")
+	if name != "" {
+		name = "_" + name
+	}
+
+	name = "new_" + class.Name + name
+	ctor.Name = name
 
 	return ctor
 }

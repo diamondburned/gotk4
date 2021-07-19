@@ -96,9 +96,9 @@ func marshalListStorer(p uintptr) (interface{}, error) {
 	return wrapListStore(obj), nil
 }
 
-// NewListStoreV: non-vararg creation function. Used primarily by language
+// NewListStore: non-vararg creation function. Used primarily by language
 // bindings.
-func NewListStoreV(types []externglib.Type) *ListStore {
+func NewListStore(types []externglib.Type) *ListStore {
 	var _arg2 *C.GType
 	var _arg1 C.gint
 	var _cret *C.GtkListStore // in
@@ -395,11 +395,11 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externgl
 	C.gtk_list_store_set_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetValuesv: variant of gtk_list_store_set_valist() which takes the columns
-// and values as two arrays, instead of varargs. This function is mainly
-// intended for language-bindings and in case the number of columns to change is
-// not known until run-time.
-func (listStore *ListStore) SetValuesv(iter *TreeIter, columns []int, values []externglib.Value) {
+// Set: variant of gtk_list_store_set_valist() which takes the columns and
+// values as two arrays, instead of varargs. This function is mainly intended
+// for language-bindings and in case the number of columns to change is not
+// known until run-time.
+func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.gint

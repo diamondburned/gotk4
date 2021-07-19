@@ -58,8 +58,8 @@ var _ gextras.Nativer = (*DBusInterface)(nil)
 
 // DBusInterfacer describes DBusInterface's abstract methods.
 type DBusInterfacer interface {
-	// DupObject gets the BusObject that interface_ belongs to, if any.
-	DupObject() DBusObjector
+	// GetObject gets the BusObject that interface_ belongs to, if any.
+	GetObject() DBusObjector
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
 	Info() *DBusInterfaceInfo
@@ -81,8 +81,8 @@ func marshalDBusInterfacer(p uintptr) (interface{}, error) {
 	return wrapDBusInterface(obj), nil
 }
 
-// DupObject gets the BusObject that interface_ belongs to, if any.
-func (interface_ *DBusInterface) DupObject() DBusObjector {
+// GetObject gets the BusObject that interface_ belongs to, if any.
+func (interface_ *DBusInterface) GetObject() DBusObjector {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 

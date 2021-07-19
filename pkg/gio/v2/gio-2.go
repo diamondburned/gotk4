@@ -1144,9 +1144,9 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	return _dBusConnectionFlags
 }
 
-// Guid: GUID of the peer performing the role of server when authenticating. See
+// GUID of the peer performing the role of server when authenticating. See
 // BusConnection:guid for more details.
-func (connection *DBusConnection) Guid() string {
+func (connection *DBusConnection) GUID() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
 
@@ -2912,8 +2912,8 @@ func (server *DBusServer) Flags() DBusServerFlags {
 	return _dBusServerFlags
 }
 
-// Guid gets the GUID for server.
-func (server *DBusServer) Guid() string {
+// GUID gets the GUID for server.
+func (server *DBusServer) GUID() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
 
@@ -3715,12 +3715,12 @@ func (notification *Notification) AddButton(label string, detailedAction string)
 	C.g_notification_add_button(_arg0, _arg1, _arg2)
 }
 
-// AddButtonWithTargetValue adds a button to notification that activates action
-// when clicked. action must be an application-wide action (it must start with
+// AddButtonWithTarget adds a button to notification that activates action when
+// clicked. action must be an application-wide action (it must start with
 // "app.").
 //
 // If target is non-NULL, action will be activated with target as its parameter.
-func (notification *Notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
+func (notification *Notification) AddButtonWithTarget(label string, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -3766,15 +3766,15 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 	C.g_notification_set_default_action(_arg0, _arg1)
 }
 
-// SetDefaultActionAndTargetValue sets the default action of notification to
-// action. This action is activated when the notification is clicked on. It must
-// be an application-wide action (start with "app.").
+// SetDefaultActionAndTarget sets the default action of notification to action.
+// This action is activated when the notification is clicked on. It must be an
+// application-wide action (start with "app.").
 //
 // If target is non-NULL, action will be activated with target as its parameter.
 //
 // When no default action is set, the application that the notification was sent
 // on is activated.
-func (notification *Notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
+func (notification *Notification) SetDefaultActionAndTarget(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
@@ -4225,10 +4225,10 @@ func marshalSubprocesser(p uintptr) (interface{}, error) {
 	return wrapSubprocess(obj), nil
 }
 
-// NewSubprocessV: create a new process with the given flags and argument list.
+// NewSubprocess: create a new process with the given flags and argument list.
 //
 // The argument list is expected to be NULL-terminated.
-func NewSubprocessV(argv []string, flags SubprocessFlags) (*Subprocess, error) {
+func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	var _arg1 **C.gchar
 	var _arg2 C.GSubprocessFlags // out
 	var _cret *C.GSubprocess     // in

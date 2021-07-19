@@ -185,7 +185,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	return _tlsCertificate, _goerr
 }
 
-// NewTLSCertificateFromPkcs11Uris creates a Certificate from a PKCS \#11 URI.
+// NewTLSCertificateFromPKCS11URIs creates a Certificate from a PKCS \#11 URI.
 //
 // An example pkcs11_uri would be
 // pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01
@@ -210,7 +210,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 //
 // Note that the private key is not accessed until usage and may fail or require
 // a PIN later.
-func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
+func NewTLSCertificateFromPKCS11URIs(pkcs11Uri string, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -309,7 +309,7 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 // PEM-encoded data in file. If file cannot be read or parsed, the function will
 // return NULL and set error. If file does not contain any PEM-encoded
 // certificates, this will return an empty list and not set error.
-func TlsCertificateListNewFromFile(file string) (*externglib.List, error) {
+func TLSCertificateListNewFromFile(file string) (*externglib.List, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GList  // in
 	var _cerr *C.GError // in

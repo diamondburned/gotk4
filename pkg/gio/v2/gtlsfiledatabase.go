@@ -68,7 +68,7 @@ func (*TLSFileDatabase) privateTLSFileDatabase() {}
 // authorities in anchors to verify certificate chains.
 //
 // The certificates in anchors must be PEM encoded.
-func NewTlsFileDatabase(anchors string) (TLSFileDatabaser, error) {
+func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in
 	var _cerr *C.GError       // in

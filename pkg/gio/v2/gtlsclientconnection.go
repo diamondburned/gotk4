@@ -262,7 +262,7 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the base_io_stream after this function
 // has returned.
-func NewTlsClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
+func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GIOStream          // in

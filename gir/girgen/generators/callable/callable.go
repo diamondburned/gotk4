@@ -100,7 +100,6 @@ func (g *Generator) UseConstructor(typ *gir.TypeFindResult, call *gir.CallableAt
 // Use uses the given CallableAttrs for the generator.
 func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	g.Reset()
-	g.Name = strcases.SnakeToGo(true, call.Name)
 	g.CallableAttrs = call
 	g.typ = typ
 
@@ -115,6 +114,11 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	// Double-check that the C identifier is allowed.
 	if call.CIdentifier != "" && types.FilterCType(g.gen, call.CIdentifier) {
 		return false
+	}
+
+	g.Name = strcases.SnakeToGo(true, call.Name)
+	if call.Shadows != "" {
+		g.Name = strcases.SnakeToGo(true, call.Shadows)
 	}
 
 	for _, name := range IgnoredNames {

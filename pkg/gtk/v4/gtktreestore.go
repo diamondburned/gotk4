@@ -83,9 +83,9 @@ func marshalTreeStorer(p uintptr) (interface{}, error) {
 	return wrapTreeStore(obj), nil
 }
 
-// NewTreeStoreV: non vararg creation function. Used primarily by language
+// NewTreeStore: non vararg creation function. Used primarily by language
 // bindings.
-func NewTreeStoreV(types []externglib.Type) *TreeStore {
+func NewTreeStore(types []externglib.Type) *TreeStore {
 	var _arg2 *C.GType
 	var _arg1 C.int
 	var _cret *C.GtkTreeStore // in
@@ -221,10 +221,10 @@ func (treeStore *TreeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tr
 	return _iter
 }
 
-// InsertWithValuesv: variant of gtk_tree_store_insert_with_values() which takes
+// InsertWithValues: variant of gtk_tree_store_insert_with_values() which takes
 // the columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language bindings.
-func (treeStore *TreeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
+func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -437,11 +437,11 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetValuesv: variant of gtk_tree_store_set_valist() which takes the columns
-// and values as two arrays, instead of varargs. This function is mainly
-// intended for language bindings or in case the number of columns to change is
-// not known until run-time.
-func (treeStore *TreeStore) SetValuesv(iter *TreeIter, columns []int, values []externglib.Value) {
+// Set: variant of gtk_tree_store_set_valist() which takes the columns and
+// values as two arrays, instead of varargs. This function is mainly intended
+// for language bindings or in case the number of columns to change is not known
+// until run-time.
+func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.int

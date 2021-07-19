@@ -1,5 +1,6 @@
 # Edge cases after Pascal case.
 
+Uris -> URIs
 Tolower -> ToLower
 Toupper -> ToUpper
 Totitle -> ToTitle

@@ -34,6 +34,7 @@ Dmy
 Cas
 Lsf
 Msf
+Tls
 Glx
 Gpl
 Mit
@@ -60,6 +61,7 @@ Argb
 Vrgb
 Vbgr
 Cogl
+Guid
 Ascii
 Iso8601
 [LA]gpl

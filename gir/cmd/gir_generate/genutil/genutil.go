@@ -212,6 +212,68 @@ func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 	return errors
 }
 
+// GeneratePackages generates the given pkgs list into the given dst directory.
+// It uses WriteNamespace to do so. The namespaces will be generated in
+// parallel. Most external GIR generators should call this.
+func GeneratePackages(gen *girgen.Generator, dst string, pkgs []gendata.Package) []error {
+	sema := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(-1)))
+
+	var wg sync.WaitGroup
+	defer wg.Wait()
+
+	var errMut sync.Mutex
+	var errors []error
+
+	genNamespace := func(namespace *gir.Namespace) {
+		ng := gen.UseNamespace(namespace.Name, namespace.Version)
+		if ng == nil {
+			log.Fatalln("cannot find namespace", namespace.Name, "v"+namespace.Version)
+		}
+
+		sema.Acquire(context.Background(), 1)
+		wg.Add(1)
+
+		go func() {
+			if err := WriteNamespace(ng, dst); err != nil {
+				errMut.Lock()
+				errors = append(errors, err)
+				errMut.Unlock()
+			}
+
+			sema.Release(1)
+			wg.Done()
+		}()
+	}
+
+	repos := gen.Repositories()
+
+	for _, pkg := range pkgs {
+		if pkg.Namespaces != nil {
+			for _, wantedName := range pkg.Namespaces {
+				namespace := repos.FindNamespace(wantedName)
+				if namespace == nil {
+					return []error{fmt.Errorf("namespace %q not found", wantedName)}
+				}
+
+				genNamespace(namespace.Namespace)
+			}
+		}
+
+		repo := repos.FromPkg(pkg.PkgName)
+		if repo == nil {
+			return []error{fmt.Errorf("package %q not found", pkg.PkgName)}
+		}
+
+		for _, namespace := range repo.Namespaces {
+			genNamespace(&namespace)
+		}
+	}
+
+	wg.Wait()
+
+	return errors
+}
+
 // CleanDirectory cleans up the directory at the given path. Files listed inside
 // except will not be wiped.
 func CleanDirectory(path string, except []string) error {

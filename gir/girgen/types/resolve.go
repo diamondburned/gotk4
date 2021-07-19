@@ -643,9 +643,6 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		}
 	}
 
-	// Fill namespace.
-	typ.Name = EnsureNamespace(gen.Namespace(), typ.Name)
-
 	if prim, ok := girToBuiltin[typ.Name]; ok {
 		return builtinType("", prim, typ)
 	}
@@ -655,6 +652,9 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	if typ.Name == "gpointer" && IsGpointer(typ.CType) {
 		return builtinType("runtime/cgo", "Handle", typ)
 	}
+
+	// Fill namespace.
+	typ.Name = EnsureNamespace(gen.Namespace(), typ.Name)
 
 	// Resolve the unknown namespace that is GLib and primitive types.
 	switch typ.Name {
@@ -667,7 +667,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return externGLibType("*SList", typ, "GSList*")
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")
-	case "GObject.Value": // inconsistency???
+	case "GObject.Value", "GValue": // inconsistency???
 		return externGLibType("*Value", typ, "GValue*")
 	case "GObject.Object":
 		return externGLibType("*Object", typ, "GObject*")

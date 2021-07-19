@@ -4,7 +4,6 @@ package glib
 
 import (
 	"fmt"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -699,15 +698,6 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
-}
-
-// NullifyPointer: set the pointer at the specified location to NULL.
-func NullifyPointer(nullifyLocation *cgo.Handle) {
-	var _arg1 *C.gpointer // out
-
-	_arg1 = (*C.gpointer)(unsafe.Pointer(nullifyLocation))
-
-	C.g_nullify_pointer(_arg1)
 }
 
 // ParseDebugString parses a string containing debugging options into a guint

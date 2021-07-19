@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
 // GoAnyType generates the Go type signature for the AnyType union. An empty
@@ -113,14 +112,16 @@ func findMethodName(record *gir.Record, name string) *gir.Method {
 // EnsureNamespace ensures that exported, non-primitive types have the namespace
 // prepended. This is useful for matching hard-coded types.
 func EnsureNamespace(nsp *gir.NamespaceFindResult, girType string) string {
-	if strcases.IsLower(girType) {
-		// is built-in
+	if _, ok := girToBuiltin[girType]; ok {
+		return girType
+	}
+	if _, ok := gpointerTypes[girType]; ok {
 		return girType
 	}
 
 	// Special cases, because GIR is very unusual.
 	switch girType {
-	case "GType":
+	case "GType", "GValue":
 		return girType
 	}
 

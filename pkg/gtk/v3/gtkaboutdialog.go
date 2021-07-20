@@ -222,7 +222,7 @@ func NewAboutDialog() *AboutDialog {
 func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.gchar          // out
-	var _arg2 **C.gchar
+	var _arg2 **C.gchar         // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sectionName)))
@@ -245,13 +245,13 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 // secondary credits dialog.
 func (about *AboutDialog) Artists() []string {
 	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -264,7 +264,6 @@ func (about *AboutDialog) Artists() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -275,13 +274,13 @@ func (about *AboutDialog) Artists() []string {
 // secondary credits dialog.
 func (about *AboutDialog) Authors() []string {
 	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -294,7 +293,6 @@ func (about *AboutDialog) Authors() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -337,13 +335,13 @@ func (about *AboutDialog) Copyright() string {
 // the secondary credits dialog.
 func (about *AboutDialog) Documenters() []string {
 	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -356,7 +354,6 @@ func (about *AboutDialog) Documenters() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -542,7 +539,7 @@ func (about *AboutDialog) WrapLicense() bool {
 // secondary credits dialog.
 func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar         // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{
@@ -564,7 +561,7 @@ func (about *AboutDialog) SetArtists(artists []string) {
 // secondary credits dialog.
 func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar         // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{
@@ -610,7 +607,7 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 // the secondary credits dialog.
 func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar         // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	{

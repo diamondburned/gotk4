@@ -105,13 +105,13 @@ func (f *Frustum) free() {
 // Planes retrieves the planes that define the given #graphene_frustum_t.
 func (f *Frustum) Planes() [6]Plane {
 	var _arg0 *C.graphene_frustum_t // out
-	var _arg1 [6]C.graphene_plane_t
+	var _arg1 [6]C.graphene_plane_t // in
 
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
 
 	C.graphene_frustum_get_planes(_arg0, &_arg1[0])
 
-	var _planes [6]Plane
+	var _planes [6]Plane // out
 
 	_planes = *(*[6]Plane)(unsafe.Pointer(&_arg1))
 

@@ -14,9 +14,9 @@ import "C"
 // EnvironGetenv returns the value of the environment variable variable in the
 // provided list envp.
 func EnvironGetenv(envp []string, variable string) string {
-	var _arg1 **C.gchar
-	var _arg2 *C.gchar // out
-	var _cret *C.gchar // in
+	var _arg1 **C.gchar // out
+	var _arg2 *C.gchar  // out
+	var _cret *C.gchar  // in
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -43,11 +43,11 @@ func EnvironGetenv(envp []string, variable string) string {
 // EnvironSetenv sets the environment variable variable in the provided list
 // envp to value.
 func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar  // out
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // out
 	var _arg4 C.gboolean // out
-	var _cret **C.gchar
+	var _cret **C.gchar  // in
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -70,7 +70,7 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 
 	_cret = C.g_environ_setenv(_arg1, _arg2, _arg3, _arg4)
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -83,6 +83,7 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -92,9 +93,9 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 // EnvironUnsetenv removes the environment variable variable from the provided
 // environment envp.
 func EnvironUnsetenv(envp []string, variable string) []string {
-	var _arg1 **C.gchar
-	var _arg2 *C.gchar // out
-	var _cret **C.gchar
+	var _arg1 **C.gchar // out
+	var _arg2 *C.gchar  // out
+	var _cret **C.gchar // in
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -113,7 +114,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 
 	_cret = C.g_environ_unsetenv(_arg1, _arg2)
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -126,6 +127,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -143,11 +145,11 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
 func GetEnviron() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_get_environ()
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -160,6 +162,7 @@ func GetEnviron() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -196,11 +199,11 @@ func Getenv(variable string) string {
 // GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
 func Listenv() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_listenv()
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -213,6 +216,7 @@ func Listenv() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

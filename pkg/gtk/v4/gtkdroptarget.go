@@ -252,7 +252,7 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 // SetGTypes sets the supported GTypes for this drop target.
 func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
-	var _arg1 *C.GType
+	var _arg1 *C.GType         // out
 	var _arg2 C.gsize
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))

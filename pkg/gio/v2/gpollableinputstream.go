@@ -212,7 +212,7 @@ func (stream *PollableInputStream) IsReadable() bool {
 func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg3 *C.GCancellable         // out
-	var _arg1 *C.void
+	var _arg1 *C.void                 // out
 	var _arg2 C.gsize
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in

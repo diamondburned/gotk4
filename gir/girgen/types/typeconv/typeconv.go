@@ -209,6 +209,11 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 		return !result.fail
 	}
 
+	if !result.resolveType(conv) {
+		result.Logln(logger.Debug, "cannot resolve type")
+		return false
+	}
+
 	switch result.Direction {
 	case ConvertCToGo:
 		if !conv.cgoConvert(result) || result.fail {
@@ -245,18 +250,24 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 // convertInner is used while converting arrays; it returns the result of the
 // inner value converted.
 func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueConverted {
-	var inner *gir.AnyType
-
+	var inner *gir.Type
 	switch {
-	case of.AnyType.Array != nil:
-		inner = &of.AnyType.Array.AnyType
-	case of.AnyType.Type.Type != nil:
-		inner = &of.AnyType.Type.AnyType
+	case of.Array != nil:
+		inner = of.Array.Type
+	case len(of.Type.Types) > 0:
+		inner = &of.Type.Types[0]
 	}
 
-	if inner == nil || inner.Type == nil {
+	if inner == nil {
 		return nil
 	}
+
+	return conv.convertType(of, in, out, inner)
+}
+
+// convertType converts a manually-crafted value with the given type.
+func (conv *Converter) convertType(
+	of *ValueConverted, in, out string, typ *gir.Type) *ValueConverted {
 
 	// If the array's ownership is ONLY container, then we must not take over
 	// the inner values. Therefore, we only generate the appropriate code.
@@ -265,24 +276,17 @@ func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueCo
 		owner = "none"
 	}
 
-	return conv.convertType(of, in, out, *inner, owner)
-}
-
-// convertType converts a manually-crafted value with the given type.
-func (conv *Converter) convertType(
-	of *ValueConverted, in, out string, typ gir.AnyType, owner string) *ValueConverted {
-
 	attrs := of.ParameterAttrs
-	attrs.AnyType = typ
+	attrs.AnyType = gir.AnyType{Type: typ}
 	attrs.TransferOwnership.TransferOwnership = owner
 
 	result := newValueConverted(conv, &ConversionValue{
 		InName:         in,
 		OutName:        out,
 		Direction:      of.Direction,
-		ParameterIndex: UnknownValueIndex,
+		ParameterIndex: of.ParameterIndex,
 		ParameterAttrs: attrs,
-		InContainer:    of.Type != nil && of.Type.Type != nil, // is container type
+		InContainer:    of.Type != nil && len(of.Type.Types) > 0, // is container type
 	})
 
 	// If the value is in a container, then its direction is always in. This is

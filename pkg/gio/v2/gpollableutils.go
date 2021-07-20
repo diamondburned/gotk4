@@ -96,7 +96,7 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
-	var _arg2 *C.void
+	var _arg2 *C.void         // out
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // out
 	var _cret C.gssize   // in
@@ -139,7 +139,7 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
-	var _arg2 *C.void
+	var _arg2 *C.void          // out
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // out
 	var _cret C.gssize   // in
@@ -189,7 +189,7 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
 	var _arg6 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
-	var _arg2 *C.void
+	var _arg2 *C.void          // out
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // out
 	var _arg5 C.gsize    // in

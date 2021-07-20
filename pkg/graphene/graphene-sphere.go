@@ -194,8 +194,8 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 // The center of the sphere can either be specified, or will be center of the 3D
 // volume that encompasses all points.
 func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
-	var _arg0 *C.graphene_sphere_t // out
-	var _arg2 *C.graphene_point3d_t
+	var _arg0 *C.graphene_sphere_t  // out
+	var _arg2 *C.graphene_point3d_t // out
 	var _arg1 C.uint
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_sphere_t  // in
@@ -223,7 +223,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 // volume that encompasses all vectors.
 func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
-	var _arg2 *C.graphene_vec3_t
+	var _arg2 *C.graphene_vec3_t   // out
 	var _arg1 C.uint
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_sphere_t  // in

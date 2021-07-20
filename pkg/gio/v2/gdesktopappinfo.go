@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -31,6 +32,27 @@ func init() {
 		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
 		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
+}
+
+// DesktopAppLaunchCallback: during invocation,
+// g_desktop_app_info_launch_uris_as_manager() may create one or more child
+// processes. This callback is invoked once for each, providing the process ID.
+type DesktopAppLaunchCallback func(appinfo *DesktopAppInfo, pid glib.Pid)
+
+//export _gotk4_gio2_DesktopAppLaunchCallback
+func _gotk4_gio2_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpointer) {
+	v := gbox.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var appinfo *DesktopAppInfo // out
+	var pid glib.Pid            // out
+
+	appinfo = wrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0)))
+
+	fn := v.(DesktopAppLaunchCallback)
+	fn(appinfo, pid)
 }
 
 // DesktopAppInfoLookupOverrider contains methods that are overridable.
@@ -309,13 +331,13 @@ func (info *DesktopAppInfo) IsHidden() bool {
 // Keywords gets the keywords from the desktop file.
 func (info *DesktopAppInfo) Keywords() []string {
 	var _arg0 *C.GDesktopAppInfo // out
-	var _cret **C.char
+	var _cret **C.char           // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_keywords(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -328,7 +350,6 @@ func (info *DesktopAppInfo) Keywords() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -501,13 +522,13 @@ func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext *AppLa
 // listed in the "Actions" key of the [Desktop Entry] group.
 func (info *DesktopAppInfo) ListActions() []string {
 	var _arg0 *C.GDesktopAppInfo // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_list_actions(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -520,7 +541,6 @@ func (info *DesktopAppInfo) ListActions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

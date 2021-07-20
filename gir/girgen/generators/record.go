@@ -116,9 +116,19 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 func mustIgnoreAny(gen FileGenerator, any gir.AnyType) bool {
 	switch {
 	case any.Type != nil:
-		return types.Filter(gen, any.Type.Name, any.Type.CType)
+		if types.Filter(gen, any.Type.Name, any.Type.CType) {
+			return true
+		}
+
+		for _, inner := range any.Type.Types {
+			if types.Filter(gen, inner.Name, inner.CType) {
+				return true
+			}
+		}
+
+		return false
 	case any.Array != nil:
-		return mustIgnoreAny(gen, any.Array.AnyType)
+		return mustIgnoreAny(gen, gir.AnyType{Type: any.Array.Type})
 	default:
 		return true
 	}

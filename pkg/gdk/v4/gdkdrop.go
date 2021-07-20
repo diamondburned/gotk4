@@ -227,9 +227,9 @@ func (self *Drop) Surface() Surfacer {
 // ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
 // that complies with one of the mime types.
 func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkDrop      // out
-	var _arg3 *C.GCancellable // out
-	var _arg1 **C.char
+	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
 	var _arg2 C.int                 // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer

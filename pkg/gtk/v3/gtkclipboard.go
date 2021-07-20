@@ -120,7 +120,7 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 	}
 
 	var clipboard *Clipboard // out
-	var uris []string
+	var uris []string        // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	{
@@ -328,8 +328,8 @@ func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 // data is stored is platform dependent, see gdk_display_store_clipboard () for
 // more information.
 func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
-	var _arg0 *C.GtkClipboard // out
-	var _arg1 *C.GtkTargetEntry
+	var _arg0 *C.GtkClipboard   // out
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
@@ -432,13 +432,13 @@ func (clipboard *Clipboard) WaitForText() string {
 // etc, may be dispatched during the wait.
 func (clipboard *Clipboard) WaitForURIs() []string {
 	var _arg0 *C.GtkClipboard // out
-	var _cret **C.gchar
+	var _cret **C.gchar       // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -451,6 +451,7 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

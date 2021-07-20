@@ -166,7 +166,7 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GErr
 		panic(`callback not found`)
 	}
 
-	var buf []byte
+	var buf []byte // out
 
 	defer C.free(unsafe.Pointer(arg0))
 	buf = make([]byte, arg1)

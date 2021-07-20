@@ -21,8 +21,8 @@ import "C"
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
 func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
-	var _arg1 C.int // out
-	var _arg3 *C.GtkRequestedSize
+	var _arg1 C.int               // out
+	var _arg3 *C.GtkRequestedSize // out
 	var _arg2 C.guint
 	var _cret C.int // in
 

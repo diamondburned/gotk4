@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,6 +22,26 @@ func init() {
 		{T: externglib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
 		{T: externglib.Type(C.gtk_debug_flags_get_type()), F: marshalDebugFlags},
 	})
+}
+
+func BuilderErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_builder_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+func ConstraintVflParserErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_constraint_vfl_parser_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type EditableProperties int
@@ -65,6 +86,26 @@ func (e EditableProperties) String() string {
 	default:
 		return fmt.Sprintf("EditableProperties(%d)", e)
 	}
+}
+
+func IconThemeErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_icon_theme_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+func RecentManagerErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_manager_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type DebugFlags int
@@ -155,4 +196,14 @@ func (d DebugFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+func CSSParserErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_css_parser_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }

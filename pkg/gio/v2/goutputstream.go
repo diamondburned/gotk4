@@ -656,7 +656,7 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg3 *C.GCancellable  // out
-	var _arg1 *C.void
+	var _arg1 *C.void          // out
 	var _arg2 C.gsize
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -704,7 +704,7 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.void
+	var _arg1 *C.void          // out
 	var _arg2 C.gsize
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
@@ -749,7 +749,7 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.void
+	var _arg1 *C.void          // out
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
 	var _arg5 C.GAsyncReadyCallback // out
@@ -838,7 +838,7 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.void
+	var _arg1 *C.void          // out
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
 	var _arg5 C.GAsyncReadyCallback // out
@@ -929,7 +929,7 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.GOutputVector
+	var _arg1 *C.GOutputVector // out
 	var _arg2 C.gsize
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
@@ -980,7 +980,7 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.GOutputVector
+	var _arg1 *C.GOutputVector // out
 	var _arg2 C.gsize
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
@@ -1026,7 +1026,7 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.GOutputVector
+	var _arg1 *C.GOutputVector // out
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
 	var _arg5 C.GAsyncReadyCallback // out
@@ -1111,7 +1111,7 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.GOutputVector
+	var _arg1 *C.GOutputVector // out
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
 	var _arg5 C.GAsyncReadyCallback // out

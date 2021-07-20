@@ -74,7 +74,7 @@ func (d *DBusAnnotationInfo) Value() string {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -130,9 +130,9 @@ func (info *DBusAnnotationInfo) unref() {
 //
 // The cost of this function is O(n) in number of annotations.
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
-	var _arg1 **C.GDBusAnnotationInfo
-	var _arg2 *C.gchar // out
-	var _cret *C.gchar // in
+	var _arg1 **C.GDBusAnnotationInfo // out
+	var _arg2 *C.gchar                // out
+	var _cret *C.gchar                // in
 
 	{
 		var zero *DBusAnnotationInfo
@@ -185,7 +185,7 @@ func (d *DBusArgInfo) Signature() string {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -265,7 +265,7 @@ func (d *DBusInterfaceInfo) Name() string {
 // Methods: pointer to a NULL-terminated array of pointers to BusMethodInfo
 // structures or NULL if there are no methods.
 func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
-	var v []*DBusMethodInfo
+	var v []*DBusMethodInfo // out
 	{
 		var i int
 		var z *C.GDBusMethodInfo
@@ -288,7 +288,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 // Signals: pointer to a NULL-terminated array of pointers to BusSignalInfo
 // structures or NULL if there are no signals.
 func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
-	var v []*DBusSignalInfo
+	var v []*DBusSignalInfo // out
 	{
 		var i int
 		var z *C.GDBusSignalInfo
@@ -311,7 +311,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 // Properties: pointer to a NULL-terminated array of pointers to BusPropertyInfo
 // structures or NULL if there are no properties.
 func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
-	var v []*DBusPropertyInfo
+	var v []*DBusPropertyInfo // out
 	{
 		var i int
 		var z *C.GDBusPropertyInfo
@@ -334,7 +334,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -514,7 +514,7 @@ func (d *DBusMethodInfo) Name() string {
 // InArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
 // structures or NULL if there are no in arguments.
 func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
+	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.GDBusArgInfo
@@ -537,7 +537,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 // OutArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
 // structures or NULL if there are no out arguments.
 func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
-	var v []*DBusArgInfo
+	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.GDBusArgInfo
@@ -560,7 +560,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -664,7 +664,7 @@ func (d *DBusNodeInfo) Path() string {
 // Interfaces: pointer to a NULL-terminated array of pointers to
 // BusInterfaceInfo structures or NULL if there are no interfaces.
 func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
-	var v []*DBusInterfaceInfo
+	var v []*DBusInterfaceInfo // out
 	{
 		var i int
 		var z *C.GDBusInterfaceInfo
@@ -687,7 +687,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 // Nodes: pointer to a NULL-terminated array of pointers to BusNodeInfo
 // structures or NULL if there are no nodes.
 func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
-	var v []*DBusNodeInfo
+	var v []*DBusNodeInfo // out
 	{
 		var i int
 		var z *C.GDBusNodeInfo
@@ -710,7 +710,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -827,7 +827,7 @@ func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
@@ -907,7 +907,7 @@ func (d *DBusSignalInfo) Name() string {
 // Args: pointer to a NULL-terminated array of pointers to BusArgInfo structures
 // or NULL if there are no arguments.
 func (d *DBusSignalInfo) Args() []*DBusArgInfo {
-	var v []*DBusArgInfo
+	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.GDBusArgInfo
@@ -930,7 +930,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo
+	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo

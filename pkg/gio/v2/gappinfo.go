@@ -490,13 +490,13 @@ func (appinfo *AppInfo) Name() string {
 // exported directly by the application.
 func (appinfo *AppInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
-	var _cret **C.char
+	var _cret **C.char    // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -509,7 +509,6 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1003,13 +1002,13 @@ func NewAppLaunchContext() *AppLaunchContext {
 // NULL-terminated array of strings, where each string has the form KEY=VALUE.
 func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
-	var _cret **C.char
+	var _cret **C.char             // in
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -1022,6 +1021,7 @@ func (context *AppLaunchContext) Environment() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

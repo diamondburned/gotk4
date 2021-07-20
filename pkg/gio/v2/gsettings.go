@@ -217,7 +217,9 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SettingsOverrider interface {
+	ChangeEvent(keys *glib.Quark, nKeys int) bool
 	Changed(key string)
+	WritableChangeEvent(key glib.Quark) bool
 	WritableChanged(key string)
 }
 
@@ -1022,14 +1024,14 @@ func (settings *Settings) String(key string) string {
 func (settings *Settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
-	var _cret **C.gchar
+	var _cret **C.gchar    // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
 	_cret = C.g_settings_get_strv(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1042,6 +1044,7 @@ func (settings *Settings) Strv(key string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1189,13 +1192,13 @@ func (settings *Settings) IsWritable(name string) bool {
 // You should free the return value with g_strfreev() when you are done with it.
 func (settings *Settings) ListChildren() []string {
 	var _arg0 *C.GSettings // out
-	var _cret **C.gchar
+	var _cret **C.gchar    // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_list_children(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1208,6 +1211,7 @@ func (settings *Settings) ListChildren() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1225,13 +1229,13 @@ func (settings *Settings) ListChildren() []string {
 // Deprecated: Use g_settings_schema_list_keys() instead.
 func (settings *Settings) ListKeys() []string {
 	var _arg0 *C.GSettings // out
-	var _cret **C.gchar
+	var _cret **C.gchar    // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_list_keys(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1244,6 +1248,7 @@ func (settings *Settings) ListKeys() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1510,8 +1515,8 @@ func (settings *Settings) SetString(key string, value string) bool {
 func (settings *Settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
-	var _arg2 **C.gchar
-	var _cret C.gboolean // in
+	var _arg2 **C.gchar    // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
@@ -1623,11 +1628,11 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 //
 // Deprecated: Use g_settings_schema_source_list_schemas() instead.
 func SettingsListRelocatableSchemas() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_settings_list_relocatable_schemas()
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1640,7 +1645,6 @@ func SettingsListRelocatableSchemas() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1653,11 +1657,11 @@ func SettingsListRelocatableSchemas() []string {
 // g_settings_list_schemas() to check for the presence of a particular schema,
 // use g_settings_schema_source_lookup() instead of your whole loop.
 func SettingsListSchemas() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_settings_list_schemas()
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1670,7 +1674,6 @@ func SettingsListSchemas() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

@@ -2571,10 +2571,10 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
-	var _arg2 *C.char
-	var _arg3 C.gsize   // in
-	var _arg4 *C.char   // in
-	var _cerr *C.GError // in
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	{
@@ -2585,9 +2585,9 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 
 	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
-	var _contents []byte
-	var _etagOut string // out
-	var _goerr error    // out
+	var _contents []byte // out
+	var _etagOut string  // out
+	var _goerr error     // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_contents = make([]byte, _arg3)
@@ -2637,19 +2637,19 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.char
-	var _arg3 C.gsize   // in
-	var _arg4 *C.char   // in
-	var _cerr *C.GError // in
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
-	var _contents []byte
-	var _etagOut string // out
-	var _goerr error    // out
+	var _contents []byte // out
+	var _etagOut string  // out
+	var _goerr error     // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_contents = make([]byte, _arg3)
@@ -2668,19 +2668,19 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.char
-	var _arg3 C.gsize   // in
-	var _arg4 *C.char   // in
-	var _cerr *C.GError // in
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
-	var _contents []byte
-	var _etagOut string // out
-	var _goerr error    // out
+	var _contents []byte // out
+	var _etagOut string  // out
+	var _goerr error     // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_contents = make([]byte, _arg3)
@@ -3932,7 +3932,7 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg7 *C.GCancellable // out
-	var _arg1 *C.char
+	var _arg1 *C.char         // out
 	var _arg2 C.gsize
 	var _arg3 *C.char            // out
 	var _arg4 C.gboolean         // out
@@ -3989,7 +3989,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile        // out
 	var _arg6 *C.GCancellable // out
-	var _arg1 *C.char
+	var _arg1 *C.char         // out
 	var _arg2 C.gsize
 	var _arg3 *C.char               // out
 	var _arg4 C.gboolean            // out

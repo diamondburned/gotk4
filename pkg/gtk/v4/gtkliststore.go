@@ -99,7 +99,7 @@ func marshalListStorer(p uintptr) (interface{}, error) {
 // NewListStore: non-vararg creation function. Used primarily by language
 // bindings.
 func NewListStore(types []externglib.Type) *ListStore {
-	var _arg2 *C.GType
+	var _arg2 *C.GType // out
 	var _arg1 C.int
 	var _cret *C.GtkListStore // in
 
@@ -221,9 +221,9 @@ func (listStore *ListStore) InsertWithValues(position int, columns []int, values
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.int           // out
-	var _arg3 *C.int
+	var _arg3 *C.int          // out
 	var _arg5 C.int
-	var _arg4 *C.GValue
+	var _arg4 *C.GValue // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.int(position)
@@ -346,7 +346,7 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 // this function only works with unsorted stores.
 func (store *ListStore) Reorder(newOrder []int) {
 	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.int
+	var _arg1 *C.int          // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	{
@@ -364,7 +364,7 @@ func (store *ListStore) Reorder(newOrder []int) {
 // interface is called.
 func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 	var _arg0 *C.GtkListStore // out
-	var _arg2 *C.GType
+	var _arg2 *C.GType        // out
 	var _arg1 C.int
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
@@ -403,9 +403,9 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externgl
 func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.int
+	var _arg2 *C.int          // out
 	var _arg4 C.int
-	var _arg3 *C.GValue
+	var _arg3 *C.GValue // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))

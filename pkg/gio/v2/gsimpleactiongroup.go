@@ -80,7 +80,7 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 // Deprecated: Use g_action_map_add_action_entries().
 func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GSimpleActionGroup // out
-	var _arg1 *C.GActionEntry
+	var _arg1 *C.GActionEntry       // out
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 

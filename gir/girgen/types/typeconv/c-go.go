@@ -11,10 +11,6 @@ import (
 
 // C to Go type conversions.
 
-func (conv *Converter) cgoParameterOverrides(value *ValueConverted) {
-	// noop
-}
-
 func (conv *Converter) cgoConvert(value *ValueConverted) bool {
 	switch {
 	case value.AnyType.Array != nil:
@@ -27,31 +23,7 @@ func (conv *Converter) cgoConvert(value *ValueConverted) bool {
 }
 
 func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
-	if value.AnyType.Array.Type == nil {
-		conv.Logln(logger.Debug, "C->Go skipping nested array", value.AnyType.Array.CType)
-		return false
-	}
-
 	array := *value.AnyType.Array
-
-	// Ensure that the array type matches the inner type. Some functions violate
-	// this, e.g. g_spawn_command_line_sync().
-	if array.Type.CType == "" {
-		// Copy the inner type so we don't accidentally change a reference.
-		typ := *array.Type
-
-		if types.CleanCType(array.CType, true) == "void" {
-			// We can't dereference the array type to get a void type, so we
-			// have to guess from the GIR type. Thanks, GIR.
-			typ.CType = types.CTypeFallback("", typ.Name)
-		} else {
-			// Dereference the inner type by 1.
-			typ.CType = strings.Replace(array.CType, "*", "", 1)
-		}
-
-		array.AnyType.Type = &typ
-		value.AnyType.Array = &array
-	}
 
 	// All generators must declare src.
 	inner := conv.convertInner(value, "src[i]", value.OutName+"[i]")
@@ -69,23 +41,19 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.In.Type = strings.TrimPrefix(value.In.Type, "*")
 	}
 
+	// The earlier ResolveType routine will be setting the inDecl, but we have
+	// our own rules for that.
+	value.inDecl.Reset()
+
 	if array.FixedSize > 0 && value.outputAllocs() {
-		value.inDecl.Linef("var %s [%d]%s", value.InName, array.FixedSize, value.In.Type)
+		value.inDecl.Linef("var %s [%d]%s // in", value.InName, array.FixedSize, value.In.Type)
 		// We've allocated an array, so have C write to this array.
 		value.In.Call = fmt.Sprintf("&%s[0]", value.InName)
 	} else {
-		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
+		value.inDecl.Linef("var %s %s // in", value.InName, value.In.Type)
 		// Slice allocations are done later, since we don't know the length yet.
 		// CallerAllocates is probably impossible to do here.
 		value.In.Call = fmt.Sprintf("&%s", value.InName)
-	}
-
-	if array.FixedSize > 0 {
-		value.Out.Type = fmt.Sprintf("[%d]%s", array.FixedSize, inner.Out.Type)
-		value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
-	} else {
-		value.Out.Type = fmt.Sprintf("[]%s", inner.Out.Type)
-		value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
 	}
 
 	switch {
@@ -252,18 +220,13 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 }
 
 func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
-	if !value.resolveType(conv) {
-		value.Logln(logger.Debug, "cannot resolve type")
-		return false
-	}
-
-	if value.AnyType.Type.Type == nil {
+	if len(value.Inner) == 0 {
 		return conv.cgoConverter(value)
 	}
 
 	// TODO: GHashTable.
-	switch {
-	case value.Resolved.IsExternGLib("List"):
+	switch value.Resolved.GType {
+	case "GLib.List":
 		value.header.Import("unsafe")
 
 		value.vtmpl("<.Out.Set> = externglib.WrapList(uintptr(unsafe.Pointer(<.InNamePtr 1>)))")
@@ -292,6 +255,44 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		if inner != nil {
 			inner.finalize()
 			value.header.ApplyFrom(inner.Header())
+		}
+
+		return true
+
+	case "GLib.HashTable":
+		if len(value.Type.Types) != 2 {
+			value.Logln(logger.Debug, "skipping untyped HashTable")
+			return false
+		}
+
+		kt := conv.convertType(value, "ksrc", "kdst", &value.Type.Types[0])
+		vt := conv.convertType(value, "vsrc", "vdst", &value.Type.Types[1])
+		if kt == nil || vt == nil {
+			value.Logln(logger.Debug, "no key/value-type")
+			return false
+		}
+
+		value.header.ImportCore("gextras")
+		value.header.ImportCore("unsafe")
+
+		value.p.Linef(
+			"%s = make(%s, gextras.HashTableSize(unsafe.Pointer(%s)))",
+			value.Out.Set, value.Out.Type, value.InNamePtr(1))
+
+		value.p.Linef(
+			"gextras.MoveHashTable(unsafe.Pointer(%s), %t, func(k, v unsafe.Pointer) {",
+			value.InNamePtr(1), value.TransferOwnership.TransferOwnership == "full")
+		value.p.Linef("ksrc := *(*%s)(k)", kt.In.Type)
+		value.p.Linef("vsrc := *(*%s)(v)", vt.In.Type)
+		value.p.Linef(kt.Out.Declare)
+		value.p.Linef(vt.Out.Declare)
+		value.p.Linef(kt.Conversion)
+		value.p.Linef(vt.Conversion)
+		value.p.Linef("%s[kdst] = vdst", value.Out.Set)
+		value.p.Linef("})")
+
+		if value.ShouldFree() {
+			value.p.Linef("gextras.FreeHashTable(unsafe.Pointer(%s))", value.InNamePtr(1))
 		}
 
 		return true
@@ -346,13 +347,7 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 		return fmt.Sprintf("C.free(unsafe.Pointer(%s))", v)
 
 	case *gir.Alias:
-		result := conv.convertType(
-			value,
-			value.InName,
-			value.OutName,
-			typ.Type.AnyType,
-			value.TransferOwnership.TransferOwnership,
-		)
+		result := conv.convertType(value, value.InName, value.OutName, &typ.Type)
 		if result != nil {
 			return conv.cFree(result, v)
 		}
@@ -604,13 +599,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Alias:
-		result := conv.convertType(
-			value,
-			value.InName,
-			value.OutName,
-			v.Type.AnyType,
-			value.TransferOwnership.TransferOwnership,
-		)
+		result := conv.convertType(value, value.InName, value.OutName, &v.Type)
 		if result != nil {
 			value.header.ApplyFrom(result.Header())
 			return true

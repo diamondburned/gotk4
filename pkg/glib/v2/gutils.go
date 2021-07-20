@@ -444,11 +444,11 @@ func GetRealName() string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetSystemConfigDirs() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_get_system_config_dirs()
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -461,7 +461,6 @@ func GetSystemConfigDirs() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -500,11 +499,11 @@ func GetSystemConfigDirs() []string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetSystemDataDirs() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_get_system_data_dirs()
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -517,7 +516,6 @@ func GetSystemDataDirs() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -711,8 +709,8 @@ func GetUserSpecialDir(directory UserDirectory) string {
 // If string is equal to "help", all the available keys in keys are printed out
 // to standard error.
 func ParseDebugString(_string string, keys []DebugKey) uint {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.GDebugKey
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GDebugKey // out
 	var _arg3 C.guint
 	var _cret C.guint // in
 

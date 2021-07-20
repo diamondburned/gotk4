@@ -423,7 +423,7 @@ func (r *RecentFilterInfo) MIMEType() string {
 
 // Applications: list of applications that have registered the file.
 func (r *RecentFilterInfo) Applications() []string {
-	var v []string
+	var v []string // out
 	{
 		var i int
 		var z *C.gchar
@@ -435,7 +435,6 @@ func (r *RecentFilterInfo) Applications() []string {
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	return v
@@ -443,7 +442,7 @@ func (r *RecentFilterInfo) Applications() []string {
 
 // Groups groups to which the file belongs to.
 func (r *RecentFilterInfo) Groups() []string {
-	var v []string
+	var v []string // out
 	{
 		var i int
 		var z *C.gchar
@@ -455,7 +454,6 @@ func (r *RecentFilterInfo) Groups() []string {
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	return v

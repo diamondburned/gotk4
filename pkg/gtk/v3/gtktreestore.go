@@ -86,7 +86,7 @@ func marshalTreeStorer(p uintptr) (interface{}, error) {
 // NewTreeStore: non vararg creation function. Used primarily by language
 // bindings.
 func NewTreeStore(types []externglib.Type) *TreeStore {
-	var _arg2 *C.GType
+	var _arg2 *C.GType // out
 	var _arg1 C.gint
 	var _cret *C.GtkTreeStore // in
 
@@ -229,9 +229,9 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
 	var _arg3 C.gint          // out
-	var _arg4 *C.gint
+	var _arg4 *C.gint         // out
 	var _arg6 C.gint
-	var _arg5 *C.GValue
+	var _arg5 *C.GValue // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
@@ -405,7 +405,7 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 // interface is called.
 func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 	var _arg0 *C.GtkTreeStore // out
-	var _arg2 *C.GType
+	var _arg2 *C.GType        // out
 	var _arg1 C.gint
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
@@ -444,9 +444,9 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.gint
+	var _arg2 *C.gint         // out
 	var _arg4 C.gint
-	var _arg3 *C.GValue
+	var _arg3 *C.GValue // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))

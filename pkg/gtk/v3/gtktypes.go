@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -140,15 +141,15 @@ func (iconSet *IconSet) Copy() *IconSet {
 //
 // Deprecated: Use IconTheme instead.
 func (iconSet *IconSet) Sizes() []int {
-	var _arg0 *C.GtkIconSet // out
-	var _arg1 *C.GtkIconSize
-	var _arg2 C.gint // in
+	var _arg0 *C.GtkIconSet  // out
+	var _arg1 *C.GtkIconSize // in
+	var _arg2 C.gint         // in
 
 	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
 	C.gtk_icon_set_get_sizes(_arg0, &_arg1, &_arg2)
 
-	var _sizes []int
+	var _sizes []int // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_sizes = make([]int, _arg2)
@@ -863,13 +864,13 @@ func (selectionData *SelectionData) Text() string {
 // URIs gets the contents of the selection data as array of URIs.
 func (selectionData *SelectionData) URIs() []string {
 	var _arg0 *C.GtkSelectionData // out
-	var _cret **C.gchar
+	var _cret **C.gchar           // in
 
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_get_uris(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -882,6 +883,7 @@ func (selectionData *SelectionData) URIs() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -936,8 +938,8 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 // converted to the form determined by selection_data->target.
 func (selectionData *SelectionData) SetURIs(uris []string) bool {
 	var _arg0 *C.GtkSelectionData // out
-	var _arg1 **C.gchar
-	var _cret C.gboolean // in
+	var _arg1 **C.gchar           // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	{
@@ -1481,6 +1483,77 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 	}
 
 	return _ok
+}
+
+// IterHasQclass: see gtk_widget_path_iter_has_class(). This is a version that
+// operates with GQuarks.
+func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_has_qclass(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IterHasQname: see gtk_widget_path_iter_has_name(). This is a version that
+// operates on #GQuarks.
+func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_has_qname(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IterHasQregion: see gtk_widget_path_iter_has_region(). This is a version that
+// operates with GQuarks.
+//
+// Deprecated: The use of regions is deprecated.
+func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, bool) {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _arg3 C.GtkRegionFlags // in
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_has_qregion(_arg0, _arg1, _arg2, &_arg3)
+
+	var _flags RegionFlags // out
+	var _ok bool           // out
+
+	_flags = RegionFlags(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _flags, _ok
 }
 
 // IterHasRegion returns TRUE if the widget at position pos has the class name

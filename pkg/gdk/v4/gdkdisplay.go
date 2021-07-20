@@ -388,21 +388,21 @@ func (display *Display) ListSeats() *externglib.List {
 //
 // Free the returned arrays with g_free().
 func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.guint       // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg4 C.int // in
-	var _arg3 *C.guint
-	var _cret C.gboolean // in
+	var _arg0 *C.GdkDisplay   // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg4 C.int           // in
+	var _arg3 *C.guint        // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint(keycode)
 
 	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
-	var _keys []KeymapKey
-	var _keyvals []uint
-	var _ok bool // out
+	var _keys []KeymapKey // out
+	var _keyvals []uint   // out
+	var _ok bool          // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_keys = make([]KeymapKey, _arg4)
@@ -433,19 +433,19 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 //
 // The returned array should be freed with g_free().
 func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 C.guint       // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg3 C.int      // in
-	var _cret C.gboolean // in
+	var _arg0 *C.GdkDisplay   // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg3 C.int           // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _keys []KeymapKey
-	var _ok bool // out
+	var _keys []KeymapKey // out
+	var _ok bool          // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_keys = make([]KeymapKey, _arg3)

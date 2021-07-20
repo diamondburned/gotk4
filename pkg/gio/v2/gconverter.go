@@ -237,9 +237,9 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 // G_IO_ERROR_PARTIAL_INPUT).
 func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
-	var _arg1 *C.void
+	var _arg1 *C.void       // out
 	var _arg2 C.gsize
-	var _arg3 *C.void
+	var _arg3 *C.void // out
 	var _arg4 C.gsize
 	var _arg5 C.GConverterFlags  // out
 	var _arg6 C.gsize            // in

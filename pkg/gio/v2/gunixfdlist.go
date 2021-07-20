@@ -80,7 +80,7 @@ func NewUnixFDList() *UnixFDList {
 //
 // If n_fds is -1 then fds must be terminated with -1.
 func NewUnixFDListFromArray(fds []int) *UnixFDList {
-	var _arg1 *C.gint
+	var _arg1 *C.gint // out
 	var _arg2 C.gint
 	var _cret *C.GUnixFDList // in
 

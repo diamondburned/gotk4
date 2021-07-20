@@ -604,15 +604,15 @@ func (layout *Layout) LineSpacing() float32 {
 // LogAttrs retrieves an array of logical attributes for each character in the
 // layout.
 func (layout *Layout) LogAttrs() []LogAttr {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 *C.PangoLogAttr
-	var _arg2 C.gint // in
+	var _arg0 *C.PangoLayout  // out
+	var _arg1 *C.PangoLogAttr // in
+	var _arg2 C.gint          // in
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_layout_get_log_attrs(_arg0, &_arg1, &_arg2)
 
-	var _attrs []LogAttr
+	var _attrs []LogAttr // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = make([]LogAttr, _arg2)
@@ -1627,6 +1627,26 @@ func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 	return _y0, _y1
 }
 
+// Run gets the current run. When iterating by run, at the end of each line,
+// there's a position with a NULL run, so this function can return NULL. The
+// NULL run at the end of each line ensures that all lines have at least one
+// run, even lines consisting of only a newline.
+//
+// Use the faster pango.LayoutIter.GetRunReadonly() if you do not plan to modify
+// the contents of the run (glyphs, glyph widths, etc.).
+func (iter *LayoutIter) Run() *LayoutRun {
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutRun  // in
+
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.pango_layout_iter_get_run(_arg0)
+
+	var _layoutRun *LayoutRun // out
+
+	return _layoutRun
+}
+
 // RunExtents gets the extents of the current run in layout coordinates (origin
 // is the top left of the entire layout).
 func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
@@ -1645,6 +1665,26 @@ func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
+}
+
+// RunReadonly gets the current run. When iterating by run, at the end of each
+// line, there's a position with a NULL run, so this function can return NULL.
+// The NULL run at the end of each line ensures that all lines have at least one
+// run, even lines consisting of only a newline.
+//
+// This is a faster alternative to pango.LayoutIter.GetRun(), but the user is
+// not expected to modify the contents of the run (glyphs, glyph widths, etc.).
+func (iter *LayoutIter) RunReadonly() *LayoutRun {
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutRun  // in
+
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.pango_layout_iter_get_run_readonly(_arg0)
+
+	var _layoutRun *LayoutRun // out
+
+	return _layoutRun
 }
 
 // NextChar moves iter forward to the next character in visual order. If iter
@@ -1832,8 +1872,8 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
-	var _arg3 *C.int
-	var _arg4 C.int // in
+	var _arg3 *C.int             // in
+	var _arg4 C.int              // in
 
 	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 	_arg1 = C.int(startIndex)
@@ -1841,7 +1881,7 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 
 	C.pango_layout_line_get_x_ranges(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _ranges []int
+	var _ranges []int // out
 
 	defer C.free(unsafe.Pointer(_arg3))
 	_ranges = make([]int, _arg4)

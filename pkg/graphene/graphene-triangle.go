@@ -313,9 +313,9 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 // space.
 func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
-	var _arg1 *C.float
-	var _arg2 *C.float
-	var _arg3 *C.float
+	var _arg1 *C.float               // out
+	var _arg2 *C.float               // out
+	var _arg3 *C.float               // out
 	var _cret *C.graphene_triangle_t // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))

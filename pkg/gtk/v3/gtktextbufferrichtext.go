@@ -33,8 +33,8 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 	var registerBuffer *TextBuffer // out
 	var contentBuffer *TextBuffer  // out
 	var iter *TextIter             // out
-	var data []byte
-	var createTags bool // out
+	var data []byte                // out
+	var createTags bool            // out
 
 	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
 	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))

@@ -455,6 +455,9 @@ func UnixMountPointsGet() (uint64, *externglib.List) {
 		src := (*C.GUnixMountPoint)(_p)
 		var dst *UnixMountPoint // out
 		dst = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *UnixMountPoint) {
+			C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -501,6 +504,9 @@ func UnixMountsGet() (uint64, *externglib.List) {
 		src := (*C.GUnixMountEntry)(_p)
 		var dst *UnixMountEntry // out
 		dst = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *UnixMountEntry) {
+			C.free(gextras.StructNative(unsafe.Pointer(v)))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

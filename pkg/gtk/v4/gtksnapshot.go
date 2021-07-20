@@ -78,8 +78,8 @@ func NewSnapshot() *Snapshot {
 func (snapshot *Snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) {
 	var _arg0 *C.GtkSnapshot    // out
 	var _arg1 *C.GskRoundedRect // out
-	var _arg2 *C.float
-	var _arg3 *C.GdkRGBA
+	var _arg2 *C.float          // out
+	var _arg3 *C.GdkRGBA        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
@@ -135,7 +135,7 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
@@ -190,7 +190,7 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
@@ -252,7 +252,7 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	var _arg4 C.float             // out
 	var _arg5 C.float             // out
 	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
+	var _arg7 *C.GskColorStop     // out
 	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
@@ -277,7 +277,7 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
@@ -302,7 +302,7 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	var _arg4 C.float             // out
 	var _arg5 C.float             // out
 	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
+	var _arg7 *C.GskColorStop     // out
 	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))

@@ -106,7 +106,7 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 // NewDropDownFromStrings creates a new GtkDropDown that is populated with the
 // strings.
 func NewDropDownFromStrings(strings []string) *DropDown {
-	var _arg1 **C.char
+	var _arg1 **C.char     // out
 	var _cret *C.GtkWidget // in
 
 	{

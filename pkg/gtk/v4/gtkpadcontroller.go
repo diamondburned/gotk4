@@ -182,8 +182,8 @@ func (controller *PadController) SetAction(typ PadActionType, index int, mode in
 //
 // See gtk.PadActionEntry and gtk.PadController.SetAction().
 func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
-	var _arg0 *C.GtkPadController // out
-	var _arg1 *C.GtkPadActionEntry
+	var _arg0 *C.GtkPadController  // out
+	var _arg1 *C.GtkPadActionEntry // out
 	var _arg2 C.int
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))

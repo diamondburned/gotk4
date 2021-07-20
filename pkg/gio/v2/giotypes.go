@@ -745,8 +745,8 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
-	var _cret **C.char
-	var _cerr *C.GError // in
+	var _cret **C.char               // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
@@ -754,8 +754,8 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
 
-	var _utf8s []string
-	var _goerr error // out
+	var _utf8s []string // out
+	var _goerr error    // out
 
 	{
 		var i int
@@ -768,6 +768,7 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -60,8 +60,8 @@ func DBusEscapeObjectPath(s string) string {
 //
 // This can be reversed with g_dbus_unescape_object_path().
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
-	var _arg1 *C.guint8
-	var _cret *C.gchar // in
+	var _arg1 *C.guint8 // out
+	var _cret *C.gchar  // in
 
 	{
 		var zero byte
@@ -282,14 +282,14 @@ func DBusIsUniqueName(_string string) bool {
 // Encoding alphanumeric characters which do not need to be encoded is not
 // allowed (e.g _63 is not valid, the string should contain c instead).
 func DBusUnescapeObjectPath(s string) []byte {
-	var _arg1 *C.gchar // out
-	var _cret *C.guint8
+	var _arg1 *C.gchar  // out
+	var _cret *C.guint8 // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(s)))
 
 	_cret = C.g_dbus_unescape_object_path(_arg1)
 
-	var _guint8s []byte
+	var _guint8s []byte // out
 
 	{
 		var i int

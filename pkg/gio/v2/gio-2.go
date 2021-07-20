@@ -59,6 +59,61 @@ func init() {
 	})
 }
 
+// ResolverErrorQuark gets the #GResolver Error Quark.
+func ResolverErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_resolver_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+// ResourceErrorQuark gets the #GResource Error Quark.
+func ResourceErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_resource_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+// TLSChannelBindingErrorQuark gets the TLS channel binding error quark.
+func TLSChannelBindingErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_tls_channel_binding_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+// TLSErrorQuark gets the TLS error quark.
+func TLSErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_tls_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+// IOErrorQuark gets the GIO Error Quark.
+func IOErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_io_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
 // AppInfoMonitor is a very simple object used for monitoring the app info
 // database for changes (ie: newly installed or removed applications).
 //
@@ -1738,7 +1793,7 @@ func NewDBusMessage() *DBusMessage {
 // If the blob cannot be parsed, contains invalid fields, or contains invalid
 // headers, G_IO_ERROR_INVALID_ARGUMENT will be returned.
 func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBusMessage, error) {
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar // out
 	var _arg2 C.gsize
 	var _arg3 C.GDBusCapabilityFlags // out
 	var _cret *C.GDBusMessage        // in
@@ -1954,13 +2009,13 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 // HeaderFields gets an array of all header fields on message that are set.
 func (message *DBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
-	var _cret *C.guchar
+	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_header_fields(_arg0)
 
-	var _guint8s []byte
+	var _guint8s []byte // out
 
 	{
 		var i int
@@ -2712,6 +2767,25 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName string, errorM
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
 
 	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
+}
+
+// ReturnErrorLiteral: like g_dbus_method_invocation_return_error() but without
+// printf()-style formatting.
+//
+// This method will take ownership of invocation. See BusInterfaceVTable for
+// more information about the ownership of invocation.
+func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 C.GQuark                 // out
+	var _arg2 C.gint                   // out
+	var _arg3 *C.gchar                 // out
+
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+
+	_arg2 = C.gint(code)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+
+	C.g_dbus_method_invocation_return_error_literal(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ReturnGError: like g_dbus_method_invocation_return_error() but takes a
@@ -4229,7 +4303,7 @@ func marshalSubprocesser(p uintptr) (interface{}, error) {
 //
 // The argument list is expected to be NULL-terminated.
 func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar          // out
 	var _arg2 C.GSubprocessFlags // out
 	var _cret *C.GSubprocess     // in
 	var _cerr *C.GError          // in
@@ -4845,7 +4919,7 @@ func (self *SubprocessLauncher) SetCwd(cwd string) {
 // they should be in UTF-8.
 func (self *SubprocessLauncher) SetEnviron(env []string) {
 	var _arg0 *C.GSubprocessLauncher // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar              // out
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{
@@ -4977,9 +5051,9 @@ func (self *SubprocessLauncher) Setenv(variable string, value string, overwrite 
 // Spawnv creates a #GSubprocess given a provided array of arguments.
 func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 	var _arg0 *C.GSubprocessLauncher // out
-	var _arg1 **C.gchar
-	var _cret *C.GSubprocess // in
-	var _cerr *C.GError      // in
+	var _arg1 **C.gchar              // out
+	var _cret *C.GSubprocess         // in
+	var _cerr *C.GError              // in
 
 	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(self.Native()))
 	{

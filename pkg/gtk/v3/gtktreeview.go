@@ -641,8 +641,8 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *cairo.Surface {
 // EnableModelDragDest turns tree_view into a drop destination for automatic
 // DND. Calling this method sets TreeView:reorderable to FALSE.
 func (treeView *TreeView) EnableModelDragDest(targets []TargetEntry, actions gdk.DragAction) {
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTargetEntry
+	var _arg0 *C.GtkTreeView    // out
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.gint
 	var _arg3 C.GdkDragAction // out
 
@@ -661,7 +661,7 @@ func (treeView *TreeView) EnableModelDragDest(targets []TargetEntry, actions gdk
 func (treeView *TreeView) EnableModelDragSource(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
 	var _arg0 *C.GtkTreeView    // out
 	var _arg1 C.GdkModifierType // out
-	var _arg2 *C.GtkTargetEntry
+	var _arg2 *C.GtkTargetEntry // out
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 

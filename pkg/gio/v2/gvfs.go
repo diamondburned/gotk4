@@ -152,14 +152,14 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 
 // SupportedURISchemes gets a list of URI schemes supported by vfs.
 func (vfs *VFS) SupportedURISchemes() []string {
-	var _arg0 *C.GVfs // out
-	var _cret **C.gchar
+	var _arg0 *C.GVfs   // out
+	var _cret **C.gchar // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 
 	_cret = C.g_vfs_get_supported_uri_schemes(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -172,7 +172,6 @@ func (vfs *VFS) SupportedURISchemes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

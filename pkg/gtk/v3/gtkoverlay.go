@@ -24,6 +24,14 @@ func init() {
 	})
 }
 
+// OverlayOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type OverlayOverrider interface {
+	ChildPosition(widget Widgetter, allocation *Allocation) bool
+}
+
 // Overlay is a container which contains a single main child, on top of which it
 // can place “overlay” widgets. The position of each overlay widget is
 // determined by its Widget:halign and Widget:valign properties. E.g. a widget

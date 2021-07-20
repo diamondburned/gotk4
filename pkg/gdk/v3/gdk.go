@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,6 +23,16 @@ func init() {
 		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTooler},
 		{T: externglib.Type(C.gdk_drag_context_get_type()), F: marshalDragContexter},
 	})
+}
+
+func GLErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gdk_gl_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type Status int
@@ -280,22 +291,6 @@ func (context *DragContext) SuggestedAction() DragAction {
 	_dragAction = DragAction(_cret)
 
 	return _dragAction
-}
-
-// ListTargets retrieves the list of targets of the context.
-func (context *DragContext) ListTargets() *externglib.List {
-	var _arg0 *C.GdkDragContext // out
-	var _cret *C.GList          // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	_cret = C.gdk_drag_context_list_targets(_arg0)
-
-	var _list *externglib.List // out
-
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-
-	return _list
 }
 
 // ManageDnd requests the drag and drop operation to be managed by context. When

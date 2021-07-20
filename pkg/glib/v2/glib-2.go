@@ -81,3 +81,16 @@ func (i IOCondition) String() string {
 
 	return strings.TrimSuffix(builder.String(), "|")
 }
+
+// VariantParserGetErrorQuark: same as g_variant_error_quark().
+//
+// Deprecated: Use g_variant_parse_error_quark() instead.
+func VariantParserGetErrorQuark() Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.g_variant_parser_get_error_quark()
+
+	var _quark Quark // out
+
+	return _quark
+}

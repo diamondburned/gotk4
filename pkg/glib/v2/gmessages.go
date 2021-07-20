@@ -177,7 +177,7 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	}
 
 	var logLevel LogLevelFlags // out
-	var fields []LogField
+	var fields []LogField      // out
 
 	logLevel = LogLevelFlags(arg0)
 	defer C.free(unsafe.Pointer(arg1))
@@ -331,7 +331,7 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 // PRIORITY field).
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
+	var _arg2 *C.GLogField     // out
 	var _arg3 C.gsize
 
 	_arg1 = C.GLogLevelFlags(logLevel)
@@ -393,7 +393,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // it is up to the writer function to determine which log messages are fatal.
 func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
+	var _arg2 *C.GLogField     // out
 	var _arg3 C.gsize
 	var _arg4 C.gpointer         // out
 	var _cret C.GLogWriterOutput // in
@@ -485,7 +485,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 // UTF-8.
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
 	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
+	var _arg2 *C.GLogField     // out
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // out
 	var _cret *C.gchar   // in
@@ -545,7 +545,7 @@ func LogWriterIsJournald(outputFd int) bool {
 // defined, but will always return G_LOG_WRITER_UNHANDLED.
 func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
+	var _arg2 *C.GLogField     // out
 	var _arg3 C.gsize
 	var _arg4 C.gpointer         // out
 	var _cret C.GLogWriterOutput // in
@@ -581,7 +581,7 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 // This is suitable for use as a WriterFunc.
 func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField
+	var _arg2 *C.GLogField     // out
 	var _arg3 C.gsize
 	var _arg4 C.gpointer         // out
 	var _cret C.GLogWriterOutput // in

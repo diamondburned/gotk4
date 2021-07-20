@@ -24,12 +24,16 @@ func GoAnyType(gen FileGenerator, any gir.AnyType, pub bool) (string, bool) {
 
 // goArrayType generates the Go type signature for the given array.
 func goArrayType(gen FileGenerator, array gir.Array, pub bool) (string, bool) {
+	if array.Type == nil {
+		return "", false
+	}
+
 	arrayPrefix := "[]"
 	if array.FixedSize > 0 {
 		arrayPrefix = fmt.Sprintf("[%d]", array.FixedSize)
 	}
 
-	child, _ := GoAnyType(gen, array.AnyType, pub)
+	child, _ := GoType(gen, *array.Type, pub)
 	// There can't be []void, so this check ensures there can only be valid
 	// array types.
 	if child == "" {
@@ -223,6 +227,11 @@ func CGoTypeFromC(cType string) string {
 	}
 
 	return MovePtr(originalCType, "C."+cType)
+}
+
+// TypeCGo is a helper function that invokes AnyTypeCGo.
+func TypeCGo(typ *gir.Type) string {
+	return AnyTypeCGo(gir.AnyType{Type: typ})
 }
 
 // AnyTypeCGo returns the CGo type for a GIR AnyType. An empty string is

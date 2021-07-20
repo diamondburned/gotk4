@@ -142,9 +142,9 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 
 // InitFromPoints initializes a #graphene_quad_t using an array of points.
 func (q *Quad) InitFromPoints(points [4]Point) *Quad {
-	var _arg0 *C.graphene_quad_t // out
-	var _arg1 *C.graphene_point_t
-	var _cret *C.graphene_quad_t // in
+	var _arg0 *C.graphene_quad_t  // out
+	var _arg1 *C.graphene_point_t // out
+	var _cret *C.graphene_quad_t  // in
 
 	_arg0 = (*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(q)))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(&points))

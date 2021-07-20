@@ -58,6 +58,9 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 		src := (*C.PangoItem)(_p)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(&dst, func(v *Item) {
+			C.pango_item_free((**C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -100,6 +103,9 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 		src := (*C.PangoItem)(_p)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(&dst, func(v *Item) {
+			C.pango_item_free((**C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -396,15 +402,15 @@ func (context *Context) Serial() uint {
 
 // ListFamilies: list all families for a context.
 func (context *Context) ListFamilies() []FontFamilier {
-	var _arg0 *C.PangoContext // out
-	var _arg1 **C.PangoFontFamily
-	var _arg2 C.int // in
+	var _arg0 *C.PangoContext     // out
+	var _arg1 **C.PangoFontFamily // in
+	var _arg2 C.int               // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
 
-	var _families []FontFamilier
+	var _families []FontFamilier // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{

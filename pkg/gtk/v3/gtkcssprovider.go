@@ -140,7 +140,7 @@ func NewCSSProvider() *CSSProvider {
 // previously loaded information.
 func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar          // out
 	var _arg2 C.gssize
 	var _cerr *C.GError // in
 

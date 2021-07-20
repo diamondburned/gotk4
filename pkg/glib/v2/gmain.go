@@ -26,8 +26,26 @@ func init() {
 	})
 }
 
-// MainContextPusher: opaque type. See g_main_context_pusher_new() for details.
-type MainContextPusher = C.void
+// ChildWatchFunc: prototype of a WatchSource callback, called when a child
+// process has exited. To interpret status, see the documentation for
+// g_spawn_check_exit_status().
+type ChildWatchFunc func(pid Pid, status int)
+
+//export _gotk4_glib2_ChildWatchFunc
+func _gotk4_glib2_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
+	v := gbox.Get(uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var pid Pid    // out
+	var status int // out
+
+	status = int(arg1)
+
+	fn := v.(ChildWatchFunc)
+	fn(pid, status)
+}
 
 // SourceFunc specifies the type of function passed to g_timeout_add(),
 // g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
@@ -52,6 +70,51 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 	}
 
 	return cret
+}
+
+// NewChildWatchSource creates a new child_watch source.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed.
+//
+// Note that child watch sources can only be used in conjunction with g_spawn...
+// when the G_SPAWN_DO_NOT_REAP_CHILD flag is used.
+//
+// Note that on platforms where #GPid must be explicitly closed (see
+// g_spawn_close_pid()) pid must not be closed while the source is still active.
+// Typically, you will want to call g_spawn_close_pid() in the callback function
+// for the source.
+//
+// On POSIX platforms, the following restrictions apply to this API due to
+// limitations in POSIX process interfaces:
+//
+// * pid must be a child of this process * pid must be positive * the
+// application must not call waitpid with a non-positive first argument, for
+// instance in another thread * the application must not wait for pid to exit by
+// any other mechanism, including waitpid(pid, ...) or a second child-watch
+// source for the same pid * the application must not ignore SIGCHLD
+//
+// If any of those conditions are not met, this and related APIs will not work
+// correctly. This can often be diagnosed via a GLib warning stating that ECHILD
+// was received by waitpid.
+//
+// Calling waitpid for specific processes other than pid remains a valid thing
+// to do.
+func NewChildWatchSource(pid Pid) *Source {
+	var _arg1 C.GPid     // out
+	var _cret *C.GSource // in
+
+	_cret = C.g_child_watch_source_new(_arg1)
+
+	var _source *Source // out
+
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
+	})
+
+	return _source
 }
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
@@ -368,7 +431,7 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // out
-	var _arg2 *C.GPollFD
+	var _arg2 *C.GPollFD      // out
 	var _arg3 C.gint
 	var _cret C.gboolean // in
 

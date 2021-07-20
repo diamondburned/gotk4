@@ -195,14 +195,14 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 //
 // Deprecated: since version 1.38.
 func SplitFileList(str string) []string {
-	var _arg1 *C.char // out
-	var _cret **C.char
+	var _arg1 *C.char  // out
+	var _cret **C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 
 	_cret = C.pango_split_file_list(_arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -215,6 +215,7 @@ func SplitFileList(str string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

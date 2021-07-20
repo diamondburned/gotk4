@@ -23,7 +23,7 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
-	var _arg4 *C.PangoLogAttr
+	var _arg4 *C.PangoLogAttr  // out
 	var _arg5 C.int
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
@@ -102,7 +102,7 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 	var _arg4 *C.PangoLanguage // out
-	var _arg5 *C.PangoLogAttr
+	var _arg5 *C.PangoLogAttr  // out
 	var _arg6 C.int
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
@@ -128,7 +128,7 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
 	var _arg4 C.int            // out
-	var _arg5 *C.PangoLogAttr
+	var _arg5 *C.PangoLogAttr  // out
 	var _arg6 C.int
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))

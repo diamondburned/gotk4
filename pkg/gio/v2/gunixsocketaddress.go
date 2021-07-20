@@ -91,7 +91,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 //
 // Deprecated: Use g_unix_socket_address_new_with_type().
 func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 C.gint
 	var _cret *C.GSocketAddress // in
 
@@ -140,7 +140,7 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 // appropriate type corresponding to how that process created its listening
 // socket.
 func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixSocketAddress {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 C.gint
 	var _arg3 C.GUnixSocketAddressType // out
 	var _cret *C.GSocketAddress        // in

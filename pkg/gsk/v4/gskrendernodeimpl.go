@@ -239,9 +239,9 @@ func marshalBorderNoder(p uintptr) (interface{}, error) {
 // The 4 sides of the border can have different widths and colors.
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode {
 	var _arg1 *C.GskRoundedRect // out
-	var _arg2 *C.float
-	var _arg3 *C.GdkRGBA
-	var _cret *C.GskRenderNode // in
+	var _arg2 *C.float          // out
+	var _arg3 *C.GdkRGBA        // out
+	var _cret *C.GskRenderNode  // in
 
 	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
 	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
@@ -291,13 +291,13 @@ func (node *BorderNode) Outline() *RoundedRect {
 // Widths retrieves the stroke widths of the border.
 func (node *BorderNode) Widths() [4]float32 {
 	var _arg0 *C.GskRenderNode // out
-	var _cret *C.float
+	var _cret *C.float         // in
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_border_node_get_widths(_arg0)
 
-	var _gfloats [4]float32
+	var _gfloats [4]float32 // out
 
 	_gfloats = *(*[4]float32)(unsafe.Pointer(&_cret))
 
@@ -643,7 +643,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
@@ -760,7 +760,7 @@ func marshalContainerNoder(p uintptr) (interface{}, error) {
 //
 // The new node will acquire a reference to each of the children.
 func NewContainerNode(children []RenderNoder) *ContainerNode {
-	var _arg1 **C.GskRenderNode
+	var _arg1 **C.GskRenderNode // out
 	var _arg2 C.guint
 	var _cret *C.GskRenderNode // in
 
@@ -1226,7 +1226,7 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
@@ -1544,7 +1544,7 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	var _arg4 C.float             // out
 	var _arg5 C.float             // out
 	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
+	var _arg7 *C.GskColorStop     // out
 	var _arg8 C.gsize
 	var _cret *C.GskRenderNode // in
 
@@ -1766,7 +1766,7 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
-	var _arg4 *C.GskColorStop
+	var _arg4 *C.GskColorStop     // out
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
@@ -1823,7 +1823,7 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	var _arg4 C.float             // out
 	var _arg5 C.float             // out
 	var _arg6 C.float             // out
-	var _arg7 *C.GskColorStop
+	var _arg7 *C.GskColorStop     // out
 	var _arg8 C.gsize
 	var _cret *C.GskRenderNode // in
 
@@ -1948,7 +1948,7 @@ func marshalShadowNoder(p uintptr) (interface{}, error) {
 // shadows below it.
 func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg1 *C.GskRenderNode // out
-	var _arg2 *C.GskShadow
+	var _arg2 *C.GskShadow     // out
 	var _arg3 C.gsize
 	var _cret *C.GskRenderNode // in
 

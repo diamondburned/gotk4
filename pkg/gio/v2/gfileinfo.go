@@ -315,14 +315,14 @@ func (info *FileInfo) AttributeString(attribute string) string {
 func (info *FileInfo) AttributeStringv(attribute string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
-	var _cret **C.char
+	var _cret **C.char     // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 
 	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -335,7 +335,6 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -703,14 +702,14 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
-	var _cret **C.char
+	var _cret **C.char     // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
 
 	_cret = C.g_file_info_list_attributes(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -723,6 +722,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -887,7 +887,7 @@ func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
-	var _arg2 **C.char
+	var _arg2 **C.char     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))

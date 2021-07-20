@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -373,9 +372,6 @@ func (gesture *Gesture) Sequences() *externglib.List {
 		src := (*C.GdkEventSequence)(_p)
 		var dst *gdk.EventSequence // out
 		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *gdk.EventSequence) {
-			C.free(gextras.StructNative(unsafe.Pointer(v)))
-		})
 		return dst
 	})
 	_list.AttachFinalizer(nil)

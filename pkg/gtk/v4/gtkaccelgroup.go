@@ -184,10 +184,10 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 // If the parse fails, accelerator_key, accelerator_mods and accelerator_codes
 // will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint, []uint, gdk.ModifierType, bool) {
-	var _arg1 *C.char       // out
-	var _arg2 *C.GdkDisplay // out
-	var _arg3 C.guint       // in
-	var _arg4 *C.guint
+	var _arg1 *C.char           // out
+	var _arg2 *C.GdkDisplay     // out
+	var _arg3 C.guint           // in
+	var _arg4 *C.guint          // in
 	var _arg5 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
@@ -196,8 +196,8 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 
 	_cret = C.gtk_accelerator_parse_with_keycode(_arg1, _arg2, &_arg3, &_arg4, &_arg5)
 
-	var _acceleratorKey uint // out
-	var _acceleratorCodes []uint
+	var _acceleratorKey uint              // out
+	var _acceleratorCodes []uint          // out
 	var _acceleratorMods gdk.ModifierType // out
 	var _ok bool                          // out
 

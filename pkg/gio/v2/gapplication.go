@@ -344,7 +344,7 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
-	var _arg1 *C.GOptionEntry
+	var _arg1 *C.GOptionEntry // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	{
@@ -648,7 +648,7 @@ func (application *Application) MarkBusy() {
 // have the G_APPLICATION_HANDLES_OPEN flag set.
 func (application *Application) Open(files []Filer, hint string) {
 	var _arg0 *C.GApplication // out
-	var _arg1 **C.GFile
+	var _arg1 **C.GFile       // out
 	var _arg2 C.gint
 	var _arg3 *C.gchar // out
 
@@ -821,7 +821,7 @@ func (application *Application) Release() {
 // invoked via the commandline will exit and what their exit status will be.
 func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
-	var _arg2 **C.char
+	var _arg2 **C.char        // out
 	var _arg1 C.int
 	var _cret C.int // in
 

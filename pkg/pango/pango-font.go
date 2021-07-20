@@ -305,6 +305,18 @@ type FontOverrider interface {
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
 	FontMap() FontMapper
+	// GlyphExtents gets the logical and ink extents of a glyph within a font.
+	//
+	// The coordinate system for each rectangle has its origin at the base line
+	// and horizontal origin of the character with increasing coordinates
+	// extending to the right and down. The macros PANGO_ASCENT(),
+	// PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
+	// convert from the extents rectangle to more traditional font metrics. The
+	// units of the rectangles are in 1/PANGO_SCALE of a device unit.
+	//
+	// If font is NULL, this function gracefully sets some sane values in the
+	// output variables and returns.
+	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -337,6 +349,8 @@ type Fonter interface {
 	Face() FontFacer
 	// FontMap gets the font map for which the font was created.
 	FontMap() FontMapper
+	// GlyphExtents gets the logical and ink extents of a glyph within a font.
+	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
 	// Metrics gets overall metric information for a font.
 	Metrics(language *Language) *FontMetrics
 	// HasChar returns whether the font provides a glyph for this character.
@@ -460,6 +474,36 @@ func (font *Font) FontMap() FontMapper {
 	return _fontMap
 }
 
+// GlyphExtents gets the logical and ink extents of a glyph within a font.
+//
+// The coordinate system for each rectangle has its origin at the base line and
+// horizontal origin of the character with increasing coordinates extending to
+// the right and down. The macros PANGO_ASCENT(), PANGO_DESCENT(),
+// PANGO_LBEARING(), and PANGO_RBEARING() can be used to convert from the
+// extents rectangle to more traditional font metrics. The units of the
+// rectangles are in 1/PANGO_SCALE of a device unit.
+//
+// If font is NULL, this function gracefully sets some sane values in the output
+// variables and returns.
+func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle) {
+	var _arg0 *C.PangoFont     // out
+	var _arg1 C.PangoGlyph     // out
+	var _arg2 C.PangoRectangle // in
+	var _arg3 C.PangoRectangle // in
+
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+
+	C.pango_font_get_glyph_extents(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _inkRect Rectangle     // out
+	var _logicalRect Rectangle // out
+
+	_inkRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_logicalRect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+
+	return _inkRect, _logicalRect
+}
+
 // Metrics gets overall metric information for a font.
 //
 // Since the metrics may be substantially different for different scripts, a
@@ -513,7 +557,7 @@ func (font *Font) HasChar(wc uint32) bool {
 
 // FontDescriptionsFree frees an array of font descriptions.
 func FontDescriptionsFree(descs []*FontDescription) {
-	var _arg1 **C.PangoFontDescription
+	var _arg1 **C.PangoFontDescription // out
 	var _arg2 C.int
 
 	_arg2 = (C.int)(len(descs))
@@ -679,14 +723,14 @@ func (face *FontFace) IsSynthesized() bool {
 // The sizes returned are in Pango units and are sorted in ascending order.
 func (face *FontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
-	var _arg1 *C.int
-	var _arg2 C.int // in
+	var _arg1 *C.int           // in
+	var _arg2 C.int            // in
 
 	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
 
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 
-	var _sizes []int
+	var _sizes []int // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_sizes = make([]int, _arg2)
@@ -865,14 +909,14 @@ func (family *FontFamily) IsVariable() bool {
 // width and other aspects.
 func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg0 *C.PangoFontFamily // out
-	var _arg1 **C.PangoFontFace
-	var _arg2 C.int // in
+	var _arg1 **C.PangoFontFace  // in
+	var _arg2 C.int              // in
 
 	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
 
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 
-	var _faces []FontFacer
+	var _faces []FontFacer // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{

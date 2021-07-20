@@ -104,16 +104,16 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 // The backlog is provided in chronological order.
 func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
-	var _arg1 *C.GdkTimeCoord
-	var _arg2 C.guint    // in
-	var _cret C.gboolean // in
+	var _arg1 *C.GdkTimeCoord     // in
+	var _arg2 C.guint             // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_backlog(_arg0, &_arg1, &_arg2)
 
-	var _backlog []gdk.TimeCoord
-	var _ok bool // out
+	var _backlog []gdk.TimeCoord // out
+	var _ok bool                 // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_backlog = make([]gdk.TimeCoord, _arg2)

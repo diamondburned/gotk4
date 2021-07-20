@@ -285,7 +285,7 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 // AddEntries adds the options specified in entries to group.
 func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
-	var _arg1 *C.GOptionEntry
+	var _arg1 *C.GOptionEntry // out
 
 	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	{

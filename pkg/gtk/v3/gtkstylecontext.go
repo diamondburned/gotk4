@@ -771,6 +771,12 @@ func (context *StyleContext) ListClasses() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.gchar)(_p)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		return dst
+	})
 	_list.AttachFinalizer(nil)
 
 	return _list
@@ -790,6 +796,12 @@ func (context *StyleContext) ListRegions() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.gchar)(_p)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		return dst
+	})
 	_list.AttachFinalizer(nil)
 
 	return _list

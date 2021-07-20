@@ -78,7 +78,7 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 
 // NewThemedIconFromNames creates a new themed icon for iconnames.
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
-	var _arg1 **C.char
+	var _arg1 **C.char // out
 	var _arg2 C.int
 	var _cret *C.GIcon // in
 
@@ -146,13 +146,13 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 // Names gets the names of icons from within icon.
 func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
-	var _cret **C.gchar
+	var _cret **C.gchar      // in
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -165,7 +165,6 @@ func (icon *ThemedIcon) Names() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

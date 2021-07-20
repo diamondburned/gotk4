@@ -442,7 +442,7 @@ func (r *RecentData) AppExec() string {
 
 // Groups: vector of strings containing groups names;
 func (r *RecentData) Groups() []string {
-	var v []string
+	var v []string // out
 	{
 		var i int
 		var z *C.char
@@ -454,7 +454,6 @@ func (r *RecentData) Groups() []string {
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	return v

@@ -21,6 +21,14 @@ func init() {
 	})
 }
 
+// FrameOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FrameOverrider interface {
+	ComputeChildAllocation(allocation *Allocation)
+}
+
 // Frame: GtkFrame is a widget that surrounds its child with a decorative frame
 // and an optional label.
 //

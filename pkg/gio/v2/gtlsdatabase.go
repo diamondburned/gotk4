@@ -452,9 +452,9 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 // g_tls_database_lookup_certificates_issued_by_async() to perform the lookup
 // operation asynchronously.
 func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (*externglib.List, error) {
-	var _arg0 *C.GTlsDatabase // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.GByteArray
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GByteArray             // out
 	var _arg2 *C.GTlsInteraction        // out
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _cret *C.GList                  // in
@@ -502,9 +502,9 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 // duration of of this asynchronous operation. The byte array should not be
 // modified during this time.
 func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsDatabase // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.GByteArray
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GByteArray             // out
 	var _arg2 *C.GTlsInteraction        // out
 	var _arg3 C.GTlsDatabaseLookupFlags // out
 	var _arg5 C.GAsyncReadyCallback     // out

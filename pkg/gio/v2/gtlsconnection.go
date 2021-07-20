@@ -227,15 +227,15 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
-	var _arg2 C.GByteArray
-	var _cerr *C.GError // in
+	var _arg2 C.GByteArray             // in
+	var _cerr *C.GError                // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = C.GTlsChannelBindingType(typ)
 
 	C.g_tls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _data []byte
+	var _data []byte // out
 	var _goerr error // out
 
 	{
@@ -508,7 +508,7 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 // for a list of registered protocol IDs.
 func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GTlsConnection // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar         // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 	{

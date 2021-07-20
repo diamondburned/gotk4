@@ -291,14 +291,14 @@ func (application *Application) AddWindow(window *Window) {
 func (application *Application) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -311,6 +311,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -334,14 +335,14 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 func (application *Application) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accel)))
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -354,6 +355,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -560,13 +562,13 @@ func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool 
 // accelerators. See gtk_application_set_accels_for_action().
 func (application *Application) ListActionDescriptions() []string {
 	var _arg0 *C.GtkApplication // out
-	var _cret **C.gchar
+	var _cret **C.gchar         // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -579,6 +581,7 @@ func (application *Application) ListActionDescriptions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -676,7 +679,7 @@ func (application *Application) RemoveWindow(window *Window) {
 func (application *Application) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
-	var _arg2 **C.gchar
+	var _arg2 **C.gchar         // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))

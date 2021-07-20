@@ -220,9 +220,6 @@ type Devicer interface {
 	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable.
 	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
-	// ListAxes returns a #GList of Atoms, containing the labels for the axes
-	// that device currently has.
-	ListAxes() *externglib.List
 	// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
 	// will return the list of slave devices attached to it, otherwise it will
 	// return NULL
@@ -723,24 +720,6 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 	return _grabStatus
 }
 
-// ListAxes returns a #GList of Atoms, containing the labels for the axes that
-// device currently has.
-func (device *Device) ListAxes() *externglib.List {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.GList     // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-
-	_cret = C.gdk_device_list_axes(_arg0)
-
-	var _list *externglib.List // out
-
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.AttachFinalizer(nil)
-
-	return _list
-}
-
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
 // return the list of slave devices attached to it, otherwise it will return
 // NULL
@@ -902,7 +881,7 @@ func (t *TimeCoord) Time() uint32 {
 
 // Axes values of the device’s axes.
 func (t *TimeCoord) Axes() [128]float64 {
-	var v [128]float64
+	var v [128]float64 // out
 	v = *(*[128]float64)(unsafe.Pointer(&t.native.axes))
 	return v
 }

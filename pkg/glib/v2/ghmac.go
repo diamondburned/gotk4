@@ -17,9 +17,9 @@ import "C"
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
 	var _arg1 C.GChecksumType // out
-	var _arg2 *C.guchar
+	var _arg2 *C.guchar       // out
 	var _arg3 C.gsize
-	var _arg4 *C.guchar
+	var _arg4 *C.guchar // out
 	var _arg5 C.gsize
 	var _cret *C.gchar // in
 
@@ -48,7 +48,7 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
 	var _arg1 C.GChecksumType // out
-	var _arg2 *C.guchar
+	var _arg2 *C.guchar       // out
 	var _arg3 C.gsize
 	var _arg4 *C.gchar // out
 	var _arg5 C.gssize // out

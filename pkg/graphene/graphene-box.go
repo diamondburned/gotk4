@@ -296,14 +296,14 @@ func (box *Box) Size() Vec3 {
 
 // Vertices computes the vertices of the given #graphene_box_t.
 func (box *Box) Vertices() [8]Vec3 {
-	var _arg0 *C.graphene_box_t // out
-	var _arg1 [8]C.graphene_vec3_t
+	var _arg0 *C.graphene_box_t    // out
+	var _arg1 [8]C.graphene_vec3_t // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_vertices(_arg0, &_arg1[0])
 
-	var _vertices [8]Vec3
+	var _vertices [8]Vec3 // out
 
 	_vertices = *(*[8]Vec3)(unsafe.Pointer(&_arg1))
 
@@ -370,8 +370,8 @@ func (box *Box) InitFromBox(src *Box) *Box {
 //
 // If n_points is 0, the returned box is initialized with graphene_box_empty().
 func (box *Box) InitFromPoints(points []Point3D) *Box {
-	var _arg0 *C.graphene_box_t // out
-	var _arg2 *C.graphene_point3d_t
+	var _arg0 *C.graphene_box_t     // out
+	var _arg2 *C.graphene_point3d_t // out
 	var _arg1 C.uint
 	var _cret *C.graphene_box_t // in
 
@@ -416,8 +416,8 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 //
 // If n_vectors is 0, the returned box is initialized with graphene_box_empty().
 func (box *Box) InitFromVectors(vectors []Vec3) *Box {
-	var _arg0 *C.graphene_box_t // out
-	var _arg2 *C.graphene_vec3_t
+	var _arg0 *C.graphene_box_t  // out
+	var _arg2 *C.graphene_vec3_t // out
 	var _arg1 C.uint
 	var _cret *C.graphene_box_t // in
 

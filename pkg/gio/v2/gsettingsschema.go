@@ -164,13 +164,13 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 // You should free the return value with g_strfreev() when you are done with it.
 func (schema *SettingsSchema) ListChildren() []string {
 	var _arg0 *C.GSettingsSchema // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_children(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -183,6 +183,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -196,13 +197,13 @@ func (schema *SettingsSchema) ListChildren() []string {
 // intended for introspection reasons.
 func (schema *SettingsSchema) ListKeys() []string {
 	var _arg0 *C.GSettingsSchema // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_keys(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -215,6 +216,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -531,8 +533,8 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 C.gboolean               // out
-	var _arg2 **C.gchar
-	var _arg3 **C.gchar
+	var _arg2 **C.gchar                // in
+	var _arg3 **C.gchar                // in
 
 	_arg0 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if recursive {
@@ -541,8 +543,8 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 
 	C.g_settings_schema_source_list_schemas(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _nonRelocatable []string
-	var _relocatable []string
+	var _nonRelocatable []string // out
+	var _relocatable []string    // out
 
 	{
 		var i int

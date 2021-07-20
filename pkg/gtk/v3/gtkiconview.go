@@ -275,8 +275,8 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 // EnableModelDragDest turns icon_view into a drop destination for automatic
 // DND. Calling this method sets IconView:reorderable to FALSE.
 func (iconView *IconView) EnableModelDragDest(targets []TargetEntry, actions gdk.DragAction) {
-	var _arg0 *C.GtkIconView // out
-	var _arg1 *C.GtkTargetEntry
+	var _arg0 *C.GtkIconView    // out
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.gint
 	var _arg3 C.GdkDragAction // out
 
@@ -295,7 +295,7 @@ func (iconView *IconView) EnableModelDragDest(targets []TargetEntry, actions gdk
 func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
 	var _arg0 *C.GtkIconView    // out
 	var _arg1 C.GdkModifierType // out
-	var _arg2 *C.GtkTargetEntry
+	var _arg2 *C.GtkTargetEntry // out
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 
@@ -747,6 +747,9 @@ func (iconView *IconView) SelectedItems() *externglib.List {
 		src := (*C.GtkTreePath)(_p)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

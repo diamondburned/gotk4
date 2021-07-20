@@ -4,8 +4,6 @@ package gio
 
 import (
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -22,29 +20,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// IOModulesLoadAllInDirectory loads all the modules in the specified directory.
-//
-// If don't require all modules to be initialized (and thus registering all
-// gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
-// delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname string) *externglib.List {
-	var _arg1 *C.gchar // out
-	var _cret *C.GList // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(dirname)))
-
-	_cret = C.g_io_modules_load_all_in_directory(_arg1)
-
-	var _list *externglib.List // out
-
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.AttachFinalizer(func(v uintptr) {
-		C.free(unsafe.Pointer(v))
-	})
-
-	return _list
-}
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
 // ensuring that any extension point implemented by a module is registered.

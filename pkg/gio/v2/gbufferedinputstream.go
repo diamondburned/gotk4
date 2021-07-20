@@ -290,7 +290,7 @@ func (stream *BufferedInputStream) BufferSize() uint {
 // offset bytes.
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
-	var _arg1 *C.void
+	var _arg1 *C.void                 // out
 	var _arg3 C.gsize
 	var _arg2 C.gsize // out
 	var _cret C.gsize // in

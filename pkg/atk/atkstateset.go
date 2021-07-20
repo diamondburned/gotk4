@@ -88,8 +88,8 @@ func (set *StateSet) AddState(typ StateType) bool {
 // #atk_object_ref_state_set. It should not be used to modify the existing state
 // of an object. See also #atk_object_notify_state_change.
 func (set *StateSet) AddStates(types []StateType) {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 *C.AtkStateType
+	var _arg0 *C.AtkStateSet  // out
+	var _arg1 *C.AtkStateType // out
 	var _arg2 C.gint
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
@@ -157,8 +157,8 @@ func (set *StateSet) ContainsState(typ StateType) bool {
 // ContainsStates checks whether the states for all the specified types are in
 // the specified set.
 func (set *StateSet) ContainsStates(types []StateType) bool {
-	var _arg0 *C.AtkStateSet // out
-	var _arg1 *C.AtkStateType
+	var _arg0 *C.AtkStateSet  // out
+	var _arg1 *C.AtkStateType // out
 	var _arg2 C.gint
 	var _cret C.gboolean // in
 

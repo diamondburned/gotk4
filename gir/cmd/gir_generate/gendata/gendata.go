@@ -128,6 +128,7 @@ var Filters = []FilterMatcher{
 	// This is useless.
 	AbsoluteFilter("GLib.nullify_pointer"),
 	// Requires special header, is optional function.
+	AbsoluteFilter("GLib.unix_error_quark"),
 	AbsoluteFilter("Gio.networking_init"),
 	// Not an array type but expects an array.
 	AbsoluteFilter("Gio.SimpleProxyResolver.set_ignore_hosts"),

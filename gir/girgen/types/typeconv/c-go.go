@@ -272,8 +272,8 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 			return false
 		}
 
+		value.header.Import("unsafe")
 		value.header.ImportCore("gextras")
-		value.header.ImportCore("unsafe")
 
 		value.p.Linef(
 			"%s = make(%s, gextras.HashTableSize(unsafe.Pointer(%s)))",

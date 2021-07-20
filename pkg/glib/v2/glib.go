@@ -87,16 +87,6 @@ func SpawnExitErrorQuark() Quark {
 	return _quark
 }
 
-func UnixErrorQuark() Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_unix_error_quark()
-
-	var _quark Quark // out
-
-	return _quark
-}
-
 func IOChannelErrorQuark() Quark {
 	var _cret C.GQuark // in
 

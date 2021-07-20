@@ -195,12 +195,12 @@ func FreeHashTable(ptr unsafe.Pointer) {
 // MoveHashTable calls f on every value of the given *GHashTable and frees each
 // element in the process if rm is true.
 func MoveHashTable(ptr unsafe.Pointer, rm bool, f func(k, v unsafe.Pointer)) {
-	var k, v uintptr
+	var k, v C.gpointer
 	var iter C.GHashTableIter
 	C.g_hash_table_iter_init(&iter, (*C.GHashTable)(ptr))
 
-	for C.g_hash_table_iter_next(&iter, (*C.gpointer)(&k), (*C.gpointer)(&v)) != 0 {
-		f(unsafe.Pointer(k), unsafe.Pointer(V))
+	for C.g_hash_table_iter_next(&iter, &k, &v) != 0 {
+		f(unsafe.Pointer(k), unsafe.Pointer(v))
 
 		if rm {
 			C.g_hash_table_iter_remove(&iter)

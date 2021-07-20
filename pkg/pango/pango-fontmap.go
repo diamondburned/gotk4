@@ -188,15 +188,15 @@ func (fontmap *FontMap) Serial() uint {
 
 // ListFamilies: list all families for a fontmap.
 func (fontmap *FontMap) ListFamilies() []FontFamilier {
-	var _arg0 *C.PangoFontMap // out
-	var _arg1 **C.PangoFontFamily
-	var _arg2 C.int // in
+	var _arg0 *C.PangoFontMap     // out
+	var _arg1 **C.PangoFontFamily // in
+	var _arg2 C.int               // in
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 
-	var _families []FontFamilier
+	var _families []FontFamilier // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{

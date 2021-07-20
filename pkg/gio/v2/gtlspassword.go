@@ -185,7 +185,7 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 // case.)
 func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar       // out
 	var _arg2 C.gssize
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))

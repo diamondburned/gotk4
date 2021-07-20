@@ -447,7 +447,7 @@ func marshalVariant(p uintptr) (interface{}, error) {
 // NewVariantArray constructs a struct Variant.
 func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _arg1 *C.GVariantType // out
-	var _arg2 **C.GVariant
+	var _arg2 **C.GVariant    // out
 	var _arg3 C.gsize
 	var _cret *C.GVariant // in
 
@@ -511,7 +511,7 @@ func NewVariantByte(value byte) *Variant {
 
 // NewVariantBytestring constructs a struct Variant.
 func NewVariantBytestring(_string []byte) *Variant {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
 	_string = append(_string, 0)
@@ -533,7 +533,7 @@ func NewVariantBytestring(_string []byte) *Variant {
 
 // NewVariantBytestringArray constructs a struct Variant.
 func NewVariantBytestringArray(strv []string) *Variant {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
@@ -741,7 +741,7 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 // NewVariantObjv constructs a struct Variant.
 func NewVariantObjv(strv []string) *Variant {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
@@ -806,7 +806,7 @@ func NewVariantString(_string string) *Variant {
 
 // NewVariantStrv constructs a struct Variant.
 func NewVariantStrv(strv []string) *Variant {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 	var _arg2 C.gssize
 	var _cret *C.GVariant // in
 
@@ -833,7 +833,7 @@ func NewVariantStrv(strv []string) *Variant {
 
 // NewVariantTuple constructs a struct Variant.
 func NewVariantTuple(children []*Variant) *Variant {
-	var _arg1 **C.GVariant
+	var _arg1 **C.GVariant // out
 	var _arg2 C.gsize
 	var _cret *C.GVariant // in
 
@@ -1155,13 +1155,13 @@ func (value *Variant) Byte() byte {
 // The return value remains valid as long as value exists.
 func (value *Variant) Bytestring() []byte {
 	var _arg0 *C.GVariant // out
-	var _cret *C.gchar
+	var _cret *C.gchar    // in
 
 	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_bytestring(_arg0)
 
-	var _guint8s []byte
+	var _guint8s []byte // out
 
 	{
 		var i int

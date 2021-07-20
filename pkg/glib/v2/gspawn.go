@@ -238,6 +238,427 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
 	fn()
 }
 
+// SpawnAsync: see g_spawn_async_with_pipes() for a full description; this
+// function simply calls the g_spawn_async_with_pipes() without any pipes.
+//
+// You should call g_spawn_close_pid() on the returned child process reference
+// when you don't need it any more.
+//
+// If you are writing a GTK+ application, and the program you are spawning is a
+// graphical application too, then to ensure that the spawned program opens its
+// windows on the right screen, you may want to use AppLaunchContext,
+// LaunchContext, or set the DISPLAY environment variable.
+//
+// Note that the returned child_pid on Windows is a handle to the child process
+// and not its identifier. Process handles and process identifiers are different
+// concepts on Windows.
+func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (Pid, error) {
+	var _arg1 *C.gchar               // out
+	var _arg2 **C.gchar              // out
+	var _arg3 **C.gchar              // out
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 C.GPid    // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+	{
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(argv)+1)
+			var zero *C.gchar
+			out[len(argv)] = zero
+			for i := range argv {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			}
+		}
+	}
+	{
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
+		}
+	}
+	_arg4 = C.GSpawnFlags(flags)
+	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+
+	C.g_spawn_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_cerr)
+
+	var _childPid Pid // out
+	var _goerr error  // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _childPid, _goerr
+}
+
+// SpawnAsyncWithFds: identical to g_spawn_async_with_pipes_and_fds() but with
+// n_fds set to zero, so no FD assignments are used.
+func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (Pid, error) {
+	var _arg1 *C.gchar               // out
+	var _arg2 **C.gchar              // out
+	var _arg3 **C.gchar              // out
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 C.GPid    // in
+	var _arg8 C.gint    // out
+	var _arg9 C.gint    // out
+	var _arg10 C.gint   // out
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+	{
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(argv)+1)
+			var zero *C.gchar
+			out[len(argv)] = zero
+			for i := range argv {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			}
+		}
+	}
+	{
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
+		}
+	}
+	_arg4 = C.GSpawnFlags(flags)
+	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	_arg8 = C.gint(stdinFd)
+	_arg9 = C.gint(stdoutFd)
+	_arg10 = C.gint(stderrFd)
+
+	C.g_spawn_async_with_fds(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, _arg8, _arg9, _arg10, &_cerr)
+
+	var _childPid Pid // out
+	var _goerr error  // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _childPid, _goerr
+}
+
+// SpawnAsyncWithPipes: identical to g_spawn_async_with_pipes_and_fds() but with
+// n_fds set to zero, so no FD assignments are used.
+func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, goerr error) {
+	var _arg1 *C.gchar               // out
+	var _arg2 **C.gchar              // out
+	var _arg3 **C.gchar              // out
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 C.GPid    // in
+	var _arg8 C.gint    // in
+	var _arg9 C.gint    // in
+	var _arg10 C.gint   // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+	{
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(argv)+1)
+			var zero *C.gchar
+			out[len(argv)] = zero
+			for i := range argv {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			}
+		}
+	}
+	{
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
+		}
+	}
+	_arg4 = C.GSpawnFlags(flags)
+	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+
+	C.g_spawn_async_with_pipes(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_arg10, &_cerr)
+
+	var _childPid Pid       // out
+	var _standardInput int  // out
+	var _standardOutput int // out
+	var _standardError int  // out
+	var _goerr error        // out
+
+	_standardInput = int(_arg8)
+	_standardOutput = int(_arg9)
+	_standardError = int(_arg10)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _childPid, _standardInput, _standardOutput, _standardError, _goerr
+}
+
+// SpawnAsyncWithPipesAndFds executes a child program asynchronously (your
+// program will not block waiting for the child to exit). The child program is
+// specified by the only argument that must be provided, argv. argv should be a
+// NULL-terminated array of strings, to be passed as the argument vector for the
+// child. The first string in argv is of course the name of the program to
+// execute. By default, the name of the program must be a full path. If flags
+// contains the G_SPAWN_SEARCH_PATH flag, the PATH environment variable is used
+// to search for the executable. If flags contains the
+// G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the PATH variable from envp is used to
+// search for the executable. If both the G_SPAWN_SEARCH_PATH and
+// G_SPAWN_SEARCH_PATH_FROM_ENVP flags are set, the PATH variable from envp
+// takes precedence over the environment variable.
+//
+// If the program name is not a full path and G_SPAWN_SEARCH_PATH flag is not
+// used, then the program will be run from the current directory (or
+// working_directory, if specified); this might be unexpected or even dangerous
+// in some cases when the current directory is world-writable.
+//
+// On Windows, note that all the string or string vector arguments to this
+// function and the other g_spawn*() functions are in UTF-8, the GLib file name
+// encoding. Unicode characters that are not part of the system codepage passed
+// in these arguments will be correctly available in the spawned program only if
+// it uses wide character API to retrieve its command line. For C programs built
+// with Microsoft's tools it is enough to make the program have a wmain()
+// instead of main(). wmain() has a wide character argument vector as parameter.
+//
+// At least currently, mingw doesn't support wmain(), so if you use mingw to
+// develop the spawned program, it should call g_win32_get_command_line() to get
+// arguments in UTF-8.
+//
+// On Windows the low-level child process creation API CreateProcess() doesn't
+// use argument vectors, but a command line. The C runtime library's spawn*()
+// family of functions (which g_spawn_async_with_pipes() eventually calls) paste
+// the argument vector elements together into a command line, and the C runtime
+// startup code does a corresponding reconstruction of an argument vector from
+// the command line, to be passed to main(). Complications arise when you have
+// argument vector elements that contain spaces or double quotes. The spawn*()
+// functions don't do any quoting or escaping, but on the other hand the startup
+// code does do unquoting and unescaping in order to enable receiving arguments
+// with embedded spaces or double quotes. To work around this asymmetry,
+// g_spawn_async_with_pipes() will do quoting and escaping on argument vector
+// elements that need it before calling the C runtime spawn() function.
+//
+// The returned child_pid on Windows is a handle to the child process, not its
+// identifier. Process handles and process identifiers are different concepts on
+// Windows.
+//
+// envp is a NULL-terminated array of strings, where each string has the form
+// KEY=VALUE. This will become the child's environment. If envp is NULL, the
+// child inherits its parent's environment.
+//
+// flags should be the bitwise OR of any flags you want to affect the function's
+// behaviour. The G_SPAWN_DO_NOT_REAP_CHILD means that the child will not
+// automatically be reaped; you must use a child watch (g_child_watch_add()) to
+// be notified about the death of the child process, otherwise it will stay
+// around as a zombie process until this process exits. Eventually you must call
+// g_spawn_close_pid() on the child_pid, in order to free resources which may be
+// associated with the child process. (On Unix, using a child watch is
+// equivalent to calling waitpid() or handling the SIGCHLD signal manually. On
+// Windows, calling g_spawn_close_pid() is equivalent to calling CloseHandle()
+// on the process handle returned in child_pid). See g_child_watch_add().
+//
+// Open UNIX file descriptors marked as FD_CLOEXEC will be automatically closed
+// in the child process. G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that other open
+// file descriptors will be inherited by the child; otherwise all descriptors
+// except stdin/stdout/stderr will be closed before calling exec() in the child.
+// G_SPAWN_SEARCH_PATH means that argv[0] need not be an absolute path, it will
+// be looked for in the PATH environment variable. G_SPAWN_SEARCH_PATH_FROM_ENVP
+// means need not be an absolute path, it will be looked for in the PATH
+// variable from envp. If both G_SPAWN_SEARCH_PATH and
+// G_SPAWN_SEARCH_PATH_FROM_ENVP are used, the value from envp takes precedence
+// over the environment.
+//
+// G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will be
+// discarded, instead of going to the same location as the parent's standard
+// output. If you use this flag, stdout_pipe_out must be NULL.
+//
+// G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error will be
+// discarded, instead of going to the same location as the parent's standard
+// error. If you use this flag, stderr_pipe_out must be NULL.
+//
+// G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
+// standard input (by default, the child's standard input is attached to
+// /dev/null). If you use this flag, stdin_pipe_out must be NULL.
+//
+// It is valid to pass the same FD in multiple parameters (e.g. you can pass a
+// single FD for both stdout_fd and stderr_fd, and include it in source_fds
+// too).
+//
+// source_fds and target_fds allow zero or more FDs from this process to be
+// remapped to different FDs in the spawned process. If n_fds is greater than
+// zero, source_fds and target_fds must both be non-NULL and the same length.
+// Each FD in source_fds is remapped to the FD number at the same index in
+// target_fds. The source and target FD may be equal to simply propagate an FD
+// to the spawned process. FD remappings are processed after standard FDs, so
+// any target FDs which equal stdin_fd, stdout_fd or stderr_fd will overwrite
+// them in the spawned process.
+//
+// G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of argv is the file
+// to execute, while the remaining elements are the actual argument vector to
+// pass to the file. Normally g_spawn_async_with_pipes() uses argv[0] as the
+// file to execute, and passes all of argv to the child.
+//
+// child_setup and user_data are a function and user data. On POSIX platforms,
+// the function is called in the child after GLib has performed all the setup it
+// plans to perform (including creating pipes, closing file descriptors, etc.)
+// but before calling exec(). That is, child_setup is called just before calling
+// exec() in the child. Obviously actions taken in this function will only
+// affect the child, not the parent.
+//
+// On Windows, there is no separate fork() and exec() functionality. Child
+// processes are created and run with a single API call, CreateProcess(). There
+// is no sensible thing child_setup could be used for on Windows so it is
+// ignored and not called.
+//
+// If non-NULL, child_pid will on Unix be filled with the child's process ID.
+// You can use the process ID to send signals to the child, or to use
+// g_child_watch_add() (or waitpid()) if you specified the
+// G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, child_pid will be filled with a
+// handle to the child process only if you specified the
+// G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child process using
+// the Win32 API, for example wait for its termination with the WaitFor*()
+// functions, or examine its exit code with GetExitCodeProcess(). You should
+// close the handle with CloseHandle() or g_spawn_close_pid() when you no longer
+// need it.
+//
+// If non-NULL, the stdin_pipe_out, stdout_pipe_out, stderr_pipe_out locations
+// will be filled with file descriptors for writing to the child's standard
+// input or reading from its standard output or standard error. The caller of
+// g_spawn_async_with_pipes() must close these file descriptors when they are no
+// longer in use. If these parameters are NULL, the corresponding pipe won't be
+// created.
+//
+// If stdin_pipe_out is NULL, the child's standard input is attached to
+// /dev/null unless G_SPAWN_CHILD_INHERITS_STDIN is set.
+//
+// If stderr_pipe_out is NULL, the child's standard error goes to the same
+// location as the parent's standard error unless G_SPAWN_STDERR_TO_DEV_NULL is
+// set.
+//
+// If stdout_pipe_out is NULL, the child's standard output goes to the same
+// location as the parent's standard output unless G_SPAWN_STDOUT_TO_DEV_NULL is
+// set.
+//
+// error can be NULL to ignore errors, or non-NULL to report errors. If an error
+// is set, the function returns FALSE. Errors are reported even if they occur in
+// the child (for example if the executable in argv[0] is not found). Typically
+// the message field of returned errors should be displayed to users. Possible
+// errors are those from the SPAWN_ERROR domain.
+//
+// If an error occurs, child_pid, stdin_pipe_out, stdout_pipe_out, and
+// stderr_pipe_out will not be filled with valid values.
+//
+// If child_pid is not NULL and an error does not occur then the returned
+// process reference must be closed using g_spawn_close_pid().
+//
+// On modern UNIX platforms, GLib can use an efficient process launching
+// codepath driven internally by posix_spawn(). This has the advantage of
+// avoiding the fork-time performance costs of cloning the parent process
+// address space, and avoiding associated memory overcommit checks that are not
+// relevant in the context of immediately executing a distinct process. This
+// optimized codepath will be used provided that the following conditions are
+// met:
+//
+// 1. G_SPAWN_DO_NOT_REAP_CHILD is set 2. G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
+// 3. G_SPAWN_SEARCH_PATH_FROM_ENVP is not set 4. working_directory is NULL 5.
+// child_setup is NULL 6. The program is of a recognised binary format, or has a
+// shebang. Otherwise, GLib will have to execute the program through the shell,
+// which is not done using the optimized codepath.
+//
+// If you are writing a GTK+ application, and the program you are spawning is a
+// graphical application too, then to ensure that the spawned program opens its
+// windows on the right screen, you may want to use AppLaunchContext,
+// LaunchContext, or set the DISPLAY environment variable.
+func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int, sourceFds []int, targetFds []int) (childPidOut Pid, stdinPipeOut int, stdoutPipeOut int, stderrPipeOut int, goerr error) {
+	var _arg1 *C.gchar               // out
+	var _arg2 **C.gchar              // out
+	var _arg3 **C.gchar              // out
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 C.gint   // out
+	var _arg8 C.gint   // out
+	var _arg9 C.gint   // out
+	var _arg10 *C.gint // out
+	var _arg12 C.gsize
+	var _arg11 *C.gint  // out
+	var _arg13 C.GPid   // in
+	var _arg14 C.gint   // in
+	var _arg15 C.gint   // in
+	var _arg16 C.gint   // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+	{
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(argv)+1)
+			var zero *C.gchar
+			out[len(argv)] = zero
+			for i := range argv {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			}
+		}
+	}
+	{
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
+		}
+	}
+	_arg4 = C.GSpawnFlags(flags)
+	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	_arg7 = C.gint(stdinFd)
+	_arg8 = C.gint(stdoutFd)
+	_arg9 = C.gint(stderrFd)
+	_arg12 = (C.gsize)(len(sourceFds))
+	if len(sourceFds) > 0 {
+		_arg10 = (*C.gint)(unsafe.Pointer(&sourceFds[0]))
+	}
+	_arg12 = (C.gsize)(len(targetFds))
+	if len(targetFds) > 0 {
+		_arg11 = (*C.gint)(unsafe.Pointer(&targetFds[0]))
+	}
+
+	C.g_spawn_async_with_pipes_and_fds(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, &_arg13, &_arg14, &_arg15, &_arg16, &_cerr)
+
+	var _childPidOut Pid   // out
+	var _stdinPipeOut int  // out
+	var _stdoutPipeOut int // out
+	var _stderrPipeOut int // out
+	var _goerr error       // out
+
+	_stdinPipeOut = int(_arg14)
+	_stdoutPipeOut = int(_arg15)
+	_stderrPipeOut = int(_arg16)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _childPidOut, _stdinPipeOut, _stdoutPipeOut, _stderrPipeOut, _goerr
+}
+
 // SpawnCheckExitStatus: set error if exit_status indicates the child exited
 // abnormally (e.g. with a nonzero exit code, or via a fatal signal).
 //
@@ -288,6 +709,16 @@ func SpawnCheckExitStatus(exitStatus int) error {
 	return _goerr
 }
 
+// SpawnClosePid: on some platforms, notably Windows, the #GPid type represents
+// a resource which must be closed to prevent resource leaking.
+// g_spawn_close_pid() is provided for this purpose. It should be used on all
+// platforms, even though it doesn't do anything under UNIX.
+func SpawnClosePid(pid Pid) {
+	var _arg1 C.GPid // out
+
+	C.g_spawn_close_pid(_arg1)
+}
+
 // SpawnCommandLineAsync: simple version of g_spawn_async() that parses a
 // command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
 // a command line in the background. Unlike g_spawn_async(), the
@@ -333,9 +764,9 @@ func SpawnCommandLineAsync(commandLine string) error {
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
 func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.gchar  // in
+	var _arg3 *C.gchar  // in
 	var _arg4 C.gint    // in
 	var _cerr *C.GError // in
 
@@ -343,10 +774,10 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
-	var _standardOutput []byte
-	var _standardError []byte
-	var _exitStatus int // out
-	var _goerr error    // out
+	var _standardOutput []byte // out
+	var _standardError []byte  // out
+	var _exitStatus int        // out
+	var _goerr error           // out
 
 	{
 		var i int
@@ -399,14 +830,14 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 // for full details on the other parameters and details on how these functions
 // work on Windows.
 func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var _arg1 *C.gchar // out
-	var _arg2 **C.gchar
-	var _arg3 **C.gchar
+	var _arg1 *C.gchar               // out
+	var _arg2 **C.gchar              // out
+	var _arg3 **C.gchar              // out
 	var _arg4 C.GSpawnFlags          // out
 	var _arg5 C.GSpawnChildSetupFunc // out
 	var _arg6 C.gpointer
-	var _arg7 *C.gchar
-	var _arg8 *C.gchar
+	var _arg7 *C.gchar  // in
+	var _arg8 *C.gchar  // in
 	var _arg9 C.gint    // in
 	var _cerr *C.GError // in
 
@@ -439,10 +870,10 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
 
-	var _standardOutput []byte
-	var _standardError []byte
-	var _exitStatus int // out
-	var _goerr error    // out
+	var _standardOutput []byte // out
+	var _standardError []byte  // out
+	var _exitStatus int        // out
+	var _goerr error           // out
 
 	{
 		var i int

@@ -245,21 +245,21 @@ func (keymap *Keymap) Direction() pango.Direction {
 // this list of entries is selected by considering the effective keyboard group
 // and level. See gdk_keymap_translate_keyboard_state().
 func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
-	var _arg0 *C.GdkKeymap // out
-	var _arg1 C.guint      // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg4 C.gint // in
-	var _arg3 *C.guint
-	var _cret C.gboolean // in
+	var _arg0 *C.GdkKeymap    // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg4 C.gint          // in
+	var _arg3 *C.guint        // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(hardwareKeycode)
 
 	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
-	var _keys []KeymapKey
-	var _keyvals []uint
-	var _ok bool // out
+	var _keys []KeymapKey // out
+	var _keyvals []uint   // out
+	var _ok bool          // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_keys = make([]KeymapKey, _arg4)
@@ -284,19 +284,19 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 // keyboard group. The level is computed from the modifier mask. The returned
 // array should be freed with g_free().
 func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
-	var _arg0 *C.GdkKeymap // out
-	var _arg1 C.guint      // out
-	var _arg2 *C.GdkKeymapKey
-	var _arg3 C.gint     // in
-	var _cret C.gboolean // in
+	var _arg0 *C.GdkKeymap    // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg3 C.gint          // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _keys []KeymapKey
-	var _ok bool // out
+	var _keys []KeymapKey // out
+	var _ok bool          // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_keys = make([]KeymapKey, _arg3)

@@ -36,10 +36,6 @@ func init() {
 	})
 }
 
-// XEvent: used to represent native events (XEvents for the X11 backend, MSGs
-// for Win32).
-type XEvent = C.void
-
 // CrossingMode specifies the crossing mode for EventCrossing.
 type CrossingMode int
 

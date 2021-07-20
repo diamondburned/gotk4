@@ -24,6 +24,14 @@ func init() {
 	})
 }
 
+// FrameOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type FrameOverrider interface {
+	ComputeChildAllocation(allocation *Allocation)
+}
+
 // Frame: frame widget is a bin that surrounds its child with a decorative frame
 // and an optional label. If present, the label is drawn in a gap in the top
 // side of the frame. The position of the label can be controlled with

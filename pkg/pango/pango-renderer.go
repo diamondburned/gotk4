@@ -80,6 +80,8 @@ type RendererOverrider interface {
 	// This should be called while renderer is already active. Use
 	// pango.Renderer.Activate() to activate a renderer.
 	DrawErrorUnderline(x int, y int, width int, height int)
+	// DrawGlyph draws a single glyph with coordinates in device space.
+	DrawGlyph(font Fonter, glyph Glyph, x float64, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
 	// output if the output format supports it.
@@ -122,6 +124,7 @@ type RendererOverrider interface {
 	// joined together. Pango automatically calls this for changes to colors.
 	// (See pango.Renderer.SetColor())
 	PartChanged(part RenderPart)
+	PrepareRun(run *LayoutRun)
 }
 
 // Renderer: PangoRenderer is a base class for objects that can render text
@@ -146,6 +149,8 @@ type Rendererer interface {
 	// given rectangle in the style of an underline used to indicate a spelling
 	// error.
 	DrawErrorUnderline(x int, y int, width int, height int)
+	// DrawGlyph draws a single glyph with coordinates in device space.
+	DrawGlyph(font Fonter, glyph Glyph, x float64, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
 	// output if the output format supports it.
@@ -246,6 +251,23 @@ func (renderer *Renderer) DrawErrorUnderline(x int, y int, width int, height int
 	_arg4 = C.int(height)
 
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// DrawGlyph draws a single glyph with coordinates in device space.
+func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float64) {
+	var _arg0 *C.PangoRenderer // out
+	var _arg1 *C.PangoFont     // out
+	var _arg2 C.PangoGlyph     // out
+	var _arg3 C.double         // out
+	var _arg4 C.double         // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+
+	C.pango_renderer_draw_glyph(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // DrawGlyphItem draws the glyphs in glyph_item with the specified

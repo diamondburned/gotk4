@@ -685,13 +685,13 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 // cannot call this function after freeing the string.
 func (matchInfo *MatchInfo) FetchAll() []string {
 	var _arg0 *C.GMatchInfo // out
-	var _cret **C.gchar
+	var _cret **C.gchar     // in
 
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_fetch_all(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -704,6 +704,7 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1374,7 +1375,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
@@ -1382,7 +1383,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 
 	_cret = C.g_regex_split(_arg0, _arg1, _arg2)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1395,6 +1396,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1524,7 +1526,7 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 	var _arg2 *C.gchar             // out
 	var _arg3 C.GRegexCompileFlags // out
 	var _arg4 C.GRegexMatchFlags   // out
-	var _cret **C.gchar
+	var _cret **C.gchar            // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
@@ -1533,7 +1535,7 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 
 	_cret = C.g_regex_split_simple(_arg1, _arg2, _arg3, _arg4)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1546,6 +1548,7 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

@@ -90,7 +90,7 @@ func NewCSSProvider() *CSSProvider {
 // This clears any previously loaded information.
 func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 	var _arg0 *C.GtkCssProvider // out
-	var _arg1 *C.char
+	var _arg1 *C.char           // out
 	var _arg2 C.gssize
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))

@@ -313,8 +313,8 @@ func Basename(fileName string) string {
 // elements as a string array, instead of varargs. This function is mainly meant
 // for language bindings.
 func BuildFilenamev(args []string) string {
-	var _arg1 **C.gchar
-	var _cret *C.gchar // in
+	var _arg1 **C.gchar // out
+	var _cret *C.gchar  // in
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(args)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -342,9 +342,9 @@ func BuildFilenamev(args []string) string {
 // as a string array, instead of varargs. This function is mainly meant for
 // language bindings.
 func BuildPathv(separator string, args []string) string {
-	var _arg1 *C.gchar // out
-	var _arg2 **C.gchar
-	var _cret *C.gchar // in
+	var _arg1 *C.gchar  // out
+	var _arg2 **C.gchar // out
+	var _cret *C.gchar  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(separator)))
 	{
@@ -436,8 +436,8 @@ func FileErrorFromErrno(errNo int) FileError {
 // are those in the Error enumeration. In the error case, contents is set to
 // NULL and length is set to zero.
 func FileGetContents(filename string) ([]byte, error) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.gchar  // in
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
 
@@ -445,8 +445,8 @@ func FileGetContents(filename string) ([]byte, error) {
 
 	C.g_file_get_contents(_arg1, &_arg2, &_arg3, &_cerr)
 
-	var _contents []byte
-	var _goerr error // out
+	var _contents []byte // out
+	var _goerr error     // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_contents = make([]byte, _arg3)
@@ -520,7 +520,7 @@ func FileReadLink(filename string) (string, error) {
 // mode set to 0666.
 func FileSetContents(filename string, contents []byte) error {
 	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
 	var _cerr *C.GError // in
 
@@ -596,7 +596,7 @@ func FileSetContents(filename string, contents []byte) error {
 // changed to mode depending on flags, or they may remain unchanged.
 func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) error {
 	var _arg1 *C.gchar // out
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
 	var _arg4 C.GFileSetContentsFlags // out
 	var _arg5 C.int                   // out

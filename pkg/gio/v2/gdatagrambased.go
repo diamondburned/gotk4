@@ -457,7 +457,7 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
-	var _arg1 *C.GInputMessage
+	var _arg1 *C.GInputMessage  // out
 	var _arg2 C.guint
 	var _arg3 C.gint    // out
 	var _arg4 C.gint64  // out
@@ -530,7 +530,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
-	var _arg1 *C.GOutputMessage
+	var _arg1 *C.GOutputMessage // out
 	var _arg2 C.guint
 	var _arg3 C.gint    // out
 	var _arg4 C.gint64  // out

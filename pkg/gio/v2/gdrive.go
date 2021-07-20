@@ -429,13 +429,13 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 // g_drive_get_identifier() to obtain the identifiers themselves.
 func (drive *Drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
-	var _cret **C.char
+	var _cret **C.char  // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_enumerate_identifiers(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -448,6 +448,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

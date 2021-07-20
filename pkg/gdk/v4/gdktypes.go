@@ -497,7 +497,7 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 
 // NewContentFormats constructs a struct ContentFormats.
 func NewContentFormats(mimeTypes []string) *ContentFormats {
-	var _arg1 **C.char
+	var _arg1 **C.char // out
 	var _arg2 C.guint
 	var _cret *C.GdkContentFormats // in
 

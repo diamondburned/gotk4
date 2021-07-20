@@ -509,7 +509,7 @@ func (t *TimeCoord) Flags() AxisFlags {
 
 // Axes axis values
 func (t *TimeCoord) Axes() [12]float64 {
-	var v [12]float64
+	var v [12]float64 // out
 	v = *(*[12]float64)(unsafe.Pointer(&t.native.axes))
 	return v
 }

@@ -174,13 +174,13 @@ func (filter *FileFilter) AddPixbufFormats() {
 // principally for use in the implementation of GtkFileChooser.
 func (filter *FileFilter) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
-	var _cret **C.char
+	var _cret **C.char         // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -193,7 +193,6 @@ func (filter *FileFilter) Attributes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

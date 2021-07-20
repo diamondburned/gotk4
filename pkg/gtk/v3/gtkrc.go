@@ -402,11 +402,11 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 //
 // Deprecated: Use StyleContext instead.
 func RCGetDefaultFiles() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.gtk_rc_get_default_files()
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -419,7 +419,6 @@ func RCGetDefaultFiles() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -715,7 +714,7 @@ func RCResetStyles(settings *Settings) {
 //
 // Deprecated: Use StyleContext with a custom StyleProvider instead.
 func RCSetDefaultFiles(filenames []string) {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(filenames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -801,4 +800,25 @@ func (orig *RCStyle) Copy() *RCStyle {
 type RCProperty struct {
 	nocopy gextras.NoCopy
 	native *C.GtkRcProperty
+}
+
+// TypeName: quark-ified type identifier
+func (r *RCProperty) TypeName() glib.Quark {
+	var v glib.Quark // out
+
+	return v
+}
+
+// PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”
+func (r *RCProperty) PropertyName() glib.Quark {
+	var v glib.Quark // out
+
+	return v
+}
+
+// Origin: field similar to one found in SettingsValue
+func (r *RCProperty) Origin() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.origin)))
+	return v
 }

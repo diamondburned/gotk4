@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,6 +30,36 @@ func init() {
 		{T: externglib.Type(C.gtk_debug_flag_get_type()), F: marshalDebugFlag},
 		{T: externglib.Type(C.gtk_entry_icon_accessible_get_type()), F: marshalEntryIconAccessibler},
 	})
+}
+
+func BuilderErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_builder_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+func CSSProviderErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_css_provider_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+func IconThemeErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_icon_theme_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type MovementStep int
@@ -109,6 +140,26 @@ func (n NotebookTab) String() string {
 	default:
 		return fmt.Sprintf("NotebookTab(%d)", n)
 	}
+}
+
+func RecentChooserErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_chooser_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
+}
+
+func RecentManagerErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_manager_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type ResizeMode int

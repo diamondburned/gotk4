@@ -186,14 +186,14 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 // Deprecated: This returns NULL.
 func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
-	var _arg1 *C.guchar
-	var _arg2 C.int // in
+	var _arg1 *C.guchar        // in
+	var _arg2 C.int            // in
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 
-	var _bytes []byte
+	var _bytes []byte // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_bytes = make([]byte, _arg2)
@@ -218,7 +218,7 @@ func (coverage *Coverage) unref() {
 //
 // Deprecated: This returns NULL.
 func CoverageFromBytes(bytes []byte) *Coverage {
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar // out
 	var _arg2 C.int
 	var _cret *C.PangoCoverage // in
 

@@ -748,6 +748,9 @@ func (resolver *Resolver) LookupService(ctx context.Context, service string, pro
 		src := (*C.GSrvTarget)(_p)
 		var dst *SrvTarget // out
 		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *SrvTarget) {
+			C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -811,6 +814,9 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) (*externglib
 		src := (*C.GSrvTarget)(_p)
 		var dst *SrvTarget // out
 		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *SrvTarget) {
+			C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

@@ -235,7 +235,7 @@ func (g *Generator) renderBlock() bool {
 
 	g.Results = g.Conv.ConvertAll()
 	if g.Results == nil {
-		g.Logln(logger.Debug, "no conversion", CFunctionHeader(g.CallableAttrs))
+		g.Logln(logger.Debug, "no conversion", cFunctionHeader(g.CallableAttrs))
 		return false
 	}
 
@@ -447,7 +447,7 @@ func AnyTypeName(typ gir.AnyType, or string) string {
 		return strcases.UnexportPascal(parts[len(parts)-1])
 
 	case typ.Array != nil:
-		name := AnyTypeName(typ.Array.AnyType, or)
+		name := AnyTypeName(gir.AnyType{Type: typ.Array.Type}, or)
 		if !strings.HasSuffix(name, "s") {
 			return name + "s"
 		}
@@ -515,4 +515,49 @@ func RenameGetter(name string) (string, bool) {
 	}
 
 	return name, false
+}
+
+// cFunctionHeader renders the given GIR function in its C function signature
+// string for debugging or callback generation.
+func cFunctionHeader(fn *gir.CallableAttrs) string {
+	b := strings.Builder{}
+	b.Grow(256)
+
+	if fn.ReturnValue != nil {
+		b.WriteString(resolveAnyCType(fn.ReturnValue.AnyType))
+		b.WriteByte(' ')
+	}
+
+	b.WriteString(fn.CIdentifier)
+	b.WriteByte('(')
+
+	if fn.Parameters != nil && len(fn.Parameters.Parameters) > 0 {
+		if fn.Parameters.InstanceParameter != nil {
+			b.WriteString(resolveAnyCType(fn.Parameters.InstanceParameter.AnyType))
+		}
+
+		for i, param := range fn.Parameters.Parameters {
+			if i != 0 || fn.Parameters.InstanceParameter != nil {
+				b.WriteString(", ")
+			}
+
+			b.WriteString(resolveAnyCType(param.AnyType))
+		}
+	}
+
+	b.WriteByte(')')
+
+	return b.String()
+}
+
+// resolveAnyCType resolves an AnyType and returns the C type signature.
+func resolveAnyCType(any gir.AnyType) string {
+	switch {
+	case any.Array != nil:
+		return any.Array.CType
+	case any.Type != nil:
+		return any.Type.CType
+	default:
+		return "..."
+	}
 }

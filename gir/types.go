@@ -1,6 +1,8 @@
 package gir
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+)
 
 type Alias struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
@@ -16,9 +18,8 @@ type Alias struct {
 
 type AnyType struct {
 	// Possible variants.
-	Type    *Type    `xml:"http://www.gtk.org/introspection/core/1.0 type"`
-	Array   *Array   `xml:"http://www.gtk.org/introspection/core/1.0 array"`
-	VarArgs *VarArgs `xml:"http://www.gtk.org/introspection/core/1.0 varargs"`
+	Type  *Type  `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+	Array *Array `xml:"http://www.gtk.org/introspection/core/1.0 array"`
 }
 
 type Annotation struct {
@@ -35,7 +36,8 @@ type Array struct {
 	ZeroTerminated *bool    `xml:"zero-terminated,attr"`
 	FixedSize      int      `xml:"fixed-size,attr"`
 	Introspectable bool     `xml:"introspectable,attr"`
-	AnyType
+	// Type is the array's inner type.
+	Type *Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
 }
 
 // IsZeroTerminated returns true if the Array is zero-terminated. It accounts
@@ -369,7 +371,8 @@ type Type struct {
 	Introspectable *bool  `xml:"introspectable,attr"`
 
 	DocElements
-	AnyType
+	// Types is the type's inner types.
+	Types []Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
 }
 
 func (typ Type) IsIntrospectable() bool {

@@ -2538,7 +2538,7 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 // valid UTF-8 as input; so data read from a file or the network should be
 // checked with g_utf8_validate() before doing anything else with it.
 func UTF8Validate(str []byte) (string, bool) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
@@ -2566,7 +2566,7 @@ func UTF8Validate(str []byte) (string, bool) {
 // As with g_utf8_validate(), but max_len must be set, and hence this function
 // will always return FALSE if any of the bytes of str are nul.
 func UTF8ValidateLen(str []byte) (string, bool) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 C.gsize
 	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in

@@ -558,7 +558,7 @@ func (dialog *Dialog) Run() int {
 // Deprecated: Deprecated.
 func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
-	var _arg2 *C.gint
+	var _arg2 *C.gint      // out
 	var _arg1 C.gint
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))

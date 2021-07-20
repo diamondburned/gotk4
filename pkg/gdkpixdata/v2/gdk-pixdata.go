@@ -239,7 +239,7 @@ type Pixdata struct {
 // Deprecated: Use GResource instead.
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
-	var _arg2 *C.guint8
+	var _arg2 *C.guint8     // out
 	var _arg1 C.guint
 	var _cerr *C.GError // in
 

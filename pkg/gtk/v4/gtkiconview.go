@@ -685,6 +685,9 @@ func (iconView *IconView) SelectedItems() *externglib.List {
 		src := (*C.GtkTreePath)(_p)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

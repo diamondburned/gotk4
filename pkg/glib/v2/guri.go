@@ -10,6 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/unsafe"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -760,7 +761,7 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 //
 // Though technically incorrect, this will also allow escaping nul bytes as 00.
 func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
-	var _arg1 *C.guint8
+	var _arg1 *C.guint8 // out
 	var _arg2 C.gsize
 	var _arg3 *C.char // out
 	var _cret *C.char // in
@@ -946,6 +947,65 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _uri, _goerr
+}
+
+// URIParseParams: many URI schemes include one or more attribute/value pairs as
+// part of the URI value. This method can be used to parse them into a hash
+// table. When an attribute has multiple occurrences, the last value is the
+// final returned value. If you need to handle repeated attributes differently,
+// use ParamsIter.
+//
+// The params string is assumed to still be %-encoded, but the returned values
+// will be fully decoded. (Thus it is possible that the returned values may
+// contain = or separators, if the value was encoded in the input.) Invalid
+// %-encoding is treated as with the G_URI_FLAGS_PARSE_RELAXED rules for
+// g_uri_parse(). (However, if params is the path or query string from a #GUri
+// that was parsed without G_URI_FLAGS_PARSE_RELAXED and G_URI_FLAGS_ENCODED,
+// then you already know that it does not contain any invalid encoding.)
+//
+// G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
+//
+// If G_URI_PARAMS_CASE_INSENSITIVE is passed to flags, attributes will be
+// compared case-insensitively, so a params string attr=123&Attr=456 will only
+// return a single attribute–value pair, Attr=456. Case will be preserved in the
+// returned attributes.
+//
+// If params cannot be parsed (for example, it contains two separators
+// characters in a row), then error is set and NULL is returned.
+func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (map[string]string, error) {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gssize          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 C.GUriParamsFlags // out
+	var _cret *C.GHashTable     // in
+	var _cerr *C.GError         // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
+	_arg2 = C.gssize(length)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
+	_arg4 = C.GUriParamsFlags(flags)
+
+	_cret = C.g_uri_parse_params(_arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _hashTable map[string]string // out
+	var _goerr error                 // out
+
+	_hashTable = make(map[string]string, gextras.HashTableSize(unsafe.Pointer(_cret)))
+	gextras.MoveHashTable(unsafe.Pointer(_cret), true, func(k, v unsafe.Pointer) {
+		ksrc := *(**C.gchar)(k)
+		vsrc := *(**C.gchar)(v)
+		var kdst string // out
+		var vdst string // out
+		kdst = C.GoString((*C.gchar)(unsafe.Pointer(ksrc)))
+		defer C.free(unsafe.Pointer(ksrc))
+		vdst = C.GoString((*C.gchar)(unsafe.Pointer(vsrc)))
+		defer C.free(unsafe.Pointer(vsrc))
+		_hashTable[kdst] = vdst
+	})
+	gextras.FreeHashTable(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _hashTable, _goerr
 }
 
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986

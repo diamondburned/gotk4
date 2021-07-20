@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -135,15 +136,40 @@ func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) err
 	return _err
 }
 
+// DBusErrorRegisterError creates an association to map between dbus_error_name
+// and #GErrors specified by error_domain and error_code.
+//
+// This is typically done in the routine that returns the #GQuark for an error
+// domain.
+func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
+	var _arg1 C.GQuark   // out
+	var _arg2 C.gint     // out
+	var _arg3 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg2 = C.gint(errorCode)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+
+	_cret = C.g_dbus_error_register_error(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // DBusErrorRegisterErrorDomain: helper function for associating a #GError error
 // domain with D-Bus error names.
 //
 // While quark_volatile has a volatile qualifier, this is a historical artifact
 // and the argument passed to it should not be volatile.
 func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.gsize // out
-	var _arg3 *C.GDBusErrorEntry
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gsize           // out
+	var _arg3 *C.GDBusErrorEntry // out
 	var _arg4 C.guint
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorDomainQuarkName)))
@@ -169,6 +195,28 @@ func DBusErrorStripRemoteError(err error) bool {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_dbus_error_strip_remote_error(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// DBusErrorUnregisterError destroys an association previously set up with
+// g_dbus_error_register_error().
+func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
+	var _arg1 C.GQuark   // out
+	var _arg2 C.gint     // out
+	var _arg3 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg2 = C.gint(errorCode)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+
+	_cret = C.g_dbus_error_unregister_error(_arg1, _arg2, _arg3)
 
 	var _ok bool // out
 

@@ -294,7 +294,7 @@ func (loader *PixbufLoader) SetSize(width int, height int) {
 // Write parses the next count bytes in the given image buffer.
 func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar          // out
 	var _arg2 C.gsize
 	var _cerr *C.GError // in
 

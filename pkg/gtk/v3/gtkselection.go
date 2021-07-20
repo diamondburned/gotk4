@@ -96,7 +96,7 @@ func SelectionRemoveAll(widget Widgetter) {
 // TargetTableFree: this function frees a target table as returned by
 // gtk_target_table_new_from_list()
 func TargetTableFree(targets []TargetEntry) {
-	var _arg1 *C.GtkTargetEntry
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.gint
 
 	_arg2 = (C.gint)(len(targets))
@@ -208,7 +208,7 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 
 // NewTargetList constructs a struct TargetList.
 func NewTargetList(targets []TargetEntry) *TargetList {
-	var _arg1 *C.GtkTargetEntry
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.guint
 	var _cret *C.GtkTargetList // in
 
@@ -268,8 +268,8 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 
 // AddTable prepends a table of TargetEntry to a target list.
 func (list *TargetList) AddTable(targets []TargetEntry) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 *C.GtkTargetEntry
+	var _arg0 *C.GtkTargetList  // out
+	var _arg1 *C.GtkTargetEntry // out
 	var _arg2 C.guint
 
 	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))

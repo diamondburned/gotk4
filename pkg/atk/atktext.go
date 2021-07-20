@@ -4,6 +4,7 @@ package atk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -646,7 +647,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 	var _arg2 C.AtkCoordType      // out
 	var _arg3 C.AtkTextClipType   // out
 	var _arg4 C.AtkTextClipType   // out
-	var _cret **C.AtkTextRange
+	var _cret **C.AtkTextRange    // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
@@ -656,7 +657,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 
 	_cret = C.atk_text_get_bounded_ranges(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _textRanges []*TextRange
+	var _textRanges []*TextRange // out
 
 	{
 		var i int
@@ -669,6 +670,9 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
 			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(_textRanges[i], func(v *TextRange) {
+				C.free(gextras.StructNative(unsafe.Pointer(v)))
+			})
 		}
 	}
 

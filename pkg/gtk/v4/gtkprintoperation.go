@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,6 +64,17 @@ func (p PrintError) String() string {
 	default:
 		return fmt.Sprintf("PrintError(%d)", p)
 	}
+}
+
+// PrintErrorQuark registers an error quark for GtkPrintOperation if necessary.
+func PrintErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_print_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 // PrintOperationAction determines what action the print operation should

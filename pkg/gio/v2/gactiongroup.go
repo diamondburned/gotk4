@@ -607,13 +607,13 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 // no longer required.
 func (actionGroup *ActionGroup) ListActions() []string {
 	var _arg0 *C.GActionGroup // out
-	var _cret **C.gchar
+	var _cret **C.gchar       // in
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.g_action_group_list_actions(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -626,6 +626,7 @@ func (actionGroup *ActionGroup) ListActions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

@@ -1217,6 +1217,24 @@ func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	C.atk_object_initialize(_arg0, _arg1)
 }
 
+// NotifyStateChange emits a state-change signal for the specified state.
+//
+// Note that as a general rule when the state of an existing object changes,
+// emitting a notification is expected.
+func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkState   // out
+	var _arg2 C.gboolean   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
+
+	if value {
+		_arg2 = C.TRUE
+	}
+
+	C.atk_object_notify_state_change(_arg0, _arg1, _arg2)
+}
+
 // PeekParent gets the accessible parent of the accessible, if it has been
 // manually assigned with atk_object_set_parent. Otherwise, this function
 // returns NULL.

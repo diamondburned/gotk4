@@ -573,16 +573,16 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
-	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cret **C.gchar       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
-	var _utf8s []string
-	var _goerr error // out
+	var _utf8s []string // out
+	var _goerr error    // out
 
 	{
 		var i int
@@ -595,6 +595,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -615,8 +616,8 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	var _arg0 *C.GMount       // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 C.gboolean      // out
-	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cret **C.gchar       // in
+	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	{
@@ -630,8 +631,8 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
-	var _utf8s []string
-	var _goerr error // out
+	var _utf8s []string // out
+	var _goerr error    // out
 
 	{
 		var i int
@@ -644,6 +645,7 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -95,7 +95,7 @@ func marshalRelationer(p uintptr) (interface{}, error) {
 // NewRelation: create a new relation for the specified key and the specified
 // list of targets. See also atk_object_add_relationship().
 func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
-	var _arg1 **C.AtkObject
+	var _arg1 **C.AtkObject // out
 	var _arg2 C.gint
 	var _arg3 C.AtkRelationType // out
 	var _cret *C.AtkRelation    // in

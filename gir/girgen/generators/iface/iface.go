@@ -248,7 +248,6 @@ func bodgeClassCtor(class *gir.Class, ctor gir.Constructor) gir.Constructor {
 
 	retTyp.Name = class.Name
 	retTyp.Introspectable = class.Introspectable
-	retTyp.AnyType = gir.AnyType{}
 
 	retVal.AnyType.Type = &retTyp
 	ctor.ReturnValue = &retVal

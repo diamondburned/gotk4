@@ -2,7 +2,6 @@ package typeconv
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -11,18 +10,6 @@ import (
 )
 
 // Go to C type conversions.
-
-func (conv *Converter) gocParameterOverrides(value *ValueConverted) {
-	if value.Resolved.Ptr != 1 || value.ParameterIndex.Index() == -1 {
-		return
-	}
-
-	switch value.Resolved.GType {
-	case "Gio.Cancellable":
-		value.Resolved = types.BuiltinType("context", "Context", *value.AnyType.Type)
-		value.Resolved.Ptr--
-	}
-}
 
 func (conv *Converter) gocConvert(value *ValueConverted) bool {
 	switch {
@@ -36,41 +23,13 @@ func (conv *Converter) gocConvert(value *ValueConverted) bool {
 }
 
 func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
-	if value.AnyType.Array.Type == nil {
-		conv.Logln(logger.Debug, "Go->C skipping nested array", value.AnyType.Array.CType)
-		return false
-	}
-
 	array := *value.AnyType.Array
-
-	// Ensure that the array type matches the inner type. Some functions violate
-	// this, e.g. g_spawn_command_line_sync().
-	if array.Type.CType == "" {
-		// Copy the inner type so we don't accidentally change a reference.
-		typ := *array.Type
-
-		if types.CleanCType(array.CType, true) == "void" {
-			// We can't dereference the array type to get a void type, so we
-			// have to guess from the GIR type. Thanks, GIR.
-			typ.CType = types.CTypeFallback("", typ.Name)
-		} else {
-			// Dereference the inner type by 1.
-			typ.CType = strings.Replace(array.CType, "*", "", 1)
-		}
-
-		array.AnyType.Type = &typ
-		value.AnyType.Array = &array
-	}
 
 	if types.CleanCType(array.CType, true) == "void" {
 		// CGo treats void* arrays a bit weirdly: the function's input parameter
 		// type is actually unsafe.Pointer, so we have to wrap it.
 		value.Out.Call = fmt.Sprintf("unsafe.Pointer(%s)", value.Out.Call)
 	}
-
-	// This is always the same.
-	value.Out.Type = types.AnyTypeCGo(value.AnyType)
-	value.outDecl.Linef("var %s %s", value.OutName, value.Out.Type)
 
 	// Length is roughly always the same as well.
 	var length *ValueConverted
@@ -107,6 +66,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// C code may mutate the backing array. The internal type is "utf8",
 		// which is false, because the C type is just a single character.
 		value.In.Type = "[]byte"
+		value.inDecl.Reset()
 		value.inDecl.Linef("var %s []byte", value.InName)
 
 		if array.IsZeroTerminated() {
@@ -135,14 +95,6 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		)
 
 		return true
-	}
-
-	if array.FixedSize > 0 {
-		value.In.Type = fmt.Sprintf("[%d]%s", array.FixedSize, inner.In.Type)
-		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
-	} else {
-		value.In.Type = fmt.Sprintf("[]%s", inner.In.Type)
-		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
 	}
 
 	// TODO: PtrArray
@@ -332,7 +284,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 }
 
 func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
-	if value.AnyType.Type.Type == nil {
+	if len(value.Inner) == 0 {
 		return conv.gocConverter(value)
 	}
 
@@ -341,17 +293,6 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 }
 
 func (conv *Converter) gocConverter(value *ValueConverted) bool {
-	for _, unsupported := range types.UnsupportedCTypes {
-		if unsupported == types.CleanCType(value.AnyType.Type.CType, true) {
-			return false
-		}
-	}
-
-	if !value.resolveType(conv) {
-		value.Logln(logger.Debug, "cannot resolve type")
-		return false
-	}
-
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
@@ -602,6 +543,14 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		}
 
 		return true
+
+	case *gir.Alias:
+		result := conv.convertType(value, value.InName, value.OutName, &v.Type)
+		if result != nil {
+			value.header.ApplyFrom(result.Header())
+			return true
+		}
+		return false
 	}
 
 	if value.Optional {

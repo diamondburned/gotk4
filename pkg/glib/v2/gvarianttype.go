@@ -270,7 +270,7 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 
 // NewVariantTypeTuple constructs a struct VariantType.
 func NewVariantTypeTuple(items []*VariantType) *VariantType {
-	var _arg1 **C.GVariantType
+	var _arg1 **C.GVariantType // out
 	var _arg2 C.gint
 	var _cret *C.GVariantType // in
 

@@ -3,6 +3,7 @@ package gextras
 
 // #cgo pkg-config: glib-2.0 gobject-2.0
 // #include <glib.h>
+// #include <gmodule.h> // HashTable
 // #include <glib-object.h>
 import "C"
 
@@ -180,3 +181,29 @@ type NoCopy struct{}
 
 func (*NoCopy) Lock()   {}
 func (*NoCopy) Unlock() {}
+
+// HashTableSize returns the size of the *GHashTable.
+func HashTableSize(ptr unsafe.Pointer) int {
+	return int(C.g_hash_table_size((*C.GHashTable)(ptr)))
+}
+
+// FreeHashTable frees the given hash table.
+func FreeHashTable(ptr unsafe.Pointer) {
+	C.g_hash_table_unref((*C.GHashTable)(ptr))
+}
+
+// MoveHashTable calls f on every value of the given *GHashTable and frees each
+// element in the process if rm is true.
+func MoveHashTable(ptr unsafe.Pointer, rm bool, f func(k, v unsafe.Pointer)) {
+	var k, v uintptr
+	var iter C.GHashTableIter
+	C.g_hash_table_iter_init(&iter, (*C.GHashTable)(ptr))
+
+	for C.g_hash_table_iter_next(&iter, (*C.gpointer)(&k), (*C.gpointer)(&v)) != 0 {
+		f(unsafe.Pointer(k), unsafe.Pointer(V))
+
+		if rm {
+			C.g_hash_table_iter_remove(&iter)
+		}
+	}
+}

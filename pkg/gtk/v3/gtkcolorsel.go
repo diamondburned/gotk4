@@ -359,17 +359,17 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 // ColorSelectionPaletteFromString parses a color palette string; the string is
 // a colon-separated list of color names readable by gdk_color_parse().
 func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.GdkColor
-	var _arg3 C.gint     // in
-	var _cret C.gboolean // in
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.GdkColor // in
+	var _arg3 C.gint      // in
+	var _cret C.gboolean  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 
 	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
 
-	var _colors []gdk.Color
-	var _ok bool // out
+	var _colors []gdk.Color // out
+	var _ok bool            // out
 
 	defer C.free(unsafe.Pointer(_arg2))
 	_colors = make([]gdk.Color, _arg3)
@@ -384,7 +384,7 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 // ColorSelectionPaletteToString encodes a palette as a string, useful for
 // persistent storage.
 func ColorSelectionPaletteToString(colors []gdk.Color) string {
-	var _arg1 *C.GdkColor
+	var _arg1 *C.GdkColor // out
 	var _arg2 C.gint
 	var _cret *C.gchar // in
 

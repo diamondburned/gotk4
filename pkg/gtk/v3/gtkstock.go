@@ -55,7 +55,7 @@ func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 //
 // Deprecated: since version 3.10.
 func StockAdd(items []StockItem) {
-	var _arg1 *C.GtkStockItem
+	var _arg1 *C.GtkStockItem // out
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
@@ -71,7 +71,7 @@ func StockAdd(items []StockItem) {
 //
 // Deprecated: since version 3.10.
 func StockAddStatic(items []StockItem) {
-	var _arg1 *C.GtkStockItem
+	var _arg1 *C.GtkStockItem // out
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))

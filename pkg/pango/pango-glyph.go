@@ -180,11 +180,53 @@ type GlyphGeometry struct {
 	native *C.PangoGlyphGeometry
 }
 
+// Width: logical width to use for the the character.
+func (g *GlyphGeometry) Width() GlyphUnit {
+	var v GlyphUnit // out
+
+	return v
+}
+
+// XOffset: horizontal offset from nominal character position.
+func (g *GlyphGeometry) XOffset() GlyphUnit {
+	var v GlyphUnit // out
+
+	return v
+}
+
+// YOffset: vertical offset from nominal character position.
+func (g *GlyphGeometry) YOffset() GlyphUnit {
+	var v GlyphUnit // out
+
+	return v
+}
+
 // GlyphInfo: PangoGlyphInfo structure represents a single glyph with
 // positioning information and visual attributes.
 type GlyphInfo struct {
 	nocopy gextras.NoCopy
 	native *C.PangoGlyphInfo
+}
+
+// Glyph: glyph itself.
+func (g *GlyphInfo) Glyph() Glyph {
+	var v Glyph // out
+
+	return v
+}
+
+// Geometry: positional information about the glyph.
+func (g *GlyphInfo) Geometry() GlyphGeometry {
+	var v GlyphGeometry // out
+	v = *(*GlyphGeometry)(gextras.NewStructNative(unsafe.Pointer((&g.native.geometry))))
+	return v
+}
+
+// Attr: visual attributes of the glyph.
+func (g *GlyphInfo) Attr() GlyphVisAttr {
+	var v GlyphVisAttr // out
+	v = *(*GlyphVisAttr)(gextras.NewStructNative(unsafe.Pointer((&g.native.attr))))
+	return v
 }
 
 // GlyphString: PangoGlyphString is used to store strings of glyphs with

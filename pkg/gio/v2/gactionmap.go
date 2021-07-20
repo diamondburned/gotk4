@@ -145,8 +145,8 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //      return G_ACTION_GROUP (group);
 //    }
 func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo.Handle) {
-	var _arg0 *C.GActionMap // out
-	var _arg1 *C.GActionEntry
+	var _arg0 *C.GActionMap   // out
+	var _arg1 *C.GActionEntry // out
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 

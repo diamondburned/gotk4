@@ -113,12 +113,12 @@ func ListVisuals() *externglib.List {
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
 func QueryDepths() []int {
-	var _arg1 *C.gint
-	var _arg2 C.gint // in
+	var _arg1 *C.gint // in
+	var _arg2 C.gint  // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 
-	var _depths []int
+	var _depths []int // out
 
 	_depths = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
 	runtime.SetFinalizer(&_depths, func(v *[]int) {
@@ -137,12 +137,12 @@ func QueryDepths() []int {
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
 func QueryVisualTypes() []VisualType {
-	var _arg1 *C.GdkVisualType
-	var _arg2 C.gint // in
+	var _arg1 *C.GdkVisualType // in
+	var _arg2 C.gint           // in
 
 	C.gdk_query_visual_types(&_arg1, &_arg2)
 
-	var _visualTypes []VisualType
+	var _visualTypes []VisualType // out
 
 	{
 		src := unsafe.Slice(_arg1, _arg2)

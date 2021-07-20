@@ -537,13 +537,13 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 // CachedPropertyNames gets the names of all cached properties on proxy.
 func (proxy *DBusProxy) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
-	var _cret **C.gchar
+	var _cret **C.gchar     // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_cached_property_names(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -556,6 +556,7 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

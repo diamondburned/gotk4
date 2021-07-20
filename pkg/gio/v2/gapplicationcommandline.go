@@ -204,13 +204,13 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 // value of a single environment variable.
 func (cmdline *ApplicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
-	var _cret **C.gchar
+	var _cret **C.gchar                  // in
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 
 	_cret = C.g_application_command_line_get_environ(_arg0)
 
-	var _filenames []string
+	var _filenames []string // out
 
 	{
 		var i int
@@ -223,7 +223,6 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

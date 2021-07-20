@@ -266,7 +266,7 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 // array.
 func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _arg1 *C.float
+	var _arg1 *C.float           // out
 	var _cret *C.graphene_vec4_t // in
 
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
@@ -534,13 +534,13 @@ func (a *Vec4) Subtract(b *Vec4) Vec4 {
 // floating point values.
 func (v *Vec4) ToFloat() [4]float32 {
 	var _arg0 *C.graphene_vec4_t // out
-	var _arg1 [4]C.float
+	var _arg1 [4]C.float         // in
 
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec4_to_float(_arg0, &_arg1[0])
 
-	var _dest [4]float32
+	var _dest [4]float32 // out
 
 	_dest = *(*[4]float32)(unsafe.Pointer(&_arg1))
 

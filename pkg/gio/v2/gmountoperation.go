@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,6 +43,8 @@ type MountOperationOverrider interface {
 	AskQuestion(message string, choices []string)
 	// Reply emits the Operation::reply signal.
 	Reply(result MountOperationResult)
+	// ShowProcesses: virtual implementation of Operation::show-processes.
+	ShowProcesses(message string, processes []glib.Pid, choices []string)
 	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
 }
 

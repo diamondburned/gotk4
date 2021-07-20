@@ -104,11 +104,11 @@ func GetConsoleCharset() (string, bool) {
 // This function consults the environment variables LANGUAGE, LC_ALL,
 // LC_MESSAGES and LANG to find the list of locales specified by the user.
 func GetLanguageNames() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_get_language_names()
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -121,7 +121,6 @@ func GetLanguageNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -139,14 +138,14 @@ func GetLanguageNames() []string {
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
 func GetLanguageNamesWithCategory(categoryName string) []string {
-	var _arg1 *C.gchar // out
-	var _cret **C.gchar
+	var _arg1 *C.gchar  // out
+	var _cret **C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(categoryName)))
 
 	_cret = C.g_get_language_names_with_category(_arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -159,7 +158,6 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -181,14 +179,14 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
 func GetLocaleVariants(locale string) []string {
-	var _arg1 *C.gchar // out
-	var _cret **C.gchar
+	var _arg1 *C.gchar  // out
+	var _cret **C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
 
 	_cret = C.g_get_locale_variants(_arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -201,6 +199,7 @@ func GetLocaleVariants(locale string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

@@ -240,7 +240,7 @@ func (stream *PollableOutputStream) IsWritable() bool {
 func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg3 *C.GCancellable          // out
-	var _arg1 *C.void
+	var _arg1 *C.void                  // out
 	var _arg2 C.gsize
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -285,7 +285,7 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vectors []OutputVector) (uint, PollableReturn, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg4 *C.GCancellable          // out
-	var _arg1 *C.GOutputVector
+	var _arg1 *C.GOutputVector         // out
 	var _arg2 C.gsize
 	var _arg3 C.gsize           // in
 	var _cret C.GPollableReturn // in

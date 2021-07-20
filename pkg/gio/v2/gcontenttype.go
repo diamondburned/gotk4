@@ -140,11 +140,11 @@ func ContentTypeGetIcon(typ string) Iconner {
 // ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
 func ContentTypeGetMIMEDirs() []string {
-	var _cret **C.gchar
+	var _cret **C.gchar // in
 
 	_cret = C.g_content_type_get_mime_dirs()
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -157,7 +157,6 @@ func ContentTypeGetMIMEDirs() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -203,8 +202,8 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 // or data may be NULL, in which case the guess will be based solely on the
 // other argument.
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
-	var _arg1 *C.gchar // out
-	var _arg2 *C.guchar
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.guchar // out
 	var _arg3 C.gsize
 	var _arg4 C.gboolean // in
 	var _cret *C.gchar   // in
@@ -242,14 +241,14 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 // This function is useful in the implementation of
 // g_mount_guess_content_type().
 func ContentTypeGuessForTree(root Filer) []string {
-	var _arg1 *C.GFile // out
-	var _cret **C.gchar
+	var _arg1 *C.GFile  // out
+	var _cret **C.gchar // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer((root).(gextras.Nativer).Native()))
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -262,6 +261,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -351,7 +351,7 @@ func ContentTypeIsUnknown(typ string) bool {
 //
 //      return g_test_run ();
 func ContentTypeSetMIMEDirs(dirs []string) {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -379,6 +379,13 @@ func ContentTypesGetRegistered() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.gchar)(_p)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		return dst
+	})
 	_list.AttachFinalizer(func(v uintptr) {
 		C.free(unsafe.Pointer(v))
 	})

@@ -352,7 +352,7 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 // floating point values.
 func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _arg1 *C.float
+	var _arg1 *C.float             // out
 	var _cret *C.graphene_matrix_t // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
@@ -1086,13 +1086,13 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 // ToFloat converts a #graphene_matrix_t to an array of floating point values.
 func (m *Matrix) ToFloat() [16]float32 {
 	var _arg0 *C.graphene_matrix_t // out
-	var _arg1 [16]C.float
+	var _arg1 [16]C.float          // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	C.graphene_matrix_to_float(_arg0, &_arg1[0])
 
-	var _v [16]float32
+	var _v [16]float32 // out
 
 	_v = *(*[16]float32)(unsafe.Pointer(&_arg1))
 

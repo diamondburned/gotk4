@@ -249,7 +249,6 @@ func firstGObjectSelector(nodes []Tree, sel string) (string, bool) {
 
 // resolveName resolves and adds the resolved type into the Tree.
 func (tree *Tree) resolveName(name string) bool {
-	tree.gen.Logln(logger.Debug, "resolving type", name)
 	parent := Tree{
 		gen: tree.gen,
 		src: tree.src,

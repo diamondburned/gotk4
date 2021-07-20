@@ -1007,7 +1007,7 @@ func (settings *PrintSettings) SetOutputBin(outputBin string) {
 // SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
 func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 	var _arg0 *C.GtkPrintSettings // out
-	var _arg1 *C.GtkPageRange
+	var _arg1 *C.GtkPageRange     // out
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))

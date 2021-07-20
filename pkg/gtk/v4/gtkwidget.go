@@ -615,6 +615,8 @@ type Widgetter interface {
 	// AllocatedWidth returns the width that has currently been allocated to
 	// widget.
 	AllocatedWidth() int
+	// Allocation retrieves the widget’s allocation.
+	Allocation() Allocation
 	// Ancestor gets the first ancestor of widget with type widget_type.
 	Ancestor(widgetType externglib.Type) Widgetter
 	// CanFocus determines whether the input focus can enter widget or any of
@@ -915,6 +917,9 @@ type Widgetter interface {
 	ShouldLayout() bool
 	// Show flags a widget to be displayed.
 	Show()
+	// SizeAllocate allocates widget with a transformation that translates the
+	// origin to the position in allocation.
+	SizeAllocate(allocation *Allocation, baseline int)
 	// SnapshotChild: snapshot the a child of widget.
 	SnapshotChild(child Widgetter, snapshot *Snapshot)
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
@@ -1493,6 +1498,33 @@ func (widget *Widget) AllocatedWidth() int {
 	return _gint
 }
 
+// Allocation retrieves the widget’s allocation.
+//
+// Note, when implementing a layout container: a widget’s allocation will be its
+// “adjusted” allocation, that is, the widget’s parent typically calls
+// gtk.Widget.SizeAllocate() with an allocation, and that allocation is then
+// adjusted (to handle margin and alignment for example) before assignment to
+// the widget. gtk.Widget.GetAllocation() returns the adjusted allocation that
+// was actually assigned to the widget. The adjusted allocation is guaranteed to
+// be completely contained within the gtk.Widget.SizeAllocate() allocation,
+// however.
+//
+// So a layout container is guaranteed that its children stay inside the
+// assigned bounds, but not that they have exactly the bounds the container
+// assigned.
+func (widget *Widget) Allocation() Allocation {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_allocation(_arg0, &_arg1)
+
+	var _allocation Allocation // out
+
+	return _allocation
+}
+
 // Ancestor gets the first ancestor of widget with type widget_type.
 //
 // For example, gtk_widget_get_ancestor (widget, GTK_TYPE_BOX) gets the first
@@ -1610,13 +1642,13 @@ func (widget *Widget) Clipboard() *gdk.Clipboard {
 // CSSClasses returns the list of style classes applied to widget.
 func (widget *Widget) CSSClasses() []string {
 	var _arg0 *C.GtkWidget // out
-	var _cret **C.char
+	var _cret **C.char     // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_css_classes(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -1629,6 +1661,7 @@ func (widget *Widget) CSSClasses() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -3494,7 +3527,7 @@ func (widget *Widget) SetChildVisible(childVisible bool) {
 // with classes.
 func (widget *Widget) SetCSSClasses(classes []string) {
 	var _arg0 *C.GtkWidget // out
-	var _arg1 **C.char
+	var _arg1 **C.char     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	{
@@ -4110,6 +4143,22 @@ func (widget *Widget) Show() {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_show(_arg0)
+}
+
+// SizeAllocate allocates widget with a transformation that translates the
+// origin to the position in allocation.
+//
+// This is a simple form of gtk.Widget.Allocate().
+func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+	var _arg2 C.int            // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_arg2 = C.int(baseline)
+
+	C.gtk_widget_size_allocate(_arg0, _arg1, _arg2)
 }
 
 // SnapshotChild: snapshot the a child of widget.

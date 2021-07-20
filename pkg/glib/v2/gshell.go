@@ -49,8 +49,8 @@ func (s ShellError) String() string {
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
 func ShellParseArgv(commandLine string) ([]string, error) {
-	var _arg1 *C.gchar // out
-	var _arg3 **C.gchar
+	var _arg1 *C.gchar  // out
+	var _arg3 **C.gchar // in
 	var _arg2 C.gint    // in
 	var _cerr *C.GError // in
 
@@ -58,8 +58,8 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 
 	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
 
-	var _argvp []string
-	var _goerr error // out
+	var _argvp []string // out
+	var _goerr error    // out
 
 	defer C.free(unsafe.Pointer(_arg3))
 	{

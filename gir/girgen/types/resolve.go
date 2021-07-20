@@ -644,6 +644,10 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	}
 
 	if prim, ok := girToBuiltin[typ.Name]; ok {
+		if prim == "" {
+			// void type, exit.
+			return nil
+		}
 		return builtinType("", prim, typ)
 	}
 

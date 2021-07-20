@@ -565,16 +565,16 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 // ReadToEnd reads all the remaining data from the file.
 func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
-	var _arg1 *C.gchar
-	var _arg2 C.gsize     // in
-	var _cret C.GIOStatus // in
-	var _cerr *C.GError   // in
+	var _arg1 *C.gchar      // in
+	var _arg2 C.gsize       // in
+	var _cret C.GIOStatus   // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_read_to_end(_arg0, &_arg1, &_arg2, &_cerr)
 
-	var _strReturn []byte
+	var _strReturn []byte  // out
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
@@ -906,11 +906,11 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 // described in the documentation for g_io_channel_set_encoding ().
 func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
-	var _arg1 *C.gchar
-	var _arg2 C.gssize    // out
-	var _arg3 C.gsize     // in
-	var _cret C.GIOStatus // in
-	var _cerr *C.GError   // in
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gssize      // out
+	var _arg3 C.gsize       // in
+	var _cret C.GIOStatus   // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	if len(buf) > 0 {

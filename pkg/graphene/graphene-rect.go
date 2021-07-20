@@ -265,14 +265,14 @@ func (r *Rect) TopRight() Point {
 
 // Vertices computes the four vertices of a #graphene_rect_t.
 func (r *Rect) Vertices() [4]Vec2 {
-	var _arg0 *C.graphene_rect_t // out
-	var _arg1 [4]C.graphene_vec2_t
+	var _arg0 *C.graphene_rect_t   // out
+	var _arg1 [4]C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	C.graphene_rect_get_vertices(_arg0, &_arg1[0])
 
-	var _vertices [4]Vec2
+	var _vertices [4]Vec2 // out
 
 	_vertices = *(*[4]Vec2)(unsafe.Pointer(&_arg1))
 

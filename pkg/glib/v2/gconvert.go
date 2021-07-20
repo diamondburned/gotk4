@@ -274,13 +274,13 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 // G_FILENAME_ENCODING value, the actual file names present on a system might be
 // in any random encoding or just gibberish.
 func GetFilenameCharsets() ([]string, bool) {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar  // in
 	var _cret C.gboolean // in
 
 	_cret = C.g_get_filename_charsets(&_arg1)
 
-	var _filenameCharsets []string
-	var _ok bool // out
+	var _filenameCharsets []string // out
+	var _ok bool                   // out
 
 	{
 		var i int
@@ -313,7 +313,7 @@ func GetFilenameCharsets() ([]string, bool) {
 // compatibility with earlier versions of this library. Use g_convert() to
 // produce output that may contain embedded nul characters.
 func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 C.gsize   // in
 	var _arg4 C.gsize   // in
@@ -345,14 +345,14 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 // type defined in RFC 2483 into individual URIs, discarding any comments. The
 // URIs are not validated.
 func URIListExtractURIs(uriList string) []string {
-	var _arg1 *C.gchar // out
-	var _cret **C.gchar
+	var _arg1 *C.gchar  // out
+	var _cret **C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriList)))
 
 	_cret = C.g_uri_list_extract_uris(_arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -365,6 +365,7 @@ func URIListExtractURIs(uriList string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

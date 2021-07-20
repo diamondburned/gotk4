@@ -508,9 +508,9 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
-	var _arg2 **C.gchar
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
+	var _arg2 **C.gchar     // out
+	var _cret C.guint       // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
@@ -550,9 +550,9 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
-	var _arg2 **C.gchar
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
+	var _arg2 **C.gchar     // out
+	var _cret C.guint       // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
@@ -593,9 +593,9 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
-	var _arg3 **C.gchar
-	var _cret C.guint   // in
-	var _cerr *C.GError // in
+	var _arg3 **C.gchar     // out
+	var _cret C.guint       // in
+	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))

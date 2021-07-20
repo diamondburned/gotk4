@@ -228,7 +228,7 @@ func (store *ListStore) Splice(position uint, nRemovals uint, additions []*exter
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out
-	var _arg3 *C.gpointer
+	var _arg3 *C.gpointer   // out
 	var _arg4 C.guint
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))

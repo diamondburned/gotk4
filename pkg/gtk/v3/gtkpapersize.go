@@ -503,6 +503,9 @@ func PaperSizeGetPaperSizes(includeCustom bool) *externglib.List {
 		src := (*C.GtkPaperSize)(_p)
 		var dst *PaperSize // out
 		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *PaperSize) {
+			C.gtk_paper_size_free((*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(v))))
+		})
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

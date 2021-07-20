@@ -1066,9 +1066,9 @@ func (socket *Socket) Listen() error {
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned.
 func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.GInputMessage
+	var _arg0 *C.GSocket       // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.GInputMessage // out
 	var _arg2 C.guint
 	var _arg3 C.gint    // out
 	var _cret C.gint    // in
@@ -1114,7 +1114,7 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar        // out
 	var _arg2 C.gsize
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -1184,9 +1184,9 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	var _arg0 *C.GSocket        // out
 	var _arg7 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.GOutputVector
+	var _arg2 *C.GOutputVector  // out
 	var _arg3 C.gint
-	var _arg4 **C.GSocketControlMessage
+	var _arg4 **C.GSocketControlMessage // out
 	var _arg5 C.gint
 	var _arg6 C.gint    // out
 	var _cret C.gssize  // in
@@ -1235,9 +1235,9 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	var _arg0 *C.GSocket        // out
 	var _arg9 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.GOutputVector
+	var _arg2 *C.GOutputVector  // out
 	var _arg3 C.gint
-	var _arg4 **C.GSocketControlMessage
+	var _arg4 **C.GSocketControlMessage // out
 	var _arg5 C.gint
 	var _arg6 C.gint            // out
 	var _arg7 C.gint64          // out
@@ -1314,9 +1314,9 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned.
 func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.GOutputMessage
+	var _arg0 *C.GSocket        // out
+	var _arg4 *C.GCancellable   // out
+	var _arg1 *C.GOutputMessage // out
 	var _arg2 C.guint
 	var _arg3 C.gint    // out
 	var _cret C.gint    // in
@@ -1353,7 +1353,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar          // out
 	var _arg3 C.gsize
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
@@ -1387,7 +1387,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar        // out
 	var _arg2 C.gsize
 	var _arg3 C.gboolean // out
 	var _cret C.gssize   // in

@@ -195,7 +195,7 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 // InitFromFloat initializes v with the contents of the given array.
 func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _arg1 *C.float
+	var _arg1 *C.float           // out
 	var _cret *C.graphene_vec2_t // in
 
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
@@ -418,13 +418,13 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 // ToFloat stores the components of v into an array.
 func (v *Vec2) ToFloat() [2]float32 {
 	var _arg0 *C.graphene_vec2_t // out
-	var _arg1 [2]C.float
+	var _arg1 [2]C.float         // in
 
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec2_to_float(_arg0, &_arg1[0])
 
-	var _dest [2]float32
+	var _dest [2]float32 // out
 
 	_dest = *(*[2]float32)(unsafe.Pointer(&_arg1))
 

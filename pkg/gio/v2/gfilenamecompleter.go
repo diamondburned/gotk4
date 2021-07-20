@@ -96,14 +96,14 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
-	var _cret **C.char
+	var _cret **C.char              // in
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(initialText)))
 
 	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -116,6 +116,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

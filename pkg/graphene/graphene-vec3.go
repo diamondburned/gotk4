@@ -318,7 +318,7 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 // InitFromFloat initializes a #graphene_vec3_t with the values from an array.
 func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _arg1 *C.float
+	var _arg1 *C.float           // out
 	var _cret *C.graphene_vec3_t // in
 
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
@@ -541,13 +541,13 @@ func (a *Vec3) Subtract(b *Vec3) Vec3 {
 // ToFloat copies the components of a #graphene_vec3_t into the given array.
 func (v *Vec3) ToFloat() [3]float32 {
 	var _arg0 *C.graphene_vec3_t // out
-	var _arg1 [3]C.float
+	var _arg1 [3]C.float         // in
 
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec3_to_float(_arg0, &_arg1[0])
 
-	var _dest [3]float32
+	var _dest [3]float32 // out
 
 	_dest = *(*[3]float32)(unsafe.Pointer(&_arg1))
 

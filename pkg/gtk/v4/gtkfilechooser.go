@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,6 +96,17 @@ func (f FileChooserError) String() string {
 	default:
 		return fmt.Sprintf("FileChooserError(%d)", f)
 	}
+}
+
+// FileChooserErrorQuark registers an error quark for GtkFileChooser errors.
+func FileChooserErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_file_chooser_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 // FileChooser: GtkFileChooser is an interface that can be implemented by file
@@ -235,8 +247,8 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
-	var _arg3 **C.char
-	var _arg4 **C.char
+	var _arg3 **C.char          // out
+	var _arg4 **C.char          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))

@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -254,17 +255,17 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 // If the parse fails, accelerator_key, accelerator_mods and accelerator_codes
 // will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
-	var _arg1 *C.gchar // out
-	var _arg2 C.guint  // in
-	var _arg3 *C.guint
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // in
+	var _arg3 *C.guint          // in
 	var _arg4 C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 
 	C.gtk_accelerator_parse_with_keycode(_arg1, &_arg2, &_arg3, &_arg4)
 
-	var _acceleratorKey uint // out
-	var _acceleratorCodes []uint
+	var _acceleratorKey uint              // out
+	var _acceleratorCodes []uint          // out
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
@@ -373,6 +374,33 @@ func NewAccelGroup() *AccelGroup {
 	return _accelGroup
 }
 
+// Activate finds the first accelerator in accel_group that matches accel_key
+// and accel_mods, and activates it.
+func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
+	var _arg0 *C.GtkAccelGroup  // out
+	var _arg1 C.GQuark          // out
+	var _arg2 *C.GObject        // out
+	var _arg3 C.guint           // out
+	var _arg4 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+
+	_arg2 = (*C.GObject)(unsafe.Pointer(acceleratable.Native()))
+	_arg3 = C.guint(accelKey)
+	_arg4 = C.GdkModifierType(accelMods)
+
+	_cret = C.gtk_accel_group_activate(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // DisconnectKey removes an accelerator previously installed through
 // gtk_accel_group_connect().
 func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
@@ -460,6 +488,18 @@ func (accelGroup *AccelGroup) Unlock() {
 type AccelGroupEntry struct {
 	nocopy gextras.NoCopy
 	native *C.GtkAccelGroupEntry
+}
+
+func (a *AccelGroupEntry) Key() AccelKey {
+	var v AccelKey // out
+	v = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&a.native.key))))
+	return v
+}
+
+func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
+	var v glib.Quark // out
+
+	return v
 }
 
 type AccelKey struct {

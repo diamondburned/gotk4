@@ -68,7 +68,7 @@ func (c ChecksumType) String() string {
 // The hexadecimal string returned will be in lower case.
 func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
-	var _arg2 *C.guchar
+	var _arg2 *C.guchar       // out
 	var _arg3 C.gsize
 	var _cret *C.gchar // in
 
@@ -208,7 +208,7 @@ func (checksum *Checksum) Reset() {
 // have been called on checksum.
 func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar    // out
 	var _arg2 C.gssize
 
 	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))

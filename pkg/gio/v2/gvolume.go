@@ -354,13 +354,13 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 // themselves.
 func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
-	var _cret **C.char
+	var _cret **C.char   // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_enumerate_identifiers(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -373,6 +373,7 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

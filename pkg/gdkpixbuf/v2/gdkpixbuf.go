@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,6 +21,16 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIterer},
 	})
+}
+
+func PixbufErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gdk_pixbuf_error_quark()
+
+	var _quark glib.Quark // out
+
+	return _quark
 }
 
 type PixbufSimpleAnimIter struct {

@@ -145,8 +145,8 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	var _arg0 *C.GProxyResolver // out
 	var _arg2 *C.GCancellable   // out
 	var _arg1 *C.gchar          // out
-	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cret **C.gchar         // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	{
@@ -158,8 +158,8 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
-	var _utf8s []string
-	var _goerr error // out
+	var _utf8s []string // out
+	var _goerr error    // out
 
 	{
 		var i int
@@ -172,6 +172,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -207,16 +208,16 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
-	var _cret **C.gchar
-	var _cerr *C.GError // in
+	var _cret **C.gchar         // in
+	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 
-	var _utf8s []string
-	var _goerr error // out
+	var _utf8s []string // out
+	var _goerr error    // out
 
 	{
 		var i int
@@ -229,6 +230,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

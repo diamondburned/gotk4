@@ -245,8 +245,8 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	var _arg0 *C.GDataInputStream // out
 	var _arg2 *C.GCancellable     // out
 	var _arg1 C.gsize             // in
-	var _cret *C.char
-	var _cerr *C.GError // in
+	var _cret *C.char             // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	{
@@ -257,9 +257,9 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 
 	_cret = C.g_data_input_stream_read_line(_arg0, &_arg1, _arg2, &_cerr)
 
-	var _length uint // out
-	var _guint8s []byte
-	var _goerr error // out
+	var _length uint    // out
+	var _guint8s []byte // out
+	var _goerr error    // out
 
 	_length = uint(_arg1)
 	{
@@ -312,17 +312,17 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
-	var _cret *C.char
-	var _cerr *C.GError // in
+	var _cret *C.char             // in
+	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _length uint // out
-	var _guint8s []byte
-	var _goerr error // out
+	var _length uint    // out
+	var _guint8s []byte // out
+	var _goerr error    // out
 
 	_length = uint(_arg2)
 	{

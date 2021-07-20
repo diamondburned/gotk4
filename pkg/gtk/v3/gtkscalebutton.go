@@ -105,8 +105,8 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 	var _arg2 C.gdouble     // out
 	var _arg3 C.gdouble     // out
 	var _arg4 C.gdouble     // out
-	var _arg5 **C.gchar
-	var _cret *C.GtkWidget // in
+	var _arg5 **C.gchar     // out
+	var _cret *C.GtkWidget  // in
 
 	_arg1 = C.GtkIconSize(size)
 	_arg2 = C.gdouble(min)
@@ -236,7 +236,7 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 // ScaleButton:icons property.
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar         // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 	{

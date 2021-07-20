@@ -302,9 +302,9 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
 	var _arg3 C.int         // in
-	var _arg4 *C.guchar
-	var _arg5 C.int // in
-	var _cret C.int // in
+	var _arg4 *C.guchar     // in
+	var _arg5 C.int         // in
+	var _cret C.int         // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
@@ -313,8 +313,8 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 
 	var _encoding string // out
 	var _format int      // out
-	var _ctext []byte
-	var _gint int // out
+	var _ctext []byte    // out
+	var _gint int        // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
@@ -341,9 +341,9 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
 	var _arg3 C.int         // in
-	var _arg4 *C.guchar
-	var _arg5 C.int      // in
-	var _cret C.gboolean // in
+	var _arg4 *C.guchar     // in
+	var _arg5 C.int         // in
+	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
@@ -352,8 +352,8 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 	var _encoding string // out
 	var _format int      // out
-	var _ctext []byte
-	var _ok bool // out
+	var _ctext []byte    // out
+	var _ok bool         // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)

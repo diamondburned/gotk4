@@ -328,13 +328,13 @@ func (format *PixbufFormat) Description() string {
 // given format.
 func (format *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GdkPixbufFormat)(gextras.StructNative(unsafe.Pointer(format)))
 
 	_cret = C.gdk_pixbuf_format_get_extensions(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -347,6 +347,7 @@ func (format *PixbufFormat) Extensions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -377,13 +378,13 @@ func (format *PixbufFormat) License() string {
 // MIMETypes returns the mime types supported by the format.
 func (format *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
-	var _cret **C.gchar
+	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GdkPixbufFormat)(gextras.StructNative(unsafe.Pointer(format)))
 
 	_cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -396,6 +397,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

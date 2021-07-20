@@ -740,16 +740,16 @@ func marshalEventer(p uintptr) (interface{}, error) {
 // Axes extracts all axis values from an event.
 func (event *Event) Axes() ([]float64, bool) {
 	var _arg0 *C.GdkEvent // out
-	var _arg1 *C.double
-	var _arg2 C.guint    // in
-	var _cret C.gboolean // in
+	var _arg1 *C.double   // in
+	var _arg2 C.guint     // in
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_event_get_axes(_arg0, &_arg1, &_arg2)
 
-	var _axes []float64
-	var _ok bool // out
+	var _axes []float64 // out
+	var _ok bool        // out
 
 	_axes = unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2)
 	runtime.SetFinalizer(&_axes, func(v *[]float64) {

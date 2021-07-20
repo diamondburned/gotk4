@@ -948,7 +948,7 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
-	var _arg3 *C.gint
+	var _arg3 *C.gint         // out
 	var _arg4 C.gint
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
@@ -1098,7 +1098,7 @@ func NewTreePathFirst() *TreePath {
 
 // NewTreePathFromIndices constructs a struct TreePath.
 func NewTreePathFromIndices(indices []int) *TreePath {
-	var _arg1 *C.gint
+	var _arg1 *C.gint // out
 	var _arg2 C.gsize
 	var _cret *C.GtkTreePath // in
 

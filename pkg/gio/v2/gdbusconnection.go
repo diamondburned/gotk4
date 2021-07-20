@@ -353,7 +353,6 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar
 			out[len(utf8s)] = zero
 			for i := range utf8s {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
-				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}

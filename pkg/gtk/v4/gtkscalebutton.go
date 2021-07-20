@@ -81,10 +81,10 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 // The new scale button has a range between min and max, with a stepping of
 // step.
 func NewScaleButton(min float64, max float64, step float64, icons []string) *ScaleButton {
-	var _arg1 C.double // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 **C.char
+	var _arg1 C.double     // out
+	var _arg2 C.double     // out
+	var _arg3 C.double     // out
+	var _arg4 **C.char     // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = C.double(min)
@@ -216,7 +216,7 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 // SetIcons sets the icons to be used by the scale button.
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
-	var _arg1 **C.char
+	var _arg1 **C.char          // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 	{

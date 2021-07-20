@@ -332,7 +332,7 @@ func (filter *TreeModelFilter) Refilter() {
 // a given filter model.
 func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeModelFilterModifyFunc) {
 	var _arg0 *C.GtkTreeModelFilter // out
-	var _arg2 *C.GType
+	var _arg2 *C.GType              // out
 	var _arg1 C.gint
 	var _arg3 C.GtkTreeModelFilterModifyFunc // out
 	var _arg4 C.gpointer

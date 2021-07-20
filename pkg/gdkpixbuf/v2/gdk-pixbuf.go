@@ -11,7 +11,9 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/unsafe"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -365,7 +367,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, e
 //
 // Deprecated: Use GResource instead.
 func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
-	var _arg2 *C.guint8
+	var _arg2 *C.guint8 // out
 	var _arg1 C.gint
 	var _arg3 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
@@ -567,7 +569,7 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 // This data is commonly the result of including an XPM file into a program's C
 // source.
 func NewPixbufFromXpmData(data []string) *Pixbuf {
-	var _arg1 **C.char
+	var _arg1 **C.char     // out
 	var _cret *C.GdkPixbuf // in
 
 	{
@@ -1014,6 +1016,34 @@ func (pixbuf *Pixbuf) Option(key string) string {
 	return _utf8
 }
 
+// Options returns a GHashTable with a list of all the options that may have
+// been attached to the pixbuf when it was loaded, or that may have been
+// attached by another function using gdkpixbuf.Pixbuf.SetOption().
+func (pixbuf *Pixbuf) Options() map[string]string {
+	var _arg0 *C.GdkPixbuf  // out
+	var _cret *C.GHashTable // in
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	_cret = C.gdk_pixbuf_get_options(_arg0)
+
+	var _hashTable map[string]string // out
+
+	_hashTable = make(map[string]string, gextras.HashTableSize(unsafe.Pointer(_cret)))
+	gextras.MoveHashTable(unsafe.Pointer(_cret), false, func(k, v unsafe.Pointer) {
+		ksrc := *(**C.gchar)(k)
+		vsrc := *(**C.gchar)(v)
+		var kdst string // out
+		var vdst string // out
+		kdst = C.GoString((*C.gchar)(unsafe.Pointer(ksrc)))
+		vdst = C.GoString((*C.gchar)(unsafe.Pointer(vsrc)))
+		_hashTable[kdst] = vdst
+	})
+	gextras.FreeHashTable(unsafe.Pointer(_cret))
+
+	return _hashTable
+}
+
 // Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 // between the start of a row and the start of the next row.
 func (pixbuf *Pixbuf) Rowstride() int {
@@ -1177,12 +1207,12 @@ func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelat
 // See gdkpixbuf.Pixbuf.SaveToBuffer() for more details.
 func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
-	var _arg1 *C.gchar
-	var _arg2 C.gsize // in
-	var _arg3 *C.char // out
-	var _arg4 **C.char
-	var _arg5 **C.char
-	var _cerr *C.GError // in
+	var _arg1 *C.gchar     // in
+	var _arg2 C.gsize      // in
+	var _arg3 *C.char      // out
+	var _arg4 **C.char     // out
+	var _arg5 **C.char     // out
+	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
@@ -1211,8 +1241,8 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 
 	C.gdk_pixbuf_save_to_bufferv(_arg0, &_arg1, &_arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _buffer []byte
-	var _goerr error // out
+	var _buffer []byte // out
+	var _goerr error   // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_buffer = make([]byte, _arg2)
@@ -1234,9 +1264,9 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
 	var _arg2 C.gpointer
-	var _arg3 *C.char // out
-	var _arg4 **C.char
-	var _arg5 **C.char
+	var _arg3 *C.char   // out
+	var _arg4 **C.char  // out
+	var _arg5 **C.char  // out
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -1286,9 +1316,9 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.char          // out
-	var _arg3 **C.char
-	var _arg4 **C.char
-	var _cerr *C.GError // in
+	var _arg3 **C.char         // out
+	var _arg4 **C.char         // out
+	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	{
@@ -1340,12 +1370,12 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 // You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the
 // operation.
 func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkPixbuf     // out
-	var _arg5 *C.GCancellable  // out
-	var _arg1 *C.GOutputStream // out
-	var _arg2 *C.gchar         // out
-	var _arg3 **C.gchar
-	var _arg4 **C.gchar
+	var _arg0 *C.GdkPixbuf          // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GOutputStream      // out
+	var _arg2 *C.gchar              // out
+	var _arg3 **C.gchar             // out
+	var _arg4 **C.gchar             // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
@@ -1397,9 +1427,9 @@ func (pixbuf *Pixbuf) Savev(filename string, typ string, optionKeys []string, op
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
-	var _arg3 **C.char
-	var _arg4 **C.char
-	var _cerr *C.GError // in
+	var _arg3 **C.char     // out
+	var _arg4 **C.char     // out
+	var _cerr *C.GError    // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))

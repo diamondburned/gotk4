@@ -412,6 +412,18 @@ type WidgetOverrider interface {
 	// is a container).
 	ShowAll()
 	ShowHelp(helpType WidgetHelpType) bool
+	// SizeAllocate: this function is only used by Container subclasses, to
+	// assign a size and position to their child widgets.
+	//
+	// In this function, the allocation may be adjusted. It will be forced to a
+	// 1x1 minimum size, and the adjust_size_allocation virtual method on the
+	// child will be used to adjust the allocation. Standard adjustments include
+	// removing the widget’s margins, and applying the widget’s Widget:halign
+	// and Widget:valign properties.
+	//
+	// For baseline support in containers you need to use
+	// gtk_widget_size_allocate_with_baseline() instead.
+	SizeAllocate(allocation *Allocation)
 	StateChanged(previousState StateType)
 	StateFlagsChanged(previousStateFlags StateFlags)
 	StyleSet(previousStyle *Style)
@@ -677,9 +689,13 @@ type Widgetter interface {
 	// AllocatedHeight returns the height that has currently been allocated to
 	// widget.
 	AllocatedHeight() int
+	// AllocatedSize retrieves the widget’s allocated size.
+	AllocatedSize() (Allocation, int)
 	// AllocatedWidth returns the width that has currently been allocated to
 	// widget.
 	AllocatedWidth() int
+	// Allocation retrieves the widget’s allocation.
+	Allocation() Allocation
 	// Ancestor gets the first ancestor of widget with type widget_type.
 	Ancestor(widgetType externglib.Type) Widgetter
 	// AppPaintable determines whether the application intends to draw on the
@@ -694,6 +710,8 @@ type Widgetter interface {
 	ChildRequisition() Requisition
 	// ChildVisible gets the value set with gtk_widget_set_child_visible().
 	ChildVisible() bool
+	// Clip retrieves the widget’s clip area.
+	Clip() Allocation
 	// CompositeName obtains the composite name of a widget.
 	CompositeName() string
 	// DeviceEnabled returns whether device can interact with widget and its
@@ -922,10 +940,6 @@ type Widgetter interface {
 	// KeynavFailed: this function should be called whenever keyboard navigation
 	// within a single widget hits a boundary.
 	KeynavFailed(direction DirectionType) bool
-	// ListAccelClosures lists the closures used by widget for accelerator group
-	// connections with gtk_accel_group_connect_by_path() or
-	// gtk_accel_group_connect().
-	ListAccelClosures() *externglib.List
 	// ListActionPrefixes retrieves a NULL-terminated array of strings
 	// containing the prefixes of Group's available to widget.
 	ListActionPrefixes() []string
@@ -1024,6 +1038,8 @@ type Widgetter interface {
 	// key binding that is defined for accel_path is pressed, widget will be
 	// activated.
 	SetAccelPath(accelPath string, accelGroup *AccelGroup)
+	// SetAllocation sets the widget’s allocation.
+	SetAllocation(allocation *Allocation)
 	// SetAppPaintable sets whether the application intends to draw on the
 	// widget in an Widget::draw handler.
 	SetAppPaintable(appPaintable bool)
@@ -1034,6 +1050,8 @@ type Widgetter interface {
 	// SetChildVisible sets whether widget should be mapped along with its when
 	// its parent is mapped and widget has been shown with gtk_widget_show().
 	SetChildVisible(isVisible bool)
+	// SetClip sets the widget’s clip.
+	SetClip(clip *Allocation)
 	// SetCompositeName sets a widgets composite name.
 	SetCompositeName(name string)
 	// SetDeviceEnabled enables or disables a Device to interact with widget and
@@ -1150,6 +1168,13 @@ type Widgetter interface {
 	ShowAll()
 	// ShowNow shows a widget.
 	ShowNow()
+	// SizeAllocate: this function is only used by Container subclasses, to
+	// assign a size and position to their child widgets.
+	SizeAllocate(allocation *Allocation)
+	// SizeAllocateWithBaseline: this function is only used by Container
+	// subclasses, to assign a size, position and (optionally) baseline to their
+	// child widgets.
+	SizeAllocateWithBaseline(allocation *Allocation, baseline int)
 	// SizeRequest: this function is typically used when implementing a
 	// Container subclass.
 	SizeRequest() Requisition
@@ -1727,7 +1752,7 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkDestDefaults // out
-	var _arg2 *C.GtkTargetEntry
+	var _arg2 *C.GtkTargetEntry // out
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 
@@ -1874,7 +1899,7 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GdkModifierType // out
-	var _arg2 *C.GtkTargetEntry
+	var _arg2 *C.GtkTargetEntry // out
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 
@@ -2130,6 +2155,32 @@ func (widget *Widget) AllocatedHeight() int {
 	return _gint
 }
 
+// AllocatedSize retrieves the widget’s allocated size.
+//
+// This function returns the last values passed to
+// gtk_widget_size_allocate_with_baseline(). The value differs from the size
+// returned in gtk_widget_get_allocation() in that functions like
+// gtk_widget_set_halign() can adjust the allocation, but not the value returned
+// by this function.
+//
+// If a widget is not visible, its allocated size is 0.
+func (widget *Widget) AllocatedSize() (Allocation, int) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+	var _arg2 C.int           // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_allocated_size(_arg0, &_arg1, &_arg2)
+
+	var _allocation Allocation // out
+	var _baseline int          // out
+
+	_baseline = int(_arg2)
+
+	return _allocation, _baseline
+}
+
 // AllocatedWidth returns the width that has currently been allocated to widget.
 // This function is intended to be used when implementing handlers for the
 // Widget::draw function.
@@ -2146,6 +2197,33 @@ func (widget *Widget) AllocatedWidth() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// Allocation retrieves the widget’s allocation.
+//
+// Note, when implementing a Container: a widget’s allocation will be its
+// “adjusted” allocation, that is, the widget’s parent container typically calls
+// gtk_widget_size_allocate() with an allocation, and that allocation is then
+// adjusted (to handle margin and alignment for example) before assignment to
+// the widget. gtk_widget_get_allocation() returns the adjusted allocation that
+// was actually assigned to the widget. The adjusted allocation is guaranteed to
+// be completely contained within the gtk_widget_size_allocate() allocation,
+// however. So a Container is guaranteed that its children stay inside the
+// assigned bounds, but not that they have exactly the bounds the container
+// assigned. There is no way to get the original allocation assigned by
+// gtk_widget_size_allocate(), since it isn’t stored; if a container
+// implementation needs that information it will have to track it itself.
+func (widget *Widget) Allocation() Allocation {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_allocation(_arg0, &_arg1)
+
+	var _allocation Allocation // out
+
+	return _allocation
 }
 
 // Ancestor gets the first ancestor of widget with type widget_type. For
@@ -2285,6 +2363,26 @@ func (widget *Widget) ChildVisible() bool {
 	}
 
 	return _ok
+}
+
+// Clip retrieves the widget’s clip area.
+//
+// The clip area is the area in which all of widget's drawing will happen. Other
+// toolkits call it the bounding box.
+//
+// Historically, in GTK+ the clip area has been equal to the allocation
+// retrieved via gtk_widget_get_allocation().
+func (widget *Widget) Clip() Allocation {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkAllocation // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_get_clip(_arg0, &_arg1)
+
+	var _clip Allocation // out
+
+	return _clip
 }
 
 // CompositeName obtains the composite name of a widget.
@@ -4226,39 +4324,17 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	return _ok
 }
 
-// ListAccelClosures lists the closures used by widget for accelerator group
-// connections with gtk_accel_group_connect_by_path() or
-// gtk_accel_group_connect(). The closures can be used to monitor accelerator
-// changes on widget, by connecting to the GtkAccelGroup::accel-changed signal
-// of the AccelGroup of a closure which can be found out with
-// gtk_accel_group_from_accel_closure().
-func (widget *Widget) ListAccelClosures() *externglib.List {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GList     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_list_accel_closures(_arg0)
-
-	var _list *externglib.List // out
-
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.AttachFinalizer(nil)
-
-	return _list
-}
-
 // ListActionPrefixes retrieves a NULL-terminated array of strings containing
 // the prefixes of Group's available to widget.
 func (widget *Widget) ListActionPrefixes() []string {
 	var _arg0 *C.GtkWidget // out
-	var _cret **C.gchar
+	var _cret **C.gchar    // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_list_action_prefixes(_arg0)
 
-	var _utf8s []string
+	var _utf8s []string // out
 
 	{
 		var i int
@@ -4271,7 +4347,6 @@ func (widget *Widget) ListActionPrefixes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -5031,6 +5106,23 @@ func (widget *Widget) SetAccelPath(accelPath string, accelGroup *AccelGroup) {
 	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
 }
 
+// SetAllocation sets the widget’s allocation. This should not be used directly,
+// but from within a widget’s size_allocate method.
+//
+// The allocation set should be the “adjusted” or actual allocation. If you’re
+// implementing a Container, you want to use gtk_widget_size_allocate() instead
+// of gtk_widget_set_allocation(). The GtkWidgetClass::adjust_size_allocation
+// virtual method adjusts the allocation inside gtk_widget_size_allocate() to
+// create an adjusted allocation.
+func (widget *Widget) SetAllocation(allocation *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_set_allocation(_arg0, _arg1)
+}
+
 // SetAppPaintable sets whether the application intends to draw on the widget in
 // an Widget::draw handler.
 //
@@ -5107,6 +5199,25 @@ func (widget *Widget) SetChildVisible(isVisible bool) {
 	}
 
 	C.gtk_widget_set_child_visible(_arg0, _arg1)
+}
+
+// SetClip sets the widget’s clip. This must not be used directly, but from
+// within a widget’s size_allocate method. It must be called after
+// gtk_widget_set_allocation() (or after chaining up to the parent class),
+// because that function resets the clip.
+//
+// The clip set should be the area that widget draws on. If widget is a
+// Container, the area must contain all children's clips.
+//
+// If this function is not called by widget during a ::size-allocate handler,
+// the clip will be set to widget's allocation.
+func (widget *Widget) SetClip(clip *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_set_clip(_arg0, _arg1)
 }
 
 // SetCompositeName sets a widgets composite name. The widget must be a
@@ -5956,6 +6067,50 @@ func (widget *Widget) ShowNow() {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_show_now(_arg0)
+}
+
+// SizeAllocate: this function is only used by Container subclasses, to assign a
+// size and position to their child widgets.
+//
+// In this function, the allocation may be adjusted. It will be forced to a 1x1
+// minimum size, and the adjust_size_allocation virtual method on the child will
+// be used to adjust the allocation. Standard adjustments include removing the
+// widget’s margins, and applying the widget’s Widget:halign and Widget:valign
+// properties.
+//
+// For baseline support in containers you need to use
+// gtk_widget_size_allocate_with_baseline() instead.
+func (widget *Widget) SizeAllocate(allocation *Allocation) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	C.gtk_widget_size_allocate(_arg0, _arg1)
+}
+
+// SizeAllocateWithBaseline: this function is only used by Container subclasses,
+// to assign a size, position and (optionally) baseline to their child widgets.
+//
+// In this function, the allocation and baseline may be adjusted. It will be
+// forced to a 1x1 minimum size, and the adjust_size_allocation virtual and
+// adjust_baseline_allocation methods on the child will be used to adjust the
+// allocation and baseline. Standard adjustments include removing the widget's
+// margins, and applying the widget’s Widget:halign and Widget:valign
+// properties.
+//
+// If the child widget does not have a valign of GTK_ALIGN_BASELINE the baseline
+// argument is ignored and -1 is used instead.
+func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int) {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkAllocation // out
+	var _arg2 C.gint           // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_arg2 = C.gint(baseline)
+
+	C.gtk_widget_size_allocate_with_baseline(_arg0, _arg1, _arg2)
 }
 
 // SizeRequest: this function is typically used when implementing a Container

@@ -189,16 +189,16 @@ func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconI
 // Deprecated: Attachment points are deprecated.
 func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _arg0 *C.GtkIconInfo // out
-	var _arg1 *C.GdkPoint
-	var _arg2 C.gint     // in
-	var _cret C.gboolean // in
+	var _arg1 *C.GdkPoint    // in
+	var _arg2 C.gint         // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_get_attach_points(_arg0, &_arg1, &_arg2)
 
-	var _points []gdk.Point
-	var _ok bool // out
+	var _points []gdk.Point // out
+	var _ok bool            // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	_points = make([]gdk.Point, _arg2)
@@ -941,8 +941,8 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 // If icon_names contains more than one name, this function tries them all in
 // the given order before falling back to inherited icon themes.
 func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconLookupFlags) *IconInfo {
-	var _arg0 *C.GtkIconTheme // out
-	var _arg1 **C.gchar
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 **C.gchar            // out
 	var _arg2 C.gint               // out
 	var _arg3 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
@@ -980,8 +980,8 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 // If icon_names contains more than one name, this function tries them all in
 // the given order before falling back to inherited icon themes.
 func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size int, scale int, flags IconLookupFlags) *IconInfo {
-	var _arg0 *C.GtkIconTheme // out
-	var _arg1 **C.gchar
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 **C.gchar            // out
 	var _arg2 C.gint               // out
 	var _arg3 C.gint               // out
 	var _arg4 C.GtkIconLookupFlags // out
@@ -1037,14 +1037,14 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
-	var _cret *C.gint
+	var _cret *C.gint         // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
-	var _gints []int
+	var _gints []int // out
 
 	{
 		var i int
@@ -1067,14 +1067,14 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 // gtk_icon_theme_set_search_path().
 func (iconTheme *IconTheme) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
-	var _arg1 **C.gchar
-	var _arg2 C.gint // in
+	var _arg1 **C.gchar       // in
+	var _arg2 C.gint          // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 
 	C.gtk_icon_theme_get_search_path(_arg0, &_arg1, &_arg2)
 
-	var _path []string
+	var _path []string // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -1122,6 +1122,13 @@ func (iconTheme *IconTheme) ListContexts() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.gchar)(_p)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		return dst
+	})
 	_list.AttachFinalizer(func(v uintptr) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -1151,6 +1158,13 @@ func (iconTheme *IconTheme) ListIcons(context string) *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.gchar)(_p)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		return dst
+	})
 	_list.AttachFinalizer(func(v uintptr) {
 		C.free(unsafe.Pointer(v))
 	})
@@ -1477,7 +1491,7 @@ func (iconTheme *IconTheme) SetScreen(screen *gdk.Screen) {
 // icon path.)
 func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar       // out
 	var _arg2 C.gint
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))

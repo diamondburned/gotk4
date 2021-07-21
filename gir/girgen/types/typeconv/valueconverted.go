@@ -53,6 +53,16 @@ type ValueType struct {
 	NeedsNamespace bool
 }
 
+func (vt *ValueType) Import(h *file.Header, public bool) {
+	if vt.NeedsNamespace {
+		if public {
+			h.ImportPubl(vt.Resolved)
+		} else {
+			h.ImportImpl(vt.Resolved)
+		}
+	}
+}
+
 // ValueName contains the different names to use during and after conversion.
 type ValueName struct {
 	Name    string
@@ -297,11 +307,12 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	// Allow Go to C gio.Cancellable to be a context.Context. We're not doing
 	// this inside Resolve, because this is the only case where we actually want
 	// this.
-	if value.Direction == ConvertGoToC && !value.ParameterIsOutput() {
-		if resolved.Ptr == 1 && resolved.GType == "Gio.Cancellable" {
-			resolved = types.BuiltinType("context", "Context", *typ)
-			resolved.Ptr--
-		}
+	if value.Direction == ConvertGoToC &&
+		value.ParameterIndex.Index() != -1 && !value.ParameterIsOutput() &&
+		resolved.Ptr == 1 && resolved.GType == "Gio.Cancellable" {
+
+		resolved = types.BuiltinType("context", "Context", *typ)
+		resolved.Ptr--
 	}
 
 	vType := ValueType{
@@ -330,12 +341,12 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		)
 	}
 
-	if vType.NeedsNamespace {
-		if value.IsPublic {
-			value.header.ImportPubl(vType.Resolved)
-		} else {
-			value.header.ImportImpl(vType.Resolved)
-		}
+	// HashTable's handling doesn't import the glib package's implementation, so
+	// we don't import it if that's the case. Ideally, HashTable should be
+	// resolved to a map directly in types/resolved.go, but that requires a
+	// refactor.
+	if vType.Resolved.GType != "GLib.HashTable" {
+		vType.Import(&value.header, value.IsPublic)
 	}
 
 	return vType, true

@@ -59,7 +59,7 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(&dst, func(v *Item) {
-			C.pango_item_free((**C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
 		})
 		return dst
 	})
@@ -104,7 +104,7 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(&dst, func(v *Item) {
-			C.pango_item_free((**C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
 		})
 		return dst
 	})

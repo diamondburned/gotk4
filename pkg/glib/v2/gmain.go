@@ -41,6 +41,7 @@ func _gotk4_glib2_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
 	var pid Pid    // out
 	var status int // out
 
+	pid = int(arg0)
 	status = int(arg1)
 
 	fn := v.(ChildWatchFunc)
@@ -103,6 +104,8 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 func NewChildWatchSource(pid Pid) *Source {
 	var _arg1 C.GPid     // out
 	var _cret *C.GSource // in
+
+	_arg1 = C.int(pid)
 
 	_cret = C.g_child_watch_source_new(_arg1)
 

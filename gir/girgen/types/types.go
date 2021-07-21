@@ -186,6 +186,15 @@ func MoveCPtr(orig, into string) string {
 	return into + strings.Repeat("*", ptr)
 }
 
+// MoveTypePtr moves the pointer from src to dst. It overrides dst's pointer.
+// A copy of dst is returned.
+func MoveTypePtr(src, dst gir.Type) *gir.Type {
+	ptr := strings.Count(src.CType, "*")
+	dst.CType = strings.ReplaceAll(dst.CType, "*", "")
+	dst.CType = dst.CType + strings.Repeat("*", ptr)
+	return &dst
+}
+
 // CleanCType cleans the underlying C type of and special keywords for
 // comparison.
 func CleanCType(cType string, stripPtr bool) string {

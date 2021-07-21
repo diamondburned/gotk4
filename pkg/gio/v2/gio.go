@@ -28,5 +28,7 @@ func DBusErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }

@@ -362,19 +362,25 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 		return false
 	}
 
-	info := cmt.GetInfoFields(res.Type)
+	return TypeIsInFile(res.Type, ff.match)
+}
+
+// TypeIsInFile returns true if the given type was declared in the given
+// filename. The filename shouldn't contain the file extension.
+func TypeIsInFile(typ interface{}, file string) bool {
+	info := cmt.GetInfoFields(typ)
 	if info.Elements == nil {
-		log.Panicf("type %T missing info.Elements", res.Type)
+		log.Panicf("type %T missing info.Elements", typ)
 	}
 
 	if info.Elements.SourcePosition != nil {
-		if strings.Contains(info.Elements.SourcePosition.Filename, ff.match) {
+		if strings.Contains(info.Elements.SourcePosition.Filename, file) {
 			return true
 		}
 	}
 
 	if info.Elements.Doc != nil {
-		if strings.Contains(info.Elements.Doc.Filename, ff.match) {
+		if strings.Contains(info.Elements.Doc.Filename, file) {
 			return true
 		}
 	}

@@ -18,6 +18,8 @@ func GLErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -27,6 +29,8 @@ func VulkanErrorQuark() glib.Quark {
 	_cret = C.gdk_vulkan_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }

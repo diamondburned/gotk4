@@ -85,6 +85,8 @@ func QuarkFromStaticString(_string string) Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -105,6 +107,8 @@ func QuarkFromString(_string string) Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -112,6 +116,8 @@ func QuarkFromString(_string string) Quark {
 func QuarkToString(quark Quark) string {
 	var _arg1 C.GQuark // out
 	var _cret *C.gchar // in
+
+	_arg1 = C.guint32(quark)
 
 	_cret = C.g_quark_to_string(_arg1)
 
@@ -139,6 +145,8 @@ func QuarkTryString(_string string) Quark {
 	_cret = C.g_quark_try_string(_arg1)
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }

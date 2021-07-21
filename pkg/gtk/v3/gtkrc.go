@@ -805,14 +805,14 @@ type RCProperty struct {
 // TypeName: quark-ified type identifier
 func (r *RCProperty) TypeName() glib.Quark {
 	var v glib.Quark // out
-
+	v = uint32(r.native.type_name)
 	return v
 }
 
 // PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”
 func (r *RCProperty) PropertyName() glib.Quark {
 	var v glib.Quark // out
-
+	v = uint32(r.native.property_name)
 	return v
 }
 

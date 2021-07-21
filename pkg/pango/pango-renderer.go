@@ -263,7 +263,7 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
-
+	_arg2 = C.guint32(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
 

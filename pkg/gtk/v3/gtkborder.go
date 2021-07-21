@@ -98,12 +98,3 @@ func (border_ *Border) Copy() *Border {
 
 	return _border
 }
-
-// Free frees a Border-struct.
-func (border_ *Border) free() {
-	var _arg0 *C.GtkBorder // out
-
-	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
-
-	C.gtk_border_free(_arg0)
-}

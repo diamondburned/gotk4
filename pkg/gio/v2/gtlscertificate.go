@@ -109,6 +109,7 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
 
@@ -139,7 +140,9 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificat
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
 
@@ -172,6 +175,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
@@ -217,7 +221,9 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
 
@@ -309,27 +315,25 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 // PEM-encoded data in file. If file cannot be read or parsed, the function will
 // return NULL and set error. If file does not contain any PEM-encoded
 // certificates, this will return an empty list and not set error.
-func TLSCertificateListNewFromFile(file string) (*externglib.List, error) {
+func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GList  // in
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_list_new_from_file(_arg1, &_cerr)
 
-	var _list *externglib.List // out
-	var _goerr error           // out
+	var _list []TLSCertificater // out
+	var _goerr error            // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GTlsCertificate)(_p)
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

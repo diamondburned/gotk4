@@ -77,7 +77,7 @@ type DBusInterfaceSkeletonner interface {
 	Connection() *DBusConnection
 	// Connections gets a list of the connections that interface_ is exported
 	// on.
-	Connections() *externglib.List
+	Connections() []DBusConnection
 	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
 	// of interface_
 	Flags() DBusInterfaceSkeletonFlags
@@ -131,6 +131,7 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
 
@@ -173,7 +174,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 }
 
 // Connections gets a list of the connections that interface_ is exported on.
-func (interface_ *DBusInterfaceSkeleton) Connections() *externglib.List {
+func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GList                  // in
 
@@ -181,17 +182,14 @@ func (interface_ *DBusInterfaceSkeleton) Connections() *externglib.List {
 
 	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
 
-	var _list *externglib.List // out
+	var _list []DBusConnection // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GDBusConnection)(_p)
+	_list = make([]DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDBusConnection)(v)
 		var dst DBusConnection // out
 		dst = *wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list

@@ -103,15 +103,6 @@ func (src *TabArray) Copy() *TabArray {
 	return _tabArray
 }
 
-// Free frees a tab array and associated resources.
-func (tabArray *TabArray) free() {
-	var _arg0 *C.PangoTabArray // out
-
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
-
-	C.pango_tab_array_free(_arg0)
-}
-
 // PositionsInPixels returns TRUE if the tab positions are in pixels, FALSE if
 // they are in Pango units.
 func (tabArray *TabArray) PositionsInPixels() bool {

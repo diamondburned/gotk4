@@ -99,7 +99,7 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 }
 
 // Emblems gets the list of emblems for the icon.
-func (emblemed *EmblemedIcon) Emblems() *externglib.List {
+func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GList         // in
 
@@ -107,14 +107,14 @@ func (emblemed *EmblemedIcon) Emblems() *externglib.List {
 
 	_cret = C.g_emblemed_icon_get_emblems(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Emblem // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GEmblem)(_p)
+	_list = make([]Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GEmblem)(v)
 		var dst Emblem // out
 		dst = *wrapEmblem(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list

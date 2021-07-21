@@ -99,15 +99,6 @@ func (a *Ray) Equal(b *Ray) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_ray_alloc().
-func (r *Ray) free() {
-	var _arg0 *C.graphene_ray_t // out
-
-	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
-
-	C.graphene_ray_free(_arg0)
-}
-
 // ClosestPointToPoint computes the point on the given #graphene_ray_t that is
 // closest to the given point p.
 func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {

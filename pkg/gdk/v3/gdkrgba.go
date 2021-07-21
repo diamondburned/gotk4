@@ -104,15 +104,6 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	return _ok
 }
 
-// Free frees a RGBA created with gdk_rgba_copy()
-func (rgba *RGBA) free() {
-	var _arg0 *C.GdkRGBA // out
-
-	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	C.gdk_rgba_free(_arg0)
-}
-
 // Hash: hash function suitable for using for a hash table that stores RGBAs.
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -155,6 +146,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 
 	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 

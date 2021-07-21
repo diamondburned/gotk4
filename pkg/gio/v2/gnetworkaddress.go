@@ -76,6 +76,7 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _cret *C.GSocketConnectable // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
@@ -189,6 +190,7 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
@@ -214,6 +216,7 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)

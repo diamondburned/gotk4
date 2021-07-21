@@ -27,6 +27,7 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg5 C.int
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg5 = (C.int)(len(attrs))
@@ -51,6 +52,7 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 	var _arg5 C.int            // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = (*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer(attrs)))
@@ -77,6 +79,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	var _arg4 C.gint   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
@@ -106,6 +109,7 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	var _arg6 C.int
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.int(level)
 	_arg4 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
@@ -132,6 +136,7 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	var _arg6 C.int
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(offset)

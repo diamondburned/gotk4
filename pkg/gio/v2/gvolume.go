@@ -450,6 +450,7 @@ func (volume *Volume) Identifier(kind string) string {
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
 

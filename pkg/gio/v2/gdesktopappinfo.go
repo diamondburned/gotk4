@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,6 +26,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_DesktopAppLaunchCallback(GDesktopAppInfo*, GPid, gpointer);
+// void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
 import "C"
 
 func init() {
@@ -122,6 +125,7 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInf
 
 	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(lookup.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
 
@@ -175,6 +179,7 @@ func NewDesktopAppInfo(desktopId string) *DesktopAppInfo {
 	var _cret *C.GDesktopAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(desktopId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new(_arg1)
 
@@ -191,6 +196,7 @@ func NewDesktopAppInfoFromFilename(filename string) *DesktopAppInfo {
 	var _cret *C.GDesktopAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new_from_filename(_arg1)
 
@@ -228,6 +234,7 @@ func (info *DesktopAppInfo) ActionName(actionName string) string {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_action_name(_arg0, _arg1)
 
@@ -249,6 +256,7 @@ func (info *DesktopAppInfo) Boolean(key string) bool {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_boolean(_arg0, _arg1)
 
@@ -368,6 +376,7 @@ func (info *DesktopAppInfo) LocaleString(key string) string {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_locale_string(_arg0, _arg1)
 
@@ -417,6 +426,7 @@ func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(desktopEnv)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
 
@@ -457,6 +467,7 @@ func (info *DesktopAppInfo) String(key string) string {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_string(_arg0, _arg1)
 
@@ -477,6 +488,7 @@ func (info *DesktopAppInfo) HasKey(key string) bool {
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_has_key(_arg0, _arg1)
 
@@ -511,9 +523,111 @@ func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext *AppLa
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
 
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
+}
+
+// LaunchURIsAsManager: this function performs the equivalent of
+// g_app_info_launch_uris(), but is intended primarily for operating system
+// components that launch applications. Ordinary applications should use
+// g_app_info_launch_uris().
+//
+// If the application is launched via GSpawn, then spawn_flags, user_setup and
+// user_setup_data are used for the call to g_spawn_async(). Additionally,
+// pid_callback (with pid_callback_data) will be called to inform about the PID
+// of the created process. See g_spawn_async_with_pipes() for information on
+// certain parameter conditions that can enable an optimized posix_spawn()
+// codepath to be used.
+//
+// If application launching occurs via some other mechanism (eg: D-Bus
+// activation) then spawn_flags, user_setup, user_setup_data, pid_callback and
+// pid_callback_data are ignored.
+func (appinfo *DesktopAppInfo) LaunchURIsAsManager(uris []string, launchContext *AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error {
+	var _arg0 *C.GDesktopAppInfo     // out
+	var _arg1 *C.GList               // out
+	var _arg2 *C.GAppLaunchContext   // out
+	var _arg3 C.GSpawnFlags          // out
+	var _arg4 C.GSpawnChildSetupFunc // out
+	var _arg5 C.gpointer
+	var _arg6 C.GDesktopAppLaunchCallback // out
+	var _arg7 C.gpointer
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(appinfo.Native()))
+	for i := len(uris) - 1; i >= 0; i-- {
+		src := uris[i]
+		var dst *C.gchar // out
+		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+		defer C.free(unsafe.Pointer(dst))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	_arg3 = C.GSpawnFlags(spawnFlags)
+	_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
+	_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
+	_arg7 = C.gpointer(gbox.Assign(pidCallback))
+	defer gbox.Delete(uintptr(_arg7))
+
+	C.g_desktop_app_info_launch_uris_as_manager(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LaunchURIsAsManagerWithFds: equivalent to
+// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in file
+// descriptors for the stdin, stdout and stderr streams of the launched process.
+//
+// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
+// activation) then stdin_fd, stdout_fd and stderr_fd are ignored.
+func (appinfo *DesktopAppInfo) LaunchURIsAsManagerWithFds(uris []string, launchContext *AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback, stdinFd int, stdoutFd int, stderrFd int) error {
+	var _arg0 *C.GDesktopAppInfo     // out
+	var _arg1 *C.GList               // out
+	var _arg2 *C.GAppLaunchContext   // out
+	var _arg3 C.GSpawnFlags          // out
+	var _arg4 C.GSpawnChildSetupFunc // out
+	var _arg5 C.gpointer
+	var _arg6 C.GDesktopAppLaunchCallback // out
+	var _arg7 C.gpointer
+	var _arg8 C.gint    // out
+	var _arg9 C.gint    // out
+	var _arg10 C.gint   // out
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(appinfo.Native()))
+	for i := len(uris) - 1; i >= 0; i-- {
+		src := uris[i]
+		var dst *C.gchar // out
+		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+		defer C.free(unsafe.Pointer(dst))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	_arg3 = C.GSpawnFlags(spawnFlags)
+	_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+	_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
+	_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
+	_arg7 = C.gpointer(gbox.Assign(pidCallback))
+	defer gbox.Delete(uintptr(_arg7))
+	_arg8 = C.gint(stdinFd)
+	_arg9 = C.gint(stdoutFd)
+	_arg10 = C.gint(stderrFd)
+
+	C.g_desktop_app_info_launch_uris_as_manager_with_fds(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // ListActions returns the list of "additional application actions" supported on
@@ -553,25 +667,23 @@ func (info *DesktopAppInfo) ListActions() []string {
 //
 // An application implements an interface if that interface is listed in the
 // Implements= line of the desktop file of the application.
-func DesktopAppInfoGetImplementations(_interface string) *externglib.List {
+func DesktopAppInfoGetImplementations(_interface string) []DesktopAppInfo {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_interface)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_implementations(_arg1)
 
-	var _list *externglib.List // out
+	var _list []DesktopAppInfo // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GDesktopAppInfo)(_p)
+	_list = make([]DesktopAppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDesktopAppInfo)(v)
 		var dst DesktopAppInfo // out
 		dst = *wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -590,6 +702,7 @@ func DesktopAppInfoSetDesktopEnv(desktopEnv string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(desktopEnv)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_desktop_app_info_set_desktop_env(_arg1)
 }

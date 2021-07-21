@@ -462,6 +462,7 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
 }
@@ -514,6 +515,7 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_language(_arg0, _arg1)
 }
@@ -537,6 +539,7 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_preview_text(_arg0, _arg1)
 }

@@ -134,6 +134,7 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_as_string(_arg0, _arg1)
 
@@ -154,6 +155,7 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_boolean(_arg0, _arg1)
 
@@ -175,6 +177,7 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_byte_string(_arg0, _arg1)
 
@@ -196,6 +199,7 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, cgo.Ha
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -224,6 +228,7 @@ func (info *FileInfo) AttributeInt32(attribute string) int32 {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_int32(_arg0, _arg1)
 
@@ -244,6 +249,7 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_int64(_arg0, _arg1)
 
@@ -263,6 +269,7 @@ func (info *FileInfo) AttributeObject(attribute string) *externglib.Object {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_object(_arg0, _arg1)
 
@@ -281,6 +288,7 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_status(_arg0, _arg1)
 
@@ -300,6 +308,7 @@ func (info *FileInfo) AttributeString(attribute string) string {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_string(_arg0, _arg1)
 
@@ -319,6 +328,7 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
 
@@ -349,6 +359,7 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_type(_arg0, _arg1)
 
@@ -369,6 +380,7 @@ func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_uint32(_arg0, _arg1)
 
@@ -389,6 +401,7 @@ func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_uint64(_arg0, _arg1)
 
@@ -665,6 +678,7 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_has_attribute(_arg0, _arg1)
 
@@ -686,6 +700,7 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_has_namespace(_arg0, _arg1)
 
@@ -706,6 +721,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_list_attributes(_arg0, _arg1)
 
@@ -736,6 +752,7 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_remove_attribute(_arg0, _arg1)
 }
@@ -750,6 +767,7 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
 	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
 
@@ -765,6 +783,7 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if attrValue {
 		_arg2 = C.TRUE
 	}
@@ -781,7 +800,9 @@ func (info *FileInfo) SetAttributeByteString(attribute string, attrValue string)
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attrValue)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
 }
@@ -795,6 +816,7 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint32(attrValue)
 
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
@@ -809,6 +831,7 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(attrValue)
 
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
@@ -834,6 +857,7 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *externglib
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
 
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
@@ -853,6 +877,7 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeStatus(status)
 
 	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
@@ -875,7 +900,9 @@ func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attrValue)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
 }
@@ -891,14 +918,17 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		_arg2 = (**C.char)(C.malloc(C.ulong(len(attrValue)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(attrValue)+1)
 			var zero *C.char
 			out[len(attrValue)] = zero
 			for i := range attrValue {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(attrValue[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -915,6 +945,7 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(attrValue)
 
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
@@ -929,6 +960,7 @@ func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(attrValue)
 
 	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
@@ -942,6 +974,7 @@ func (info *FileInfo) SetContentType(contentType string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_content_type(_arg0, _arg1)
 }
@@ -954,6 +987,7 @@ func (info *FileInfo) SetDisplayName(displayName string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_display_name(_arg0, _arg1)
 }
@@ -966,6 +1000,7 @@ func (info *FileInfo) SetEditName(editName string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(editName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_edit_name(_arg0, _arg1)
 }
@@ -1045,6 +1080,7 @@ func (info *FileInfo) SetName(name string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_name(_arg0, _arg1)
 }
@@ -1093,6 +1129,7 @@ func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkTarget)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_symlink_target(_arg0, _arg1)
 }

@@ -30,20 +30,6 @@ func (queue *Queue) Clear() {
 	C.g_queue_clear(_arg0)
 }
 
-// Free frees the memory allocated for the #GQueue. Only call this function if
-// queue was created with g_queue_new(). If queue elements contain
-// dynamically-allocated memory, they should be freed first.
-//
-// If queue elements contain dynamically-allocated memory, you should either use
-// g_queue_free_full() or free them manually first.
-func (queue *Queue) free() {
-	var _arg0 *C.GQueue // out
-
-	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
-
-	C.g_queue_free(_arg0)
-}
-
 // Length returns the number of items in queue.
 func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out

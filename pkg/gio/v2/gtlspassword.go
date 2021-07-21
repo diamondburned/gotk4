@@ -71,6 +71,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 
 	_arg1 = C.GTlsPasswordFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_password_new(_arg1, _arg2)
 
@@ -161,6 +162,7 @@ func (password *TLSPassword) SetDescription(description string) {
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
 }
@@ -206,6 +208,7 @@ func (password *TLSPassword) SetWarning(warning string) {
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(warning)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_warning(_arg0, _arg1)
 }

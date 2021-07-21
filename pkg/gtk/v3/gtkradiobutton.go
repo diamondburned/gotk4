@@ -173,6 +173,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
 
@@ -193,6 +194,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
 

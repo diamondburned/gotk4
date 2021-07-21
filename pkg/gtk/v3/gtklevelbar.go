@@ -149,6 +149,7 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
 
 	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
@@ -230,6 +231,7 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
@@ -268,6 +270,7 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
 }

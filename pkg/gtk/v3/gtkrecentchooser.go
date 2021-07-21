@@ -145,7 +145,7 @@ type RecentChooserOverrider interface {
 	//
 	// The return value of this function is affected by the “sort-type” and
 	// “limit” properties of chooser.
-	Items() *externglib.List
+	Items() []*RecentInfo
 	ItemActivated()
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
@@ -199,7 +199,7 @@ type RecentChooserer interface {
 	Filter() *RecentFilter
 	// Items gets the list of recently used resources in form of RecentInfo
 	// objects.
-	Items() *externglib.List
+	Items() []*RecentInfo
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
 	Limit() int
@@ -354,7 +354,7 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 //
 // The return value of this function is affected by the “sort-type” and “limit”
 // properties of chooser.
-func (chooser *RecentChooser) Items() *externglib.List {
+func (chooser *RecentChooser) Items() []*RecentInfo {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GList            // in
 
@@ -362,21 +362,18 @@ func (chooser *RecentChooser) Items() *externglib.List {
 
 	_cret = C.gtk_recent_chooser_get_items(_arg0)
 
-	var _list *externglib.List // out
+	var _list []*RecentInfo // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkRecentInfo)(_p)
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
 		C.gtk_recent_info_ref(src)
 		runtime.SetFinalizer(dst, func(v *RecentInfo) {
 			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -557,6 +554,7 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
 
@@ -575,6 +573,7 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
 
@@ -744,6 +743,7 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
 }

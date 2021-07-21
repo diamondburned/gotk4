@@ -369,25 +369,6 @@ func (self *Bitset) IsEmpty() bool {
 	return _ok
 }
 
-// Ref acquires a reference on the given GtkBitset.
-func (self *Bitset) ref() *Bitset {
-	var _arg0 *C.GtkBitset // out
-	var _cret *C.GtkBitset // in
-
-	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
-
-	_cret = C.gtk_bitset_ref(_arg0)
-
-	var _bitset *Bitset // out
-
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _bitset
-}
-
 // Remove removes value from self if it was part of it before.
 func (self *Bitset) Remove(value uint) bool {
 	var _arg0 *C.GtkBitset // out
@@ -544,16 +525,4 @@ func (self *Bitset) Union(other *Bitset) {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_union(_arg0, _arg1)
-}
-
-// Unref releases a reference on the given GtkBitset.
-//
-// If the reference was the last, the resources associated to the self are
-// freed.
-func (self *Bitset) unref() {
-	var _arg0 *C.GtkBitset // out
-
-	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
-
-	C.gtk_bitset_unref(_arg0)
 }

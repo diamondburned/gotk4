@@ -75,7 +75,7 @@ type CellLayoutOverrider interface {
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
-	Cells() *externglib.List
+	Cells() []CellRendererer
 	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
 	// the cell is allocated no more space than it needs. Any unused space is
 	// divided evenly between cells for which expand is TRUE.
@@ -211,7 +211,7 @@ type CellLayouter interface {
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
-	Cells() *externglib.List
+	Cells() []CellRendererer
 	// PackEnd adds the cell to the end of cell_layout.
 	PackEnd(cell CellRendererer, expand bool)
 	// PackStart packs the cell into the beginning of cell_layout.
@@ -251,6 +251,7 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
 
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
@@ -296,7 +297,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 }
 
 // Cells returns the cell renderers which have been added to cell_layout.
-func (cellLayout *CellLayout) Cells() *externglib.List {
+func (cellLayout *CellLayout) Cells() []CellRendererer {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GList         // in
 
@@ -304,16 +305,15 @@ func (cellLayout *CellLayout) Cells() *externglib.List {
 
 	_cret = C.gtk_cell_layout_get_cells(_arg0)
 
-	var _list *externglib.List // out
+	var _list []CellRendererer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkCellRenderer)(_p)
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

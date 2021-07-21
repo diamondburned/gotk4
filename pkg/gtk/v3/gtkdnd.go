@@ -113,6 +113,7 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX int, hotY i
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -145,6 +146,7 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX int, hotY i
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 

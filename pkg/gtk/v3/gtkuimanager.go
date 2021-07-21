@@ -424,8 +424,11 @@ func (manager *UIManager) AddUi(mergeId uint, path string, name string, action s
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = C.guint(mergeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.GtkUIManagerItemType(typ)
 	if top {
 		_arg6 = C.TRUE
@@ -446,6 +449,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
 
@@ -470,6 +474,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
 
@@ -496,6 +501,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, &_cerr)
@@ -562,6 +568,7 @@ func (manager *UIManager) Action(path string) *Action {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
 
@@ -575,7 +582,7 @@ func (manager *UIManager) Action(path string) *Action {
 // ActionGroups returns the list of action groups associated with manager.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) ActionGroups() *externglib.List {
+func (manager *UIManager) ActionGroups() []ActionGroup {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.GList        // in
 
@@ -583,14 +590,14 @@ func (manager *UIManager) ActionGroups() *externglib.List {
 
 	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
 
-	var _list *externglib.List // out
+	var _list []ActionGroup // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkActionGroup)(_p)
+	_list = make([]ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkActionGroup)(v)
 		var dst ActionGroup // out
 		dst = *wrapActionGroup(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -659,6 +666,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
 

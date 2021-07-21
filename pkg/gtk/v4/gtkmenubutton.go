@@ -354,6 +354,7 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
 }
@@ -365,6 +366,7 @@ func (menuButton *MenuButton) SetLabel(label string) {
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_label(_arg0, _arg1)
 }

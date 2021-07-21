@@ -917,6 +917,7 @@ func (iconTheme *IconTheme) AddResourcePath(path string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
 }
@@ -929,6 +930,7 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_append_search_path(_arg0, _arg1)
 }
@@ -950,12 +952,14 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(iconNames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
 			var zero *C.gchar
 			out[len(iconNames)] = zero
 			for i := range iconNames {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(iconNames[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -990,12 +994,14 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size int, sca
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(iconNames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(iconNames)+1)
 			var zero *C.gchar
 			out[len(iconNames)] = zero
 			for i := range iconNames {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(iconNames[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1041,6 +1047,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
@@ -1097,6 +1104,7 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 
@@ -1111,7 +1119,7 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 
 // ListContexts gets the list of contexts available within the current hierarchy
 // of icon themes. See gtk_icon_theme_list_icons() for details about contexts.
-func (iconTheme *IconTheme) ListContexts() *externglib.List {
+func (iconTheme *IconTheme) ListContexts() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GList        // in
 
@@ -1119,18 +1127,15 @@ func (iconTheme *IconTheme) ListContexts() *externglib.List {
 
 	_cret = C.gtk_icon_theme_list_contexts(_arg0)
 
-	var _list *externglib.List // out
+	var _list []string // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.gchar)(_p)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		defer C.free(unsafe.Pointer(src))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.free(unsafe.Pointer(v))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -1145,28 +1150,26 @@ func (iconTheme *IconTheme) ListContexts() *externglib.List {
 // standard contexts are listed in the Icon Naming Specification
 // (http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also see
 // gtk_icon_theme_list_contexts().
-func (iconTheme *IconTheme) ListIcons(context string) *externglib.List {
+func (iconTheme *IconTheme) ListIcons(context string) []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GList        // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_list_icons(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []string // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.gchar)(_p)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		defer C.free(unsafe.Pointer(src))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.free(unsafe.Pointer(v))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -1193,6 +1196,7 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.GtkIconLookupFlags(flags)
 
@@ -1239,6 +1243,7 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	_arg4 = C.GtkIconLookupFlags(flags)
@@ -1283,6 +1288,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	_arg4 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
@@ -1378,6 +1384,7 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLook
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.GtkIconLookupFlags(flags)
 
@@ -1405,6 +1412,7 @@ func (iconTheme *IconTheme) LookupIconForScale(iconName string, size int, scale 
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	_arg4 = C.GtkIconLookupFlags(flags)
@@ -1426,6 +1434,7 @@ func (iconTheme *IconTheme) PrependSearchPath(path string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_prepend_search_path(_arg0, _arg1)
 }
@@ -1460,6 +1469,7 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_set_custom_theme(_arg0, _arg1)
 }
@@ -1497,10 +1507,12 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 	_arg2 = (C.gint)(len(path))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(path)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(path))
 		for i := range path {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(path[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -1527,6 +1539,7 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	var _arg3 *C.GdkPixbuf // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 

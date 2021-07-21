@@ -55,7 +55,7 @@ func init() {
 // The gdk_pixbuf_new() function will compute an optimal rowstride so that
 // rendering can be performed with an efficient algorithm.
 //
-// As a special case, you can use the gdkpixbuf.Pixbuf.NewFromXpmData function
+// As a special case, you can use the gdkpixbuf.Pixbuf.NewFromXPMData function
 // to create a pixbuf from inline XPM image data.
 //
 // You can also copy an existing pixbuf with the pixbuf.Copy function. This is
@@ -233,6 +233,7 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_file(_arg1, &_cerr)
 
@@ -276,6 +277,7 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	if preserveAspectRatio {
@@ -318,6 +320,7 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, e
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 
@@ -401,6 +404,7 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_resource(_arg1, &_cerr)
 
@@ -436,6 +440,7 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	if preserveAspectRatio {
@@ -562,22 +567,24 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	return _pixbuf, _goerr
 }
 
-// NewPixbufFromXpmData creates a new pixbuf by parsing XPM data in memory.
+// NewPixbufFromXPMData creates a new pixbuf by parsing XPM data in memory.
 //
 // This data is commonly the result of including an XPM file into a program's C
 // source.
-func NewPixbufFromXpmData(data []string) *Pixbuf {
+func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _arg1 **C.char     // out
 	var _cret *C.GdkPixbuf // in
 
 	{
 		_arg1 = (**C.char)(C.malloc(C.ulong(len(data)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(data)+1)
 			var zero *C.char
 			out[len(data)] = zero
 			for i := range data {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(data[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1004,6 +1011,7 @@ func (pixbuf *Pixbuf) Option(key string) string {
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_get_option(_arg0, _arg1)
 
@@ -1028,7 +1036,7 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 	var _hashTable map[string]string // out
 
 	_hashTable = make(map[string]string, gextras.HashTableSize(unsafe.Pointer(_cret)))
-	gextras.MoveHashTable(unsafe.Pointer(_cret), false, func(k, v unsafe.Pointer) {
+	gextras.MoveHashTable(unsafe.Pointer(_cret), true, func(k, v unsafe.Pointer) {
 		ksrc := *(**C.gchar)(k)
 		vsrc := *(**C.gchar)(v)
 		var kdst string // out
@@ -1037,7 +1045,6 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 		vdst = C.GoString((*C.gchar)(unsafe.Pointer(vsrc)))
 		_hashTable[kdst] = vdst
 	})
-	gextras.FreeHashTable(unsafe.Pointer(_cret))
 
 	return _hashTable
 }
@@ -1134,6 +1141,7 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_remove_option(_arg0, _arg1)
 
@@ -1214,25 +1222,30 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg3))
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionKeys)+1)
 			var zero *C.char
 			out[len(optionKeys)] = zero
 			for i := range optionKeys {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionKeys[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg5 = (**C.char)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg5))
 		{
 			out := unsafe.Slice(_arg5, len(optionValues)+1)
 			var zero *C.char
 			out[len(optionValues)] = zero
 			for i := range optionValues {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionValues[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1272,25 +1285,30 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	_arg2 = C.gpointer(gbox.Assign(saveFunc))
 	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg3))
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionKeys)+1)
 			var zero *C.char
 			out[len(optionKeys)] = zero
 			for i := range optionKeys {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionKeys[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg5 = (**C.char)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg5))
 		{
 			out := unsafe.Slice(_arg5, len(optionValues)+1)
 			var zero *C.char
 			out[len(optionValues)] = zero
 			for i := range optionValues {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionValues[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1326,25 +1344,30 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		_arg3 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
 			var zero *C.char
 			out[len(optionKeys)] = zero
 			for i := range optionKeys {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionKeys[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)
 			var zero *C.char
 			out[len(optionValues)] = zero
 			for i := range optionValues {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionValues[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1385,25 +1408,30 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
 			var zero *C.gchar
 			out[len(optionKeys)] = zero
 			for i := range optionKeys {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionKeys[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg4 = (**C.gchar)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)
 			var zero *C.gchar
 			out[len(optionValues)] = zero
 			for i := range optionValues {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionValues[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1431,26 +1459,32 @@ func (pixbuf *Pixbuf) Savev(filename string, typ string, optionKeys []string, op
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		_arg3 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(optionKeys)+1)
 			var zero *C.char
 			out[len(optionKeys)] = zero
 			for i := range optionKeys {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionKeys[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionValues)+1)
 			var zero *C.char
 			out[len(optionValues)] = zero
 			for i := range optionValues {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionValues[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1555,7 +1589,9 @@ func (pixbuf *Pixbuf) SetOption(key string, value string) bool {
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_pixbuf_set_option(_arg0, _arg1, _arg2)
 

@@ -219,33 +219,3 @@ func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
-
-// Ref increments the reference count on values.
-func (values *TextAttributes) ref() *TextAttributes {
-	var _arg0 *C.GtkTextAttributes // out
-	var _cret *C.GtkTextAttributes // in
-
-	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(values)))
-
-	_cret = C.gtk_text_attributes_ref(_arg0)
-
-	var _textAttributes *TextAttributes // out
-
-	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_text_attributes_ref(_cret)
-	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _textAttributes
-}
-
-// Unref decrements the reference count on values, freeing the structure if the
-// reference count reaches 0.
-func (values *TextAttributes) unref() {
-	var _arg0 *C.GtkTextAttributes // out
-
-	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(values)))
-
-	C.gtk_text_attributes_unref(_arg0)
-}

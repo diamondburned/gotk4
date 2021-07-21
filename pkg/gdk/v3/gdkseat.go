@@ -127,7 +127,7 @@ type Seater interface {
 	// Pointer returns the master device that routes pointer events.
 	Pointer() Devicer
 	// Slaves returns the slave devices that match the given capabilities.
-	Slaves(capabilities SeatCapabilities) *externglib.List
+	Slaves(capabilities SeatCapabilities) []Devicer
 	// Ungrab releases a grab added through gdk_seat_grab().
 	Ungrab()
 }
@@ -211,7 +211,7 @@ func (seat *Seat) Pointer() Devicer {
 }
 
 // Slaves returns the slave devices that match the given capabilities.
-func (seat *Seat) Slaves(capabilities SeatCapabilities) *externglib.List {
+func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
@@ -221,16 +221,15 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) *externglib.List {
 
 	_cret = C.gdk_seat_get_slaves(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []Devicer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkDevice)(_p)
+	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

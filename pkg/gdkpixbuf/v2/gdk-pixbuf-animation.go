@@ -134,6 +134,7 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_animation_new_from_file(_arg1, &_cerr)
 
@@ -157,6 +158,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, &_cerr)
 

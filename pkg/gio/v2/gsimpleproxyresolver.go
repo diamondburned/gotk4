@@ -73,6 +73,7 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(defaultProxy)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
@@ -91,7 +92,9 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme string, proxy string)
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(proxy)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
 }

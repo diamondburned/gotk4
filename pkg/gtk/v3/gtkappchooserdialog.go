@@ -117,6 +117,7 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
 
@@ -173,6 +174,7 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(heading)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 }

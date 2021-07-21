@@ -139,6 +139,7 @@ func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object,
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
 }
@@ -156,6 +157,7 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *exter
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
 
@@ -179,6 +181,7 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.O
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -197,6 +200,7 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gpointer)(unsafe.Pointer(data))
 
 	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -216,6 +220,7 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
@@ -243,6 +248,7 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *e
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childname)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 
@@ -297,6 +303,7 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
@@ -309,6 +316,7 @@ func (buildable *Buildable) SetName(name string) {
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_buildable_set_name(_arg0, _arg1)
 }

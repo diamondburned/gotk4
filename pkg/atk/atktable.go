@@ -706,6 +706,7 @@ func (table *Table) SetColumnDescription(column int, description string) {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_column_description(_arg0, _arg1, _arg2)
 }
@@ -732,6 +733,7 @@ func (table *Table) SetRowDescription(row int, description string) {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_row_description(_arg0, _arg1, _arg2)
 }

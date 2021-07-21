@@ -111,6 +111,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
@@ -258,6 +259,7 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -291,6 +293,7 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -348,7 +351,9 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain string,
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -378,7 +383,9 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain st
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -441,6 +448,7 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -474,6 +482,7 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))

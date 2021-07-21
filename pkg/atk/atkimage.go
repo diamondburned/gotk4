@@ -182,6 +182,7 @@ func (image *Image) SetImageDescription(description string) bool {
 
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_image_set_image_description(_arg0, _arg1)
 

@@ -45,14 +45,14 @@ type VolumeMonitorOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	ConnectedDrives() *externglib.List
+	ConnectedDrives() []Driver
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 	MountForUUID(uuid string) Mounter
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Mounts() *externglib.List
+	Mounts() []Mounter
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
 	VolumeForUUID(uuid string) Volumer
@@ -60,7 +60,7 @@ type VolumeMonitorOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Volumes() *externglib.List
+	Volumes() []Volumer
 	MountAdded(mount Mounter)
 	MountChanged(mount Mounter)
 	MountPreUnmount(mount Mounter)
@@ -102,7 +102,7 @@ func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) ConnectedDrives() *externglib.List {
+func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -110,17 +110,14 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() *externglib.List {
 
 	_cret = C.g_volume_monitor_get_connected_drives(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Driver // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GDrive)(_p)
+	_list = make([]Driver, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDrive)(v)
 		var dst Driver // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -134,6 +131,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
@@ -148,7 +146,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) Mounts() *externglib.List {
+func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -156,17 +154,14 @@ func (volumeMonitor *VolumeMonitor) Mounts() *externglib.List {
 
 	_cret = C.g_volume_monitor_get_mounts(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Mounter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GMount)(_p)
+	_list = make([]Mounter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GMount)(v)
 		var dst Mounter // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -180,6 +175,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 
@@ -194,7 +190,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (volumeMonitor *VolumeMonitor) Volumes() *externglib.List {
+func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -202,17 +198,14 @@ func (volumeMonitor *VolumeMonitor) Volumes() *externglib.List {
 
 	_cret = C.g_volume_monitor_get_volumes(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Volumer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GVolume)(_p)
+	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GVolume)(v)
 		var dst Volumer // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list

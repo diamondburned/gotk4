@@ -2020,6 +2020,7 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -2058,6 +2059,7 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -2239,6 +2241,7 @@ func (file *File) Child(name string) Filer {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
 
@@ -2264,6 +2267,7 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 
@@ -2475,6 +2479,7 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
 
@@ -2820,6 +2825,7 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
 
@@ -3477,6 +3483,7 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -3513,6 +3520,7 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -3583,6 +3591,7 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -3621,6 +3630,7 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -3861,6 +3871,7 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -3902,6 +3913,7 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -3951,6 +3963,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
 	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg3))
 	if makeBackup {
 		_arg4 = C.TRUE
 	}
@@ -4008,6 +4021,7 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
 	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg3))
 	if makeBackup {
 		_arg4 = C.TRUE
 	}
@@ -4090,6 +4104,7 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -4131,6 +4146,7 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -4174,6 +4190,7 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
 
@@ -4209,6 +4226,7 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
 	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
 	_arg4 = C.GFileQueryInfoFlags(flags)
@@ -4244,7 +4262,9 @@ func (file *File) SetAttributeByteString(ctx context.Context, attribute string, 
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -4277,6 +4297,7 @@ func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint32(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
@@ -4310,6 +4331,7 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
@@ -4343,7 +4365,9 @@ func (file *File) SetAttributeString(ctx context.Context, attribute string, valu
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -4376,6 +4400,7 @@ func (file *File) SetAttributeUint32(ctx context.Context, attribute string, valu
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
@@ -4409,6 +4434,7 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
@@ -4539,6 +4565,7 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
 
@@ -4573,6 +4600,7 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -4924,6 +4952,7 @@ func NewFileForCommandlineArg(arg string) Filer {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
 
@@ -4951,7 +4980,9 @@ func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(cwd)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_file_new_for_commandline_arg_and_cwd(_arg1, _arg2)
 
@@ -4970,6 +5001,7 @@ func NewFileForPath(path string) Filer {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_path(_arg1)
 
@@ -4988,6 +5020,7 @@ func NewFileForURI(uri string) Filer {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_uri(_arg1)
 
@@ -5015,6 +5048,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	var _cerr *C.GError        // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_tmp(_arg1, &_arg2, &_cerr)
 
@@ -5038,6 +5072,7 @@ func FileParseName(parseName string) Filer {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_parse_name(_arg1)
 

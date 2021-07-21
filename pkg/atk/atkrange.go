@@ -46,6 +46,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	_arg1 = C.gdouble(lowerLimit)
 	_arg2 = C.gdouble(upperLimit)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
 
@@ -76,15 +77,6 @@ func (src *Range) Copy() *Range {
 	})
 
 	return __range
-}
-
-// Free: free range
-func (_range *Range) free() {
-	var _arg0 *C.AtkRange // out
-
-	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
-
-	C.atk_range_free(_arg0)
 }
 
 // Description returns the human readable description of range

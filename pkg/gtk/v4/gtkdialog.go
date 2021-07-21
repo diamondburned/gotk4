@@ -372,6 +372,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)

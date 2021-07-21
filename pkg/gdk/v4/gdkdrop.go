@@ -242,12 +242,14 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 	}
 	{
 		_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
 			var zero *C.char
 			out[len(mimeTypes)] = zero
 			for i := range mimeTypes {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}

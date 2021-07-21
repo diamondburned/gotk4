@@ -619,6 +619,7 @@ func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(pathString)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, &_arg1, _arg2)
 
@@ -1078,17 +1079,6 @@ func (iter *TreeIter) Copy() *TreeIter {
 	return _treeIter
 }
 
-// Free frees an iterator that has been allocated by gtk_tree_iter_copy().
-//
-// This function is mainly used for language bindings.
-func (iter *TreeIter) free() {
-	var _arg0 *C.GtkTreeIter // out
-
-	_arg0 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C.gtk_tree_iter_free(_arg0)
-}
-
 // TreePath: opaque structure representing a path to a row in a model.
 type TreePath struct {
 	nocopy gextras.NoCopy
@@ -1161,6 +1151,7 @@ func NewTreePathFromString(path string) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tree_path_new_from_string(_arg1)
 
@@ -1234,15 +1225,6 @@ func (path *TreePath) Down() {
 	_arg0 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_tree_path_down(_arg0)
-}
-
-// Free frees path. If path is NULL, it simply returns.
-func (path *TreePath) free() {
-	var _arg0 *C.GtkTreePath // out
-
-	_arg0 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C.gtk_tree_path_free(_arg0)
 }
 
 // Depth returns the current depth of path.
@@ -1455,15 +1437,6 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 	})
 
 	return _treeRowReference
-}
-
-// Free free’s reference. reference may be NULL
-func (reference *TreeRowReference) free() {
-	var _arg0 *C.GtkTreeRowReference // out
-
-	_arg0 = (*C.GtkTreeRowReference)(gextras.StructNative(unsafe.Pointer(reference)))
-
-	C.gtk_tree_row_reference_free(_arg0)
 }
 
 // Model returns the model that the row reference is monitoring.

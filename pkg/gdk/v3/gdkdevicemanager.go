@@ -140,7 +140,7 @@ type DeviceManagerer interface {
 	Display() *Display
 	// ListDevices returns the list of devices of type type currently attached
 	// to device_manager.
-	ListDevices(typ DeviceType) *externglib.List
+	ListDevices(typ DeviceType) []Devicer
 }
 
 var _ DeviceManagerer = (*DeviceManager)(nil)
@@ -202,7 +202,7 @@ func (deviceManager *DeviceManager) Display() *Display {
 //
 // Deprecated: , use gdk_seat_get_pointer(), gdk_seat_get_keyboard() and
 // gdk_seat_get_slaves() instead.
-func (deviceManager *DeviceManager) ListDevices(typ DeviceType) *externglib.List {
+func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	var _arg0 *C.GdkDeviceManager // out
 	var _arg1 C.GdkDeviceType     // out
 	var _cret *C.GList            // in
@@ -212,16 +212,15 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) *externglib.List
 
 	_cret = C.gdk_device_manager_list_devices(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []Devicer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkDevice)(_p)
+	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

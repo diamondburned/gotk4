@@ -128,6 +128,7 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 
 	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(screen.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
 

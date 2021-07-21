@@ -230,6 +230,7 @@ func NewIconForString(str string) (Iconner, error) {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
 

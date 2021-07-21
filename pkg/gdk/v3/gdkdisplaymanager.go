@@ -98,6 +98,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 

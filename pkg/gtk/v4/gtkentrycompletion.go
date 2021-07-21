@@ -183,6 +183,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 

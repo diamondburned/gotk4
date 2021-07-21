@@ -310,6 +310,7 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
 
@@ -1002,6 +1003,7 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
 
@@ -1289,17 +1291,6 @@ func (iter *TextIter) ForwardWordEnds(count int) bool {
 	}
 
 	return _ok
-}
-
-// Free: free an iterator allocated on the heap. This function is intended for
-// use in language bindings, and is not especially useful for applications,
-// because iterators can simply be allocated on the stack.
-func (iter *TextIter) free() {
-	var _arg0 *C.GtkTextIter // out
-
-	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C.gtk_text_iter_free(_arg0)
 }
 
 // Attributes computes the effect of any tags applied to this spot in the text.

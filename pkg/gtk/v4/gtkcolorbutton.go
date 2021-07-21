@@ -169,6 +169,7 @@ func (button *ColorButton) SetTitle(title string) {
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)
 }

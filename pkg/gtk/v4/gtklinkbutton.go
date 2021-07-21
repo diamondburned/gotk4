@@ -104,6 +104,7 @@ func NewLinkButton(uri string) *LinkButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_link_button_new(_arg1)
 
@@ -121,7 +122,9 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
@@ -180,6 +183,7 @@ func (linkButton *LinkButton) SetURI(uri string) {
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_link_button_set_uri(_arg0, _arg1)
 }

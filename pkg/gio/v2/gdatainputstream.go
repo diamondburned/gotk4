@@ -524,6 +524,7 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
@@ -570,6 +571,7 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -632,6 +634,7 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 
 	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
@@ -675,6 +678,7 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

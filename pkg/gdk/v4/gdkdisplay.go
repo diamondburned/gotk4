@@ -255,6 +255,7 @@ func (display *Display) Setting(name string, value *externglib.Value) bool {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
@@ -357,7 +358,7 @@ func (display *Display) IsRGBA() bool {
 }
 
 // ListSeats returns the list of seats known to display.
-func (display *Display) ListSeats() *externglib.List {
+func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
 
@@ -365,16 +366,15 @@ func (display *Display) ListSeats() *externglib.List {
 
 	_cret = C.gdk_display_list_seats(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Seater // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkSeat)(_p)
+	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkSeat)(v)
 		var dst Seater // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -469,6 +469,7 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
@@ -604,6 +605,7 @@ func DisplayOpen(displayName string) *Display {
 	var _cret *C.GdkDisplay // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_open(_arg1)
 

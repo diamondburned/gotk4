@@ -206,6 +206,7 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
+	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
 		_arg3 = C.TRUE
 	}

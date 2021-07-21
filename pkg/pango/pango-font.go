@@ -556,24 +556,6 @@ func (font *Font) HasChar(wc uint32) bool {
 	return _ok
 }
 
-// FontDescriptionsFree frees an array of font descriptions.
-func FontDescriptionsFree(descs []*FontDescription) {
-	var _arg1 **C.PangoFontDescription // out
-	var _arg2 C.int
-
-	_arg2 = (C.int)(len(descs))
-	_arg1 = (**C.PangoFontDescription)(C.malloc(C.ulong(len(descs)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((**C.PangoFontDescription)(_arg1), len(descs))
-		for i := range descs {
-			out[i] = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(descs[i])))
-		}
-	}
-
-	C.pango_font_descriptions_free(_arg1, _arg2)
-}
-
 // FontFaceOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -826,6 +808,7 @@ func (family *FontFamily) Face(name string) FontFacer {
 
 	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
 
@@ -1062,15 +1045,6 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	}
 
 	return _ok
-}
-
-// Free frees a font description.
-func (desc *FontDescription) free() {
-	var _arg0 *C.PangoFontDescription // out
-
-	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
-
-	C.pango_font_description_free(_arg0)
 }
 
 // Family gets the family name field of a font description.
@@ -1342,6 +1316,7 @@ func (desc *FontDescription) SetFamily(family string) {
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family(_arg0, _arg1)
 }
@@ -1360,6 +1335,7 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family_static(_arg0, _arg1)
 }
@@ -1462,6 +1438,7 @@ func (desc *FontDescription) SetVariations(variations string) {
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations(_arg0, _arg1)
 }
@@ -1479,6 +1456,7 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations_static(_arg0, _arg1)
 }
@@ -1599,6 +1577,7 @@ func FontDescriptionFromString(str string) *FontDescription {
 	var _cret *C.PangoFontDescription // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_description_from_string(_arg1)
 
@@ -1803,34 +1782,4 @@ func (metrics *FontMetrics) UnderlineThickness() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// Ref: increase the reference count of a font metrics structure by one.
-func (metrics *FontMetrics) ref() *FontMetrics {
-	var _arg0 *C.PangoFontMetrics // out
-	var _cret *C.PangoFontMetrics // in
-
-	_arg0 = (*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(metrics)))
-
-	_cret = C.pango_font_metrics_ref(_arg0)
-
-	var _fontMetrics *FontMetrics // out
-
-	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_font_metrics_ref(_cret)
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _fontMetrics
-}
-
-// Unref: decrease the reference count of a font metrics structure by one. If
-// the result is zero, frees the structure and any associated memory.
-func (metrics *FontMetrics) unref() {
-	var _arg0 *C.PangoFontMetrics // out
-
-	_arg0 = (*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(metrics)))
-
-	C.pango_font_metrics_unref(_arg0)
 }

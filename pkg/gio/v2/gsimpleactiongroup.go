@@ -124,6 +124,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 
@@ -145,6 +146,7 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_action_group_remove(_arg0, _arg1)
 }

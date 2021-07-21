@@ -149,6 +149,7 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_map_get_family(_arg0, _arg1)
 

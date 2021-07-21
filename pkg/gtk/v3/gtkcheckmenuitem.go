@@ -118,6 +118,7 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
@@ -136,6 +137,7 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 

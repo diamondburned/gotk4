@@ -347,12 +347,14 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar
 
 	{
 		cret = (**C.gchar)(C.malloc(C.ulong(len(utf8s)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(cret))
 		{
 			out := unsafe.Slice(cret, len(utf8s)+1)
 			var zero *C.gchar
 			out[len(utf8s)] = zero
 			for i := range utf8s {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -536,6 +538,7 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 	}
 	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -577,6 +580,7 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GDBusConnectionFlags(flags)
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

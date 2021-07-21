@@ -729,6 +729,7 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
 }
@@ -789,6 +790,7 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_export_filename(_arg0, _arg1)
 }
@@ -821,6 +823,7 @@ func (op *PrintOperation) SetJobName(jobName string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(jobName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_job_name(_arg0, _arg1)
 }

@@ -732,7 +732,7 @@ func (iconView *IconView) RowSpacing() int {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (iconView *IconView) SelectedItems() *externglib.List {
+func (iconView *IconView) SelectedItems() []*TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _cret *C.GList       // in
 
@@ -740,20 +740,17 @@ func (iconView *IconView) SelectedItems() *externglib.List {
 
 	_cret = C.gtk_icon_view_get_selected_items(_arg0)
 
-	var _list *externglib.List // out
+	var _list []*TreePath // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkTreePath)(_p)
+	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTreePath)(v)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(dst, func(v *TreePath) {
 			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _list

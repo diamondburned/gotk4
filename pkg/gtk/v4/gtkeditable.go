@@ -640,6 +640,7 @@ func (editable *Editable) SetText(text string) {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_editable_set_text(_arg0, _arg1)
 }

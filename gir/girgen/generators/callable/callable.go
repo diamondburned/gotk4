@@ -43,9 +43,10 @@ type Generator struct {
 // IgnoredNames is a list of method names that would be ignored. For more
 // information, see typeconv/c-go.go.
 var IgnoredNames = []string{
-	"Ref",
-	"Unref",
-	"Free",
+	"ref",
+	"unref",
+	"free",
+	"destroy",
 }
 
 // NewGenerator creates a new callable generator from the given generator.
@@ -116,16 +117,16 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 		return false
 	}
 
+	for _, name := range IgnoredNames {
+		if name == call.Name || strings.HasSuffix(call.Name, "_"+name) {
+			g.Logln(logger.Debug, "not generating ignored name", call.Name)
+			return false
+		}
+	}
+
 	g.Name = strcases.SnakeToGo(true, call.Name)
 	if call.Shadows != "" {
 		g.Name = strcases.SnakeToGo(true, call.Shadows)
-	}
-
-	for _, name := range IgnoredNames {
-		if name == g.Name {
-			g.Name = strcases.UnexportPascal(g.Name)
-			break
-		}
 	}
 
 	if !g.renderBlock() {

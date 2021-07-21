@@ -776,6 +776,7 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_notebook_set_group_name(_arg0, _arg1)
 }
@@ -802,6 +803,7 @@ func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(menuText)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_menu_label_text(_arg0, _arg1, _arg2)
 }
@@ -929,6 +931,7 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(tabText)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_tab_label_text(_arg0, _arg1, _arg2)
 }

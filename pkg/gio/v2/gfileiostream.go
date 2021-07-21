@@ -177,6 +177,7 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -210,6 +211,7 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))

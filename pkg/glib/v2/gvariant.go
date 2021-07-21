@@ -539,10 +539,12 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
 		for i := range strv {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -726,6 +728,7 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_object_path(_arg1)
 
@@ -747,10 +750,12 @@ func NewVariantObjv(strv []string) *Variant {
 
 	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
 		for i := range strv {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -772,6 +777,7 @@ func NewVariantSignature(signature string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(signature)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_signature(_arg1)
 
@@ -791,6 +797,7 @@ func NewVariantString(_string string) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_string(_arg1)
 
@@ -812,10 +819,12 @@ func NewVariantStrv(strv []string) *Variant {
 
 	_arg2 = (C.gssize)(len(strv))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(strv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.gchar)(_arg1), len(strv))
 		for i := range strv {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(strv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -981,6 +990,7 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 
 	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(formatString)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if copyOnly {
 		_arg2 = C.TRUE
 	}
@@ -1742,6 +1752,7 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 
 	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(dictionary)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_variant_lookup_value(_arg0, _arg1, _arg2)
@@ -1807,26 +1818,6 @@ func (value *Variant) Print(typeAnnotate bool) string {
 	return _utf8
 }
 
-// Ref increases the reference count of value.
-func (value *Variant) ref() *Variant {
-	var _arg0 *C.GVariant // out
-	var _cret *C.GVariant // in
-
-	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	_cret = C.g_variant_ref(_arg0)
-
-	var _variant *Variant // out
-
-	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _variant
-}
-
 // RefSink uses a floating reference count system. All functions with names
 // starting with g_variant_new_ return floating references.
 //
@@ -1888,64 +1879,6 @@ func (value *Variant) Store(data cgo.Handle) {
 	C.g_variant_store(_arg0, _arg1)
 }
 
-// TakeRef: if value is floating, sink it. Otherwise, do nothing.
-//
-// Typically you want to use g_variant_ref_sink() in order to automatically do
-// the correct thing with respect to floating or non-floating references, but
-// there is one specific scenario where this function is helpful.
-//
-// The situation where this function is helpful is when creating an API that
-// allows the user to provide a callback function that returns a #GVariant. We
-// certainly want to allow the user the flexibility to return a non-floating
-// reference from this callback (for the case where the value that is being
-// returned already exists).
-//
-// At the same time, the style of the #GVariant API makes it likely that for
-// newly-created #GVariant instances, the user can be saved some typing if they
-// are allowed to return a #GVariant with a floating reference.
-//
-// Using this function on the return value of the user's callback allows the
-// user to do whichever is more convenient for them. The caller will always
-// receives exactly one full reference to the value: either the one that was
-// returned in the first place, or a floating reference that has been converted
-// to a full reference.
-//
-// This function has an odd interaction when combined with g_variant_ref_sink()
-// running at the same time in another thread on the same #GVariant instance. If
-// g_variant_ref_sink() runs first then the result will be that the floating
-// reference is converted to a hard reference. If g_variant_take_ref() runs
-// first then the result will be that the floating reference is converted to a
-// hard reference and an additional reference on top of that one is added. It is
-// best to avoid this situation.
-func (value *Variant) TakeRef() *Variant {
-	var _arg0 *C.GVariant // out
-	var _cret *C.GVariant // in
-
-	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	_cret = C.g_variant_take_ref(_arg0)
-
-	var _variant *Variant // out
-
-	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _variant
-}
-
-// Unref decreases the reference count of value. When its reference count drops
-// to 0, the memory used by the variant is freed.
-func (value *Variant) unref() {
-	var _arg0 *C.GVariant // out
-
-	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	C.g_variant_unref(_arg0)
-}
-
 // VariantIsObjectPath determines if a given string is a valid D-Bus object
 // path. You should ensure that a string is a valid D-Bus object path before
 // passing it to g_variant_new_object_path().
@@ -1959,6 +1892,7 @@ func VariantIsObjectPath(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_is_object_path(_arg1)
 
@@ -1982,6 +1916,7 @@ func VariantIsSignature(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_is_signature(_arg1)
 
@@ -2025,6 +1960,7 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 
 	_arg1 = (*C.GError)(gerror.New(err))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(sourceStr)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_variant_parse_error_print_context(_arg1, _arg2)
 
@@ -2185,44 +2121,6 @@ func (builder *VariantBuilder) Open(typ *VariantType) {
 	C.g_variant_builder_open(_arg0, _arg1)
 }
 
-// Ref increases the reference count on builder.
-//
-// Don't call this on stack-allocated Builder instances or bad things will
-// happen.
-func (builder *VariantBuilder) ref() *VariantBuilder {
-	var _arg0 *C.GVariantBuilder // out
-	var _cret *C.GVariantBuilder // in
-
-	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	_cret = C.g_variant_builder_ref(_arg0)
-
-	var _variantBuilder *VariantBuilder // out
-
-	_variantBuilder = (*VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_builder_ref(_cret)
-	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.g_variant_builder_unref((*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _variantBuilder
-}
-
-// Unref decreases the reference count on builder.
-//
-// In the event that there are no more references, releases all memory
-// associated with the Builder.
-//
-// Don't call this on stack-allocated Builder instances or bad things will
-// happen.
-func (builder *VariantBuilder) unref() {
-	var _arg0 *C.GVariantBuilder // out
-
-	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	C.g_variant_builder_unref(_arg0)
-}
-
 // VariantDict is a mutable interface to #GVariant dictionaries.
 //
 // It can be used for doing a sequence of dictionary lookups in an efficient way
@@ -2338,6 +2236,7 @@ func (dict *VariantDict) Contains(key string) bool {
 
 	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_dict_contains(_arg0, _arg1)
 
@@ -2385,6 +2284,7 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 
 	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_variant_dict_insert_value(_arg0, _arg1, _arg2)
@@ -2408,6 +2308,7 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 
 	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_variant_dict_lookup_value(_arg0, _arg1, _arg2)
@@ -2423,28 +2324,6 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	return _variant
 }
 
-// Ref increases the reference count on dict.
-//
-// Don't call this on stack-allocated Dict instances or bad things will happen.
-func (dict *VariantDict) ref() *VariantDict {
-	var _arg0 *C.GVariantDict // out
-	var _cret *C.GVariantDict // in
-
-	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
-
-	_cret = C.g_variant_dict_ref(_arg0)
-
-	var _variantDict *VariantDict // out
-
-	_variantDict = (*VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_dict_ref(_cret)
-	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _variantDict
-}
-
 // Remove removes a key and its associated value from a Dict.
 func (dict *VariantDict) Remove(key string) bool {
 	var _arg0 *C.GVariantDict // out
@@ -2453,6 +2332,7 @@ func (dict *VariantDict) Remove(key string) bool {
 
 	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_dict_remove(_arg0, _arg1)
 
@@ -2463,18 +2343,4 @@ func (dict *VariantDict) Remove(key string) bool {
 	}
 
 	return _ok
-}
-
-// Unref decreases the reference count on dict.
-//
-// In the event that there are no more references, releases all memory
-// associated with the Dict.
-//
-// Don't call this on stack-allocated Dict instances or bad things will happen.
-func (dict *VariantDict) unref() {
-	var _arg0 *C.GVariantDict // out
-
-	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
-
-	C.g_variant_dict_unref(_arg0)
 }

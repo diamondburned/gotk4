@@ -181,15 +181,6 @@ func (window *Window) Close() {
 	C.gtk_window_close(_arg0)
 }
 
-// Destroy: drop the internal reference GTK holds on toplevel windows.
-func (window *Window) Destroy() {
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-
-	C.gtk_window_destroy(_arg0)
-}
-
 // Fullscreen asks to place window in the fullscreen state.
 //
 // Note that you shouldn’t assume the window is definitely fullscreen afterward,
@@ -971,6 +962,7 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
 }
@@ -1039,6 +1031,7 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
 }
@@ -1059,6 +1052,7 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_title(_arg0, _arg1)
 }
@@ -1195,21 +1189,20 @@ func WindowGetToplevels() gio.ListModeller {
 // iterate through the list and perform actions involving callbacks that might
 // destroy the widgets, you must call g_list_foreach (result,
 // (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
-func WindowListToplevels() *externglib.List {
+func WindowListToplevels() []Widgetter {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_list_toplevels()
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1244,6 +1237,7 @@ func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_name(_arg1)
 }

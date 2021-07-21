@@ -784,6 +784,7 @@ func RoleForName(name string) Role {
 	var _cret C.AtkRole // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_for_name(_arg1)
 
@@ -838,6 +839,7 @@ func RoleRegister(name string) Role {
 	var _cret C.AtkRole // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_register(_arg1)
 
@@ -1357,6 +1359,7 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_accessible_id(_arg0, _arg1)
 }
@@ -1371,6 +1374,7 @@ func (accessible *ObjectClass) SetDescription(description string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_description(_arg0, _arg1)
 }
@@ -1385,6 +1389,7 @@ func (accessible *ObjectClass) SetName(name string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_name(_arg0, _arg1)
 }

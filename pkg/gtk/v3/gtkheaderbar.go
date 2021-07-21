@@ -248,6 +248,7 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(layout)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
 }
@@ -292,6 +293,7 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(subtitle)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_subtitle(_arg0, _arg1)
 }
@@ -305,6 +307,7 @@ func (bar *HeaderBar) SetTitle(title string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_title(_arg0, _arg1)
 }

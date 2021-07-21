@@ -714,13 +714,9 @@ type Eventer interface {
 	Surface() Surfacer
 	// Time returns the timestamp of event.
 	Time() uint32
-	// Ref: increase the ref count of event.
-	ref() Eventer
 	// TriggersContextMenu returns whether a GdkEvent should trigger a context
 	// menu, according to platform conventions.
 	TriggersContextMenu() bool
-	// Unref: decrease the ref count of event.
-	unref()
 }
 
 var _ Eventer = (*Event)(nil)
@@ -988,22 +984,6 @@ func (event *Event) Time() uint32 {
 	return _guint32
 }
 
-// Ref: increase the ref count of event.
-func (event *Event) ref() Eventer {
-	var _arg0 *C.GdkEvent // out
-	var _cret *C.GdkEvent // in
-
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
-
-	_cret = C.gdk_event_ref(_arg0)
-
-	var _ret Eventer // out
-
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Eventer)
-
-	return _ret
-}
-
 // TriggersContextMenu returns whether a GdkEvent should trigger a context menu,
 // according to platform conventions.
 //
@@ -1026,17 +1006,6 @@ func (event *Event) TriggersContextMenu() bool {
 	}
 
 	return _ok
-}
-
-// Unref: decrease the ref count of event.
-//
-// If the last reference is dropped, the structure is freed.
-func (event *Event) unref() {
-	var _arg0 *C.GdkEvent // out
-
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
-
-	C.gdk_event_unref(_arg0)
 }
 
 // FocusEvent: event related to a keyboard focus change.

@@ -111,6 +111,7 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 
 	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
 	_arg3 = C.GFileAttributeInfoFlags(flags)
 
@@ -145,6 +146,7 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 
 	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
 
@@ -153,34 +155,4 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	_fileAttributeInfo = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _fileAttributeInfo
-}
-
-// Ref references a file attribute info list.
-func (list *FileAttributeInfoList) ref() *FileAttributeInfoList {
-	var _arg0 *C.GFileAttributeInfoList // out
-	var _cret *C.GFileAttributeInfoList // in
-
-	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	_cret = C.g_file_attribute_info_list_ref(_arg0)
-
-	var _fileAttributeInfoList *FileAttributeInfoList // out
-
-	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_info_list_ref(_cret)
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _fileAttributeInfoList
-}
-
-// Unref removes a reference from the given list. If the reference count falls
-// to zero, the list is deleted.
-func (list *FileAttributeInfoList) unref() {
-	var _arg0 *C.GFileAttributeInfoList // out
-
-	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	C.g_file_attribute_info_list_unref(_arg0)
 }

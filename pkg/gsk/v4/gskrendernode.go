@@ -83,10 +83,6 @@ type RenderNoder interface {
 	Bounds() graphene.Rect
 	// NodeType returns the type of the node.
 	NodeType() RenderNodeType
-	// Ref acquires a reference on the given GskRenderNode.
-	ref() RenderNoder
-	// Unref releases a reference on the given GskRenderNode.
-	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	WriteToFile(filename string) error
@@ -158,34 +154,6 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
-// Ref acquires a reference on the given GskRenderNode.
-func (node *RenderNode) ref() RenderNoder {
-	var _arg0 *C.GskRenderNode // out
-	var _cret *C.GskRenderNode // in
-
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
-
-	_cret = C.gsk_render_node_ref(_arg0)
-
-	var _renderNode RenderNoder // out
-
-	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
-
-	return _renderNode
-}
-
-// Unref releases a reference on the given GskRenderNode.
-//
-// If the reference was the last, the resources associated to the node are
-// freed.
-func (node *RenderNode) unref() {
-	var _arg0 *C.GskRenderNode // out
-
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
-
-	C.gsk_render_node_unref(_arg0)
-}
-
 // WriteToFile: this function is equivalent to calling
 // gsk_render_node_serialize() followed by g_file_set_contents().
 //
@@ -200,6 +168,7 @@ func (node *RenderNode) WriteToFile(filename string) error {
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gsk_render_node_write_to_file(_arg0, _arg1, &_cerr)
 

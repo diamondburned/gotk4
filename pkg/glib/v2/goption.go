@@ -4,7 +4,6 @@ package glib
 
 import (
 	"fmt"
-	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -297,38 +296,6 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	C.g_option_group_add_entries(_arg0, _arg1)
 }
 
-// Free frees a Group. Note that you must not free groups which have been added
-// to a Context.
-//
-// Deprecated: Use g_option_group_unref() instead.
-func (group *OptionGroup) free() {
-	var _arg0 *C.GOptionGroup // out
-
-	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
-
-	C.g_option_group_free(_arg0)
-}
-
-// Ref increments the reference count of group by one.
-func (group *OptionGroup) ref() *OptionGroup {
-	var _arg0 *C.GOptionGroup // out
-	var _cret *C.GOptionGroup // in
-
-	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
-
-	_cret = C.g_option_group_ref(_arg0)
-
-	var _optionGroup *OptionGroup // out
-
-	_optionGroup = (*OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_option_group_ref(_cret)
-	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
-		C.g_option_group_unref((*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _optionGroup
-}
-
 // SetTranslationDomain: convenience function to use gettext() for translating
 // user-visible strings.
 func (group *OptionGroup) SetTranslationDomain(domain string) {
@@ -337,17 +304,7 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 
 	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_option_group_set_translation_domain(_arg0, _arg1)
-}
-
-// Unref decrements the reference count of group by one. If the reference count
-// drops to 0, the group will be freed. and all memory allocated by the group is
-// released.
-func (group *OptionGroup) unref() {
-	var _arg0 *C.GOptionGroup // out
-
-	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
-
-	C.g_option_group_unref(_arg0)
 }

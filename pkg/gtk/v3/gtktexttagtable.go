@@ -170,6 +170,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
 

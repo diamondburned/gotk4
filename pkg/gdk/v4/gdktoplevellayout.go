@@ -182,26 +182,6 @@ func (layout *ToplevelLayout) Resizable() bool {
 	return _ok
 }
 
-// Ref increases the reference count of layout.
-func (layout *ToplevelLayout) ref() *ToplevelLayout {
-	var _arg0 *C.GdkToplevelLayout // out
-	var _cret *C.GdkToplevelLayout // in
-
-	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	_cret = C.gdk_toplevel_layout_ref(_arg0)
-
-	var _toplevelLayout *ToplevelLayout // out
-
-	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_toplevel_layout_ref(_cret)
-	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _toplevelLayout
-}
-
 // SetFullscreen sets whether the layout should cause the surface to be
 // fullscreen when presented.
 func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
@@ -244,13 +224,4 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	}
 
 	C.gdk_toplevel_layout_set_resizable(_arg0, _arg1)
-}
-
-// Unref decreases the reference count of layout.
-func (layout *ToplevelLayout) unref() {
-	var _arg0 *C.GdkToplevelLayout // out
-
-	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	C.gdk_toplevel_layout_unref(_arg0)
 }

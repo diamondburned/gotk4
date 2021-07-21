@@ -112,6 +112,7 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 
@@ -132,6 +133,7 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
 
@@ -167,6 +169,7 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_markup(_arg0, _arg1)
 }
@@ -180,6 +183,7 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_text(_arg0, _arg1)
 }

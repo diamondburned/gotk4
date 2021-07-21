@@ -201,6 +201,7 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 	var _cret *C.GtkApplication   // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
@@ -245,6 +246,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
@@ -292,6 +294,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(accel)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
@@ -347,6 +350,7 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
 
@@ -410,7 +414,7 @@ func (application *Application) WindowByID(id uint) *Window {
 //
 // The list that is returned should not be modified in any way. It will only
 // remain valid until the next focus change or window creation or deletion.
-func (application *Application) Windows() *externglib.List {
+func (application *Application) Windows() []Window {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GList          // in
 
@@ -418,14 +422,14 @@ func (application *Application) Windows() *externglib.List {
 
 	_cret = C.gtk_application_get_windows(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Window // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWindow)(_p)
+	_list = make([]Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkWindow)(v)
 		var dst Window // out
 		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -463,6 +467,7 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.GtkApplicationInhibitFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(reason)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
@@ -540,14 +545,17 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		_arg2 = (**C.char)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(accels)+1)
 			var zero *C.char
 			out[len(accels)] = zero
 			for i := range accels {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(accels[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}

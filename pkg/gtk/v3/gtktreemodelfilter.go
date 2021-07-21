@@ -341,6 +341,7 @@ func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeMod
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (C.gint)(len(types))
 	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((*C.GType)(_arg2), len(types))
 		for i := range types {

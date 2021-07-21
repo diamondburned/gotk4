@@ -532,6 +532,7 @@ func NewSettings(schemaId string) *Settings {
 	var _cret *C.GSettings // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_new(_arg1)
 
@@ -560,7 +561,9 @@ func NewSettingsWithPath(schemaId string, path string) *Settings {
 	var _cret *C.GSettings // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_settings_new_with_path(_arg1, _arg2)
 
@@ -609,8 +612,10 @@ func (settings *Settings) Bind(key string, object *externglib.Object, property s
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GSettingsBindFlags(flags)
 
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -640,8 +645,10 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg3))
 	if inverted {
 		_arg4 = C.TRUE
 	}
@@ -668,6 +675,7 @@ func (settings *Settings) CreateAction(key string) Actioner {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_create_action(_arg0, _arg1)
 
@@ -702,6 +710,7 @@ func (settings *Settings) Boolean(key string) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_boolean(_arg0, _arg1)
 
@@ -726,6 +735,7 @@ func (settings *Settings) Child(name string) *Settings {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_child(_arg0, _arg1)
 
@@ -763,6 +773,7 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_default_value(_arg0, _arg1)
 
@@ -790,6 +801,7 @@ func (settings *Settings) Double(key string) float64 {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_double(_arg0, _arg1)
 
@@ -818,6 +830,7 @@ func (settings *Settings) Enum(key string) int {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_enum(_arg0, _arg1)
 
@@ -846,6 +859,7 @@ func (settings *Settings) Flags(key string) uint {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_flags(_arg0, _arg1)
 
@@ -888,6 +902,7 @@ func (settings *Settings) Int(key string) int {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_int(_arg0, _arg1)
 
@@ -911,6 +926,7 @@ func (settings *Settings) Int64(key string) int64 {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_int64(_arg0, _arg1)
 
@@ -956,6 +972,7 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*[0]byte)(C._gotk4_gio2_SettingsGetMapping)
 	_arg3 = C.gpointer(gbox.Assign(mapping))
 	defer gbox.Delete(uintptr(_arg3))
@@ -979,6 +996,7 @@ func (settings *Settings) Range(key string) *glib.Variant {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_range(_arg0, _arg1)
 
@@ -1006,6 +1024,7 @@ func (settings *Settings) String(key string) string {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_string(_arg0, _arg1)
 
@@ -1028,6 +1047,7 @@ func (settings *Settings) Strv(key string) []string {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_strv(_arg0, _arg1)
 
@@ -1064,6 +1084,7 @@ func (settings *Settings) Uint(key string) uint {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_uint(_arg0, _arg1)
 
@@ -1087,6 +1108,7 @@ func (settings *Settings) Uint64(key string) uint64 {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_uint64(_arg0, _arg1)
 
@@ -1121,6 +1143,7 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_user_value(_arg0, _arg1)
 
@@ -1146,6 +1169,7 @@ func (settings *Settings) Value(key string) *glib.Variant {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_value(_arg0, _arg1)
 
@@ -1168,6 +1192,7 @@ func (settings *Settings) IsWritable(name string) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_is_writable(_arg0, _arg1)
 
@@ -1267,6 +1292,7 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
@@ -1291,6 +1317,7 @@ func (settings *Settings) Reset(key string) {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_settings_reset(_arg0, _arg1)
 }
@@ -1322,6 +1349,7 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if value {
 		_arg2 = C.TRUE
 	}
@@ -1351,6 +1379,7 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
 
 	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
@@ -1381,6 +1410,7 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
 
 	_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
@@ -1411,6 +1441,7 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
 
 	_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
@@ -1438,6 +1469,7 @@ func (settings *Settings) SetInt(key string, value int) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
 
 	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
@@ -1465,6 +1497,7 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
 
 	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
@@ -1492,7 +1525,9 @@ func (settings *Settings) SetString(key string, value string) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
 
@@ -1520,14 +1555,17 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(value)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(value)+1)
 			var zero *C.gchar
 			out[len(value)] = zero
 			for i := range value {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(value[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1557,6 +1595,7 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
 
 	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
@@ -1584,6 +1623,7 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
@@ -1611,6 +1651,7 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
@@ -1704,6 +1745,7 @@ func SettingsUnbind(object *externglib.Object, property string) {
 
 	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_settings_unbind(_arg1, _arg2)
 }

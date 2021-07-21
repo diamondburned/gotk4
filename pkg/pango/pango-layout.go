@@ -1182,6 +1182,7 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
@@ -1208,6 +1209,7 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
 
@@ -1291,6 +1293,7 @@ func (layout *Layout) SetText(text string, length int) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	C.pango_layout_set_text(_arg0, _arg1, _arg2)
@@ -1411,15 +1414,6 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 	})
 
 	return _layoutIter
-}
-
-// Free frees an iterator that's no longer in use.
-func (iter *LayoutIter) free() {
-	var _arg0 *C.PangoLayoutIter // out
-
-	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C.pango_layout_iter_free(_arg0)
 }
 
 // Baseline gets the Y position of the current line's baseline, in layout
@@ -1914,36 +1908,6 @@ func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
 	_xPos = int(_arg3)
 
 	return _xPos
-}
-
-// Ref: increase the reference count of a PangoLayoutLine by one.
-func (line *LayoutLine) ref() *LayoutLine {
-	var _arg0 *C.PangoLayoutLine // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
-
-	_cret = C.pango_layout_line_ref(_arg0)
-
-	var _layoutLine *LayoutLine // out
-
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_layout_line_ref(_cret)
-	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _layoutLine
-}
-
-// Unref: decrease the reference count of a PangoLayoutLine by one. If the
-// result is zero, the line and all associated memory will be freed.
-func (line *LayoutLine) unref() {
-	var _arg0 *C.PangoLayoutLine // out
-
-	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
-
-	C.pango_layout_line_unref(_arg0)
 }
 
 // XToIndex converts from x offset to the byte index of the corresponding

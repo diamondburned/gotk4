@@ -94,7 +94,7 @@ type DriveOverrider interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Volumes() *externglib.List
+	Volumes() []Volumer
 	// HasMedia checks if the drive has media. Note that the OS may not be
 	// polling the drive for media changes; see
 	// g_drive_is_media_check_automatic() for more details.
@@ -201,7 +201,7 @@ type Driver interface {
 	// SymbolicIcon gets the icon for drive.
 	SymbolicIcon() Iconner
 	// Volumes: get a list of mountable volumes for drive.
-	Volumes() *externglib.List
+	Volumes() []Volumer
 	// HasMedia checks if the drive has media.
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
@@ -480,6 +480,7 @@ func (drive *Drive) Identifier(kind string) string {
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 
@@ -560,7 +561,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 //
 // The returned list should be freed with g_list_free(), after its elements have
 // been unreffed with g_object_unref().
-func (drive *Drive) Volumes() *externglib.List {
+func (drive *Drive) Volumes() []Volumer {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
 
@@ -568,17 +569,14 @@ func (drive *Drive) Volumes() *externglib.List {
 
 	_cret = C.g_drive_get_volumes(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Volumer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GVolume)(_p)
+	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GVolume)(v)
 		var dst Volumer // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list

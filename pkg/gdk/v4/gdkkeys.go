@@ -42,6 +42,7 @@ func KeyvalFromName(keyvalName string) uint {
 	var _cret C.guint // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(keyvalName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_keyval_from_name(_arg1)
 

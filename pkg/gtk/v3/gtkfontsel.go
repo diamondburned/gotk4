@@ -282,6 +282,7 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_set_font_name(_arg0, _arg1)
 
@@ -304,6 +305,7 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
@@ -352,6 +354,7 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_new(_arg1)
 
@@ -470,6 +473,7 @@ func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_set_font_name(_arg0, _arg1)
 
@@ -491,6 +495,7 @@ func (fsd *FontSelectionDialog) SetPreviewText(text string) {
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)
 }

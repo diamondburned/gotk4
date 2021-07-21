@@ -242,6 +242,7 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
@@ -253,6 +254,7 @@ func (filter *FileFilter) AddPattern(pattern string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
@@ -338,6 +340,7 @@ func (filter *FileFilter) SetName(name string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }

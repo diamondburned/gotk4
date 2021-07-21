@@ -33,7 +33,7 @@ func init() {
 // before or containing start_index; cached_iter will be advanced to the range
 // covering the position just after start_index + length. (i.e. if itemizing in
 // a loop, just keep passing in the same cached_iter).
-func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *externglib.List {
+func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
 	var _arg3 C.int                // out
@@ -44,6 +44,7 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(startIndex)
 	_arg4 = C.int(length)
 	_arg5 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
@@ -51,20 +52,17 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 
 	_cret = C.pango_itemize(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var _list *externglib.List // out
+	var _list []Item // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.PangoItem)(_p)
+	_list = make([]Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoItem)(v)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(&dst, func(v *Item) {
 			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -76,7 +74,7 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 // The base direction is used when computing bidirectional levels. (see
 // pango.Context.SetBaseDir()). itemize gets the base direction from the
 // PangoContext.
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *externglib.List {
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out
 	var _arg3 *C.char              // out
@@ -89,6 +87,7 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.PangoDirection(baseDir)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.int(startIndex)
 	_arg5 = C.int(length)
 	_arg6 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
@@ -96,20 +95,17 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 
 	_cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
-	var _list *externglib.List // out
+	var _list []Item // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.PangoItem)(_p)
+	_list = make([]Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoItem)(v)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(&dst, func(v *Item) {
 			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _list

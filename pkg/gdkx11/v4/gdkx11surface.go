@@ -189,6 +189,7 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
 }
@@ -237,7 +238,9 @@ func (surface *X11Surface) SetUTF8Property(name string, value string) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_surface_set_utf8_property(_arg0, _arg1, _arg2)
 }

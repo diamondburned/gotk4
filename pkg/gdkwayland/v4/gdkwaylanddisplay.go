@@ -77,6 +77,7 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(global)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
@@ -97,6 +98,7 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
 
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
@@ -117,6 +119,7 @@ func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_wayland_display_set_startup_notification_id(_arg0, _arg1)
 }

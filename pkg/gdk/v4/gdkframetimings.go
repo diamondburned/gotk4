@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -165,35 +164,4 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
-}
-
-// Ref increases the reference count of timings.
-func (timings *FrameTimings) ref() *FrameTimings {
-	var _arg0 *C.GdkFrameTimings // out
-	var _cret *C.GdkFrameTimings // in
-
-	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
-
-	_cret = C.gdk_frame_timings_ref(_arg0)
-
-	var _frameTimings *FrameTimings // out
-
-	_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_frame_timings_ref(_cret)
-	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _frameTimings
-}
-
-// Unref decreases the reference count of timings.
-//
-// If timings is no longer referenced, it will be freed.
-func (timings *FrameTimings) unref() {
-	var _arg0 *C.GdkFrameTimings // out
-
-	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
-
-	C.gdk_frame_timings_unref(_arg0)
 }

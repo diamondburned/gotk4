@@ -82,6 +82,7 @@ func (settings *Settings) ResetProperty(name string) {
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
 }

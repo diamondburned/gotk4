@@ -766,6 +766,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 
 	_arg2 = (C.guint)(len(children))
 	_arg1 = (**C.GskRenderNode)(C.malloc(C.ulong(len(children)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
 		for i := range children {
@@ -940,7 +941,6 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(message)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gsk_debug_node_new(_arg1, _arg2)
 

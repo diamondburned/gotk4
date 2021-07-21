@@ -426,26 +426,32 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		_arg3 = (**C.char)(C.malloc(C.ulong(len(options)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(options)+1)
 			var zero *C.char
 			out[len(options)] = zero
 			for i := range options {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(options[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionLabels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionLabels)+1)
 			var zero *C.char
 			out[len(optionLabels)] = zero
 			for i := range optionLabels {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -480,6 +486,7 @@ func (chooser *FileChooser) AddShortcutFolder(folder string) error {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(folder)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -501,6 +508,7 @@ func (chooser *FileChooser) AddShortcutFolderURI(uri string) error {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_add_shortcut_folder_uri(_arg0, _arg1, &_cerr)
 
@@ -536,6 +544,7 @@ func (chooser *FileChooser) Choice(id string) string {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
 
@@ -947,6 +956,7 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_remove_choice(_arg0, _arg1)
 }
@@ -972,6 +982,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder string) error {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(folder)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -991,6 +1002,7 @@ func (chooser *FileChooser) RemoveShortcutFolderURI(uri string) error {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_remove_shortcut_folder_uri(_arg0, _arg1, &_cerr)
 
@@ -1039,6 +1051,7 @@ func (chooser *FileChooser) SelectFilename(filename string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_select_filename(_arg0, _arg1)
 
@@ -1061,6 +1074,7 @@ func (chooser *FileChooser) SelectURI(uri string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_select_uri(_arg0, _arg1)
 
@@ -1098,7 +1112,9 @@ func (chooser *FileChooser) SetChoice(id string, option string) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(option)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_file_chooser_set_choice(_arg0, _arg1, _arg2)
 }
@@ -1132,6 +1148,7 @@ func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_current_folder(_arg0, _arg1)
 
@@ -1177,6 +1194,7 @@ func (chooser *FileChooser) SetCurrentFolderURI(uri string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_current_folder_uri(_arg0, _arg1)
 
@@ -1205,6 +1223,7 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_set_current_name(_arg0, _arg1)
 }
@@ -1329,6 +1348,7 @@ func (chooser *FileChooser) SetFilename(filename string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_filename(_arg0, _arg1)
 
@@ -1481,6 +1501,7 @@ func (chooser *FileChooser) SetURI(uri string) bool {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_uri(_arg0, _arg1)
 
@@ -1542,6 +1563,7 @@ func (chooser *FileChooser) UnselectFilename(filename string) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_unselect_filename(_arg0, _arg1)
 }
@@ -1555,6 +1577,7 @@ func (chooser *FileChooser) UnselectURI(uri string) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_unselect_uri(_arg0, _arg1)
 }

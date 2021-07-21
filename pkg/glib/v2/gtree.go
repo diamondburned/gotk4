@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -34,19 +33,6 @@ type Tree struct {
 func marshalTree(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return &Tree{native: (*C.GTree)(unsafe.Pointer(b))}, nil
-}
-
-// Destroy removes all keys and values from the #GTree and decreases its
-// reference count by one. If keys and/or values are dynamically allocated, you
-// should either free them first or create the #GTree using g_tree_new_full().
-// In the latter case the destroy functions you supplied will be called on all
-// keys and values before destroying the #GTree.
-func (tree *Tree) Destroy() {
-	var _arg0 *C.GTree // out
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-
-	C.g_tree_destroy(_arg0)
 }
 
 // Height gets the height of a #GTree.
@@ -149,28 +135,6 @@ func (tree *Tree) Nnodes() int {
 	return _gint
 }
 
-// Ref increments the reference count of tree by one.
-//
-// It is safe to call this function from any thread.
-func (tree *Tree) ref() *Tree {
-	var _arg0 *C.GTree // out
-	var _cret *C.GTree // in
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-
-	_cret = C.g_tree_ref(_arg0)
-
-	var _ret *Tree // out
-
-	_ret = (*Tree)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_tree_ref(_cret)
-	runtime.SetFinalizer(_ret, func(v *Tree) {
-		C.g_tree_unref((*C.GTree)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _ret
-}
-
 // Remove removes a key/value pair from a #GTree.
 //
 // If the #GTree was created using g_tree_new_full(), the key and value are
@@ -234,17 +198,4 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	}
 
 	return _ok
-}
-
-// Unref decrements the reference count of tree by one. If the reference count
-// drops to 0, all keys and values will be destroyed (if destroy functions were
-// specified) and all memory allocated by tree will be released.
-//
-// It is safe to call this function from any thread.
-func (tree *Tree) unref() {
-	var _arg0 *C.GTree // out
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-
-	C.g_tree_unref(_arg0)
 }

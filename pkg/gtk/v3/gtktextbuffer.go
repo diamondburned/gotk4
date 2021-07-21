@@ -219,6 +219,7 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start *TextIter, end *Text
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -341,6 +342,7 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 	if leftGravity {
 		_arg3 = C.TRUE
@@ -444,6 +446,7 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_text_buffer_delete_mark_by_name(_arg0, _arg1)
 }
@@ -765,6 +768,7 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_buffer_get_mark(_arg0, _arg1)
 
@@ -983,6 +987,7 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(len)
 
 	C.gtk_text_buffer_insert(_arg0, _arg1, _arg2, _arg3)
@@ -997,6 +1002,7 @@ func (buffer *TextBuffer) InsertAtCursor(text string, len int) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
 	C.gtk_text_buffer_insert_at_cursor(_arg0, _arg1, _arg2)
@@ -1043,6 +1049,7 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(len)
 	if defaultEditable {
 		_arg4 = C.TRUE
@@ -1074,6 +1081,7 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int, defaul
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 	if defaultEditable {
 		_arg3 = C.TRUE
@@ -1104,6 +1112,7 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(len)
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
@@ -1205,6 +1214,7 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_move_mark_by_name(_arg0, _arg1, _arg2)
@@ -1304,6 +1314,7 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start *TextIter, end *Tex
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -1354,6 +1365,7 @@ func (buffer *TextBuffer) SetText(text string, len int) {
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)

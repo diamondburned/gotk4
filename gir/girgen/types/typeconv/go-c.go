@@ -288,6 +288,82 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 		return conv.gocConverter(value)
 	}
 
+	// TODO: Account for setting these in callbacks. The code may have already
+	// done it, actually. Who knows.
+
+	switch value.Resolved.GType {
+	case "GLib.List":
+		inner := conv.convertInner(value, "src", "dst")
+		if inner == nil {
+			value.Logln(logger.Debug, "List missing inner type")
+			return false
+		}
+
+		value.header.Import("unsafe")
+		value.header.ApplyFrom(inner.Header())
+
+		// Iterate the array backwards, because prepending into the List is
+		// faster than appending.
+		value.p.Linef("for i := len(%s)-1; i >= 0; i-- {", value.InNamePtr(0))
+		value.p.Linef("  src := %s[i]", value.InNamePtr(0))
+		value.p.Linef(inner.Out.Declare)
+		value.p.Linef(inner.Conversion)
+		value.p.Linef(
+			"%s = C.g_list_prepend(%[1]s, C.gpointer(unsafe.Pointer(dst)))",
+			value.OutInNamePtr(1))
+		value.p.Linef("}")
+
+		if value.ShouldFree() {
+			value.p.Linef("defer C.g_list_free(%s)", value.OutInNamePtr(1))
+		}
+
+		return true
+
+	case "GLib.HashTable":
+		// Any type unsupported for multiple reasons:
+		// - This requires refactoring gocConverter to decouple freeing away.
+		// - This requires generating a function just to free the type, which
+		//   might be a lot of work involved.
+		//
+		// For now, map[string]string is only supported.
+
+		kt := conv.convertType(value, "ksrc", "kdst", &value.Type.Types[0])
+		vt := conv.convertType(value, "vsrc", "vdst", &value.Type.Types[1])
+		if kt == nil || vt == nil {
+			value.Logln(logger.Debug, "no key/value-type")
+			return false
+		}
+		if kt.Type.Name != "utf8" || vt.Type.Name != "utf8" {
+			value.Logln(logger.Debug, "unsupported k/v type", kt.Type.Name, ":", vt.Type.Name)
+		}
+
+		value.header.Import("unsafe")
+		value.header.ApplyFrom(kt.Header())
+		value.header.ApplyFrom(vt.Header())
+
+		// libsecret/test-item.c directly passes the value in.
+		kptr := fmt.Sprintf("C.gpointer(unsafe.Pointer(kdst))")
+		vptr := fmt.Sprintf("C.gpointer(unsafe.Pointer(vdst))")
+
+		// Since we're using strings, we can use C.free directly.
+		value.p.Linef(
+			"%s = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))",
+			value.Out.Set)
+		value.p.Linef("for ksrc, vsrc := range %s {", value.InNamePtr(0))
+		value.p.Linef(kt.Out.Declare)
+		value.p.Linef(vt.Out.Declare)
+		value.p.Linef(kt.Conversion)
+		value.p.Linef(vt.Conversion)
+		value.p.Linef("  C.g_hash_table_insert(%s, %s, %s)", value.OutInNamePtr(1), kptr, vptr)
+		value.p.Linef("}")
+
+		if value.ShouldFree() {
+			value.p.Linef("defer C.g_hash_table_unref(%s)", value.OutInNamePtr(1))
+		}
+
+		return true
+	}
+
 	// TODO: gocConvertNested.
 	return false
 }

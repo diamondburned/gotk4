@@ -140,7 +140,6 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	_arg2 = (C.gsize)(len(providers))
 	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
 		for i := range providers {
@@ -263,6 +262,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

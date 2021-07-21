@@ -187,11 +187,6 @@ func HashTableSize(ptr unsafe.Pointer) int {
 	return int(C.g_hash_table_size((*C.GHashTable)(ptr)))
 }
 
-// FreeHashTable frees the given hash table.
-func FreeHashTable(ptr unsafe.Pointer) {
-	C.g_hash_table_unref((*C.GHashTable)(ptr))
-}
-
 // MoveHashTable calls f on every value of the given *GHashTable and frees each
 // element in the process if rm is true.
 func MoveHashTable(ptr unsafe.Pointer, rm bool, f func(k, v unsafe.Pointer)) {
@@ -201,9 +196,26 @@ func MoveHashTable(ptr unsafe.Pointer, rm bool, f func(k, v unsafe.Pointer)) {
 
 	for C.g_hash_table_iter_next(&iter, &k, &v) != 0 {
 		f(unsafe.Pointer(k), unsafe.Pointer(v))
+	}
 
-		if rm {
-			C.g_hash_table_iter_remove(&iter)
-		}
+	if rm {
+		C.g_hash_table_unref((*C.GHashTable)(ptr))
+	}
+}
+
+// ListSize returns the length of the list.
+func ListSize(ptr unsafe.Pointer) int {
+	return int(C.g_list_length((*C.GList)(ptr)))
+}
+
+// MoveList calls f on every value of the given *GList. If rm is true, then the
+// GList is freed.
+func MoveList(ptr unsafe.Pointer, rm bool, f func(v unsafe.Pointer)) {
+	for v := (*C.GList)(ptr); v != nil; v = v.next {
+		f(unsafe.Pointer(v.data))
+	}
+
+	if rm {
+		C.g_list_free((*C.GList)(ptr))
 	}
 }

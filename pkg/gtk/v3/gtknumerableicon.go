@@ -185,6 +185,7 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
 }
@@ -229,6 +230,7 @@ func (self *NumerableIcon) SetLabel(label string) {
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_label(_arg0, _arg1)
 }

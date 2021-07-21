@@ -344,10 +344,6 @@ type Expressioner interface {
 	ValueType() externglib.Type
 	// IsStatic checks if the expression is static.
 	IsStatic() bool
-	// Ref acquires a reference on the given GtkExpression.
-	ref() Expressioner
-	// Unref releases a reference on the given GtkExpression.
-	unref()
 	// Watch installs a watch for the given expression that calls the notify
 	// function whenever the evaluation of self may have changed.
 	Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch
@@ -388,6 +384,7 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gpointer(unsafe.Pointer(this_.Native()))
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
@@ -472,34 +469,6 @@ func (self *Expression) IsStatic() bool {
 	}
 
 	return _ok
-}
-
-// Ref acquires a reference on the given GtkExpression.
-func (self *Expression) ref() Expressioner {
-	var _arg0 *C.GtkExpression // out
-	var _cret *C.GtkExpression // in
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-
-	_cret = C.gtk_expression_ref(_arg0)
-
-	var _expression Expressioner // out
-
-	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
-
-	return _expression
-}
-
-// Unref releases a reference on the given GtkExpression.
-//
-// If the reference was the last, the resources associated to the self are
-// freed.
-func (self *Expression) unref() {
-	var _arg0 *C.GtkExpression // out
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-
-	C.gtk_expression_unref(_arg0)
 }
 
 // Watch installs a watch for the given expression that calls the notify
@@ -632,6 +601,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	_arg1 = C.GType(thisType)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_property_expression_new(_arg1, _arg2, _arg3)
 
@@ -695,37 +665,6 @@ func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 	}
 
 	return _ok
-}
-
-// Ref acquires a reference on the given GtkExpressionWatch.
-func (watch *ExpressionWatch) ref() *ExpressionWatch {
-	var _arg0 *C.GtkExpressionWatch // out
-	var _cret *C.GtkExpressionWatch // in
-
-	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
-
-	_cret = C.gtk_expression_watch_ref(_arg0)
-
-	var _expressionWatch *ExpressionWatch // out
-
-	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _expressionWatch
-}
-
-// Unref releases a reference on the given GtkExpressionWatch.
-//
-// If the reference was the last, the resources associated to self are freed.
-func (watch *ExpressionWatch) unref() {
-	var _arg0 *C.GtkExpressionWatch // out
-
-	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
-
-	C.gtk_expression_watch_unref(_arg0)
 }
 
 // Unwatch stops watching an expression.

@@ -95,6 +95,7 @@ func (set *StateSet) AddStates(types []StateType) {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = (C.gint)(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
 		for i := range types {
@@ -165,6 +166,7 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = (C.gint)(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
 		for i := range types {

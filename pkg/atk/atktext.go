@@ -197,6 +197,7 @@ func TextAttributeForName(name string) TextAttribute {
 	var _cret C.AtkTextAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_for_name(_arg1)
 
@@ -247,6 +248,7 @@ func TextAttributeRegister(name string) TextAttribute {
 	var _cret C.AtkTextAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_register(_arg1)
 

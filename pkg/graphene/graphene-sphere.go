@@ -109,15 +109,6 @@ func (a *Sphere) Equal(b *Sphere) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_sphere_alloc().
-func (s *Sphere) free() {
-	var _arg0 *C.graphene_sphere_t // out
-
-	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
-
-	C.graphene_sphere_free(_arg0)
-}
-
 // BoundingBox computes the bounding box capable of containing the given
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {

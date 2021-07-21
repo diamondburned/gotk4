@@ -68,7 +68,9 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
 

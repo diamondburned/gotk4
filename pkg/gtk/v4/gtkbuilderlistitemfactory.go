@@ -73,6 +73,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 
 	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer((scope).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
 

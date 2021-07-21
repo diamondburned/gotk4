@@ -148,6 +148,7 @@ func FindBaseDir(text string, length int) Direction {
 	var _cret C.PangoDirection // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	_cret = C.pango_find_base_dir(_arg1, _arg2)

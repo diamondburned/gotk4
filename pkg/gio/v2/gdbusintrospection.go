@@ -94,38 +94,6 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	return v
 }
 
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
-	var _arg0 *C.GDBusAnnotationInfo // out
-	var _cret *C.GDBusAnnotationInfo // in
-
-	_arg0 = (*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_annotation_info_ref(_arg0)
-
-	var _dBusAnnotationInfo *DBusAnnotationInfo // out
-
-	_dBusAnnotationInfo = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_annotation_info_ref(_cret)
-	runtime.SetFinalizer(_dBusAnnotationInfo, func(v *DBusAnnotationInfo) {
-		C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusAnnotationInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusAnnotationInfo) unref() {
-	var _arg0 *C.GDBusAnnotationInfo // out
-
-	_arg0 = (*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_annotation_info_unref(_arg0)
-}
-
 // DBusAnnotationInfoLookup looks up the value of an annotation.
 //
 // The cost of this function is O(n) in number of annotations.
@@ -140,6 +108,7 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 		_arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(&annotations[0]))
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
 
@@ -203,38 +172,6 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
-}
-
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusArgInfo) ref() *DBusArgInfo {
-	var _arg0 *C.GDBusArgInfo // out
-	var _cret *C.GDBusArgInfo // in
-
-	_arg0 = (*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_arg_info_ref(_arg0)
-
-	var _dBusArgInfo *DBusArgInfo // out
-
-	_dBusArgInfo = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_arg_info_ref(_cret)
-	runtime.SetFinalizer(_dBusArgInfo, func(v *DBusArgInfo) {
-		C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusArgInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusArgInfo) unref() {
-	var _arg0 *C.GDBusArgInfo // out
-
-	_arg0 = (*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_arg_info_unref(_arg0)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
@@ -393,6 +330,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 
 	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
 
@@ -417,6 +355,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
 
@@ -441,6 +380,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
 
@@ -452,38 +392,6 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	})
 
 	return _dBusSignalInfo
-}
-
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
-	var _arg0 *C.GDBusInterfaceInfo // out
-	var _cret *C.GDBusInterfaceInfo // in
-
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_interface_info_ref(_arg0)
-
-	var _dBusInterfaceInfo *DBusInterfaceInfo // out
-
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_interface_info_ref(_cret)
-	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
-		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusInterfaceInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusInterfaceInfo) unref() {
-	var _arg0 *C.GDBusInterfaceInfo // out
-
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_interface_info_unref(_arg0)
 }
 
 // DBusMethodInfo: information about a method on an D-Bus interface.
@@ -580,38 +488,6 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	return v
 }
 
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusMethodInfo) ref() *DBusMethodInfo {
-	var _arg0 *C.GDBusMethodInfo // out
-	var _cret *C.GDBusMethodInfo // in
-
-	_arg0 = (*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_method_info_ref(_arg0)
-
-	var _dBusMethodInfo *DBusMethodInfo // out
-
-	_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_method_info_ref(_cret)
-	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
-		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusMethodInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusMethodInfo) unref() {
-	var _arg0 *C.GDBusMethodInfo // out
-
-	_arg0 = (*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_method_info_unref(_arg0)
-}
-
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
 type DBusNodeInfo struct {
 	nocopy gextras.NoCopy
@@ -630,6 +506,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _cerr *C.GError        // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
 
@@ -740,6 +617,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 	_arg0 = (*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
 
@@ -751,38 +629,6 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	})
 
 	return _dBusInterfaceInfo
-}
-
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusNodeInfo) ref() *DBusNodeInfo {
-	var _arg0 *C.GDBusNodeInfo // out
-	var _cret *C.GDBusNodeInfo // in
-
-	_arg0 = (*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_node_info_ref(_arg0)
-
-	var _dBusNodeInfo *DBusNodeInfo // out
-
-	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_node_info_ref(_cret)
-	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
-		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusNodeInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusNodeInfo) unref() {
-	var _arg0 *C.GDBusNodeInfo // out
-
-	_arg0 = (*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_node_info_unref(_arg0)
 }
 
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
@@ -845,38 +691,6 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
-}
-
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusPropertyInfo) ref() *DBusPropertyInfo {
-	var _arg0 *C.GDBusPropertyInfo // out
-	var _cret *C.GDBusPropertyInfo // in
-
-	_arg0 = (*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_property_info_ref(_arg0)
-
-	var _dBusPropertyInfo *DBusPropertyInfo // out
-
-	_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_property_info_ref(_cret)
-	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
-		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusPropertyInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusPropertyInfo) unref() {
-	var _arg0 *C.GDBusPropertyInfo // out
-
-	_arg0 = (*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_property_info_unref(_arg0)
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -948,36 +762,4 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
-}
-
-// Ref: if info is statically allocated does nothing. Otherwise increases the
-// reference count.
-func (info *DBusSignalInfo) ref() *DBusSignalInfo {
-	var _arg0 *C.GDBusSignalInfo // out
-	var _cret *C.GDBusSignalInfo // in
-
-	_arg0 = (*C.GDBusSignalInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	_cret = C.g_dbus_signal_info_ref(_arg0)
-
-	var _dBusSignalInfo *DBusSignalInfo // out
-
-	_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_signal_info_ref(_cret)
-	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
-		C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _dBusSignalInfo
-}
-
-// Unref: if info is statically allocated, does nothing. Otherwise decreases the
-// reference count of info. When its reference count drops to 0, the memory used
-// is freed.
-func (info *DBusSignalInfo) unref() {
-	var _arg0 *C.GDBusSignalInfo // out
-
-	_arg0 = (*C.GDBusSignalInfo)(gextras.StructNative(unsafe.Pointer(info)))
-
-	C.g_dbus_signal_info_unref(_arg0)
 }

@@ -41,6 +41,7 @@ func DBusAddressEscapeValue(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_address_escape_value(_arg1)
 
@@ -106,6 +107,7 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -163,6 +165,7 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
 
@@ -188,6 +191,7 @@ func DBusIsAddress(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_address(_arg1)
 
@@ -209,6 +213,7 @@ func DBusIsSupportedAddress(_string string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_is_supported_address(_arg1, &_cerr)
 

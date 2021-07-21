@@ -220,6 +220,7 @@ func AttrTypeRegister(name string) AttrType {
 	var _cret C.PangoAttrType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_type_register(_arg1)
 
@@ -515,6 +516,7 @@ func NewAttrFamily(family string) *Attribute {
 	var _cret *C.PangoAttribute // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_family_new(_arg1)
 
@@ -1027,6 +1029,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _cerr *C.GError        // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
 
@@ -1162,6 +1165,7 @@ func NewAttrFontFeatures(features string) *Attribute {
 	var _cret *C.PangoAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(features)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_font_features_new(_arg1)
 
@@ -1229,15 +1233,6 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	})
 
 	return _attrIterator
-}
-
-// Destroy a PangoAttrIterator and free all associated memory.
-func (iterator *AttrIterator) Destroy() {
-	var _arg0 *C.PangoAttrIterator // out
-
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
-
-	C.pango_attr_iterator_destroy(_arg0)
 }
 
 // Get: find the current attribute of a particular type at the iterator
@@ -1511,26 +1506,6 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 	C.pango_attr_list_insert_before(_arg0, _arg1)
 }
 
-// Ref: increase the reference count of the given attribute list by one.
-func (list *AttrList) ref() *AttrList {
-	var _arg0 *C.PangoAttrList // out
-	var _cret *C.PangoAttrList // in
-
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	_cret = C.pango_attr_list_ref(_arg0)
-
-	var _attrList *AttrList // out
-
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_attr_list_ref(_cret)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _attrList
-}
-
 // Splice: this function opens up a hole in list, fills it in with attributes
 // from the left, and then merges other on top of the hole.
 //
@@ -1553,16 +1528,6 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 	_arg3 = C.gint(len)
 
 	C.pango_attr_list_splice(_arg0, _arg1, _arg2, _arg3)
-}
-
-// Unref: decrease the reference count of the given attribute list by one. If
-// the result is zero, free the attribute list and the attributes it contains.
-func (list *AttrList) unref() {
-	var _arg0 *C.PangoAttrList // out
-
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	C.pango_attr_list_unref(_arg0)
 }
 
 // Update indices of attributes in list for a change in the text they refer to.
@@ -1741,15 +1706,6 @@ func (attr *Attribute) Copy() *Attribute {
 	return _attribute
 }
 
-// Destroy a PangoAttribute and free all associated memory.
-func (attr *Attribute) Destroy() {
-	var _arg0 *C.PangoAttribute // out
-
-	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
-
-	C.pango_attribute_destroy(_arg0)
-}
-
 // Equal: compare two attributes for equality. This compares only the actual
 // value of the two attributes and not the ranges that the attributes apply to.
 func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
@@ -1827,15 +1783,6 @@ func (src *Color) Copy() *Color {
 	return _color
 }
 
-// Free frees a color allocated by pango_color_copy().
-func (color *Color) free() {
-	var _arg0 *C.PangoColor // out
-
-	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C.pango_color_free(_arg0)
-}
-
 // Parse: fill in the fields of a color from a string specification.
 //
 // The string can either one of a large set of standard names. (Taken from the
@@ -1851,6 +1798,7 @@ func (color *Color) Parse(spec string) bool {
 
 	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_color_parse(_arg0, _arg1)
 
@@ -1884,6 +1832,7 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 
 	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_color_parse_with_alpha(_arg0, &_arg1, _arg2)
 

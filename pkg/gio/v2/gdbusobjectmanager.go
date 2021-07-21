@@ -44,7 +44,7 @@ type DBusObjectManagerOverrider interface {
 	// ObjectPath gets the object path that manager is for.
 	ObjectPath() string
 	// Objects gets all BusObject objects known to manager.
-	Objects() *externglib.List
+	Objects() []DBusObjector
 	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
 	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
 	ObjectAdded(object DBusObjector)
@@ -74,7 +74,7 @@ type DBusObjectManagerer interface {
 	// ObjectPath gets the object path that manager is for.
 	ObjectPath() string
 	// Objects gets all BusObject objects known to manager.
-	Objects() *externglib.List
+	Objects() []DBusObjector
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
@@ -100,7 +100,9 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 
@@ -119,6 +121,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 
@@ -146,7 +149,7 @@ func (manager *DBusObjectManager) ObjectPath() string {
 }
 
 // Objects gets all BusObject objects known to manager.
-func (manager *DBusObjectManager) Objects() *externglib.List {
+func (manager *DBusObjectManager) Objects() []DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.GList              // in
 
@@ -154,17 +157,14 @@ func (manager *DBusObjectManager) Objects() *externglib.List {
 
 	_cret = C.g_dbus_object_manager_get_objects(_arg0)
 
-	var _list *externglib.List // out
+	var _list []DBusObjector // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GDBusObject)(_p)
+	_list = make([]DBusObjector, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDBusObject)(v)
 		var dst DBusObjector // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusObjector)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list

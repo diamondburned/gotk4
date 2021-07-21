@@ -72,15 +72,6 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 	return _glyphItem
 }
 
-// Free frees a PangoGlyphItem and resources to which it points.
-func (glyphItem *GlyphItem) free() {
-	var _arg0 *C.PangoGlyphItem // out
-
-	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-
-	C.pango_glyph_item_free(_arg0)
-}
-
 // Split modifies orig to cover only the text after split_index, and returns a
 // new item that covers the text before split_index that used to be in orig.
 //
@@ -99,6 +90,7 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 
 	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(orig)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(splitIndex)
 
 	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
@@ -227,15 +219,6 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	return _glyphItemIter
 }
 
-// Free frees a PangoGlyphItemIter.
-func (iter *GlyphItemIter) free() {
-	var _arg0 *C.PangoGlyphItemIter // out
-
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C.pango_glyph_item_iter_free(_arg0)
-}
-
 // InitEnd initializes a PangoGlyphItemIter structure to point to the last
 // cluster in a glyph item.
 //
@@ -249,6 +232,7 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
 
@@ -274,6 +258,7 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
 

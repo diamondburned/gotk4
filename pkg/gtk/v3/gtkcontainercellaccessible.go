@@ -82,7 +82,7 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 }
 
 // Children: get a list of children.
-func (container *ContainerCellAccessible) Children() *externglib.List {
+func (container *ContainerCellAccessible) Children() []CellAccessible {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _cret *C.GList                      // in
 
@@ -90,14 +90,14 @@ func (container *ContainerCellAccessible) Children() *externglib.List {
 
 	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
 
-	var _list *externglib.List // out
+	var _list []CellAccessible // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkCellAccessible)(_p)
+	_list = make([]CellAccessible, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkCellAccessible)(v)
 		var dst CellAccessible // out
 		dst = *wrapCellAccessible(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list

@@ -111,17 +111,6 @@ func (colora *Color) Equal(colorb *Color) bool {
 	return _ok
 }
 
-// Free frees a Color created with gdk_color_copy().
-//
-// Deprecated: Use RGBA.
-func (color *Color) free() {
-	var _arg0 *C.GdkColor // out
-
-	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C.gdk_color_free(_arg0)
-}
-
 // Hash: hash function suitable for using for a hash table that stores Colors.
 //
 // Deprecated: Use RGBA.
@@ -180,6 +169,7 @@ func ColorParse(spec string) (Color, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_color_parse(_arg1, &_arg2)
 

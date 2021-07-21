@@ -54,9 +54,6 @@ type Surfacer interface {
 	// CreateVulkanContext creates a new GdkVulkanContext for rendering on
 	// surface.
 	CreateVulkanContext() (VulkanContexter, error)
-	// Destroy destroys the window system resources associated with surface and
-	// decrements surface's reference count.
-	Destroy()
 	// Cursor retrieves a GdkCursor pointer for the cursor currently set on the
 	// GdkSurface.
 	Cursor() *Cursor
@@ -262,22 +259,6 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
-}
-
-// Destroy destroys the window system resources associated with surface and
-// decrements surface's reference count.
-//
-// The window system resources for all children of surface are also destroyed,
-// but the children’s reference counts are not decremented.
-//
-// Note that a surface will not be destroyed automatically when its reference
-// count reaches zero. You must call this function yourself before that happens.
-func (surface *Surface) Destroy() {
-	var _arg0 *C.GdkSurface // out
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	C.gdk_surface_destroy(_arg0)
 }
 
 // Cursor retrieves a GdkCursor pointer for the cursor currently set on the

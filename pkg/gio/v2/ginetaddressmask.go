@@ -91,6 +91,7 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _cerr *C.GError           // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(maskString)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_mask_new_from_string(_arg1, &_cerr)
 

@@ -115,6 +115,7 @@ func (obj *Socket) Embed(plugId string) {
 
 	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_socket_embed(_arg0, _arg1)
 }

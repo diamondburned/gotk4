@@ -169,15 +169,6 @@ func (box *Box) ExpandVec3(vec *Vec3) Box {
 	return _res
 }
 
-// Free frees the resources allocated by graphene_box_alloc().
-func (box *Box) free() {
-	var _arg0 *C.graphene_box_t // out
-
-	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
-
-	C.graphene_box_free(_arg0)
-}
-
 // BoundingSphere computes the bounding #graphene_sphere_t capable of containing
 // the given #graphene_box_t.
 func (box *Box) BoundingSphere() Sphere {

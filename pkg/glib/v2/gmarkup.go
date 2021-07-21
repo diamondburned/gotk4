@@ -4,7 +4,6 @@ package glib
 
 import (
 	"fmt"
-	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -216,6 +215,7 @@ func MarkupEscapeText(text string, length int) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
@@ -260,18 +260,6 @@ func (context *MarkupParseContext) EndParse() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// Free frees a ParseContext.
-//
-// This function can't be called from inside one of the Parser functions or
-// while a subparser is pushed.
-func (context *MarkupParseContext) free() {
-	var _arg0 *C.GMarkupParseContext // out
-
-	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	C.g_markup_parse_context_free(_arg0)
 }
 
 // Element retrieves the name of the currently open element.
@@ -353,6 +341,7 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
 
 	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
@@ -444,36 +433,6 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
-}
-
-// Ref increases the reference count of context.
-func (context *MarkupParseContext) ref() *MarkupParseContext {
-	var _arg0 *C.GMarkupParseContext // out
-	var _cret *C.GMarkupParseContext // in
-
-	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	_cret = C.g_markup_parse_context_ref(_arg0)
-
-	var _markupParseContext *MarkupParseContext // out
-
-	_markupParseContext = (*MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_markup_parse_context_ref(_cret)
-	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
-		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _markupParseContext
-}
-
-// Unref decreases the reference count of context. When its reference count
-// drops to 0, it is freed.
-func (context *MarkupParseContext) unref() {
-	var _arg0 *C.GMarkupParseContext // out
-
-	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	C.g_markup_parse_context_unref(_arg0)
 }
 
 // MarkupParser: any of the fields in Parser can be NULL, in which case they

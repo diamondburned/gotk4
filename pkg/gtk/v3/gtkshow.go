@@ -33,6 +33,7 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3, &_cerr)
@@ -69,6 +70,7 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, &_cerr)

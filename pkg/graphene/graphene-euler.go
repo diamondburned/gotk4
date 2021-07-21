@@ -245,15 +245,6 @@ func (a *Euler) Equal(b *Euler) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_euler_alloc().
-func (e *Euler) free() {
-	var _arg0 *C.graphene_euler_t // out
-
-	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
-
-	C.graphene_euler_free(_arg0)
-}
-
 // Alpha retrieves the first component of the Euler angle vector, depending on
 // the order of rotation.
 //

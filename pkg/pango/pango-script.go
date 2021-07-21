@@ -612,6 +612,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	var _cret *C.PangoScriptIter // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
@@ -624,15 +625,6 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	})
 
 	return _scriptIter
-}
-
-// Free frees a ScriptIter created with pango_script_iter_new().
-func (iter *ScriptIter) free() {
-	var _arg0 *C.PangoScriptIter // out
-
-	_arg0 = (*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C.pango_script_iter_free(_arg0)
 }
 
 // Range gets information about the range to which iter currently points. The

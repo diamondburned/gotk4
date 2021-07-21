@@ -38,6 +38,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
@@ -76,6 +77,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -103,6 +105,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
@@ -152,6 +155,7 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_resource_load(_arg1, &_cerr)
 

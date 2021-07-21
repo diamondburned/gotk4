@@ -24,10 +24,14 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	var _arg8 C.GtkAccessibleRole // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(line)
 	_arg4 = (*C.char)(unsafe.Pointer(C.CString(fn)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(expr)))
+	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
 	_arg7 = C.GtkAccessibleRole(expectedRole)
 	_arg8 = C.GtkAccessibleRole(actualRole)

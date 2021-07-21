@@ -246,6 +246,7 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
 }

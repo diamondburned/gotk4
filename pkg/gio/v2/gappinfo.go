@@ -97,6 +97,52 @@ type AppInfoOverrider interface {
 	// associations added with g_app_info_add_supports_type(), but only those
 	// exported directly by the application.
 	SupportedTypes() []string
+	// Launch launches the application. Passes files to the launched application
+	// as arguments, using the optional context to get information about the
+	// details of the launcher (like what screen it is on). On error, error will
+	// be set accordingly.
+	//
+	// To launch the application without arguments pass a NULL files list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	//
+	// Some URIs can be changed when passed through a GFile (for instance
+	// unsupported URIs with strange formats like mailto:), so if you have a
+	// textual URI you want to pass in as argument, consider using
+	// g_app_info_launch_uris() instead.
+	//
+	// The launched application inherits the environment of the launching
+	// process, but it can be modified with g_app_launch_context_setenv() and
+	// g_app_launch_context_unsetenv().
+	//
+	// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
+	// variable with the path of the launched desktop file and
+	// GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process.
+	// This can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be
+	// inherited by further processes. The DISPLAY and DESKTOP_STARTUP_ID
+	// environment variables are also set, based on information provided in
+	// context.
+	Launch(files []Filer, context *AppLaunchContext) error
+	// LaunchURIs launches the application. This passes the uris to the launched
+	// application as arguments, using the optional context to get information
+	// about the details of the launcher (like what screen it is on). On error,
+	// error will be set accordingly.
+	//
+	// To launch the application without arguments pass a NULL uris list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	LaunchURIs(uris []string, context *AppLaunchContext) error
+	// LaunchURIsAsync: async version of g_app_info_launch_uris().
+	//
+	// The callback is invoked immediately after the application launch, but it
+	// waits for activation in case of D-Bus–activated applications and also
+	// provides extended error information for sandboxed applications, see notes
+	// for g_app_info_launch_default_for_uri_async().
+	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
@@ -207,6 +253,12 @@ type AppInfor interface {
 	// SupportedTypes retrieves the list of content types that app_info claims
 	// to support.
 	SupportedTypes() []string
+	// Launch launches the application.
+	Launch(files []Filer, context *AppLaunchContext) error
+	// LaunchURIs launches the application.
+	LaunchURIs(uris []string, context *AppLaunchContext) error
+	// LaunchURIsAsync: async version of g_app_info_launch_uris().
+	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
@@ -255,6 +307,7 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_add_supports_type(_arg0, _arg1, &_cerr)
 
@@ -515,6 +568,128 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 	return _utf8s
 }
 
+// Launch launches the application. Passes files to the launched application as
+// arguments, using the optional context to get information about the details of
+// the launcher (like what screen it is on). On error, error will be set
+// accordingly.
+//
+// To launch the application without arguments pass a NULL files list.
+//
+// Note that even if the launch is successful the application launched can fail
+// to start if it runs into problems during startup. There is no way to detect
+// this.
+//
+// Some URIs can be changed when passed through a GFile (for instance
+// unsupported URIs with strange formats like mailto:), so if you have a textual
+// URI you want to pass in as argument, consider using g_app_info_launch_uris()
+// instead.
+//
+// The launched application inherits the environment of the launching process,
+// but it can be modified with g_app_launch_context_setenv() and
+// g_app_launch_context_unsetenv().
+//
+// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
+// variable with the path of the launched desktop file and
+// GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process. This
+// can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be inherited by
+// further processes. The DISPLAY and DESKTOP_STARTUP_ID environment variables
+// are also set, based on information provided in context.
+func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
+	var _arg0 *C.GAppInfo          // out
+	var _arg1 *C.GList             // out
+	var _arg2 *C.GAppLaunchContext // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+
+	C.g_app_info_launch(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LaunchURIs launches the application. This passes the uris to the launched
+// application as arguments, using the optional context to get information about
+// the details of the launcher (like what screen it is on). On error, error will
+// be set accordingly.
+//
+// To launch the application without arguments pass a NULL uris list.
+//
+// Note that even if the launch is successful the application launched can fail
+// to start if it runs into problems during startup. There is no way to detect
+// this.
+func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) error {
+	var _arg0 *C.GAppInfo          // out
+	var _arg1 *C.GList             // out
+	var _arg2 *C.GAppLaunchContext // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	for i := len(uris) - 1; i >= 0; i-- {
+		src := uris[i]
+		var dst *C.gchar // out
+		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+		defer C.free(unsafe.Pointer(dst))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+
+	C.g_app_info_launch_uris(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LaunchURIsAsync: async version of g_app_info_launch_uris().
+//
+// The callback is invoked immediately after the application launch, but it
+// waits for activation in case of D-Bus–activated applications and also
+// provides extended error information for sandboxed applications, see notes for
+// g_app_info_launch_default_for_uri_async().
+func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _arg0 *C.GAppInfo           // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GList              // out
+	var _arg2 *C.GAppLaunchContext  // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	for i := len(uris) - 1; i >= 0; i-- {
+		src := uris[i]
+		var dst *C.gchar // out
+		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+		defer C.free(unsafe.Pointer(dst))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 // LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
@@ -541,6 +716,7 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_remove_supports_type(_arg0, _arg1, &_cerr)
 
@@ -560,6 +736,7 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(extension)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_extension(_arg0, _arg1, &_cerr)
 
@@ -579,6 +756,7 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_type(_arg0, _arg1, &_cerr)
 
@@ -600,6 +778,7 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_last_used_for_type(_arg0, _arg1, &_cerr)
 
@@ -682,7 +861,9 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(commandline)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(applicationName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GAppInfoCreateFlags(flags)
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
@@ -703,22 +884,19 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 // are excluded from display by means of OnlyShowIn or NotShowIn. See
 // g_app_info_should_show(). The returned list does not include applications
 // which have the Hidden key set.
-func AppInfoGetAll() *externglib.List {
+func AppInfoGetAll() []AppInfor {
 	var _cret *C.GList // in
 
 	_cret = C.g_app_info_get_all()
 
-	var _list *externglib.List // out
+	var _list []AppInfor // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GAppInfo)(_p)
+	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -727,25 +905,23 @@ func AppInfoGetAll() *externglib.List {
 // AppInfoGetAllForType gets a list of all Infos for a given content type,
 // including the recommended and fallback Infos. See
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
-func AppInfoGetAllForType(contentType string) *externglib.List {
+func AppInfoGetAllForType(contentType string) []AppInfor {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_all_for_type(_arg1)
 
-	var _list *externglib.List // out
+	var _list []AppInfor // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GAppInfo)(_p)
+	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -758,6 +934,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	var _cret *C.GAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if mustSupportUris {
 		_arg2 = C.TRUE
 	}
@@ -779,6 +956,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	var _cret *C.GAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 
@@ -792,25 +970,23 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 // AppInfoGetFallbackForType gets a list of fallback Infos for a given content
 // type, i.e. those applications which claim to support the given content type
 // by MIME type subclassing and not directly.
-func AppInfoGetFallbackForType(contentType string) *externglib.List {
+func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
 
-	var _list *externglib.List // out
+	var _list []AppInfor // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GAppInfo)(_p)
+	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -821,25 +997,23 @@ func AppInfoGetFallbackForType(contentType string) *externglib.List {
 // content type exactly, and not by MIME type subclassing. Note that the first
 // application of the list is the last used one, i.e. the last one for which
 // g_app_info_set_as_last_used_for_type() has been called.
-func AppInfoGetRecommendedForType(contentType string) *externglib.List {
+func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
 
-	var _list *externglib.List // out
+	var _list []AppInfor // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GAppInfo)(_p)
+	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -858,6 +1032,7 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
@@ -892,6 +1067,7 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -924,6 +1100,7 @@ func AppInfoResetTypeAssociations(contentType string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_reset_type_associations(_arg1)
 }
@@ -954,6 +1131,17 @@ func AppInfoMonitorGet() *AppInfoMonitor {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AppLaunchContextOverrider interface {
+	// Display gets the display string for the context. This is used to ensure
+	// new applications are started on the same display as the launching
+	// application, by setting the DISPLAY environment variable.
+	Display(info AppInfor, files []Filer) string
+	// StartupNotifyID initiates startup notification for the application and
+	// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
+	//
+	// Startup notification IDs are defined in the FreeDesktop.Org Startup
+	// Notifications standard
+	// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+	StartupNotifyID(info AppInfor, files []Filer) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
@@ -997,6 +1185,35 @@ func NewAppLaunchContext() *AppLaunchContext {
 	return _appLaunchContext
 }
 
+// Display gets the display string for the context. This is used to ensure new
+// applications are started on the same display as the launching application, by
+// setting the DISPLAY environment variable.
+func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
+	var _arg0 *C.GAppLaunchContext // out
+	var _arg1 *C.GAppInfo          // out
+	var _arg2 *C.GList             // out
+	var _cret *C.char              // in
+
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg2)
+
+	_cret = C.g_app_launch_context_get_display(_arg0, _arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
 // Environment gets the complete environment variable list to be passed to the
 // child process when context is used to launch an application. This is a
 // NULL-terminated array of strings, where each string has the form KEY=VALUE.
@@ -1028,6 +1245,38 @@ func (context *AppLaunchContext) Environment() []string {
 	return _filenames
 }
 
+// StartupNotifyID initiates startup notification for the application and
+// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
+//
+// Startup notification IDs are defined in the FreeDesktop.Org Startup
+// Notifications standard
+// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
+	var _arg0 *C.GAppLaunchContext // out
+	var _arg1 *C.GAppInfo          // out
+	var _arg2 *C.GList             // out
+	var _cret *C.char              // in
+
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg2)
+
+	_cret = C.g_app_launch_context_get_startup_notify_id(_arg0, _arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
 // LaunchFailed: called when an application has failed to launch, so that it can
 // cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
@@ -1037,6 +1286,7 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupNotifyId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
@@ -1050,7 +1300,9 @@ func (context *AppLaunchContext) Setenv(variable string, value string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
@@ -1063,6 +1315,7 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_unsetenv(_arg0, _arg1)
 }

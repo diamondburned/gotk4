@@ -147,15 +147,6 @@ func (a *Point3D) Equal(b *Point3D) bool {
 	return _ok
 }
 
-// Free frees the resources allocated via graphene_point3d_alloc().
-func (p *Point3D) free() {
-	var _arg0 *C.graphene_point3d_t // out
-
-	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
-
-	C.graphene_point3d_free(_arg0)
-}
-
 // Init initializes a #graphene_point3d_t with the given coordinates.
 func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out

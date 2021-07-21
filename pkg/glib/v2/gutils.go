@@ -202,6 +202,7 @@ func FindProgramInPath(program string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(program)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_find_program_in_path(_arg1)
 
@@ -378,6 +379,7 @@ func GetOsInfo(keyName string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(keyName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_os_info(_arg1)
 
@@ -715,6 +717,7 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _cret C.guint // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.guint)(len(keys))
 	if len(keys) > 0 {
 		_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
@@ -755,6 +758,7 @@ func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_application_name(_arg1)
 }
@@ -772,6 +776,7 @@ func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prgname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_prgname(_arg1)
 }

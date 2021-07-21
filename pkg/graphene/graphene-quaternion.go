@@ -108,15 +108,6 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 	return _ok
 }
 
-// Free releases the resources allocated by graphene_quaternion_alloc().
-func (q *Quaternion) free() {
-	var _arg0 *C.graphene_quaternion_t // out
-
-	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
-
-	C.graphene_quaternion_free(_arg0)
-}
-
 // Init initializes a #graphene_quaternion_t using the given four values.
 func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out

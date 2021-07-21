@@ -892,6 +892,7 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 		_arg2 = C.TRUE
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -927,6 +928,7 @@ func (socket *Socket) JoinMulticastGroupSSM(group *InetAddress, sourceSpecific *
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -959,6 +961,7 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 		_arg2 = C.TRUE
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -986,6 +989,7 @@ func (socket *Socket) LeaveMulticastGroupSSM(group *InetAddress, sourceSpecific 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1205,6 +1209,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	}
 	_arg5 = (C.gint)(len(messages))
 	_arg4 = (**C.GSocketControlMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {
@@ -1258,6 +1263,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	}
 	_arg5 = (C.gint)(len(messages))
 	_arg4 = (**C.GSocketControlMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg4))
 	{
 		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {

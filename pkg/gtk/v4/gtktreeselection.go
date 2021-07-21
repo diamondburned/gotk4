@@ -206,7 +206,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (selection *TreeSelection) SelectedRows() (TreeModeller, *externglib.List) {
+func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _cret *C.GList            // in
@@ -215,22 +215,19 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, *externglib.List) 
 
 	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
 
-	var _model TreeModeller    // out
-	var _list *externglib.List // out
+	var _model TreeModeller // out
+	var _list []*TreePath   // out
 
 	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkTreePath)(_p)
+	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTreePath)(v)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(dst, func(v *TreePath) {
 			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _model, _list

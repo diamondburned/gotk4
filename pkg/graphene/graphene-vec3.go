@@ -147,15 +147,6 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by v
-func (v *Vec3) free() {
-	var _arg0 *C.graphene_vec3_t // out
-
-	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
-
-	C.graphene_vec3_free(_arg0)
-}
-
 // X retrieves the first component of the given vector v.
 func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out

@@ -43,6 +43,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _cerr *C.GError      // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if writable {
 		_arg2 = C.TRUE
 	}
@@ -89,18 +90,6 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	return _mappedFile, _goerr
 }
 
-// Free: this call existed before File had refcounting and is currently exactly
-// the same as g_mapped_file_unref().
-//
-// Deprecated: Use g_mapped_file_unref() instead.
-func (file *MappedFile) free() {
-	var _arg0 *C.GMappedFile // out
-
-	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
-
-	C.g_mapped_file_free(_arg0)
-}
-
 // Contents returns the contents of a File.
 //
 // Note that the contents may not be zero-terminated, even if the File is backed
@@ -137,39 +126,4 @@ func (file *MappedFile) Length() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
-}
-
-// Ref increments the reference count of file by one. It is safe to call this
-// function from any thread.
-func (file *MappedFile) ref() *MappedFile {
-	var _arg0 *C.GMappedFile // out
-	var _cret *C.GMappedFile // in
-
-	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
-
-	_cret = C.g_mapped_file_ref(_arg0)
-
-	var _mappedFile *MappedFile // out
-
-	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_mapped_file_ref(_cret)
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _mappedFile
-}
-
-// Unref decrements the reference count of file by one. If the reference count
-// drops to 0, unmaps the buffer of file and frees it.
-//
-// It is safe to call this function from any thread.
-//
-// Since 2.22
-func (file *MappedFile) unref() {
-	var _arg0 *C.GMappedFile // out
-
-	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
-
-	C.g_mapped_file_unref(_arg0)
 }

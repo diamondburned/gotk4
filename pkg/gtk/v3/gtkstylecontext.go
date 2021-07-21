@@ -245,6 +245,7 @@ func (context *StyleContext) AddClass(className string) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_add_class(_arg0, _arg1)
 }
@@ -295,6 +296,7 @@ func (context *StyleContext) AddRegion(regionName string, flags RegionFlags) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkRegionFlags(flags)
 
 	C.gtk_style_context_add_region(_arg0, _arg1, _arg2)
@@ -577,6 +579,7 @@ func (context *StyleContext) Property(property string, state StateFlags) externg
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_property(_arg0, _arg1, _arg2, &_arg3)
@@ -646,6 +649,7 @@ func (context *StyleContext) Section(property string) *CSSSection {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_get_section(_arg0, _arg1)
 
@@ -690,6 +694,7 @@ func (context *StyleContext) StyleProperty(propertyName string) externglib.Value
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_get_style_property(_arg0, _arg1, &_arg2)
 
@@ -708,6 +713,7 @@ func (context *StyleContext) HasClass(className string) bool {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
@@ -732,6 +738,7 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_region(_arg0, _arg1, &_arg2)
 
@@ -760,7 +767,7 @@ func (context *StyleContext) Invalidate() {
 }
 
 // ListClasses returns the list of classes currently defined in context.
-func (context *StyleContext) ListClasses() *externglib.List {
+func (context *StyleContext) ListClasses() []string {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
 
@@ -768,16 +775,15 @@ func (context *StyleContext) ListClasses() *externglib.List {
 
 	_cret = C.gtk_style_context_list_classes(_arg0)
 
-	var _list *externglib.List // out
+	var _list []string // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.gchar)(_p)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -785,7 +791,7 @@ func (context *StyleContext) ListClasses() *externglib.List {
 // ListRegions returns the list of regions currently defined in context.
 //
 // Deprecated: since version 3.14.
-func (context *StyleContext) ListRegions() *externglib.List {
+func (context *StyleContext) ListRegions() []string {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GList           // in
 
@@ -793,16 +799,15 @@ func (context *StyleContext) ListRegions() *externglib.List {
 
 	_cret = C.gtk_style_context_list_regions(_arg0)
 
-	var _list *externglib.List // out
+	var _list []string // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.gchar)(_p)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -816,6 +821,7 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
@@ -841,6 +847,7 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_icon_set(_arg0, _arg1)
 
@@ -941,6 +948,7 @@ func (context *StyleContext) RemoveClass(className string) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_class(_arg0, _arg1)
 }
@@ -965,6 +973,7 @@ func (context *StyleContext) RemoveRegion(regionName string) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_region(_arg0, _arg1)
 }

@@ -128,6 +128,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
 
@@ -159,6 +160,7 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(imageType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_loader_new_with_type(_arg1, &_cerr)
 

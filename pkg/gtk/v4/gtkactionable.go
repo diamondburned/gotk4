@@ -181,6 +181,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
 }
@@ -223,6 +224,7 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_actionable_set_detailed_action_name(_arg0, _arg1)
 }

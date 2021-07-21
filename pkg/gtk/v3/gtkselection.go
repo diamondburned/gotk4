@@ -93,20 +93,6 @@ func SelectionRemoveAll(widget Widgetter) {
 	C.gtk_selection_remove_all(_arg1)
 }
 
-// TargetTableFree: this function frees a target table as returned by
-// gtk_target_table_new_from_list()
-func TargetTableFree(targets []TargetEntry) {
-	var _arg1 *C.GtkTargetEntry // out
-	var _arg2 C.gint
-
-	_arg2 = (C.gint)(len(targets))
-	if len(targets) > 0 {
-		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
-	}
-
-	C.gtk_target_table_free(_arg1, _arg2)
-}
-
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
 type TargetEntry struct {
@@ -127,6 +113,7 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(target)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(flags)
 	_arg3 = C.guint(info)
 
@@ -182,16 +169,6 @@ func (data *TargetEntry) Copy() *TargetEntry {
 	})
 
 	return _targetEntry
-}
-
-// Free frees a TargetEntry returned from gtk_target_entry_new() or
-// gtk_target_entry_copy().
-func (data *TargetEntry) free() {
-	var _arg0 *C.GtkTargetEntry // out
-
-	_arg0 = (*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(data)))
-
-	C.gtk_target_entry_free(_arg0)
 }
 
 // TargetList is a reference counted list of TargetPair and should be treated as
@@ -303,36 +280,6 @@ func (list *TargetList) AddURITargets(info uint) {
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
-}
-
-// Ref increases the reference count of a TargetList by one.
-func (list *TargetList) ref() *TargetList {
-	var _arg0 *C.GtkTargetList // out
-	var _cret *C.GtkTargetList // in
-
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	_cret = C.gtk_target_list_ref(_arg0)
-
-	var _targetList *TargetList // out
-
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _targetList
-}
-
-// Unref decreases the reference count of a TargetList by one. If the resulting
-// reference count is zero, frees the list.
-func (list *TargetList) unref() {
-	var _arg0 *C.GtkTargetList // out
-
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	C.gtk_target_list_unref(_arg0)
 }
 
 // TargetPair is used to represent the same information as a table of

@@ -158,28 +158,6 @@ func (iconSet *IconSet) Sizes() []int {
 	return _sizes
 }
 
-// Ref increments the reference count on icon_set.
-//
-// Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) ref() *IconSet {
-	var _arg0 *C.GtkIconSet // out
-	var _cret *C.GtkIconSet // in
-
-	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
-
-	_cret = C.gtk_icon_set_ref(_arg0)
-
-	var _iconSet *IconSet // out
-
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_icon_set_ref(_cret)
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _iconSet
-}
-
 // RenderIcon renders an icon using gtk_style_render_icon(). In most cases,
 // gtk_widget_render_icon() is better, since it automatically provides most of
 // the arguments from the current widget settings. This function never returns
@@ -204,6 +182,7 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 	_arg4 = C.GtkIconSize(size)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+	defer C.free(unsafe.Pointer(_arg6))
 
 	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -296,18 +275,6 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	return _surface
 }
 
-// Unref decrements the reference count on icon_set, and frees memory if the
-// reference count reaches 0.
-//
-// Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) unref() {
-	var _arg0 *C.GtkIconSet // out
-
-	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
-
-	C.gtk_icon_set_unref(_arg0)
-}
-
 type IconSource struct {
 	nocopy gextras.NoCopy
 	native *C.GtkIconSource
@@ -353,18 +320,6 @@ func (source *IconSource) Copy() *IconSource {
 	})
 
 	return _iconSource
-}
-
-// Free frees a dynamically-allocated icon source, along with its filename,
-// size, and pixbuf fields if those are not NULL.
-//
-// Deprecated: Use IconTheme instead.
-func (source *IconSource) free() {
-	var _arg0 *C.GtkIconSource // out
-
-	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
-
-	C.gtk_icon_source_free(_arg0)
 }
 
 // Direction obtains the text direction this icon source applies to. The return
@@ -608,6 +563,7 @@ func (source *IconSource) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_filename(_arg0, _arg1)
 }
@@ -622,6 +578,7 @@ func (source *IconSource) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 }
@@ -754,15 +711,6 @@ func (data *SelectionData) Copy() *SelectionData {
 	})
 
 	return _selectionData
-}
-
-// Free frees a SelectionData-struct returned from gtk_selection_data_copy().
-func (data *SelectionData) free() {
-	var _arg0 *C.GtkSelectionData // out
-
-	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(data)))
-
-	C.gtk_selection_data_free(_arg0)
 }
 
 // Display retrieves the display of the selection.
@@ -921,6 +869,7 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
 	_cret = C.gtk_selection_data_set_text(_arg0, _arg1, _arg2)
@@ -944,12 +893,14 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(uris)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(uris)+1)
 			var zero *C.gchar
 			out[len(uris)] = zero
 			for i := range uris {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(uris[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -1190,16 +1141,6 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	return _widgetPath
 }
 
-// Free decrements the reference count on path, freeing the structure if the
-// reference count reaches 0.
-func (path *WidgetPath) free() {
-	var _arg0 *C.GtkWidgetPath // out
-
-	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C.gtk_widget_path_free(_arg0)
-}
-
 // ObjectType returns the topmost object type, that is, the object type this
 // path is representing.
 func (path *WidgetPath) ObjectType() externglib.Type {
@@ -1269,6 +1210,7 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
 }
@@ -1289,6 +1231,7 @@ func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GtkRegionFlags(flags)
 
 	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
@@ -1450,6 +1393,7 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
 
@@ -1473,6 +1417,7 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
 
@@ -1573,6 +1518,7 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
 
@@ -1597,6 +1543,7 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
 }
@@ -1613,6 +1560,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
 }
@@ -1627,6 +1575,7 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
 }
@@ -1643,6 +1592,7 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
 }
@@ -1711,26 +1661,6 @@ func (path *WidgetPath) PrependType(typ externglib.Type) {
 	C.gtk_widget_path_prepend_type(_arg0, _arg1)
 }
 
-// Ref increments the reference count on path.
-func (path *WidgetPath) ref() *WidgetPath {
-	var _arg0 *C.GtkWidgetPath // out
-	var _cret *C.GtkWidgetPath // in
-
-	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C.gtk_widget_path_ref(_arg0)
-
-	var _widgetPath *WidgetPath // out
-
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _widgetPath
-}
-
 // String dumps the widget path into a string representation. It tries to match
 // the CSS style as closely as possible (Note that there might be paths that
 // cannot be represented in CSS).
@@ -1751,14 +1681,4 @@ func (path *WidgetPath) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Unref decrements the reference count on path, freeing the structure if the
-// reference count reaches 0.
-func (path *WidgetPath) unref() {
-	var _arg0 *C.GtkWidgetPath // out
-
-	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C.gtk_widget_path_unref(_arg0)
 }

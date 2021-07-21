@@ -739,7 +739,7 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 
 // IconList retrieves the list of icons set by gtk_window_set_icon_list(). The
 // list is copied, but the reference count on each member won’t be incremented.
-func (window *Window) IconList() *externglib.List {
+func (window *Window) IconList() []gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GList     // in
 
@@ -747,11 +747,11 @@ func (window *Window) IconList() *externglib.List {
 
 	_cret = C.gtk_window_get_icon_list(_arg0)
 
-	var _list *externglib.List // out
+	var _list []gdkpixbuf.Pixbuf // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkPixbuf)(_p)
+	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkPixbuf)(v)
 		var dst gdkpixbuf.Pixbuf // out
 		{
 			obj := externglib.Take(unsafe.Pointer(src))
@@ -764,9 +764,8 @@ func (window *Window) IconList() *externglib.List {
 				},
 			}
 		}
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1454,6 +1453,7 @@ func (window *Window) ParseGeometry(geometry string) bool {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(geometry)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_window_parse_geometry(_arg0, _arg1)
 
@@ -2015,6 +2015,7 @@ func (window *Window) SetIconFromFile(filename string) error {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_from_file(_arg0, _arg1, &_cerr)
 
@@ -2023,6 +2024,47 @@ func (window *Window) SetIconFromFile(filename string) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// SetIconList sets up the icon representing a Window. The icon is used when the
+// window is minimized (also known as iconified). Some window managers or
+// desktop environments may also place it in the window frame, or display it in
+// other contexts. On others, the icon is not used at all, so your mileage may
+// vary.
+//
+// gtk_window_set_icon_list() allows you to pass in the same icon in several
+// hand-drawn sizes. The list should contain the natural sizes your icon is
+// available in; that is, don’t scale the image before passing it to GTK+.
+// Scaling is postponed until the last minute, when the desired final size is
+// known, to allow best quality.
+//
+// By passing several sizes, you may improve the final image quality of the
+// icon, by reducing or eliminating automatic image scaling.
+//
+// Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger
+// images (64x64, 128x128) if you have them.
+//
+// See also gtk_window_set_default_icon_list() to set the icon for all windows
+// in your application in one go.
+//
+// Note that transient windows (those who have been set transient for another
+// window using gtk_window_set_transient_for()) will inherit their icon from
+// their transient parent. So there’s no need to explicitly set the icon on
+// transient windows.
+func (window *Window) SetIconList(list []gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkWindow // out
+	var _arg1 *C.GList     // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GdkPixbuf // out
+		dst = (*C.GdkPixbuf)(unsafe.Pointer((&src).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+
+	C.gtk_window_set_icon_list(_arg0, _arg1)
 }
 
 // SetIconName sets the icon for the window from a named themed icon. See the
@@ -2037,6 +2079,7 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
 }
@@ -2201,6 +2244,7 @@ func (window *Window) SetRole(role string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_role(_arg0, _arg1)
 }
@@ -2263,6 +2307,7 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
 }
@@ -2280,6 +2325,7 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_title(_arg0, _arg1)
 }
@@ -2378,7 +2424,9 @@ func (window *Window) SetWmclass(wmclassName string, wmclassClass string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassClass)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_window_set_wmclass(_arg0, _arg1, _arg2)
 }
@@ -2452,16 +2500,16 @@ func (window *Window) Unstick() {
 // gtk_window_set_default_icon_list(). The list is a copy and should be freed
 // with g_list_free(), but the pixbufs in the list have not had their reference
 // count incremented.
-func WindowGetDefaultIconList() *externglib.List {
+func WindowGetDefaultIconList() []gdkpixbuf.Pixbuf {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_get_default_icon_list()
 
-	var _list *externglib.List // out
+	var _list []gdkpixbuf.Pixbuf // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkPixbuf)(_p)
+	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkPixbuf)(v)
 		var dst gdkpixbuf.Pixbuf // out
 		{
 			obj := externglib.Take(unsafe.Pointer(src))
@@ -2474,9 +2522,8 @@ func WindowGetDefaultIconList() *externglib.List {
 				},
 			}
 		}
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -2502,21 +2549,20 @@ func WindowGetDefaultIconName() string {
 // through the list and perform actions involving callbacks that might destroy
 // the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, NULL)
 // first, and then unref all the widgets afterwards.
-func WindowListToplevels() *externglib.List {
+func WindowListToplevels() []Widgetter {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_list_toplevels()
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -2558,6 +2604,7 @@ func WindowSetDefaultIconFromFile(filename string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_from_file(_arg1, &_cerr)
 
@@ -2568,6 +2615,25 @@ func WindowSetDefaultIconFromFile(filename string) error {
 	return _goerr
 }
 
+// WindowSetDefaultIconList sets an icon list to be used as fallback for windows
+// that haven't had gtk_window_set_icon_list() called on them to set up a
+// window-specific icon list. This function allows you to set up the icon for
+// all windows in your app at once.
+//
+// See gtk_window_set_icon_list() for more details.
+func WindowSetDefaultIconList(list []gdkpixbuf.Pixbuf) {
+	var _arg1 *C.GList // out
+
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GdkPixbuf // out
+		dst = (*C.GdkPixbuf)(unsafe.Pointer((&src).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	C.gtk_window_set_default_icon_list(_arg1)
+}
+
 // WindowSetDefaultIconName sets an icon to be used as fallback for windows that
 // haven't had gtk_window_set_icon_list() called on them from a named themed
 // icon, see gtk_window_set_icon_name().
@@ -2575,6 +2641,7 @@ func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_name(_arg1)
 }

@@ -130,6 +130,7 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
@@ -149,6 +150,7 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
 
@@ -169,6 +171,7 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
 

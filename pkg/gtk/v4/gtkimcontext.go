@@ -539,6 +539,7 @@ func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) 
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(len)
 	_arg3 = C.int(cursorIndex)
 
@@ -558,6 +559,7 @@ func (context *IMContext) SetSurroundingWithSelection(text string, len int, curs
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(len)
 	_arg3 = C.int(cursorIndex)
 	_arg4 = C.int(anchorIndex)

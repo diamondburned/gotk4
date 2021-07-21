@@ -163,6 +163,7 @@ func (context *StyleContext) AddClass(className string) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_add_class(_arg0, _arg1)
 }
@@ -318,6 +319,7 @@ func (context *StyleContext) HasClass(className string) bool {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
@@ -339,6 +341,7 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
@@ -360,6 +363,7 @@ func (context *StyleContext) RemoveClass(className string) {
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_class(_arg0, _arg1)
 }

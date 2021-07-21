@@ -206,6 +206,7 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, &_cerr)
 

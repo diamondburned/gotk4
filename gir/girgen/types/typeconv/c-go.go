@@ -224,47 +224,39 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		return conv.cgoConverter(value)
 	}
 
-	// TODO: GHashTable.
+	// Miraculously, convertInner will handle freeing for us. The only con is
+	// that this approach will not work once we change from copying to
+	// container-viewing, since the routine will end up freeing on view.
+	//
+	// This is a concern for future me, though.
+
 	switch value.Resolved.GType {
 	case "GLib.List":
-		value.header.Import("unsafe")
-
-		value.vtmpl("<.Out.Set> = externglib.WrapList(uintptr(unsafe.Pointer(<.InNamePtr 1>)))")
-
 		inner := conv.convertInner(value, "src", "dst")
-		if inner != nil {
-			value.p.Linef("%s.DataWrapper(func(_p unsafe.Pointer) interface{} {",
-				value.OutInNamePtr(1))
-			value.p.Linef("  src := (%s)(_p)", inner.In.Type)
-			value.p.Linef("  %s", inner.Out.Declare)
-			value.p.Linef("  %s", inner.Conversion)
-			value.p.Linef("  return %s", inner.Out.Name)
-			value.p.Linef("})")
+		if inner == nil {
+			value.Logln(logger.Debug, "List missing inner type")
+			return false
 		}
 
-		switch value.TransferOwnership.TransferOwnership {
-		case "container":
-			value.vtmpl("<.OutInNamePtr 1>.AttachFinalizer(nil)")
-		case "full":
-			value.p.Linef("%s.AttachFinalizer(func(v uintptr) {", value.OutInNamePtr(1))
-			value.p.Linef("  " + conv.cFree(inner, "unsafe.Pointer(v)"))
-			value.p.Linef("})")
-		}
+		value.header.Import("unsafe")
+		value.header.ImportCore("gextras")
+		value.header.ApplyFrom(inner.Header())
 
-		// Transfer over the header in the end.
-		if inner != nil {
-			inner.finalize()
-			value.header.ApplyFrom(inner.Header())
-		}
+		value.p.Linef(
+			"%s = make([]%s, 0, gextras.ListSize(unsafe.Pointer(%s)))",
+			value.Out.Set, inner.Out.Type, value.InNamePtr(1))
+
+		value.p.Linef("gextras.MoveList(unsafe.Pointer(%s), %t, func(v unsafe.Pointer) {",
+			value.InNamePtr(1), value.ShouldFree())
+		value.p.Linef("  src := (%s)(v)", inner.In.Type)
+		value.p.Linef("  %s", inner.Out.Declare)
+		value.p.Linef("  %s", inner.Conversion)
+		value.p.Linef("  %s = append(%[1]s, %s)", value.Out.Set, inner.Out.Name)
+		value.p.Linef("})")
 
 		return true
 
 	case "GLib.HashTable":
-		if len(value.Type.Types) != 2 {
-			value.Logln(logger.Debug, "skipping untyped HashTable")
-			return false
-		}
-
 		kt := conv.convertType(value, "ksrc", "kdst", &value.Type.Types[0])
 		vt := conv.convertType(value, "vsrc", "vdst", &value.Type.Types[1])
 		if kt == nil || vt == nil {
@@ -274,6 +266,8 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 
 		value.header.Import("unsafe")
 		value.header.ImportCore("gextras")
+		value.header.ApplyFrom(kt.Header())
+		value.header.ApplyFrom(vt.Header())
 
 		value.p.Linef(
 			"%s = make(%s, gextras.HashTableSize(unsafe.Pointer(%s)))",
@@ -281,7 +275,7 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 
 		value.p.Linef(
 			"gextras.MoveHashTable(unsafe.Pointer(%s), %t, func(k, v unsafe.Pointer) {",
-			value.InNamePtr(1), value.TransferOwnership.TransferOwnership == "full")
+			value.InNamePtr(1), value.ShouldFree())
 		value.p.Linef("ksrc := *(*%s)(k)", kt.In.Type)
 		value.p.Linef("vsrc := *(*%s)(v)", vt.In.Type)
 		value.p.Linef(kt.Out.Declare)
@@ -290,10 +284,6 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		value.p.Linef(vt.Conversion)
 		value.p.Linef("%s[kdst] = vdst", value.Out.Set)
 		value.p.Linef("})")
-
-		if value.ShouldFree() {
-			value.p.Linef("gextras.FreeHashTable(unsafe.Pointer(%s))", value.InNamePtr(1))
-		}
 
 		return true
 	}

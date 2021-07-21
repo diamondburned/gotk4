@@ -32,6 +32,7 @@ func IconSizeFromName(name string) int {
 	var _cret C.GtkIconSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_size_from_name(_arg1)
 
@@ -137,6 +138,7 @@ func IconSizeRegister(name string, width int, height int) int {
 	var _cret C.GtkIconSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(width)
 	_arg3 = C.gint(height)
 
@@ -158,6 +160,7 @@ func IconSizeRegisterAlias(alias string, target int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(target)
 
 	C.gtk_icon_size_register_alias(_arg1, _arg2)
@@ -296,6 +299,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
 	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
@@ -330,6 +334,7 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 
@@ -368,6 +373,7 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 	var _cret *C.GtkIconSet // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_factory_lookup_default(_arg1)
 

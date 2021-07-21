@@ -76,6 +76,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 	var _cret *C.GSocketAddress // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_socket_address_new(_arg1)
 

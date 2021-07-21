@@ -85,21 +85,20 @@ func (v VisualType) String() string {
 // Call g_list_free() on the return value when you’re finished with it.
 //
 // Deprecated: Use gdk_screen_list_visuals (gdk_screen_get_default ()).
-func ListVisuals() *externglib.List {
+func ListVisuals() []Visual {
 	var _cret *C.GList // in
 
 	_cret = C.gdk_list_visuals()
 
-	var _list *externglib.List // out
+	var _list []Visual // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkVisual)(_p)
+	_list = make([]Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkVisual)(v)
 		var dst Visual // out
 		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

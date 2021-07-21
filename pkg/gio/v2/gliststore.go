@@ -236,6 +236,7 @@ func (store *ListStore) Splice(position uint, nRemovals uint, additions []*exter
 	_arg2 = C.guint(nRemovals)
 	_arg4 = (C.guint)(len(additions))
 	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_gpointer)))
+	defer C.free(unsafe.Pointer(_arg3))
 	{
 		out := unsafe.Slice((*C.gpointer)(_arg3), len(additions))
 		for i := range additions {

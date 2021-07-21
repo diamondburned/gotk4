@@ -405,7 +405,7 @@ func (box *FlowBox) RowSpacing() uint {
 }
 
 // SelectedChildren creates a list of all selected children.
-func (box *FlowBox) SelectedChildren() *externglib.List {
+func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret *C.GList      // in
 
@@ -413,16 +413,15 @@ func (box *FlowBox) SelectedChildren() *externglib.List {
 
 	_cret = C.gtk_flow_box_get_selected_children(_arg0)
 
-	var _list *externglib.List // out
+	var _list []FlowBoxChild // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkFlowBoxChild)(_p)
+	_list = make([]FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkFlowBoxChild)(v)
 		var dst FlowBoxChild // out
 		dst = *wrapFlowBoxChild(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

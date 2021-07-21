@@ -119,6 +119,7 @@ func (vfs *VFS) FileForPath(path string) Filer {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
@@ -140,6 +141,7 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
@@ -206,6 +208,7 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
 
@@ -249,6 +252,7 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, pars
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
 	_arg3 = C.gpointer(gbox.Assign(uriFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -276,6 +280,7 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
 

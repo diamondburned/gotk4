@@ -84,7 +84,7 @@ func (anchor *TextChildAnchor) Deleted() bool {
 
 // Widgets gets a list of all widgets anchored at this child anchor. The
 // returned list should be freed with g_list_free().
-func (anchor *TextChildAnchor) Widgets() *externglib.List {
+func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret *C.GList              // in
 
@@ -92,16 +92,15 @@ func (anchor *TextChildAnchor) Widgets() *externglib.List {
 
 	_cret = C.gtk_text_child_anchor_get_widgets(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

@@ -28,6 +28,7 @@ func RelationTypeForName(name string) RelationType {
 	var _cret C.AtkRelationType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_for_name(_arg1)
 
@@ -61,6 +62,7 @@ func RelationTypeRegister(name string) RelationType {
 	var _cret C.AtkRelationType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_register(_arg1)
 
@@ -102,6 +104,7 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 	_arg2 = (C.gint)(len(targets))
 	_arg1 = (**C.AtkObject)(C.malloc(C.ulong(len(targets)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.AtkObject)(_arg1), len(targets))
 		for i := range targets {

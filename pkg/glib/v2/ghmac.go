@@ -60,6 +60,7 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 		_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
 	}
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.gssize(length)
 
 	_cret = C.g_compute_hmac_for_string(_arg1, _arg2, _arg3, _arg4, _arg5)

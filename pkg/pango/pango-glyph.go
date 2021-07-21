@@ -80,6 +80,40 @@ func (s ShapeFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// ReorderItems: reorder items from logical order to visual order.
+//
+// The visual order is determined from the associated directional levels of the
+// items. The original list is unmodified.
+func ReorderItems(logicalItems []Item) []Item {
+	var _arg1 *C.GList // out
+	var _cret *C.GList // in
+
+	for i := len(logicalItems) - 1; i >= 0; i-- {
+		src := logicalItems[i]
+		var dst *C.PangoItem // out
+		dst = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer((&src))))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+
+	_cret = C.pango_reorder_items(_arg1)
+
+	var _list []Item // out
+
+	_list = make([]Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoItem)(v)
+		var dst Item // out
+		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(&dst, func(v *Item) {
+			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
 // Shape: convert the characters in text into glyphs.
 //
 // Given a segment of text and the corresponding PangoAnalysis structure
@@ -99,6 +133,7 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg4 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
@@ -131,8 +166,10 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	var _arg6 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
@@ -163,8 +200,10 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 	var _arg7 C.PangoShapeFlags   // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
@@ -336,15 +375,6 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	return _inkRect, _logicalRect
 }
 
-// Free: free a glyph string and associated storage.
-func (_string *GlyphString) free() {
-	var _arg0 *C.PangoGlyphString // out
-
-	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(_string)))
-
-	C.pango_glyph_string_free(_arg0)
-}
-
 // Width computes the logical width of the glyph string.
 //
 // This can also be computed using pango.GlyphString.Extents(). However, since
@@ -381,6 +411,7 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(index_)
@@ -426,6 +457,7 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(xPos)

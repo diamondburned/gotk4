@@ -117,6 +117,7 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 

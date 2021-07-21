@@ -183,38 +183,6 @@ type WidgetOverrider interface {
 	ConfigureEvent(event *gdk.EventConfigure) bool
 	DamageEvent(event *gdk.EventExpose) bool
 	DeleteEvent(event *gdk.EventAny) bool
-	// Destroy destroys a widget.
-	//
-	// When a widget is destroyed all references it holds on other objects will
-	// be released:
-	//
-	//    - if the widget is inside a container, it will be removed from its
-	//    parent
-	//    - if the widget is a container, all its children will be destroyed,
-	//    recursively
-	//    - if the widget is a top level, it will be removed from the list
-	//    of top level widgets that GTK+ maintains internally
-	//
-	// It's expected that all references held on the widget will also be
-	// released; you should connect to the Widget::destroy signal if you hold a
-	// reference to widget and you wish to remove it when this function is
-	// called. It is not necessary to do so if you are implementing a Container,
-	// as you'll be able to use the ContainerClass.remove() virtual function for
-	// that.
-	//
-	// It's important to notice that gtk_widget_destroy() will only cause the
-	// widget to be finalized if no additional references, acquired using
-	// g_object_ref(), are held on it. In case additional references are in
-	// place, the widget will be in an "inert" state after calling this
-	// function; widget will still point to valid memory, allowing you to
-	// release the references you hold, but you may not query the widget's own
-	// state.
-	//
-	// You should typically call this function on top level widgets, and rarely
-	// on child widgets.
-	//
-	// See also: gtk_container_remove()
-	Destroy()
 	DestroyEvent(event *gdk.EventAny) bool
 	DirectionChanged(previousDirection TextDirection)
 	DragBegin(context *gdk.DragContext)
@@ -592,8 +560,6 @@ type Widgetter interface {
 	// CreatePangoLayout creates a new Layout with the appropriate font map,
 	// font description, and base direction for drawing text for this widget.
 	CreatePangoLayout(text string) *pango.Layout
-	// Destroy destroys a widget.
-	Destroy()
 	// DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+
 	// device grab on another widget, so it would stop sending events to widget.
 	DeviceIsShadowed(device gdk.Devicer) bool
@@ -946,7 +912,7 @@ type Widgetter interface {
 	// ListMnemonicLabels returns a newly allocated list of the widgets,
 	// normally labels, for which this widget is the target of a mnemonic (see
 	// for example, gtk_label_set_mnemonic_widget()).
-	ListMnemonicLabels() *externglib.List
+	ListMnemonicLabels() []Widgetter
 	// Map: this function is only for use in widget implementations.
 	Map()
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
@@ -1272,6 +1238,7 @@ func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup,
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelSignal)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 	_arg3 = C.guint(accelKey)
 	_arg4 = C.GdkModifierType(accelMods)
@@ -1435,6 +1402,7 @@ func (widget *Widget) ChildNotify(childProperty string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_child_notify(_arg0, _arg1)
 }
@@ -1531,6 +1499,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
 
@@ -1544,43 +1513,6 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	}
 
 	return _layout
-}
-
-// Destroy destroys a widget.
-//
-// When a widget is destroyed all references it holds on other objects will be
-// released:
-//
-//    - if the widget is inside a container, it will be removed from its
-//    parent
-//    - if the widget is a container, all its children will be destroyed,
-//    recursively
-//    - if the widget is a top level, it will be removed from the list
-//    of top level widgets that GTK+ maintains internally
-//
-// It's expected that all references held on the widget will also be released;
-// you should connect to the Widget::destroy signal if you hold a reference to
-// widget and you wish to remove it when this function is called. It is not
-// necessary to do so if you are implementing a Container, as you'll be able to
-// use the ContainerClass.remove() virtual function for that.
-//
-// It's important to notice that gtk_widget_destroy() will only cause the widget
-// to be finalized if no additional references, acquired using g_object_ref(),
-// are held on it. In case additional references are in place, the widget will
-// be in an "inert" state after calling this function; widget will still point
-// to valid memory, allowing you to release the references you hold, but you may
-// not query the widget's own state.
-//
-// You should typically call this function on top level widgets, and rarely on
-// child widgets.
-//
-// See also: gtk_container_remove()
-func (widget *Widget) Destroy() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	C.gtk_widget_destroy(_arg0)
 }
 
 // DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+ device
@@ -1935,6 +1867,7 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_name(_arg0, _arg1)
 }
@@ -1962,6 +1895,7 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
 }
@@ -2108,6 +2042,7 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prefix)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
 
@@ -3572,6 +3507,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
 
@@ -4107,6 +4043,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
@@ -4366,7 +4303,7 @@ func (widget *Widget) ListActionPrefixes() []string {
 // iterate through the list and perform actions involving callbacks that might
 // destroy the widgets, you must call g_list_foreach (result,
 // (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
-func (widget *Widget) ListMnemonicLabels() *externglib.List {
+func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -4374,16 +4311,15 @@ func (widget *Widget) ListMnemonicLabels() *externglib.List {
 
 	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -4685,6 +4621,7 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
@@ -4978,8 +4915,10 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
 
@@ -5018,6 +4957,7 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
@@ -5106,6 +5046,7 @@ func (widget *Widget) SetAccelPath(accelPath string, accelGroup *AccelGroup) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
@@ -5238,6 +5179,7 @@ func (widget *Widget) SetCompositeName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_composite_name(_arg0, _arg1)
 }
@@ -5616,6 +5558,7 @@ func (widget *Widget) SetName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_name(_arg0, _arg1)
 }
@@ -5890,6 +5833,7 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
 }
@@ -5905,6 +5849,7 @@ func (widget *Widget) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
 }
@@ -6177,6 +6122,7 @@ func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Va
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)
@@ -6404,13 +6350,4 @@ func (requisition *Requisition) Copy() *Requisition {
 	})
 
 	return _ret
-}
-
-// Free frees a Requisition.
-func (requisition *Requisition) free() {
-	var _arg0 *C.GtkRequisition // out
-
-	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
-
-	C.gtk_requisition_free(_arg0)
 }

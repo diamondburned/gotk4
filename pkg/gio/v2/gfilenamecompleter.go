@@ -81,6 +81,7 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(initialText)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
@@ -100,6 +101,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(completer.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(initialText)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
 

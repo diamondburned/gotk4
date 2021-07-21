@@ -633,6 +633,7 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
 }

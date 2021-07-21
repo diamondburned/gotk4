@@ -89,6 +89,7 @@ func NewInetAddressFromString(_string string) *InetAddress {
 	var _cret *C.GInetAddress // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
 

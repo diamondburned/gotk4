@@ -397,7 +397,7 @@ type CellAreaer interface {
 	// for which renderer is, or may be a sibling.
 	FocusFromSibling(renderer CellRendererer) CellRendererer
 	// FocusSiblings gets the focus sibling cell renderers for renderer.
-	FocusSiblings(renderer CellRendererer) *externglib.List
+	FocusSiblings(renderer CellRendererer) []CellRendererer
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
@@ -593,6 +593,7 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
 
 	C.gtk_cell_area_attribute_connect(_arg0, _arg1, _arg2, _arg3)
@@ -608,6 +609,7 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_cell_area_attribute_disconnect(_arg0, _arg1, _arg2)
 }
@@ -623,6 +625,7 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_cell_area_attribute_get_column(_arg0, _arg1, _arg2)
 
@@ -643,6 +646,7 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_cell_area_cell_get_property(_arg0, _arg1, _arg2, _arg3)
@@ -658,6 +662,7 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_cell_area_cell_set_property(_arg0, _arg1, _arg2, _arg3)
@@ -943,7 +948,7 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 }
 
 // FocusSiblings gets the focus sibling cell renderers for renderer.
-func (area *CellArea) FocusSiblings(renderer CellRendererer) *externglib.List {
+func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.GList           // in
@@ -953,14 +958,14 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) *externglib.List {
 
 	_cret = C.gtk_cell_area_get_focus_siblings(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []CellRendererer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkCellRenderer)(_p)
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list

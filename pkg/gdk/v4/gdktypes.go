@@ -503,10 +503,12 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	_arg2 = (C.guint)(len(mimeTypes))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.char)(_arg1), len(mimeTypes))
 		for i := range mimeTypes {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -571,6 +573,7 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
 
@@ -642,26 +645,6 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// Ref increases the reference count of a GdkContentFormats by one.
-func (formats *ContentFormats) ref() *ContentFormats {
-	var _arg0 *C.GdkContentFormats // out
-	var _cret *C.GdkContentFormats // in
-
-	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	_cret = C.gdk_content_formats_ref(_arg0)
-
-	var _contentFormats *ContentFormats // out
-
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _contentFormats
 }
 
 // String prints the given formats into a human-readable string.
@@ -789,17 +772,6 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	})
 
 	return _contentFormats
-}
-
-// Unref decreases the reference count of a GdkContentFormats by one.
-//
-// If the resulting reference count is zero, frees the formats.
-func (formats *ContentFormats) unref() {
-	var _arg0 *C.GdkContentFormats // out
-
-	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	C.gdk_content_formats_unref(_arg0)
 }
 
 // KeymapKey: GdkKeymapKey is a hardware key that can be mapped to a keyval.

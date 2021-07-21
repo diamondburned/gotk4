@@ -142,6 +142,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _cret **C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(categoryName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_language_names_with_category(_arg1)
 
@@ -183,6 +184,7 @@ func GetLocaleVariants(locale string) []string {
 	var _cret **C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_locale_variants(_arg1)
 

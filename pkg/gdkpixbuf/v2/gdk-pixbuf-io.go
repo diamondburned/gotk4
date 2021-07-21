@@ -169,6 +169,7 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 	var _cret *C.GdkPixbufFormat // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_get_file_info(_arg1, &_arg2, &_arg3)
 
@@ -204,6 +205,7 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -253,6 +255,7 @@ func PixbufInitModules(path string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_pixbuf_init_modules(_arg1, &_cerr)
 
@@ -295,16 +298,6 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 	})
 
 	return _pixbufFormat
-}
-
-// Free frees the resources allocated when copying a GdkPixbufFormat using
-// gdk_pixbuf_format_copy()
-func (format *PixbufFormat) free() {
-	var _arg0 *C.GdkPixbufFormat // out
-
-	_arg0 = (*C.GdkPixbufFormat)(gextras.StructNative(unsafe.Pointer(format)))
-
-	C.gdk_pixbuf_format_free(_arg0)
 }
 
 // Description returns a description of the format.
@@ -452,6 +445,7 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	_arg0 = (*C.GdkPixbufFormat)(gextras.StructNative(unsafe.Pointer(format)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(optionKey)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
 

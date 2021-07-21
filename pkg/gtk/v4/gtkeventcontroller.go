@@ -238,6 +238,7 @@ func (controller *EventController) SetName(name string) {
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_event_controller_set_name(_arg0, _arg1)
 }

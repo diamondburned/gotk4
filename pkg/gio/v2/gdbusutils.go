@@ -34,6 +34,7 @@ func DBusEscapeObjectPath(s string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(s)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_escape_object_path(_arg1)
 
@@ -189,6 +190,7 @@ func DBusIsGUID(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_guid(_arg1)
 
@@ -207,6 +209,7 @@ func DBusIsInterfaceName(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_interface_name(_arg1)
 
@@ -226,6 +229,7 @@ func DBusIsMemberName(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_member_name(_arg1)
 
@@ -245,6 +249,7 @@ func DBusIsName(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_name(_arg1)
 
@@ -263,6 +268,7 @@ func DBusIsUniqueName(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_unique_name(_arg1)
 
@@ -286,6 +292,7 @@ func DBusUnescapeObjectPath(s string) []byte {
 	var _cret *C.guint8 // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(s)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_unescape_object_path(_arg1)
 

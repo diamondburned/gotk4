@@ -114,6 +114,7 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
 
@@ -252,6 +253,7 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
 
@@ -299,6 +301,7 @@ func (fontButton *FontButton) SetTitle(title string) {
 
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_button_set_title(_arg0, _arg1)
 }

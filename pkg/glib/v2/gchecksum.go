@@ -99,6 +99,7 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 
 	_arg1 = C.GChecksumType(checksumType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gssize(length)
 
 	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
@@ -162,15 +163,6 @@ func (checksum *Checksum) Copy() *Checksum {
 	})
 
 	return _ret
-}
-
-// Free frees the memory allocated for checksum.
-func (checksum *Checksum) free() {
-	var _arg0 *C.GChecksum // out
-
-	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
-
-	C.g_checksum_free(_arg0)
 }
 
 // String gets the digest as a hexadecimal string.

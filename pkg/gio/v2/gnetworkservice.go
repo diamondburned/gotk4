@@ -71,8 +71,11 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 	var _cret *C.GSocketConnectable // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 
@@ -157,6 +160,7 @@ func (srv *NetworkService) SetScheme(scheme string) {
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_network_service_set_scheme(_arg0, _arg1)
 }

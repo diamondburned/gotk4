@@ -791,7 +791,7 @@ type Widgetter interface {
 	KeynavFailed(direction DirectionType) bool
 	// ListMnemonicLabels returns the widgets for which this widget is the
 	// target of a mnemonic.
-	ListMnemonicLabels() *externglib.List
+	ListMnemonicLabels() []Widgetter
 	// Map causes a widget to be mapped if it isn’t already.
 	Map()
 	// Measure measures widget in the orientation orientation and for the given
@@ -979,6 +979,7 @@ func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if enabled {
 		_arg2 = C.TRUE
 	}
@@ -1034,6 +1035,7 @@ func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 
 	_cret = C.gtk_widget_activate_action_variant(_arg0, _arg1, _arg2)
@@ -1082,6 +1084,7 @@ func (widget *Widget) AddCSSClass(cssClass string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_add_css_class(_arg0, _arg1)
 }
@@ -1386,6 +1389,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
 
@@ -2607,6 +2611,7 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
 
@@ -2793,6 +2798,7 @@ func (widget *Widget) HasCSSClass(cssClass string) bool {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_has_css_class(_arg0, _arg1)
 
@@ -2948,6 +2954,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
@@ -3160,7 +3167,7 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 // iterate through the list and perform actions involving callbacks that might
 // destroy the widgets, you must call g_list_foreach (result,
 // (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
-func (widget *Widget) ListMnemonicLabels() *externglib.List {
+func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -3168,16 +3175,15 @@ func (widget *Widget) ListMnemonicLabels() *externglib.List {
 
 	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -3431,6 +3437,7 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_remove_css_class(_arg0, _arg1)
 }
@@ -3534,12 +3541,14 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	{
 		_arg1 = (**C.char)(C.malloc(C.ulong(len(classes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(classes)+1)
 			var zero *C.char
 			out[len(classes)] = zero
 			for i := range classes {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(classes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -3577,6 +3586,7 @@ func (widget *Widget) SetCursorFromName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_cursor_from_name(_arg0, _arg1)
 }
@@ -3848,6 +3858,7 @@ func (widget *Widget) SetName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_name(_arg0, _arg1)
 }
@@ -4024,6 +4035,7 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
 }
@@ -4042,6 +4054,7 @@ func (widget *Widget) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
 }
@@ -4365,13 +4378,4 @@ func (requisition *Requisition) Copy() *Requisition {
 	})
 
 	return _ret
-}
-
-// Free frees a GtkRequisition.
-func (requisition *Requisition) free() {
-	var _arg0 *C.GtkRequisition // out
-
-	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
-
-	C.gtk_requisition_free(_arg0)
 }

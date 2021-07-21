@@ -99,6 +99,7 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
 }

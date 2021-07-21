@@ -43,6 +43,7 @@ func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 	utf8 := fn(path)
 
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
 
 	return cret
 }
@@ -92,6 +93,7 @@ func StockLookup(stockId string) (StockItem, bool) {
 	var _cret C.gboolean     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
 
@@ -145,6 +147,7 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	var _arg4 C.GDestroyNotify
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
 	_arg3 = C.gpointer(gbox.Assign(fn))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -191,17 +194,4 @@ func (s *StockItem) TranslationDomain() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.translation_domain)))
 	return v
-}
-
-// Free frees a stock item allocated on the heap, such as one returned by
-// gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
-// are not NULL.
-//
-// Deprecated: since version 3.10.
-func (item *StockItem) free() {
-	var _arg0 *C.GtkStockItem // out
-
-	_arg0 = (*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer(item)))
-
-	C.gtk_stock_item_free(_arg0)
 }

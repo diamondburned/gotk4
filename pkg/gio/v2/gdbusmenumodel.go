@@ -39,7 +39,9 @@ func DBusMenuModelGet(connection *DBusConnection, busName string, objectPath str
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_menu_model_get(_arg1, _arg2, _arg3)
 

@@ -230,6 +230,7 @@ func NewImageFromFile(filename string) *Image {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
 
@@ -271,6 +272,7 @@ func NewImageFromIconName(iconName string, size int) *Image {
 	var _cret *C.GtkWidget  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1, _arg2)
@@ -352,6 +354,7 @@ func NewImageFromResource(resourcePath string) *Image {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
 
@@ -375,6 +378,7 @@ func NewImageFromStock(stockId string, size int) *Image {
 	var _cret *C.GtkWidget  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_stock(_arg1, _arg2)
@@ -613,6 +617,7 @@ func (image *Image) SetFromFile(filename string) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
@@ -638,6 +643,7 @@ func (image *Image) SetFromIconName(iconName string, size int) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1, _arg2)
@@ -676,6 +682,7 @@ func (image *Image) SetFromResource(resourcePath string) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)
 }
@@ -690,6 +697,7 @@ func (image *Image) SetFromStock(stockId string, size int) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_stock(_arg0, _arg1, _arg2)

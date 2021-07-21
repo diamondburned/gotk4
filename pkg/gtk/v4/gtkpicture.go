@@ -146,6 +146,7 @@ func NewPictureForFilename(filename string) *Picture {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
 
@@ -206,6 +207,7 @@ func NewPictureForResource(resourcePath string) *Picture {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
 
@@ -321,6 +323,7 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(alternativeText)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_alternative_text(_arg0, _arg1)
 }
@@ -369,6 +372,7 @@ func (self *Picture) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_filename(_arg0, _arg1)
 }
@@ -433,6 +437,7 @@ func (self *Picture) SetResource(resourcePath string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_resource(_arg0, _arg1)
 }

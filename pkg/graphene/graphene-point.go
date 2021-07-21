@@ -111,15 +111,6 @@ func (a *Point) Equal(b *Point) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_point_alloc().
-func (p *Point) free() {
-	var _arg0 *C.graphene_point_t // out
-
-	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
-
-	C.graphene_point_free(_arg0)
-}
-
 // Init initializes p to the given x and y coordinates.
 //
 // It's safe to call this function multiple times.

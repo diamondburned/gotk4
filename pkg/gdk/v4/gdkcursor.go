@@ -102,6 +102,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _cret *C.GdkCursor // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)

@@ -104,6 +104,7 @@ func NewVideoForFilename(filename string) *Video {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_video_new_for_filename(_arg1)
 
@@ -139,6 +140,7 @@ func NewVideoForResource(resourcePath string) *Video {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_video_new_for_resource(_arg1)
 
@@ -251,6 +253,7 @@ func (self *Video) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_video_set_filename(_arg0, _arg1)
 }
@@ -293,6 +296,7 @@ func (self *Video) SetResource(resourcePath string) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_video_set_resource(_arg0, _arg1)
 }

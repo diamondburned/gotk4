@@ -3,7 +3,6 @@
 package gsk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -152,6 +151,7 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _cret *C.GskGLShader // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_new_from_resource(_arg1)
 
@@ -198,6 +198,7 @@ func (shader *GLShader) FindUniformByName(name string) int {
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
 
@@ -346,26 +347,6 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	return &ShaderArgsBuilder{native: (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))}, nil
 }
 
-// Ref increases the reference count of a GskShaderArgsBuilder by one.
-func (builder *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
-	var _arg0 *C.GskShaderArgsBuilder // out
-	var _cret *C.GskShaderArgsBuilder // in
-
-	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	_cret = C.gsk_shader_args_builder_ref(_arg0)
-
-	var _shaderArgsBuilder *ShaderArgsBuilder // out
-
-	_shaderArgsBuilder = (*ShaderArgsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_shader_args_builder_ref(_cret)
-	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
-		C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _shaderArgsBuilder
-}
-
 // SetBool sets the value of the uniform idx.
 //
 // The uniform must be of bool type.
@@ -471,15 +452,4 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec4(_arg0, _arg1, _arg2)
-}
-
-// Unref decreases the reference count of a GskShaderArgBuilder by one.
-//
-// If the resulting reference count is zero, frees the builder.
-func (builder *ShaderArgsBuilder) unref() {
-	var _arg0 *C.GskShaderArgsBuilder // out
-
-	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	C.gsk_shader_args_builder_unref(_arg0)
 }

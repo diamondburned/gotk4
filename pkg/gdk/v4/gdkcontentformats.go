@@ -31,6 +31,7 @@ func InternMIMEType(_string string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_intern_mime_type(_arg1)
 
@@ -100,30 +101,9 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
-}
-
-// Ref acquires a reference on the given builder.
-//
-// This function is intended primarily for bindings. GdkContentFormatsBuilder
-// objects should not be kept around.
-func (builder *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-	var _cret *C.GdkContentFormatsBuilder // in
-
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	_cret = C.gdk_content_formats_builder_ref(_arg0)
-
-	var _contentFormatsBuilder *ContentFormatsBuilder // out
-
-	_contentFormatsBuilder = (*ContentFormatsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
-		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _contentFormatsBuilder
 }
 
 // ToFormats creates a new GdkContentFormats from the given builder.
@@ -150,13 +130,4 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	})
 
 	return _contentFormats
-}
-
-// Unref releases a reference on the given builder.
-func (builder *ContentFormatsBuilder) unref() {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	C.gdk_content_formats_builder_unref(_arg0)
 }

@@ -56,6 +56,7 @@ func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(smClientId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
@@ -194,6 +195,7 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(theme)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
@@ -218,6 +220,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }

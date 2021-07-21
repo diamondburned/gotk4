@@ -196,6 +196,7 @@ func NewVariantType(typeString string) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_new(_arg1)
 
@@ -401,20 +402,6 @@ func (typ *VariantType) First() *VariantType {
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _variantType
-}
-
-// Free frees a Type that was allocated with g_variant_type_copy(),
-// g_variant_type_new() or one of the container type constructor functions.
-//
-// In the case that type is NULL, this function does nothing.
-//
-// Since 2.24
-func (typ *VariantType) free() {
-	var _arg0 *C.GVariantType // out
-
-	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
-
-	C.g_variant_type_free(_arg0)
 }
 
 // StringLength returns the length of the type string corresponding to the given
@@ -749,6 +736,7 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg0)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_checked_(_arg1)
 
@@ -764,6 +752,7 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 	var _cret C.gsize  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_get_depth_(_arg1)
 
@@ -782,6 +771,7 @@ func VariantTypeStringIsValid(typeString string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_is_valid(_arg1)
 
@@ -813,7 +803,9 @@ func VariantTypeStringScan(_string string, limit string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
 

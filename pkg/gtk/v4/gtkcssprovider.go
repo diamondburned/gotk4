@@ -124,6 +124,7 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1)
 }
@@ -138,6 +139,7 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
@@ -154,7 +156,9 @@ func (provider *CSSProvider) LoadNamed(name string, variant string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_css_provider_load_named(_arg0, _arg1, _arg2)
 }

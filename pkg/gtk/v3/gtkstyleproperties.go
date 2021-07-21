@@ -104,6 +104,7 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
 	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
@@ -132,6 +133,7 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
 
@@ -156,6 +158,7 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
@@ -191,6 +194,7 @@ func (props *StyleProperties) SetPropertyStylePropertieser(property string, stat
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -207,6 +211,7 @@ func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
@@ -307,28 +312,6 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	C.gtk_gradient_add_color_stop(_arg0, _arg1, _arg2)
 }
 
-// Ref increases the reference count of gradient.
-//
-// Deprecated: Gradient is deprecated.
-func (gradient *Gradient) ref() *Gradient {
-	var _arg0 *C.GtkGradient // out
-	var _cret *C.GtkGradient // in
-
-	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
-
-	_cret = C.gtk_gradient_ref(_arg0)
-
-	var _ret *Gradient // out
-
-	_ret = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_gradient_ref(_cret)
-	runtime.SetFinalizer(_ret, func(v *Gradient) {
-		C.gtk_gradient_unref((*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _ret
-}
-
 // Resolve: if gradient is resolvable, resolved_gradient will be filled in with
 // the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
 // Generally, if gradient can’t be resolved, it is due to it being defined on
@@ -406,18 +389,6 @@ func (gradient *Gradient) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Unref decreases the reference count of gradient, freeing its memory if the
-// reference count reaches 0.
-//
-// Deprecated: Gradient is deprecated.
-func (gradient *Gradient) unref() {
-	var _arg0 *C.GtkGradient // out
-
-	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
-
-	C.gtk_gradient_unref(_arg0)
 }
 
 // SymbolicColor is a boxed type that represents a symbolic color. It is the
@@ -514,6 +485,7 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	var _cret *C.GtkSymbolicColor // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_symbolic_color_new_name(_arg1)
 
@@ -557,31 +529,10 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	var _cret *C.GtkSymbolicColor // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(id)
 
 	_cret = C.gtk_symbolic_color_new_win32(_arg1, _arg2)
-
-	var _symbolicColor *SymbolicColor // out
-
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _symbolicColor
-}
-
-// Ref increases the reference count of color
-//
-// Deprecated: SymbolicColor is deprecated.
-func (color *SymbolicColor) ref() *SymbolicColor {
-	var _arg0 *C.GtkSymbolicColor // out
-	var _cret *C.GtkSymbolicColor // in
-
-	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
-
-	_cret = C.gtk_symbolic_color_ref(_arg0)
 
 	var _symbolicColor *SymbolicColor // out
 
@@ -646,16 +597,4 @@ func (color *SymbolicColor) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Unref decreases the reference count of color, freeing its memory if the
-// reference count reaches 0.
-//
-// Deprecated: SymbolicColor is deprecated.
-func (color *SymbolicColor) unref() {
-	var _arg0 *C.GtkSymbolicColor // out
-
-	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C.gtk_symbolic_color_unref(_arg0)
 }

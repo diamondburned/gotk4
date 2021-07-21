@@ -772,7 +772,7 @@ func (treeView *TreeView) Column(n int) *TreeViewColumn {
 
 // Columns returns a #GList of all the TreeViewColumn s currently in tree_view.
 // The returned list must be freed with g_list_free ().
-func (treeView *TreeView) Columns() *externglib.List {
+func (treeView *TreeView) Columns() []TreeViewColumn {
 	var _arg0 *C.GtkTreeView // out
 	var _cret *C.GList       // in
 
@@ -780,16 +780,15 @@ func (treeView *TreeView) Columns() *externglib.List {
 
 	_cret = C.gtk_tree_view_get_columns(_arg0)
 
-	var _list *externglib.List // out
+	var _list []TreeViewColumn // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkTreeViewColumn)(_p)
+	_list = make([]TreeViewColumn, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTreeViewColumn)(v)
 		var dst TreeViewColumn // out
 		dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1407,6 +1406,7 @@ func (treeView *TreeView) InsertColumnWithDataFunc(position int, title string, c
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg1 = C.int(position)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gtk4_TreeCellDataFunc)
 	_arg5 = C.gpointer(gbox.Assign(fn))

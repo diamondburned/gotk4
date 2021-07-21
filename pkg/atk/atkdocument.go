@@ -115,6 +115,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
 
@@ -228,7 +229,9 @@ func (document *Document) SetAttributeValue(attributeName string, attributeValue
 
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
 

@@ -194,6 +194,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 
@@ -405,6 +406,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = C.gint(index_)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_completion_insert_action_markup(_arg0, _arg1, _arg2)
 }
@@ -423,6 +425,7 @@ func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = C.gint(index_)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_completion_insert_action_text(_arg0, _arg1, _arg2)
 }

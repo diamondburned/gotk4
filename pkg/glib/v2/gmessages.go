@@ -200,10 +200,14 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	var _arg5 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(line)
 	_arg4 = (*C.char)(unsafe.Pointer(C.CString(prettyFunction)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(expression)))
+	defer C.free(unsafe.Pointer(_arg5))
 
 	C.g_assert_warning(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -239,8 +243,10 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	var _arg4 C.gpointer       // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.gpointer)(unsafe.Pointer(unusedData))
 
 	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
@@ -255,6 +261,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg2 C.guint  // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(handlerId)
 
 	C.g_log_remove_handler(_arg1, _arg2)
@@ -309,6 +316,7 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _cret C.GLogLevelFlags // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_fatal_mask(_arg1, _arg2)
@@ -366,6 +374,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg3 *C.GVariant      // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fields)))
 
@@ -462,6 +471,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 

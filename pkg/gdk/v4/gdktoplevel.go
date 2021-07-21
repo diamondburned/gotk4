@@ -246,6 +246,8 @@ type Topleveller interface {
 	SetDecorated(decorated bool)
 	// SetDeletable sets the toplevel to be deletable.
 	SetDeletable(deletable bool)
+	// SetIconList sets a list of icons for the surface.
+	SetIconList(surfaces []Texturer)
 	// SetModal sets the toplevel to be modal.
 	SetModal(modal bool)
 	// SetStartupID sets the startup notification ID.
@@ -487,6 +489,30 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	C.gdk_toplevel_set_deletable(_arg0, _arg1)
 }
 
+// SetIconList sets a list of icons for the surface.
+//
+// One of these will be used to represent the surface in iconic form. The icon
+// may be shown in window lists or task bars. Which icon size is shown depends
+// on the window manager. The window manager can scale the icon but setting
+// several size icons can give better image quality.
+//
+// Note that some platforms don't support surface icons.
+func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 *C.GList       // out
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	for i := len(surfaces) - 1; i >= 0; i-- {
+		src := surfaces[i]
+		var dst *C.GdkTexture // out
+		dst = (*C.GdkTexture)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+
+	C.gdk_toplevel_set_icon_list(_arg0, _arg1)
+}
+
 // SetModal sets the toplevel to be modal.
 //
 // The application can use this hint to tell the window manager that a certain
@@ -517,6 +543,7 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_startup_id(_arg0, _arg1)
 }
@@ -530,6 +557,7 @@ func (toplevel *Toplevel) SetTitle(title string) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_title(_arg0, _arg1)
 }

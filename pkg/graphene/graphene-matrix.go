@@ -167,15 +167,6 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_matrix_alloc().
-func (m *Matrix) free() {
-	var _arg0 *C.graphene_matrix_t // out
-
-	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
-
-	C.graphene_matrix_free(_arg0)
-}
-
 // Row retrieves the given row vector at index_ inside a matrix.
 func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out

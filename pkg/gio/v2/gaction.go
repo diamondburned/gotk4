@@ -382,6 +382,7 @@ func ActionNameIsValid(actionName string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_name_is_valid(_arg1)
 
@@ -424,6 +425,7 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_parse_detailed_name(_arg1, &_arg2, &_arg3, &_cerr)
 
@@ -460,6 +462,7 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	var _cret *C.gchar    // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 
 	_cret = C.g_action_print_detailed_name(_arg1, _arg2)

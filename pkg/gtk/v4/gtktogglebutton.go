@@ -168,6 +168,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
@@ -187,6 +188,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 

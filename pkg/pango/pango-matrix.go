@@ -113,15 +113,6 @@ func (matrix *Matrix) Copy() *Matrix {
 	return _ret
 }
 
-// Free: free a PangoMatrix.
-func (matrix *Matrix) free() {
-	var _arg0 *C.PangoMatrix // out
-
-	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
-
-	C.pango_matrix_free(_arg0)
-}
-
 // FontScaleFactor returns the scale factor of a matrix on the height of the
 // font.
 //

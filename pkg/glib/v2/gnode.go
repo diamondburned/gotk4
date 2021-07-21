@@ -216,16 +216,6 @@ func (node *Node) Depth() uint {
 	return _guint
 }
 
-// Destroy removes root and its children from the tree, freeing any memory
-// allocated.
-func (root *Node) Destroy() {
-	var _arg0 *C.GNode // out
-
-	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
-
-	C.g_node_destroy(_arg0)
-}
-
 // IsAncestor returns TRUE if node is an ancestor of descendant. This is true if
 // node is the parent of descendant, or if node is the grandparent of descendant
 // etc.

@@ -89,15 +89,6 @@ func (a *Triangle) Equal(b *Triangle) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_triangle_alloc().
-func (t *Triangle) free() {
-	var _arg0 *C.graphene_triangle_t // out
-
-	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
-
-	C.graphene_triangle_free(_arg0)
-}
-
 // Area computes the area of the given #graphene_triangle_t.
 func (t *Triangle) Area() float32 {
 	var _arg0 *C.graphene_triangle_t // out

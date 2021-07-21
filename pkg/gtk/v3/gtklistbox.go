@@ -397,7 +397,7 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 }
 
 // SelectedRows creates a list of all selected children.
-func (box *ListBox) SelectedRows() *externglib.List {
+func (box *ListBox) SelectedRows() []ListBoxRow {
 	var _arg0 *C.GtkListBox // out
 	var _cret *C.GList      // in
 
@@ -405,16 +405,15 @@ func (box *ListBox) SelectedRows() *externglib.List {
 
 	_cret = C.gtk_list_box_get_selected_rows(_arg0)
 
-	var _list *externglib.List // out
+	var _list []ListBoxRow // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkListBoxRow)(_p)
+	_list = make([]ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkListBoxRow)(v)
 		var dst ListBoxRow // out
 		dst = *wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

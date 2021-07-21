@@ -125,7 +125,9 @@ func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) err
 	var _cret *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorMessage)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_error_new_for_dbus_error(_arg1, _arg2)
 
@@ -150,6 +152,7 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 	_arg1 = C.guint32(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_error_register_error(_arg1, _arg2, _arg3)
 
@@ -174,6 +177,7 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 	var _arg4 C.guint
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorDomainQuarkName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gsize)(unsafe.Pointer(quarkVolatile))
 	_arg4 = (C.guint)(len(entries))
 	if len(entries) > 0 {
@@ -217,6 +221,7 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 	_arg1 = C.guint32(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_error_unregister_error(_arg1, _arg2, _arg3)
 

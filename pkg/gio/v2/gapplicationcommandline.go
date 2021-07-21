@@ -154,6 +154,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
@@ -361,6 +362,7 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
 

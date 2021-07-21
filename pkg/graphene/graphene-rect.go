@@ -138,15 +138,6 @@ func (r *Rect) Expand(p *Point) Rect {
 	return _res
 }
 
-// Free frees the resources allocated by graphene_rect_alloc().
-func (r *Rect) free() {
-	var _arg0 *C.graphene_rect_t // out
-
-	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
-
-	C.graphene_rect_free(_arg0)
-}
-
 // Area: compute the area of given normalized rectangle.
 func (r *Rect) Area() float32 {
 	var _arg0 *C.graphene_rect_t // out

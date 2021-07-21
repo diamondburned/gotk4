@@ -32,6 +32,7 @@ func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
@@ -250,6 +251,7 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
@@ -274,6 +276,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }
@@ -308,6 +311,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -347,6 +351,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -374,6 +379,7 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 	var _cret *C.GdkDisplay // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_open(_arg1)
 
@@ -399,6 +405,7 @@ func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_display_set_program_class(_arg1, _arg2)
 }

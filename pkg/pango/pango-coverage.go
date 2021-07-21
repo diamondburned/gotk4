@@ -152,22 +152,6 @@ func (coverage *Coverage) Max(other *Coverage) {
 	C.pango_coverage_max(_arg0, _arg1)
 }
 
-// Ref: increase the reference count on the PangoCoverage by one.
-func (coverage *Coverage) ref() *Coverage {
-	var _arg0 *C.PangoCoverage // out
-	var _cret *C.PangoCoverage // in
-
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
-
-	_cret = C.pango_coverage_ref(_arg0)
-
-	var _ret *Coverage // out
-
-	_ret = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _ret
-}
-
 // Set: modify a particular index within coverage
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
@@ -200,17 +184,6 @@ func (coverage *Coverage) ToBytes() []byte {
 	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _bytes
-}
-
-// Unref: decrease the reference count on the PangoCoverage by one.
-//
-// If the result is zero, free the coverage and all associated memory.
-func (coverage *Coverage) unref() {
-	var _arg0 *C.PangoCoverage // out
-
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
-
-	C.pango_coverage_unref(_arg0)
 }
 
 // CoverageFromBytes: convert data generated from pango_coverage_to_bytes() back

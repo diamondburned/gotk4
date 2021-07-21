@@ -237,15 +237,6 @@ func (scanner *Scanner) CurToken() TokenType {
 	return _tokenType
 }
 
-// Destroy frees all memory used by the #GScanner.
-func (scanner *Scanner) Destroy() {
-	var _arg0 *C.GScanner // out
-
-	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
-
-	C.g_scanner_destroy(_arg0)
-}
-
 // EOF returns TRUE if the scanner has reached the end of the file or text
 // buffer.
 func (scanner *Scanner) EOF() bool {
@@ -302,6 +293,7 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(textLen)
 
 	C.g_scanner_input_text(_arg0, _arg1, _arg2)
@@ -316,6 +308,7 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
 
@@ -362,6 +355,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_scanner_scope_add_symbol(_arg0, _arg1, _arg2, _arg3)
@@ -378,6 +372,7 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
 
@@ -397,6 +392,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_scanner_scope_remove_symbol(_arg0, _arg1, _arg2)
 }
@@ -448,9 +444,13 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.GTokenType(expectedToken)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(identifierSpec)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(symbolSpec)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(symbolName)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.gint(isError)
 
 	C.g_scanner_unexp_token(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

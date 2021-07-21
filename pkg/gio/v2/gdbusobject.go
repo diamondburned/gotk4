@@ -40,7 +40,7 @@ type DBusObjectOverrider interface {
 	// with object, if any.
 	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
-	Interfaces() *externglib.List
+	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 	InterfaceAdded(interface_ DBusInterfacer)
@@ -62,7 +62,7 @@ type DBusObjector interface {
 	// with object, if any.
 	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
-	Interfaces() *externglib.List
+	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 }
@@ -90,6 +90,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 
 	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
@@ -101,7 +102,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 }
 
 // Interfaces gets the D-Bus interfaces associated with object.
-func (object *DBusObject) Interfaces() *externglib.List {
+func (object *DBusObject) Interfaces() []DBusInterfacer {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
 
@@ -109,17 +110,14 @@ func (object *DBusObject) Interfaces() *externglib.List {
 
 	_cret = C.g_dbus_object_get_interfaces(_arg0)
 
-	var _list *externglib.List // out
+	var _list []DBusInterfacer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GDBusInterface)(_p)
+	_list = make([]DBusInterfacer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDBusInterface)(v)
 		var dst DBusInterfacer // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusInterfacer)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list

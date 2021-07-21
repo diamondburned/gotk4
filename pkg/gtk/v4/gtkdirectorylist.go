@@ -77,6 +77,7 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _cret *C.GtkDirectoryList // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
@@ -210,6 +211,7 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 }

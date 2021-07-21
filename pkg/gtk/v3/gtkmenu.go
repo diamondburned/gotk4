@@ -414,6 +414,7 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_accel_path(_arg0, _arg1)
 }
@@ -504,13 +505,14 @@ func (menu *Menu) SetTitle(title string) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_title(_arg0, _arg1)
 }
 
 // MenuGetForAttachWidget returns a list of the menus which are attached to this
 // widget. This list is owned by GTK+ and must not be modified.
-func MenuGetForAttachWidget(widget Widgetter) *externglib.List {
+func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -518,14 +520,14 @@ func MenuGetForAttachWidget(widget Widgetter) *externglib.List {
 
 	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list

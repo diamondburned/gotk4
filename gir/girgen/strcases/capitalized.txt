@@ -42,6 +42,7 @@ Bsd
 Mpl
 Ssl
 Ssm
+Xpm
 Tcp
 Udp
 Ipp

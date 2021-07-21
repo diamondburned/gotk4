@@ -133,7 +133,7 @@ type Gesturer interface {
 	// gesture.
 	Device() gdk.Devicer
 	// GetGroup returns all gestures in the group of gesture
-	GetGroup() *externglib.List
+	GetGroup() []Gesturer
 	// LastEvent returns the last event that was processed for sequence.
 	LastEvent(sequence *gdk.EventSequence) gdk.Eventer
 	// LastUpdatedSequence returns the GdkEventSequence that was last updated on
@@ -147,7 +147,7 @@ type Gesturer interface {
 	SequenceState(sequence *gdk.EventSequence) EventSequenceState
 	// Sequences returns the list of GdkEventSequences currently being
 	// interpreted by gesture.
-	Sequences() *externglib.List
+	Sequences() []*gdk.EventSequence
 	// Group adds gesture to the same group than group_gesture.
 	Group(gesture Gesturer)
 	// HandlesSequence returns TRUE if gesture is currently handling events
@@ -261,7 +261,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 }
 
 // GetGroup returns all gestures in the group of gesture
-func (gesture *Gesture) GetGroup() *externglib.List {
+func (gesture *Gesture) GetGroup() []Gesturer {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GList      // in
 
@@ -269,16 +269,15 @@ func (gesture *Gesture) GetGroup() *externglib.List {
 
 	_cret = C.gtk_gesture_get_group(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Gesturer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkGesture)(_p)
+	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -371,7 +370,7 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 
 // Sequences returns the list of GdkEventSequences currently being interpreted
 // by gesture.
-func (gesture *Gesture) Sequences() *externglib.List {
+func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GList      // in
 
@@ -379,16 +378,15 @@ func (gesture *Gesture) Sequences() *externglib.List {
 
 	_cret = C.gtk_gesture_get_sequences(_arg0)
 
-	var _list *externglib.List // out
+	var _list []*gdk.EventSequence // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkEventSequence)(_p)
+	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkEventSequence)(v)
 		var dst *gdk.EventSequence // out
 		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

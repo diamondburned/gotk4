@@ -93,15 +93,6 @@ func (a *Frustum) Equal(b *Frustum) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_frustum_alloc().
-func (f *Frustum) free() {
-	var _arg0 *C.graphene_frustum_t // out
-
-	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
-
-	C.graphene_frustum_free(_arg0)
-}
-
 // Planes retrieves the planes that define the given #graphene_frustum_t.
 func (f *Frustum) Planes() [6]Plane {
 	var _arg0 *C.graphene_frustum_t // out

@@ -103,7 +103,7 @@ type Seater interface {
 	// Capabilities returns the capabilities this GdkSeat currently has.
 	Capabilities() SeatCapabilities
 	// Devices returns the devices that match the given capabilities.
-	Devices(capabilities SeatCapabilities) *externglib.List
+	Devices(capabilities SeatCapabilities) []Devicer
 	// Display returns the GdkDisplay this seat belongs to.
 	Display() *Display
 	// Keyboard returns the device that routes keyboard events.
@@ -111,7 +111,7 @@ type Seater interface {
 	// Pointer returns the device that routes pointer events.
 	Pointer() Devicer
 	// Tools returns all GdkDeviceTools that are known to the application.
-	Tools() *externglib.List
+	Tools() []DeviceTool
 }
 
 var _ Seater = (*Seat)(nil)
@@ -145,7 +145,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 }
 
 // Devices returns the devices that match the given capabilities.
-func (seat *Seat) Devices(capabilities SeatCapabilities) *externglib.List {
+func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
@@ -155,16 +155,15 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) *externglib.List {
 
 	_cret = C.gdk_seat_get_devices(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []Devicer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkDevice)(_p)
+	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -218,7 +217,7 @@ func (seat *Seat) Pointer() Devicer {
 }
 
 // Tools returns all GdkDeviceTools that are known to the application.
-func (seat *Seat) Tools() *externglib.List {
+func (seat *Seat) Tools() []DeviceTool {
 	var _arg0 *C.GdkSeat // out
 	var _cret *C.GList   // in
 
@@ -226,16 +225,15 @@ func (seat *Seat) Tools() *externglib.List {
 
 	_cret = C.gdk_seat_get_tools(_arg0)
 
-	var _list *externglib.List // out
+	var _list []DeviceTool // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkDeviceTool)(_p)
+	_list = make([]DeviceTool, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDeviceTool)(v)
 		var dst DeviceTool // out
 		dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

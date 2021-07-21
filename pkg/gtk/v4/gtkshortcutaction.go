@@ -261,6 +261,7 @@ func NewNamedAction(name string) *NamedAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_named_action_new(_arg1)
 
@@ -401,6 +402,7 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
@@ -494,6 +496,7 @@ func NewSignalAction(signalName string) *SignalAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_signal_action_new(_arg1)
 

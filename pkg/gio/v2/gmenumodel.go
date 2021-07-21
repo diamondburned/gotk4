@@ -585,6 +585,7 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
@@ -614,6 +615,7 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)
 

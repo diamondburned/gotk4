@@ -292,7 +292,9 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _cerr *C.GError     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mode)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_io_channel_new_file(_arg1, _arg2, &_cerr)
 
@@ -413,27 +415,6 @@ func (channel *IOChannel) Buffered() bool {
 	return _ok
 }
 
-// CloseOnUnref returns whether the file/socket/whatever associated with channel
-// will be closed when channel receives its final unref and is destroyed. The
-// default value of this is TRUE for channels created by g_io_channel_new_file
-// (), and FALSE for all other channels.
-func (channel *IOChannel) CloseOnUnref() bool {
-	var _arg0 *C.GIOChannel // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-
-	_cret = C.g_io_channel_get_close_on_unref(_arg0)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Encoding gets the encoding for the input/output of the channel. The internal
 // encoding is always UTF-8. The encoding NULL makes the channel safe for binary
 // data.
@@ -519,6 +500,7 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
 
@@ -610,26 +592,6 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	return _thechar, _ioStatus, _goerr
 }
 
-// Ref increments the reference count of a OChannel.
-func (channel *IOChannel) ref() *IOChannel {
-	var _arg0 *C.GIOChannel // out
-	var _cret *C.GIOChannel // in
-
-	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-
-	_cret = C.g_io_channel_ref(_arg0)
-
-	var _ioChannel *IOChannel // out
-
-	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_io_channel_ref(_cret)
-	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
-		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _ioChannel
-}
-
 // Seek sets the current position in the OChannel, similar to the standard
 // library function fseek().
 //
@@ -715,24 +677,6 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 	C.g_io_channel_set_buffered(_arg0, _arg1)
 }
 
-// SetCloseOnUnref: whether to close the channel on the final unref of the
-// OChannel data structure. The default value of this is TRUE for channels
-// created by g_io_channel_new_file (), and FALSE for all other channels.
-//
-// Setting this flag to TRUE for a channel you have already closed can cause
-// problems when the final reference to the OChannel is dropped.
-func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
-	var _arg0 *C.GIOChannel // out
-	var _arg1 C.gboolean    // out
-
-	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	if doClose {
-		_arg1 = C.TRUE
-	}
-
-	C.g_io_channel_set_close_on_unref(_arg0, _arg1)
-}
-
 // SetEncoding sets the encoding for the input/output of the channel. The
 // internal encoding is always UTF-8. The default encoding for the external file
 // is UTF-8.
@@ -773,6 +717,7 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(encoding)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
 
@@ -816,6 +761,7 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(lineTerm)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	C.g_io_channel_set_line_term(_arg0, _arg1, _arg2)
@@ -865,15 +811,6 @@ func (channel *IOChannel) UnixGetFd() int {
 	return _gint
 }
 
-// Unref decrements the reference count of a OChannel.
-func (channel *IOChannel) unref() {
-	var _arg0 *C.GIOChannel // out
-
-	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-
-	C.g_io_channel_unref(_arg0)
-}
-
 // Write writes data to a OChannel.
 //
 // Deprecated: Use g_io_channel_write_chars() instead.
@@ -886,6 +823,7 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesWritten))
 

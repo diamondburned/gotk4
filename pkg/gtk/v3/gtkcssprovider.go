@@ -187,6 +187,7 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
 
@@ -208,6 +209,7 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
@@ -256,7 +258,9 @@ func CSSProviderGetNamed(name string, variant string) *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
 

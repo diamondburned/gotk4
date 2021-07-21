@@ -56,6 +56,7 @@ func SetAllowedBackends(backends string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(backends)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
 }
@@ -142,6 +143,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 

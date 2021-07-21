@@ -358,6 +358,7 @@ func StateTypeForName(name string) StateType {
 	var _cret C.AtkStateType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_state_type_for_name(_arg1)
 
@@ -390,6 +391,7 @@ func StateTypeRegister(name string) StateType {
 	var _cret C.AtkStateType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_state_type_register(_arg1)
 

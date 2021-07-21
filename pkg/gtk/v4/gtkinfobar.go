@@ -169,6 +169,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)

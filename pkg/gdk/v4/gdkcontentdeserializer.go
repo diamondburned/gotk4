@@ -53,6 +53,7 @@ func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mime
 	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GType(typ)
 	_arg4 = C.int(ioPriority)
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

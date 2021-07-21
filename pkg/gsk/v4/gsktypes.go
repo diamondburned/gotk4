@@ -168,25 +168,6 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	return _transform
 }
 
-// Ref acquires a reference on the given GskTransform.
-func (self *Transform) ref() *Transform {
-	var _arg0 *C.GskTransform // out
-	var _cret *C.GskTransform // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-
-	_cret = C.gsk_transform_ref(_arg0)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _transform
-}
-
 // Rotate rotates next angle degrees in 2D - or in 3D-speak, around the z axis.
 func (next *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -522,16 +503,4 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	})
 
 	return _transform
-}
-
-// Unref releases a reference on the given GskTransform.
-//
-// If the reference was the last, the resources associated to the self are
-// freed.
-func (self *Transform) unref() {
-	var _arg0 *C.GskTransform // out
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-
-	C.gsk_transform_unref(_arg0)
 }

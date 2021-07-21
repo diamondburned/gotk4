@@ -172,7 +172,9 @@ func (controller *PadController) SetAction(typ PadActionType, index int, mode in
 	_arg2 = C.int(index)
 	_arg3 = C.int(mode)
 	_arg4 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg5))
 
 	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

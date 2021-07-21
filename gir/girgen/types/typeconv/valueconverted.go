@@ -224,7 +224,8 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		cgoType = strings.Replace(cgoType, "*", "", 1)
 	}
 
-	if value.Resolved.GType == "GLib.HashTable" {
+	switch value.Resolved.GType {
+	case "GLib.HashTable":
 		if value.Resolved.Ptr != 1 {
 			// Unknown ptr rule.
 			value.Logln(logger.Debug, "unknown HashTable pointer rule", value.Resolved.Ptr)
@@ -241,6 +242,18 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			value.Inner[0].GoType,
 			value.Inner[1].GoType,
 		)
+	case "GLib.List":
+		if value.Resolved.Ptr != 1 {
+			value.Logln(logger.Debug, "unknown List pointer rule", value.Resolved.Ptr)
+			return false
+		}
+
+		if len(value.Inner) != 1 {
+			value.Logln(logger.Debug, "List missing inner type")
+			return false
+		}
+
+		value.GoType = fmt.Sprintf("[]%s", value.Inner[0].GoType)
 	}
 
 	if value.Array != nil {
@@ -484,9 +497,9 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 
 	switch value.Direction {
 	case ConvertCToGo:
-		return strings.Count(value.In.Type, "*") == wantC
+		return types.CountPtr(value.In.Type) == wantC
 	case ConvertGoToC:
-		return strings.Count(value.Out.Type, "*") == wantC
+		return types.CountPtr(value.Out.Type) == wantC
 	default:
 		return false
 	}
@@ -521,7 +534,7 @@ func (value *ValueConverted) InNamePtr(want int) string {
 
 func (value *ValueConverted) InPtr(want int) string {
 	// Account for gpointer.
-	has := strings.Count(value.In.Type, "*")
+	has := types.CountPtr(value.In.Type)
 	if value.Direction == ConvertCToGo && value.Resolved.IsGpointer() {
 		has++
 	}
@@ -551,12 +564,12 @@ func (value *ValueConverted) OutInNamePtr(want int) string {
 // OutInPtr returns the left-hand side for the output name and type SPECIFICALLY
 // for inputting the output name elsewhere, like giving it to SetFinalizer.
 func (value *ValueConverted) OutInPtr(want int) string {
-	has := strings.Count(value.Out.Type, "*")
+	has := types.CountPtr(value.Out.Type)
 	return value._ptr(has, want)
 }
 
 func (value *ValueConverted) OutPtr(want int) string {
-	has := strings.Count(value.Out.Type, "*")
+	has := types.CountPtr(value.Out.Type)
 	// Account for gpointer.
 	if value.Direction == ConvertGoToC && value.Resolved.IsGpointer() {
 		has++

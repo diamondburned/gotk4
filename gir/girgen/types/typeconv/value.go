@@ -242,9 +242,9 @@ func (prop *ConversionValue) ShouldFree() bool {
 	goReceiving := prop.ParameterIndex == ReturnValueIndex || prop.ParameterIsOutput()
 	// If we're not converting C to Go, then we're probably in a callback, so
 	// the ownership is flipped.
-	if prop.Direction != ConvertCToGo {
-		goReceiving = !goReceiving
-	}
+	// if prop.Direction != ConvertCToGo {
+	// 	goReceiving = !goReceiving
+	// }
 
 	if goReceiving {
 		return prop.ownershipIsTransferring()

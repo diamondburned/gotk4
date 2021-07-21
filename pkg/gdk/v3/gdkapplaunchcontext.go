@@ -135,6 +135,7 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
 }

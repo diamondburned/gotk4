@@ -365,6 +365,7 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _cret C.gboolean  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
 

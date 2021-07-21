@@ -43,6 +43,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_mount_path_system_internal(_arg1)
 
@@ -67,6 +68,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(devicePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_device_path(_arg1)
 
@@ -91,6 +93,7 @@ func UnixIsSystemFSType(fsType string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fsType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_fs_type(_arg1)
 
@@ -114,6 +117,7 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 	var _cret *C.GUnixMountEntry // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_at(_arg1, &_arg2)
 
@@ -177,6 +181,7 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	var _cret *C.GUnixMountEntry // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_for(_arg1, &_arg2)
 
@@ -190,15 +195,6 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	})
 
 	return _timeRead, _unixMountEntry
-}
-
-// UnixMountFree frees a unix mount.
-func UnixMountFree(mountEntry *UnixMountEntry) {
-	var _arg1 *C.GUnixMountEntry // out
-
-	_arg1 = (*C.GUnixMountEntry)(gextras.StructNative(unsafe.Pointer(mountEntry)))
-
-	C.g_unix_mount_free(_arg1)
 }
 
 // UnixMountGetDevicePath gets the device path for a unix mount.
@@ -440,28 +436,25 @@ func UnixMountPointsChangedSince(time uint64) bool {
 // points. If time_read is set, it will be filled with the mount timestamp,
 // allowing for checking if the mounts have changed with
 // g_unix_mount_points_changed_since().
-func UnixMountPointsGet() (uint64, *externglib.List) {
+func UnixMountPointsGet() (uint64, []*UnixMountPoint) {
 	var _arg1 C.guint64 // in
 	var _cret *C.GList  // in
 
 	_cret = C.g_unix_mount_points_get(&_arg1)
 
-	var _timeRead uint64       // out
-	var _list *externglib.List // out
+	var _timeRead uint64        // out
+	var _list []*UnixMountPoint // out
 
 	_timeRead = uint64(_arg1)
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GUnixMountPoint)(_p)
+	_list = make([]*UnixMountPoint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GUnixMountPoint)(v)
 		var dst *UnixMountPoint // out
 		dst = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(dst, func(v *UnixMountPoint) {
 			C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_unix_mount_point_free((*C.GUnixMountPoint)(unsafe.Pointer(v)))
+		_list = append(_list, dst)
 	})
 
 	return _timeRead, _list
@@ -489,28 +482,25 @@ func UnixMountsChangedSince(time uint64) bool {
 // UnixMountsGet gets a #GList of MountEntry containing the unix mounts. If
 // time_read is set, it will be filled with the mount timestamp, allowing for
 // checking if the mounts have changed with g_unix_mounts_changed_since().
-func UnixMountsGet() (uint64, *externglib.List) {
+func UnixMountsGet() (uint64, []*UnixMountEntry) {
 	var _arg1 C.guint64 // in
 	var _cret *C.GList  // in
 
 	_cret = C.g_unix_mounts_get(&_arg1)
 
-	var _timeRead uint64       // out
-	var _list *externglib.List // out
+	var _timeRead uint64        // out
+	var _list []*UnixMountEntry // out
 
 	_timeRead = uint64(_arg1)
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GUnixMountEntry)(_p)
+	_list = make([]*UnixMountEntry, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GUnixMountEntry)(v)
 		var dst *UnixMountEntry // out
 		dst = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(dst, func(v *UnixMountEntry) {
 			C.free(gextras.StructNative(unsafe.Pointer(v)))
 		})
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.free(unsafe.Pointer((*C.GUnixMountEntry)(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _timeRead, _list
@@ -649,15 +639,6 @@ func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 	})
 
 	return _unixMountPoint
-}
-
-// Free frees a unix mount point.
-func (mountPoint *UnixMountPoint) free() {
-	var _arg0 *C.GUnixMountPoint // out
-
-	_arg0 = (*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(mountPoint)))
-
-	C.g_unix_mount_point_free(_arg0)
 }
 
 // DevicePath gets the device path for a unix mount point.
@@ -858,6 +839,7 @@ func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
 	var _cret *C.GUnixMountPoint // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_point_at(_arg1, &_arg2)
 

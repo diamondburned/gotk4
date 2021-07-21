@@ -626,12 +626,14 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(protocols)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(protocols)+1)
 			var zero *C.gchar
 			out[len(protocols)] = zero
 			for i := range protocols {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}

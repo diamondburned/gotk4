@@ -89,15 +89,6 @@ func (q *Quad) Contains(p *Point) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_quad_alloc()
-func (q *Quad) free() {
-	var _arg0 *C.graphene_quad_t // out
-
-	_arg0 = (*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(q)))
-
-	C.graphene_quad_free(_arg0)
-}
-
 // Point retrieves the point of a #graphene_quad_t at the given index.
 func (q *Quad) Point(index_ uint) *Point {
 	var _arg0 *C.graphene_quad_t  // out

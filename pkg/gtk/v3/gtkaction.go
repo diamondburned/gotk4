@@ -141,9 +141,13 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 	var _cret *C.GtkAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg4))
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -647,6 +651,7 @@ func (action *Action) SetAccelPath(accelPath string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_accel_path(_arg0, _arg1)
 }
@@ -697,6 +702,7 @@ func (action *Action) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_icon_name(_arg0, _arg1)
 }
@@ -729,6 +735,7 @@ func (action *Action) SetLabel(label string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_label(_arg0, _arg1)
 }
@@ -759,6 +766,7 @@ func (action *Action) SetShortLabel(shortLabel string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(shortLabel)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_short_label(_arg0, _arg1)
 }
@@ -772,6 +780,7 @@ func (action *Action) SetStockID(stockId string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_stock_id(_arg0, _arg1)
 }
@@ -786,6 +795,7 @@ func (action *Action) SetTooltip(tooltip string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_tooltip(_arg0, _arg1)
 }

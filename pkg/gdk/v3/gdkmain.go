@@ -216,6 +216,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_notify_startup_complete_with_id(_arg1)
 }
@@ -337,6 +338,7 @@ func SetAllowedBackends(backends string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(backends)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
 }
@@ -363,6 +365,7 @@ func SetProgramClass(programClass string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_program_class(_arg1)
 }

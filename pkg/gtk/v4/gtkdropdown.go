@@ -111,12 +111,14 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 
 	{
 		_arg1 = (**C.char)(C.malloc(C.ulong(len(strings)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(strings)+1)
 			var zero *C.char
 			out[len(strings)] = zero
 			for i := range strings {
 				out[i] = (*C.char)(unsafe.Pointer(C.CString(strings[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}

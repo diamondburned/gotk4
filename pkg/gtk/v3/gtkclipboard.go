@@ -364,6 +364,7 @@ func (clipboard *Clipboard) SetText(text string, len int) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
 	C.gtk_clipboard_set_text(_arg0, _arg1, _arg2)

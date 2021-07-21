@@ -692,26 +692,6 @@ func (context *MainContext) PushThreadDefault() {
 	C.g_main_context_push_thread_default(_arg0)
 }
 
-// Ref increases the reference count on a Context object by one.
-func (context *MainContext) ref() *MainContext {
-	var _arg0 *C.GMainContext // out
-	var _cret *C.GMainContext // in
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	_cret = C.g_main_context_ref(_arg0)
-
-	var _mainContext *MainContext // out
-
-	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _mainContext
-}
-
 // Release releases ownership of a context previously acquired by this thread
 // with g_main_context_acquire(). If the context was acquired multiple times,
 // the ownership will be released only when g_main_context_release() is called
@@ -734,16 +714,6 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_main_context_remove_poll(_arg0, _arg1)
-}
-
-// Unref decreases the reference count on a Context object by one. If the result
-// is zero, free the context and free all associated memory.
-func (context *MainContext) unref() {
-	var _arg0 *C.GMainContext // out
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	C.g_main_context_unref(_arg0)
 }
 
 // Wakeup: if context is currently blocking in g_main_context_iteration()
@@ -922,26 +892,6 @@ func (loop *MainLoop) Quit() {
 	C.g_main_loop_quit(_arg0)
 }
 
-// Ref increases the reference count on a Loop object by one.
-func (loop *MainLoop) ref() *MainLoop {
-	var _arg0 *C.GMainLoop // out
-	var _cret *C.GMainLoop // in
-
-	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
-
-	_cret = C.g_main_loop_ref(_arg0)
-
-	var _mainLoop *MainLoop // out
-
-	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_loop_ref(_cret)
-	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.g_main_loop_unref((*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _mainLoop
-}
-
 // Run runs a main loop until g_main_loop_quit() is called on the loop. If this
 // is called for the thread of the loop's Context, it will process events from
 // the loop, otherwise it will simply wait.
@@ -951,16 +901,6 @@ func (loop *MainLoop) Run() {
 	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_run(_arg0)
-}
-
-// Unref decreases the reference count on a Loop object by one. If the result is
-// zero, free the loop and free all associated memory.
-func (loop *MainLoop) unref() {
-	var _arg0 *C.GMainLoop // out
-
-	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
-
-	C.g_main_loop_unref(_arg0)
 }
 
 // Source: GSource struct is an opaque data type representing an event source.
@@ -1095,23 +1035,6 @@ func (source *Source) Attach(context *MainContext) uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// Destroy removes a source from its Context, if any, and mark it as destroyed.
-// The source cannot be subsequently added to another context. It is safe to
-// call this on sources which have already been removed from their context.
-//
-// This does not unref the #GSource: if you still hold a reference, use
-// g_source_unref() to drop it.
-//
-// This function is safe to call from any thread, regardless of which thread the
-// Context is running in.
-func (source *Source) Destroy() {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-
-	C.g_source_destroy(_arg0)
 }
 
 // CanRecurse checks whether a source is allowed to be called recursively. see
@@ -1364,26 +1287,6 @@ func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
 	return _ioCondition
 }
 
-// Ref increases the reference count on a source by one.
-func (source *Source) ref() *Source {
-	var _arg0 *C.GSource // out
-	var _cret *C.GSource // in
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-
-	_cret = C.g_source_ref(_arg0)
-
-	var _ret *Source // out
-
-	_ret = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
-	runtime.SetFinalizer(_ret, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _ret
-}
-
 // RemoveChildSource detaches child_source from source and destroys it.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
@@ -1504,6 +1407,7 @@ func (source *Source) SetName(name string) {
 
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_source_set_name(_arg0, _arg1)
 }
@@ -1554,16 +1458,6 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	_arg1 = C.gint64(readyTime)
 
 	C.g_source_set_ready_time(_arg0, _arg1)
-}
-
-// Unref decreases the reference count of a source by one. If the resulting
-// reference count is zero the source and associated memory will be destroyed.
-func (source *Source) unref() {
-	var _arg0 *C.GSource // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-
-	C.g_source_unref(_arg0)
 }
 
 // SourceRemove removes the source with the given ID from the default main
@@ -1663,6 +1557,7 @@ func SourceSetNameByID(tag uint, name string) {
 
 	_arg1 = C.guint(tag)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_source_set_name_by_id(_arg1, _arg2)
 }

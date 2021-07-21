@@ -172,6 +172,17 @@ func init() {
 	cTypePrefixEraser = strings.NewReplacer(replacers...)
 }
 
+// CountPtr counts the number of pointers in the given type string. If the
+// string contains "[]", then the pointer is counted up to that.
+func CountPtr(typ string) int {
+	sliceIx := strings.Index(typ, "[]")
+	if sliceIx == -1 {
+		sliceIx = len(typ) - 1
+	}
+
+	return strings.Count(typ[:sliceIx], "*")
+}
+
 // MovePtr moves the same number of pointers from the given orig string into
 // another string.
 func MovePtr(orig, into string) string {

@@ -352,6 +352,7 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	var _cret *C.GtkShortcutTrigger // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
 

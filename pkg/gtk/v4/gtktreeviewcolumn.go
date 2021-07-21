@@ -185,6 +185,7 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attr
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
 
 	C.gtk_tree_view_column_add_attribute(_arg0, _arg1, _arg2, _arg3)
@@ -940,6 +941,7 @@ func (treeColumn *TreeViewColumn) SetTitle(title string) {
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tree_view_column_set_title(_arg0, _arg1)
 }

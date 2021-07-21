@@ -389,11 +389,6 @@ type Cursorrer interface {
 	// Surface returns a cairo image surface with the image used to display the
 	// cursor.
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-	// Ref adds a reference to cursor.
-	ref() Cursorrer
-	// Unref removes a reference from cursor, deallocating the cursor if no
-	// references remain.
-	unref()
 }
 
 var _ Cursorrer = (*Cursor)(nil)
@@ -531,6 +526,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
@@ -700,34 +696,4 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	})
 
 	return _xHot, _yHot, _surface
-}
-
-// Ref adds a reference to cursor.
-//
-// Deprecated: Use g_object_ref() instead.
-func (cursor *Cursor) ref() Cursorrer {
-	var _arg0 *C.GdkCursor // out
-	var _cret *C.GdkCursor // in
-
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-
-	_cret = C.gdk_cursor_ref(_arg0)
-
-	var _ret Cursorrer // out
-
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Cursorrer)
-
-	return _ret
-}
-
-// Unref removes a reference from cursor, deallocating the cursor if no
-// references remain.
-//
-// Deprecated: Use g_object_unref() instead.
-func (cursor *Cursor) unref() {
-	var _arg0 *C.GdkCursor // out
-
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-
-	C.gdk_cursor_unref(_arg0)
 }

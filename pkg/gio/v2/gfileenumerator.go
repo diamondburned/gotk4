@@ -96,7 +96,7 @@ type FileEnumeratorOverrider interface {
 	NextFilesAsync(ctx context.Context, numFiles int, ioPriority int, callback AsyncReadyCallback)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
-	NextFilesFinish(result AsyncResulter) (*externglib.List, error)
+	NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -436,7 +436,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles i
 
 // NextFilesFinish finishes the asynchronous operation started with
 // g_file_enumerator_next_files_async().
-func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) (*externglib.List, error) {
+func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GList           // in
@@ -447,18 +447,15 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) (*extern
 
 	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
 
-	var _list *externglib.List // out
-	var _goerr error           // out
+	var _list []FileInfo // out
+	var _goerr error     // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GFileInfo)(_p)
+	_list = make([]FileInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GFileInfo)(v)
 		var dst FileInfo // out
 		dst = *wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

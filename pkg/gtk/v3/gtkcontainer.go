@@ -287,10 +287,10 @@ type Containerer interface {
 	// BorderWidth retrieves the border width of the container.
 	BorderWidth() uint
 	// Children returns the container’s non-internal children.
-	Children() *externglib.List
+	Children() []Widgetter
 	// FocusChain retrieves the focus chain of the container, if one has been
 	// set explicitly.
-	FocusChain() (*externglib.List, bool)
+	FocusChain() ([]Widgetter, bool)
 	// FocusChild returns the current focus child widget inside container.
 	FocusChild() Widgetter
 	// FocusHAdjustment retrieves the horizontal focus adjustment for the
@@ -314,6 +314,9 @@ type Containerer interface {
 	ResizeChildren()
 	// SetBorderWidth sets the border width of the container.
 	SetBorderWidth(borderWidth uint)
+	// SetFocusChain sets a focus chain, overriding the one computed
+	// automatically by GTK+.
+	SetFocusChain(focusableWidgets []Widgetter)
 	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
 	// container.
 	SetFocusChild(child Widgetter)
@@ -397,6 +400,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
@@ -416,6 +420,7 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
 }
@@ -430,6 +435,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
@@ -516,7 +522,7 @@ func (container *Container) BorderWidth() uint {
 
 // Children returns the container’s non-internal children. See
 // gtk_container_forall() for details on what constitutes an "internal" child.
-func (container *Container) Children() *externglib.List {
+func (container *Container) Children() []Widgetter {
 	var _arg0 *C.GtkContainer // out
 	var _cret *C.GList        // in
 
@@ -524,16 +530,15 @@ func (container *Container) Children() *externglib.List {
 
 	_cret = C.gtk_container_get_children(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Widgetter // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -545,7 +550,7 @@ func (container *Container) Children() *externglib.List {
 //
 // Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
 // signal.
-func (container *Container) FocusChain() (*externglib.List, bool) {
+func (container *Container) FocusChain() ([]Widgetter, bool) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GList        // in
 	var _cret C.gboolean      // in
@@ -554,17 +559,16 @@ func (container *Container) FocusChain() (*externglib.List, bool) {
 
 	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
 
-	var _focusableWidgets *externglib.List // out
-	var _ok bool                           // out
+	var _focusableWidgets []Widgetter // out
+	var _ok bool                      // out
 
-	_focusableWidgets = externglib.WrapList(uintptr(unsafe.Pointer(_arg1)))
-	_focusableWidgets.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWidget)(_p)
+	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
+	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
-		return dst
+		_focusableWidgets = append(_focusableWidgets, dst)
 	})
-	_focusableWidgets.AttachFinalizer(nil)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -737,6 +741,33 @@ func (container *Container) SetBorderWidth(borderWidth uint) {
 	_arg1 = C.guint(borderWidth)
 
 	C.gtk_container_set_border_width(_arg0, _arg1)
+}
+
+// SetFocusChain sets a focus chain, overriding the one computed automatically
+// by GTK+.
+//
+// In principle each widget in the chain should be a descendant of the
+// container, but this is not enforced by this method, since it’s allowed to set
+// the focus chain before you pack the widgets, or have a widget in the chain
+// that isn’t always packed. The necessary checks are done when the focus chain
+// is actually traversed.
+//
+// Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
+// signal.
+func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GList        // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
+	for i := len(focusableWidgets) - 1; i >= 0; i-- {
+		src := focusableWidgets[i]
+		var dst *C.GtkWidget // out
+		dst = (*C.GtkWidget)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+
+	C.gtk_container_set_focus_chain(_arg0, _arg1)
 }
 
 // SetFocusChild: sets, or unsets if child is NULL, the focused child of

@@ -130,6 +130,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1, _arg2)
@@ -147,6 +148,7 @@ func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_stock(_arg0, _arg1, _arg2)
@@ -161,6 +163,7 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tooltip_set_markup(_arg0, _arg1)
 }
@@ -173,6 +176,7 @@ func (tooltip *Tooltip) SetText(text string) {
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tooltip_set_text(_arg0, _arg1)
 }

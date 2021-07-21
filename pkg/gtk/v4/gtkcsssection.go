@@ -138,26 +138,6 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 	return _cssLocation
 }
 
-// Ref increments the reference count on section.
-func (section *CSSSection) ref() *CSSSection {
-	var _arg0 *C.GtkCssSection // out
-	var _cret *C.GtkCssSection // in
-
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
-
-	_cret = C.gtk_css_section_ref(_arg0)
-
-	var _cssSection *CSSSection // out
-
-	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_css_section_ref(_cret)
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _cssSection
-}
-
 // String prints the section into a human-readable text form using
 // gtk.CSSSection.Print().
 func (section *CSSSection) String() string {
@@ -174,14 +154,4 @@ func (section *CSSSection) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Unref decrements the reference count on section, freeing the structure if the
-// reference count reaches 0.
-func (section *CSSSection) unref() {
-	var _arg0 *C.GtkCssSection // out
-
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
-
-	C.gtk_css_section_unref(_arg0)
 }

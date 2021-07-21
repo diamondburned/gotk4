@@ -72,6 +72,7 @@ func NewTimeZone(identifier string) *TimeZone {
 	var _cret *C.GTimeZone // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_time_zone_new(_arg1)
 
@@ -92,6 +93,7 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 	var _cret *C.GTimeZone // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_time_zone_new_identifier(_arg1)
 
@@ -315,33 +317,4 @@ func (tz *TimeZone) IsDst(interval int) bool {
 	}
 
 	return _ok
-}
-
-// Ref increases the reference count on tz.
-func (tz *TimeZone) ref() *TimeZone {
-	var _arg0 *C.GTimeZone // out
-	var _cret *C.GTimeZone // in
-
-	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
-
-	_cret = C.g_time_zone_ref(_arg0)
-
-	var _timeZone *TimeZone // out
-
-	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _timeZone
-}
-
-// Unref decreases the reference count on tz.
-func (tz *TimeZone) unref() {
-	var _arg0 *C.GTimeZone // out
-
-	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
-
-	C.g_time_zone_unref(_arg0)
 }

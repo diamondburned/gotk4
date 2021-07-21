@@ -182,15 +182,6 @@ func (item *Item) Copy() *Item {
 	return _ret
 }
 
-// Free: free a PangoItem and all associated memory.
-func (item *Item) free() {
-	var _arg0 *C.PangoItem // out
-
-	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
-
-	C.pango_item_free(_arg0)
-}
-
 // Split modifies orig to cover only the text after split_index, and returns a
 // new item that covers the text before split_index that used to be in orig.
 //

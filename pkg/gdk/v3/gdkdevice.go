@@ -223,7 +223,7 @@ type Devicer interface {
 	// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
 	// will return the list of slave devices attached to it, otherwise it will
 	// return NULL
-	ListSlaveDevices() *externglib.List
+	ListSlaveDevices() []Devicer
 	// SetAxisUse specifies how an axis of a device is used.
 	SetAxisUse(index_ uint, use AxisUse)
 	// SetKey specifies the X key event to generate when a macro button of a
@@ -723,7 +723,7 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
 // return the list of slave devices attached to it, otherwise it will return
 // NULL
-func (device *Device) ListSlaveDevices() *externglib.List {
+func (device *Device) ListSlaveDevices() []Devicer {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GList     // in
 
@@ -731,16 +731,15 @@ func (device *Device) ListSlaveDevices() *externglib.List {
 
 	_cret = C.gdk_device_list_slave_devices(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Devicer // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkDevice)(_p)
+	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

@@ -485,6 +485,7 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
@@ -521,7 +522,7 @@ func (screen *Screen) SystemVisual() *Visual {
 //
 // The returned list should be freed with g_list_free(), but its elements need
 // not be freed.
-func (screen *Screen) ToplevelWindows() *externglib.List {
+func (screen *Screen) ToplevelWindows() []Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -529,16 +530,15 @@ func (screen *Screen) ToplevelWindows() *externglib.List {
 
 	_cret = C.gdk_screen_get_toplevel_windows(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Windower // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkWindow)(_p)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -599,7 +599,7 @@ func (screen *Screen) WidthMm() int {
 // The returned list is newly allocated and owns references to the windows it
 // contains, so it should be freed using g_list_free() and its windows unrefed
 // using g_object_unref() when no longer needed.
-func (screen *Screen) WindowStack() *externglib.List {
+func (screen *Screen) WindowStack() []Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -607,17 +607,14 @@ func (screen *Screen) WindowStack() *externglib.List {
 
 	_cret = C.gdk_screen_get_window_stack(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Windower // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkWindow)(_p)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -651,7 +648,7 @@ func (screen *Screen) IsComposited() bool {
 // format.
 //
 // Call g_list_free() on the return value when you’re finished with it.
-func (screen *Screen) ListVisuals() *externglib.List {
+func (screen *Screen) ListVisuals() []Visual {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GList     // in
 
@@ -659,16 +656,15 @@ func (screen *Screen) ListVisuals() *externglib.List {
 
 	_cret = C.gdk_screen_list_visuals(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Visual // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkVisual)(_p)
+	_list = make([]Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkVisual)(v)
 		var dst Visual // out
 		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

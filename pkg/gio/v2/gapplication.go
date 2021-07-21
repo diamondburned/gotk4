@@ -225,6 +225,7 @@ func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _cret *C.GApplication     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.g_application_new(_arg1, _arg2)
@@ -273,11 +274,14 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(longName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.char(shortName)
 	_arg3 = C.GOptionFlags(flags)
 	_arg4 = C.GOptionArg(arg)
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
+	defer C.free(unsafe.Pointer(_arg6))
 
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -402,6 +406,7 @@ func (application *Application) BindBusyProperty(object *externglib.Object, prop
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
 }
@@ -655,6 +660,7 @@ func (application *Application) Open(files []Filer, hint string) {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg2 = (C.gint)(len(files))
 	_arg1 = (**C.GFile)(C.malloc(C.ulong(len(files)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
 		for i := range files {
@@ -662,6 +668,7 @@ func (application *Application) Open(files []Filer, hint string) {
 		}
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
 }
@@ -828,10 +835,12 @@ func (application *Application) Run(argv []string) int {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (C.int)(len(argv))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice((**C.char)(_arg2), len(argv))
 		for i := range argv {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -875,6 +884,7 @@ func (application *Application) SendNotification(id string, notification *Notifi
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
@@ -910,6 +920,7 @@ func (application *Application) SetApplicationID(applicationId string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_application_id(_arg0, _arg1)
 }
@@ -970,6 +981,7 @@ func (application *Application) SetOptionContextDescription(description string) 
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_description(_arg0, _arg1)
 }
@@ -987,6 +999,7 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
 }
@@ -1000,6 +1013,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_option_context_summary(_arg0, _arg1)
 }
@@ -1041,6 +1055,7 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
 }
@@ -1056,6 +1071,7 @@ func (application *Application) UnbindBusyProperty(object *externglib.Object, pr
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
@@ -1093,6 +1109,7 @@ func (application *Application) WithdrawNotification(id string) {
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_withdraw_notification(_arg0, _arg1)
 }
@@ -1168,6 +1185,7 @@ func ApplicationIDIsValid(applicationId string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_id_is_valid(_arg1)
 

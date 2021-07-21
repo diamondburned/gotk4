@@ -120,6 +120,7 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_file(_arg1)
 
@@ -161,6 +162,7 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_icon_name(_arg1)
 
@@ -205,6 +207,7 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_stock(_arg1)
 
@@ -600,6 +603,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
@@ -632,6 +636,7 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_icon_name(_arg0, _arg1)
 }
@@ -662,6 +667,7 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_stock(_arg0, _arg1)
 }
@@ -699,6 +705,7 @@ func (statusIcon *StatusIcon) SetName(name string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_name(_arg0, _arg1)
 }
@@ -732,6 +739,7 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_title(_arg0, _arg1)
 }
@@ -752,6 +760,7 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_tooltip_markup(_arg0, _arg1)
 }
@@ -771,6 +780,7 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_tooltip_text(_arg0, _arg1)
 }

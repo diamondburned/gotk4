@@ -321,6 +321,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _cret *C.GFileAttributeMatcher // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
 
@@ -348,6 +349,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ns)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
 
@@ -386,6 +388,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
 
@@ -407,6 +410,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
 
@@ -417,26 +421,6 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	}
 
 	return _ok
-}
-
-// Ref references a file attribute matcher.
-func (matcher *FileAttributeMatcher) ref() *FileAttributeMatcher {
-	var _arg0 *C.GFileAttributeMatcher // out
-	var _cret *C.GFileAttributeMatcher // in
-
-	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
-
-	_cret = C.g_file_attribute_matcher_ref(_arg0)
-
-	var _fileAttributeMatcher *FileAttributeMatcher // out
-
-	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_matcher_ref(_cret)
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _fileAttributeMatcher
 }
 
 // Subtract subtracts all attributes of subtract from matcher and returns a
@@ -485,16 +469,6 @@ func (matcher *FileAttributeMatcher) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Unref unreferences matcher. If the reference count falls below 1, the matcher
-// is automatically freed.
-func (matcher *FileAttributeMatcher) unref() {
-	var _arg0 *C.GFileAttributeMatcher // out
-
-	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
-
-	C.g_file_attribute_matcher_unref(_arg0)
 }
 
 // InputMessage: structure used for scatter/gather data input when receiving
@@ -750,6 +724,7 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 
 	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
@@ -790,6 +765,7 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 
 	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -818,6 +794,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 
 	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
@@ -829,38 +806,6 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr
-}
-
-// Ref: atomically increments the reference count of resource by one. This
-// function is MT-safe and may be called from any thread.
-func (resource *Resource) ref() *Resource {
-	var _arg0 *C.GResource // out
-	var _cret *C.GResource // in
-
-	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
-
-	_cret = C.g_resource_ref(_arg0)
-
-	var _ret *Resource // out
-
-	_ret = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_resource_ref(_cret)
-	runtime.SetFinalizer(_ret, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _ret
-}
-
-// Unref: atomically decrements the reference count of resource by one. If the
-// reference count drops to 0, all memory allocated by the resource is released.
-// This function is MT-safe and may be called from any thread.
-func (resource *Resource) unref() {
-	var _arg0 *C.GResource // out
-
-	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
-
-	C.g_resource_unref(_arg0)
 }
 
 // SrvTarget: SRV (service) records are used by some network protocols to
@@ -894,6 +839,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	var _cret *C.GSrvTarget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(port)
 	_arg3 = C.guint16(priority)
 	_arg4 = C.guint16(weight)
@@ -927,15 +873,6 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	})
 
 	return _srvTarget
-}
-
-// Free frees target
-func (target *SrvTarget) free() {
-	var _arg0 *C.GSrvTarget // out
-
-	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
-
-	C.g_srv_target_free(_arg0)
 }
 
 // Hostname gets target's hostname (in ASCII form; if you are going to present

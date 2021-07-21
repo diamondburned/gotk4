@@ -152,6 +152,7 @@ func (popover *PopoverMenu) OpenSubmenu(name string) {
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 }

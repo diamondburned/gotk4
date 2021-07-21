@@ -44,6 +44,7 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gp
 	utf8 := fn(scale, value)
 
 	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
 
 	return cret
 }
@@ -247,6 +248,7 @@ func (scale *Scale) AddMark(value float64, position PositionType, markup string)
 	_arg1 = C.double(value)
 	_arg2 = C.GtkPositionType(position)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
 }

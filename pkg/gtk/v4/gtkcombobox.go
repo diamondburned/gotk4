@@ -465,6 +465,7 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(activeId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
 

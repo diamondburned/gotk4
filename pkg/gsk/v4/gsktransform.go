@@ -28,6 +28,7 @@ func TransformParse(_string string) (*Transform, bool) {
 	var _cret C.gboolean      // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_transform_parse(_arg1, &_arg2)
 

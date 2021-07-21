@@ -109,6 +109,7 @@ func (language *Language) Matches(rangeList string) bool {
 
 	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
 
@@ -153,6 +154,7 @@ func LanguageFromString(language string) *Language {
 	var _cret *C.PangoLanguage // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_language_from_string(_arg1)
 

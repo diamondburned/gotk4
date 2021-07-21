@@ -32,6 +32,7 @@ func ContentTypeCanBeExecutable(typ string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_can_be_executable(_arg1)
 
@@ -51,7 +52,9 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(type1)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(type2)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_equals(_arg1, _arg2)
 
@@ -71,6 +74,7 @@ func ContentTypeFromMIMEType(mimeType string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_from_mime_type(_arg1)
 
@@ -89,6 +93,7 @@ func ContentTypeGetDescription(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_description(_arg1)
 
@@ -110,6 +115,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_generic_icon_name(_arg1)
 
@@ -127,6 +133,7 @@ func ContentTypeGetIcon(typ string) Iconner {
 	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
@@ -170,6 +177,7 @@ func ContentTypeGetMIMEType(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_mime_type(_arg1)
 
@@ -187,6 +195,7 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
@@ -209,6 +218,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _cret *C.gchar   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gsize)(len(data))
 	if len(data) > 0 {
 		_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
@@ -275,7 +285,9 @@ func ContentTypeIsA(typ string, supertype string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(supertype)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 
@@ -296,7 +308,9 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
 
@@ -317,6 +331,7 @@ func ContentTypeIsUnknown(typ string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_is_unknown(_arg1)
 
@@ -355,12 +370,14 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 
 	{
 		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(dirs)+1)
 			var zero *C.gchar
 			out[len(dirs)] = zero
 			for i := range dirs {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -371,23 +388,20 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 // ContentTypesGetRegistered gets a list of strings containing all the
 // registered content types known to the system. The list and its data should be
 // freed using g_list_free_full (list, g_free).
-func ContentTypesGetRegistered() *externglib.List {
+func ContentTypesGetRegistered() []string {
 	var _cret *C.GList // in
 
 	_cret = C.g_content_types_get_registered()
 
-	var _list *externglib.List // out
+	var _list []string // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.gchar)(_p)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		defer C.free(unsafe.Pointer(src))
-		return dst
-	})
-	_list.AttachFinalizer(func(v uintptr) {
-		C.free(unsafe.Pointer(v))
+		_list = append(_list, dst)
 	})
 
 	return _list

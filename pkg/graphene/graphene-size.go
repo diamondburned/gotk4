@@ -83,15 +83,6 @@ func (a *Size) Equal(b *Size) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_size_alloc().
-func (s *Size) free() {
-	var _arg0 *C.graphene_size_t // out
-
-	_arg0 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(s)))
-
-	C.graphene_size_free(_arg0)
-}
-
 // Init initializes a #graphene_size_t using the given width and height.
 func (s *Size) Init(width float32, height float32) *Size {
 	var _arg0 *C.graphene_size_t // out

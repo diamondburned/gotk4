@@ -685,6 +685,7 @@ func (task *Task) SetName(name string) {
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_task_set_name(_arg0, _arg1)
 }

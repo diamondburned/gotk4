@@ -323,26 +323,6 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	return _gravity
 }
 
-// Ref increases the reference count of value.
-func (layout *PopupLayout) ref() *PopupLayout {
-	var _arg0 *C.GdkPopupLayout // out
-	var _cret *C.GdkPopupLayout // in
-
-	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	_cret = C.gdk_popup_layout_ref(_arg0)
-
-	var _popupLayout *PopupLayout // out
-
-	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_popup_layout_ref(_cret)
-	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-
-	return _popupLayout
-}
-
 // SetAnchorHints: set new anchor hints.
 //
 // The set anchor_hints determines how surface will be moved if the anchor
@@ -424,13 +404,4 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	_arg1 = C.GdkGravity(anchor)
 
 	C.gdk_popup_layout_set_surface_anchor(_arg0, _arg1)
-}
-
-// Unref decreases the reference count of value.
-func (layout *PopupLayout) unref() {
-	var _arg0 *C.GdkPopupLayout // out
-
-	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	C.gdk_popup_layout_unref(_arg0)
 }

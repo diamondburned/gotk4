@@ -82,7 +82,7 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 }
 
 // ListWindows returns a list of the GtkWindows that belong to window_group.
-func (windowGroup *WindowGroup) ListWindows() *externglib.List {
+func (windowGroup *WindowGroup) ListWindows() []Window {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GList          // in
 
@@ -90,16 +90,15 @@ func (windowGroup *WindowGroup) ListWindows() *externglib.List {
 
 	_cret = C.gtk_window_group_list_windows(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Window // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GtkWindow)(_p)
+	_list = make([]Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWindow)(v)
 		var dst Window // out
 		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }

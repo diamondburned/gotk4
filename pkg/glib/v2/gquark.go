@@ -28,6 +28,7 @@ func InternStaticString(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_static_string(_arg1)
 
@@ -50,6 +51,7 @@ func InternString(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_string(_arg1)
 
@@ -80,6 +82,7 @@ func QuarkFromStaticString(_string string) Quark {
 	var _cret C.GQuark // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_quark_from_static_string(_arg1)
 
@@ -102,6 +105,7 @@ func QuarkFromString(_string string) Quark {
 	var _cret C.GQuark // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_quark_from_string(_arg1)
 
@@ -141,6 +145,7 @@ func QuarkTryString(_string string) Quark {
 	var _cret C.GQuark // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_quark_try_string(_arg1)
 

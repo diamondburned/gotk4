@@ -12,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -774,9 +775,6 @@ type Windower interface {
 	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// Deiconify: attempt to deiconify (unminimize) window.
 	Deiconify()
-	// Destroy destroys the window system resources associated with window and
-	// decrements window's reference count.
-	Destroy()
 	// EnableSynchronizedConfigure does nothing, present only for compatiblity.
 	EnableSynchronizedConfigure()
 	// EndDrawFrame indicates that the drawing of the contents of window started
@@ -815,10 +813,10 @@ type Windower interface {
 	// window.
 	BackgroundPattern() *cairo.Pattern
 	// Children gets the list of children of window known to GDK.
-	Children() *externglib.List
+	Children() []Windower
 	// ChildrenWithUserData gets the list of children of window known to GDK
 	// with a particular user_data set on it.
-	ChildrenWithUserData(userData cgo.Handle) *externglib.List
+	ChildrenWithUserData(userData cgo.Handle) []Windower
 	// ClipRegion computes the region of a window that potentially can be
 	// written to by drawing primitives.
 	ClipRegion() *cairo.Region
@@ -982,7 +980,7 @@ type Windower interface {
 	MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
 	// PeekChildren: like gdk_window_get_children(), but does not copy the list
 	// of children, so the list does not need to be freed.
-	PeekChildren() *externglib.List
+	PeekChildren() []Windower
 	// ProcessUpdates sends one or more expose events to window.
 	ProcessUpdates(updateChildren bool)
 	// Raise raises window to the top of the Z-order (stacking order), so that
@@ -1052,6 +1050,8 @@ type Windower interface {
 	SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 	// SetGroup sets the group leader window for window.
 	SetGroup(leader Windower)
+	// SetIconList sets a list of icons for the window.
+	SetIconList(pixbufs []gdkpixbuf.Pixbuf)
 	// SetIconName windows may have a name used while minimized, distinct from
 	// the name they display in their titlebar.
 	SetIconName(name string)
@@ -1596,21 +1596,6 @@ func (window *Window) Deiconify() {
 	C.gdk_window_deiconify(_arg0)
 }
 
-// Destroy destroys the window system resources associated with window and
-// decrements window's reference count. The window system resources for all
-// children of window are also destroyed, but the children’s reference counts
-// are not decremented.
-//
-// Note that a window will not be destroyed automatically when its reference
-// count reaches zero. You must call this function yourself before that happens.
-func (window *Window) Destroy() {
-	var _arg0 *C.GdkWindow // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-
-	C.gdk_window_destroy(_arg0)
-}
-
 // EnableSynchronizedConfigure does nothing, present only for compatiblity.
 //
 // Deprecated: this function is no longer needed.
@@ -1826,7 +1811,7 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 // the root window; it only returns windows an application created itself.
 //
 // The returned list must be freed, but the elements in the list need not be.
-func (window *Window) Children() *externglib.List {
+func (window *Window) Children() []Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
 
@@ -1834,16 +1819,15 @@ func (window *Window) Children() *externglib.List {
 
 	_cret = C.gdk_window_get_children(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Windower // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkWindow)(_p)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1855,7 +1839,7 @@ func (window *Window) Children() *externglib.List {
 //
 // The list is returned in (relative) stacking order, i.e. the lowest window is
 // first.
-func (window *Window) ChildrenWithUserData(userData cgo.Handle) *externglib.List {
+func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gpointer   // out
 	var _cret *C.GList     // in
@@ -1865,16 +1849,15 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) *externglib.List
 
 	_cret = C.gdk_window_get_children_with_user_data(_arg0, _arg1)
 
-	var _list *externglib.List // out
+	var _list []Windower // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkWindow)(_p)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
-		return dst
+		_list = append(_list, dst)
 	})
-	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -3192,7 +3175,7 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnch
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
 // children, so the list does not need to be freed.
-func (window *Window) PeekChildren() *externglib.List {
+func (window *Window) PeekChildren() []Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GList     // in
 
@@ -3200,14 +3183,14 @@ func (window *Window) PeekChildren() *externglib.List {
 
 	_cret = C.gdk_window_peek_children(_arg0)
 
-	var _list *externglib.List // out
+	var _list []Windower // out
 
-	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
-		src := (*C.GdkWindow)(_p)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
-		return dst
+		_list = append(_list, dst)
 	})
 
 	return _list
@@ -3698,6 +3681,30 @@ func (window *Window) SetGroup(leader Windower) {
 	C.gdk_window_set_group(_arg0, _arg1)
 }
 
+// SetIconList sets a list of icons for the window. One of these will be used to
+// represent the window when it has been iconified. The icon is usually shown in
+// an icon box or some sort of task bar. Which icon size is shown depends on the
+// window manager. The window manager can scale the icon but setting several
+// size icons can give better image quality since the window manager may only
+// need to scale the icon by a small amount or not at all.
+//
+// Note that some platforms don't support window icons.
+func (window *Window) SetIconList(pixbufs []gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GList     // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	for i := len(pixbufs) - 1; i >= 0; i-- {
+		src := pixbufs[i]
+		var dst *C.GdkPixbuf // out
+		dst = (*C.GdkPixbuf)(unsafe.Pointer((&src).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg1)
+
+	C.gdk_window_set_icon_list(_arg0, _arg1)
+}
+
 // SetIconName windows may have a name used while minimized, distinct from the
 // name they display in their titlebar. Most of the time this is a bad idea from
 // a user interface standpoint. But you can set such a name with this function,
@@ -3716,6 +3723,7 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_icon_name(_arg0, _arg1)
 }
@@ -3894,6 +3902,7 @@ func (window *Window) SetRole(role string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_role(_arg0, _arg1)
 }
@@ -3982,6 +3991,7 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_startup_id(_arg0, _arg1)
 }
@@ -4042,6 +4052,7 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_title(_arg0, _arg1)
 }

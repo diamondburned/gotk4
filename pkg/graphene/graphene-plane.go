@@ -90,15 +90,6 @@ func (a *Plane) Equal(b *Plane) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by graphene_plane_alloc().
-func (p *Plane) free() {
-	var _arg0 *C.graphene_plane_t // out
-
-	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
-
-	C.graphene_plane_free(_arg0)
-}
-
 // Constant retrieves the distance along the normal vector of the given
 // #graphene_plane_t from the origin.
 func (p *Plane) Constant() float32 {

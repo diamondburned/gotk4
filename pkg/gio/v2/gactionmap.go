@@ -170,6 +170,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
@@ -189,6 +190,7 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_map_remove_action(_arg0, _arg1)
 }

@@ -290,6 +290,7 @@ func (action *Action) SetDescription(i int, desc string) bool {
 	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = C.gint(i)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_action_set_description(_arg0, _arg1, _arg2)
 

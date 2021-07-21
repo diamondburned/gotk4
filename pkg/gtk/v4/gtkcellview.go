@@ -126,6 +126,7 @@ func NewCellViewWithMarkup(markup string) *CellView {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
 
@@ -143,6 +144,7 @@ func NewCellViewWithText(text string) *CellView {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
 

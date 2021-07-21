@@ -129,15 +129,6 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by v
-func (v *Vec4) free() {
-	var _arg0 *C.graphene_vec4_t // out
-
-	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
-
-	C.graphene_vec4_free(_arg0)
-}
-
 // W retrieves the value of the fourth component of the given #graphene_vec4_t.
 func (v *Vec4) W() float32 {
 	var _arg0 *C.graphene_vec4_t // out

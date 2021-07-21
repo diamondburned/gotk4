@@ -123,6 +123,7 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 
@@ -146,6 +147,7 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value 
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 

@@ -545,12 +545,16 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Alias:
-		result := conv.convertType(value, value.InName, value.OutName, &v.Type)
-		if result != nil {
-			value.header.ApplyFrom(result.Header())
-			return true
+		typ := types.MoveTypePtr(*value.Type, v.Type)
+
+		result := conv.convertType(value, value.InName, value.OutName, typ)
+		if result == nil {
+			return false
 		}
-		return false
+
+		value.p.Line(result.Conversion)
+		value.header.ApplyFrom(result.Header())
+		return true
 	}
 
 	if value.Optional {

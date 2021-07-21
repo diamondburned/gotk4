@@ -67,6 +67,8 @@ func ResolverErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -77,6 +79,8 @@ func ResourceErrorQuark() glib.Quark {
 	_cret = C.g_resource_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -89,6 +93,8 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -100,6 +106,8 @@ func TLSErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -110,6 +118,8 @@ func IOErrorQuark() glib.Quark {
 	_cret = C.g_io_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -2781,7 +2791,7 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 	var _arg3 *C.gchar                 // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-
+	_arg1 = C.guint32(domain)
 	_arg2 = C.gint(code)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
 

@@ -50,6 +50,7 @@ func _gotk4_gio2_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, 
 	var pid glib.Pid            // out
 
 	appinfo = wrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0)))
+	pid = int(arg1)
 
 	fn := v.(DesktopAppLaunchCallback)
 	fn(appinfo, pid)

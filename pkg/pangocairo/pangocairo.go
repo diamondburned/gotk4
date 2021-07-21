@@ -405,8 +405,7 @@ var _ gextras.Nativer = (*Font)(nil)
 
 // Fonter describes Font's abstract methods.
 type Fonter interface {
-	// ScaledFont gets the cairo_scaled_font_t used by font.
-	ScaledFont() *cairo.ScaledFont
+	privateFont()
 }
 
 var _ Fonter = (*Font)(nil)
@@ -425,22 +424,7 @@ func marshalFonter(p uintptr) (interface{}, error) {
 	return wrapFont(obj), nil
 }
 
-// ScaledFont gets the cairo_scaled_font_t used by font. The scaled font can be
-// referenced and kept using cairo_scaled_font_reference().
-func (font *Font) ScaledFont() *cairo.ScaledFont {
-	var _arg0 *C.PangoCairoFont      // out
-	var _cret *C.cairo_scaled_font_t // in
-
-	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer(font.Native()))
-
-	_cret = C.pango_cairo_font_get_scaled_font(_arg0)
-
-	var _scaledFont *cairo.ScaledFont // out
-
-	_scaledFont = (*cairo.ScaledFont)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-
-	return _scaledFont
-}
+func (*Font) privateFont() {}
 
 // FontMap: PangoCairoFontMap is an interface exported by font maps for use with
 // Cairo.
@@ -455,8 +439,6 @@ var _ gextras.Nativer = (*FontMap)(nil)
 
 // FontMapper describes FontMap's abstract methods.
 type FontMapper interface {
-	// FontType gets the type of Cairo font backend that fontmap uses.
-	FontType() cairo.FontType
 	// Resolution gets the resolution for the fontmap.
 	Resolution() float64
 	// SetDefault sets a default PangoCairoFontMap to use with Cairo.
@@ -479,22 +461,6 @@ func marshalFontMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontMap(obj), nil
-}
-
-// FontType gets the type of Cairo font backend that fontmap uses.
-func (fontmap *FontMap) FontType() cairo.FontType {
-	var _arg0 *C.PangoCairoFontMap // out
-	var _cret C.cairo_font_type_t  // in
-
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
-
-	_cret = C.pango_cairo_font_map_get_font_type(_arg0)
-
-	var _fontType cairo.FontType // out
-
-	_fontType = cairo.FontType(_cret)
-
-	return _fontType
 }
 
 // Resolution gets the resolution for the fontmap.
@@ -596,26 +562,6 @@ func NewFontMap() pango.FontMapper {
 	var _cret *C.PangoFontMap // in
 
 	_cret = C.pango_cairo_font_map_new()
-
-	var _fontMap pango.FontMapper // out
-
-	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
-
-	return _fontMap
-}
-
-// NewFontMapForFontType creates a new PangoCairoFontMap object of the type
-// suitable to be used with cairo font backend of type fonttype.
-//
-// In most cases one should simply use pangocairo.FontMap.New, or in fact in
-// most of those cases, just use pangocairo.FontMap().GetDefault.
-func NewFontMapForFontType(fonttype cairo.FontType) pango.FontMapper {
-	var _arg1 C.cairo_font_type_t // out
-	var _cret *C.PangoFontMap     // in
-
-	_arg1 = C.cairo_font_type_t(fonttype)
-
-	_cret = C.pango_cairo_font_map_new_for_font_type(_arg1)
 
 	var _fontMap pango.FontMapper // out
 

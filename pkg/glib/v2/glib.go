@@ -14,6 +14,8 @@ func ConvertErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -23,6 +25,8 @@ func FileErrorQuark() Quark {
 	_cret = C.g_file_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -34,6 +38,8 @@ func MarkupErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -43,6 +49,8 @@ func NumberParserErrorQuark() Quark {
 	_cret = C.g_number_parser_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -54,6 +62,8 @@ func OptionErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -63,6 +73,8 @@ func ShellErrorQuark() Quark {
 	_cret = C.g_shell_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -74,6 +86,8 @@ func SpawnErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -83,6 +97,8 @@ func SpawnExitErrorQuark() Quark {
 	_cret = C.g_spawn_exit_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -94,6 +110,8 @@ func IOChannelErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -103,6 +121,8 @@ func KeyFileErrorQuark() Quark {
 	_cret = C.g_key_file_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -114,6 +134,8 @@ func RegexErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -124,6 +146,8 @@ func URIErrorQuark() Quark {
 
 	var _quark Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -133,6 +157,8 @@ func VariantParseErrorQuark() Quark {
 	_cret = C.g_variant_parse_error_quark()
 
 	var _quark Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }

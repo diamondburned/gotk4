@@ -183,21 +183,21 @@ type GlyphGeometry struct {
 // Width: logical width to use for the the character.
 func (g *GlyphGeometry) Width() GlyphUnit {
 	var v GlyphUnit // out
-
+	v = int32(g.native.width)
 	return v
 }
 
 // XOffset: horizontal offset from nominal character position.
 func (g *GlyphGeometry) XOffset() GlyphUnit {
 	var v GlyphUnit // out
-
+	v = int32(g.native.x_offset)
 	return v
 }
 
 // YOffset: vertical offset from nominal character position.
 func (g *GlyphGeometry) YOffset() GlyphUnit {
 	var v GlyphUnit // out
-
+	v = int32(g.native.y_offset)
 	return v
 }
 
@@ -211,7 +211,7 @@ type GlyphInfo struct {
 // Glyph: glyph itself.
 func (g *GlyphInfo) Glyph() Glyph {
 	var v Glyph // out
-
+	v = uint32(g.native.glyph)
 	return v
 }
 

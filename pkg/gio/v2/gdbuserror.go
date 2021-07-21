@@ -147,6 +147,7 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 	var _arg3 *C.gchar   // out
 	var _cret C.gboolean // in
 
+	_arg1 = C.guint32(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
 
@@ -213,6 +214,7 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 	var _arg3 *C.gchar   // out
 	var _cret C.gboolean // in
 
+	_arg1 = C.guint32(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
 

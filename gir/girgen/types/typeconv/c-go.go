@@ -585,8 +585,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 			if free != nil {
 				value.p.Linef(
-					"C.%s((%s%s)(gextras.StructNative(unsafe.Pointer(v))))",
-					free.CIdentifier, value.OutPtr(1), value.In.Type,
+					"C.%s((%s)(gextras.StructNative(unsafe.Pointer(v))))",
+					free.CIdentifier, value.In.Type,
 				)
 			} else {
 				value.p.Linef(
@@ -599,12 +599,16 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Alias:
-		result := conv.convertType(value, value.InName, value.OutName, &v.Type)
-		if result != nil {
-			value.header.ApplyFrom(result.Header())
-			return true
+		typ := types.MoveTypePtr(*value.Type, v.Type)
+
+		result := conv.convertType(value, value.InName, value.OutName, typ)
+		if result == nil {
+			return false
 		}
-		return false
+
+		value.p.Line(result.Conversion)
+		value.header.ApplyFrom(result.Header())
+		return true
 	}
 
 	if value.Optional {

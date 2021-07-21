@@ -2176,6 +2176,7 @@ func (widget *Widget) AllocatedSize() (Allocation, int) {
 	var _allocation Allocation // out
 	var _baseline int          // out
 
+	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_baseline = int(_arg2)
 
 	return _allocation, _baseline
@@ -2222,6 +2223,8 @@ func (widget *Widget) Allocation() Allocation {
 	C.gtk_widget_get_allocation(_arg0, &_arg1)
 
 	var _allocation Allocation // out
+
+	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _allocation
 }
@@ -2381,6 +2384,8 @@ func (widget *Widget) Clip() Allocation {
 	C.gtk_widget_get_clip(_arg0, &_arg1)
 
 	var _clip Allocation // out
+
+	_clip = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _clip
 }
@@ -5119,6 +5124,7 @@ func (widget *Widget) SetAllocation(allocation *Allocation) {
 	var _arg1 *C.GtkAllocation // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
 
 	C.gtk_widget_set_allocation(_arg0, _arg1)
 }
@@ -5216,6 +5222,7 @@ func (widget *Widget) SetClip(clip *Allocation) {
 	var _arg1 *C.GtkAllocation // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	C.gtk_widget_set_clip(_arg0, _arg1)
 }
@@ -6085,6 +6092,7 @@ func (widget *Widget) SizeAllocate(allocation *Allocation) {
 	var _arg1 *C.GtkAllocation // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
 
 	C.gtk_widget_size_allocate(_arg0, _arg1)
 }
@@ -6107,7 +6115,7 @@ func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline 
 	var _arg2 C.gint           // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
 	_arg2 = C.gint(baseline)
 
 	C.gtk_widget_size_allocate_with_baseline(_arg0, _arg1, _arg2)

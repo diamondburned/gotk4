@@ -1522,6 +1522,8 @@ func (widget *Widget) Allocation() Allocation {
 
 	var _allocation Allocation // out
 
+	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
 	return _allocation
 }
 
@@ -4155,7 +4157,7 @@ func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 	var _arg2 C.int            // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
 	_arg2 = C.int(baseline)
 
 	C.gtk_widget_size_allocate(_arg0, _arg1, _arg2)

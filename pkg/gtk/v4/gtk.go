@@ -31,6 +31,8 @@ func BuilderErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -40,6 +42,8 @@ func ConstraintVflParserErrorQuark() glib.Quark {
 	_cret = C.gtk_constraint_vfl_parser_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -95,6 +99,8 @@ func IconThemeErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -104,6 +110,8 @@ func RecentManagerErrorQuark() glib.Quark {
 	_cret = C.gtk_recent_manager_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -204,6 +212,8 @@ func CSSParserErrorQuark() glib.Quark {
 	_cret = C.gtk_css_parser_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }

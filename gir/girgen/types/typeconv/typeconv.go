@@ -3,6 +3,7 @@ package typeconv
 
 import (
 	"log"
+	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -154,7 +155,9 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 
 	// Convert everything in one go.
 	for i := range conv.Results {
-		if !conv.convert(&conv.Results[i]) || conv.Results[i].fail {
+		result := &conv.Results[i]
+
+		if !conv.convert(result) || result.fail {
 			// final is true if the value is already manually handled.
 			// Otherwise, exit.
 			if !conv.Results[i].final {
@@ -169,16 +172,25 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 
 	conv.final = make([]ValueConverted, 0, len(conv.Results))
 
-	for i, result := range conv.Results {
+	for i := range conv.Results {
 		// Finalize all results.
+		result := &conv.Results[i]
 		result.finalize()
 
 		if result.Skip {
 			continue
 		}
 
+		if types.TypeIsInFile(conv.Parent.Type, "gdk-pixbuf.") {
+			for path := range result.header.Imports {
+				if strings.Contains(path, "glib/v2") {
+					result.Logln(logger.Debug, "imports glib/v2")
+				}
+			}
+		}
+
 		file.ApplyHeader(conv, &conv.Results[i])
-		conv.final = append(conv.final, result)
+		conv.final = append(conv.final, *result)
 	}
 
 	return conv.final

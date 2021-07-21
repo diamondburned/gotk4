@@ -18,6 +18,9 @@ type Resolved struct {
 	Extern  *gir.TypeFindResult // optional
 	Builtin *string             // optional
 
+	// TODO: move file.Header over to types.Header.
+	// TODO: replace {Publ,Impl}Import with types.Header to allow HashTable.
+
 	PublImport ResolvedImport
 	ImplImport ResolvedImport
 
@@ -669,6 +672,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return externGLibType("*List", typ, "GList*")
 	case "GLib.SList":
 		return externGLibType("*SList", typ, "GSList*")
+	// TODO: include GLib.HashTable
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")
 	case "GObject.Value", "GValue": // inconsistency???

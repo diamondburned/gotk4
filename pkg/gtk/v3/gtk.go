@@ -39,6 +39,8 @@ func BuilderErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -49,6 +51,8 @@ func CSSProviderErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -58,6 +62,8 @@ func IconThemeErrorQuark() glib.Quark {
 	_cret = C.gtk_icon_theme_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -149,6 +155,8 @@ func RecentChooserErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
+	_quark = uint32(_cret)
+
 	return _quark
 }
 
@@ -158,6 +166,8 @@ func RecentManagerErrorQuark() glib.Quark {
 	_cret = C.gtk_recent_manager_error_quark()
 
 	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
 
 	return _quark
 }

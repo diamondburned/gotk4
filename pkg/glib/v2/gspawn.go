@@ -294,6 +294,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var _childPid Pid // out
 	var _goerr error  // out
 
+	_childPid = int(_arg7)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _childPid, _goerr
@@ -349,6 +350,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var _childPid Pid // out
 	var _goerr error  // out
 
+	_childPid = int(_arg7)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _childPid, _goerr
@@ -404,6 +406,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	var _standardError int  // out
 	var _goerr error        // out
 
+	_childPid = int(_arg7)
 	_standardInput = int(_arg8)
 	_standardOutput = int(_arg9)
 	_standardError = int(_arg10)
@@ -651,6 +654,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 	var _stderrPipeOut int // out
 	var _goerr error       // out
 
+	_childPidOut = int(_arg13)
 	_stdinPipeOut = int(_arg14)
 	_stdoutPipeOut = int(_arg15)
 	_stderrPipeOut = int(_arg16)
@@ -715,6 +719,8 @@ func SpawnCheckExitStatus(exitStatus int) error {
 // platforms, even though it doesn't do anything under UNIX.
 func SpawnClosePid(pid Pid) {
 	var _arg1 C.GPid // out
+
+	_arg1 = C.int(pid)
 
 	C.g_spawn_close_pid(_arg1)
 }

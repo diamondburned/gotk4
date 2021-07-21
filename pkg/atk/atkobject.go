@@ -1227,7 +1227,7 @@ func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-
+	_arg1 = C.guint64(state)
 	if value {
 		_arg2 = C.TRUE
 	}

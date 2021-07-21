@@ -1644,6 +1644,8 @@ func (iter *LayoutIter) Run() *LayoutRun {
 
 	var _layoutRun *LayoutRun // out
 
+	_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
 	return _layoutRun
 }
 
@@ -1683,6 +1685,8 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 	_cret = C.pango_layout_iter_get_run_readonly(_arg0)
 
 	var _layoutRun *LayoutRun // out
+
+	_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _layoutRun
 }

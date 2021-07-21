@@ -492,6 +492,7 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rect
 	var _arg3 C.PangoRectangle // in
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg1 = C.guint32(glyph)
 
 	C.pango_font_get_glyph_extents(_arg0, _arg1, &_arg2, &_arg3)
 

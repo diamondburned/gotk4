@@ -121,6 +121,10 @@ var ConversionProcessors = []ConversionProcessor{
 var Filters = []FilterMatcher{
 	AbsoluteFilter("C.cairo_image_surface_create"),
 
+	// These are not in gotk3/cairo.
+	AbsoluteFilter("cairo.ScaledFont"),
+	AbsoluteFilter("cairo.FontType"),
+
 	// Broadway is not included, so we don't generate code for it.
 	FileFilter("gsk/broadway/gskbroadwayrenderer.h"),
 	// Output buffer parameter is not actually array.

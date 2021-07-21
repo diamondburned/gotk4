@@ -385,7 +385,7 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
-
+	_arg1 = C.guint32(accelQuark)
 	_arg2 = (*C.GObject)(unsafe.Pointer(acceleratable.Native()))
 	_arg3 = C.guint(accelKey)
 	_arg4 = C.GdkModifierType(accelMods)
@@ -498,7 +498,7 @@ func (a *AccelGroupEntry) Key() AccelKey {
 
 func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
 	var v glib.Quark // out
-
+	v = uint32(a.native.accel_path_quark)
 	return v
 }
 

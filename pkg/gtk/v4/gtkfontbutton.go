@@ -104,6 +104,11 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	return _fontButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (fontButton *FontButton) Native() uintptr {
+	return fontButton.Object.Native()
+}
+
 // Modal gets whether the dialog is modal.
 func (fontButton *FontButton) Modal() bool {
 	var _arg0 *C.GtkFontButton // out

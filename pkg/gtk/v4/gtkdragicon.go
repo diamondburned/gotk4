@@ -86,6 +86,11 @@ func marshalDragIconner(p uintptr) (interface{}, error) {
 	return wrapDragIcon(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *DragIcon) Native() uintptr {
+	return self.Object.Native()
+}
+
 // Child gets the widget currently used as drag icon.
 func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out

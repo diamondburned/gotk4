@@ -84,6 +84,11 @@ func NewCellAreaBox() *CellAreaBox {
 	return _cellAreaBox
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (box *CellAreaBox) Native() uintptr {
+	return box.Object.Native()
+}
+
 // Spacing gets the spacing added between cell renderers.
 func (box *CellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out

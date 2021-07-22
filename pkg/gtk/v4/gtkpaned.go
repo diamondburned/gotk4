@@ -136,6 +136,11 @@ func NewPaned(orientation Orientation) *Paned {
 	return _paned
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (paned *Paned) Native() uintptr {
+	return paned.Object.Native()
+}
+
 // EndChild retrieves the end child of the given GtkPaned.
 //
 // See also: GtkPaned:end-child

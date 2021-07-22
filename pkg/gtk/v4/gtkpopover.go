@@ -172,6 +172,11 @@ func NewPopover() *Popover {
 	return _popover
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (popover *Popover) Native() uintptr {
+	return popover.Object.Native()
+}
+
 // Autohide returns whether the popover is modal.
 //
 // See gtk.Popover.SetAutohide() for the implications of this.

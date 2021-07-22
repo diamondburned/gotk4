@@ -172,6 +172,11 @@ func NewCellViewWithText(text string) *CellView {
 	return _cellView
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (cellView *CellView) Native() uintptr {
+	return cellView.Object.Native()
+}
+
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
 // no row is currently displayed, NULL is returned.
 func (cellView *CellView) DisplayedRow() *TreePath {

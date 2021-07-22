@@ -189,6 +189,11 @@ func NewButtonWithMnemonic(label string) *Button {
 	return _button
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (button *Button) Native() uintptr {
+	return button.Object.Native()
+}
+
 // Child gets the child widget of button.
 func (button *Button) Child() Widgetter {
 	var _arg0 *C.GtkButton // out

@@ -85,4 +85,9 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	return _fileChooserWidget
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (v *FileChooserWidget) Native() uintptr {
+	return v.Object.Native()
+}
+
 func (*FileChooserWidget) privateFileChooserWidget() {}

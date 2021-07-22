@@ -113,6 +113,11 @@ func NewEditableLabel(str string) *EditableLabel {
 	return _editableLabel
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *EditableLabel) Native() uintptr {
+	return self.Object.Native()
+}
+
 // Editing returns whether the label is currently in “editing mode”.
 func (self *EditableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out

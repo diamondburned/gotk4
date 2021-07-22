@@ -96,6 +96,11 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	return _viewport
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (viewport *Viewport) Native() uintptr {
+	return viewport.Object.Native()
+}
+
 // Child gets the child widget of viewport.
 func (viewport *Viewport) Child() Widgetter {
 	var _arg0 *C.GtkViewport // out

@@ -244,6 +244,11 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	return _entry
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (entry *Entry) Native() uintptr {
+	return entry.Object.Native()
+}
+
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
 func (entry *Entry) ActivatesDefault() bool {

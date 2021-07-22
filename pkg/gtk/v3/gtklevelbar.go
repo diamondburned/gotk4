@@ -130,6 +130,11 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	return _levelBar
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *LevelBar) Native() uintptr {
+	return self.Object.Native()
+}
+
 // AddOffsetValue adds a new offset marker on self at the position specified by
 // value. When the bar value is in the interval topped by value (or between
 // value and LevelBar:max-value in case the offset is the last one on the bar) a

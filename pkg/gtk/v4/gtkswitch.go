@@ -110,6 +110,11 @@ func NewSwitch() *Switch {
 	return __switch
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *Switch) Native() uintptr {
+	return self.Object.Native()
+}
+
 // Active gets whether the GtkSwitch is in its “on” or “off” state.
 func (self *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out

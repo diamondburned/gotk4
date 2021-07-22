@@ -203,6 +203,11 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	return _iconView
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (iconView *IconView) Native() uintptr {
+	return iconView.Object.Native()
+}
+
 // CreateDragIcon creates a #cairo_surface_t representation of the item at path.
 // This image is used for a drag icon.
 func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {

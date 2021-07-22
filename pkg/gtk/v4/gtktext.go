@@ -165,6 +165,11 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	return _text
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *Text) Native() uintptr {
+	return self.Object.Native()
+}
+
 // ActivatesDefault retrieves the value set by gtk_text_set_activates_default().
 func (self *Text) ActivatesDefault() bool {
 	var _arg0 *C.GtkText // out

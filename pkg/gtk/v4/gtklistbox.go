@@ -831,6 +831,11 @@ func NewListBoxRow() *ListBoxRow {
 	return _listBoxRow
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (row *ListBoxRow) Native() uintptr {
+	return row.Object.Native()
+}
+
 // Changed marks row as changed, causing any state that depends on this to be
 // updated.
 //

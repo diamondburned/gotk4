@@ -105,6 +105,11 @@ func NewCenterBox() *CenterBox {
 	return _centerBox
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *CenterBox) Native() uintptr {
+	return self.Object.Native()
+}
+
 // BaselinePosition gets the value set by
 // gtk_center_box_set_baseline_position().
 func (self *CenterBox) BaselinePosition() BaselinePosition {

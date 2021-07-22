@@ -375,6 +375,11 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	return _treeView
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (treeView *TreeView) Native() uintptr {
+	return treeView.Object.Native()
+}
+
 // AppendColumn appends column to the list of columns. If tree_view has
 // “fixed_height” mode enabled, then column must have its “sizing” property set
 // to be GTK_TREE_VIEW_COLUMN_FIXED.

@@ -119,6 +119,11 @@ func NewPasswordEntry() *PasswordEntry {
 	return _passwordEntry
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (entry *PasswordEntry) Native() uintptr {
+	return entry.Object.Native()
+}
+
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkPasswordEntry // out

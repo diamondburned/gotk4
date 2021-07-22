@@ -72,4 +72,9 @@ func marshalListBaser(p uintptr) (interface{}, error) {
 	return wrapListBase(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (v *ListBase) Native() uintptr {
+	return v.Object.Native()
+}
+
 func (*ListBase) privateListBase() {}

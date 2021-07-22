@@ -115,6 +115,11 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	return _scrollbar
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *Scrollbar) Native() uintptr {
+	return self.Object.Native()
+}
+
 // Adjustment returns the scrollbar's adjustment.
 func (self *Scrollbar) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScrollbar  // out

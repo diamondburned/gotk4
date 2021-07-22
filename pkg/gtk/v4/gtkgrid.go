@@ -154,6 +154,11 @@ func NewGrid() *Grid {
 	return _grid
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (grid *Grid) Native() uintptr {
+	return grid.Object.Native()
+}
+
 // Attach adds a widget to the grid.
 //
 // The position of child is determined by column and row. The number of “cells”

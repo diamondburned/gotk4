@@ -205,6 +205,11 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	return _comboBox
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (comboBox *ComboBox) Native() uintptr {
+	return comboBox.Object.Native()
+}
+
 // Active returns the index of the currently active item.
 //
 // If the model is a non-flat treemodel, and the active item is not an immediate

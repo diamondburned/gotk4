@@ -88,4 +88,9 @@ func NewFontChooserWidget() *FontChooserWidget {
 	return _fontChooserWidget
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (v *FontChooserWidget) Native() uintptr {
+	return v.Object.Native()
+}
+
 func (*FontChooserWidget) privateFontChooserWidget() {}

@@ -258,6 +258,11 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 	return _textView
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (textView *TextView) Native() uintptr {
+	return textView.Object.Native()
+}
+
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
 func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out

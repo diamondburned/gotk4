@@ -110,6 +110,11 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	return _appChooserWidget
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *AppChooserWidget) Native() uintptr {
+	return self.Object.Native()
+}
+
 // DefaultText returns the text that is shown if there are not applications that
 // can handle the content type.
 func (self *AppChooserWidget) DefaultText() string {

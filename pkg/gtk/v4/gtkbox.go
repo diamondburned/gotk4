@@ -109,6 +109,11 @@ func NewBox(orientation Orientation, spacing int) *Box {
 	return _box
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (box *Box) Native() uintptr {
+	return box.Object.Native()
+}
+
 // Append adds child as the last child to box.
 func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out

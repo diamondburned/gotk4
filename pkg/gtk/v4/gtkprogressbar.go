@@ -117,6 +117,11 @@ func NewProgressBar() *ProgressBar {
 	return _progressBar
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (pbar *ProgressBar) Native() uintptr {
+	return pbar.Object.Native()
+}
+
 // Ellipsize returns the ellipsizing position of the progress bar.
 //
 // See gtk.ProgressBar.SetEllipsize().

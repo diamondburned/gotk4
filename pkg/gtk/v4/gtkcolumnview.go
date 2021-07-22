@@ -142,6 +142,11 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	return _columnView
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *ColumnView) Native() uintptr {
+	return self.Object.Native()
+}
+
 // AppendColumn appends the column to the end of the columns in self.
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out

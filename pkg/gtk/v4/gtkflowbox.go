@@ -221,6 +221,11 @@ func NewFlowBox() *FlowBox {
 	return _flowBox
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (box *FlowBox) Native() uintptr {
+	return box.Object.Native()
+}
+
 // BindModel binds model to box.
 //
 // If box was already bound to a model, that previous binding is destroyed.

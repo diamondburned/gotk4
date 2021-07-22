@@ -114,6 +114,11 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 	return _scaleButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (button *ScaleButton) Native() uintptr {
+	return button.Object.Native()
+}
+
 // Adjustment gets the GtkAdjustment associated with the GtkScaleButton’s scale.
 //
 // See gtk.Range.GetAdjustment() for details.

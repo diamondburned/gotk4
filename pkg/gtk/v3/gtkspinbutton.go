@@ -261,6 +261,11 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 	return _spinButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (spinButton *SpinButton) Native() uintptr {
+	return spinButton.Object.Native()
+}
+
 // Configure changes the properties of an existing spin button. The adjustment,
 // climb rate, and number of decimal places are updated accordingly.
 func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {

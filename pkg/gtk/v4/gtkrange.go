@@ -79,6 +79,11 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	return wrapRange(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (_range *Range) Native() uintptr {
+	return _range.Object.Native()
+}
+
 // Adjustment: get the adjustment which is the “model” object for GtkRange.
 func (_range *Range) Adjustment() *Adjustment {
 	var _arg0 *C.GtkRange      // out

@@ -117,6 +117,11 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	return _appChooserButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *AppChooserButton) Native() uintptr {
+	return self.Object.Native()
+}
+
 // AppendCustomItem appends a custom item to the list of applications that is
 // shown in the popup.
 //

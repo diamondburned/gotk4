@@ -169,6 +169,11 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 	return _applicationWindow
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (window *ApplicationWindow) Native() uintptr {
+	return window.Object.Native()
+}
+
 // HelpOverlay gets the GtkShortcutsWindow that is associated with window.
 //
 // See gtk.ApplicationWindow.SetHelpOverlay().

@@ -163,6 +163,11 @@ func NewWindow() *Window {
 	return _window
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (window *Window) Native() uintptr {
+	return window.Object.Native()
+}
+
 // Close requests that the window is closed.
 //
 // This is similar to what happens when a window manager close button is

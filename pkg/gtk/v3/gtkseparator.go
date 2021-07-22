@@ -83,4 +83,9 @@ func NewSeparator(orientation Orientation) *Separator {
 	return _separator
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (v *Separator) Native() uintptr {
+	return v.Object.Native()
+}
+
 func (*Separator) privateSeparator() {}

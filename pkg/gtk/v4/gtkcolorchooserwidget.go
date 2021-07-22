@@ -95,4 +95,9 @@ func NewColorChooserWidget() *ColorChooserWidget {
 	return _colorChooserWidget
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (v *ColorChooserWidget) Native() uintptr {
+	return v.Object.Native()
+}
+
 func (*ColorChooserWidget) privateColorChooserWidget() {}

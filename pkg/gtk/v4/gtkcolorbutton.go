@@ -110,6 +110,11 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	return _colorButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (button *ColorButton) Native() uintptr {
+	return button.Object.Native()
+}
+
 // Modal gets whether the dialog is modal.
 func (button *ColorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out

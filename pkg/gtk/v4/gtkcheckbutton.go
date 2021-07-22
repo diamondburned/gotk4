@@ -180,6 +180,11 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	return _checkButton
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (self *CheckButton) Native() uintptr {
+	return self.Object.Native()
+}
+
 // Active returns whether the check button is active.
 func (self *CheckButton) Active() bool {
 	var _arg0 *C.GtkCheckButton // out

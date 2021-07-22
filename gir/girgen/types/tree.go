@@ -194,6 +194,16 @@ func (tree *Tree) HasAmbiguousNative() bool {
 		}
 	}
 
+	// If any of the child types have this as well, then the parent will have an
+	// ambiguity between either of this and the child type.
+	if hasGInitiallyUnowned || hasGObject {
+		for _, req := range tree.Requires {
+			if req.HasAmbiguousNative() {
+				return true
+			}
+		}
+	}
+
 	return false
 }
 
@@ -204,7 +214,7 @@ func (tree *Tree) HasAmbiguousSelector() bool {
 		return false
 	}
 
-	// If the fields already have a GInitiallyUnowned field, then we're fine.
+	// If the fields already have a GObject field, then we're fine.
 	for _, req := range tree.Requires {
 		if req.IsExternGLib("Object") {
 			return false

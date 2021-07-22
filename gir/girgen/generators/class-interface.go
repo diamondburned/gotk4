@@ -106,7 +106,6 @@ type ifacegenData struct {
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
-	writer.Header().ImportCore("gextras")
 
 	// Import for implementation types.
 	for _, parent := range igen.Tree.Requires {
@@ -123,9 +122,9 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
 	}
 
-	if data.Tree.HasAmbiguousSelector() {
-		// Import externglib for Object.
-		writer.Header().NeedsExternGLib()
+	if data.Abstract() {
+		// Import gextras for Objector.
+		writer.Header().ImportCore("gextras")
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)

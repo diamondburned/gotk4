@@ -308,10 +308,7 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		}
 	}
 
-	// Ensure the correct namespace is searched from.
-	resolveNamespace := types.OverrideNamespace(conv.fgen, conv.Parent.NamespaceFindResult)
-
-	resolved := types.Resolve(resolveNamespace, *typ)
+	resolved := types.Resolve(conv.rgen(), *typ)
 	if resolved == nil {
 		value.Logln(logger.Debug, "can't resolve", types.TypeCGo(typ))
 		return ValueType{}, false

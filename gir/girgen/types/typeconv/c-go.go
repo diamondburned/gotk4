@@ -576,13 +576,12 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			if free != nil {
 				value.p.Linef(
 					"C.%s((%s)(gextras.StructNative(unsafe.Pointer(v))))",
-					free.CIdentifier, value.In.Type,
+					free.CIdentifier, types.AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
 				)
 			} else {
-				value.p.Linef(
-					"C.free(gextras.StructNative(unsafe.Pointer(v)))",
-				)
+				value.p.Linef("C.free(gextras.StructNative(unsafe.Pointer(v)))")
 			}
+
 			value.p.Linef("})")
 		}
 

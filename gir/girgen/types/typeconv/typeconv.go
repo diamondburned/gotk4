@@ -358,6 +358,12 @@ func (conv *Converter) convertParam(at int) *ValueConverted {
 	return nil
 }
 
+// rgen returns the generator with the source namespace. It ensures that the
+// correct namespace is searched from.
+func (conv *Converter) rgen() types.FileGenerator {
+	return types.OverrideNamespace(conv.fgen, conv.Parent.NamespaceFindResult)
+}
+
 // TODO: realistically, the difference between the expected poiner and what C
 // wants is only 1. We can work around this.
 //

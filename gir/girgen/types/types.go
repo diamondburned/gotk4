@@ -80,6 +80,7 @@ func methodCanCallDirectly(method *gir.Method) bool {
 		method.IsIntrospectable() &&
 		method.Parameters != nil &&
 		method.Parameters.InstanceParameter != nil &&
+		method.Parameters.InstanceParameter.Type != nil &&
 		len(method.Parameters.Parameters) == 0
 }
 

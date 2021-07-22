@@ -71,8 +71,6 @@ type StringFilter struct {
 	Filter
 }
 
-var _ gextras.Nativer = (*StringFilter)(nil)
-
 func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	return &StringFilter{
 		Filter: Filter{
@@ -95,7 +93,7 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
@@ -182,7 +180,7 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression   // out
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
 }

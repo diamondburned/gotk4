@@ -26,8 +26,6 @@ type GLTexture struct {
 	Texture
 }
 
-var _ gextras.Nativer = (*GLTexture)(nil)
-
 func wrapGLTexture(obj *externglib.Object) *GLTexture {
 	return &GLTexture{
 		Texture: Texture{

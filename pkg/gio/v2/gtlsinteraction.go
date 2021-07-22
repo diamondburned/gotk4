@@ -151,8 +151,6 @@ type TLSInteraction struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TLSInteraction)(nil)
-
 func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	return &TLSInteraction{
 		Object: obj,
@@ -256,7 +254,7 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
 
@@ -347,7 +345,7 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -393,7 +391,7 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -430,7 +428,7 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -456,7 +454,7 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
 

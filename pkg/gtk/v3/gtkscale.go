@@ -115,8 +115,6 @@ type Scale struct {
 	Range
 }
 
-var _ gextras.Nativer = (*Scale)(nil)
-
 func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{
 		Range: Range{
@@ -130,10 +128,12 @@ func wrapScale(obj *externglib.Object) *Scale {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

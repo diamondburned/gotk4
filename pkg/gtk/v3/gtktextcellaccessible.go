@@ -28,9 +28,8 @@ type TextCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Text
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TextCellAccessible)(nil)
 
 func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{
@@ -52,11 +51,13 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 		Text: atk.Text{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +65,6 @@ func marshalTextCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextCellAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TextCellAccessible) Native() uintptr {
-	return v.RendererCellAccessible.CellAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TextCellAccessible) privateTextCellAccessible() {}

@@ -94,10 +94,10 @@ type MemoryMonitor struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*MemoryMonitor)(nil)
-
 // MemoryMonitorrer describes MemoryMonitor's abstract methods.
 type MemoryMonitorrer interface {
+	gextras.Objector
+
 	privateMemoryMonitor()
 }
 

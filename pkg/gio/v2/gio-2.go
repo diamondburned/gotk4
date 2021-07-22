@@ -143,8 +143,6 @@ type AppInfoMonitor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AppInfoMonitor)(nil)
-
 func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	return &AppInfoMonitor{
 		Object: obj,
@@ -166,8 +164,6 @@ type BytesIcon struct {
 
 	LoadableIcon
 }
-
-var _ gextras.Nativer = (*BytesIcon)(nil)
 
 func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	return &BytesIcon{
@@ -196,8 +192,6 @@ type DBusActionGroup struct {
 
 	RemoteActionGroup
 }
-
-var _ gextras.Nativer = (*DBusActionGroup)(nil)
 
 func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 	return &DBusActionGroup{
@@ -256,8 +250,6 @@ type DBusAuthObserver struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DBusAuthObserver)(nil)
-
 func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 	return &DBusAuthObserver{
 		Object: obj,
@@ -313,7 +305,7 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_dbus_auth_observer_authorize_authenticated_peer(_arg0, _arg1, _arg2)
@@ -385,8 +377,6 @@ type DBusConnection struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*DBusConnection)(nil)
-
 func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 	return &DBusConnection{
 		Object: obj,
@@ -412,7 +402,7 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_new_finish(_arg1, &_cerr)
 
@@ -432,7 +422,7 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_new_for_address_finish(_arg1, &_cerr)
 
@@ -517,7 +507,7 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GDBusConnectionFlags(flags)
@@ -667,7 +657,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_call_finish(_arg0, _arg1, &_cerr)
 
@@ -839,7 +829,7 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -962,7 +952,7 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_dbus_connection_close_finish(_arg0, _arg1, &_cerr)
 
@@ -1063,7 +1053,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer((actionGroup).(gextras.Nativer).Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.g_dbus_connection_export_action_group(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1097,7 +1087,7 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.g_dbus_connection_export_menu_model(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1148,7 +1138,7 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_dbus_connection_flush_finish(_arg0, _arg1, &_cerr)
 
@@ -1487,7 +1477,7 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_send_message_with_reply_finish(_arg0, _arg1, &_cerr)
 
@@ -1775,8 +1765,6 @@ type DBusMenuModel struct {
 	MenuModel
 }
 
-var _ gextras.Nativer = (*DBusMenuModel)(nil)
-
 func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	return &DBusMenuModel{
 		MenuModel: MenuModel{
@@ -1798,8 +1786,6 @@ func (*DBusMenuModel) privateDBusMenuModel() {}
 type DBusMessage struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*DBusMessage)(nil)
 
 func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 	return &DBusMessage{
@@ -2615,8 +2601,6 @@ type DBusMethodInvocation struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DBusMethodInvocation)(nil)
-
 func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 	return &DBusMethodInvocation{
 		Object: obj,
@@ -2944,8 +2928,6 @@ type DBusServer struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*DBusServer)(nil)
-
 func wrapDBusServer(obj *externglib.Object) *DBusServer {
 	return &DBusServer{
 		Object: obj,
@@ -3110,8 +3092,6 @@ type Menu struct {
 	MenuModel
 }
 
-var _ gextras.Nativer = (*Menu)(nil)
-
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
 		MenuModel: MenuModel{
@@ -3182,7 +3162,7 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 }
@@ -3198,7 +3178,7 @@ func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 }
@@ -3278,7 +3258,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 }
@@ -3296,7 +3276,7 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 }
@@ -3342,7 +3322,7 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 }
@@ -3358,7 +3338,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 }
@@ -3397,8 +3377,6 @@ func (menu *Menu) RemoveAll() {
 type MenuItem struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MenuItem)(nil)
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
@@ -3448,7 +3426,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg2 = C.gint(itemIndex)
 
 	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
@@ -3524,7 +3502,7 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	_cret = C.g_menu_item_new_section(_arg1, _arg2)
 
@@ -3546,7 +3524,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	_cret = C.g_menu_item_new_submenu(_arg1, _arg2)
 
@@ -3720,7 +3698,7 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_menu_item_set_icon(_arg0, _arg1)
 }
@@ -3758,7 +3736,7 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 }
@@ -3774,7 +3752,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((section).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	C.g_menu_item_set_section(_arg0, _arg1)
 }
@@ -3791,7 +3769,7 @@ func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	C.g_menu_item_set_submenu(_arg0, _arg1)
 }
@@ -3819,8 +3797,6 @@ func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 type Notification struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Notification)(nil)
 
 func wrapNotification(obj *externglib.Object) *Notification {
 	return &Notification{
@@ -3958,7 +3934,7 @@ func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon         // out
 
 	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_notification_set_icon(_arg0, _arg1)
 }
@@ -4057,8 +4033,6 @@ type PropertyAction struct {
 	Action
 }
 
-var _ gextras.Nativer = (*PropertyAction)(nil)
-
 func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 	return &PropertyAction{
 		Object: obj,
@@ -4115,8 +4089,6 @@ type SimpleAction struct {
 
 	Action
 }
-
-var _ gextras.Nativer = (*SimpleAction)(nil)
 
 func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 	return &SimpleAction{
@@ -4242,8 +4214,6 @@ type SimpleIOStream struct {
 	IOStream
 }
 
-var _ gextras.Nativer = (*SimpleIOStream)(nil)
-
 func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 	return &SimpleIOStream{
 		IOStream: IOStream{
@@ -4265,8 +4235,8 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	var _arg2 *C.GOutputStream // out
 	var _cret *C.GIOStream     // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((inputStream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer((outputStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
 
 	_cret = C.g_simple_io_stream_new(_arg1, _arg2)
 
@@ -4287,8 +4257,6 @@ func (*SimpleIOStream) privateSimpleIOStream() {}
 type SimplePermission struct {
 	Permission
 }
-
-var _ gextras.Nativer = (*SimplePermission)(nil)
 
 func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 	return &SimplePermission{
@@ -4378,8 +4346,6 @@ type Subprocess struct {
 
 	Initable
 }
-
-var _ gextras.Nativer = (*Subprocess)(nil)
 
 func wrapSubprocess(obj *externglib.Object) *Subprocess {
 	return &Subprocess{
@@ -4501,7 +4467,7 @@ func (subprocess *Subprocess) CommunicateUTF8Finish(result AsyncResulter) (stdou
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_subprocess_communicate_utf8_finish(_arg0, _arg1, &_arg2, &_arg3, &_cerr)
 
@@ -4869,7 +4835,7 @@ func (subprocess *Subprocess) WaitCheckFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_subprocess_wait_check_finish(_arg0, _arg1, &_cerr)
 
@@ -4888,7 +4854,7 @@ func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_subprocess_wait_finish(_arg0, _arg1, &_cerr)
 
@@ -4909,8 +4875,6 @@ func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 type SubprocessLauncher struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*SubprocessLauncher)(nil)
 
 func wrapSubprocessLauncher(obj *externglib.Object) *SubprocessLauncher {
 	return &SubprocessLauncher{
@@ -5385,8 +5349,6 @@ func (self *SubprocessLauncher) Unsetenv(variable string) {
 type TestDBus struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TestDBus)(nil)
 
 func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	return &TestDBus{

@@ -42,8 +42,6 @@ type TearoffMenuItem struct {
 	MenuItem
 }
 
-var _ gextras.Nativer = (*TearoffMenuItem)(nil)
-
 func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{
 		MenuItem: MenuItem{
@@ -59,6 +57,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -73,11 +72,13 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

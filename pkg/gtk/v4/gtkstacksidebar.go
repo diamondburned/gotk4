@@ -40,8 +40,6 @@ type StackSidebar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*StackSidebar)(nil)
-
 func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Widget: Widget{
@@ -57,6 +55,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

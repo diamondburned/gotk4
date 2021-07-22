@@ -47,8 +47,6 @@ type OffscreenWindow struct {
 	Window
 }
 
-var _ gextras.Nativer = (*OffscreenWindow)(nil)
-
 func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{
 		Window: Window{
@@ -64,6 +62,7 @@ func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},

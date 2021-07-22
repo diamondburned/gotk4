@@ -43,10 +43,10 @@ type Texture struct {
 	Paintable
 }
 
-var _ gextras.Nativer = (*Texture)(nil)
-
 // Texturer describes Texture's abstract methods.
 type Texturer interface {
+	gextras.Objector
+
 	// Height returns the height of the texture, in pixels.
 	Height() int
 	// Width returns the width of texture, in pixels.
@@ -99,7 +99,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _cret *C.GdkTexture // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
 

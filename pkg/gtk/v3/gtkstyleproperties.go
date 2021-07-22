@@ -48,8 +48,6 @@ type StyleProperties struct {
 	StyleProvider
 }
 
-var _ gextras.Nativer = (*StyleProperties)(nil)
-
 func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	return &StyleProperties{
 		Object: obj,

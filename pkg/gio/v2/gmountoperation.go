@@ -72,8 +72,6 @@ type MountOperation struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*MountOperation)(nil)
-
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		Object: obj,

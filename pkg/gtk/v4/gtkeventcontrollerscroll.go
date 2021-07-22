@@ -123,8 +123,6 @@ type EventControllerScroll struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*EventControllerScroll)(nil)
-
 func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
 		EventController: EventController{

@@ -49,7 +49,7 @@ func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	return cret
 }
@@ -175,9 +175,8 @@ type FlowBox struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FlowBox)(nil)
 
 func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	return &FlowBox{
@@ -194,10 +193,12 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -218,12 +219,6 @@ func NewFlowBox() *FlowBox {
 	_flowBox = wrapFlowBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBox
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FlowBox) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BindModel binds model to box.
@@ -248,7 +243,7 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_FlowBoxCreateWidgetFunc)
 	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -447,7 +442,7 @@ func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.int(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
@@ -485,7 +480,7 @@ func (box *FlowBox) Remove(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_flow_box_remove(_arg0, _arg1)
 }
@@ -737,8 +732,6 @@ type FlowBoxChild struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*FlowBoxChild)(nil)
-
 func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{
 		Widget: Widget{
@@ -754,6 +747,7 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -862,7 +856,7 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 }

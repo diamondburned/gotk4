@@ -28,8 +28,6 @@ type NumericSorter struct {
 	Sorter
 }
 
-var _ gextras.Nativer = (*NumericSorter)(nil)
-
 func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 	return &NumericSorter{
 		Sorter: Sorter{
@@ -52,7 +50,7 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
@@ -109,7 +107,7 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression    // out
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }

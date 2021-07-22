@@ -508,12 +508,6 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 
 		name := value.InNamePtrPubl(1)
-		if value.IsPublic {
-			// Public interfaces don't have .Native, so we type-assert it.
-			value.header.ImportCore("gextras")
-			name = fmt.Sprintf("(%s).(gextras.Nativer)", name)
-		}
-
 		value.p.Linef("%s = %s(unsafe.Pointer(%s.Native()))", value.Out.Set, value.OutCast(1), name)
 		return true
 

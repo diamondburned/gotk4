@@ -75,10 +75,10 @@ type ToolShell struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*ToolShell)(nil)
-
 // ToolSheller describes ToolShell's abstract methods.
 type ToolSheller interface {
+	gextras.Objector
+
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	EllipsizeMode() pango.EllipsizeMode
 	// IconSize retrieves the icon size for the tool shell.
@@ -115,6 +115,7 @@ func wrapToolShell(obj *externglib.Object) *ToolShell {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

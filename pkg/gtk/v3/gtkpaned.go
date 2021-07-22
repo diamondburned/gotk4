@@ -81,9 +81,8 @@ type Paned struct {
 	Container
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Paned)(nil)
 
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
@@ -98,11 +97,13 @@ func wrapPaned(obj *externglib.Object) *Paned {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -128,12 +129,6 @@ func NewPaned(orientation Orientation) *Paned {
 	return _paned
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Paned) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
-}
-
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to gtk_paned_pack1 (paned, child, FALSE, TRUE).
 func (paned *Paned) Add1(child Widgetter) {
@@ -141,7 +136,7 @@ func (paned *Paned) Add1(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
 }
@@ -153,7 +148,7 @@ func (paned *Paned) Add2(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
 }
@@ -250,7 +245,7 @@ func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -269,7 +264,7 @@ func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
 	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}

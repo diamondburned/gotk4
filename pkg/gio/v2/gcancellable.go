@@ -48,8 +48,6 @@ type Cancellable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Cancellable)(nil)
-
 func wrapCancellable(obj *externglib.Object) *Cancellable {
 	return &Cancellable{
 		Object: obj,

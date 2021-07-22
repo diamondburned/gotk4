@@ -42,8 +42,6 @@ type X11Surface struct {
 	gdk.Surface
 }
 
-var _ gextras.Nativer = (*X11Surface)(nil)
-
 func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{
 		Surface: gdk.Surface{
@@ -142,7 +140,7 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg1 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((leader).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
 
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 }

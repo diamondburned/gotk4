@@ -97,10 +97,10 @@ type BuilderScope struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*BuilderScope)(nil)
-
 // BuilderScoper describes BuilderScope's abstract methods.
 type BuilderScoper interface {
+	gextras.Objector
+
 	privateBuilderScope()
 }
 
@@ -139,8 +139,6 @@ type BuilderCScope struct {
 
 	BuilderScope
 }
-
-var _ gextras.Nativer = (*BuilderCScope)(nil)
 
 func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 	return &BuilderCScope{

@@ -159,8 +159,6 @@ type Stack struct {
 	Container
 }
 
-var _ gextras.Nativer = (*Stack)(nil)
-
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
 		Container: Container{
@@ -174,6 +172,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -205,7 +204,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) {
 	var _arg2 *C.gchar     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -222,7 +221,7 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) {
 	var _arg3 *C.gchar     // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
@@ -521,7 +520,7 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
 }

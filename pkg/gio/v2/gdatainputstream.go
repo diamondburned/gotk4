@@ -43,8 +43,6 @@ type DataInputStream struct {
 	BufferedInputStream
 }
 
-var _ gextras.Nativer = (*DataInputStream)(nil)
-
 func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{
 		BufferedInputStream: BufferedInputStream{
@@ -71,7 +69,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_data_input_stream_new(_arg1)
 
@@ -316,7 +314,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -353,7 +351,7 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -592,7 +590,7 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -703,7 +701,7 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, &_cerr)
 

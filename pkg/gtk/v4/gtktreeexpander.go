@@ -64,8 +64,6 @@ type TreeExpander struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*TreeExpander)(nil)
-
 func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 	return &TreeExpander{
 		Widget: Widget{
@@ -81,6 +79,7 @@ func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -162,7 +161,7 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
 }

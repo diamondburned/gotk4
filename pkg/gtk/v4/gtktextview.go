@@ -185,9 +185,8 @@ type TextView struct {
 	Widget
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TextView)(nil)
 
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
@@ -204,10 +203,12 @@ func wrapTextView(obj *externglib.Object) *TextView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -257,12 +258,6 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 	return _textView
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TextView) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
-}
-
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
 func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
@@ -270,7 +265,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 	var _arg2 *C.GtkTextChildAnchor // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	C.gtk_text_view_add_child_at_anchor(_arg0, _arg1, _arg2)
@@ -292,7 +287,7 @@ func (textView *TextView) AddOverlay(child Widgetter, xpos int, ypos int) {
 	var _arg3 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(xpos)
 	_arg3 = C.int(ypos)
 
@@ -1053,7 +1048,7 @@ func (textView *TextView) ImContextFilterKeypress(event gdk.Eventer) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gtk_text_view_im_context_filter_keypress(_arg0, _arg1)
 
@@ -1097,7 +1092,7 @@ func (textView *TextView) MoveOverlay(child Widgetter, xpos int, ypos int) {
 	var _arg3 C.int          // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(xpos)
 	_arg3 = C.int(ypos)
 
@@ -1161,7 +1156,7 @@ func (textView *TextView) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_text_view_remove(_arg0, _arg1)
 }
@@ -1365,7 +1360,7 @@ func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel  // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_text_view_set_extra_menu(_arg0, _arg1)
 }
@@ -1381,7 +1376,7 @@ func (textView *TextView) SetGutter(win TextWindowType, widget Widgetter) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg1 = C.GtkTextWindowType(win)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_text_view_set_gutter(_arg0, _arg1, _arg2)
 }

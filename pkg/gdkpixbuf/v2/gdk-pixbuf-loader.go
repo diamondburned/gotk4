@@ -82,8 +82,6 @@ type PixbufLoader struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PixbufLoader)(nil)
-
 func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	return &PixbufLoader{
 		Object: obj,

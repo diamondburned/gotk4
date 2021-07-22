@@ -35,8 +35,6 @@ type HScrollbar struct {
 	Scrollbar
 }
 
-var _ gextras.Nativer = (*HScrollbar)(nil)
-
 func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	return &HScrollbar{
 		Scrollbar: Scrollbar{
@@ -51,10 +49,12 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

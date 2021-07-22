@@ -65,8 +65,6 @@ type SocketService struct {
 	SocketListener
 }
 
-var _ gextras.Nativer = (*SocketService)(nil)
-
 func wrapSocketService(obj *externglib.Object) *SocketService {
 	return &SocketService{
 		SocketListener: SocketListener{

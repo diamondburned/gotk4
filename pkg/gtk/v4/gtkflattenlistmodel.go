@@ -33,8 +33,6 @@ type FlattenListModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*FlattenListModel)(nil)
-
 func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	return &FlattenListModel{
 		Object: obj,
@@ -55,7 +53,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
 
@@ -106,7 +104,7 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel          // out
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)
 }

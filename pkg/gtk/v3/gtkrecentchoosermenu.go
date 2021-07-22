@@ -47,9 +47,8 @@ type RecentChooserMenu struct {
 
 	Activatable
 	RecentChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RecentChooserMenu)(nil)
 
 func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{
@@ -66,6 +65,7 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -76,6 +76,7 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -127,12 +128,6 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *RecentChooserMenu) Native() uintptr {
-	return v.Menu.MenuShell.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ShowNumbers returns the value set by

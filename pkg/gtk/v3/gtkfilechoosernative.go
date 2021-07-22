@@ -183,9 +183,8 @@ type FileChooserNative struct {
 	NativeDialog
 
 	FileChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileChooserNative)(nil)
 
 func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 	return &FileChooserNative{
@@ -195,6 +194,7 @@ func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 		FileChooser: FileChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -229,12 +229,6 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 	_fileChooserNative = wrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileChooserNative
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileChooserNative) Native() uintptr {
-	return v.NativeDialog.Object.Native()
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.

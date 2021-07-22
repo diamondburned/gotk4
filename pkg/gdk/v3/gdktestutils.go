@@ -4,8 +4,6 @@ package gdk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -21,7 +19,7 @@ import "C"
 func TestRenderSync(window Windower) {
 	var _arg1 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_test_render_sync(_arg1)
 }
@@ -46,7 +44,7 @@ func TestSimulateButton(window Windower, x int, y int, button uint, modifiers Mo
 	var _arg6 C.GdkEventType    // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 	_arg4 = C.guint(button)
@@ -87,7 +85,7 @@ func TestSimulateKey(window Windower, x int, y int, keyval uint, modifiers Modif
 	var _arg6 C.GdkEventType    // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 	_arg4 = C.guint(keyval)

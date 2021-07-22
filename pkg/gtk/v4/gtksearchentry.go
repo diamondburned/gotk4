@@ -67,9 +67,8 @@ type SearchEntry struct {
 	Widget
 
 	Editable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*SearchEntry)(nil)
 
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
@@ -86,6 +85,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
@@ -101,8 +101,10 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -123,12 +125,6 @@ func NewSearchEntry() *SearchEntry {
 	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *SearchEntry) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // KeyCaptureWidget gets the widget that entry is capturing key events from.
@@ -166,7 +162,7 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }

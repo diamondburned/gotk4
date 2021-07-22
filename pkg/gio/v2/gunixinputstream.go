@@ -44,9 +44,8 @@ type UnixInputStream struct {
 
 	FileDescriptorBased
 	PollableInputStream
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*UnixInputStream)(nil)
 
 func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 	return &UnixInputStream{
@@ -61,6 +60,7 @@ func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -91,12 +91,6 @@ func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 	_unixInputStream = wrapUnixInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixInputStream
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *UnixInputStream) Native() uintptr {
-	return v.InputStream.Object.Native()
 }
 
 // CloseFd returns whether the file descriptor of stream will be closed when the

@@ -197,10 +197,10 @@ type Editable struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Editable)(nil)
-
 // Editabler describes Editable's abstract methods.
 type Editabler interface {
+	gextras.Objector
+
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
 	// DeleteText deletes a sequence of characters.
@@ -272,6 +272,7 @@ func wrapEditable(obj *externglib.Object) *Editable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

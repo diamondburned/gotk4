@@ -28,8 +28,6 @@ type NoOpObjectFactory struct {
 	ObjectFactory
 }
 
-var _ gextras.Nativer = (*NoOpObjectFactory)(nil)
-
 func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{

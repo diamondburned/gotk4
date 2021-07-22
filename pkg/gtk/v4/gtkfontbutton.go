@@ -41,9 +41,8 @@ type FontButton struct {
 	Widget
 
 	FontChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FontButton)(nil)
 
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{
@@ -60,10 +59,12 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		FontChooser: FontChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -102,12 +103,6 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	_fontButton = wrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FontButton) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

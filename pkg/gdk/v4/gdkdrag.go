@@ -89,10 +89,10 @@ type Drag struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Drag)(nil)
-
 // Dragger describes Drag's abstract methods.
 type Dragger interface {
+	gextras.Objector
+
 	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
 	// Actions determines the bitmask of possible actions proposed by the
@@ -328,8 +328,8 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 	var _arg6 C.double              // out
 	var _cret *C.GdkDrag            // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg3 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
 	_arg4 = C.GdkDragAction(actions)
 	_arg5 = C.double(dx)

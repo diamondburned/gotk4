@@ -27,8 +27,6 @@ type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
-var _ gextras.Nativer = (*X11AppLaunchContext)(nil)
-
 func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 	return &X11AppLaunchContext{
 		AppLaunchContext: gdk.AppLaunchContext{

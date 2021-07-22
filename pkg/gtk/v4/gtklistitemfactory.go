@@ -73,8 +73,6 @@ type ListItemFactory struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ListItemFactory)(nil)
-
 func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
 	return &ListItemFactory{
 		Object: obj,

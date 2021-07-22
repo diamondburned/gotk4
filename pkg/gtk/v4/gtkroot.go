@@ -39,10 +39,10 @@ type Root struct {
 	NativeSurface
 }
 
-var _ gextras.Nativer = (*Root)(nil)
-
 // Rooter describes Root's abstract methods.
 type Rooter interface {
+	gextras.Objector
+
 	// Display returns the display that this GtkRoot is on.
 	Display() *gdk.Display
 	// Focus retrieves the current focused widget within the root.
@@ -70,6 +70,7 @@ func wrapRoot(obj *externglib.Object) *Root {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -134,7 +135,7 @@ func (self *Root) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((focus).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_root_set_focus(_arg0, _arg1)
 }

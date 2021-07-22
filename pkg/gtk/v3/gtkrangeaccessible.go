@@ -30,8 +30,6 @@ type RangeAccessible struct {
 	atk.Value
 }
 
-var _ gextras.Nativer = (*RangeAccessible)(nil)
-
 func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 	return &RangeAccessible{
 		WidgetAccessible: WidgetAccessible{

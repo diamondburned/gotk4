@@ -29,8 +29,6 @@ type GObjectAccessible struct {
 	ObjectClass
 }
 
-var _ gextras.Nativer = (*GObjectAccessible)(nil)
-
 func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{
 		ObjectClass: ObjectClass{

@@ -137,10 +137,10 @@ type Renderer struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Renderer)(nil)
-
 // Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
+	gextras.Objector
+
 	// Activate does initial setup before rendering operations on renderer.
 	Activate()
 	// Deactivate cleans up after rendering operations on renderer.
@@ -262,7 +262,7 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float
 	var _arg4 C.double         // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = C.guint32(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -309,7 +309,7 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y 
 	var _arg4 C.int               // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)

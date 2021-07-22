@@ -31,8 +31,6 @@ type EventControllerKey struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*EventControllerKey)(nil)
-
 func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	return &EventControllerKey{
 		EventController: EventController{
@@ -51,7 +49,7 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_key_new(_arg1)
 
@@ -68,7 +66,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _cret C.gboolean               // in
 
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
@@ -117,7 +115,7 @@ func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
 	var _arg1 *C.GtkIMContext          // out
 
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
-	_arg1 = (*C.GtkIMContext)(unsafe.Pointer((imContext).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(imContext.Native()))
 
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 }

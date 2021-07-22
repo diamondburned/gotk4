@@ -192,8 +192,6 @@ type Application struct {
 	ActionMap
 }
 
-var _ gextras.Nativer = (*Application)(nil)
-
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
 		Object: obj,
@@ -664,7 +662,7 @@ func (application *Application) Open(files []Filer, hint string) {
 	{
 		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
 		for i := range files {
-			out[i] = (*C.GFile)(unsafe.Pointer((files[i]).(gextras.Nativer).Native()))
+			out[i] = (*C.GFile)(unsafe.Pointer(files[i].Native()))
 		}
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
@@ -902,7 +900,7 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg1 *C.GActionGroup // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer((actionGroup).(gextras.Nativer).Native()))
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	C.g_application_set_action_group(_arg0, _arg1)
 }

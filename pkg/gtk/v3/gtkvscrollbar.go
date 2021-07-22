@@ -35,8 +35,6 @@ type VScrollbar struct {
 	Scrollbar
 }
 
-var _ gextras.Nativer = (*VScrollbar)(nil)
-
 func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	return &VScrollbar{
 		Scrollbar: Scrollbar{
@@ -51,10 +49,12 @@ func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

@@ -68,9 +68,8 @@ type RecentChooserDialog struct {
 	Dialog
 
 	RecentChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RecentChooserDialog)(nil)
 
 func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{
@@ -88,6 +87,7 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -96,6 +96,7 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -103,12 +104,6 @@ func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRecentChooserDialog(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *RecentChooserDialog) Native() uintptr {
-	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*RecentChooserDialog) privateRecentChooserDialog() {}

@@ -29,8 +29,6 @@ type GestureZoom struct {
 	Gesture
 }
 
-var _ gextras.Nativer = (*GestureZoom)(nil)
-
 func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{
 		Gesture: Gesture{

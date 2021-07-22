@@ -125,7 +125,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, &_cerr)
 

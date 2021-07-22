@@ -663,7 +663,7 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_offscreen_window_get_embedder(_arg1)
 
@@ -681,7 +681,7 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_offscreen_window_get_surface(_arg1)
 
@@ -705,8 +705,8 @@ func OffscreenWindowSetEmbedder(window Windower, embedder Windower) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((embedder).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(embedder.Native()))
 
 	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
 }
@@ -725,10 +725,10 @@ type Window struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Window)(nil)
-
 // Windower describes Window's abstract methods.
 type Windower interface {
+	gextras.Objector
+
 	// Beep emits a short beep associated to window in the appropriate display,
 	// if supported.
 	Beep()
@@ -1168,7 +1168,7 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 	var _arg3 C.gint           // out
 	var _cret *C.GdkWindow     // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.GdkWindowAttr)(gextras.StructNative(unsafe.Pointer(attributes)))
 	_arg3 = C.gint(attributesMask)
 
@@ -1269,7 +1269,7 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button int, rootX i
 	var _arg5 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.gint(button)
 	_arg3 = C.gint(rootX)
 	_arg4 = C.gint(rootY)
@@ -1379,7 +1379,7 @@ func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, 
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = C.GdkWindowEdge(edge)
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg3 = C.gint(button)
 	_arg4 = C.gint(rootX)
 	_arg5 = C.gint(rootY)
@@ -1962,7 +1962,7 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _cret *C.GdkCursor // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 
@@ -1981,7 +1981,7 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 	var _cret C.GdkEventMask // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_events(_arg0, _arg1)
 
@@ -2005,7 +2005,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -2034,7 +2034,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	var _cret *C.GdkWindow      // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_position_double(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -3251,7 +3251,7 @@ func (window *Window) Reparent(newParent Windower, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((newParent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(newParent.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -3294,7 +3294,7 @@ func (window *Window) Restack(sibling Windower, above bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(sibling.Native()))
 	if above {
 		_arg2 = C.TRUE
 	}
@@ -3462,7 +3462,7 @@ func (window *Window) SetCursor(cursor Cursorrer) {
 	var _arg1 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkCursor)(unsafe.Pointer((cursor).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_window_set_cursor(_arg0, _arg1)
 }
@@ -3502,8 +3502,8 @@ func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	var _arg2 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer((cursor).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_window_set_device_cursor(_arg0, _arg1, _arg2)
 }
@@ -3521,7 +3521,7 @@ func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
 	var _arg2 C.GdkEventMask // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_device_events(_arg0, _arg1, _arg2)
@@ -3676,7 +3676,7 @@ func (window *Window) SetGroup(leader Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((leader).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(leader.Native()))
 
 	C.gdk_window_set_group(_arg0, _arg1)
 }
@@ -4068,7 +4068,7 @@ func (window *Window) SetTransientFor(parent Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gdk_window_set_transient_for(_arg0, _arg1)
 }

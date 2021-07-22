@@ -30,8 +30,6 @@ type ListBoxAccessible struct {
 	atk.Selection
 }
 
-var _ gextras.Nativer = (*ListBoxAccessible)(nil)
-
 func wrapListBoxAccessible(obj *externglib.Object) *ListBoxAccessible {
 	return &ListBoxAccessible{
 		ContainerAccessible: ContainerAccessible{

@@ -30,8 +30,6 @@ type LevelBarAccessible struct {
 	atk.Value
 }
 
-var _ gextras.Nativer = (*LevelBarAccessible)(nil)
-
 func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{
 		WidgetAccessible: WidgetAccessible{

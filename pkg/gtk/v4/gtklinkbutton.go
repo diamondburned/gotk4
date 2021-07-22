@@ -53,8 +53,6 @@ type LinkButton struct {
 	Button
 }
 
-var _ gextras.Nativer = (*LinkButton)(nil)
-
 func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{
 		Button: Button{
@@ -71,6 +69,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Actionable: Actionable{
 				Widget: Widget{
@@ -86,8 +85,10 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }

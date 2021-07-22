@@ -185,10 +185,10 @@ type AsyncInitable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AsyncInitable)(nil)
-
 // AsyncInitabler describes AsyncInitable's abstract methods.
 type AsyncInitabler interface {
+	gextras.Objector
+
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface.
 	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
@@ -277,7 +277,7 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 
@@ -297,7 +297,7 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 

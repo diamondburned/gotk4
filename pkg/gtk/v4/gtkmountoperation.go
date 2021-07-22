@@ -39,8 +39,6 @@ type MountOperation struct {
 	gio.MountOperation
 }
 
-var _ gextras.Nativer = (*MountOperation)(nil)
-
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		MountOperation: gio.MountOperation{

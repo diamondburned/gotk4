@@ -220,8 +220,6 @@ type SimpleAsyncResult struct {
 	AsyncResult
 }
 
-var _ gextras.Nativer = (*SimpleAsyncResult)(nil)
-
 func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{
 		Object: obj,
@@ -502,7 +500,7 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, s
 	var _arg3 C.gpointer      // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
 	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
 

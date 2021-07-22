@@ -42,9 +42,8 @@ type Viewport struct {
 	Widget
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Viewport)(nil)
 
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
@@ -61,10 +60,12 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -93,12 +94,6 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Viewport) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the child widget of viewport.
@@ -142,7 +137,7 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }

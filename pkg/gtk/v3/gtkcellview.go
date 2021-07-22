@@ -49,9 +49,8 @@ type CellView struct {
 
 	CellLayout
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CellView)(nil)
 
 func wrapCellView(obj *externglib.Object) *CellView {
 	return &CellView{
@@ -65,6 +64,7 @@ func wrapCellView(obj *externglib.Object) *CellView {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
@@ -72,6 +72,7 @@ func wrapCellView(obj *externglib.Object) *CellView {
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -105,7 +106,7 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 	var _arg2 *C.GtkCellAreaContext // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
@@ -169,12 +170,6 @@ func NewCellViewWithText(text string) *CellView {
 	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CellView) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
@@ -361,7 +356,7 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)
 }

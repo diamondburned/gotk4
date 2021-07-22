@@ -70,9 +70,8 @@ type MenuItem struct {
 
 	Actionable
 	Activatable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MenuItem)(nil)
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
@@ -88,6 +87,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -102,11 +102,13 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Activatable: Activatable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -164,12 +166,6 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *MenuItem) Native() uintptr {
-	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Activate emits the MenuItem::activate signal on the given item

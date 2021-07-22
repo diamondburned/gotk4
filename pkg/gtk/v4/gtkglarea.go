@@ -136,8 +136,6 @@ type GLArea struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*GLArea)(nil)
-
 func wrapGLArea(obj *externglib.Object) *GLArea {
 	return &GLArea{
 		Widget: Widget{
@@ -153,6 +151,7 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

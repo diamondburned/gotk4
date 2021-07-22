@@ -28,9 +28,8 @@ type SpinButtonAccessible struct {
 	EntryAccessible
 
 	atk.Value
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*SpinButtonAccessible)(nil)
 
 func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{
@@ -54,10 +53,12 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 			Text: atk.Text{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Value: atk.Value{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -65,12 +66,6 @@ func marshalSpinButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSpinButtonAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *SpinButtonAccessible) Native() uintptr {
-	return v.EntryAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*SpinButtonAccessible) privateSpinButtonAccessible() {}

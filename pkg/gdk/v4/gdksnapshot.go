@@ -28,10 +28,10 @@ type Snapshot struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Snapshot)(nil)
-
 // Snapshotter describes Snapshot's abstract methods.
 type Snapshotter interface {
+	gextras.Objector
+
 	privateSnapshot()
 }
 

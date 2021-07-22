@@ -53,8 +53,6 @@ type CheckMenuItem struct {
 	MenuItem
 }
 
-var _ gextras.Nativer = (*CheckMenuItem)(nil)
-
 func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 	return &CheckMenuItem{
 		MenuItem: MenuItem{
@@ -70,6 +68,7 @@ func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -84,11 +83,13 @@ func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

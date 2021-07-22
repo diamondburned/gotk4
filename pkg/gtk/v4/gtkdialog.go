@@ -272,8 +272,6 @@ type Dialog struct {
 	Window
 }
 
-var _ gextras.Nativer = (*Dialog)(nil)
-
 func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
 		Window: Window{
@@ -290,6 +288,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Root: Root{
 				NativeSurface: NativeSurface{
@@ -306,12 +305,14 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -352,7 +353,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
@@ -427,7 +428,7 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _cret C.int        // in
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 

@@ -70,10 +70,10 @@ type Proxy struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Proxy)(nil)
-
 // Proxier describes Proxy's abstract methods.
 type Proxier interface {
+	gextras.Objector
+
 	// ConnectProxier: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to proxy_address, and if required, wraps
@@ -120,7 +120,7 @@ func (proxy *Proxy) ConnectProxier(ctx context.Context, connection IOStreamer, p
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -149,7 +149,7 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -165,7 +165,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 

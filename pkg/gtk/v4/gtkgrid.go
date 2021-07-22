@@ -108,9 +108,8 @@ type Grid struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Grid)(nil)
 
 func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{
@@ -127,10 +126,12 @@ func wrapGrid(obj *externglib.Object) *Grid {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -153,12 +154,6 @@ func NewGrid() *Grid {
 	return _grid
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Grid) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
-}
-
 // Attach adds a widget to the grid.
 //
 // The position of child is determined by column and row. The number of “cells”
@@ -172,7 +167,7 @@ func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height
 	var _arg5 C.int        // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(column)
 	_arg3 = C.int(row)
 	_arg4 = C.int(width)
@@ -198,8 +193,8 @@ func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side Position
 	var _arg5 C.int             // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 	_arg3 = C.GtkPositionType(side)
 	_arg4 = C.int(width)
 	_arg5 = C.int(height)
@@ -358,7 +353,7 @@ func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
 	var _arg2 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 	_arg2 = C.GtkPositionType(side)
 
 	C.gtk_grid_insert_next_to(_arg0, _arg1, _arg2)
@@ -389,7 +384,7 @@ func (grid *Grid) QueryChild(child Widgetter) (column int, row int, width int, h
 	var _arg5 C.int        // in
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_query_child(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -415,7 +410,7 @@ func (grid *Grid) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_remove(_arg0, _arg1)
 }

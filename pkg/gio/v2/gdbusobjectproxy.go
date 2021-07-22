@@ -40,8 +40,6 @@ type DBusObjectProxy struct {
 	DBusObject
 }
 
-var _ gextras.Nativer = (*DBusObjectProxy)(nil)
-
 func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{
 		Object: obj,

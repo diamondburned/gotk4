@@ -60,7 +60,7 @@ func _gotk4_gio2_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier)
 
-	cret = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	return cret
 }
@@ -96,8 +96,6 @@ type VFSOverrider interface {
 type VFS struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*VFS)(nil)
 
 func wrapVFS(obj *externglib.Object) *VFS {
 	return &VFS{

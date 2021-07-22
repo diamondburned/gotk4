@@ -36,9 +36,8 @@ type FontChooserDialog struct {
 	Dialog
 
 	FontChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FontChooserDialog)(nil)
 
 func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	return &FontChooserDialog{
@@ -56,6 +55,7 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -64,6 +64,7 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 		FontChooser: FontChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -90,12 +91,6 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	_fontChooserDialog = wrapFontChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserDialog
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FontChooserDialog) Native() uintptr {
-	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FontChooserDialog) privateFontChooserDialog() {}

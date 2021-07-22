@@ -219,9 +219,8 @@ type SpinButton struct {
 	CellEditable
 	Editable
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*SpinButton)(nil)
 
 func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{
@@ -238,6 +237,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		CellEditable: CellEditable{
 			Widget: Widget{
@@ -253,6 +253,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Editable: Editable{
@@ -269,11 +270,13 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -330,12 +333,6 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 	_spinButton = wrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *SpinButton) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Configure changes the properties of an existing spin button.

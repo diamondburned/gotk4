@@ -92,7 +92,7 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 	var _arg5 C.GtkTextDirection // out
 	var _arg6 C.gboolean         // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(location)))
 	if isPrimary {
@@ -194,8 +194,6 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StyleContext)(nil)
-
 func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	return &StyleContext{
 		Object: obj,
@@ -264,7 +262,7 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
@@ -898,7 +896,7 @@ func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId cgo
 	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.gpointer)(unsafe.Pointer(regionId))
 	_arg3 = C.GtkStateType(state)
 	if stateValue {
@@ -959,7 +957,7 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -1015,7 +1013,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy in
 	var _arg3 C.gint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(dx)
 	_arg3 = C.gint(dy)
 
@@ -1033,7 +1031,7 @@ func (context *StyleContext) SetBackground(window gdk.Windower) {
 	var _arg1 *C.GdkWindow       // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_style_context_set_background(_arg0, _arg1)
 }
@@ -1066,7 +1064,7 @@ func (context *StyleContext) SetFrameClock(frameClock gdk.FrameClocker) {
 	var _arg1 *C.GdkFrameClock   // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer((frameClock).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gtk_style_context_set_frame_clock(_arg0, _arg1)
 }
@@ -1231,7 +1229,7 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 	var _arg3 C.guint             // out
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg3 = C.guint(priority)
 
 	C.gtk_style_context_add_provider_for_screen(_arg1, _arg2, _arg3)
@@ -1244,7 +1242,7 @@ func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProvi
 	var _arg2 *C.GtkStyleProvider // out
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider_for_screen(_arg1, _arg2)
 }

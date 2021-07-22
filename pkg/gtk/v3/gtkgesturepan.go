@@ -39,8 +39,6 @@ type GesturePan struct {
 	GestureDrag
 }
 
-var _ gextras.Nativer = (*GesturePan)(nil)
-
 func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	return &GesturePan{
 		GestureDrag: GestureDrag{
@@ -67,7 +65,7 @@ func NewGesturePan(widget Widgetter, orientation Orientation) *GesturePan {
 	var _arg2 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_gesture_pan_new(_arg1, _arg2)

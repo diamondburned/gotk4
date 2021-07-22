@@ -159,8 +159,6 @@ type Calendar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Calendar)(nil)
-
 func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
 		Widget: Widget{
@@ -173,6 +171,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

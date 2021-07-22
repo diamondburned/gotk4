@@ -228,10 +228,10 @@ type FileChooser struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileChooser)(nil)
-
 // FileChooserer describes FileChooser's abstract methods.
 type FileChooserer interface {
+	gextras.Objector
+
 	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id string, label string, options []string, optionLabels []string)
 	// AddFilter adds filter to the list of filters that the user can select
@@ -1030,7 +1030,7 @@ func (chooser *FileChooser) SelectFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_select_file(_arg0, _arg1, &_cerr)
 
@@ -1169,7 +1169,7 @@ func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_set_current_folder_file(_arg0, _arg1, &_cerr)
 
@@ -1258,7 +1258,7 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((extraWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
 
 	C.gtk_file_chooser_set_extra_widget(_arg0, _arg1)
 }
@@ -1300,7 +1300,7 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
 
@@ -1414,7 +1414,7 @@ func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((previewWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(previewWidget.Native()))
 
 	C.gtk_file_chooser_set_preview_widget(_arg0, _arg1)
 }
@@ -1549,7 +1549,7 @@ func (chooser *FileChooser) UnselectFile(file gio.Filer) {
 	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_unselect_file(_arg0, _arg1)
 }

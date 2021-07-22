@@ -68,7 +68,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, pa
 	var _cret C.gboolean          // in
 
 	_arg1 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg3 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_set_row_drag_data(_arg1, _arg2, _arg3)
@@ -106,10 +106,10 @@ type TreeDragDest struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeDragDest)(nil)
-
 // TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
+	gextras.Objector
+
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from selection_data.
 	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
@@ -209,10 +209,10 @@ type TreeDragSource struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeDragSource)(nil)
-
 // TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
+	gextras.Objector
+
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.
 	DragDataDelete(path *TreePath) bool

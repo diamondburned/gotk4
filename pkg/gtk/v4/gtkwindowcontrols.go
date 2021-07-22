@@ -73,8 +73,6 @@ type WindowControls struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*WindowControls)(nil)
-
 func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	return &WindowControls{
 		Widget: Widget{
@@ -90,6 +88,7 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

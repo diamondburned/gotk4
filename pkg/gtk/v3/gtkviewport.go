@@ -47,9 +47,8 @@ type Viewport struct {
 	Bin
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Viewport)(nil)
 
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
@@ -65,12 +64,14 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -97,12 +98,6 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Viewport) Native() uintptr {
-	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BinWindow gets the bin window of the Viewport.

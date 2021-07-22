@@ -123,8 +123,6 @@ type EventControllerScroll struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*EventControllerScroll)(nil)
-
 func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
 		EventController: EventController{
@@ -146,7 +144,7 @@ func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags
 	var _arg2 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkEventControllerScrollFlags(flags)
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)

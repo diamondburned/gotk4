@@ -90,9 +90,8 @@ type ColumnView struct {
 	Widget
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ColumnView)(nil)
 
 func wrapColumnView(obj *externglib.Object) *ColumnView {
 	return &ColumnView{
@@ -109,10 +108,12 @@ func wrapColumnView(obj *externglib.Object) *ColumnView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -130,7 +131,7 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_column_view_new(_arg1)
 
@@ -139,12 +140,6 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _columnView
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ColumnView) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AppendColumn appends the column to the end of the columns in self.
@@ -367,7 +362,7 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_column_view_set_model(_arg0, _arg1)
 }

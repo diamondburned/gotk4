@@ -132,8 +132,6 @@ type MessageDialog struct {
 	Dialog
 }
 
-var _ gextras.Nativer = (*MessageDialog)(nil)
-
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{
@@ -151,6 +149,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Root: Root{
 					NativeSurface: NativeSurface{
@@ -167,12 +166,14 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

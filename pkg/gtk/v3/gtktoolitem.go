@@ -50,9 +50,8 @@ type ToolItem struct {
 	Bin
 
 	Activatable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ToolItem)(nil)
 
 func wrapToolItem(obj *externglib.Object) *ToolItem {
 	return &ToolItem{
@@ -68,12 +67,14 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
 		Activatable: Activatable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -94,12 +95,6 @@ func NewToolItem() *ToolItem {
 	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ToolItem) Native() uintptr {
-	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // EllipsizeMode returns the ellipsize mode used for tool_item. Custom
@@ -492,7 +487,7 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
 }

@@ -193,8 +193,6 @@ type ScrolledWindow struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*ScrolledWindow)(nil)
-
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
 		Widget: Widget{
@@ -210,6 +208,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -522,7 +521,7 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_scrolled_window_set_child(_arg0, _arg1)
 }

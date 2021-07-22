@@ -41,8 +41,6 @@ type ObjectFactory struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ObjectFactory)(nil)
-
 func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	return &ObjectFactory{
 		Object: obj,

@@ -34,10 +34,10 @@ type Bin struct {
 	Container
 }
 
-var _ gextras.Nativer = (*Bin)(nil)
-
 // Binner describes Bin's abstract methods.
 type Binner interface {
+	gextras.Objector
+
 	// Child gets the child of the Bin, or NULL if the bin contains no child
 	// widget.
 	Child() Widgetter
@@ -58,6 +58,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

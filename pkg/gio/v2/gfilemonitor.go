@@ -56,10 +56,10 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileMonitor)(nil)
-
 // FileMonitorrer describes FileMonitor's abstract methods.
 type FileMonitorrer interface {
+	gextras.Objector
+
 	// Cancel cancels a file monitor.
 	Cancel() bool
 	// EmitEvent emits the Monitor::changed signal if a change has taken place.
@@ -116,8 +116,8 @@ func (monitor *FileMonitor) EmitEvent(child Filer, otherFile Filer, eventType Fi
 	var _arg3 C.GFileMonitorEvent // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GFile)(unsafe.Pointer((otherFile).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
 	_arg3 = C.GFileMonitorEvent(eventType)
 
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)

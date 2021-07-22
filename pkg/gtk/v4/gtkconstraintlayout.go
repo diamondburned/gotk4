@@ -186,9 +186,8 @@ type ConstraintLayout struct {
 	LayoutManager
 
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ConstraintLayout)(nil)
 
 func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
@@ -198,6 +197,7 @@ func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -218,12 +218,6 @@ func NewConstraintLayout() *ConstraintLayout {
 	_constraintLayout = wrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ConstraintLayout) Native() uintptr {
-	return v.LayoutManager.Object.Native()
 }
 
 // AddConstraint adds a constraint to the layout manager.
@@ -353,7 +347,7 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 		var vdst *C.GtkConstraintTarget // out
 		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
 		defer C.free(unsafe.Pointer(kdst))
-		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer((vsrc).(gextras.Nativer).Native()))
+		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer(vsrc.Native()))
 		C.g_hash_table_insert(_arg5, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg5)
@@ -477,8 +471,6 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 type ConstraintLayoutChild struct {
 	LayoutChild
 }
-
-var _ gextras.Nativer = (*ConstraintLayoutChild)(nil)
 
 func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{

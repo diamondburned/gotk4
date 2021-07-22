@@ -30,8 +30,6 @@ type WaylandMonitor struct {
 	gdk.Monitor
 }
 
-var _ gextras.Nativer = (*WaylandMonitor)(nil)
-
 func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 	return &WaylandMonitor{
 		Monitor: gdk.Monitor{

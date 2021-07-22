@@ -28,8 +28,6 @@ type VButtonBox struct {
 	ButtonBox
 }
 
-var _ gextras.Nativer = (*VButtonBox)(nil)
-
 func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 	return &VButtonBox{
 		ButtonBox: ButtonBox{
@@ -45,11 +43,13 @@ func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

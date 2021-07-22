@@ -118,10 +118,10 @@ type InputStream struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*InputStream)(nil)
-
 // InputStreamer describes InputStream's abstract methods.
 type InputStreamer interface {
+	gextras.Objector
+
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
 	// Close closes the stream, releasing resources related to it.
@@ -259,7 +259,7 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_input_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -322,7 +322,7 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_input_stream_read_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -384,7 +384,7 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_read_finish(_arg0, _arg1, &_cerr)
 
@@ -508,7 +508,7 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_skip_finish(_arg0, _arg1, &_cerr)
 

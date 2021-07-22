@@ -28,8 +28,6 @@ type RadioMenuItemAccessible struct {
 	CheckMenuItemAccessible
 }
 
-var _ gextras.Nativer = (*RadioMenuItemAccessible)(nil)
-
 func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessible {
 	return &RadioMenuItemAccessible{
 		CheckMenuItemAccessible: CheckMenuItemAccessible{
@@ -52,6 +50,7 @@ func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessibl
 				Selection: atk.Selection{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

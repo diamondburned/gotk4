@@ -37,8 +37,6 @@ type FilterListModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*FilterListModel)(nil)
-
 func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	return &FilterListModel{
 		Object: obj,
@@ -61,7 +59,7 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
@@ -203,7 +201,7 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }

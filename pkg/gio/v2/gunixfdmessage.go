@@ -47,8 +47,6 @@ type UnixFDMessage struct {
 	SocketControlMessage
 }
 
-var _ gextras.Nativer = (*UnixFDMessage)(nil)
-
 func wrapUnixFDMessage(obj *externglib.Object) *UnixFDMessage {
 	return &UnixFDMessage{
 		SocketControlMessage: SocketControlMessage{

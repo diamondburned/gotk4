@@ -82,10 +82,10 @@ type Buildable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Buildable)(nil)
-
 // Buildabler describes Buildable's abstract methods.
 type Buildabler interface {
+	gextras.Objector
+
 	// AddChild adds a child to buildable.
 	AddChild(builder *Builder, child *externglib.Object, typ string)
 	// ConstructChild constructs a child of buildable with the name name.

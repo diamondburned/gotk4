@@ -26,8 +26,6 @@ type X11Drag struct {
 	gdk.Drag
 }
 
-var _ gextras.Nativer = (*X11Drag)(nil)
-
 func wrapX11Drag(obj *externglib.Object) *X11Drag {
 	return &X11Drag{
 		Drag: gdk.Drag{

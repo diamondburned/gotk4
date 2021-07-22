@@ -206,10 +206,10 @@ type CellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-var _ gextras.Nativer = (*CellRenderer)(nil)
-
 // CellRendererer describes CellRenderer's abstract methods.
 type CellRendererer interface {
+	gextras.Objector
+
 	// AlignedArea gets the aligned area used by cell inside cell_area.
 	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment fills in xalign and yalign with the appropriate values of cell.
@@ -291,7 +291,7 @@ func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState,
 	var _arg4 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkCellRendererState(flags)
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
@@ -369,7 +369,7 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, na
 	var _arg3 C.gint             // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_height(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -392,7 +392,7 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 	var _arg4 C.gint             // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(width)
 
 	C.gtk_cell_renderer_get_preferred_height_for_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
@@ -415,7 +415,7 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisiti
 	var _arg3 C.GtkRequisition   // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -436,7 +436,7 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, nat
 	var _arg3 C.gint             // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_width(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -459,7 +459,7 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) 
 	var _arg4 C.gint             // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(height)
 
 	C.gtk_cell_renderer_get_preferred_width_for_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
@@ -527,7 +527,7 @@ func (cell *CellRenderer) Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffs
 	var _arg6 C.gint             // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
 	C.gtk_cell_renderer_get_size(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
@@ -554,7 +554,7 @@ func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) S
 	var _cret C.GtkStateFlags        // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkCellRendererState(cellState)
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
@@ -620,7 +620,7 @@ func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgetter, background
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg5 = C.GtkCellRendererState(flags)

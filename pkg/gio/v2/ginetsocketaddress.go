@@ -37,8 +37,6 @@ type InetSocketAddress struct {
 	SocketAddress
 }
 
-var _ gextras.Nativer = (*InetSocketAddress)(nil)
-
 func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{
 		SocketAddress: SocketAddress{

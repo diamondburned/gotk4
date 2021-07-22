@@ -137,9 +137,8 @@ type ApplicationWindow struct {
 
 	gio.ActionGroup
 	gio.ActionMap
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ApplicationWindow)(nil)
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -156,6 +155,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -166,6 +166,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -189,12 +190,6 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ApplicationWindow) Native() uintptr {
-	return v.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior call

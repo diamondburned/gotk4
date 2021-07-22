@@ -87,9 +87,8 @@ type Paned struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Paned)(nil)
 
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
@@ -106,10 +105,12 @@ func wrapPaned(obj *externglib.Object) *Paned {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -133,12 +134,6 @@ func NewPaned(orientation Orientation) *Paned {
 	_paned = wrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Paned) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // EndChild retrieves the end child of the given GtkPaned.
@@ -289,7 +284,7 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_set_end_child(_arg0, _arg1)
 }
@@ -363,7 +358,7 @@ func (paned *Paned) SetStartChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_set_start_child(_arg0, _arg1)
 }

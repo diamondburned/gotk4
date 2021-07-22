@@ -28,8 +28,6 @@ type SocketAccessible struct {
 	ContainerAccessible
 }
 
-var _ gextras.Nativer = (*SocketAccessible)(nil)
-
 func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	return &SocketAccessible{
 		ContainerAccessible: ContainerAccessible{

@@ -79,10 +79,10 @@ type ProxyResolver struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ProxyResolver)(nil)
-
 // ProxyResolverer describes ProxyResolver's abstract methods.
 type ProxyResolverer interface {
+	gextras.Objector
+
 	// IsSupported checks if resolver can be used on this system.
 	IsSupported() bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
@@ -214,7 +214,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 

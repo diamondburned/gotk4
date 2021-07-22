@@ -48,10 +48,10 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StyleProvider)(nil)
-
 // StyleProviderer describes StyleProvider's abstract methods.
 type StyleProviderer interface {
+	gextras.Objector
+
 	// IconFactory returns the IconFactory defined to be in use for path, or
 	// NULL if none is defined.
 	IconFactory(path *WidgetPath) *IconFactory

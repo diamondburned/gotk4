@@ -69,8 +69,6 @@ type ShortcutsWindow struct {
 	Window
 }
 
-var _ gextras.Nativer = (*ShortcutsWindow)(nil)
-
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{
@@ -87,6 +85,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Root: Root{
 				NativeSurface: NativeSurface{
@@ -103,12 +102,14 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

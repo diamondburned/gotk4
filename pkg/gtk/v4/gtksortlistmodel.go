@@ -38,8 +38,6 @@ type SortListModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*SortListModel)(nil)
-
 func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	return &SortListModel{
 		Object: obj,
@@ -62,7 +60,7 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	var _arg2 *C.GtkSorter        // out
 	var _cret *C.GtkSortListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
@@ -192,7 +190,7 @@ func (self *SortListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel       // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_sort_list_model_set_model(_arg0, _arg1)
 }

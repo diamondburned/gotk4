@@ -30,9 +30,8 @@ type TreeViewAccessible struct {
 	atk.Selection
 	atk.Table
 	CellAccessibleParent
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TreeViewAccessible)(nil)
 
 func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 	return &TreeViewAccessible{
@@ -57,6 +56,7 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 		CellAccessibleParent: CellAccessibleParent{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +64,6 @@ func marshalTreeViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeViewAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TreeViewAccessible) Native() uintptr {
-	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TreeViewAccessible) privateTreeViewAccessible() {}

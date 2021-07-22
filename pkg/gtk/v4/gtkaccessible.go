@@ -72,10 +72,10 @@ type Accessible struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Accessible)(nil)
-
 // Accessibler describes Accessible's abstract methods.
 type Accessibler interface {
+	gextras.Objector
+
 	// AccessibleRole retrieves the GtkAccessibleRole for the given
 	// GtkAccessible.
 	AccessibleRole() AccessibleRole

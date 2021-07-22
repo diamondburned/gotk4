@@ -131,10 +131,10 @@ type AsyncResult struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AsyncResult)(nil)
-
 // AsyncResulter describes AsyncResult's abstract methods.
 type AsyncResulter interface {
+	gextras.Objector
+
 	// SourceObject gets the source object from a Result.
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.

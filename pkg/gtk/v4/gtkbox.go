@@ -59,9 +59,8 @@ type Box struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Box)(nil)
 
 func wrapBox(obj *externglib.Object) *Box {
 	return &Box{
@@ -78,10 +77,12 @@ func wrapBox(obj *externglib.Object) *Box {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -109,19 +110,13 @@ func NewBox(orientation Orientation, spacing int) *Box {
 	return _box
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Box) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
-}
-
 // Append adds child as the last child to box.
 func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_append(_arg0, _arg1)
 }
@@ -187,8 +182,8 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 
 	C.gtk_box_insert_child_after(_arg0, _arg1, _arg2)
 }
@@ -199,7 +194,7 @@ func (box *Box) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_prepend(_arg0, _arg1)
 }
@@ -213,7 +208,7 @@ func (box *Box) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_remove(_arg0, _arg1)
 }
@@ -228,8 +223,8 @@ func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
 
 	C.gtk_box_reorder_child_after(_arg0, _arg1, _arg2)
 }

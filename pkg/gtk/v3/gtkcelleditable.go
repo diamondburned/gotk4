@@ -42,10 +42,10 @@ type CellEditable struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*CellEditable)(nil)
-
 // CellEditabler describes CellEditable's abstract methods.
 type CellEditabler interface {
+	gextras.Objector
+
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
@@ -66,6 +66,7 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

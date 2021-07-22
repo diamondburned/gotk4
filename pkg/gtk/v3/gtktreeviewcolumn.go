@@ -119,9 +119,8 @@ type TreeViewColumn struct {
 
 	Buildable
 	CellLayout
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TreeViewColumn)(nil)
 
 func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 	return &TreeViewColumn{
@@ -134,6 +133,7 @@ func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 		CellLayout: CellLayout{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -162,7 +162,7 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	var _arg1 *C.GtkCellArea       // out
 	var _cret *C.GtkTreeViewColumn // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_tree_view_column_new_with_area(_arg1)
 
@@ -171,12 +171,6 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TreeViewColumn) Native() uintptr {
-	return v.InitiallyUnowned.Object.Native()
 }
 
 // AddAttribute adds an attribute mapping to the list in tree_column. The column
@@ -191,7 +185,7 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attr
 	var _arg3 C.gint               // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
@@ -210,7 +204,7 @@ func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 
 	_cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -287,7 +281,7 @@ func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *
 	var _arg4 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if isExpander {
 		_arg3 = C.TRUE
@@ -315,7 +309,7 @@ func (treeColumn *TreeViewColumn) ClearAttributes(cellRenderer CellRendererer) {
 	var _arg1 *C.GtkCellRenderer   // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 
 	C.gtk_tree_view_column_clear_attributes(_arg0, _arg1)
 }
@@ -337,7 +331,7 @@ func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererer) {
 	var _arg1 *C.GtkCellRenderer   // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_tree_view_column_focus_cell(_arg0, _arg1)
 }
@@ -693,7 +687,7 @@ func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererer, expand bool) {
 	var _arg2 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -710,7 +704,7 @@ func (treeColumn *TreeViewColumn) PackStart(cell CellRendererer, expand bool) {
 	var _arg2 C.gboolean           // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -753,7 +747,7 @@ func (treeColumn *TreeViewColumn) SetCellDataFunc(cellRenderer CellRendererer, f
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_TreeCellDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(fn))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -976,7 +970,7 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_tree_view_column_set_widget(_arg0, _arg1)
 }

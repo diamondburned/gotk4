@@ -34,9 +34,8 @@ type Plug struct {
 	ObjectClass
 
 	Component
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Plug)(nil)
 
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
@@ -46,6 +45,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 		Component: Component{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -66,12 +66,6 @@ func NewPlug() *Plug {
 	_plug = wrapPlug(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _plug
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Plug) Native() uintptr {
-	return v.ObjectClass.Object.Native()
 }
 
 // ID gets the unique ID of an Plug object, which can be used to embed inside of

@@ -117,10 +117,10 @@ type Gesture struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*Gesture)(nil)
-
 // Gesturer describes Gesture's abstract methods.
 type Gesturer interface {
+	gextras.Objector
+
 	// BoundingBox: if there are touch sequences being currently handled by
 	// gesture, returns TRUE and fills in rect with the bounding box containing
 	// all active touches.
@@ -411,7 +411,7 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 	var _arg1 *C.GtkGesture // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(groupGesture.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer((gesture).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	C.gtk_gesture_group(_arg0, _arg1)
 }
@@ -464,7 +464,7 @@ func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GtkGesture)(unsafe.Pointer((other).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
 
 	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
 

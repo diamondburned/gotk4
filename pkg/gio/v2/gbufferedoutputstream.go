@@ -51,8 +51,6 @@ type BufferedOutputStream struct {
 	Seekable
 }
 
-var _ gextras.Nativer = (*BufferedOutputStream)(nil)
-
 func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{
 		FilterOutputStream: FilterOutputStream{
@@ -78,7 +76,7 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 
@@ -96,7 +94,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 	var _arg2 C.gsize          // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)

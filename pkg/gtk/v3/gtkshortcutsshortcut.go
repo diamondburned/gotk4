@@ -91,8 +91,6 @@ type ShortcutsShortcut struct {
 	Box
 }
 
-var _ gextras.Nativer = (*ShortcutsShortcut)(nil)
-
 func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
 		Box: Box{
@@ -107,11 +105,13 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

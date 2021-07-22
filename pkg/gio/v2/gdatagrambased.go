@@ -247,10 +247,10 @@ type DatagramBased struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DatagramBased)(nil)
-
 // DatagramBasedder describes DatagramBased's abstract methods.
 type DatagramBasedder interface {
+	gextras.Objector
+
 	// ConditionCheck checks on the readiness of datagram_based to perform
 	// operations.
 	ConditionCheck(condition glib.IOCondition) glib.IOCondition

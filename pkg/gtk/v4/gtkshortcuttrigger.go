@@ -35,8 +35,6 @@ type AlternativeTrigger struct {
 	ShortcutTrigger
 }
 
-var _ gextras.Nativer = (*AlternativeTrigger)(nil)
-
 func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -61,8 +59,8 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 	var _arg2 *C.GtkShortcutTrigger // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((first).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer((second).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(first.Native()))
+	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 
@@ -114,8 +112,6 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 type KeyvalTrigger struct {
 	ShortcutTrigger
 }
-
-var _ gextras.Nativer = (*KeyvalTrigger)(nil)
 
 func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
@@ -191,8 +187,6 @@ type MnemonicTrigger struct {
 	ShortcutTrigger
 }
 
-var _ gextras.Nativer = (*MnemonicTrigger)(nil)
-
 func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -248,8 +242,6 @@ type NeverTrigger struct {
 	ShortcutTrigger
 }
 
-var _ gextras.Nativer = (*NeverTrigger)(nil)
-
 func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 	return &NeverTrigger{
 		ShortcutTrigger: ShortcutTrigger{
@@ -298,10 +290,10 @@ type ShortcutTrigger struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ShortcutTrigger)(nil)
-
 // ShortcutTriggerer describes ShortcutTrigger's abstract methods.
 type ShortcutTriggerer interface {
+	gextras.Objector
+
 	// Compare types of trigger1 and trigger2 are #gconstpointer only to allow
 	// use of this function as a Func.
 	Compare(trigger2 ShortcutTriggerer) int
@@ -373,7 +365,7 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _cret C.int           // in
 
 	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
-	_arg1 = C.gconstpointer(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
@@ -394,7 +386,7 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
-	_arg1 = C.gconstpointer(unsafe.Pointer((trigger2).(gextras.Nativer).Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 
@@ -487,7 +479,7 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	var _cret C.GdkKeyMatch         // in
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 	if enableMnemonics {
 		_arg2 = C.TRUE
 	}

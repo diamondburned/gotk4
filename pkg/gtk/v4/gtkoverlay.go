@@ -57,8 +57,6 @@ type Overlay struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Overlay)(nil)
-
 func wrapOverlay(obj *externglib.Object) *Overlay {
 	return &Overlay{
 		Widget: Widget{
@@ -74,6 +72,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -109,7 +108,7 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
@@ -137,7 +136,7 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
 
@@ -158,7 +157,7 @@ func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
 
@@ -178,7 +177,7 @@ func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_remove_overlay(_arg0, _arg1)
 }
@@ -189,7 +188,7 @@ func (overlay *Overlay) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_overlay_set_child(_arg0, _arg1)
 }
@@ -201,7 +200,7 @@ func (overlay *Overlay) SetClipOverlay(widget Widgetter, clipOverlay bool) {
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if clipOverlay {
 		_arg2 = C.TRUE
 	}
@@ -221,7 +220,7 @@ func (overlay *Overlay) SetMeasureOverlay(widget Widgetter, measure bool) {
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if measure {
 		_arg2 = C.TRUE
 	}

@@ -80,8 +80,6 @@ type ShortcutsWindow struct {
 	Window
 }
 
-var _ gextras.Nativer = (*ShortcutsWindow)(nil)
-
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{
@@ -97,6 +95,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},

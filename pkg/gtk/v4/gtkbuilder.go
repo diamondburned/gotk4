@@ -290,8 +290,6 @@ type Builder struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Builder)(nil)
-
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{
 		Object: obj,
@@ -776,7 +774,7 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 	var _arg1 *C.GtkBuilderScope // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer((scope).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
 
 	C.gtk_builder_set_scope(_arg0, _arg1)
 }

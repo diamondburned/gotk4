@@ -28,8 +28,6 @@ type LockButtonAccessible struct {
 	ButtonAccessible
 }
 
-var _ gextras.Nativer = (*LockButtonAccessible)(nil)
-
 func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 	return &LockButtonAccessible{
 		ButtonAccessible: ButtonAccessible{
@@ -51,6 +49,7 @@ func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 			Image: atk.Image{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

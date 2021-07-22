@@ -48,8 +48,6 @@ type Registry struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Registry)(nil)
-
 func wrapRegistry(obj *externglib.Object) *Registry {
 	return &Registry{
 		Object: obj,

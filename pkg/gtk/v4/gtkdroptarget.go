@@ -96,8 +96,6 @@ type DropTarget struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*DropTarget)(nil)
-
 func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	return &DropTarget{
 		EventController: EventController{

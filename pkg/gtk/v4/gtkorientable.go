@@ -30,10 +30,10 @@ type Orientable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Orientable)(nil)
-
 // Orientabler describes Orientable's abstract methods.
 type Orientabler interface {
+	gextras.Objector
+
 	// Orientation retrieves the orientation of the orientable.
 	Orientation() Orientation
 	// SetOrientation sets the orientation of the orientable.

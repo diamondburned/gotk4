@@ -31,9 +31,8 @@ type CellRendererProgress struct {
 	CellRenderer
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CellRendererProgress)(nil)
 
 func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{
@@ -45,6 +44,7 @@ func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -65,12 +65,6 @@ func NewCellRendererProgress() *CellRendererProgress {
 	_cellRendererProgress = wrapCellRendererProgress(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CellRendererProgress) Native() uintptr {
-	return v.CellRenderer.InitiallyUnowned.Object.Native()
 }
 
 func (*CellRendererProgress) privateCellRendererProgress() {}

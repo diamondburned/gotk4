@@ -39,10 +39,10 @@ type FilterInputStream struct {
 	InputStream
 }
 
-var _ gextras.Nativer = (*FilterInputStream)(nil)
-
 // FilterInputStreamer describes FilterInputStream's abstract methods.
 type FilterInputStreamer interface {
+	gextras.Objector
+
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() InputStreamer
 	// CloseBaseStream returns whether the base stream will be closed when

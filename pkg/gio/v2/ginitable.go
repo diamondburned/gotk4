@@ -107,10 +107,10 @@ type Initable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Initable)(nil)
-
 // Initabler describes Initable's abstract methods.
 type Initabler interface {
+	gextras.Objector
+
 	// Init initializes the object implementing the interface.
 	Init(ctx context.Context) error
 }

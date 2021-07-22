@@ -53,8 +53,6 @@ type CheckButton struct {
 	ToggleButton
 }
 
-var _ gextras.Nativer = (*CheckButton)(nil)
-
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
 		ToggleButton: ToggleButton{
@@ -71,6 +69,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -85,11 +84,13 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

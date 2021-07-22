@@ -46,10 +46,10 @@ type ShortcutManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ShortcutManager)(nil)
-
 // ShortcutManagerer describes ShortcutManager's abstract methods.
 type ShortcutManagerer interface {
+	gextras.Objector
+
 	privateShortcutManager()
 }
 

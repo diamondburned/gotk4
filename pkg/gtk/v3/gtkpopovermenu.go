@@ -96,8 +96,6 @@ type PopoverMenu struct {
 	Popover
 }
 
-var _ gextras.Nativer = (*PopoverMenu)(nil)
-
 func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{
 		Popover: Popover{
@@ -113,6 +111,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},

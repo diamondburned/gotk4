@@ -155,8 +155,6 @@ type Application struct {
 	gio.Application
 }
 
-var _ gextras.Nativer = (*Application)(nil)
-
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
 		Application: gio.Application{
@@ -585,7 +583,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menubar).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }

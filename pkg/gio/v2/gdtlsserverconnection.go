@@ -38,10 +38,10 @@ type DTLSServerConnection struct {
 	DTLSConnection
 }
 
-var _ gextras.Nativer = (*DTLSServerConnection)(nil)
-
 // DTLSServerConnectioner describes DTLSServerConnection's abstract methods.
 type DTLSServerConnectioner interface {
+	gextras.Objector
+
 	privateDTLSServerConnection()
 }
 
@@ -72,8 +72,8 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _cret *C.GDatagramBased  // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer((baseSocket).(gextras.Nativer).Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
 

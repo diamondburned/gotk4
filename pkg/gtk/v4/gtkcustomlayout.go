@@ -30,8 +30,6 @@ type CustomLayout struct {
 	LayoutManager
 }
 
-var _ gextras.Nativer = (*CustomLayout)(nil)
-
 func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 	return &CustomLayout{
 		LayoutManager: LayoutManager{

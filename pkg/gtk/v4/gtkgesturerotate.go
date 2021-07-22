@@ -29,8 +29,6 @@ type GestureRotate struct {
 	Gesture
 }
 
-var _ gextras.Nativer = (*GestureRotate)(nil)
-
 func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{

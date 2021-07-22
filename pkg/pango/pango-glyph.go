@@ -333,7 +333,7 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect 
 	var _arg3 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -362,7 +362,7 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
-	_arg3 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 

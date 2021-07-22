@@ -28,8 +28,6 @@ type MenuButtonAccessible struct {
 	ToggleButtonAccessible
 }
 
-var _ gextras.Nativer = (*MenuButtonAccessible)(nil)
-
 func wrapMenuButtonAccessible(obj *externglib.Object) *MenuButtonAccessible {
 	return &MenuButtonAccessible{
 		ToggleButtonAccessible: ToggleButtonAccessible{
@@ -52,6 +50,7 @@ func wrapMenuButtonAccessible(obj *externglib.Object) *MenuButtonAccessible {
 				Image: atk.Image{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

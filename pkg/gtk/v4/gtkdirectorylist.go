@@ -51,8 +51,6 @@ type DirectoryList struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*DirectoryList)(nil)
-
 func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	return &DirectoryList{
 		Object: obj,
@@ -78,7 +76,7 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 
@@ -224,7 +222,7 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_directory_list_set_file(_arg0, _arg1)
 }

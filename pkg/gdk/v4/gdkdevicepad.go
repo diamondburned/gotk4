@@ -74,10 +74,10 @@ type DevicePad struct {
 	Device
 }
 
-var _ gextras.Nativer = (*DevicePad)(nil)
-
 // DevicePadder describes DevicePad's abstract methods.
 type DevicePadder interface {
+	gextras.Objector
+
 	// FeatureGroup returns the group the given feature and idx belong to.
 	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that group may have.

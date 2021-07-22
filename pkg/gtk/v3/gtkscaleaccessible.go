@@ -28,8 +28,6 @@ type ScaleAccessible struct {
 	RangeAccessible
 }
 
-var _ gextras.Nativer = (*ScaleAccessible)(nil)
-
 func wrapScaleAccessible(obj *externglib.Object) *ScaleAccessible {
 	return &ScaleAccessible{
 		RangeAccessible: RangeAccessible{

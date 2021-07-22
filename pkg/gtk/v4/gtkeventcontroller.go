@@ -38,10 +38,10 @@ type EventController struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*EventController)(nil)
-
 // EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
+	gextras.Objector
+
 	// CurrentEvent returns the event that is currently being handled by the
 	// controller, and NULL at other times.
 	CurrentEvent() gdk.Eventer

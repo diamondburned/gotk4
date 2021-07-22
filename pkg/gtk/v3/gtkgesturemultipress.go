@@ -37,8 +37,6 @@ type GestureMultiPress struct {
 	GestureSingle
 }
 
-var _ gextras.Nativer = (*GestureMultiPress)(nil)
-
 func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{
 		GestureSingle: GestureSingle{
@@ -63,7 +61,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 

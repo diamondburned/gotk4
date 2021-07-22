@@ -36,8 +36,6 @@ type TreeListRowSorter struct {
 	Sorter
 }
 
-var _ gextras.Nativer = (*TreeListRowSorter)(nil)
-
 func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{
 		Sorter: Sorter{

@@ -65,10 +65,10 @@ type TLSCertificate struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TLSCertificate)(nil)
-
 // TLSCertificater describes TLSCertificate's abstract methods.
 type TLSCertificater interface {
+	gextras.Objector
+
 	// Issuer gets the Certificate representing cert's issuer, if known
 	Issuer() TLSCertificater
 	// IsSame: check if two Certificate objects represent the same certificate.
@@ -263,7 +263,7 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(certOne.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((certTwo).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 
@@ -299,8 +299,8 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	var _cret C.GTlsCertificateFlags // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((trustedCa).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
 

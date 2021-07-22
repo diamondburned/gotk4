@@ -83,10 +83,10 @@ type Actionable struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Actionable)(nil)
-
 // Actionabler describes Actionable's abstract methods.
 type Actionabler interface {
+	gextras.Objector
+
 	// ActionName gets the action name for actionable.
 	ActionName() string
 	// ActionTargetValue gets the current target value of actionable.
@@ -118,6 +118,7 @@ func wrapActionable(obj *externglib.Object) *Actionable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

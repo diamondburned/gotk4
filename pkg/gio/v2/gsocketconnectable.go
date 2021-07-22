@@ -113,10 +113,10 @@ type SocketConnectable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*SocketConnectable)(nil)
-
 // SocketConnectabler describes SocketConnectable's abstract methods.
 type SocketConnectabler interface {
+	gextras.Objector
+
 	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() SocketAddressEnumeratorrer
 	// ProxyEnumerate creates a AddressEnumerator for connectable that will

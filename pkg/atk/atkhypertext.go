@@ -47,10 +47,10 @@ type Hypertext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Hypertext)(nil)
-
 // Hypertexter describes Hypertext's abstract methods.
 type Hypertexter interface {
+	gextras.Objector
+
 	// Link gets the link in this hypertext document at index link_index
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated

@@ -93,9 +93,8 @@ type Toolbar struct {
 
 	Orientable
 	ToolShell
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Toolbar)(nil)
 
 func wrapToolbar(obj *externglib.Object) *Toolbar {
 	return &Toolbar{
@@ -110,6 +109,7 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
@@ -126,8 +126,10 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -148,12 +150,6 @@ func NewToolbar() *Toolbar {
 	_toolbar = wrapToolbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolbar
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Toolbar) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DropIndex returns the position corresponding to the indicated point on

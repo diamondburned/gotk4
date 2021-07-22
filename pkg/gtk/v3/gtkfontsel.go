@@ -30,8 +30,6 @@ type FontSelection struct {
 	Box
 }
 
-var _ gextras.Nativer = (*FontSelection)(nil)
-
 func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	return &FontSelection{
 		Box: Box{
@@ -46,11 +44,13 @@ func wrapFontSelection(obj *externglib.Object) *FontSelection {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -314,8 +314,6 @@ type FontSelectionDialog struct {
 	Dialog
 }
 
-var _ gextras.Nativer = (*FontSelectionDialog)(nil)
-
 func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	return &FontSelectionDialog{
 		Dialog: Dialog{
@@ -332,6 +330,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},

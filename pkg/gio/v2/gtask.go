@@ -204,8 +204,6 @@ type Task struct {
 	AsyncResult
 }
 
-var _ gextras.Nativer = (*Task)(nil)
-
 func wrapTask(obj *externglib.Object) *Task {
 	return &Task{
 		Object: obj,
@@ -775,7 +773,7 @@ func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 	var _arg2 C.gpointer // out
 	var _cret C.gboolean // in
 
-	_arg1 = C.gpointer(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(result.Native()))
 	_arg2 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 
 	_cret = C.g_task_is_valid(_arg1, _arg2)

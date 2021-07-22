@@ -75,8 +75,6 @@ type Frame struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Frame)(nil)
-
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
 		Widget: Widget{
@@ -92,6 +90,7 @@ func wrapFrame(obj *externglib.Object) *Frame {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -193,7 +192,7 @@ func (frame *Frame) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_frame_set_child(_arg0, _arg1)
 }
@@ -233,7 +232,7 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }

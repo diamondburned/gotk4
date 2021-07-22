@@ -129,8 +129,6 @@ type ModelButton struct {
 	Button
 }
 
-var _ gextras.Nativer = (*ModelButton)(nil)
-
 func wrapModelButton(obj *externglib.Object) *ModelButton {
 	return &ModelButton{
 		Button: Button{
@@ -146,6 +144,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -160,11 +159,13 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

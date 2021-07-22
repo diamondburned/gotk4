@@ -51,8 +51,6 @@ type VBox struct {
 	Box
 }
 
-var _ gextras.Nativer = (*VBox)(nil)
-
 func wrapVBox(obj *externglib.Object) *VBox {
 	return &VBox{
 		Box: Box{
@@ -67,11 +65,13 @@ func wrapVBox(obj *externglib.Object) *VBox {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

@@ -28,8 +28,6 @@ type PlugAccessible struct {
 	WindowAccessible
 }
 
-var _ gextras.Nativer = (*PlugAccessible)(nil)
-
 func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 	return &PlugAccessible{
 		WindowAccessible: WindowAccessible{

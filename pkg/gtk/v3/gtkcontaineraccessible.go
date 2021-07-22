@@ -28,8 +28,6 @@ type ContainerAccessible struct {
 	WidgetAccessible
 }
 
-var _ gextras.Nativer = (*ContainerAccessible)(nil)
-
 func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{
 		WidgetAccessible: WidgetAccessible{

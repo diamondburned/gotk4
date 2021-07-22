@@ -41,8 +41,6 @@ type Display struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Display)(nil)
-
 func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
 		Object: obj,
@@ -82,7 +80,7 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
@@ -279,7 +277,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _cret *C.GdkMonitor // in
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_display_get_monitor_at_window(_arg0, _arg1)
 

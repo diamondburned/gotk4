@@ -30,8 +30,6 @@ type MediaControls struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*MediaControls)(nil)
-
 func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	return &MediaControls{
 		Widget: Widget{
@@ -47,6 +45,7 @@ func wrapMediaControls(obj *externglib.Object) *MediaControls {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -63,7 +62,7 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gtk_media_controls_new(_arg1)
 
@@ -96,7 +95,7 @@ func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	var _arg1 *C.GtkMediaStream   // out
 
 	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(controls.Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 }

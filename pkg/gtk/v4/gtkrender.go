@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/cairo"
@@ -222,7 +221,7 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg4 = C.double(x)
 	_arg5 = C.double(y)
 

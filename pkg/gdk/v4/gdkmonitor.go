@@ -76,8 +76,6 @@ type Monitor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Monitor)(nil)
-
 func wrapMonitor(obj *externglib.Object) *Monitor {
 	return &Monitor{
 		Object: obj,

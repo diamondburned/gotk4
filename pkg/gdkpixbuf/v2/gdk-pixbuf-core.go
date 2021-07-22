@@ -11,7 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -233,7 +232,7 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -263,7 +262,7 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gint(width)
 	_arg3 = C.gint(height)
 	if preserveAspectRatio {
@@ -281,7 +280,7 @@ func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	C.gdk_pixbuf_save_to_stream_finish(_arg1, &_cerr)
 

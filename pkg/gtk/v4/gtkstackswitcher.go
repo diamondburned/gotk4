@@ -53,8 +53,6 @@ type StackSwitcher struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*StackSwitcher)(nil)
-
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Widget: Widget{
@@ -70,6 +68,7 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

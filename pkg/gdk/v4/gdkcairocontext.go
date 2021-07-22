@@ -33,10 +33,10 @@ type CairoContext struct {
 	DrawContext
 }
 
-var _ gextras.Nativer = (*CairoContext)(nil)
-
 // CairoContexter describes CairoContext's abstract methods.
 type CairoContexter interface {
+	gextras.Objector
+
 	// CairoCreate retrieves a Cairo context to be used to draw on the
 	// GdkSurface of context.
 	CairoCreate() *cairo.Context

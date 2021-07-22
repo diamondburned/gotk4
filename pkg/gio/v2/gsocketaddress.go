@@ -61,10 +61,10 @@ type SocketAddress struct {
 	SocketConnectable
 }
 
-var _ gextras.Nativer = (*SocketAddress)(nil)
-
 // SocketAddresser describes SocketAddress's abstract methods.
 type SocketAddresser interface {
+	gextras.Objector
+
 	// Family gets the socket family type of address.
 	Family() SocketFamily
 	// NativeSize gets the size of address's native struct sockaddr.

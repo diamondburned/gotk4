@@ -112,10 +112,10 @@ type IOStream struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*IOStream)(nil)
-
 // IOStreamer describes IOStream's abstract methods.
 type IOStreamer interface {
+	gextras.Objector
+
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
 	// Close closes the stream, releasing resources related to it.
@@ -253,7 +253,7 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -371,7 +371,7 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream2.Native()))
 	_arg2 = C.GIOStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -385,7 +385,7 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_io_stream_splice_finish(_arg1, &_cerr)
 

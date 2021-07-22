@@ -27,8 +27,6 @@ type IMMulticontext struct {
 	IMContext
 }
 
-var _ gextras.Nativer = (*IMMulticontext)(nil)
-
 func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{
 		IMContext: IMContext{
@@ -68,7 +66,7 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	var _arg1 *C.GtkMenuShell      // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer((menushell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(menushell.Native()))
 
 	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 }

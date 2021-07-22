@@ -52,8 +52,6 @@ type SearchBar struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*SearchBar)(nil)
-
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Bin: Bin{
@@ -68,6 +66,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

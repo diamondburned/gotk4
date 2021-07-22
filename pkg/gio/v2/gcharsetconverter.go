@@ -40,8 +40,6 @@ type CharsetConverter struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*CharsetConverter)(nil)
-
 func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	return &CharsetConverter{
 		Object: obj,

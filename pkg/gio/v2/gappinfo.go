@@ -215,10 +215,10 @@ type AppInfo struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AppInfo)(nil)
-
 // AppInfor describes AppInfo's abstract methods.
 type AppInfor interface {
+	gextras.Objector
+
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
 	// content type.
@@ -405,7 +405,7 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo1.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer((appinfo2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 
@@ -604,7 +604,7 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	for i := len(files) - 1; i >= 0; i-- {
 		src := files[i]
 		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
@@ -697,7 +697,7 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
 
@@ -1081,7 +1081,7 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_app_info_launch_default_for_uri_finish(_arg1, &_cerr)
 
@@ -1156,8 +1156,6 @@ type AppLaunchContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AppLaunchContext)(nil)
-
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		Object: obj,
@@ -1195,11 +1193,11 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	var _cret *C.char              // in
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
 	for i := len(files) - 1; i >= 0; i-- {
 		src := files[i]
 		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)
@@ -1258,11 +1256,11 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 	var _cret *C.char              // in
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
 	for i := len(files) - 1; i >= 0; i-- {
 		src := files[i]
 		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)

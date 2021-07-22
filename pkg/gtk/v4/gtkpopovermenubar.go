@@ -53,8 +53,6 @@ type PopoverMenuBar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*PopoverMenuBar)(nil)
-
 func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 	return &PopoverMenuBar{
 		Widget: Widget{
@@ -70,6 +68,7 @@ func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -85,7 +84,7 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_popover_menu_bar_new_from_model(_arg1)
 
@@ -107,7 +106,7 @@ func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -146,7 +145,7 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
 
@@ -165,7 +164,7 @@ func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel        // out
 
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)
 }

@@ -64,8 +64,6 @@ type Overlay struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*Overlay)(nil)
-
 func wrapOverlay(obj *externglib.Object) *Overlay {
 	return &Overlay{
 		Bin: Bin{
@@ -80,6 +78,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -117,7 +116,7 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
@@ -130,7 +129,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
@@ -156,7 +155,7 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
@@ -170,7 +169,7 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if passThrough {
 		_arg2 = C.TRUE
 	}

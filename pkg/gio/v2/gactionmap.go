@@ -64,10 +64,10 @@ type ActionMap struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ActionMap)(nil)
-
 // ActionMapper describes ActionMap's abstract methods.
 type ActionMapper interface {
+	gextras.Objector
+
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
@@ -104,7 +104,7 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg1 *C.GAction    // out
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
 }

@@ -54,10 +54,10 @@ type DBusObject struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DBusObject)(nil)
-
 // DBusObjector describes DBusObject's abstract methods.
 type DBusObjector interface {
+	gextras.Objector
+
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
 	Interface(interfaceName string) DBusInterfacer

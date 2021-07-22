@@ -31,8 +31,6 @@ type IMMulticontext struct {
 	IMContext
 }
 
-var _ gextras.Nativer = (*IMMulticontext)(nil)
-
 func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{
 		IMContext: IMContext{

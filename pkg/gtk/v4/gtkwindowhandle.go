@@ -39,8 +39,6 @@ type WindowHandle struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*WindowHandle)(nil)
-
 func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	return &WindowHandle{
 		Widget: Widget{
@@ -56,6 +54,7 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -101,7 +100,7 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)
 }

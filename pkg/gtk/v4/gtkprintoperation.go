@@ -368,8 +368,6 @@ type PrintOperation struct {
 	PrintOperationPreview
 }
 
-var _ gextras.Nativer = (*PrintOperation)(nil)
-
 func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 	return &PrintOperation{
 		Object: obj,

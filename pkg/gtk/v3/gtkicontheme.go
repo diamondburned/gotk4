@@ -152,8 +152,6 @@ type IconInfo struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*IconInfo)(nil)
-
 func wrapIconInfo(obj *externglib.Object) *IconInfo {
 	return &IconInfo{
 		Object: obj,
@@ -432,7 +430,7 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_icon_finish(_arg0, _arg1, &_cerr)
 
@@ -472,7 +470,7 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
 	_cret = C.gtk_icon_info_load_surface(_arg0, _arg1, &_cerr)
 
@@ -588,7 +586,7 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -696,7 +694,7 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -870,8 +868,6 @@ type IconThemeOverrider interface {
 type IconTheme struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*IconTheme)(nil)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{
@@ -1291,7 +1287,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 	_arg5 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_load_surface(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -1326,7 +1322,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 	var _cret *C.GtkIconInfo       // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = C.gint(size)
 	_arg3 = C.GtkIconLookupFlags(flags)
 
@@ -1351,7 +1347,7 @@ func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, sc
 	var _cret *C.GtkIconInfo       // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	_arg4 = C.GtkIconLookupFlags(flags)

@@ -68,8 +68,6 @@ type ListStore struct {
 	TreeSortable
 }
 
-var _ gextras.Nativer = (*ListStore)(nil)
-
 func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{
 		Object: obj,

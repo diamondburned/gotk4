@@ -55,8 +55,6 @@ type MenuToolButton struct {
 	ToolButton
 }
 
-var _ gextras.Nativer = (*MenuToolButton)(nil)
-
 func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 	return &MenuToolButton{
 		ToolButton: ToolButton{
@@ -73,12 +71,14 @@ func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Actionable: Actionable{
 				Widget: Widget{
@@ -91,8 +91,10 @@ func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }
@@ -110,7 +112,7 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -195,7 +197,7 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 }

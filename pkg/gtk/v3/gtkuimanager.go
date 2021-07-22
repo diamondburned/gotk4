@@ -369,8 +369,6 @@ type UIManager struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*UIManager)(nil)
-
 func wrapUIManager(obj *externglib.Object) *UIManager {
 	return &UIManager{
 		Object: obj,

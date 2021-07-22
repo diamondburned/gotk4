@@ -84,8 +84,6 @@ type AccelMap struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AccelMap)(nil)
-
 func wrapAccelMap(obj *externglib.Object) *AccelMap {
 	return &AccelMap{
 		Object: obj,

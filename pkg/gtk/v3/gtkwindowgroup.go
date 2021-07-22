@@ -41,8 +41,6 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*WindowGroup)(nil)
-
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,
@@ -88,7 +86,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 	var _cret *C.GtkWidget      // in
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 

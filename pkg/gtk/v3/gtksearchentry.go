@@ -62,8 +62,6 @@ type SearchEntry struct {
 	Entry
 }
 
-var _ gextras.Nativer = (*SearchEntry)(nil)
-
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
 		Entry: Entry{
@@ -77,6 +75,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			CellEditable: CellEditable{
 				Widget: Widget{
@@ -89,11 +88,13 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Editable: Editable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

@@ -75,8 +75,6 @@ type Picture struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Picture)(nil)
-
 func wrapPicture(obj *externglib.Object) *Picture {
 	return &Picture{
 		Widget: Widget{
@@ -92,6 +90,7 @@ func wrapPicture(obj *externglib.Object) *Picture {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -126,7 +125,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
 
@@ -165,7 +164,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
 
@@ -358,7 +357,7 @@ func (self *Picture) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile      // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_picture_set_file(_arg0, _arg1)
 }
@@ -407,7 +406,7 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gtk_picture_set_paintable(_arg0, _arg1)
 }

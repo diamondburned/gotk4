@@ -64,10 +64,10 @@ type Buildable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Buildable)(nil)
-
 // Buildabler describes Buildable's abstract methods.
 type Buildabler interface {
+	gextras.Objector
+
 	// BuildableID gets the ID of the buildable object.
 	BuildableID() string
 }

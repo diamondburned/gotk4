@@ -140,8 +140,6 @@ type RecentManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*RecentManager)(nil)
-
 func wrapRecentManager(obj *externglib.Object) *RecentManager {
 	return &RecentManager{
 		Object: obj,

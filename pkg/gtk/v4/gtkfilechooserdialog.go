@@ -191,9 +191,8 @@ type FileChooserDialog struct {
 	Dialog
 
 	FileChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileChooserDialog)(nil)
 
 func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{
@@ -212,6 +211,7 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Root: Root{
 					NativeSurface: NativeSurface{
@@ -228,17 +228,20 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 							ConstraintTarget: ConstraintTarget{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				ShortcutManager: ShortcutManager{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		FileChooser: FileChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -246,12 +249,6 @@ func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserDialog(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileChooserDialog) Native() uintptr {
-	return v.Dialog.Window.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FileChooserDialog) privateFileChooserDialog() {}

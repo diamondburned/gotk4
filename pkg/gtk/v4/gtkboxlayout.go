@@ -38,9 +38,8 @@ type BoxLayout struct {
 	LayoutManager
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*BoxLayout)(nil)
 
 func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 	return &BoxLayout{
@@ -50,6 +49,7 @@ func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -73,12 +73,6 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 	_boxLayout = wrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boxLayout
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *BoxLayout) Native() uintptr {
-	return v.LayoutManager.Object.Native()
 }
 
 // BaselinePosition gets the value set by

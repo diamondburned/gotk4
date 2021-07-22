@@ -43,9 +43,8 @@ type FontChooserWidget struct {
 	Widget
 
 	FontChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FontChooserWidget)(nil)
 
 func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 	return &FontChooserWidget{
@@ -62,10 +61,12 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		FontChooser: FontChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -86,12 +87,6 @@ func NewFontChooserWidget() *FontChooserWidget {
 	_fontChooserWidget = wrapFontChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserWidget
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FontChooserWidget) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FontChooserWidget) privateFontChooserWidget() {}

@@ -44,8 +44,6 @@ type ToggleToolButton struct {
 	ToolButton
 }
 
-var _ gextras.Nativer = (*ToggleToolButton)(nil)
-
 func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	return &ToggleToolButton{
 		ToolButton: ToolButton{
@@ -62,12 +60,14 @@ func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Actionable: Actionable{
 				Widget: Widget{
@@ -80,8 +80,10 @@ func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }

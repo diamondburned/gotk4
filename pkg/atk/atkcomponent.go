@@ -168,10 +168,10 @@ type Component struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Component)(nil)
-
 // Componenter describes Component's abstract methods.
 type Componenter interface {
+	gextras.Objector
+
 	// Contains checks whether the specified point is within the extent of the
 	// component.
 	Contains(x int, y int, coordType CoordType) bool

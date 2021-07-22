@@ -61,8 +61,6 @@ type SocketListener struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*SocketListener)(nil)
-
 func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	return &SocketListener{
 		Object: obj,
@@ -158,7 +156,7 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -245,7 +243,7 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -290,7 +288,7 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = C.GSocketType(typ)
 	_arg3 = C.GSocketProtocol(protocol)
 	_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))

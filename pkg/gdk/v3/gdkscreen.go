@@ -36,8 +36,6 @@ type Screen struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Screen)(nil)
-
 func wrapScreen(obj *externglib.Object) *Screen {
 	return &Screen{
 		Object: obj,
@@ -188,7 +186,7 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 	var _cret C.gint       // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
 

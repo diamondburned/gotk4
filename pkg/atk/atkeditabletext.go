@@ -54,10 +54,10 @@ type EditableText struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*EditableText)(nil)
-
 // EditableTexter describes EditableText's abstract methods.
 type EditableTexter interface {
+	gextras.Objector
+
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
 	CopyText(startPos int, endPos int)

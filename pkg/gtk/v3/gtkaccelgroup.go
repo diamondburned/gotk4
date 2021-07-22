@@ -349,8 +349,6 @@ type AccelGroup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*AccelGroup)(nil)
-
 func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	return &AccelGroup{
 		Object: obj,

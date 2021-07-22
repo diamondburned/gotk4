@@ -104,8 +104,6 @@ type DrawingArea struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*DrawingArea)(nil)
-
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{
@@ -118,6 +116,7 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

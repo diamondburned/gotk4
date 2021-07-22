@@ -151,9 +151,8 @@ type Entry struct {
 
 	CellEditable
 	Editable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Entry)(nil)
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
@@ -170,6 +169,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		CellEditable: CellEditable{
 			Widget: Widget{
@@ -185,6 +185,7 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Editable: Editable{
@@ -201,8 +202,10 @@ func wrapEntry(obj *externglib.Object) *Entry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -239,12 +242,6 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	_entry = wrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Entry) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ActivatesDefault retrieves the value set by
@@ -929,7 +926,7 @@ func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_entry_set_extra_menu(_arg0, _arg1)
 }
@@ -993,7 +990,7 @@ func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
 }
@@ -1029,7 +1026,7 @@ func (entry *Entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gd
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gtk_entry_set_icon_from_paintable(_arg0, _arg1, _arg2)
 }

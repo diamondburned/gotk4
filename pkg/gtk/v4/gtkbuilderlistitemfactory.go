@@ -47,8 +47,6 @@ type BuilderListItemFactory struct {
 	ListItemFactory
 }
 
-var _ gextras.Nativer = (*BuilderListItemFactory)(nil)
-
 func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{
@@ -71,7 +69,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	var _arg2 *C.char               // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer((scope).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg2))
 

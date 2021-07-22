@@ -72,10 +72,10 @@ type Selection struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Selection)(nil)
-
 // Selectioner describes Selection's abstract methods.
 type Selectioner interface {
+	gextras.Objector
+
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
 	AddSelection(i int) bool

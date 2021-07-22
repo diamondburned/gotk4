@@ -41,8 +41,6 @@ type SimpleActionGroup struct {
 	ActionMap
 }
 
-var _ gextras.Nativer = (*SimpleActionGroup)(nil)
-
 func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{
 		Object: obj,
@@ -107,7 +105,7 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg1 *C.GAction            // out
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }

@@ -26,8 +26,6 @@ type PixbufSimpleAnim struct {
 	PixbufAnimation
 }
 
-var _ gextras.Nativer = (*PixbufSimpleAnim)(nil)
-
 func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{

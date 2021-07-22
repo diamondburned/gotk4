@@ -376,10 +376,10 @@ type Cursor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Cursor)(nil)
-
 // Cursorrer describes Cursor's abstract methods.
 type Cursorrer interface {
+	gextras.Objector
+
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
 	// Display returns the display on which the Cursor is defined.

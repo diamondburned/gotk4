@@ -180,7 +180,7 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 	_arg2 = C.GtkTextDirection(direction)
 	_arg3 = C.GtkStateType(state)
 	_arg4 = C.GtkIconSize(size)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 	defer C.free(unsafe.Pointer(_arg6))
 
@@ -260,7 +260,7 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = C.int(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer((forWindow).(gextras.Nativer).Native()))
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -1066,7 +1066,7 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	var _cret C.gint           // in
 
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 

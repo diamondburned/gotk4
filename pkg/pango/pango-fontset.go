@@ -81,10 +81,10 @@ type Fontset struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Fontset)(nil)
-
 // Fontsetter describes Fontset's abstract methods.
 type Fontsetter interface {
+	gextras.Objector
+
 	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	Foreach(fn FontsetForeachFunc)
@@ -174,8 +174,6 @@ type FontsetSimple struct {
 	Fontset
 }
 
-var _ gextras.Nativer = (*FontsetSimple)(nil)
-
 func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{
 		Fontset: Fontset{
@@ -212,7 +210,7 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 	var _arg1 *C.PangoFont          // out
 
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
 }

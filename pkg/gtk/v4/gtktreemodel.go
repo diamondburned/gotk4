@@ -414,10 +414,10 @@ type TreeModel struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeModel)(nil)
-
 // TreeModeller describes TreeModel's abstract methods.
 type TreeModeller interface {
+	gextras.Objector
+
 	// NewFilter creates a new TreeModel, with child_model as the child_model
 	// and root as the virtual root.
 	NewFilter(root *TreePath) TreeModeller
@@ -1382,7 +1382,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_row_reference_new(_arg1, _arg2)
@@ -1405,7 +1405,7 @@ func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path
 	var _cret *C.GtkTreeRowReference // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 	_arg3 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_row_reference_new_proxy(_arg1, _arg2, _arg3)

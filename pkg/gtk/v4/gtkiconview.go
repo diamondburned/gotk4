@@ -121,9 +121,8 @@ type IconView struct {
 
 	CellLayout
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*IconView)(nil)
 
 func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{
@@ -140,6 +139,7 @@ func wrapIconView(obj *externglib.Object) *IconView {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		CellLayout: CellLayout{
 			Object: obj,
@@ -147,6 +147,7 @@ func wrapIconView(obj *externglib.Object) *IconView {
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -175,7 +176,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_icon_view_new_with_area(_arg1)
 
@@ -191,7 +192,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_icon_view_new_with_model(_arg1)
 
@@ -200,12 +201,6 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *IconView) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // CreateDragIcon creates a #cairo_surface_t representation of the item at path.
@@ -289,7 +284,7 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (gdk.Rec
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, &_arg3)
 
@@ -994,7 +989,7 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if startEditing {
 		_arg3 = C.TRUE
 	}
@@ -1086,7 +1081,7 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_icon_view_set_model(_arg0, _arg1)
 }
@@ -1187,7 +1182,7 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_icon_view_set_tooltip_cell(_arg0, _arg1, _arg2, _arg3)
 }

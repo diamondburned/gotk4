@@ -72,10 +72,10 @@ type GLContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*GLContext)(nil)
-
 // GLContexter describes GLContext's abstract methods.
 type GLContexter interface {
+	gextras.Objector
+
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
 	DebugEnabled() bool

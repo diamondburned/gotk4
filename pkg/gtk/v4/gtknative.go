@@ -43,10 +43,10 @@ type NativeSurface struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*NativeSurface)(nil)
-
 // NativeSurfacer describes NativeSurface's abstract methods.
 type NativeSurfacer interface {
+	gextras.Objector
+
 	// Renderer returns the renderer that is used for this GtkNative.
 	Renderer() gsk.Rendererer
 	// Surface returns the surface of this GtkNative.
@@ -76,6 +76,7 @@ func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -167,7 +168,7 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gtk_native_get_for_surface(_arg1)
 

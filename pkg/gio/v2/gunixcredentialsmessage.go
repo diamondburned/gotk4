@@ -44,8 +44,6 @@ type UnixCredentialsMessage struct {
 	SocketControlMessage
 }
 
-var _ gextras.Nativer = (*UnixCredentialsMessage)(nil)
-
 func wrapUnixCredentialsMessage(obj *externglib.Object) *UnixCredentialsMessage {
 	return &UnixCredentialsMessage{
 		SocketControlMessage: SocketControlMessage{

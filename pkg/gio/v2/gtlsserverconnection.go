@@ -38,10 +38,10 @@ type TLSServerConnection struct {
 	TLSConnection
 }
 
-var _ gextras.Nativer = (*TLSServerConnection)(nil)
-
 // TLSServerConnectioner describes TLSServerConnection's abstract methods.
 type TLSServerConnectioner interface {
+	gextras.Objector
+
 	privateTLSServerConnection()
 }
 
@@ -77,8 +77,8 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	var _cret *C.GIOStream       // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
 

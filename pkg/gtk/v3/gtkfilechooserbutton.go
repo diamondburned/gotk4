@@ -67,9 +67,8 @@ type FileChooserButton struct {
 	Box
 
 	FileChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileChooserButton)(nil)
 
 func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	return &FileChooserButton{
@@ -85,15 +84,18 @@ func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		FileChooser: FileChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -144,12 +146,6 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	_fileChooserButton = wrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileChooserButton) Native() uintptr {
-	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked with

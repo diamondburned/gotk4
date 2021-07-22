@@ -160,10 +160,10 @@ type Volume struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Volume)(nil)
-
 // Volumer describes Volume's abstract methods.
 type Volumer interface {
+	gextras.Objector
+
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
@@ -293,7 +293,7 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -338,7 +338,7 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -584,7 +584,7 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 

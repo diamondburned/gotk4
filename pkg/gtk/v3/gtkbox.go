@@ -73,9 +73,8 @@ type Box struct {
 	Container
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Box)(nil)
 
 func wrapBox(obj *externglib.Object) *Box {
 	return &Box{
@@ -90,11 +89,13 @@ func wrapBox(obj *externglib.Object) *Box {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -120,12 +121,6 @@ func NewBox(orientation Orientation, spacing int) *Box {
 	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Box) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
@@ -206,7 +201,7 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -229,7 +224,7 @@ func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint)
 	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -251,7 +246,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 	var _arg5 C.GtkPackType // in
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -286,7 +281,7 @@ func (box *Box) ReorderChild(child Widgetter, position int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
@@ -315,7 +310,7 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_box_set_center_widget(_arg0, _arg1)
 }
@@ -330,7 +325,7 @@ func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding
 	var _arg5 C.GtkPackType // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}

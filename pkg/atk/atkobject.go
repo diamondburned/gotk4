@@ -878,10 +878,10 @@ type ImplementorIface struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ImplementorIface)(nil)
-
 // ImplementorIfacer describes ImplementorIface's abstract methods.
 type ImplementorIfacer interface {
+	gextras.Objector
+
 	privateImplementorIface()
 }
 
@@ -993,8 +993,6 @@ type ObjectClassOverrider interface {
 type ObjectClass struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ObjectClass)(nil)
 
 func wrapObject(obj *externglib.Object) *ObjectClass {
 	return &ObjectClass{

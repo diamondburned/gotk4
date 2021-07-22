@@ -178,10 +178,10 @@ type Mount struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Mount)(nil)
-
 // Mounter describes Mount's abstract methods.
 type Mounter interface {
+	gextras.Objector
+
 	// CanEject checks if mount can be ejected.
 	CanEject() bool
 	// CanUnmount checks if mount can be unmounted.
@@ -324,7 +324,7 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -369,7 +369,7 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -577,7 +577,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 
@@ -729,7 +729,7 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 
@@ -788,7 +788,7 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 
@@ -833,7 +833,7 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 

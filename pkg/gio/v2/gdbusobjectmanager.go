@@ -62,10 +62,10 @@ type DBusObjectManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DBusObjectManager)(nil)
-
 // DBusObjectManagerer describes DBusObjectManager's abstract methods.
 type DBusObjectManagerer interface {
+	gextras.Objector
+
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
 	Interface(objectPath string, interfaceName string) DBusInterfacer

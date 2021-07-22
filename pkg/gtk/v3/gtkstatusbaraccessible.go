@@ -28,8 +28,6 @@ type StatusbarAccessible struct {
 	ContainerAccessible
 }
 
-var _ gextras.Nativer = (*StatusbarAccessible)(nil)
-
 func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 	return &StatusbarAccessible{
 		ContainerAccessible: ContainerAccessible{

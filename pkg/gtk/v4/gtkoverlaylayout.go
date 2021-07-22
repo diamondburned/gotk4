@@ -32,8 +32,6 @@ type OverlayLayout struct {
 	LayoutManager
 }
 
-var _ gextras.Nativer = (*OverlayLayout)(nil)
-
 func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	return &OverlayLayout{
 		LayoutManager: LayoutManager{
@@ -68,8 +66,6 @@ func (*OverlayLayout) privateOverlayLayout() {}
 type OverlayLayoutChild struct {
 	LayoutChild
 }
-
-var _ gextras.Nativer = (*OverlayLayoutChild)(nil)
 
 func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{

@@ -221,7 +221,7 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 	var _cret *C.GdkPixbufFormat // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_get_file_info_finish(_arg1, &_arg2, &_arg3, &_cerr)
 

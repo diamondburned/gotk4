@@ -42,9 +42,8 @@ type MemoryOutputStream struct {
 
 	PollableOutputStream
 	Seekable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MemoryOutputStream)(nil)
 
 func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{
@@ -59,6 +58,7 @@ func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 		Seekable: Seekable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -80,12 +80,6 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 	_memoryOutputStream = wrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *MemoryOutputStream) Native() uintptr {
-	return v.OutputStream.Object.Native()
 }
 
 // Data gets any loaded data from the ostream.

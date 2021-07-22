@@ -38,10 +38,10 @@ type Renderer struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Renderer)(nil)
-
 // Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
+	gextras.Objector
+
 	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
 	Surface() gdk.Surfacer
 	// IsRealized checks whether the renderer is realized or not.
@@ -85,7 +85,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gsk_renderer_new_for_surface(_arg1)
 
@@ -140,7 +140,7 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
 
@@ -167,7 +167,7 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg2 *C.cairo_region_t // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((root).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
@@ -188,7 +188,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	var _cret *C.GdkTexture      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((root).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)

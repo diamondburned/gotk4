@@ -31,8 +31,6 @@ type CustomSorter struct {
 	Sorter
 }
 
-var _ gextras.Nativer = (*CustomSorter)(nil)
-
 func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	return &CustomSorter{
 		Sorter: Sorter{

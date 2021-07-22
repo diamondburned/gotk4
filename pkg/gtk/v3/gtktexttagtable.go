@@ -75,8 +75,6 @@ type TextTagTable struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*TextTagTable)(nil)
-
 func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{
 		Object: obj,

@@ -51,8 +51,6 @@ type Accessible struct {
 	atk.ObjectClass
 }
 
-var _ gextras.Nativer = (*Accessible)(nil)
-
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{
 		ObjectClass: atk.ObjectClass{
@@ -106,7 +104,7 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 }

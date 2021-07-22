@@ -29,9 +29,8 @@ type LabelAccessible struct {
 
 	atk.Hypertext
 	atk.Text
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*LabelAccessible)(nil)
 
 func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 	return &LabelAccessible{
@@ -51,6 +50,7 @@ func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 		Text: atk.Text{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -58,12 +58,6 @@ func marshalLabelAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLabelAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *LabelAccessible) Native() uintptr {
-	return v.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*LabelAccessible) privateLabelAccessible() {}

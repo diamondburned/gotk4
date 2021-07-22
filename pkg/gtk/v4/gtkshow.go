@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -74,7 +73,7 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
 

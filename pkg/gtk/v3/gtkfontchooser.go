@@ -170,10 +170,10 @@ type FontChooser struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FontChooser)(nil)
-
 // FontChooserer describes FontChooser's abstract methods.
 type FontChooserer interface {
+	gextras.Objector
+
 	// Font gets the currently-selected font name.
 	Font() string
 	// FontDesc gets the currently-selected font.
@@ -503,7 +503,7 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap   // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontmap).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
 }

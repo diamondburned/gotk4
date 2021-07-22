@@ -83,10 +83,10 @@ type Device struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Device)(nil)
-
 // Devicer describes Device's abstract methods.
 type Devicer interface {
+	gextras.Objector
+
 	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 	// locked.
 	CapsLockState() bool

@@ -65,8 +65,6 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
-var _ gextras.Nativer = (*SignalListItemFactory)(nil)
-
 func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{

@@ -85,10 +85,10 @@ type DesktopAppInfoLookup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DesktopAppInfoLookup)(nil)
-
 // DesktopAppInfoLookupper describes DesktopAppInfoLookup's abstract methods.
 type DesktopAppInfoLookupper interface {
+	gextras.Objector
+
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
 	// implementation.
@@ -146,8 +146,6 @@ type DesktopAppInfo struct {
 
 	AppInfo
 }
-
-var _ gextras.Nativer = (*DesktopAppInfo)(nil)
 
 func wrapDesktopAppInfo(obj *externglib.Object) *DesktopAppInfo {
 	return &DesktopAppInfo{

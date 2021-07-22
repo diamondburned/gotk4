@@ -109,8 +109,6 @@ type Action struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*Action)(nil)
-
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{
 		Object: obj,
@@ -686,7 +684,7 @@ func (action *Action) SetGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_action_set_gicon(_arg0, _arg1)
 }

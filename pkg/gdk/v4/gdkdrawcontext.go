@@ -36,10 +36,10 @@ type DrawContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DrawContext)(nil)
-
 // DrawContexter describes DrawContext's abstract methods.
 type DrawContexter interface {
+	gextras.Objector
+
 	// BeginFrame indicates that you are beginning the process of redrawing
 	// region on the context's surface.
 	BeginFrame(region *cairo.Region)

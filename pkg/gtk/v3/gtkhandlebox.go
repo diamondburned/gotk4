@@ -59,8 +59,6 @@ type HandleBox struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*HandleBox)(nil)
-
 func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	return &HandleBox{
 		Bin: Bin{
@@ -75,6 +73,7 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

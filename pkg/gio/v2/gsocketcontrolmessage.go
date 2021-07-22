@@ -74,10 +74,10 @@ type SocketControlMessage struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*SocketControlMessage)(nil)
-
 // SocketControlMessager describes SocketControlMessage's abstract methods.
 type SocketControlMessager interface {
+	gextras.Objector
+
 	// Level returns the "level" (i.e.
 	Level() int
 	// MsgType returns the protocol specific type of the control message.

@@ -43,10 +43,10 @@ type Misc struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Misc)(nil)
-
 // Miscer describes Misc's abstract methods.
 type Miscer interface {
+	gextras.Objector
+
 	// Alignment gets the X and Y alignment of the widget within its allocation.
 	Alignment() (xalign float32, yalign float32)
 	// Padding gets the padding in the X and Y directions of the widget.
@@ -71,6 +71,7 @@ func wrapMisc(obj *externglib.Object) *Misc {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

@@ -102,10 +102,10 @@ type ListModel struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ListModel)(nil)
-
 // ListModeller describes ListModel's abstract methods.
 type ListModeller interface {
+	gextras.Objector
+
 	// ItemType gets the type of the items in list.
 	ItemType() externglib.Type
 	// NItems gets the number of items in list.

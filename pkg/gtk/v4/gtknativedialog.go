@@ -62,10 +62,10 @@ type NativeDialog struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*NativeDialog)(nil)
-
 // NativeDialogger describes NativeDialog's abstract methods.
 type NativeDialogger interface {
+	gextras.Objector
+
 	// Modal returns whether the dialog is modal.
 	Modal() bool
 	// Title gets the title of the GtkNativeDialog.

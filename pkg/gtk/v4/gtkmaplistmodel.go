@@ -86,8 +86,6 @@ type MapListModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*MapListModel)(nil)
-
 func wrapMapListModel(obj *externglib.Object) *MapListModel {
 	return &MapListModel{
 		Object: obj,
@@ -111,7 +109,7 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 	var _arg4 C.GDestroyNotify
 	var _cret *C.GtkMapListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
 	_arg3 = C.gpointer(gbox.Assign(mapFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -194,7 +192,7 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel      // out
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
 }

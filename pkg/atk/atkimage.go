@@ -62,10 +62,10 @@ type Image struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Image)(nil)
-
 // Imager describes Image's abstract methods.
 type Imager interface {
+	gextras.Objector
+
 	// ImageDescription: get a textual description of this image.
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.

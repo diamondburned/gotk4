@@ -28,8 +28,6 @@ type ContainerCellAccessible struct {
 	CellAccessible
 }
 
-var _ gextras.Nativer = (*ContainerCellAccessible)(nil)
-
 func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessible {
 	return &ContainerCellAccessible{
 		CellAccessible: CellAccessible{
@@ -49,6 +47,7 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }

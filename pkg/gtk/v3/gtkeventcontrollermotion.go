@@ -31,8 +31,6 @@ type EventControllerMotion struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*EventControllerMotion)(nil)
-
 func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
 		EventController: EventController{
@@ -53,7 +51,7 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 

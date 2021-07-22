@@ -46,10 +46,10 @@ type CellAccessibleParent struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*CellAccessibleParent)(nil)
-
 // CellAccessibleParenter describes CellAccessibleParent's abstract methods.
 type CellAccessibleParenter interface {
+	gextras.Objector
+
 	Activate(cell *CellAccessible)
 	Edit(cell *CellAccessible)
 	ExpandCollapse(cell *CellAccessible)

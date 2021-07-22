@@ -453,7 +453,7 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
 
@@ -536,7 +536,7 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GDBusConnectionFlags(flags)

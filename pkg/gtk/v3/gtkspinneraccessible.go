@@ -30,8 +30,6 @@ type SpinnerAccessible struct {
 	atk.Image
 }
 
-var _ gextras.Nativer = (*SpinnerAccessible)(nil)
-
 func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 	return &SpinnerAccessible{
 		WidgetAccessible: WidgetAccessible{

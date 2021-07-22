@@ -38,8 +38,6 @@ type AspectFrame struct {
 	Frame
 }
 
-var _ gextras.Nativer = (*AspectFrame)(nil)
-
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Frame: Frame{
@@ -55,6 +53,7 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},

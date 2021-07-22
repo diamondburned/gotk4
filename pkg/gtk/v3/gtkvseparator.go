@@ -33,8 +33,6 @@ type VSeparator struct {
 	Separator
 }
 
-var _ gextras.Nativer = (*VSeparator)(nil)
-
 func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	return &VSeparator{
 		Separator: Separator{
@@ -48,10 +46,12 @@ func wrapVSeparator(obj *externglib.Object) *VSeparator {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

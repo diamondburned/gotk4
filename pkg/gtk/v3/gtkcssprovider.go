@@ -106,8 +106,6 @@ type CSSProvider struct {
 	StyleProvider
 }
 
-var _ gextras.Nativer = (*CSSProvider)(nil)
-
 func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{
 		Object: obj,
@@ -167,7 +165,7 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 

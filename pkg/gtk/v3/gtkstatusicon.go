@@ -78,8 +78,6 @@ type StatusIcon struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StatusIcon)(nil)
-
 func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	return &StatusIcon{
 		Object: obj,
@@ -140,7 +138,7 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.gtk_status_icon_new_from_gicon(_arg1)
 
@@ -619,7 +617,7 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon         // out
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_status_icon_set_from_gicon(_arg0, _arg1)
 }

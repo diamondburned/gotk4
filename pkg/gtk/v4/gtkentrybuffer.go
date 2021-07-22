@@ -67,8 +67,6 @@ type EntryBuffer struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*EntryBuffer)(nil)
-
 func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	return &EntryBuffer{
 		Object: obj,

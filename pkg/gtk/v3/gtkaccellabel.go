@@ -61,8 +61,6 @@ type AccelLabel struct {
 	Label
 }
 
-var _ gextras.Nativer = (*AccelLabel)(nil)
-
 func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	return &AccelLabel{
 		Label: Label{
@@ -77,6 +75,7 @@ func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -207,7 +206,7 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((accelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 }

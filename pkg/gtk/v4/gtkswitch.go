@@ -51,9 +51,8 @@ type Switch struct {
 	Widget
 
 	Actionable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Switch)(nil)
 
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{
@@ -70,6 +69,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Widget: Widget{
@@ -85,8 +85,10 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -107,12 +109,6 @@ func NewSwitch() *Switch {
 	__switch = wrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Switch) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active gets whether the GtkSwitch is in its “on” or “off” state.

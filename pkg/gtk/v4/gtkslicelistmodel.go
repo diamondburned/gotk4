@@ -34,8 +34,6 @@ type SliceListModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*SliceListModel)(nil)
-
 func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	return &SliceListModel{
 		Object: obj,
@@ -60,7 +58,7 @@ func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceLis
 	var _arg3 C.guint              // out
 	var _cret *C.GtkSliceListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = C.guint(offset)
 	_arg3 = C.guint(size)
 
@@ -129,7 +127,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_slice_list_model_set_model(_arg0, _arg1)
 }

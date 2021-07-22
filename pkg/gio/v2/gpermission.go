@@ -117,10 +117,10 @@ type Permission struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Permission)(nil)
-
 // Permissioner describes Permission's abstract methods.
 type Permissioner interface {
+	gextras.Objector
+
 	// Acquire attempts to acquire the permission represented by permission.
 	Acquire(ctx context.Context) error
 	// AcquireAsync attempts to acquire the permission represented by
@@ -230,7 +230,7 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 
@@ -394,7 +394,7 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 

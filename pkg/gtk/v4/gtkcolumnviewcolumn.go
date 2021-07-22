@@ -39,8 +39,6 @@ type ColumnViewColumn struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ColumnViewColumn)(nil)
-
 func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{
 		Object: obj,
@@ -284,7 +282,7 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	var _arg1 *C.GMenuModel          // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
 }

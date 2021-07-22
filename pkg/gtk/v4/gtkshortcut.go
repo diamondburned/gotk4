@@ -41,8 +41,6 @@ type Shortcut struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Shortcut)(nil)
-
 func wrapShortcut(obj *externglib.Object) *Shortcut {
 	return &Shortcut{
 		Object: obj,
@@ -62,8 +60,8 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 	var _arg2 *C.GtkShortcutAction  // out
 	var _cret *C.GtkShortcut        // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((trigger).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
+	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
 
@@ -131,7 +129,7 @@ func (self *Shortcut) SetAction(action ShortcutActioner) {
 	var _arg1 *C.GtkShortcutAction // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_shortcut_set_action(_arg0, _arg1)
 }
@@ -153,7 +151,7 @@ func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	var _arg1 *C.GtkShortcutTrigger // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer((trigger).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
 
 	C.gtk_shortcut_set_trigger(_arg0, _arg1)
 }

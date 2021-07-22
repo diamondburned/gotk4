@@ -43,8 +43,6 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-var _ gextras.Nativer = (*AppLaunchContext)(nil)
-
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{
@@ -116,7 +114,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon               // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }

@@ -80,10 +80,10 @@ type RemoteActionGroup struct {
 	ActionGroup
 }
 
-var _ gextras.Nativer = (*RemoteActionGroup)(nil)
-
 // RemoteActionGrouper describes RemoteActionGroup's abstract methods.
 type RemoteActionGrouper interface {
+	gextras.Objector
+
 	// ActivateActionFull activates the remote action.
 	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
 	// ChangeActionStateFull changes the state of a remote action.

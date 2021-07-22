@@ -130,10 +130,10 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FrameClock)(nil)
-
 // FrameClocker describes FrameClock's abstract methods.
 type FrameClocker interface {
+	gextras.Objector
+
 	// BeginUpdating starts updates for an animation.
 	BeginUpdating()
 	// EndUpdating stops updates for an animation.

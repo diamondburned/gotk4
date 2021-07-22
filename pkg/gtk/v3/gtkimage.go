@@ -148,8 +148,6 @@ type Image struct {
 	Misc
 }
 
-var _ gextras.Nativer = (*Image)(nil)
-
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
 		Misc: Misc{
@@ -163,6 +161,7 @@ func wrapImage(obj *externglib.Object) *Image {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -250,7 +249,7 @@ func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
@@ -629,7 +628,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)

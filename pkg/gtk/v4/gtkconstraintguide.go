@@ -38,8 +38,6 @@ type ConstraintGuide struct {
 	ConstraintTarget
 }
 
-var _ gextras.Nativer = (*ConstraintGuide)(nil)
-
 func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 	return &ConstraintGuide{
 		Object: obj,

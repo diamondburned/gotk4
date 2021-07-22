@@ -50,10 +50,10 @@ type FileDescriptorBased struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileDescriptorBased)(nil)
-
 // FileDescriptorBasedder describes FileDescriptorBased's abstract methods.
 type FileDescriptorBasedder interface {
+	gextras.Objector
+
 	// Fd gets the underlying file descriptor.
 	Fd() int
 }

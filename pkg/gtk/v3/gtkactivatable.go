@@ -273,10 +273,10 @@ type Activatable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Activatable)(nil)
-
 // Activatabler describes Activatable's abstract methods.
 type Activatabler interface {
+	gextras.Objector
+
 	// DoSetRelatedAction: this is a utility function for Activatable
 	// implementors.
 	DoSetRelatedAction(action *Action)

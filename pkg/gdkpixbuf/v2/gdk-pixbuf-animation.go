@@ -106,8 +106,6 @@ type PixbufAnimation struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PixbufAnimation)(nil)
-
 func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{
 		Object: obj,
@@ -194,7 +192,7 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -215,7 +213,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 
@@ -374,7 +372,7 @@ func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStre
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -447,8 +445,6 @@ type PixbufAnimationIterOverrider interface {
 type PixbufAnimationIter struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*PixbufAnimationIter)(nil)
 
 func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{

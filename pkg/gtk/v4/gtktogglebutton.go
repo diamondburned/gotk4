@@ -102,8 +102,6 @@ type ToggleButton struct {
 	Button
 }
 
-var _ gextras.Nativer = (*ToggleButton)(nil)
-
 func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	return &ToggleButton{
 		Button: Button{
@@ -120,6 +118,7 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Actionable: Actionable{
 				Widget: Widget{
@@ -135,8 +134,10 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }

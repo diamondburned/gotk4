@@ -69,9 +69,8 @@ type ShortcutController struct {
 
 	gio.ListModel
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ShortcutController)(nil)
 
 func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 	return &ShortcutController{
@@ -84,6 +83,7 @@ func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -116,7 +116,7 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
@@ -125,12 +125,6 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ShortcutController) Native() uintptr {
-	return v.EventController.Object.Native()
 }
 
 // AddShortcut adds shortcut to the list of shortcuts handled by self.

@@ -84,8 +84,6 @@ type VolumeMonitor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*VolumeMonitor)(nil)
-
 func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	return &VolumeMonitor{
 		Object: obj,
@@ -248,7 +246,7 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	var _arg1 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg1 = (*C.GMount)(unsafe.Pointer((mount).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_volume_monitor_adopt_orphan_mount(_arg1)
 

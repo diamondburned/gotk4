@@ -47,9 +47,8 @@ type ScaleButton struct {
 	Button
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ScaleButton)(nil)
 
 func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	return &ScaleButton{
@@ -66,6 +65,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -80,15 +80,18 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -133,12 +136,6 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 	_scaleButton = wrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ScaleButton) Native() uintptr {
-	return v.Button.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment gets the Adjustment associated with the ScaleButton’s scale. See

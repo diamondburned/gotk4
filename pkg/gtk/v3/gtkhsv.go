@@ -43,8 +43,6 @@ type HSV struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*HSV)(nil)
-
 func wrapHSV(obj *externglib.Object) *HSV {
 	return &HSV{
 		Widget: Widget{
@@ -57,6 +55,7 @@ func wrapHSV(obj *externglib.Object) *HSV {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

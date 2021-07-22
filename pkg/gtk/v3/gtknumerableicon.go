@@ -35,8 +35,6 @@ type NumerableIcon struct {
 	gio.EmblemedIcon
 }
 
-var _ gextras.Nativer = (*NumerableIcon)(nil)
-
 func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	return &NumerableIcon{
 		EmblemedIcon: gio.EmblemedIcon{
@@ -163,7 +161,7 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
 }
@@ -256,7 +254,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((baseIcon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(baseIcon.Native()))
 
 	_cret = C.gtk_numerable_icon_new(_arg1)
 
@@ -277,7 +275,7 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((baseIcon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(baseIcon.Native()))
 	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)

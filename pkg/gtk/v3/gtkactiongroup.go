@@ -92,8 +92,6 @@ type ActionGroup struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*ActionGroup)(nil)
-
 func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	return &ActionGroup{
 		Object: obj,

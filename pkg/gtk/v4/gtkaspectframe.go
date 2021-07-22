@@ -34,8 +34,6 @@ type AspectFrame struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*AspectFrame)(nil)
-
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Widget: Widget{
@@ -51,6 +49,7 @@ func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -176,7 +175,7 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
 }

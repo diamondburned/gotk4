@@ -31,8 +31,6 @@ type EventBox struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*EventBox)(nil)
-
 func wrapEventBox(obj *externglib.Object) *EventBox {
 	return &EventBox{
 		Bin: Bin{
@@ -47,6 +45,7 @@ func wrapEventBox(obj *externglib.Object) *EventBox {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

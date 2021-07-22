@@ -48,8 +48,6 @@ type StackSwitcher struct {
 	Box
 }
 
-var _ gextras.Nativer = (*StackSwitcher)(nil)
-
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Box: Box{
@@ -64,11 +62,13 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

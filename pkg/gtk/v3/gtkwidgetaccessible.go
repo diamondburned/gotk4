@@ -30,8 +30,6 @@ type WidgetAccessible struct {
 	atk.Component
 }
 
-var _ gextras.Nativer = (*WidgetAccessible)(nil)
-
 func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 	return &WidgetAccessible{
 		Accessible: Accessible{

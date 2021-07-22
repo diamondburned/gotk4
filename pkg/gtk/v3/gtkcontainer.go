@@ -261,10 +261,10 @@ type Container struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Container)(nil)
-
 // Containerer describes Container's abstract methods.
 type Containerer interface {
+	gextras.Objector
+
 	// Add adds widget to container.
 	Add(widget Widgetter)
 	CheckResize()
@@ -352,6 +352,7 @@ func wrapContainer(obj *externglib.Object) *Container {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -377,7 +378,7 @@ func (container *Container) Add(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_add(_arg0, _arg1)
 }
@@ -398,7 +399,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -418,7 +419,7 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -433,7 +434,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
@@ -636,7 +637,7 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	var _cret *C.GtkWidgetPath // in
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
 
@@ -692,7 +693,7 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	var _arg2 *C.cairo_t      // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
@@ -711,7 +712,7 @@ func (container *Container) Remove(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_remove(_arg0, _arg1)
 }
@@ -762,7 +763,7 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 	for i := len(focusableWidgets) - 1; i >= 0; i-- {
 		src := focusableWidgets[i]
 		var dst *C.GtkWidget // out
-		dst = (*C.GtkWidget)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		dst = (*C.GtkWidget)(unsafe.Pointer(src.Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
@@ -784,7 +785,7 @@ func (container *Container) SetFocusChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }

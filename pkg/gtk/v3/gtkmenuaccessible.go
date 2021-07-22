@@ -28,8 +28,6 @@ type MenuAccessible struct {
 	MenuShellAccessible
 }
 
-var _ gextras.Nativer = (*MenuAccessible)(nil)
-
 func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 	return &MenuAccessible{
 		MenuShellAccessible: MenuShellAccessible{

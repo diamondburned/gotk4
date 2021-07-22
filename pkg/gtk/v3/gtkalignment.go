@@ -45,8 +45,6 @@ type Alignment struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*Alignment)(nil)
-
 func wrapAlignment(obj *externglib.Object) *Alignment {
 	return &Alignment{
 		Bin: Bin{
@@ -61,6 +59,7 @@ func wrapAlignment(obj *externglib.Object) *Alignment {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

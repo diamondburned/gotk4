@@ -30,8 +30,6 @@ type ArrowAccessible struct {
 	atk.Image
 }
 
-var _ gextras.Nativer = (*ArrowAccessible)(nil)
-
 func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	return &ArrowAccessible{
 		WidgetAccessible: WidgetAccessible{

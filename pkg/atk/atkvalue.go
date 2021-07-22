@@ -276,10 +276,10 @@ type Value struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Value)(nil)
-
 // Valueer describes Value's abstract methods.
 type Valueer interface {
+	gextras.Objector
+
 	// CurrentValue gets the value of this object.
 	CurrentValue() externglib.Value
 	// Increment gets the minimum increment by which the value of this object

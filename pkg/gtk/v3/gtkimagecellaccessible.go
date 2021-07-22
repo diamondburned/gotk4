@@ -28,9 +28,8 @@ type ImageCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Image
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ImageCellAccessible)(nil)
 
 func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 	return &ImageCellAccessible{
@@ -52,11 +51,13 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 		Image: atk.Image{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +65,6 @@ func marshalImageCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapImageCellAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ImageCellAccessible) Native() uintptr {
-	return v.RendererCellAccessible.CellAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ImageCellAccessible) privateImageCellAccessible() {}

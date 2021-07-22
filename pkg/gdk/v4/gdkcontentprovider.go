@@ -87,8 +87,6 @@ type ContentProvider struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ContentProvider)(nil)
-
 func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{
 		Object: obj,
@@ -263,7 +261,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
@@ -280,7 +278,7 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
 

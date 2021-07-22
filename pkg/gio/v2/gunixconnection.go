@@ -50,8 +50,6 @@ type UnixConnection struct {
 	SocketConnection
 }
 
-var _ gextras.Nativer = (*UnixConnection)(nil)
-
 func wrapUnixConnection(obj *externglib.Object) *UnixConnection {
 	return &UnixConnection{
 		SocketConnection: SocketConnection{
@@ -149,7 +147,7 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, &_cerr)
 
@@ -269,7 +267,7 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_unix_connection_send_credentials_finish(_arg0, _arg1, &_cerr)
 

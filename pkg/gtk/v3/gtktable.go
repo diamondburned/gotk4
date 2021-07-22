@@ -102,8 +102,6 @@ type Table struct {
 	Container
 }
 
-var _ gextras.Nativer = (*Table)(nil)
-
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{
 		Container: Container{
@@ -117,6 +115,7 @@ func wrapTable(obj *externglib.Object) *Table {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -188,7 +187,7 @@ func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, t
 	var _arg9 C.guint            // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
@@ -218,7 +217,7 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttac
 	var _arg5 C.guint      // out
 
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)

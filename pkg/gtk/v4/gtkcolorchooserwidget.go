@@ -50,9 +50,8 @@ type ColorChooserWidget struct {
 	Widget
 
 	ColorChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ColorChooserWidget)(nil)
 
 func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{
@@ -69,10 +68,12 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -93,12 +94,6 @@ func NewColorChooserWidget() *ColorChooserWidget {
 	_colorChooserWidget = wrapColorChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ColorChooserWidget) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ColorChooserWidget) privateColorChooserWidget() {}

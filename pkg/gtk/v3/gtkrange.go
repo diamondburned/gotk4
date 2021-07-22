@@ -49,12 +49,13 @@ type Range struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Range)(nil)
 
 // Ranger describes Range's abstract methods.
 type Ranger interface {
+	gextras.Objector
+
 	// Adjustment: get the Adjustment which is the “model” object for Range.
 	Adjustment() *Adjustment
 	// FillLevel gets the current position of the fill level indicator.
@@ -144,10 +145,12 @@ func wrapRange(obj *externglib.Object) *Range {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -155,12 +158,6 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRange(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Range) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment: get the Adjustment which is the “model” object for Range. See

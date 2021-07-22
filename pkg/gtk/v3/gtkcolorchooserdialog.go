@@ -30,9 +30,8 @@ type ColorChooserDialog struct {
 	Dialog
 
 	ColorChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ColorChooserDialog)(nil)
 
 func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{
@@ -50,6 +49,7 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -58,6 +58,7 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -84,12 +85,6 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	_colorChooserDialog = wrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ColorChooserDialog) Native() uintptr {
-	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ColorChooserDialog) privateColorChooserDialog() {}

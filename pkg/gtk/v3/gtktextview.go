@@ -193,9 +193,8 @@ type TextView struct {
 	Container
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TextView)(nil)
 
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
@@ -210,11 +209,13 @@ func wrapTextView(obj *externglib.Object) *TextView {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -261,12 +262,6 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 	return _textView
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TextView) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
-}
-
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
 func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
@@ -274,7 +269,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 	var _arg2 *C.GtkTextChildAnchor // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	C.gtk_text_view_add_child_at_anchor(_arg0, _arg1, _arg2)
@@ -297,7 +292,7 @@ func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWind
 	var _arg4 C.gint              // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.GtkTextWindowType(whichWindow)
 	_arg3 = C.gint(xpos)
 	_arg4 = C.gint(ypos)
@@ -1057,7 +1052,7 @@ func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
 	var _cret C.GtkTextWindowType // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_text_view_get_window_type(_arg0, _arg1)
 
@@ -1140,7 +1135,7 @@ func (textView *TextView) MoveChild(child Widgetter, xpos int, ypos int) {
 	var _arg3 C.gint         // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(xpos)
 	_arg3 = C.gint(ypos)
 

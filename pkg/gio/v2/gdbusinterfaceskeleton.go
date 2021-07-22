@@ -63,10 +63,10 @@ type DBusInterfaceSkeleton struct {
 	DBusInterface
 }
 
-var _ gextras.Nativer = (*DBusInterfaceSkeleton)(nil)
-
 // DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's abstract methods.
 type DBusInterfaceSkeletonner interface {
+	gextras.Objector
+
 	// Export exports interface_ at object_path on connection.
 	Export(connection *DBusConnection, objectPath string) error
 	// Flush: if interface_ has outstanding changes, request for these changes

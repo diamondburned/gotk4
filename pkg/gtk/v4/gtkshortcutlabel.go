@@ -29,8 +29,6 @@ type ShortcutLabel struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*ShortcutLabel)(nil)
-
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
 		Widget: Widget{
@@ -46,6 +44,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

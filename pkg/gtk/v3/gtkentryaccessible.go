@@ -30,9 +30,8 @@ type EntryAccessible struct {
 	atk.Action
 	atk.EditableText
 	atk.Text
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*EntryAccessible)(nil)
 
 func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 	return &EntryAccessible{
@@ -55,6 +54,7 @@ func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 		Text: atk.Text{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -62,12 +62,6 @@ func marshalEntryAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEntryAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *EntryAccessible) Native() uintptr {
-	return v.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*EntryAccessible) privateEntryAccessible() {}

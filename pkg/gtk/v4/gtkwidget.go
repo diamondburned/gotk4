@@ -546,12 +546,13 @@ type Widget struct {
 	Accessible
 	Buildable
 	ConstraintTarget
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Widget)(nil)
 
 // Widgetter describes Widget's abstract methods.
 type Widgetter interface {
+	gextras.Objector
+
 	// ActionSetEnabled: enable or disable an action installed with
 	// gtk_widget_class_install_action().
 	ActionSetEnabled(actionName string, enabled bool)
@@ -955,6 +956,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -962,12 +964,6 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Widget) Native() uintptr {
-	return v.InitiallyUnowned.Object.Native()
 }
 
 // ActionSetEnabled: enable or disable an action installed with
@@ -1067,7 +1063,7 @@ func (widget *Widget) AddController(controller EventControllerer) {
 	var _arg1 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkEventController)(unsafe.Pointer((controller).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_widget_add_controller(_arg0, _arg1)
 }
@@ -1101,7 +1097,7 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((label).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
 
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
 }
@@ -1227,7 +1223,7 @@ func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, &_arg2)
 
@@ -1286,7 +1282,7 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, &_arg3)
@@ -1311,7 +1307,7 @@ func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
 	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, &_arg2)
 
@@ -2955,7 +2951,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
 }
@@ -2979,8 +2975,8 @@ func (widget *Widget) InsertAfter(parent Widgetter, previousSibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((previousSibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(previousSibling.Native()))
 
 	C.gtk_widget_insert_after(_arg0, _arg1, _arg2)
 }
@@ -3003,8 +2999,8 @@ func (widget *Widget) InsertBefore(parent Widgetter, nextSibling Widgetter) {
 	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((nextSibling).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(nextSibling.Native()))
 
 	C.gtk_widget_insert_before(_arg0, _arg1, _arg2)
 }
@@ -3017,7 +3013,7 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((ancestor).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
 
 	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
 
@@ -3423,7 +3419,7 @@ func (widget *Widget) RemoveController(controller EventControllerer) {
 	var _arg1 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkEventController)(unsafe.Pointer((controller).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_widget_remove_controller(_arg0, _arg1)
 }
@@ -3452,7 +3448,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((label).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
 
 	C.gtk_widget_remove_mnemonic_label(_arg0, _arg1)
 }
@@ -3624,7 +3620,7 @@ func (widget *Widget) SetFocusChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_widget_set_focus_child(_arg0, _arg1)
 }
@@ -3682,7 +3678,7 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
@@ -3792,7 +3788,7 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	var _arg1 *C.GtkLayoutManager // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkLayoutManager)(unsafe.Pointer((layoutManager).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkLayoutManager)(unsafe.Pointer(layoutManager.Native()))
 
 	C.gtk_widget_set_layout_manager(_arg0, _arg1)
 }
@@ -3923,7 +3919,7 @@ func (widget *Widget) SetParent(parent Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_widget_set_parent(_arg0, _arg1)
 }
@@ -4194,7 +4190,7 @@ func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 	var _arg2 *C.GtkSnapshot // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	C.gtk_widget_snapshot_child(_arg0, _arg1, _arg2)
@@ -4214,7 +4210,7 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX float64
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(srcWidget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((destWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
 	_arg2 = C.double(srcX)
 	_arg3 = C.double(srcY)
 

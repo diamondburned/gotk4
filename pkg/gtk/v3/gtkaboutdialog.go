@@ -173,8 +173,6 @@ type AboutDialog struct {
 	Dialog
 }
 
-var _ gextras.Nativer = (*AboutDialog)(nil)
-
 func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	return &AboutDialog{
 		Dialog: Dialog{
@@ -191,6 +189,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},

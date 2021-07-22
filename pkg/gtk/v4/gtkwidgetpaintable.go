@@ -47,8 +47,6 @@ type WidgetPaintable struct {
 	gdk.Paintable
 }
 
-var _ gextras.Nativer = (*WidgetPaintable)(nil)
-
 func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
 		Object: obj,
@@ -69,7 +67,7 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
@@ -102,7 +100,7 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget          // out
 
 	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

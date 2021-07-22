@@ -67,8 +67,6 @@ type Credentials struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Credentials)(nil)
-
 func wrapCredentials(obj *externglib.Object) *Credentials {
 	return &Credentials{
 		Object: obj,

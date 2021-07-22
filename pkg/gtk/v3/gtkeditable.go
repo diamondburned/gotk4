@@ -115,10 +115,10 @@ type Editable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Editable)(nil)
-
 // Editabler describes Editable's abstract methods.
 type Editabler interface {
+	gextras.Objector
+
 	// CopyClipboard copies the contents of the currently selected content in
 	// the editable and puts it on the clipboard.
 	CopyClipboard()

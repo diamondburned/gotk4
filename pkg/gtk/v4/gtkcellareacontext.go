@@ -87,8 +87,6 @@ type CellAreaContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*CellAreaContext)(nil)
-
 func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	return &CellAreaContext{
 		Object: obj,

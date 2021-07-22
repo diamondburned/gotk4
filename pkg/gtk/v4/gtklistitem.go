@@ -39,8 +39,6 @@ type ListItem struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ListItem)(nil)
-
 func wrapListItem(obj *externglib.Object) *ListItem {
 	return &ListItem{
 		Object: obj,
@@ -196,7 +194,7 @@ func (self *ListItem) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_list_item_set_child(_arg0, _arg1)
 }

@@ -150,10 +150,10 @@ type IMContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*IMContext)(nil)
-
 // IMContexter describes IMContext's abstract methods.
 type IMContexter interface {
+	gextras.Objector
+
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
@@ -368,7 +368,7 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg1 *C.GdkWindow    // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
 }

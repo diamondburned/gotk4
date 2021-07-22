@@ -98,8 +98,6 @@ type InfoBar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*InfoBar)(nil)
-
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
 		Widget: Widget{
@@ -115,6 +113,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -150,7 +149,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.int(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
@@ -187,7 +186,7 @@ func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_add_child(_arg0, _arg1)
 }
@@ -254,7 +253,7 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_remove_action_widget(_arg0, _arg1)
 }
@@ -265,7 +264,7 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_remove_child(_arg0, _arg1)
 }

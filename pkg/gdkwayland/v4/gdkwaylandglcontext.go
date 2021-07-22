@@ -27,8 +27,6 @@ type WaylandGLContext struct {
 	gdk.GLContext
 }
 
-var _ gextras.Nativer = (*WaylandGLContext)(nil)
-
 func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 	return &WaylandGLContext{
 		GLContext: gdk.GLContext{

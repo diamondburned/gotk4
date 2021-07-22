@@ -32,10 +32,10 @@ type ATContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ATContext)(nil)
-
 // ATContexter describes ATContext's abstract methods.
 type ATContexter interface {
+	gextras.Objector
+
 	// Accessible retrieves the GtkAccessible using this context.
 	Accessible() Accessibler
 	// AccessibleRole retrieves the accessible role of this context.
@@ -68,7 +68,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 	var _cret *C.GtkATContext     // in
 
 	_arg1 = C.GtkAccessibleRole(accessibleRole)
-	_arg2 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)

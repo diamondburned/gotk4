@@ -65,9 +65,8 @@ type FileFilter struct {
 	Filter
 
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileFilter)(nil)
 
 func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{
@@ -77,6 +76,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -124,12 +124,6 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileFilter) Native() uintptr {
-	return v.Filter.Object.Native()
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.

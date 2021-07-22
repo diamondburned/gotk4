@@ -38,10 +38,10 @@ type DTLSClientConnection struct {
 	DTLSConnection
 }
 
-var _ gextras.Nativer = (*DTLSClientConnection)(nil)
-
 // DTLSClientConnectioner describes DTLSClientConnection's abstract methods.
 type DTLSClientConnectioner interface {
+	gextras.Objector
+
 	// ServerIdentity gets conn's expected server identity
 	ServerIdentity() SocketConnectabler
 	// ValidationFlags gets conn's validation flags
@@ -115,7 +115,7 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	var _arg1 *C.GSocketConnectable    // out
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }
@@ -142,8 +142,8 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _cret *C.GDatagramBased     // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer((baseSocket).(gextras.Nativer).Native()))
-	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer((serverIdentity).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
+	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
 	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
 

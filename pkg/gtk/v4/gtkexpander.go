@@ -115,8 +115,6 @@ type Expander struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Expander)(nil)
-
 func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
 		Widget: Widget{
@@ -132,6 +130,7 @@ func wrapExpander(obj *externglib.Object) *Expander {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -318,7 +317,7 @@ func (expander *Expander) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_expander_set_child(_arg0, _arg1)
 }
@@ -361,7 +360,7 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }

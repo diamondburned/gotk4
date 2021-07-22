@@ -58,8 +58,6 @@ type CustomFilter struct {
 	Filter
 }
 
-var _ gextras.Nativer = (*CustomFilter)(nil)
-
 func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 	return &CustomFilter{
 		Filter: Filter{

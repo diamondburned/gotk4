@@ -105,8 +105,6 @@ type TextBuffer struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TextBuffer)(nil)
-
 func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 	return &TextBuffer{
 		Object: obj,
@@ -1263,7 +1261,7 @@ func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintabl
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gtk_text_buffer_insert_paintable(_arg0, _arg1, _arg2)
 }

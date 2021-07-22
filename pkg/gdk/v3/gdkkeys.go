@@ -192,8 +192,6 @@ type Keymap struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Keymap)(nil)
-
 func wrapKeymap(obj *externglib.Object) *Keymap {
 	return &Keymap{
 		Object: obj,

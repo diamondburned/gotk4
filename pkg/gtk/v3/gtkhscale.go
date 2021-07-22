@@ -35,8 +35,6 @@ type HScale struct {
 	Scale
 }
 
-var _ gextras.Nativer = (*HScale)(nil)
-
 func wrapHScale(obj *externglib.Object) *HScale {
 	return &HScale{
 		Scale: Scale{
@@ -51,10 +49,12 @@ func wrapHScale(obj *externglib.Object) *HScale {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

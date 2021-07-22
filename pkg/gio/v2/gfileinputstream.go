@@ -81,9 +81,8 @@ type FileInputStream struct {
 	InputStream
 
 	Seekable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileInputStream)(nil)
 
 func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 	return &FileInputStream{
@@ -93,6 +92,7 @@ func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 		Seekable: Seekable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -100,12 +100,6 @@ func marshalFileInputStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileInputStream(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileInputStream) Native() uintptr {
-	return v.InputStream.Object.Native()
 }
 
 // QueryInfo queries a file input stream the given attributes. This function
@@ -181,7 +175,7 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

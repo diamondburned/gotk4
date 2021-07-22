@@ -67,10 +67,10 @@ type FontMap struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FontMap)(nil)
-
 // FontMapper describes FontMap's abstract methods.
 type FontMapper interface {
+	gextras.Objector
+
 	// Changed forces a change in the context, which will cause any PangoContext
 	// using this fontmap to change.
 	Changed()

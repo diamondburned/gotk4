@@ -46,8 +46,6 @@ type NetworkAddress struct {
 	SocketConnectable
 }
 
-var _ gextras.Nativer = (*NetworkAddress)(nil)
-
 func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{
 		Object: obj,

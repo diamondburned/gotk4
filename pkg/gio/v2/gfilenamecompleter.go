@@ -46,8 +46,6 @@ type FilenameCompleter struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FilenameCompleter)(nil)
-
 func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 	return &FilenameCompleter{
 		Object: obj,

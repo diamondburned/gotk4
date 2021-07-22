@@ -511,8 +511,6 @@ type UnixMountMonitor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*UnixMountMonitor)(nil)
-
 func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	return &UnixMountMonitor{
 		Object: obj,

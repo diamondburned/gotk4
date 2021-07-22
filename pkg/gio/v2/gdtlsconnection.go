@@ -141,10 +141,10 @@ type DTLSConnection struct {
 	DatagramBased
 }
 
-var _ gextras.Nativer = (*DTLSConnection)(nil)
-
 // DTLSConnectioner describes DTLSConnection's abstract methods.
 type DTLSConnectioner interface {
+	gextras.Objector
+
 	// Close the DTLS connection.
 	Close(ctx context.Context) error
 	// CloseAsync: asynchronously close the DTLS connection.
@@ -297,7 +297,7 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_close_finish(_arg0, _arg1, &_cerr)
 
@@ -317,7 +317,7 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 	var _cret C.gboolean             // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((peerCert).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(peerCert.Native()))
 	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_dtls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
@@ -597,7 +597,7 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_handshake_finish(_arg0, _arg1, &_cerr)
 
@@ -661,7 +661,7 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg1 *C.GTlsCertificate // out
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	C.g_dtls_connection_set_certificate(_arg0, _arg1)
 }
@@ -678,7 +678,7 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg1 *C.GTlsDatabase    // out
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer((database).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
 
 	C.g_dtls_connection_set_database(_arg0, _arg1)
 }
@@ -833,7 +833,7 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_shutdown_finish(_arg0, _arg1, &_cerr)
 

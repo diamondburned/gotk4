@@ -38,8 +38,6 @@ type GesturePan struct {
 	GestureDrag
 }
 
-var _ gextras.Nativer = (*GesturePan)(nil)
-
 func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	return &GesturePan{
 		GestureDrag: GestureDrag{

@@ -131,8 +131,6 @@ type TextBuffer struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TextBuffer)(nil)
-
 func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
 	return &TextBuffer{
 		Object: obj,

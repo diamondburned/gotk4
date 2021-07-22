@@ -27,10 +27,10 @@ type Window struct {
 	ObjectClass
 }
 
-var _ gextras.Nativer = (*Window)(nil)
-
 // Windower describes Window's abstract methods.
 type Windower interface {
+	gextras.Objector
+
 	privateWindow()
 }
 

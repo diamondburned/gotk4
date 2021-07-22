@@ -26,8 +26,6 @@ type X11DisplayManager struct {
 	gdk.DisplayManager
 }
 
-var _ gextras.Nativer = (*X11DisplayManager)(nil)
-
 func wrapX11DisplayManager(obj *externglib.Object) *X11DisplayManager {
 	return &X11DisplayManager{
 		DisplayManager: gdk.DisplayManager{

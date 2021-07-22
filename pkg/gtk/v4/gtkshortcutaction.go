@@ -112,8 +112,6 @@ type ActivateAction struct {
 	ShortcutAction
 }
 
-var _ gextras.Nativer = (*ActivateAction)(nil)
-
 func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 	return &ActivateAction{
 		ShortcutAction: ShortcutAction{
@@ -150,8 +148,6 @@ func ActivateActionGet() *ActivateAction {
 type CallbackAction struct {
 	ShortcutAction
 }
-
-var _ gextras.Nativer = (*CallbackAction)(nil)
 
 func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 	return &CallbackAction{
@@ -195,8 +191,6 @@ type MnemonicAction struct {
 	ShortcutAction
 }
 
-var _ gextras.Nativer = (*MnemonicAction)(nil)
-
 func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 	return &MnemonicAction{
 		ShortcutAction: ShortcutAction{
@@ -233,8 +227,6 @@ func MnemonicActionGet() *MnemonicAction {
 type NamedAction struct {
 	ShortcutAction
 }
-
-var _ gextras.Nativer = (*NamedAction)(nil)
 
 func wrapNamedAction(obj *externglib.Object) *NamedAction {
 	return &NamedAction{
@@ -292,8 +284,6 @@ func (self *NamedAction) ActionName() string {
 type NothingAction struct {
 	ShortcutAction
 }
-
-var _ gextras.Nativer = (*NothingAction)(nil)
 
 func wrapNothingAction(obj *externglib.Object) *NothingAction {
 	return &NothingAction{
@@ -357,10 +347,10 @@ type ShortcutAction struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ShortcutAction)(nil)
-
 // ShortcutActioner describes ShortcutAction's abstract methods.
 type ShortcutActioner interface {
+	gextras.Objector
+
 	// Activate activates the action on the widget with the given args.
 	Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
@@ -429,7 +419,7 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GtkShortcutActionFlags(flags)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
@@ -470,8 +460,6 @@ func (self *ShortcutAction) String() string {
 type SignalAction struct {
 	ShortcutAction
 }
-
-var _ gextras.Nativer = (*SignalAction)(nil)
 
 func wrapSignalAction(obj *externglib.Object) *SignalAction {
 	return &SignalAction{

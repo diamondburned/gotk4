@@ -44,8 +44,6 @@ type SimpleProxyResolver struct {
 	ProxyResolver
 }
 
-var _ gextras.Nativer = (*SimpleProxyResolver)(nil)
-
 func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{
 		Object: obj,

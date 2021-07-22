@@ -50,7 +50,7 @@ func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 	fn := v.(FlowBoxCreateWidgetFunc)
 	widget := fn(item)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	return cret
 }
@@ -185,9 +185,8 @@ type FlowBox struct {
 	Container
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FlowBox)(nil)
 
 func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	return &FlowBox{
@@ -202,11 +201,13 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -227,12 +228,6 @@ func NewFlowBox() *FlowBox {
 	_flowBox = wrapFlowBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBox
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FlowBox) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BindModel binds model to box.
@@ -257,7 +252,7 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_FlowBoxCreateWidgetFunc)
 	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -456,7 +451,7 @@ func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
@@ -733,8 +728,6 @@ type FlowBoxChild struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*FlowBoxChild)(nil)
-
 func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{
 		Bin: Bin{
@@ -749,6 +742,7 @@ func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

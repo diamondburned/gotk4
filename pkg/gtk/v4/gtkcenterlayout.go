@@ -33,8 +33,6 @@ type CenterLayout struct {
 	LayoutManager
 }
 
-var _ gextras.Nativer = (*CenterLayout)(nil)
-
 func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 	return &CenterLayout{
 		LayoutManager: LayoutManager{
@@ -161,7 +159,7 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
@@ -174,7 +172,7 @@ func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
@@ -198,7 +196,7 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
 }

@@ -56,8 +56,6 @@ type LinkButton struct {
 	Button
 }
 
-var _ gextras.Nativer = (*LinkButton)(nil)
-
 func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{
 		Button: Button{
@@ -73,6 +71,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -87,11 +86,13 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

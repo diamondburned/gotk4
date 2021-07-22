@@ -165,8 +165,6 @@ type Pixbuf struct {
 	gio.LoadableIcon
 }
 
-var _ gextras.Nativer = (*Pixbuf)(nil)
-
 func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	return &Pixbuf{
 		Object: obj,
@@ -481,7 +479,7 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -529,7 +527,7 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gint(width)
 	_arg3 = C.gint(height)
 	if preserveAspectRatio {
@@ -554,7 +552,7 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
 
@@ -1342,7 +1340,7 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
@@ -1406,7 +1404,7 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{

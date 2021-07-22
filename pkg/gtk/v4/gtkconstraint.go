@@ -30,10 +30,10 @@ type ConstraintTarget struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ConstraintTarget)(nil)
-
 // ConstraintTargetter describes ConstraintTarget's abstract methods.
 type ConstraintTargetter interface {
+	gextras.Objector
+
 	privateConstraintTarget()
 }
 
@@ -71,8 +71,6 @@ type Constraint struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Constraint)(nil)
-
 func wrapConstraint(obj *externglib.Object) *Constraint {
 	return &Constraint{
 		Object: obj,
@@ -98,10 +96,10 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 	var _arg8 C.int                    // out
 	var _cret *C.GtkConstraint         // in
 
-	_arg1 = C.gpointer(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = C.GtkConstraintAttribute(targetAttribute)
 	_arg3 = C.GtkConstraintRelation(relation)
-	_arg4 = C.gpointer(unsafe.Pointer((source).(gextras.Nativer).Native()))
+	_arg4 = C.gpointer(unsafe.Pointer(source.Native()))
 	_arg5 = C.GtkConstraintAttribute(sourceAttribute)
 	_arg6 = C.double(multiplier)
 	_arg7 = C.double(constant)
@@ -126,7 +124,7 @@ func NewConstraintConstant(target ConstraintTargetter, targetAttribute Constrain
 	var _arg5 C.int                    // out
 	var _cret *C.GtkConstraint         // in
 
-	_arg1 = C.gpointer(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = C.GtkConstraintAttribute(targetAttribute)
 	_arg3 = C.GtkConstraintRelation(relation)
 	_arg4 = C.double(constant)

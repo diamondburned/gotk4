@@ -52,10 +52,10 @@ type PrintOperationPreview struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PrintOperationPreview)(nil)
-
 // PrintOperationPreviewer describes PrintOperationPreview's abstract methods.
 type PrintOperationPreviewer interface {
+	gextras.Objector
+
 	// EndPreview ends a preview.
 	EndPreview()
 	// IsSelected returns whether the given page is included in the set of pages

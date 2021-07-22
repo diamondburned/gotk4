@@ -33,8 +33,6 @@ type GestureLongPress struct {
 	GestureSingle
 }
 
-var _ gextras.Nativer = (*GestureLongPress)(nil)
-
 func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{
@@ -59,7 +57,7 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_long_press_new(_arg1)
 

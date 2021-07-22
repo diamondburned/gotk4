@@ -31,7 +31,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
@@ -103,10 +103,10 @@ type TreeDragDest struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeDragDest)(nil)
-
 // TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
+	gextras.Objector
+
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from value.
 	DragDataReceived(dest *TreePath, value *externglib.Value) bool
@@ -206,10 +206,10 @@ type TreeDragSource struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeDragSource)(nil)
-
 // TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
+	gextras.Objector
+
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.
 	DragDataDelete(path *TreePath) bool

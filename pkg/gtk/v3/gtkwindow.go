@@ -182,8 +182,6 @@ type Window struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*Window)(nil)
-
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Bin: Bin{
@@ -198,6 +196,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -326,7 +325,7 @@ func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = C.guint(keyval)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
 	C.gtk_window_add_mnemonic(_arg0, _arg1, _arg2)
 }
@@ -1548,7 +1547,7 @@ func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = C.guint(keyval)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(target.Native()))
 
 	C.gtk_window_remove_mnemonic(_arg0, _arg1, _arg2)
 }
@@ -1697,7 +1696,7 @@ func (window *Window) SetAttachedTo(attachWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((attachWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(attachWidget.Native()))
 
 	C.gtk_window_set_attached_to(_arg0, _arg1)
 }
@@ -1735,7 +1734,7 @@ func (window *Window) SetDefault(defaultWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((defaultWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
 
 	C.gtk_window_set_default(_arg0, _arg1)
 }
@@ -1850,7 +1849,7 @@ func (window *Window) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((focus).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_window_set_focus(_arg0, _arg1)
 }
@@ -1894,7 +1893,7 @@ func (window *Window) SetGeometryHints(geometryWidget Widgetter, geometry *gdk.G
 	var _arg3 C.GdkWindowHints // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((geometryWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(geometryWidget.Native()))
 	_arg2 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
 	_arg3 = C.GdkWindowHints(geomMask)
 
@@ -2344,7 +2343,7 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titlebar).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
 }

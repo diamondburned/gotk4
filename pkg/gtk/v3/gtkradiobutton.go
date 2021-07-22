@@ -96,8 +96,6 @@ type RadioButton struct {
 	CheckButton
 }
 
-var _ gextras.Nativer = (*RadioButton)(nil)
-
 func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	return &RadioButton{
 		CheckButton: CheckButton{
@@ -115,6 +113,7 @@ func wrapRadioButton(obj *externglib.Object) *RadioButton {
 								Buildable: Buildable{
 									Object: obj,
 								},
+								Object: obj,
 							},
 						},
 					},
@@ -129,11 +128,13 @@ func wrapRadioButton(obj *externglib.Object) *RadioButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 					Activatable: Activatable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

@@ -140,8 +140,6 @@ type PlacesSidebar struct {
 	ScrolledWindow
 }
 
-var _ gextras.Nativer = (*PlacesSidebar)(nil)
-
 func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	return &PlacesSidebar{
 		ScrolledWindow: ScrolledWindow{
@@ -157,6 +155,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -201,7 +200,7 @@ func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
 
 	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
 }
@@ -430,7 +429,7 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
 
 	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
 }
@@ -481,7 +480,7 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
 
 	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }

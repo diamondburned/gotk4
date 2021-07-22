@@ -88,9 +88,8 @@ type Window struct {
 
 	Root
 	ShortcutManager
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Window)(nil)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -107,6 +106,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Root: Root{
 			NativeSurface: NativeSurface{
@@ -123,12 +123,14 @@ func wrapWindow(obj *externglib.Object) *Window {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
 		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -159,12 +161,6 @@ func NewWindow() *Window {
 	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Window) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Close requests that the window is closed.
@@ -759,7 +755,7 @@ func (window *Window) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_window_set_child(_arg0, _arg1)
 }
@@ -832,7 +828,7 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((defaultWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
 
 	C.gtk_window_set_default_widget(_arg0, _arg1)
 }
@@ -903,7 +899,7 @@ func (window *Window) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((focus).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
 	C.gtk_window_set_focus(_arg0, _arg1)
 }
@@ -1071,7 +1067,7 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((titlebar).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
 }

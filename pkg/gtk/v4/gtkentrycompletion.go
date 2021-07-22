@@ -105,8 +105,6 @@ type EntryCompletion struct {
 	CellLayout
 }
 
-var _ gextras.Nativer = (*EntryCompletion)(nil)
-
 func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	return &EntryCompletion{
 		Object: obj,
@@ -147,7 +145,7 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_entry_completion_new_with_area(_arg1)
 
@@ -452,7 +450,7 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel       // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_entry_completion_set_model(_arg0, _arg1)
 }

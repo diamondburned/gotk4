@@ -114,8 +114,6 @@ type MessageDialog struct {
 	Dialog
 }
 
-var _ gextras.Nativer = (*MessageDialog)(nil)
-
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{
@@ -132,6 +130,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -192,7 +191,7 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }

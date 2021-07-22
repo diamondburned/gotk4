@@ -46,10 +46,10 @@ type Drop struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Drop)(nil)
-
 // Dropper describes Drop's abstract methods.
 type Dropper interface {
+	gextras.Objector
+
 	// Finish ends the drag operation after a drop.
 	Finish(action DragAction)
 	// Actions returns the possible actions for this GdkDrop.
@@ -276,7 +276,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -333,7 +333,7 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
 

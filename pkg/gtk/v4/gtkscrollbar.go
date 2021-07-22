@@ -65,9 +65,8 @@ type Scrollbar struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Scrollbar)(nil)
 
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
@@ -84,10 +83,12 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -113,12 +114,6 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	_scrollbar = wrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Scrollbar) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment returns the scrollbar's adjustment.

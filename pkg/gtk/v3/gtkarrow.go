@@ -46,8 +46,6 @@ type Arrow struct {
 	Misc
 }
 
-var _ gextras.Nativer = (*Arrow)(nil)
-
 func wrapArrow(obj *externglib.Object) *Arrow {
 	return &Arrow{
 		Misc: Misc{
@@ -61,6 +59,7 @@ func wrapArrow(obj *externglib.Object) *Arrow {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

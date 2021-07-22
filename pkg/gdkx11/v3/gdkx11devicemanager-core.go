@@ -26,8 +26,6 @@ type X11DeviceManagerCore struct {
 	gdk.DeviceManager
 }
 
-var _ gextras.Nativer = (*X11DeviceManagerCore)(nil)
-
 func wrapX11DeviceManagerCore(obj *externglib.Object) *X11DeviceManagerCore {
 	return &X11DeviceManagerCore{
 		DeviceManager: gdk.DeviceManager{

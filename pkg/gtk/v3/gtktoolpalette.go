@@ -123,9 +123,8 @@ type ToolPalette struct {
 
 	Orientable
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ToolPalette)(nil)
 
 func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 	return &ToolPalette{
@@ -140,6 +139,7 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Orientable: Orientable{
@@ -148,6 +148,7 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -170,12 +171,6 @@ func NewToolPalette() *ToolPalette {
 	return _toolPalette
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ToolPalette) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
-}
-
 // AddDragDest sets palette as drag source (see
 // gtk_tool_palette_set_drag_source()) and sets widget as a drag destination for
 // drags from palette. See gtk_drag_dest_set().
@@ -187,7 +182,7 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 	var _arg4 C.GdkDragAction             // out
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkDestDefaults(flags)
 	_arg3 = C.GtkToolPaletteDragTargets(targets)
 	_arg4 = C.GdkDragAction(actions)

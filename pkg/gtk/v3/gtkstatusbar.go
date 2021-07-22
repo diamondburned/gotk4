@@ -69,8 +69,6 @@ type Statusbar struct {
 	Box
 }
 
-var _ gextras.Nativer = (*Statusbar)(nil)
-
 func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
 		Box: Box{
@@ -85,11 +83,13 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

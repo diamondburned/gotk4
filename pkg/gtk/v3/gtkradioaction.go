@@ -37,8 +37,6 @@ type RadioAction struct {
 	ToggleAction
 }
 
-var _ gextras.Nativer = (*RadioAction)(nil)
-
 func wrapRadioAction(obj *externglib.Object) *RadioAction {
 	return &RadioAction{
 		ToggleAction: ToggleAction{

@@ -89,8 +89,6 @@ type Menu struct {
 	MenuShell
 }
 
-var _ gextras.Nativer = (*Menu)(nil)
-
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
 		MenuShell: MenuShell{
@@ -105,6 +103,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -144,7 +143,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_new_from_model(_arg1)
 
@@ -171,7 +170,7 @@ func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, top
 	var _arg5 C.guint      // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
@@ -358,7 +357,7 @@ func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_reorder_child(_arg0, _arg1, _arg2)
@@ -516,7 +515,7 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
 

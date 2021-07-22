@@ -55,8 +55,6 @@ type DropDown struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*DropDown)(nil)
-
 func wrapDropDown(obj *externglib.Object) *DropDown {
 	return &DropDown{
 		Widget: Widget{
@@ -72,6 +70,7 @@ func wrapDropDown(obj *externglib.Object) *DropDown {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -91,8 +90,8 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)
 
@@ -280,7 +279,7 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
 }
@@ -314,7 +313,7 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel  // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_drop_down_set_model(_arg0, _arg1)
 }

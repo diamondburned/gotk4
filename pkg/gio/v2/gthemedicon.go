@@ -43,8 +43,6 @@ type ThemedIcon struct {
 	Icon
 }
 
-var _ gextras.Nativer = (*ThemedIcon)(nil)
-
 func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	return &ThemedIcon{
 		Object: obj,

@@ -51,7 +51,7 @@ func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mime
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GType(typ)
@@ -68,7 +68,7 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 	var _arg2 *C.GValue       // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
@@ -96,8 +96,6 @@ type ContentDeserializer struct {
 
 	gio.AsyncResult
 }
-
-var _ gextras.Nativer = (*ContentDeserializer)(nil)
 
 func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	return &ContentDeserializer{

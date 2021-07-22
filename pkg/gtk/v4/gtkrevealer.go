@@ -109,8 +109,6 @@ type Revealer struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Revealer)(nil)
-
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Widget: Widget{
@@ -126,6 +124,7 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -248,7 +247,7 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }

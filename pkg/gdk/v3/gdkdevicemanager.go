@@ -129,10 +129,10 @@ type DeviceManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DeviceManager)(nil)
-
 // DeviceManagerer describes DeviceManager's abstract methods.
 type DeviceManagerer interface {
+	gextras.Objector
+
 	// ClientPointer returns the client pointer, that is, the master pointer
 	// that acts as the core pointer for this application.
 	ClientPointer() Devicer

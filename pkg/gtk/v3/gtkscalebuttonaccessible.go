@@ -28,9 +28,8 @@ type ScaleButtonAccessible struct {
 	ButtonAccessible
 
 	atk.Value
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ScaleButtonAccessible)(nil)
 
 func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 	return &ScaleButtonAccessible{
@@ -53,10 +52,12 @@ func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 			Image: atk.Image{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Value: atk.Value{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +65,6 @@ func marshalScaleButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScaleButtonAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ScaleButtonAccessible) Native() uintptr {
-	return v.ButtonAccessible.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ScaleButtonAccessible) privateScaleButtonAccessible() {}

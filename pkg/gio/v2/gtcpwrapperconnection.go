@@ -39,8 +39,6 @@ type TCPWrapperConnection struct {
 	TCPConnection
 }
 
-var _ gextras.Nativer = (*TCPWrapperConnection)(nil)
-
 func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{
 		TCPConnection: TCPConnection{
@@ -66,7 +64,7 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
 	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)

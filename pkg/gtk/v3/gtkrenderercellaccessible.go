@@ -28,8 +28,6 @@ type RendererCellAccessible struct {
 	CellAccessible
 }
 
-var _ gextras.Nativer = (*RendererCellAccessible)(nil)
-
 func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{
 		CellAccessible: CellAccessible{
@@ -49,6 +47,7 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 					Object: obj,
 				},
 			},
+			Object: obj,
 		},
 	}
 }
@@ -63,7 +62,7 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in
 
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
 

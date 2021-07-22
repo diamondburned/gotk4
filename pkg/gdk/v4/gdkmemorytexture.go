@@ -101,8 +101,6 @@ type MemoryTexture struct {
 	Texture
 }
 
-var _ gextras.Nativer = (*MemoryTexture)(nil)
-
 func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	return &MemoryTexture{
 		Texture: Texture{

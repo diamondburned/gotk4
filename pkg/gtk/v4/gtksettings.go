@@ -54,8 +54,6 @@ type Settings struct {
 	StyleProvider
 }
 
-var _ gextras.Nativer = (*Settings)(nil)
-
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{
 		Object: obj,

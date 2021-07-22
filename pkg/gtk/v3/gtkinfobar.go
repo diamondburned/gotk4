@@ -108,8 +108,6 @@ type InfoBar struct {
 	Box
 }
 
-var _ gextras.Nativer = (*InfoBar)(nil)
-
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
 		Box: Box{
@@ -124,11 +122,13 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -162,7 +162,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)

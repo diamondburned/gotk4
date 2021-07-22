@@ -62,8 +62,6 @@ type ThemingEngine struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ThemingEngine)(nil)
-
 func wrapThemingEngine(obj *externglib.Object) *ThemingEngine {
 	return &ThemingEngine{
 		Object: obj,

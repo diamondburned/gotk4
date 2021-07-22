@@ -39,8 +39,6 @@ type Video struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Video)(nil)
-
 func wrapVideo(obj *externglib.Object) *Video {
 	return &Video{
 		Widget: Widget{
@@ -56,6 +54,7 @@ func wrapVideo(obj *externglib.Object) *Video {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -84,7 +83,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_video_new_for_file(_arg1)
 
@@ -120,7 +119,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
 
@@ -239,7 +238,7 @@ func (self *Video) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile    // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_video_set_file(_arg0, _arg1)
 }
@@ -282,7 +281,7 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg1 *C.GtkMediaStream // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }

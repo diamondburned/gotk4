@@ -59,9 +59,8 @@ type CenterBox struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CenterBox)(nil)
 
 func wrapCenterBox(obj *externglib.Object) *CenterBox {
 	return &CenterBox{
@@ -78,10 +77,12 @@ func wrapCenterBox(obj *externglib.Object) *CenterBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -102,12 +103,6 @@ func NewCenterBox() *CenterBox {
 	_centerBox = wrapCenterBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _centerBox
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CenterBox) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BaselinePosition gets the value set by
@@ -199,7 +194,7 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
@@ -212,7 +207,7 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
@@ -225,7 +220,7 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }

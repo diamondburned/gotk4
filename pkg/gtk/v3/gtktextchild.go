@@ -30,8 +30,6 @@ type TextChildAnchor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TextChildAnchor)(nil)
-
 func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
 		Object: obj,

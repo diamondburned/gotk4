@@ -31,8 +31,6 @@ type RelationSet struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*RelationSet)(nil)
-
 func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	return &RelationSet{
 		Object: obj,

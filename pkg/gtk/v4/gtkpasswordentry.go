@@ -59,9 +59,8 @@ type PasswordEntry struct {
 	Widget
 
 	Editable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*PasswordEntry)(nil)
 
 func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 	return &PasswordEntry{
@@ -78,6 +77,7 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
@@ -93,8 +93,10 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -115,12 +117,6 @@ func NewPasswordEntry() *PasswordEntry {
 	_passwordEntry = wrapPasswordEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *PasswordEntry) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
@@ -165,7 +161,7 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel       // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }

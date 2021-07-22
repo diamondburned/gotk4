@@ -128,7 +128,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _cret C.gboolean   // in
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_cairo_should_draw_window(_arg1, _arg2)
 
@@ -155,8 +155,8 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 	var _arg3 *C.GdkWindow // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
-	_arg3 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_cairo_transform_to_window(_arg1, _arg2, _arg3)
 }
@@ -512,12 +512,13 @@ type Widget struct {
 
 	atk.ImplementorIface
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Widget)(nil)
 
 // Widgetter describes Widget's abstract methods.
 type Widgetter interface {
+	gextras.Objector
+
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
 	Activate() bool
@@ -1184,6 +1185,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -1191,12 +1193,6 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Widget) Native() uintptr {
-	return v.InitiallyUnowned.Object.Native()
 }
 
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)
@@ -1255,7 +1251,7 @@ func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) 
 	var _arg2 C.GdkEventMask // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.GdkEventMask(events)
 
 	C.gtk_widget_add_device_events(_arg0, _arg1, _arg2)
@@ -1284,7 +1280,7 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((label).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
 
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
 }
@@ -1525,7 +1521,7 @@ func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_device_is_shadowed(_arg0, _arg1)
 
@@ -1709,7 +1705,7 @@ func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.Dr
 	var _arg3 C.gboolean        // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((proxyWindow).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(proxyWindow.Native()))
 	_arg2 = C.GdkDragProtocol(protocol)
 	if useCoordinates {
 		_arg3 = C.TRUE
@@ -1853,7 +1849,7 @@ func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
 }
@@ -2353,7 +2349,7 @@ func (widget *Widget) DeviceEnabled(device gdk.Devicer) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_get_device_enabled(_arg0, _arg1)
 
@@ -2375,7 +2371,7 @@ func (widget *Widget) DeviceEvents(device gdk.Devicer) gdk.EventMask {
 	var _cret C.GdkEventMask // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_get_device_events(_arg0, _arg1)
 
@@ -4044,7 +4040,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
 }
@@ -4083,7 +4079,7 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((ancestor).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
 
 	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
 
@@ -4839,7 +4835,7 @@ func (widget *Widget) RegisterWindow(window gdk.Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_widget_register_window(_arg0, _arg1)
 }
@@ -4877,7 +4873,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((label).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(label.Native()))
 
 	C.gtk_widget_remove_mnemonic_label(_arg0, _arg1)
 }
@@ -4988,7 +4984,7 @@ func (widget *Widget) Reparent(newParent Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((newParent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(newParent.Native()))
 
 	C.gtk_widget_reparent(_arg0, _arg1)
 }
@@ -5196,7 +5192,7 @@ func (widget *Widget) SetDeviceEnabled(device gdk.Devicer, enabled bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	if enabled {
 		_arg2 = C.TRUE
 	}
@@ -5220,7 +5216,7 @@ func (widget *Widget) SetDeviceEvents(device gdk.Devicer, events gdk.EventMask) 
 	var _arg2 C.GdkEventMask // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.GdkEventMask(events)
 
 	C.gtk_widget_set_device_events(_arg0, _arg1, _arg2)
@@ -5327,7 +5323,7 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
@@ -5612,7 +5608,7 @@ func (widget *Widget) SetParent(parent Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_widget_set_parent(_arg0, _arg1)
 }
@@ -5628,7 +5624,7 @@ func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((parentWindow).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parentWindow.Native()))
 
 	C.gtk_widget_set_parent_window(_arg0, _arg1)
 }
@@ -5962,7 +5958,7 @@ func (widget *Widget) SetWindow(window gdk.Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_widget_set_window(_arg0, _arg1)
 }
@@ -6153,7 +6149,7 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, sr
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(srcWidget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((destWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(destWidget.Native()))
 	_arg2 = C.gint(srcX)
 	_arg3 = C.gint(srcY)
 
@@ -6223,7 +6219,7 @@ func (widget *Widget) UnregisterWindow(window gdk.Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_widget_unregister_window(_arg0, _arg1)
 }

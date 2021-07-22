@@ -46,9 +46,8 @@ type Range struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Range)(nil)
 
 func wrapRange(obj *externglib.Object) *Range {
 	return &Range{
@@ -65,10 +64,12 @@ func wrapRange(obj *externglib.Object) *Range {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -76,12 +77,6 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRange(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Range) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Adjustment: get the adjustment which is the “model” object for GtkRange.

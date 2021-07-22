@@ -59,8 +59,6 @@ type LockButton struct {
 	Button
 }
 
-var _ gextras.Nativer = (*LockButton)(nil)
-
 func wrapLockButton(obj *externglib.Object) *LockButton {
 	return &LockButton{
 		Button: Button{
@@ -76,6 +74,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -90,11 +89,13 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -110,7 +111,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GPermission)(unsafe.Pointer((permission).(gextras.Nativer).Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
@@ -143,7 +144,7 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg1 *C.GPermission   // out
 
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GPermission)(unsafe.Pointer((permission).(gextras.Nativer).Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }

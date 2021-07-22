@@ -37,8 +37,6 @@ type DrawingContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DrawingContext)(nil)
-
 func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
 	return &DrawingContext{
 		Object: obj,

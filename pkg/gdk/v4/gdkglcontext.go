@@ -76,10 +76,10 @@ type GLContext struct {
 	DrawContext
 }
 
-var _ gextras.Nativer = (*GLContext)(nil)
-
 // GLContexter describes GLContext's abstract methods.
 type GLContexter interface {
+	gextras.Objector
+
 	// DebugEnabled retrieves whether the context is doing extra validations and
 	// runtime checking.
 	DebugEnabled() bool

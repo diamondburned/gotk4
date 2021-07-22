@@ -66,9 +66,8 @@ type ProgressBar struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ProgressBar)(nil)
 
 func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	return &ProgressBar{
@@ -82,10 +81,12 @@ func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -106,12 +107,6 @@ func NewProgressBar() *ProgressBar {
 	_progressBar = wrapProgressBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ProgressBar) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar. See

@@ -75,8 +75,6 @@ type ComboBoxText struct {
 	ComboBox
 }
 
-var _ gextras.Nativer = (*ComboBoxText)(nil)
-
 func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 	return &ComboBoxText{
 		ComboBox: ComboBox{
@@ -92,6 +90,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -106,11 +105,13 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			CellLayout: CellLayout{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

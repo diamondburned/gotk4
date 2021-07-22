@@ -146,10 +146,10 @@ type Action struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Action)(nil)
-
 // Actioner describes Action's abstract methods.
 type Actioner interface {
+	gextras.Objector
+
 	// Activate activates the action.
 	Activate(parameter *glib.Variant)
 	// ChangeState: request for the state of action to be changed to value.

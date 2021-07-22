@@ -78,9 +78,8 @@ type Button struct {
 
 	Actionable
 	Activatable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Button)(nil)
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
@@ -96,6 +95,7 @@ func wrapButton(obj *externglib.Object) *Button {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -110,11 +110,13 @@ func wrapButton(obj *externglib.Object) *Button {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Activatable: Activatable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -227,12 +229,6 @@ func NewButtonWithMnemonic(label string) *Button {
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Button) Native() uintptr {
-	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Clicked emits a Button::clicked signal to the given Button.
@@ -536,7 +532,7 @@ func (button *Button) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_button_set_image(_arg0, _arg1)
 }

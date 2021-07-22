@@ -36,8 +36,6 @@ type CellRendererSpinner struct {
 	CellRenderer
 }
 
-var _ gextras.Nativer = (*CellRendererSpinner)(nil)
-
 func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 	return &CellRendererSpinner{
 		CellRenderer: CellRenderer{

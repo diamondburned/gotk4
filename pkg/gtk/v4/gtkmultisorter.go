@@ -31,9 +31,8 @@ type MultiSorter struct {
 
 	gio.ListModel
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MultiSorter)(nil)
 
 func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	return &MultiSorter{
@@ -46,6 +45,7 @@ func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -70,12 +70,6 @@ func NewMultiSorter() *MultiSorter {
 	_multiSorter = wrapMultiSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *MultiSorter) Native() uintptr {
-	return v.Sorter.Object.Native()
 }
 
 // Append: add sorter to self to use for sorting at the end.

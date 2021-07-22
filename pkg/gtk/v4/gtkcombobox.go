@@ -96,9 +96,8 @@ type ComboBox struct {
 
 	CellEditable
 	CellLayout
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ComboBox)(nil)
 
 func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{
@@ -115,6 +114,7 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		CellEditable: CellEditable{
 			Widget: Widget{
@@ -130,11 +130,13 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		CellLayout: CellLayout{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -175,7 +177,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_combo_box_new_with_model(_arg1)
 
@@ -192,7 +194,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
 
@@ -201,12 +203,6 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ComboBox) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active returns the index of the currently active item.
@@ -434,7 +430,7 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 	var _arg1 *C.GdkDevice   // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
 }
@@ -509,7 +505,7 @@ func (comboBox *ComboBox) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_combo_box_set_child(_arg0, _arg1)
 }
@@ -559,7 +555,7 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }

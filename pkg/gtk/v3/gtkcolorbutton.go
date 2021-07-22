@@ -46,9 +46,8 @@ type ColorButton struct {
 	Button
 
 	ColorChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ColorButton)(nil)
 
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
@@ -65,6 +64,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -79,15 +79,18 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -147,12 +150,6 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ColorButton) Native() uintptr {
-	return v.Button.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Alpha returns the current alpha value.

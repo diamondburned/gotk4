@@ -63,10 +63,10 @@ type ColorChooser struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ColorChooser)(nil)
-
 // ColorChooserer describes ColorChooser's abstract methods.
 type ColorChooserer interface {
+	gextras.Objector
+
 	// AddPalette adds a palette to the color chooser.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	// RGBA gets the currently-selected color.

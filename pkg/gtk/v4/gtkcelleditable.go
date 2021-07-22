@@ -55,10 +55,10 @@ type CellEditable struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*CellEditable)(nil)
-
 // CellEditabler describes CellEditable's abstract methods.
 type CellEditabler interface {
+	gextras.Objector
+
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
@@ -84,6 +84,7 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -127,7 +128,7 @@ func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	var _arg1 *C.GdkEvent        // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 }

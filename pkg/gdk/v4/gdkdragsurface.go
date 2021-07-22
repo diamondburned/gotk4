@@ -26,10 +26,10 @@ type DragSurface struct {
 	Surface
 }
 
-var _ gextras.Nativer = (*DragSurface)(nil)
-
 // DragSurfacer describes DragSurface's abstract methods.
 type DragSurfacer interface {
+	gextras.Objector
+
 	// Present drag_surface.
 	Present(width int, height int) bool
 }

@@ -34,8 +34,6 @@ type Invisible struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Invisible)(nil)
-
 func wrapInvisible(obj *externglib.Object) *Invisible {
 	return &Invisible{
 		Widget: Widget{
@@ -48,6 +46,7 @@ func wrapInvisible(obj *externglib.Object) *Invisible {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

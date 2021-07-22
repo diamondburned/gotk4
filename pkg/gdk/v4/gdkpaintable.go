@@ -187,10 +187,10 @@ type Paintable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Paintable)(nil)
-
 // Paintabler describes Paintable's abstract methods.
 type Paintabler interface {
+	gextras.Objector
+
 	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
@@ -440,7 +440,7 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	var _arg3 C.double        // out
 
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer((snapshot).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg2 = C.double(width)
 	_arg3 = C.double(height)
 

@@ -35,8 +35,6 @@ type VScale struct {
 	Scale
 }
 
-var _ gextras.Nativer = (*VScale)(nil)
-
 func wrapVScale(obj *externglib.Object) *VScale {
 	return &VScale{
 		Scale: Scale{
@@ -51,10 +49,12 @@ func wrapVScale(obj *externglib.Object) *VScale {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

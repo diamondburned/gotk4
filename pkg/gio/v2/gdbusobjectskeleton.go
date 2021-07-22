@@ -50,8 +50,6 @@ type DBusObjectSkeleton struct {
 	DBusObject
 }
 
-var _ gextras.Nativer = (*DBusObjectSkeleton)(nil)
-
 func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	return &DBusObjectSkeleton{
 		Object: obj,
@@ -96,7 +94,7 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((interface_).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
@@ -117,7 +115,7 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer((interface_).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }

@@ -126,8 +126,6 @@ type FileEnumerator struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileEnumerator)(nil)
-
 func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{
 		Object: obj,
@@ -210,7 +208,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 
@@ -443,7 +441,7 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
 

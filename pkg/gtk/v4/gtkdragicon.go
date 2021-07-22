@@ -37,9 +37,8 @@ type DragIcon struct {
 	Widget
 
 	Root
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*DragIcon)(nil)
 
 func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	return &DragIcon{
@@ -56,6 +55,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Root: Root{
 			NativeSurface: NativeSurface{
@@ -72,9 +72,11 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -82,12 +84,6 @@ func marshalDragIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDragIcon(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *DragIcon) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the widget currently used as drag icon.
@@ -112,7 +108,7 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }
@@ -148,7 +144,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer((drag).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
 
@@ -170,8 +166,8 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX i
 	var _arg3 C.int           // out
 	var _arg4 C.int           // out
 
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer((drag).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 	_arg3 = C.int(hotX)
 	_arg4 = C.int(hotY)
 

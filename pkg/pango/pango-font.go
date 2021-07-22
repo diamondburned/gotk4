@@ -334,10 +334,10 @@ type Font struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Font)(nil)
-
 // Fonter describes Font's abstract methods.
 type Fonter interface {
+	gextras.Objector
+
 	// Describe returns a description of the font, with font size set in points.
 	Describe() *FontDescription
 	// DescribeWithAbsoluteSize returns a description of the font, with absolute
@@ -590,10 +590,10 @@ type FontFace struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FontFace)(nil)
-
 // FontFacer describes FontFace's abstract methods.
 type FontFacer interface {
+	gextras.Objector
+
 	// Describe returns the family, style, variant, weight and stretch of a
 	// PangoFontFace.
 	Describe() *FontDescription
@@ -768,10 +768,10 @@ type FontFamily struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FontFamily)(nil)
-
 // FontFamilier describes FontFamily's abstract methods.
 type FontFamilier interface {
+	gextras.Objector
+
 	// Face gets the PangoFontFace of family with the given name.
 	Face(name string) FontFacer
 	// Name gets the name of the family.

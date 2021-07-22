@@ -73,10 +73,10 @@ type RenderNode struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*RenderNode)(nil)
-
 // RenderNoder describes RenderNode's abstract methods.
 type RenderNoder interface {
+	gextras.Objector
+
 	// Draw the contents of node to the given cairo context.
 	Draw(cr *cairo.Context)
 	// Bounds retrieves the boundaries of the node.

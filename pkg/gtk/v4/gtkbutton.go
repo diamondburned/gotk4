@@ -65,9 +65,8 @@ type Button struct {
 	Widget
 
 	Actionable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Button)(nil)
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
@@ -84,6 +83,7 @@ func wrapButton(obj *externglib.Object) *Button {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Widget: Widget{
@@ -99,8 +99,10 @@ func wrapButton(obj *externglib.Object) *Button {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -185,12 +187,6 @@ func NewButtonWithMnemonic(label string) *Button {
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Button) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Child gets the child widget of button.
@@ -293,7 +289,7 @@ func (button *Button) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_button_set_child(_arg0, _arg1)
 }

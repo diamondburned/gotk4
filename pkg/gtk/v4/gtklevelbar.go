@@ -121,9 +121,8 @@ type LevelBar struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*LevelBar)(nil)
 
 func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{
@@ -140,10 +139,12 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -182,12 +183,6 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	_levelBar = wrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *LevelBar) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AddOffsetValue adds a new offset marker on self at the position specified by

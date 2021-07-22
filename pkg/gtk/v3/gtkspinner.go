@@ -40,8 +40,6 @@ type Spinner struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Spinner)(nil)
-
 func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{
 		Widget: Widget{
@@ -54,6 +52,7 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

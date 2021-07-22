@@ -38,8 +38,6 @@ type ZlibCompressor struct {
 	Converter
 }
 
-var _ gextras.Nativer = (*ZlibCompressor)(nil)
-
 func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	return &ZlibCompressor{
 		Object: obj,

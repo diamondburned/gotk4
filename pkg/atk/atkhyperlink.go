@@ -109,8 +109,6 @@ type Hyperlink struct {
 	Action
 }
 
-var _ gextras.Nativer = (*Hyperlink)(nil)
-
 func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 	return &Hyperlink{
 		Object: obj,

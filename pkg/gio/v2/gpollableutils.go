@@ -107,7 +107,7 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
@@ -150,7 +150,7 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
@@ -200,7 +200,7 @@ func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer [
 		defer runtime.KeepAlive(cancellable)
 		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))

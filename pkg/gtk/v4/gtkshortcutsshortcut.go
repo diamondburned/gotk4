@@ -101,8 +101,6 @@ type ShortcutsShortcut struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*ShortcutsShortcut)(nil)
-
 func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
 		Widget: Widget{
@@ -118,6 +116,7 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

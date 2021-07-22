@@ -37,8 +37,6 @@ type CellRendererCombo struct {
 	CellRendererText
 }
 
-var _ gextras.Nativer = (*CellRendererCombo)(nil)
-
 func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 	return &CellRendererCombo{
 		CellRendererText: CellRendererText{

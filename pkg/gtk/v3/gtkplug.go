@@ -53,8 +53,6 @@ type Plug struct {
 	Window
 }
 
-var _ gextras.Nativer = (*Plug)(nil)
-
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
 		Window: Window{
@@ -70,6 +68,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},

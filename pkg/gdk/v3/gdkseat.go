@@ -114,10 +114,10 @@ type Seat struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Seat)(nil)
-
 // Seater describes Seat's abstract methods.
 type Seater interface {
+	gextras.Objector
+
 	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
 	// Display returns the Display this seat belongs to.

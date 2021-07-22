@@ -42,8 +42,6 @@ type SeparatorToolItem struct {
 	ToolItem
 }
 
-var _ gextras.Nativer = (*SeparatorToolItem)(nil)
-
 func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{
 		ToolItem: ToolItem{
@@ -59,12 +57,14 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

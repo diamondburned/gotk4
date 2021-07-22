@@ -71,8 +71,6 @@ type Calendar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Calendar)(nil)
-
 func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
 		Widget: Widget{
@@ -88,6 +86,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

@@ -130,8 +130,6 @@ type GLShader struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*GLShader)(nil)
-
 func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{
 		Object: obj,
@@ -178,7 +176,7 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = (*C.GskRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.gsk_gl_shader_compile(_arg0, _arg1, &_cerr)
 

@@ -38,8 +38,6 @@ type CellRendererPixbuf struct {
 	CellRenderer
 }
 
-var _ gextras.Nativer = (*CellRendererPixbuf)(nil)
-
 func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	return &CellRendererPixbuf{
 		CellRenderer: CellRenderer{

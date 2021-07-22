@@ -37,10 +37,10 @@ type Surface struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Surface)(nil)
-
 // Surfacer describes Surface's abstract methods.
 type Surfacer interface {
+	gextras.Objector
+
 	// Beep emits a short beep associated to surface.
 	Beep()
 	// CreateCairoContext creates a new GdkCairoContext for rendering on
@@ -119,7 +119,7 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 	var _arg2 C.gboolean    // out
 	var _cret *C.GdkSurface // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 	if autohide {
 		_arg2 = C.TRUE
 	}
@@ -292,7 +292,7 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _cret *C.GdkCursor  // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_cursor(_arg0, _arg1)
 
@@ -316,7 +316,7 @@ func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, ma
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
@@ -541,7 +541,7 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 	var _arg2 *C.GdkCursor  // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)

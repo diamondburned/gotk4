@@ -217,10 +217,10 @@ type Toplevel struct {
 	Surface
 }
 
-var _ gextras.Nativer = (*Toplevel)(nil)
-
 // Topleveller describes Toplevel's abstract methods.
 type Topleveller interface {
+	gextras.Objector
+
 	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
@@ -291,7 +291,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y flo
 	var _arg5 C.guint32      // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg2 = C.int(button)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -314,7 +314,7 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = C.GdkSurfaceEdge(edge)
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg3 = C.int(button)
 	_arg4 = C.double(x)
 	_arg5 = C.double(y)
@@ -379,7 +379,7 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg1 *C.GdkEvent    // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
 }
@@ -505,7 +505,7 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	for i := len(surfaces) - 1; i >= 0; i-- {
 		src := surfaces[i]
 		var dst *C.GdkTexture // out
-		dst = (*C.GdkTexture)(unsafe.Pointer((src).(gextras.Nativer).Native()))
+		dst = (*C.GdkTexture)(unsafe.Pointer(src.Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
@@ -574,7 +574,7 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg1 *C.GdkSurface  // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 
 	C.gdk_toplevel_set_transient_for(_arg0, _arg1)
 }
@@ -591,7 +591,7 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 

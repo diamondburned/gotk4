@@ -1023,10 +1023,10 @@ type File struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*File)(nil)
-
 // Filer describes File's abstract methods.
 type Filer interface {
+	gextras.Objector
+
 	// AppendTo gets an output stream for appending data to the file.
 	AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
 	// AppendToAsync: asynchronously opens file for appending.
@@ -1418,7 +1418,7 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
 
@@ -1522,7 +1522,7 @@ func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyF
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer((destination).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
 	_arg5 = C.gpointer(gbox.Assign(progressCallback))
@@ -1557,7 +1557,7 @@ func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer((destination).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 
 	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -1576,7 +1576,7 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
 
@@ -1668,7 +1668,7 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
 
@@ -1766,7 +1766,7 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -1850,7 +1850,7 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
 
@@ -1925,7 +1925,7 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -1974,7 +1974,7 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -2077,7 +2077,7 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
 
@@ -2102,7 +2102,7 @@ func (file1 *File) Equal(file2 Filer) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file1.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
 
 	_cret = C.g_file_equal(_arg0, _arg1)
 
@@ -2184,7 +2184,7 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
 
@@ -2356,7 +2356,7 @@ func (parent *File) RelativePath(descendant Filer) string {
 	var _cret *C.char  // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((descendant).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
 
@@ -2425,7 +2425,7 @@ func (file *File) HasParent(parent Filer) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
 
@@ -2456,7 +2456,7 @@ func (file *File) HasPrefix(prefix Filer) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((prefix).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
 
@@ -2648,7 +2648,7 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -2679,7 +2679,7 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -2761,7 +2761,7 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
 
@@ -2848,7 +2848,7 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
@@ -3014,7 +3014,7 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(location.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
 
@@ -3069,7 +3069,7 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -3130,7 +3130,7 @@ func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyF
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer((destination).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
 	_arg5 = C.gpointer(gbox.Assign(progressCallback))
@@ -3218,7 +3218,7 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -3289,7 +3289,7 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -3360,7 +3360,7 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
 
@@ -3537,7 +3537,7 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
 
@@ -3648,7 +3648,7 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
 
@@ -3805,7 +3805,7 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
 
@@ -4042,7 +4042,7 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -4065,7 +4065,7 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
 
@@ -4167,7 +4167,7 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
 
@@ -4487,7 +4487,7 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -4617,7 +4617,7 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
 
@@ -4673,7 +4673,7 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -4725,7 +4725,7 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -4817,7 +4817,7 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
 
@@ -4871,7 +4871,7 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
 
@@ -4923,7 +4923,7 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 

@@ -52,8 +52,6 @@ type ImageMenuItem struct {
 	MenuItem
 }
 
-var _ gextras.Nativer = (*ImageMenuItem)(nil)
-
 func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	return &ImageMenuItem{
 		MenuItem: MenuItem{
@@ -69,6 +67,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -83,11 +82,13 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -291,7 +292,7 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }

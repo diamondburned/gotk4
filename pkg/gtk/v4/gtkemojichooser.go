@@ -50,8 +50,6 @@ type EmojiChooser struct {
 	Popover
 }
 
-var _ gextras.Nativer = (*EmojiChooser)(nil)
-
 func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 	return &EmojiChooser{
 		Popover: Popover{
@@ -68,6 +66,7 @@ func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			NativeSurface: NativeSurface{
 				Widget: Widget{
@@ -83,11 +82,13 @@ func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 					ConstraintTarget: ConstraintTarget{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

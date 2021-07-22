@@ -56,8 +56,6 @@ type Label struct {
 	Misc
 }
 
-var _ gextras.Nativer = (*Label)(nil)
-
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
 		Misc: Misc{
@@ -71,6 +69,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -800,7 +799,7 @@ func (label *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_label_set_mnemonic_widget(_arg0, _arg1)
 }

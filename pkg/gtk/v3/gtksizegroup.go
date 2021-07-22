@@ -92,8 +92,6 @@ type SizeGroup struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*SizeGroup)(nil)
-
 func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{
 		Object: obj,
@@ -138,7 +136,7 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
 }
@@ -190,7 +188,7 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }

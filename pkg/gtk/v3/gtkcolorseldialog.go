@@ -28,8 +28,6 @@ type ColorSelectionDialog struct {
 	Dialog
 }
 
-var _ gextras.Nativer = (*ColorSelectionDialog)(nil)
-
 func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 	return &ColorSelectionDialog{
 		Dialog: Dialog{
@@ -46,6 +44,7 @@ func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},

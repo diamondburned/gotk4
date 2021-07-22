@@ -57,8 +57,6 @@ type Cursor struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Cursor)(nil)
-
 func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
 		Object: obj,
@@ -122,7 +120,7 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 	var _arg4 *C.GdkCursor  // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg2 = C.int(hotspotX)
 	_arg3 = C.int(hotspotY)
 	_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))

@@ -65,8 +65,6 @@ type Fixed struct {
 	Container
 }
 
-var _ gextras.Nativer = (*Fixed)(nil)
-
 func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{
 		Container: Container{
@@ -80,6 +78,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -112,7 +111,7 @@ func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -127,7 +126,7 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

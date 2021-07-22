@@ -555,10 +555,10 @@ type Text struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Text)(nil)
-
 // Texter describes Text's abstract methods.
 type Texter interface {
+	gextras.Objector
+
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.

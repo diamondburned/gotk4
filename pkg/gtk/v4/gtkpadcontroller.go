@@ -103,8 +103,6 @@ type PadController struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*PadController)(nil)
-
 func wrapPadController(obj *externglib.Object) *PadController {
 	return &PadController{
 		EventController: EventController{
@@ -138,8 +136,8 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg2 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((pad).(gextras.Nativer).Native()))
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
 

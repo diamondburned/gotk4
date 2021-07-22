@@ -65,8 +65,6 @@ type Tooltip struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Tooltip)(nil)
-
 func wrapTooltip(obj *externglib.Object) *Tooltip {
 	return &Tooltip{
 		Object: obj,
@@ -88,7 +86,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((customWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
 }
@@ -114,7 +112,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((gicon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)

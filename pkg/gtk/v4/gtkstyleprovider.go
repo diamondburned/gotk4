@@ -32,10 +32,10 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StyleProvider)(nil)
-
 // StyleProviderer describes StyleProvider's abstract methods.
 type StyleProviderer interface {
+	gextras.Objector
+
 	privateStyleProvider()
 }
 

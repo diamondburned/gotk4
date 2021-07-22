@@ -38,8 +38,6 @@ type ZlibDecompressor struct {
 	Converter
 }
 
-var _ gextras.Nativer = (*ZlibDecompressor)(nil)
-
 func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	return &ZlibDecompressor{
 		Object: obj,

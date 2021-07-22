@@ -30,8 +30,6 @@ type VolumeButton struct {
 	ScaleButton
 }
 
-var _ gextras.Nativer = (*VolumeButton)(nil)
-
 func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{
@@ -48,6 +46,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -62,15 +61,18 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

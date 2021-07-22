@@ -102,9 +102,8 @@ type FileIOStream struct {
 	IOStream
 
 	Seekable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileIOStream)(nil)
 
 func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 	return &FileIOStream{
@@ -114,6 +113,7 @@ func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 		Seekable: Seekable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -121,12 +121,6 @@ func marshalFileIOStreamer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileIOStream(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileIOStream) Native() uintptr {
-	return v.IOStream.Object.Native()
 }
 
 // Etag gets the entity tag for the file when it has been written. This must be
@@ -228,7 +222,7 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 

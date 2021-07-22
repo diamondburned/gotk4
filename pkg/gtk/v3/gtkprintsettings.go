@@ -65,8 +65,6 @@ type PrintSettings struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PrintSettings)(nil)
-
 func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
 	return &PrintSettings{
 		Object: obj,

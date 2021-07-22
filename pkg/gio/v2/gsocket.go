@@ -92,8 +92,6 @@ type Socket struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*Socket)(nil)
-
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Object: obj,
@@ -238,7 +236,7 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	if allowReuse {
 		_arg2 = C.TRUE
 	}
@@ -442,7 +440,7 @@ func (socket *Socket) ConnectSocketter(ctx context.Context, address SocketAddres
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	C.g_socket_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1202,7 +1200,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 		defer runtime.KeepAlive(cancellable)
 		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg3 = (C.gint)(len(vectors))
 	if len(vectors) > 0 {
 		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
@@ -1213,7 +1211,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	{
 		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {
-			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer((messages[i]).(gextras.Nativer).Native()))
+			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
 	}
 	_arg6 = C.gint(flags)
@@ -1256,7 +1254,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 		defer runtime.KeepAlive(cancellable)
 		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg3 = (C.gint)(len(vectors))
 	if len(vectors) > 0 {
 		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
@@ -1267,7 +1265,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	{
 		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {
-			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer((messages[i]).(gextras.Nativer).Native()))
+			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
 	}
 	_arg6 = C.gint(flags)
@@ -1370,7 +1368,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))

@@ -41,8 +41,6 @@ type CellRendererText struct {
 	CellRenderer
 }
 
-var _ gextras.Nativer = (*CellRendererText)(nil)
-
 func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 	return &CellRendererText{
 		CellRenderer: CellRenderer{

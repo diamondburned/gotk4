@@ -197,8 +197,6 @@ type Stack struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Stack)(nil)
-
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
 		Widget: Widget{
@@ -214,6 +212,7 @@ func wrapStack(obj *externglib.Object) *Stack {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -244,7 +243,7 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_stack_add_child(_arg0, _arg1)
 
@@ -265,7 +264,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -290,7 +289,7 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(title)))
@@ -370,7 +369,7 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 	var _cret *C.GtkStackPage // in
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_stack_get_page(_arg0, _arg1)
 
@@ -513,7 +512,7 @@ func (stack *Stack) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_remove(_arg0, _arg1)
 }
@@ -612,7 +611,7 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
 }
@@ -658,8 +657,6 @@ type StackPage struct {
 
 	Accessible
 }
-
-var _ gextras.Nativer = (*StackPage)(nil)
 
 func wrapStackPage(obj *externglib.Object) *StackPage {
 	return &StackPage{

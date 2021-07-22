@@ -28,8 +28,6 @@ type CheckMenuItemAccessible struct {
 	MenuItemAccessible
 }
 
-var _ gextras.Nativer = (*CheckMenuItemAccessible)(nil)
-
 func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{
 		MenuItemAccessible: MenuItemAccessible{
@@ -51,6 +49,7 @@ func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessibl
 			Selection: atk.Selection{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

@@ -43,8 +43,6 @@ type EmblemedIcon struct {
 	Icon
 }
 
-var _ gextras.Nativer = (*EmblemedIcon)(nil)
-
 func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	return &EmblemedIcon{
 		Object: obj,
@@ -66,7 +64,7 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)

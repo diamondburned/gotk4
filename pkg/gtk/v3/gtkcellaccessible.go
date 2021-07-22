@@ -38,9 +38,8 @@ type CellAccessible struct {
 	atk.Action
 	atk.Component
 	atk.TableCell
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CellAccessible)(nil)
 
 func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 	return &CellAccessible{
@@ -60,6 +59,7 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -67,12 +67,6 @@ func marshalCellAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CellAccessible) Native() uintptr {
-	return v.Accessible.ObjectClass.Object.Native()
 }
 
 func (*CellAccessible) privateCellAccessible() {}

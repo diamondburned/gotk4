@@ -113,8 +113,6 @@ type IconPaintable struct {
 	gdk.Paintable
 }
 
-var _ gextras.Nativer = (*IconPaintable)(nil)
-
 func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
 	return &IconPaintable{
 		Object: obj,
@@ -140,7 +138,7 @@ func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable
 	var _arg3 C.int               // out
 	var _cret *C.GtkIconPaintable // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg2 = C.int(size)
 	_arg3 = C.int(scale)
 
@@ -252,8 +250,6 @@ func (self *IconPaintable) IsSymbolic() bool {
 type IconTheme struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*IconTheme)(nil)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{
@@ -490,7 +486,7 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((gicon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
 
 	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
 
@@ -538,7 +534,7 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, dire
 	var _cret *C.GtkIconPaintable  // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg2 = C.int(size)
 	_arg3 = C.int(scale)
 	_arg4 = C.GtkTextDirection(direction)

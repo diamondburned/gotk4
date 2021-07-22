@@ -89,9 +89,8 @@ type Text struct {
 	Widget
 
 	Editable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Text)(nil)
 
 func wrapText(obj *externglib.Object) *Text {
 	return &Text{
@@ -108,6 +107,7 @@ func wrapText(obj *externglib.Object) *Text {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
@@ -123,8 +123,10 @@ func wrapText(obj *externglib.Object) *Text {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -161,12 +163,6 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	_text = wrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Text) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // ActivatesDefault retrieves the value set by gtk_text_set_activates_default().
@@ -545,7 +541,7 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_text_set_extra_menu(_arg0, _arg1)
 }

@@ -86,9 +86,8 @@ type CheckButton struct {
 	Widget
 
 	Actionable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CheckButton)(nil)
 
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
@@ -105,6 +104,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Widget: Widget{
@@ -120,8 +120,10 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -177,12 +179,6 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CheckButton) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active returns whether the check button is active.

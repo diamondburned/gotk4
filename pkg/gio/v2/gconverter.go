@@ -133,10 +133,10 @@ type Converter struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Converter)(nil)
-
 // Converterer describes Converter's abstract methods.
 type Converterer interface {
+	gextras.Objector
+
 	// Convert: this is the main operation used when converting data.
 	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
 	// Reset resets all internal state in the converter, making it behave as if

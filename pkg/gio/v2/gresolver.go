@@ -210,10 +210,10 @@ type Resolver struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Resolver)(nil)
-
 // Resolverer describes Resolver's abstract methods.
 type Resolverer interface {
+	gextras.Objector
+
 	// LookupByAddress: synchronously reverse-resolves address to determine its
 	// associated hostname.
 	LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
@@ -356,7 +356,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 
@@ -461,7 +461,7 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_finish(_arg0, _arg1, &_cerr)
 
@@ -558,7 +558,7 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_with_flags_finish(_arg0, _arg1, &_cerr)
 
@@ -666,7 +666,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_records_finish(_arg0, _arg1, &_cerr)
 
@@ -793,7 +793,7 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_service_finish(_arg0, _arg1, &_cerr)
 

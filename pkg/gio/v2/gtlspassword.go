@@ -49,8 +49,6 @@ type TLSPassword struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TLSPassword)(nil)
-
 func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	return &TLSPassword{
 		Object: obj,

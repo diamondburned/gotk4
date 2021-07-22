@@ -30,8 +30,6 @@ type GestureRotate struct {
 	Gesture
 }
 
-var _ gextras.Nativer = (*GestureRotate)(nil)
-
 func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{
@@ -54,7 +52,7 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_rotate_new(_arg1)
 

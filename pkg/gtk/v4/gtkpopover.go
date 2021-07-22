@@ -109,9 +109,8 @@ type Popover struct {
 
 	NativeSurface
 	ShortcutManager
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Popover)(nil)
 
 func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
@@ -128,6 +127,7 @@ func wrapPopover(obj *externglib.Object) *Popover {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		NativeSurface: NativeSurface{
 			Widget: Widget{
@@ -143,11 +143,13 @@ func wrapPopover(obj *externglib.Object) *Popover {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		ShortcutManager: ShortcutManager{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -168,12 +170,6 @@ func NewPopover() *Popover {
 	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Popover) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Autohide returns whether the popover is modal.
@@ -404,7 +400,7 @@ func (popover *Popover) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_popover_set_child(_arg0, _arg1)
 }
@@ -419,7 +415,7 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }

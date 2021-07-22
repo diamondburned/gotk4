@@ -254,7 +254,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 	var _arg1 *C.GFile  // out
 	var _cret **C.gchar // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((root).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
 

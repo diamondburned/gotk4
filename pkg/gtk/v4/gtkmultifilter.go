@@ -32,8 +32,6 @@ type AnyFilter struct {
 	MultiFilter
 }
 
-var _ gextras.Nativer = (*AnyFilter)(nil)
-
 func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	return &AnyFilter{
 		MultiFilter: MultiFilter{
@@ -46,6 +44,7 @@ func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -84,8 +83,6 @@ type EveryFilter struct {
 	MultiFilter
 }
 
-var _ gextras.Nativer = (*EveryFilter)(nil)
-
 func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	return &EveryFilter{
 		MultiFilter: MultiFilter{
@@ -98,6 +95,7 @@ func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -136,12 +134,13 @@ type MultiFilter struct {
 
 	gio.ListModel
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MultiFilter)(nil)
 
 // MultiFilterer describes MultiFilter's abstract methods.
 type MultiFilterer interface {
+	gextras.Objector
+
 	// Append adds a filter to self to use for matching.
 	Append(filter *Filter)
 	// Remove removes the filter at the given position from the list of filters
@@ -162,6 +161,7 @@ func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -169,12 +169,6 @@ func marshalMultiFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMultiFilter(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *MultiFilter) Native() uintptr {
-	return v.Filter.Object.Native()
 }
 
 // Append adds a filter to self to use for matching.

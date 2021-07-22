@@ -27,12 +27,13 @@ type ListBase struct {
 
 	Orientable
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ListBase)(nil)
 
 // ListBaser describes ListBase's abstract methods.
 type ListBaser interface {
+	gextras.Objector
+
 	privateListBase()
 }
 
@@ -53,6 +54,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
@@ -60,6 +62,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -67,12 +70,6 @@ func marshalListBaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListBase(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ListBase) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*ListBase) privateListBase() {}

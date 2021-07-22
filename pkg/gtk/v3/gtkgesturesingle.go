@@ -41,8 +41,6 @@ type GestureSingle struct {
 	Gesture
 }
 
-var _ gextras.Nativer = (*GestureSingle)(nil)
-
 func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 	return &GestureSingle{
 		Gesture: Gesture{

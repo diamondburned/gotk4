@@ -93,9 +93,8 @@ type ApplicationWindow struct {
 
 	gio.ActionGroup
 	gio.ActionMap
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ApplicationWindow)(nil)
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -113,6 +112,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Root: Root{
 				NativeSurface: NativeSurface{
@@ -129,12 +129,14 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		ActionGroup: gio.ActionGroup{
 			Object: obj,
@@ -142,6 +144,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 		ActionMap: gio.ActionMap{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -165,12 +168,6 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ApplicationWindow) Native() uintptr {
-	return v.Window.Widget.InitiallyUnowned.Object.Native()
 }
 
 // HelpOverlay gets the GtkShortcutsWindow that is associated with window.

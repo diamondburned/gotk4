@@ -38,8 +38,6 @@ type FileIcon struct {
 	LoadableIcon
 }
 
-var _ gextras.Nativer = (*FileIcon)(nil)
-
 func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	return &FileIcon{
 		Object: obj,
@@ -62,7 +60,7 @@ func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_icon_new(_arg1)
 

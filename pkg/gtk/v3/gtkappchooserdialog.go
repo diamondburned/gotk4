@@ -38,9 +38,8 @@ type AppChooserDialog struct {
 	Dialog
 
 	AppChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*AppChooserDialog)(nil)
 
 func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	return &AppChooserDialog{
@@ -58,6 +57,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -74,8 +74,10 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -95,7 +97,7 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
 
@@ -126,12 +128,6 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 	_appChooserDialog = wrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *AppChooserDialog) Native() uintptr {
-	return v.Dialog.Window.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Heading returns the text to display at the top of the dialog.

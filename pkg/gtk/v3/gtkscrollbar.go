@@ -66,8 +66,6 @@ type Scrollbar struct {
 	Range
 }
 
-var _ gextras.Nativer = (*Scrollbar)(nil)
-
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
 		Range: Range{
@@ -81,10 +79,12 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

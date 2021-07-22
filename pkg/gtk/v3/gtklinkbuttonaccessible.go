@@ -28,9 +28,8 @@ type LinkButtonAccessible struct {
 	ButtonAccessible
 
 	atk.HyperlinkImpl
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*LinkButtonAccessible)(nil)
 
 func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 	return &LinkButtonAccessible{
@@ -53,10 +52,12 @@ func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 			Image: atk.Image{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		HyperlinkImpl: atk.HyperlinkImpl{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +65,6 @@ func marshalLinkButtonAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLinkButtonAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *LinkButtonAccessible) Native() uintptr {
-	return v.ButtonAccessible.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*LinkButtonAccessible) privateLinkButtonAccessible() {}

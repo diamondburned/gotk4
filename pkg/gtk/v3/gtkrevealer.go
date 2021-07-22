@@ -87,8 +87,6 @@ type Revealer struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*Revealer)(nil)
-
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Bin: Bin{
@@ -103,6 +101,7 @@ func wrapRevealer(obj *externglib.Object) *Revealer {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

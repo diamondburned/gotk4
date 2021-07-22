@@ -187,10 +187,10 @@ type IMContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*IMContext)(nil)
-
 // IMContexter describes IMContext's abstract methods.
 type IMContexter interface {
+	gextras.Objector
+
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
@@ -302,8 +302,8 @@ func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk
 	if press {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
-	_arg3 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	_arg4 = C.guint32(time)
 	_arg5 = C.guint(keycode)
 	_arg6 = C.GdkModifierType(state)
@@ -331,7 +331,7 @@ func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
@@ -504,7 +504,7 @@ func (context *IMContext) SetClientWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_im_context_set_client_widget(_arg0, _arg1)
 }

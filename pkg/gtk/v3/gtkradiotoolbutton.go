@@ -40,8 +40,6 @@ type RadioToolButton struct {
 	ToggleToolButton
 }
 
-var _ gextras.Nativer = (*RadioToolButton)(nil)
-
 func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	return &RadioToolButton{
 		ToggleToolButton: ToggleToolButton{
@@ -59,12 +57,14 @@ func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 								Buildable: Buildable{
 									Object: obj,
 								},
+								Object: obj,
 							},
 						},
 					},
 					Activatable: Activatable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 				Actionable: Actionable{
 					Widget: Widget{
@@ -77,8 +77,10 @@ func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 	}

@@ -34,10 +34,10 @@ type LayoutChild struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*LayoutChild)(nil)
-
 // LayoutChilder describes LayoutChild's abstract methods.
 type LayoutChilder interface {
+	gextras.Objector
+
 	// ChildWidget retrieves the GtkWidget associated to the given layout_child.
 	ChildWidget() Widgetter
 	// LayoutManager retrieves the GtkLayoutManager instance that created the

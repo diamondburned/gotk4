@@ -30,8 +30,6 @@ type ProgressBarAccessible struct {
 	atk.Value
 }
 
-var _ gextras.Nativer = (*ProgressBarAccessible)(nil)
-
 func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 	return &ProgressBarAccessible{
 		WidgetAccessible: WidgetAccessible{

@@ -28,8 +28,6 @@ type BooleanCellAccessible struct {
 	RendererCellAccessible
 }
 
-var _ gextras.Nativer = (*BooleanCellAccessible)(nil)
-
 func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
@@ -50,6 +48,7 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 						Object: obj,
 					},
 				},
+				Object: obj,
 			},
 		},
 	}

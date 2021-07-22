@@ -42,8 +42,6 @@ type TextTag struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TextTag)(nil)
-
 func wrapTextTag(obj *externglib.Object) *TextTag {
 	return &TextTag{
 		Object: obj,

@@ -41,8 +41,6 @@ type ActionBar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*ActionBar)(nil)
-
 func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{
 		Widget: Widget{
@@ -58,6 +56,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -122,7 +121,7 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
@@ -134,7 +133,7 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
@@ -145,7 +144,7 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_action_bar_remove(_arg0, _arg1)
 }
@@ -156,7 +155,7 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((centerWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }

@@ -195,10 +195,10 @@ type CellLayout struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*CellLayout)(nil)
-
 // CellLayouter describes CellLayout's abstract methods.
 type CellLayouter interface {
+	gextras.Objector
+
 	// AddAttribute adds an attribute mapping to the list in cell_layout.
 	AddAttribute(cell CellRendererer, attribute string, column int)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
@@ -249,7 +249,7 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	var _arg3 C.int              // out
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(column)
@@ -274,7 +274,7 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	var _arg1 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
 }
@@ -329,7 +329,7 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	var _arg2 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -348,7 +348,7 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	var _arg2 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -366,7 +366,7 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg2 C.int              // out
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg2 = C.int(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
@@ -387,7 +387,7 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(fn))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))

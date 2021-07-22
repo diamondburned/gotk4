@@ -119,8 +119,6 @@ type DBusObjectManagerClient struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*DBusObjectManagerClient)(nil)
-
 func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClient {
 	return &DBusObjectManagerClient{
 		Object: obj,
@@ -149,7 +147,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_finish(_arg1, &_cerr)
 
@@ -169,7 +167,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, &_cerr)
 

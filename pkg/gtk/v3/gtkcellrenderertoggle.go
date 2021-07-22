@@ -38,8 +38,6 @@ type CellRendererToggle struct {
 	CellRenderer
 }
 
-var _ gextras.Nativer = (*CellRendererToggle)(nil)
-
 func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	return &CellRendererToggle{
 		CellRenderer: CellRenderer{

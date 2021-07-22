@@ -33,8 +33,6 @@ type VPaned struct {
 	Paned
 }
 
-var _ gextras.Nativer = (*VPaned)(nil)
-
 func wrapVPaned(obj *externglib.Object) *VPaned {
 	return &VPaned{
 		Paned: Paned{
@@ -49,11 +47,13 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

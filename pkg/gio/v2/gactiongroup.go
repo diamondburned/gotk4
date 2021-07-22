@@ -246,10 +246,10 @@ type ActionGroup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*ActionGroup)(nil)
-
 // ActionGrouper describes ActionGroup's abstract methods.
 type ActionGrouper interface {
+	gextras.Objector
+
 	// ActionAdded emits the Group::action-added signal on action_group.
 	ActionAdded(actionName string)
 	// ActionEnabledChanged emits the Group::action-enabled-changed signal on

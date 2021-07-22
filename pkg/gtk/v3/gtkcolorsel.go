@@ -37,8 +37,6 @@ type ColorSelection struct {
 	Box
 }
 
-var _ gextras.Nativer = (*ColorSelection)(nil)
-
 func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	return &ColorSelection{
 		Box: Box{
@@ -53,11 +51,13 @@ func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

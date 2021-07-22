@@ -61,8 +61,6 @@ type Statusbar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Statusbar)(nil)
-
 func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
 		Widget: Widget{
@@ -78,6 +76,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

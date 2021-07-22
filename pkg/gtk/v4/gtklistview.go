@@ -120,8 +120,6 @@ type ListView struct {
 	ListBase
 }
 
-var _ gextras.Nativer = (*ListView)(nil)
-
 func wrapListView(obj *externglib.Object) *ListView {
 	return &ListView{
 		ListBase: ListBase{
@@ -138,6 +136,7 @@ func wrapListView(obj *externglib.Object) *ListView {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
@@ -145,6 +144,7 @@ func wrapListView(obj *externglib.Object) *ListView {
 			Scrollable: Scrollable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -167,7 +167,7 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
@@ -301,7 +301,7 @@ func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_list_view_set_model(_arg0, _arg1)
 }

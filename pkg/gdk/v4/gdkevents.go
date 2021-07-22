@@ -431,8 +431,8 @@ func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event1).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer((event2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 
@@ -458,8 +458,8 @@ func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok b
 	var _arg4 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event1).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer((event2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 
@@ -486,8 +486,8 @@ func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event1).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer((event2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 
@@ -506,8 +506,6 @@ func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
 type ButtonEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*ButtonEvent)(nil)
 
 func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	return &ButtonEvent{
@@ -543,8 +541,6 @@ func (event *ButtonEvent) Button() uint {
 type CrossingEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*CrossingEvent)(nil)
 
 func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	return &CrossingEvent{
@@ -615,8 +611,6 @@ type DNDEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*DNDEvent)(nil)
-
 func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	return &DNDEvent{
 		Event: Event{
@@ -652,8 +646,6 @@ type DeleteEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*DeleteEvent)(nil)
-
 func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	return &DeleteEvent{
 		Event: Event{
@@ -680,10 +672,10 @@ type Event struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Event)(nil)
-
 // Eventer describes Event's abstract methods.
 type Eventer interface {
+	gextras.Objector
+
 	// Axes extracts all axis values from an event.
 	Axes() ([]float64, bool)
 	// Axis: extract the axis value for a particular axis use from an event
@@ -1013,8 +1005,6 @@ type FocusEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*FocusEvent)(nil)
-
 func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	return &FocusEvent{
 		Event: Event{
@@ -1052,8 +1042,6 @@ func (event *FocusEvent) In() bool {
 type GrabBrokenEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*GrabBrokenEvent)(nil)
 
 func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	return &GrabBrokenEvent{
@@ -1107,8 +1095,6 @@ func (event *GrabBrokenEvent) Implicit() bool {
 type KeyEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*KeyEvent)(nil)
 
 func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	return &KeyEvent{
@@ -1280,8 +1266,6 @@ type MotionEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*MotionEvent)(nil)
-
 func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	return &MotionEvent{
 		Event: Event{
@@ -1302,8 +1286,6 @@ func (*MotionEvent) privateMotionEvent() {}
 type PadEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*PadEvent)(nil)
 
 func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	return &PadEvent{
@@ -1378,8 +1360,6 @@ type ProximityEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*ProximityEvent)(nil)
-
 func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	return &ProximityEvent{
 		Event: Event{
@@ -1400,8 +1380,6 @@ func (*ProximityEvent) privateProximityEvent() {}
 type ScrollEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*ScrollEvent)(nil)
 
 func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	return &ScrollEvent{
@@ -1484,8 +1462,6 @@ type TouchEvent struct {
 	Event
 }
 
-var _ gextras.Nativer = (*TouchEvent)(nil)
-
 func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	return &TouchEvent{
 		Event: Event{
@@ -1527,8 +1503,6 @@ func (event *TouchEvent) EmulatingPointer() bool {
 type TouchpadEvent struct {
 	Event
 }
-
-var _ gextras.Nativer = (*TouchpadEvent)(nil)
 
 func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	return &TouchpadEvent{

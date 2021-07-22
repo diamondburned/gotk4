@@ -345,9 +345,8 @@ type TreeView struct {
 	Container
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TreeView)(nil)
 
 func wrapTreeView(obj *externglib.Object) *TreeView {
 	return &TreeView{
@@ -362,11 +361,13 @@ func wrapTreeView(obj *externglib.Object) *TreeView {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -395,7 +396,7 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_tree_view_new_with_model(_arg1)
 
@@ -404,12 +405,6 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	_treeView = wrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TreeView) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // AppendColumn appends column to the list of columns. If tree_view has
@@ -1477,7 +1472,7 @@ func (treeView *TreeView) InsertColumnWithDataFunc(position int, title string, c
 	_arg1 = C.gint(position)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gtk3_TreeCellDataFunc)
 	_arg5 = C.gpointer(gbox.Assign(fn))
 	_arg6 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -1783,7 +1778,7 @@ func (treeView *TreeView) SetCursorOnCell(path *TreePath, focusColumn *TreeViewC
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(focusColumn.Native()))
-	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((focusCell).(gextras.Nativer).Native()))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(focusCell.Native()))
 	if startEditing {
 		_arg4 = C.TRUE
 	}
@@ -1991,7 +1986,7 @@ func (treeView *TreeView) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_tree_view_set_model(_arg0, _arg1)
 }
@@ -2187,7 +2182,7 @@ func (treeView *TreeView) SetTooltipCell(tooltip *Tooltip, path *TreePath, colum
 	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg3 = (*C.GtkTreeViewColumn)(unsafe.Pointer(column.Native()))
-	_arg4 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg4 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_tree_view_set_tooltip_cell(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

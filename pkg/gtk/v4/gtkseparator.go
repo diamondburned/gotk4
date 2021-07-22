@@ -42,9 +42,8 @@ type Separator struct {
 	Widget
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Separator)(nil)
 
 func wrapSeparator(obj *externglib.Object) *Separator {
 	return &Separator{
@@ -61,10 +60,12 @@ func wrapSeparator(obj *externglib.Object) *Separator {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -88,12 +89,6 @@ func NewSeparator(orientation Orientation) *Separator {
 	_separator = wrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Separator) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*Separator) privateSeparator() {}

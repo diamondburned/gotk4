@@ -57,8 +57,6 @@ type FixedLayout struct {
 	LayoutManager
 }
 
-var _ gextras.Nativer = (*FixedLayout)(nil)
-
 func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
@@ -92,8 +90,6 @@ func (*FixedLayout) privateFixedLayout() {}
 type FixedLayoutChild struct {
 	LayoutChild
 }
-
-var _ gextras.Nativer = (*FixedLayoutChild)(nil)
 
 func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{

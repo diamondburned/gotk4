@@ -92,8 +92,6 @@ type PrintContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PrintContext)(nil)
-
 func wrapPrintContext(obj *externglib.Object) *PrintContext {
 	return &PrintContext{
 		Object: obj,

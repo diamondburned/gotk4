@@ -29,9 +29,8 @@ type MenuItemAccessible struct {
 
 	atk.Action
 	atk.Selection
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*MenuItemAccessible)(nil)
 
 func wrapMenuItemAccessible(obj *externglib.Object) *MenuItemAccessible {
 	return &MenuItemAccessible{
@@ -53,6 +52,7 @@ func wrapMenuItemAccessible(obj *externglib.Object) *MenuItemAccessible {
 		Selection: atk.Selection{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -60,12 +60,6 @@ func marshalMenuItemAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItemAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *MenuItemAccessible) Native() uintptr {
-	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*MenuItemAccessible) privateMenuItemAccessible() {}

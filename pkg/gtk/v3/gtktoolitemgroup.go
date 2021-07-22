@@ -36,9 +36,8 @@ type ToolItemGroup struct {
 	Container
 
 	ToolShell
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ToolItemGroup)(nil)
 
 func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{
@@ -53,6 +52,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		ToolShell: ToolShell{
@@ -66,8 +66,10 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -92,12 +94,6 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ToolItemGroup) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Collapsed gets whether group is collapsed or expanded.
@@ -338,7 +334,7 @@ func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
 }

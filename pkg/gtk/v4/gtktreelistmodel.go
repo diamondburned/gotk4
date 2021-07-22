@@ -49,7 +49,7 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 	fn := v.(TreeListModelCreateModelFunc)
 	listModel := fn(item)
 
-	cret = (*C.GListModel)(unsafe.Pointer((listModel).(gextras.Nativer).Native()))
+	cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
 
 	return cret
 }
@@ -61,8 +61,6 @@ type TreeListModel struct {
 
 	gio.ListModel
 }
-
-var _ gextras.Nativer = (*TreeListModel)(nil)
 
 func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	return &TreeListModel{
@@ -90,7 +88,7 @@ func NewTreeListModel(root gio.ListModeller, passthrough bool, autoexpand bool, 
 	var _arg6 C.GDestroyNotify
 	var _cret *C.GtkTreeListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((root).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(root.Native()))
 	if passthrough {
 		_arg2 = C.TRUE
 	}
@@ -260,8 +258,6 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 type TreeListRow struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TreeListRow)(nil)
 
 func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	return &TreeListRow{

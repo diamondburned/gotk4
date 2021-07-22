@@ -30,8 +30,6 @@ type GestureStylus struct {
 	GestureSingle
 }
 
-var _ gextras.Nativer = (*GestureStylus)(nil)
-
 func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
@@ -55,7 +53,7 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 

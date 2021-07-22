@@ -34,9 +34,8 @@ type RecentAction struct {
 	Action
 
 	RecentChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RecentAction)(nil)
 
 func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	return &RecentAction{
@@ -49,6 +48,7 @@ func wrapRecentAction(obj *externglib.Object) *RecentAction {
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -118,12 +118,6 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	_recentAction = wrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *RecentAction) Native() uintptr {
-	return v.Action.Object.Native()
 }
 
 // ShowNumbers returns the value set by

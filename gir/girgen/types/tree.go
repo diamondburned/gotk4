@@ -113,7 +113,7 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		if len(tree.Requires) == 0 {
 			// All interfaces are derived from GObjects, so we override the list
 			// if it's empty.
-			if !tree.resolveParents(externGLibType("*Object", gir.Type{}, "GObject*")) {
+			if !tree.resolveName("GObject.Object") {
 				tree.gen.Logln(logger.Debug,
 					"can't resolve fallback prerequisite *GObject for interface", v.Name)
 				return false
@@ -145,6 +145,11 @@ func (tree *Tree) omitRedundant(ignoreFirst bool) {
 	}
 
 	tree.Requires = cleaned
+
+	if tree.HasAmbiguousSelector() {
+		// Add an Object if this is still the case.
+		tree.resolveName("GObject.Object")
+	}
 }
 
 func findInTree(reqs []Tree, girType string, ignore int) bool {

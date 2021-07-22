@@ -32,8 +32,6 @@ type BinLayout struct {
 	LayoutManager
 }
 
-var _ gextras.Nativer = (*BinLayout)(nil)
-
 func wrapBinLayout(obj *externglib.Object) *BinLayout {
 	return &BinLayout{
 		LayoutManager: LayoutManager{

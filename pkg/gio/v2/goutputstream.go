@@ -217,10 +217,10 @@ type OutputStream struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*OutputStream)(nil)
-
 // OutputStreamer describes OutputStream's abstract methods.
 type OutputStreamer interface {
+	gextras.Objector
+
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
 	// Close closes the stream, releasing resources related to it.
@@ -397,7 +397,7 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_close_finish(_arg0, _arg1, &_cerr)
 
@@ -470,7 +470,7 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_flush_finish(_arg0, _arg1, &_cerr)
 
@@ -569,7 +569,7 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((source).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -604,7 +604,7 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((source).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -621,7 +621,7 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
 
@@ -788,7 +788,7 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_write_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -869,7 +869,7 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
 
@@ -890,7 +890,7 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
 
@@ -1065,7 +1065,7 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -1142,7 +1142,7 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_finish(_arg0, _arg1, &_arg2, &_cerr)
 

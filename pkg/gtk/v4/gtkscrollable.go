@@ -66,10 +66,10 @@ type Scrollable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Scrollable)(nil)
-
 // Scrollabler describes Scrollable's abstract methods.
 type Scrollabler interface {
+	gextras.Objector
+
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
 	Border() (Border, bool)

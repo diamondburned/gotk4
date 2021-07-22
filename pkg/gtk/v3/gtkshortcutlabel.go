@@ -30,8 +30,6 @@ type ShortcutLabel struct {
 	Box
 }
 
-var _ gextras.Nativer = (*ShortcutLabel)(nil)
-
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
 		Box: Box{
@@ -46,11 +44,13 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

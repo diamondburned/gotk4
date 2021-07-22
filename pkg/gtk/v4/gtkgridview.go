@@ -59,8 +59,6 @@ type GridView struct {
 	ListBase
 }
 
-var _ gextras.Nativer = (*GridView)(nil)
-
 func wrapGridView(obj *externglib.Object) *GridView {
 	return &GridView{
 		ListBase: ListBase{
@@ -77,6 +75,7 @@ func wrapGridView(obj *externglib.Object) *GridView {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Orientable: Orientable{
 				Object: obj,
@@ -84,6 +83,7 @@ func wrapGridView(obj *externglib.Object) *GridView {
 			Scrollable: Scrollable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -106,7 +106,7 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.gtk_grid_view_new(_arg1, _arg2)
@@ -285,7 +285,7 @@ func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_grid_view_set_model(_arg0, _arg1)
 }

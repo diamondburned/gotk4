@@ -56,8 +56,6 @@ type BlendNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*BlendNode)(nil)
-
 func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	return &BlendNode{
 		RenderNode: RenderNode{
@@ -80,8 +78,8 @@ func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *Ble
 	var _arg3 C.GskBlendMode   // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((bottom).(gextras.Nativer).Native()))
-	_arg2 = (*C.GskRenderNode)(unsafe.Pointer((top).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(bottom.Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(top.Native()))
 	_arg3 = C.GskBlendMode(blendMode)
 
 	_cret = C.gsk_blend_node_new(_arg1, _arg2, _arg3)
@@ -146,8 +144,6 @@ type BlurNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*BlurNode)(nil)
-
 func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	return &BlurNode{
 		RenderNode: RenderNode{
@@ -168,7 +164,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 	var _arg2 C.float          // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = C.float(radius)
 
 	_cret = C.gsk_blur_node_new(_arg1, _arg2)
@@ -216,8 +212,6 @@ func (node *BlurNode) Radius() float32 {
 type BorderNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*BorderNode)(nil)
 
 func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	return &BorderNode{
@@ -309,8 +303,6 @@ type CairoNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*CairoNode)(nil)
-
 func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	return &CairoNode{
 		RenderNode: RenderNode{
@@ -392,8 +384,6 @@ type ClipNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*ClipNode)(nil)
-
 func wrapClipNode(obj *externglib.Object) *ClipNode {
 	return &ClipNode{
 		RenderNode: RenderNode{
@@ -415,7 +405,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	_cret = C.gsk_clip_node_new(_arg1, _arg2)
@@ -465,8 +455,6 @@ type ColorMatrixNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*ColorMatrixNode)(nil)
-
 func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{
 		RenderNode: RenderNode{
@@ -495,7 +483,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 	var _arg3 *C.graphene_vec4_t   // out
 	var _cret *C.GskRenderNode     // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
 	_arg3 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
@@ -562,8 +550,6 @@ type ColorNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*ColorNode)(nil)
-
 func wrapColorNode(obj *externglib.Object) *ColorNode {
 	return &ColorNode{
 		RenderNode: RenderNode{
@@ -617,8 +603,6 @@ func (node *ColorNode) Color() *gdk.RGBA {
 type ConicGradientNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*ConicGradientNode)(nil)
 
 func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{
@@ -739,8 +723,6 @@ type ContainerNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*ContainerNode)(nil)
-
 func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	return &ContainerNode{
 		RenderNode: RenderNode{
@@ -770,7 +752,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
 		for i := range children {
-			out[i] = (*C.GskRenderNode)(unsafe.Pointer((children[i]).(gextras.Nativer).Native()))
+			out[i] = (*C.GskRenderNode)(unsafe.Pointer(children[i].Native()))
 		}
 	}
 
@@ -822,8 +804,6 @@ type CrossFadeNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*CrossFadeNode)(nil)
-
 func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{
 		RenderNode: RenderNode{
@@ -846,8 +826,8 @@ func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *Cro
 	var _arg3 C.float          // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((start).(gextras.Nativer).Native()))
-	_arg2 = (*C.GskRenderNode)(unsafe.Pointer((end).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(start.Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(end.Native()))
 	_arg3 = C.float(progress)
 
 	_cret = C.gsk_cross_fade_node_new(_arg1, _arg2, _arg3)
@@ -914,8 +894,6 @@ type DebugNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*DebugNode)(nil)
-
 func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	return &DebugNode{
 		RenderNode: RenderNode{
@@ -939,7 +917,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _arg2 *C.char          // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(message)))
 
 	_cret = C.gsk_debug_node_new(_arg1, _arg2)
@@ -987,8 +965,6 @@ func (node *DebugNode) Message() string {
 type GLShaderNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*GLShaderNode)(nil)
 
 func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	return &GLShaderNode{
@@ -1058,8 +1034,6 @@ func (node *GLShaderNode) Shader() *GLShader {
 type InsetShadowNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*InsetShadowNode)(nil)
 
 func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{
@@ -1203,8 +1177,6 @@ type LinearGradientNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*LinearGradientNode)(nil)
-
 func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{
 		RenderNode: RenderNode{
@@ -1300,8 +1272,6 @@ type OpacityNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*OpacityNode)(nil)
-
 func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	return &OpacityNode{
 		RenderNode: RenderNode{
@@ -1323,7 +1293,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	var _arg2 C.float          // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = C.float(opacity)
 
 	_cret = C.gsk_opacity_node_new(_arg1, _arg2)
@@ -1371,8 +1341,6 @@ func (node *OpacityNode) Opacity() float32 {
 type OutsetShadowNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*OutsetShadowNode)(nil)
 
 func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{
@@ -1515,8 +1483,6 @@ func (node *OutsetShadowNode) Spread() float32 {
 type RadialGradientNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*RadialGradientNode)(nil)
 
 func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{
@@ -1669,8 +1635,6 @@ type RepeatNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*RepeatNode)(nil)
-
 func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	return &RepeatNode{
 		RenderNode: RenderNode{
@@ -1694,7 +1658,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 	var _cret *C.GskRenderNode   // in
 
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
-	_arg2 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
 
 	_cret = C.gsk_repeat_node_new(_arg1, _arg2, _arg3)
@@ -1742,8 +1706,6 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 type RepeatingLinearGradientNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*RepeatingLinearGradientNode)(nil)
 
 func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{
@@ -1793,8 +1755,6 @@ func (*RepeatingLinearGradientNode) privateRepeatingLinearGradientNode() {}
 type RepeatingRadialGradientNode struct {
 	RenderNode
 }
-
-var _ gextras.Nativer = (*RepeatingRadialGradientNode)(nil)
 
 func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{
@@ -1855,8 +1815,6 @@ type RoundedClipNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*RoundedClipNode)(nil)
-
 func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{
 		RenderNode: RenderNode{
@@ -1878,7 +1836,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _arg2 *C.GskRoundedRect // out
 	var _cret *C.GskRenderNode  // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	_cret = C.gsk_rounded_clip_node_new(_arg1, _arg2)
@@ -1928,8 +1886,6 @@ type ShadowNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*ShadowNode)(nil)
-
 func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	return &ShadowNode{
 		RenderNode: RenderNode{
@@ -1952,7 +1908,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg3 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg3 = (C.gsize)(len(shadows))
 	if len(shadows) > 0 {
 		_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
@@ -2022,8 +1978,6 @@ type TextNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*TextNode)(nil)
-
 func wrapTextNode(obj *externglib.Object) *TextNode {
 	return &TextNode{
 		RenderNode: RenderNode{
@@ -2048,7 +2002,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	var _arg4 *C.graphene_point_t // out
 	var _cret *C.GskRenderNode    // in
 
-	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg4 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(offset)))
@@ -2149,8 +2103,6 @@ type TextureNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*TextureNode)(nil)
-
 func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	return &TextureNode{
 		RenderNode: RenderNode{
@@ -2172,7 +2124,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gsk_texture_node_new(_arg1, _arg2)
@@ -2205,8 +2157,6 @@ type TransformNode struct {
 	RenderNode
 }
 
-var _ gextras.Nativer = (*TransformNode)(nil)
-
 func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	return &TransformNode{
 		RenderNode: RenderNode{
@@ -2228,7 +2178,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _arg2 *C.GskTransform  // out
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	_cret = C.gsk_transform_node_new(_arg1, _arg2)

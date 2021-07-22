@@ -28,8 +28,6 @@ type CairoRenderer struct {
 	Renderer
 }
 
-var _ gextras.Nativer = (*CairoRenderer)(nil)
-
 func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	return &CairoRenderer{
 		Renderer: Renderer{

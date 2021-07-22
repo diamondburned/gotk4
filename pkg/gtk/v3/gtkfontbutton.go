@@ -44,9 +44,8 @@ type FontButton struct {
 	Button
 
 	FontChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FontButton)(nil)
 
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{
@@ -63,6 +62,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -77,15 +77,18 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		FontChooser: FontChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -123,12 +126,6 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	_fontButton = wrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FontButton) Native() uintptr {
-	return v.Button.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // FontName retrieves the name of the currently selected font. This name

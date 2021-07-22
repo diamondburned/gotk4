@@ -44,8 +44,6 @@ type NetworkService struct {
 	SocketConnectable
 }
 
-var _ gextras.Nativer = (*NetworkService)(nil)
-
 func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	return &NetworkService{
 		Object: obj,

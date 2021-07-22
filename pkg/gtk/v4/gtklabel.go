@@ -201,8 +201,6 @@ type Label struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Label)(nil)
-
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
 		Widget: Widget{
@@ -218,6 +216,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -792,7 +791,7 @@ func (self *Label) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_label_set_extra_menu(_arg0, _arg1)
 }
@@ -933,7 +932,7 @@ func (self *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_label_set_mnemonic_widget(_arg0, _arg1)
 }

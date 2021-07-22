@@ -94,10 +94,10 @@ type LayoutManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*LayoutManager)(nil)
-
 // LayoutManagerer describes LayoutManager's abstract methods.
 type LayoutManagerer interface {
+	gextras.Objector
+
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.
@@ -141,7 +141,7 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width int, height int, 
 	var _arg4 C.int               // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	_arg4 = C.int(baseline)
@@ -163,7 +163,7 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 	var _cret *C.GtkLayoutChild   // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
@@ -233,7 +233,7 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	var _arg7 C.int               // in
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GtkOrientation(orientation)
 	_arg3 = C.int(forSize)
 

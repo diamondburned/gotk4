@@ -55,8 +55,6 @@ type TreeStore struct {
 	TreeSortable
 }
 
-var _ gextras.Nativer = (*TreeStore)(nil)
-
 func wrapTreeStore(obj *externglib.Object) *TreeStore {
 	return &TreeStore{
 		Object: obj,

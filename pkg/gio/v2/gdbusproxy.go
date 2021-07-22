@@ -90,8 +90,6 @@ type DBusProxy struct {
 	Initable
 }
 
-var _ gextras.Nativer = (*DBusProxy)(nil)
-
 func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{
 		Object: obj,
@@ -119,7 +117,7 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_new_finish(_arg1, &_cerr)
 
@@ -138,7 +136,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_new_for_bus_finish(_arg1, &_cerr)
 
@@ -325,7 +323,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_finish(_arg0, _arg1, &_cerr)
 
@@ -452,7 +450,7 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
 

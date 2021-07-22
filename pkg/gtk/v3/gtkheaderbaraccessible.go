@@ -19,8 +19,6 @@ type HeaderBarAccessible struct {
 	ContainerAccessible
 }
 
-var _ gextras.Nativer = (*HeaderBarAccessible)(nil)
-
 func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{
 		ContainerAccessible: ContainerAccessible{

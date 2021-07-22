@@ -258,7 +258,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	var _arg7 C.GdkDragProtocol // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((dragWindow).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
 	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)
@@ -293,7 +293,7 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 	var _cret C.gboolean        // in
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer((destWindow).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(destWindow.Native()))
 	_arg3 = C.GdkDragProtocol(protocol)
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)

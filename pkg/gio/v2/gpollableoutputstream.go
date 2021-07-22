@@ -107,10 +107,10 @@ type PollableOutputStream struct {
 	OutputStream
 }
 
-var _ gextras.Nativer = (*PollableOutputStream)(nil)
-
 // PollableOutputStreamer describes PollableOutputStream's abstract methods.
 type PollableOutputStreamer interface {
+	gextras.Objector
+
 	// CanPoll checks if stream is actually pollable.
 	CanPoll() bool
 	// CreateSource creates a #GSource that triggers when stream can be written,

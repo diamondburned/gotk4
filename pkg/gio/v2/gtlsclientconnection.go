@@ -73,10 +73,10 @@ type TLSClientConnection struct {
 	TLSConnection
 }
 
-var _ gextras.Nativer = (*TLSClientConnection)(nil)
-
 // TLSClientConnectioner describes TLSClientConnection's abstract methods.
 type TLSClientConnectioner interface {
+	gextras.Objector
+
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
@@ -147,7 +147,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	var _arg1 *C.GTlsClientConnection // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer((source).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
@@ -214,7 +214,7 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 	var _arg1 *C.GSocketConnectable   // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
 }
@@ -268,8 +268,8 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _cret *C.GIOStream          // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer((serverIdentity).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
+	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
 	_cret = C.g_tls_client_connection_new(_arg1, _arg2, &_cerr)
 

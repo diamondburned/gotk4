@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/gotk3/gotk3/cairo"
@@ -90,7 +89,7 @@ func PixbufGetFromWindow(window Windower, srcX int, srcY int, width int, height 
 	var _arg5 C.gint       // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(srcX)
 	_arg3 = C.gint(srcY)
 	_arg4 = C.gint(width)

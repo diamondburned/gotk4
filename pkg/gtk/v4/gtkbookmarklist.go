@@ -35,8 +35,6 @@ type BookmarkList struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*BookmarkList)(nil)
-
 func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 	return &BookmarkList{
 		Object: obj,

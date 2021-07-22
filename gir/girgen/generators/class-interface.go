@@ -32,11 +32,11 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 	}
 
-	var _ gextras.Nativer = (*{{ .StructName }})(nil)
-
 	{{ if .Abstract }}
 	// {{ .InterfaceName }} describes {{ .StructName }}'s abstract methods.
 	type {{ .InterfaceName }} interface {
+		gextras.Objector
+
 		{{ range .Methods -}}
 		{{- Synopsis . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
@@ -64,19 +64,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ range .Constructors }}
 	{{ GoDoc . 0 }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ end }}
-
-	{{ if .Tree.HasAmbiguousSelector }}
-	{{ $field := (.Tree.FirstGObjectSelector "v") }}
-	// Native implements gextras.Nativer. It returns the underlying GObject
-	// field.
-	func (v *{{ $.StructName }}) Native() uintptr {
-		return {{ if $field -}}
-			{{ $field }}.Native()
-		{{- else -}}
-			uintptr(unsafe.Pointer(v))
-		{{- end }}
-	}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -134,6 +121,11 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
 		data.HasMarshaler = true
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
+	}
+
+	if data.Tree.HasAmbiguousSelector() {
+		// Import externglib for Object.
+		writer.Header().NeedsExternGLib()
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)

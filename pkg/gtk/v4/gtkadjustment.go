@@ -44,8 +44,6 @@ type Adjustment struct {
 	externglib.InitiallyUnowned
 }
 
-var _ gextras.Nativer = (*Adjustment)(nil)
-
 func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	return &Adjustment{
 		InitiallyUnowned: externglib.InitiallyUnowned{

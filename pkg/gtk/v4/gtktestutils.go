@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -32,7 +30,7 @@ func TestRegisterAllTypes() {
 func TestWidgetWaitForDraw(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_test_widget_wait_for_draw(_arg1)
 }

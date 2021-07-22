@@ -35,10 +35,10 @@ type NativeVolumeMonitor struct {
 	VolumeMonitor
 }
 
-var _ gextras.Nativer = (*NativeVolumeMonitor)(nil)
-
 // NativeVolumeMonitorrer describes NativeVolumeMonitor's abstract methods.
 type NativeVolumeMonitorrer interface {
+	gextras.Objector
+
 	privateNativeVolumeMonitor()
 }
 

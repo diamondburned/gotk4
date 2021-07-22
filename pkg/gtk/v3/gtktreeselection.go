@@ -129,8 +129,6 @@ type TreeSelection struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*TreeSelection)(nil)
-
 func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 	return &TreeSelection{
 		Object: obj,

@@ -493,7 +493,7 @@ func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
@@ -755,8 +755,6 @@ type RCStyleOverrider interface {
 type RCStyle struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RCStyle)(nil)
 
 func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	return &RCStyle{

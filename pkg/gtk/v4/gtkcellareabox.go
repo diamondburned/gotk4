@@ -42,9 +42,8 @@ type CellAreaBox struct {
 	CellArea
 
 	Orientable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*CellAreaBox)(nil)
 
 func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	return &CellAreaBox{
@@ -58,10 +57,12 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 			CellLayout: CellLayout{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Orientable: Orientable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -82,12 +83,6 @@ func NewCellAreaBox() *CellAreaBox {
 	_cellAreaBox = wrapCellAreaBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellAreaBox
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *CellAreaBox) Native() uintptr {
-	return v.CellArea.InitiallyUnowned.Object.Native()
 }
 
 // Spacing gets the spacing added between cell renderers.
@@ -118,7 +113,7 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool
 	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -144,7 +139,7 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bo
 	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}

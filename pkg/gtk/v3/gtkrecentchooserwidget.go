@@ -37,9 +37,8 @@ type RecentChooserWidget struct {
 	Box
 
 	RecentChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RecentChooserWidget)(nil)
 
 func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{
@@ -55,15 +54,18 @@ func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		RecentChooser: RecentChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -105,12 +107,6 @@ func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidg
 	_recentChooserWidget = wrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *RecentChooserWidget) Native() uintptr {
-	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*RecentChooserWidget) privateRecentChooserWidget() {}

@@ -60,10 +60,10 @@ type LoadableIcon struct {
 	Icon
 }
 
-var _ gextras.Nativer = (*LoadableIcon)(nil)
-
 // LoadableIconner describes LoadableIcon's abstract methods.
 type LoadableIconner interface {
+	gextras.Objector
+
 	// Load loads a loadable icon.
 	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously.
@@ -154,7 +154,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((res).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 

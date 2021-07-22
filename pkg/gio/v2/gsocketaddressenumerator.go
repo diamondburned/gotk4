@@ -84,10 +84,10 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*SocketAddressEnumerator)(nil)
-
 // SocketAddressEnumeratorrer describes SocketAddressEnumerator's abstract methods.
 type SocketAddressEnumeratorrer interface {
+	gextras.Objector
+
 	// Next retrieves the next Address from enumerator.
 	Next(ctx context.Context) (SocketAddresser, error)
 	// NextAsync: asynchronously retrieves the next Address from enumerator and
@@ -182,7 +182,7 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	var _cerr *C.GError                   // in
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
 

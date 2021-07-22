@@ -96,8 +96,6 @@ type DragSource struct {
 	GestureSingle
 }
 
-var _ gextras.Nativer = (*DragSource)(nil)
-
 func wrapDragSource(obj *externglib.Object) *DragSource {
 	return &DragSource{
 		GestureSingle: GestureSingle{
@@ -245,7 +243,7 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) 
 	var _arg3 C.int            // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 	_arg2 = C.int(hotX)
 	_arg3 = C.int(hotY)
 

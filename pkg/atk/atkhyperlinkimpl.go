@@ -58,10 +58,10 @@ type HyperlinkImpl struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*HyperlinkImpl)(nil)
-
 // HyperlinkImpler describes HyperlinkImpl's abstract methods.
 type HyperlinkImpler interface {
+	gextras.Objector
+
 	// Hyperlink gets the hyperlink associated with this object.
 	Hyperlink() *Hyperlink
 }

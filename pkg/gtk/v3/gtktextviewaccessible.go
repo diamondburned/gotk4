@@ -30,9 +30,8 @@ type TextViewAccessible struct {
 	atk.EditableText
 	atk.StreamableContent
 	atk.Text
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*TextViewAccessible)(nil)
 
 func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 	return &TextViewAccessible{
@@ -57,6 +56,7 @@ func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 		Text: atk.Text{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -64,12 +64,6 @@ func marshalTextViewAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextViewAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *TextViewAccessible) Native() uintptr {
-	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*TextViewAccessible) privateTextViewAccessible() {}

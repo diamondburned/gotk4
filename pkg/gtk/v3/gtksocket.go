@@ -84,8 +84,6 @@ type Socket struct {
 	Container
 }
 
-var _ gextras.Nativer = (*Socket)(nil)
-
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Container: Container{
@@ -99,6 +97,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

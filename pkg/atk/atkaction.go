@@ -98,10 +98,10 @@ type Action struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Action)(nil)
-
 // Actioner describes Action's abstract methods.
 type Actioner interface {
+	gextras.Objector
+
 	// DoAction: perform the specified action on the object.
 	DoAction(i int) bool
 	// Description returns a description of the specified action of the object.

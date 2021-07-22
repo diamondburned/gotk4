@@ -40,8 +40,6 @@ type CellRendererSpin struct {
 	CellRendererText
 }
 
-var _ gextras.Nativer = (*CellRendererSpin)(nil)
-
 func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 	return &CellRendererSpin{
 		CellRendererText: CellRendererText{

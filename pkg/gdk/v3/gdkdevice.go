@@ -163,10 +163,10 @@ type Device struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Device)(nil)
-
 // Devicer describes Device's abstract methods.
 type Devicer interface {
+	gextras.Objector
+
 	// AssociatedDevice returns the associated device to device, if device is of
 	// type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
 	// keyboard.
@@ -702,13 +702,13 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 	var _cret C.GdkGrabStatus    // in
 
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.GdkGrabOwnership(grabOwnership)
 	if ownerEvents {
 		_arg3 = C.TRUE
 	}
 	_arg4 = C.GdkEventMask(eventMask)
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer((cursor).(gextras.Nativer).Native()))
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -846,7 +846,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _cret C.gboolean    // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_grab_info_libgtk_only(_arg1, _arg2, &_arg3, &_arg4)
 

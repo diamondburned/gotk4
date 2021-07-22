@@ -56,8 +56,6 @@ type ThreadedSocketService struct {
 	SocketService
 }
 
-var _ gextras.Nativer = (*ThreadedSocketService)(nil)
-
 func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{
 		SocketService: SocketService{

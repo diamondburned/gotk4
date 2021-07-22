@@ -240,8 +240,6 @@ type IconFactory struct {
 	Buildable
 }
 
-var _ gextras.Nativer = (*IconFactory)(nil)
-
 func wrapIconFactory(obj *externglib.Object) *IconFactory {
 	return &IconFactory{
 		Object: obj,

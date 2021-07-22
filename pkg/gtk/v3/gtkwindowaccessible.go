@@ -30,8 +30,6 @@ type WindowAccessible struct {
 	atk.Window
 }
 
-var _ gextras.Nativer = (*WindowAccessible)(nil)
-
 func wrapWindowAccessible(obj *externglib.Object) *WindowAccessible {
 	return &WindowAccessible{
 		ContainerAccessible: ContainerAccessible{

@@ -87,10 +87,10 @@ type MediaStream struct {
 	gdk.Paintable
 }
 
-var _ gextras.Nativer = (*MediaStream)(nil)
-
 // MediaStreamer describes MediaStream's abstract methods.
 type MediaStreamer interface {
+	gextras.Objector
+
 	// Ended pauses the media stream and marks it as ended.
 	Ended()
 	// GError sets self into an error state.
@@ -538,7 +538,7 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	var _arg1 *C.GdkSurface     // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_media_stream_realize(_arg0, _arg1)
 }
@@ -685,7 +685,7 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg1 *C.GdkSurface     // out
 
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_media_stream_unrealize(_arg0, _arg1)
 }

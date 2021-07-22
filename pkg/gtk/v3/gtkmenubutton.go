@@ -110,8 +110,6 @@ type MenuButton struct {
 	ToggleButton
 }
 
-var _ gextras.Nativer = (*MenuButton)(nil)
-
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
 		ToggleButton: ToggleButton{
@@ -128,6 +126,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -142,11 +141,13 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -287,7 +288,7 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((alignWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(alignWidget.Native()))
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
 }
@@ -326,7 +327,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg1 *C.GMenuModel    // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((menuModel).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
@@ -341,7 +342,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((popover).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
@@ -356,7 +357,7 @@ func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_button_set_popup(_arg0, _arg1)
 }

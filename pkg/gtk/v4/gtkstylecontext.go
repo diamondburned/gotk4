@@ -131,8 +131,6 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StyleContext)(nil)
-
 func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	return &StyleContext{
 		Object: obj,
@@ -184,7 +182,7 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
@@ -374,7 +372,7 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
@@ -487,7 +485,7 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 	var _arg3 C.guint             // out
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 	_arg3 = C.guint(priority)
 
 	C.gtk_style_context_add_provider_for_display(_arg1, _arg2, _arg3)
@@ -500,7 +498,7 @@ func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StylePr
 	var _arg2 *C.GtkStyleProvider // out
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider_for_display(_arg1, _arg2)
 }

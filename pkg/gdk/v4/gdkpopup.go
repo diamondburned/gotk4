@@ -31,10 +31,10 @@ type Popup struct {
 	Surface
 }
 
-var _ gextras.Nativer = (*Popup)(nil)
-
 // Popupper describes Popup's abstract methods.
 type Popupper interface {
+	gextras.Objector
+
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
 	// Parent returns the parent surface of a popup.

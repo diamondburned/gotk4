@@ -145,10 +145,10 @@ type Table struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Table)(nil)
-
 // Tabler describes Table's abstract methods.
 type Tabler interface {
+	gextras.Objector
+
 	// AddColumnSelection adds the specified column to the selection.
 	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified row to the selection.

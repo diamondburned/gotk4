@@ -26,8 +26,6 @@ type X11Visual struct {
 	gdk.Visual
 }
 
-var _ gextras.Nativer = (*X11Visual)(nil)
-
 func wrapX11Visual(obj *externglib.Object) *X11Visual {
 	return &X11Visual{
 		Visual: gdk.Visual{

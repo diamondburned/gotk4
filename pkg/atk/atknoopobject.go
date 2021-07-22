@@ -39,9 +39,8 @@ type NoOpObject struct {
 	Text
 	Value
 	Window
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*NoOpObject)(nil)
 
 func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 	return &NoOpObject{
@@ -88,6 +87,7 @@ func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -112,12 +112,6 @@ func NewNoOpObject(obj *externglib.Object) *NoOpObject {
 	_noOpObject = wrapNoOpObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObject
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *NoOpObject) Native() uintptr {
-	return v.ObjectClass.Object.Native()
 }
 
 func (*NoOpObject) privateNoOpObject() {}

@@ -43,8 +43,6 @@ type StackSidebar struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*StackSidebar)(nil)
-
 func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Bin: Bin{
@@ -59,6 +57,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},

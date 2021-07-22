@@ -44,10 +44,10 @@ type MediaFile struct {
 	MediaStream
 }
 
-var _ gextras.Nativer = (*MediaFile)(nil)
-
 // MediaFiler describes MediaFile's abstract methods.
 type MediaFiler interface {
+	gextras.Objector
+
 	// Clear resets the media file to be empty.
 	Clear()
 	// File returns the file that self is currently playing from.
@@ -101,7 +101,7 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_media_file_new_for_file(_arg1)
 
@@ -140,7 +140,7 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 
@@ -224,7 +224,7 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile        // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_media_file_set_file(_arg0, _arg1)
 }
@@ -255,7 +255,7 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg1 *C.GInputStream // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }

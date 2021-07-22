@@ -34,8 +34,6 @@ type DropControllerMotion struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*DropControllerMotion)(nil)
-
 func wrapDropControllerMotion(obj *externglib.Object) *DropControllerMotion {
 	return &DropControllerMotion{
 		EventController: EventController{

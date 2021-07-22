@@ -61,8 +61,6 @@ type SocketClient struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*SocketClient)(nil)
-
 func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	return &SocketClient{
 		Object: obj,
@@ -148,7 +146,7 @@ func (client *SocketClient) ConnectSocketClienter(ctx context.Context, connectab
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -186,7 +184,7 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -202,7 +200,7 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
 
@@ -310,7 +308,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
 
@@ -401,7 +399,7 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
 
@@ -499,7 +497,7 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
 
@@ -721,7 +719,7 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	var _arg1 *C.GSocketAddress // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
 }
@@ -753,7 +751,7 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg1 *C.GProxyResolver // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GProxyResolver)(unsafe.Pointer((proxyResolver).(gextras.Nativer).Native()))
+	_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 }

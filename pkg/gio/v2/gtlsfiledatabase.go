@@ -39,10 +39,10 @@ type TLSFileDatabase struct {
 	TLSDatabase
 }
 
-var _ gextras.Nativer = (*TLSFileDatabase)(nil)
-
 // TLSFileDatabaser describes TLSFileDatabase's abstract methods.
 type TLSFileDatabaser interface {
+	gextras.Objector
+
 	privateTLSFileDatabase()
 }
 

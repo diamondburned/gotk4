@@ -48,8 +48,6 @@ type UnixSocketAddress struct {
 	SocketAddress
 }
 
-var _ gextras.Nativer = (*UnixSocketAddress)(nil)
-
 func wrapUnixSocketAddress(obj *externglib.Object) *UnixSocketAddress {
 	return &UnixSocketAddress{
 		SocketAddress: SocketAddress{

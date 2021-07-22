@@ -28,8 +28,6 @@ type ListBoxRowAccessible struct {
 	ContainerAccessible
 }
 
-var _ gextras.Nativer = (*ListBoxRowAccessible)(nil)
-
 func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 	return &ListBoxRowAccessible{
 		ContainerAccessible: ContainerAccessible{

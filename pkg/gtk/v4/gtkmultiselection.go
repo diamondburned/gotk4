@@ -30,8 +30,6 @@ type MultiSelection struct {
 	SelectionModel
 }
 
-var _ gextras.Nativer = (*MultiSelection)(nil)
-
 func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 	return &MultiSelection{
 		Object: obj,
@@ -54,7 +52,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_multi_selection_new(_arg1)
 
@@ -89,7 +87,7 @@ func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_multi_selection_set_model(_arg0, _arg1)
 }

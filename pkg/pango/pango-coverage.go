@@ -76,8 +76,6 @@ type Coverage struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Coverage)(nil)
-
 func wrapCoverage(obj *externglib.Object) *Coverage {
 	return &Coverage{
 		Object: obj,

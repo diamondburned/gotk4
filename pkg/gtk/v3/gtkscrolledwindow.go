@@ -195,8 +195,6 @@ type ScrolledWindow struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*ScrolledWindow)(nil)
-
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
 		Bin: Bin{
@@ -211,6 +209,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -269,7 +268,7 @@ func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_scrolled_window_add_with_viewport(_arg0, _arg1)
 }

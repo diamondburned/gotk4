@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/gotk3/gotk3/cairo"
@@ -65,7 +64,7 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GdkPixbuf  // in
 
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
 

@@ -63,10 +63,10 @@ type MenuAttributeIter struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*MenuAttributeIter)(nil)
-
 // MenuAttributeIterer describes MenuAttributeIter's abstract methods.
 type MenuAttributeIterer interface {
+	gextras.Objector
+
 	// Name gets the name of the attribute at the current iterator position, as
 	// a string.
 	Name() string
@@ -227,10 +227,10 @@ type MenuLinkIter struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*MenuLinkIter)(nil)
-
 // MenuLinkIterer describes MenuLinkIter's abstract methods.
 type MenuLinkIterer interface {
+	gextras.Objector
+
 	// Name gets the name of the link at the current iterator position.
 	Name() string
 	// GetNext: this function combines g_menu_link_iter_next() with
@@ -525,10 +525,10 @@ type MenuModel struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*MenuModel)(nil)
-
 // MenuModeller describes MenuModel's abstract methods.
 type MenuModeller interface {
+	gextras.Objector
+
 	// ItemAttributeValue queries the item at position item_index in model for
 	// the attribute specified by attribute.
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant

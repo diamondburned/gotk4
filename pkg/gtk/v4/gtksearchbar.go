@@ -69,8 +69,6 @@ type SearchBar struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*SearchBar)(nil)
-
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Widget: Widget{
@@ -86,6 +84,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -123,7 +122,7 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _arg1 *C.GtkEditable  // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkEditable)(unsafe.Pointer((entry).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkEditable)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
@@ -202,7 +201,7 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
 }
@@ -223,7 +222,7 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }

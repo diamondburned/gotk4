@@ -29,9 +29,8 @@ type ComboBoxAccessible struct {
 
 	atk.Action
 	atk.Selection
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ComboBoxAccessible)(nil)
 
 func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 	return &ComboBoxAccessible{
@@ -53,6 +52,7 @@ func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 		Selection: atk.Selection{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -60,12 +60,6 @@ func marshalComboBoxAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapComboBoxAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ComboBoxAccessible) Native() uintptr {
-	return v.ContainerAccessible.WidgetAccessible.Accessible.ObjectClass.Object.Native()
 }
 
 func (*ComboBoxAccessible) privateComboBoxAccessible() {}

@@ -43,8 +43,6 @@ type DataOutputStream struct {
 	Seekable
 }
 
-var _ gextras.Nativer = (*DataOutputStream)(nil)
-
 func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{
 		FilterOutputStream: FilterOutputStream{
@@ -69,7 +67,7 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer((baseStream).(gextras.Nativer).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_data_output_stream_new(_arg1)
 

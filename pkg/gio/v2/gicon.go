@@ -82,10 +82,10 @@ type Icon struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Icon)(nil)
-
 // Iconner describes Icon's abstract methods.
 type Iconner interface {
+	gextras.Objector
+
 	// Equal checks if two icons are equal.
 	Equal(icon2 Iconner) bool
 	// Serialize serializes a #GIcon into a #GVariant.
@@ -117,7 +117,7 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon2).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 

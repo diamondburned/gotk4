@@ -240,7 +240,7 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
@@ -332,7 +332,7 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
@@ -402,10 +402,10 @@ type Font struct {
 	pango.Font
 }
 
-var _ gextras.Nativer = (*Font)(nil)
-
 // Fonter describes Font's abstract methods.
 type Fonter interface {
+	gextras.Objector
+
 	privateFont()
 }
 
@@ -436,10 +436,10 @@ type FontMap struct {
 	pango.FontMap
 }
 
-var _ gextras.Nativer = (*FontMap)(nil)
-
 // FontMapper describes FontMap's abstract methods.
 type FontMapper interface {
+	gextras.Objector
+
 	// Resolution gets the resolution for the fontmap.
 	Resolution() float64
 	// SetDefault sets a default PangoCairoFontMap to use with Cairo.

@@ -45,10 +45,10 @@ type AppChooser struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*AppChooser)(nil)
-
 // AppChooserer describes AppChooser's abstract methods.
 type AppChooserer interface {
+	gextras.Objector
+
 	// AppInfo returns the currently selected application.
 	AppInfo() gio.AppInfor
 	// ContentType returns the current value of the AppChooser:content-type
@@ -72,6 +72,7 @@ func wrapAppChooser(obj *externglib.Object) *AppChooser {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

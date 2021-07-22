@@ -164,10 +164,10 @@ type Drive struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Drive)(nil)
-
 // Driver describes Drive's abstract methods.
 type Driver interface {
+	gextras.Objector
+
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
 	// CanPollForMedia checks if a drive can be polled for media changes.
@@ -369,7 +369,7 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
 
@@ -414,7 +414,7 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
@@ -707,7 +707,7 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
 
@@ -751,7 +751,7 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
 
@@ -795,7 +795,7 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
 

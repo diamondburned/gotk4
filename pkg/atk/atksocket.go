@@ -61,9 +61,8 @@ type Socket struct {
 	ObjectClass
 
 	Component
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Socket)(nil)
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
@@ -73,6 +72,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 		Component: Component{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -93,12 +93,6 @@ func NewSocket() *Socket {
 	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socket
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Socket) Native() uintptr {
-	return v.ObjectClass.Object.Native()
 }
 
 // Embed embeds the children of an Plug as the children of the Socket. The plug

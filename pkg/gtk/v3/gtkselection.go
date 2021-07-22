@@ -88,7 +88,7 @@ func (t TargetFlags) String() string {
 func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_selection_remove_all(_arg1)
 }

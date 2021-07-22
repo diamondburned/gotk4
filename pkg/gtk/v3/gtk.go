@@ -346,9 +346,8 @@ type EntryIconAccessible struct {
 
 	atk.Action
 	atk.Component
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*EntryIconAccessible)(nil)
 
 func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{
@@ -361,6 +360,7 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 		Component: atk.Component{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -368,12 +368,6 @@ func marshalEntryIconAccessibler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEntryIconAccessible(obj), nil
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *EntryIconAccessible) Native() uintptr {
-	return v.ObjectClass.Object.Native()
 }
 
 func (*EntryIconAccessible) privateEntryIconAccessible() {}

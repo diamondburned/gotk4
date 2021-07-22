@@ -253,8 +253,6 @@ type Util struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Util)(nil)
-
 func wrapUtil(obj *externglib.Object) *Util {
 	return &Util{
 		Object: obj,

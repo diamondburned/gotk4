@@ -124,10 +124,10 @@ type SelectionModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*SelectionModel)(nil)
-
 // SelectionModeller describes SelectionModel's abstract methods.
 type SelectionModeller interface {
+	gextras.Objector
+
 	// Selection gets the set containing all currently selected items in the
 	// model.
 	Selection() *Bitset

@@ -79,8 +79,6 @@ type DeviceTool struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DeviceTool)(nil)
-
 func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,

@@ -43,9 +43,8 @@ type ColorButton struct {
 	Widget
 
 	ColorChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ColorButton)(nil)
 
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
@@ -62,10 +61,12 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		ColorChooser: ColorChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -107,12 +108,6 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ColorButton) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

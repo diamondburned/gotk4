@@ -28,8 +28,6 @@ type ToplevelAccessible struct {
 	atk.ObjectClass
 }
 
-var _ gextras.Nativer = (*ToplevelAccessible)(nil)
-
 func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{
 		ObjectClass: atk.ObjectClass{

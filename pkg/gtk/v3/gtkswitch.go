@@ -51,9 +51,8 @@ type Switch struct {
 
 	Actionable
 	Activatable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Switch)(nil)
 
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{
@@ -67,6 +66,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 			Buildable: Buildable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Widget: Widget{
@@ -79,11 +79,13 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Activatable: Activatable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -104,12 +106,6 @@ func NewSwitch() *Switch {
 	__switch = wrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Switch) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.

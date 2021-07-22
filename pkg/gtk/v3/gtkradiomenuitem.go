@@ -53,8 +53,6 @@ type RadioMenuItem struct {
 	CheckMenuItem
 }
 
-var _ gextras.Nativer = (*RadioMenuItem)(nil)
-
 func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	return &RadioMenuItem{
 		CheckMenuItem: CheckMenuItem{
@@ -71,6 +69,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 							Buildable: Buildable{
 								Object: obj,
 							},
+							Object: obj,
 						},
 					},
 				},
@@ -85,11 +84,13 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Activatable: Activatable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

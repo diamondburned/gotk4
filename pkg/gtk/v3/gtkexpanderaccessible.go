@@ -30,8 +30,6 @@ type ExpanderAccessible struct {
 	atk.Action
 }
 
-var _ gextras.Nativer = (*ExpanderAccessible)(nil)
-
 func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{
 		ContainerAccessible: ContainerAccessible{

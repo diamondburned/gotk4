@@ -35,8 +35,6 @@ type SingleSelection struct {
 	SelectionModel
 }
 
-var _ gextras.Nativer = (*SingleSelection)(nil)
-
 func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
 	return &SingleSelection{
 		Object: obj,
@@ -59,7 +57,7 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkSingleSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_single_selection_new(_arg1)
 
@@ -203,7 +201,7 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_single_selection_set_model(_arg0, _arg1)
 }

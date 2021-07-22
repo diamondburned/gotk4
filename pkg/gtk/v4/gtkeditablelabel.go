@@ -50,9 +50,8 @@ type EditableLabel struct {
 	Widget
 
 	Editable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*EditableLabel)(nil)
 
 func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	return &EditableLabel{
@@ -69,6 +68,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Editable: Editable{
 			Widget: Widget{
@@ -84,8 +84,10 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -110,12 +112,6 @@ func NewEditableLabel(str string) *EditableLabel {
 	_editableLabel = wrapEditableLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _editableLabel
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *EditableLabel) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Editing returns whether the label is currently in “editing mode”.

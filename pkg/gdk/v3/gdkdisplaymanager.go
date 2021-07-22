@@ -60,8 +60,6 @@ type DisplayManager struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DisplayManager)(nil)
-
 func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	return &DisplayManager{
 		Object: obj,

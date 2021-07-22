@@ -45,7 +45,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType
 	var _arg9 C.int         // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)

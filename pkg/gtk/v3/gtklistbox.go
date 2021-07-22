@@ -56,7 +56,7 @@ func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 	fn := v.(ListBoxCreateWidgetFunc)
 	widget := fn(item)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	return cret
 }
@@ -211,8 +211,6 @@ type ListBox struct {
 	Container
 }
 
-var _ gextras.Nativer = (*ListBox)(nil)
-
 func wrapListBox(obj *externglib.Object) *ListBox {
 	return &ListBox{
 		Container: Container{
@@ -226,6 +224,7 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -272,7 +271,7 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_ListBoxCreateWidgetFunc)
 	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -446,7 +445,7 @@ func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
@@ -492,7 +491,7 @@ func (box *ListBox) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_list_box_prepend(_arg0, _arg1)
 }
@@ -632,7 +631,7 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((placeholder).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
 
 	C.gtk_list_box_set_placeholder(_arg0, _arg1)
 }
@@ -704,9 +703,8 @@ type ListBoxRow struct {
 	Bin
 
 	Actionable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ListBoxRow)(nil)
 
 func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	return &ListBoxRow{
@@ -722,6 +720,7 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -736,8 +735,10 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -758,12 +759,6 @@ func NewListBoxRow() *ListBoxRow {
 	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ListBoxRow) Native() uintptr {
-	return v.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // Changed marks row as changed, causing any state that depends on this to be
@@ -900,7 +895,7 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((header).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
 
 	C.gtk_list_box_row_set_header(_arg0, _arg1)
 }

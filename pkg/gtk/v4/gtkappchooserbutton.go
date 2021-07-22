@@ -53,9 +53,8 @@ type AppChooserButton struct {
 	Widget
 
 	AppChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*AppChooserButton)(nil)
 
 func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	return &AppChooserButton{
@@ -72,6 +71,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		AppChooser: AppChooser{
 			Widget: Widget{
@@ -87,8 +87,10 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -116,12 +118,6 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	return _appChooserButton
 }
 
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *AppChooserButton) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
-}
-
 // AppendCustomItem appends a custom item to the list of applications that is
 // shown in the popup.
 //
@@ -141,7 +137,7 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }

@@ -36,8 +36,6 @@ type MenuBar struct {
 	MenuShell
 }
 
-var _ gextras.Nativer = (*MenuBar)(nil)
-
 func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	return &MenuBar{
 		MenuShell: MenuShell{
@@ -52,6 +50,7 @@ func wrapMenuBar(obj *externglib.Object) *MenuBar {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -87,7 +86,7 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 

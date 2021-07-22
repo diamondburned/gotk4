@@ -28,8 +28,6 @@ type HButtonBox struct {
 	ButtonBox
 }
 
-var _ gextras.Nativer = (*HButtonBox)(nil)
-
 func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 	return &HButtonBox{
 		ButtonBox: ButtonBox{
@@ -45,11 +43,13 @@ func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 				Orientable: Orientable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}

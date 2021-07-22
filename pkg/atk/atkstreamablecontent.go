@@ -65,10 +65,10 @@ type StreamableContent struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*StreamableContent)(nil)
-
 // StreamableContenter describes StreamableContent's abstract methods.
 type StreamableContenter interface {
+	gextras.Objector
+
 	// MIMEType gets the character string of the specified mime type.
 	MIMEType(i int) string
 	// NMIMETypes gets the number of mime types supported by this object.

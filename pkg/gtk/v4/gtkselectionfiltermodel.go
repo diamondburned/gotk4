@@ -30,8 +30,6 @@ type SelectionFilterModel struct {
 	gio.ListModel
 }
 
-var _ gextras.Nativer = (*SelectionFilterModel)(nil)
-
 func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{
 		Object: obj,
@@ -53,7 +51,7 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
 
@@ -90,7 +88,7 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel       // out
 
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 }

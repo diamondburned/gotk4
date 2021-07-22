@@ -76,10 +76,10 @@ type MenuShell struct {
 	Container
 }
 
-var _ gextras.Nativer = (*MenuShell)(nil)
-
 // MenuSheller describes MenuShell's abstract methods.
 type MenuSheller interface {
+	gextras.Objector
+
 	// ActivateItem activates the menu item within the menu shell.
 	ActivateItem(menuItem Widgetter, forceDeactivate bool)
 	// Append adds a new MenuItem to the end of the menu shell's item list.
@@ -132,6 +132,7 @@ func wrapMenuShell(obj *externglib.Object) *MenuShell {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 	}
@@ -150,7 +151,7 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 	if forceDeactivate {
 		_arg2 = C.TRUE
 	}
@@ -204,7 +205,7 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 	var _arg3 C.gboolean      // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
 	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
@@ -305,7 +306,7 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg2 C.gint          // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
@@ -317,7 +318,7 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_prepend(_arg0, _arg1)
 }
@@ -342,7 +343,7 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_shell_select_item(_arg0, _arg1)
 }

@@ -87,7 +87,7 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_value_set_expression(_arg1, _arg2)
 }
@@ -100,7 +100,7 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
@@ -109,8 +109,6 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 type CClosureExpression struct {
 	Expression
 }
-
-var _ gextras.Nativer = (*CClosureExpression)(nil)
 
 func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 	return &CClosureExpression{
@@ -134,8 +132,6 @@ type ClosureExpression struct {
 	Expression
 }
 
-var _ gextras.Nativer = (*ClosureExpression)(nil)
-
 func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 	return &ClosureExpression{
 		Expression: Expression{
@@ -156,8 +152,6 @@ func (*ClosureExpression) privateClosureExpression() {}
 type ConstantExpression struct {
 	Expression
 }
-
-var _ gextras.Nativer = (*ConstantExpression)(nil)
 
 func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 	return &ConstantExpression{
@@ -331,10 +325,10 @@ type Expression struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Expression)(nil)
-
 // Expressioner describes Expression's abstract methods.
 type Expressioner interface {
+	gextras.Objector
+
 	// Bind target's property named property to self.
 	Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch
 	// Evaluate evaluates the given expression and on success stores the result
@@ -508,8 +502,6 @@ type ObjectExpression struct {
 	Expression
 }
 
-var _ gextras.Nativer = (*ObjectExpression)(nil)
-
 func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 	return &ObjectExpression{
 		Expression: Expression{
@@ -568,8 +560,6 @@ type PropertyExpression struct {
 	Expression
 }
 
-var _ gextras.Nativer = (*PropertyExpression)(nil)
-
 func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 	return &PropertyExpression{
 		Expression: Expression{
@@ -599,7 +589,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	var _cret *C.GtkExpression // in
 
 	_arg1 = C.GType(thisType)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg3))
 

@@ -159,8 +159,6 @@ type Visual struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Visual)(nil)
-
 func wrapVisual(obj *externglib.Object) *Visual {
 	return &Visual{
 		Object: obj,

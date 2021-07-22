@@ -52,8 +52,6 @@ type Misc struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Misc)(nil)
-
 func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{
 		Object: obj,

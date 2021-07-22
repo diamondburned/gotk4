@@ -60,8 +60,6 @@ type FileInfo struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileInfo)(nil)
-
 func wrapFileInfo(obj *externglib.Object) *FileInfo {
 	return &FileInfo{
 		Object: obj,
@@ -1023,7 +1021,7 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_file_info_set_icon(_arg0, _arg1)
 }
@@ -1116,7 +1114,7 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
 }

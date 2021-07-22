@@ -46,8 +46,6 @@ type Clipboard struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Clipboard)(nil)
-
 func wrapClipboard(obj *externglib.Object) *Clipboard {
 	return &Clipboard{
 		Object: obj,
@@ -150,7 +148,7 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
@@ -202,7 +200,7 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
 
@@ -253,7 +251,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
 
@@ -307,7 +305,7 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
 
@@ -404,7 +402,7 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gdk_clipboard_store_finish(_arg0, _arg1, &_cerr)
 

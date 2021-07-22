@@ -37,8 +37,6 @@ type TCPConnection struct {
 	SocketConnection
 }
 
-var _ gextras.Nativer = (*TCPConnection)(nil)
-
 func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 	return &TCPConnection{
 		SocketConnection: SocketConnection{

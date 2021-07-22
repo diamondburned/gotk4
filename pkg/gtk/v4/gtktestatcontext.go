@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -32,7 +30,7 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(expr)))
 	defer C.free(unsafe.Pointer(_arg5))
-	_arg6 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg6 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg7 = C.GtkAccessibleRole(expectedRole)
 	_arg8 = C.GtkAccessibleRole(actualRole)
 
@@ -45,7 +43,7 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 	var _arg2 C.GtkAccessibleProperty // out
 	var _cret C.gboolean              // in
 
-	_arg1 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = C.GtkAccessibleProperty(property)
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
@@ -65,7 +63,7 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 	var _arg2 C.GtkAccessibleRelation // out
 	var _cret C.gboolean              // in
 
-	_arg1 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = C.GtkAccessibleRelation(relation)
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
@@ -86,7 +84,7 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	var _arg2 C.GtkAccessibleRole // out
 	var _cret C.gboolean          // in
 
-	_arg1 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = C.GtkAccessibleRole(role)
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
@@ -106,7 +104,7 @@ func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool 
 	var _arg2 C.GtkAccessibleState // out
 	var _cret C.gboolean           // in
 
-	_arg1 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = C.GtkAccessibleState(state)
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)

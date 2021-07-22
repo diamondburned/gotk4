@@ -26,8 +26,6 @@ type X11DeviceCore struct {
 	gdk.Device
 }
 
-var _ gextras.Nativer = (*X11DeviceCore)(nil)
-
 func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
 	return &X11DeviceCore{
 		Device: gdk.Device{

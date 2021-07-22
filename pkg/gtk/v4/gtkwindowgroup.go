@@ -41,8 +41,6 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*WindowGroup)(nil)
-
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,

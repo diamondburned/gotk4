@@ -75,8 +75,6 @@ type Frame struct {
 	Bin
 }
 
-var _ gextras.Nativer = (*Frame)(nil)
-
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
 		Bin: Bin{
@@ -91,6 +89,7 @@ func wrapFrame(obj *externglib.Object) *Frame {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 		},
@@ -227,7 +226,7 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }

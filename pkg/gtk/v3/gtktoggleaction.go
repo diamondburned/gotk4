@@ -40,8 +40,6 @@ type ToggleAction struct {
 	Action
 }
 
-var _ gextras.Nativer = (*ToggleAction)(nil)
-
 func wrapToggleAction(obj *externglib.Object) *ToggleAction {
 	return &ToggleAction{
 		Action: Action{

@@ -45,8 +45,6 @@ type HBox struct {
 	Box
 }
 
-var _ gextras.Nativer = (*HBox)(nil)
-
 func wrapHBox(obj *externglib.Object) *HBox {
 	return &HBox{
 		Box: Box{
@@ -61,11 +59,13 @@ func wrapHBox(obj *externglib.Object) *HBox {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

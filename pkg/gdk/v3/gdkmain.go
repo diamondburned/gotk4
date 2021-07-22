@@ -168,7 +168,7 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg3 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
@@ -252,13 +252,13 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 	var _arg6 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
 	_arg3 = C.GdkEventMask(eventMask)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer((confineTo).(gextras.Nativer).Native()))
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer((cursor).(gextras.Nativer).Native()))
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

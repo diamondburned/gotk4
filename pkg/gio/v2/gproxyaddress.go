@@ -36,8 +36,6 @@ type ProxyAddress struct {
 	InetSocketAddress
 }
 
-var _ gextras.Nativer = (*ProxyAddress)(nil)
-
 func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{
 		InetSocketAddress: InetSocketAddress{

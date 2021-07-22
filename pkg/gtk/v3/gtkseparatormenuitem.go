@@ -36,8 +36,6 @@ type SeparatorMenuItem struct {
 	MenuItem
 }
 
-var _ gextras.Nativer = (*SeparatorMenuItem)(nil)
-
 func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 	return &SeparatorMenuItem{
 		MenuItem: MenuItem{
@@ -53,6 +51,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
@@ -67,11 +66,13 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }

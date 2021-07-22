@@ -167,8 +167,6 @@ type AboutDialog struct {
 	Window
 }
 
-var _ gextras.Nativer = (*AboutDialog)(nil)
-
 func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	return &AboutDialog{
 		Window: Window{
@@ -185,6 +183,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 			Root: Root{
 				NativeSurface: NativeSurface{
@@ -201,12 +200,14 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 						ConstraintTarget: ConstraintTarget{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			ShortcutManager: ShortcutManager{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -691,7 +692,7 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable   // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((logo).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }

@@ -30,8 +30,6 @@ type GestureZoom struct {
 	Gesture
 }
 
-var _ gextras.Nativer = (*GestureZoom)(nil)
-
 func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{
 		Gesture: Gesture{
@@ -54,7 +52,7 @@ func NewGestureZoom(widget Widgetter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_zoom_new(_arg1)
 

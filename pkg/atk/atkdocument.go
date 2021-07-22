@@ -69,10 +69,10 @@ type Document struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Document)(nil)
-
 // Documenter describes Document's abstract methods.
 type Documenter interface {
+	gextras.Objector
+
 	// AttributeValue retrieves the value of the given attribute_name inside
 	// document.
 	AttributeValue(attributeName string) string

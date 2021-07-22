@@ -94,7 +94,7 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY
 	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -180,7 +180,7 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX int, hot
 	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 

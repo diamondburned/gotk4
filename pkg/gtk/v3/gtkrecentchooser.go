@@ -183,10 +183,10 @@ type RecentChooser struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*RecentChooser)(nil)
-
 // RecentChooserer describes RecentChooser's abstract methods.
 type RecentChooserer interface {
+	gextras.Objector
+
 	// AddFilter adds filter to the list of RecentFilter objects held by
 	// chooser.
 	AddFilter(filter *RecentFilter)

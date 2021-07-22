@@ -54,10 +54,10 @@ type DBusInterface struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DBusInterface)(nil)
-
 // DBusInterfacer describes DBusInterface's abstract methods.
 type DBusInterfacer interface {
+	gextras.Objector
+
 	// GetObject gets the BusObject that interface_ belongs to, if any.
 	GetObject() DBusObjector
 	// Info gets D-Bus introspection information for the D-Bus interface
@@ -125,7 +125,7 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg1 *C.GDBusObject    // out
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
-	_arg1 = (*C.GDBusObject)(unsafe.Pointer((object).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

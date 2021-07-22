@@ -71,8 +71,6 @@ type PageSetup struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*PageSetup)(nil)
-
 func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	return &PageSetup{
 		Object: obj,

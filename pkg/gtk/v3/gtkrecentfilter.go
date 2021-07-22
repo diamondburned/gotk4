@@ -170,9 +170,8 @@ type RecentFilter struct {
 	externglib.InitiallyUnowned
 
 	Buildable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*RecentFilter)(nil)
 
 func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 	return &RecentFilter{
@@ -182,6 +181,7 @@ func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 		Buildable: Buildable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -210,12 +210,6 @@ func NewRecentFilter() *RecentFilter {
 	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *RecentFilter) Native() uintptr {
-	return v.InitiallyUnowned.Object.Native()
 }
 
 // AddAge adds a rule that allows resources based on their age - that is, the

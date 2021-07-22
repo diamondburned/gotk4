@@ -117,10 +117,10 @@ type TreeSortable struct {
 	TreeModel
 }
 
-var _ gextras.Nativer = (*TreeSortable)(nil)
-
 // TreeSortabler describes TreeSortable's abstract methods.
 type TreeSortabler interface {
+	gextras.Objector
+
 	// SortColumnID fills in sort_column_id and order with the current sort
 	// column and the order.
 	SortColumnID() (int, SortType, bool)

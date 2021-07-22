@@ -36,9 +36,8 @@ type FileChooserWidget struct {
 	Box
 
 	FileChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*FileChooserWidget)(nil)
 
 func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	return &FileChooserWidget{
@@ -54,15 +53,18 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 					Buildable: Buildable{
 						Object: obj,
 					},
+					Object: obj,
 				},
 			},
 			Orientable: Orientable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		FileChooser: FileChooser{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -88,12 +90,6 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	_fileChooserWidget = wrapFileChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserWidget
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *FileChooserWidget) Native() uintptr {
-	return v.Box.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 func (*FileChooserWidget) privateFileChooserWidget() {}

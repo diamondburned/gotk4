@@ -57,9 +57,8 @@ type ToolButton struct {
 	ToolItem
 
 	Actionable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*ToolButton)(nil)
 
 func wrapToolButton(obj *externglib.Object) *ToolButton {
 	return &ToolButton{
@@ -76,12 +75,14 @@ func wrapToolButton(obj *externglib.Object) *ToolButton {
 						Buildable: Buildable{
 							Object: obj,
 						},
+						Object: obj,
 					},
 				},
 			},
 			Activatable: Activatable{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		Actionable: Actionable{
 			Widget: Widget{
@@ -94,8 +95,10 @@ func wrapToolButton(obj *externglib.Object) *ToolButton {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -112,7 +115,7 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -147,12 +150,6 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 	_toolButton = wrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *ToolButton) Native() uintptr {
-	return v.ToolItem.Bin.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // IconName returns the name of the themed icon for the tool button, see
@@ -287,7 +284,7 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
 
 	C.gtk_tool_button_set_icon_widget(_arg0, _arg1)
 }
@@ -319,7 +316,7 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_tool_button_set_label_widget(_arg0, _arg1)
 }

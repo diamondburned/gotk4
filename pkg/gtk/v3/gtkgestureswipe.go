@@ -37,8 +37,6 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
-var _ gextras.Nativer = (*GestureSwipe)(nil)
-
 func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{
@@ -62,7 +60,7 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 

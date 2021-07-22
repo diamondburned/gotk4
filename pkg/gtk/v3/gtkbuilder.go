@@ -297,8 +297,6 @@ type Builder struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Builder)(nil)
-
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{
 		Object: obj,
@@ -699,7 +697,7 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.GType(templateType)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg3))

@@ -45,8 +45,6 @@ type UnixFDList struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*UnixFDList)(nil)
-
 func wrapUnixFDList(obj *externglib.Object) *UnixFDList {
 	return &UnixFDList{
 		Object: obj,

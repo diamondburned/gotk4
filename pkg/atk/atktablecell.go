@@ -53,10 +53,10 @@ type TableCell struct {
 	ObjectClass
 }
 
-var _ gextras.Nativer = (*TableCell)(nil)
-
 // TableCeller describes TableCell's abstract methods.
 type TableCeller interface {
+	gextras.Objector
+
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	ColumnSpan() int

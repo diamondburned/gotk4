@@ -28,8 +28,6 @@ type FrameAccessible struct {
 	ContainerAccessible
 }
 
-var _ gextras.Nativer = (*FrameAccessible)(nil)
-
 func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	return &FrameAccessible{
 		ContainerAccessible: ContainerAccessible{

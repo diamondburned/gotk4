@@ -30,10 +30,10 @@ type EventController struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*EventController)(nil)
-
 // EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
+	gextras.Objector
+
 	// PropagationPhase gets the propagation phase at which controller handles
 	// events.
 	PropagationPhase() PropagationPhase

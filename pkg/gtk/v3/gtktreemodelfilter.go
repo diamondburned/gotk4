@@ -167,8 +167,6 @@ type TreeModelFilter struct {
 	TreeModel
 }
 
-var _ gextras.Nativer = (*TreeModelFilter)(nil)
-
 func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
 	return &TreeModelFilter{
 		Object: obj,

@@ -86,8 +86,6 @@ type TreeModelSort struct {
 	TreeSortable
 }
 
-var _ gextras.Nativer = (*TreeModelSort)(nil)
-
 func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 	return &TreeModelSort{
 		Object: obj,
@@ -114,7 +112,7 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((childModel).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
 
 	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
 

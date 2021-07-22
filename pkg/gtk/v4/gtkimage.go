@@ -110,8 +110,6 @@ type Image struct {
 	Widget
 }
 
-var _ gextras.Nativer = (*Image)(nil)
-
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
 		Widget: Widget{
@@ -127,6 +125,7 @@ func wrapImage(obj *externglib.Object) *Image {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 	}
 }
@@ -187,7 +186,7 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.gtk_image_new_from_gicon(_arg1)
 
@@ -232,7 +231,7 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
 
@@ -441,7 +440,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon    // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1)
 }
@@ -468,7 +467,7 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
 }

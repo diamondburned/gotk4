@@ -41,9 +41,8 @@ type Layout struct {
 	Container
 
 	Scrollable
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*Layout)(nil)
 
 func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{
@@ -58,11 +57,13 @@ func wrapLayout(obj *externglib.Object) *Layout {
 				Buildable: Buildable{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
 		Scrollable: Scrollable{
 			Object: obj,
 		},
+		Object: obj,
 	}
 }
 
@@ -90,12 +91,6 @@ func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
 	_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *Layout) Native() uintptr {
-	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
@@ -188,7 +183,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((childWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -204,7 +199,7 @@ func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
 	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((childWidget).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

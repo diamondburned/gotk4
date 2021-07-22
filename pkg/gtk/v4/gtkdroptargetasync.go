@@ -59,8 +59,6 @@ type DropTargetAsync struct {
 	EventController
 }
 
-var _ gextras.Nativer = (*DropTargetAsync)(nil)
-
 func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{
 		EventController: EventController{
@@ -140,7 +138,7 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg1 *C.GdkDrop            // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkDrop)(unsafe.Pointer((drop).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDrop)(unsafe.Pointer(drop.Native()))
 
 	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
 }

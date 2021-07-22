@@ -73,8 +73,6 @@ type DeviceTool struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*DeviceTool)(nil)
-
 func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,
@@ -147,8 +145,6 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 type DragContext struct {
 	*externglib.Object
 }
-
-var _ gextras.Nativer = (*DragContext)(nil)
 
 func wrapDragContext(obj *externglib.Object) *DragContext {
 	return &DragContext{
@@ -322,7 +318,7 @@ func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bo
 	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((ipcWindow).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
@@ -343,7 +339,7 @@ func (context *DragContext) SetDevice(device Devicer) {
 	var _arg1 *C.GdkDevice      // out
 
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gdk_drag_context_set_device(_arg0, _arg1)
 }

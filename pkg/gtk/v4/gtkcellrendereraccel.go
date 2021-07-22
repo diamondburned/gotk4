@@ -61,8 +61,6 @@ type CellRendererAccel struct {
 	CellRendererText
 }
 
-var _ gextras.Nativer = (*CellRendererAccel)(nil)
-
 func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{

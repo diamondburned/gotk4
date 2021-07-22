@@ -156,10 +156,10 @@ type FileChooser struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*FileChooser)(nil)
-
 // FileChooserer describes FileChooser's abstract methods.
 type FileChooserer interface {
+	gextras.Objector
+
 	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id string, label string, options []string, optionLabels []string)
 	// AddFilter adds filter to the list of filters that the user can select
@@ -313,7 +313,7 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((folder).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
 	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -561,7 +561,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((folder).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
 	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
 
@@ -630,7 +630,7 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_set_current_folder(_arg0, _arg1, &_cerr)
 
@@ -711,7 +711,7 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
 

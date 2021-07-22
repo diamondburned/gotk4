@@ -43,8 +43,6 @@ type Snapshot struct {
 	gdk.Snapshot
 }
 
-var _ gextras.Nativer = (*Snapshot)(nil)
-
 func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{
 		Snapshot: gdk.Snapshot{
@@ -215,7 +213,7 @@ func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 	var _arg1 *C.GskRenderNode // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((node).(gextras.Nativer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	C.gtk_snapshot_append_node(_arg0, _arg1)
 }
@@ -328,7 +326,7 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_append_texture(_arg0, _arg1, _arg2)

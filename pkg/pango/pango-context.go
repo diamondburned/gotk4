@@ -123,8 +123,6 @@ type Context struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Context)(nil)
-
 func wrapContext(obj *externglib.Object) *Context {
 	return &Context{
 		Object: obj,
@@ -512,7 +510,7 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
 	C.pango_context_set_font_map(_arg0, _arg1)
 }

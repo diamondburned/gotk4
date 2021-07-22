@@ -91,10 +91,10 @@ type Seekable struct {
 	*externglib.Object
 }
 
-var _ gextras.Nativer = (*Seekable)(nil)
-
 // Seekabler describes Seekable's abstract methods.
 type Seekabler interface {
+	gextras.Objector
+
 	// CanSeek tests if the stream supports the Iface.
 	CanSeek() bool
 	// CanTruncate tests if the length of the stream can be adjusted with

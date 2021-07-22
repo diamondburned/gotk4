@@ -46,9 +46,8 @@ type AppChooserWidget struct {
 	Widget
 
 	AppChooser
+	*externglib.Object
 }
-
-var _ gextras.Nativer = (*AppChooserWidget)(nil)
 
 func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
@@ -65,6 +64,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 			ConstraintTarget: ConstraintTarget{
 				Object: obj,
 			},
+			Object: obj,
 		},
 		AppChooser: AppChooser{
 			Widget: Widget{
@@ -80,8 +80,10 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 				ConstraintTarget: ConstraintTarget{
 					Object: obj,
 				},
+				Object: obj,
 			},
 		},
+		Object: obj,
 	}
 }
 
@@ -107,12 +109,6 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	_appChooserWidget = wrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
-}
-
-// Native implements gextras.Nativer. It returns the underlying GObject
-// field.
-func (v *AppChooserWidget) Native() uintptr {
-	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
 // DefaultText returns the text that is shown if there are not applications that

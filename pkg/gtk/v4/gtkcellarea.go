@@ -465,6 +465,11 @@ func marshalCellAreaer(p uintptr) (interface{}, error) {
 	return wrapCellArea(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (area *CellArea) Native() uintptr {
+	return area.Object.Native()
+}
+
 // Activate activates area, usually by activating the currently focused cell,
 // however some subclasses which embed widgets in the area can also activate a
 // widget if it currently has the focus.

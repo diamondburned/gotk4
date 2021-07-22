@@ -170,6 +170,33 @@ func findInTree(reqs []Tree, girType string, ignore int) bool {
 	return false
 }
 
+// HasAmbiguousNative returns true if the Native method cannot be accessed
+// normally. This is usually because the type contains both the GObject and
+// GInitiallyUnowned fields.
+func (tree *Tree) HasAmbiguousNative() bool {
+	if len(tree.Requires) == 1 {
+		return false
+	}
+
+	var hasGInitiallyUnowned bool
+	var hasGObject bool
+
+	for _, req := range tree.Requires {
+		if req.IsExternGLib("InitiallyUnowned") {
+			hasGInitiallyUnowned = true
+		}
+		if req.IsExternGLib("Object") {
+			hasGObject = true
+		}
+
+		if hasGInitiallyUnowned && hasGObject {
+			return true
+		}
+	}
+
+	return false
+}
+
 // HasAmbiguousSelector returns true if the GObject methods cannot be accessed
 // normally.
 func (tree *Tree) HasAmbiguousSelector() bool {

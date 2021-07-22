@@ -966,6 +966,11 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (widget *Widget) Native() uintptr {
+	return widget.Object.Native()
+}
+
 // ActionSetEnabled: enable or disable an action installed with
 // gtk_widget_class_install_action().
 func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {

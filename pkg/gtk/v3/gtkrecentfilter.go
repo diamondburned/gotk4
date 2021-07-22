@@ -212,6 +212,11 @@ func NewRecentFilter() *RecentFilter {
 	return _recentFilter
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (filter *RecentFilter) Native() uintptr {
+	return filter.Object.Native()
+}
+
 // AddAge adds a rule that allows resources based on their age - that is, the
 // number of days elapsed since they were last modified.
 func (filter *RecentFilter) AddAge(days int) {

@@ -173,6 +173,11 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	return _treeViewColumn
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (treeColumn *TreeViewColumn) Native() uintptr {
+	return treeColumn.Object.Native()
+}
+
 // AddAttribute adds an attribute mapping to the list in tree_column. The column
 // is the column of the model to get a value from, and the attribute is the
 // parameter on cell_renderer to be set from the value. So for example if column

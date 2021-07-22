@@ -1195,6 +1195,11 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (widget *Widget) Native() uintptr {
+	return widget.Object.Native()
+}
+
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 // this function activates them. Activation is what happens when you press Enter
 // on a widget during key navigation. If widget isn't activatable, the function

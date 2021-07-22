@@ -66,6 +66,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 
+	{{ if .Tree.HasAmbiguousNative }}
+	// Native solves the ambiguous selector of this class or interface.
+	func ({{ .Recv }} *{{ $.StructName }}) Native() uintptr {
+		return {{ .Recv }}.Object.Native()
+	}
+	{{ end }}
+
 	{{ range .Methods }}
 	{{ GoDoc . 0 }}
 	func ({{ .Recv }} *{{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
@@ -101,6 +108,16 @@ func GenerateClass(gen FileGeneratorWriter, class *gir.Class) bool {
 type ifacegenData struct {
 	*ifacegen.Generator
 	HasMarshaler bool
+}
+
+func (d ifacegenData) Recv() string {
+	if len(d.Methods) > 0 {
+		return d.Methods[0].Recv
+	}
+	if len(d.Virtuals) > 0 {
+		return d.Virtuals[0].Recv
+	}
+	return "v"
 }
 
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {

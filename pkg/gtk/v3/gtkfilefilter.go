@@ -209,6 +209,11 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	return _fileFilter
 }
 
+// Native solves the ambiguous selector of this class or interface.
+func (filter *FileFilter) Native() uintptr {
+	return filter.Object.Native()
+}
+
 // AddCustom adds rule to a filter that allows files based on a custom callback
 // function. The bitfield needed which is passed in provides information about
 // what sorts of information that the filter function needs; this allows GTK+ to

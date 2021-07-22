@@ -104,7 +104,11 @@ func (h *Header) ImportPubl(resolved *types.Resolved) {
 		return
 	}
 
-	h.ImportResolvedType(resolved.PublImport)
+	if resolved.IsAbstract() {
+		h.ImportResolvedType(resolved.PublImport)
+	} else {
+		h.ImportResolvedType(resolved.ImplImport)
+	}
 
 	if resolved.Extern != nil {
 		callback, ok := resolved.Extern.Type.(*gir.Callback)

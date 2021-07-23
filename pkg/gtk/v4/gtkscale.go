@@ -186,7 +186,9 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
 
@@ -330,10 +332,12 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_layout = &pango.Layout{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_layout = &pango.Layout{
+				Object: obj,
+			}
 		}
 	}
 
@@ -432,9 +436,11 @@ func (scale *Scale) SetFormatValueFunc(fn ScaleFormatValueFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_ScaleFormatValueFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_ScaleFormatValueFunc)
+		_arg2 = C.gpointer(gbox.Assign(fn))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_scale_set_format_value_func(_arg0, _arg1, _arg2, _arg3)
 }

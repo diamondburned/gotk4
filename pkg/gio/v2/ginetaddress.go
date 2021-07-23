@@ -92,7 +92,9 @@ func NewInetAddressFromString(_string string) *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _inetAddress
 }

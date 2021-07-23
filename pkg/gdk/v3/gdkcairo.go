@@ -126,7 +126,9 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 
 	var _drawingContext *DrawingContext // out
 
-	_drawingContext = wrapDrawingContext(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_drawingContext = wrapDrawingContext(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _drawingContext
 }
@@ -254,7 +256,9 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg2 = C.int(scale)
-	_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	if forWindow != nil {
+		_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	}
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
 

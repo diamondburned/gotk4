@@ -213,7 +213,9 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _stateSet
 }

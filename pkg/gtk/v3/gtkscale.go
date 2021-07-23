@@ -150,7 +150,9 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
 
@@ -290,10 +292,12 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_layout = &pango.Layout{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_layout = &pango.Layout{
+				Object: obj,
+			}
 		}
 	}
 

@@ -160,7 +160,9 @@ func (self *DropTarget) Drop() gdk.Dropper {
 
 	var _drop gdk.Dropper // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
+	if _cret != nil {
+		_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
+	}
 
 	return _drop
 }
@@ -178,11 +180,13 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_content_formats_ref(_cret)
+		runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _contentFormats
 }
@@ -216,7 +220,9 @@ func (self *DropTarget) Value() *externglib.Value {
 
 	var _value *externglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	}
 
 	return _value
 }

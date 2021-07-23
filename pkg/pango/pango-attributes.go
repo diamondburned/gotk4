@@ -206,7 +206,9 @@ func AttrTypeGetName(typ AttrType) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1271,7 +1273,9 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _attribute
 }
@@ -1418,17 +1422,21 @@ func (list *AttrList) Copy() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+	if list != nil {
+		_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+	}
 
 	_cret = C.pango_attr_list_copy(_arg0)
 
 	var _attrList *AttrList // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_attr_list_ref(_cret)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
+		runtime.SetFinalizer(_attrList, func(v *AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _attrList
 }
@@ -1472,11 +1480,13 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_attr_list_ref(_cret)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
+		runtime.SetFinalizer(_attrList, func(v *AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _attrList
 }
@@ -1799,16 +1809,20 @@ func (src *Color) Copy() *Color {
 	var _arg0 *C.PangoColor // out
 	var _cret *C.PangoColor // in
 
-	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(src)))
+	if src != nil {
+		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(src)))
+	}
 
 	_cret = C.pango_color_copy(_arg0)
 
 	var _color *Color // out
 
-	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_color, func(v *Color) {
-		C.pango_color_free((*C.PangoColor)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_color, func(v *Color) {
+			C.pango_color_free((*C.PangoColor)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _color
 }
@@ -1826,7 +1840,9 @@ func (color *Color) Parse(spec string) bool {
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1860,7 +1876,9 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _arg2 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg2))
 

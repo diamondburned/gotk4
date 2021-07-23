@@ -233,7 +233,9 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
 
@@ -260,7 +262,9 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
@@ -324,7 +328,9 @@ func (image *Image) GIcon() gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	}
 
 	return _icon
 }
@@ -344,7 +350,9 @@ func (image *Image) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -380,7 +388,9 @@ func (image *Image) Paintable() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	if _cret != nil {
+		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	}
 
 	return _paintable
 }
@@ -473,7 +483,9 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
 
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
 }
@@ -489,7 +501,9 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }

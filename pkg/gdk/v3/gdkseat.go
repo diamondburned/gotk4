@@ -189,7 +189,9 @@ func (seat *Seat) Keyboard() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	}
 
 	return _device
 }
@@ -205,7 +207,9 @@ func (seat *Seat) Pointer() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	}
 
 	return _device
 }

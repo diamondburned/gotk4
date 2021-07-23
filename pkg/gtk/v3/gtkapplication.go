@@ -260,7 +260,9 @@ func (application *Application) AddAccelerator(accelerator string, actionName st
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	if parameter != nil {
+		_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	}
 
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
@@ -383,7 +385,9 @@ func (application *Application) ActiveWindow() *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _window
 }
@@ -400,7 +404,9 @@ func (application *Application) AppMenu() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -465,7 +471,9 @@ func (application *Application) WindowByID(id uint) *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _window
 }
@@ -527,7 +535,9 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	var _cret C.guint                      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	if window != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	}
 	_arg2 = C.GtkApplicationInhibitFlags(flags)
 	if reason != "" {
 		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(reason)))
@@ -656,7 +666,9 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	if parameter != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	}
 
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }
@@ -731,7 +743,9 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(appMenu.Native()))
+	if appMenu != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(appMenu.Native()))
+	}
 
 	C.gtk_application_set_app_menu(_arg0, _arg1)
 }
@@ -758,7 +772,9 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	if menubar != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	}
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }

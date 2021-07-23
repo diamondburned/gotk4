@@ -96,10 +96,14 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 	var _arg8 C.int                    // out
 	var _cret *C.GtkConstraint         // in
 
-	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
+	if target != nil {
+		_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
+	}
 	_arg2 = C.GtkConstraintAttribute(targetAttribute)
 	_arg3 = C.GtkConstraintRelation(relation)
-	_arg4 = C.gpointer(unsafe.Pointer(source.Native()))
+	if source != nil {
+		_arg4 = C.gpointer(unsafe.Pointer(source.Native()))
+	}
 	_arg5 = C.GtkConstraintAttribute(sourceAttribute)
 	_arg6 = C.double(multiplier)
 	_arg7 = C.double(constant)
@@ -124,7 +128,9 @@ func NewConstraintConstant(target ConstraintTargetter, targetAttribute Constrain
 	var _arg5 C.int                    // out
 	var _cret *C.GtkConstraint         // in
 
-	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
+	if target != nil {
+		_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
+	}
 	_arg2 = C.GtkConstraintAttribute(targetAttribute)
 	_arg3 = C.GtkConstraintRelation(relation)
 	_arg4 = C.double(constant)
@@ -203,7 +209,9 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 
 	var _constraintTarget ConstraintTargetter // out
 
-	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+	if _cret != nil {
+		_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+	}
 
 	return _constraintTarget
 }
@@ -256,7 +264,9 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 
 	var _constraintTarget ConstraintTargetter // out
 
-	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+	if _cret != nil {
+		_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+	}
 
 	return _constraintTarget
 }

@@ -232,8 +232,10 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_tls_interaction_ask_password_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -439,8 +441,10 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 	}
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_tls_interaction_request_certificate_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

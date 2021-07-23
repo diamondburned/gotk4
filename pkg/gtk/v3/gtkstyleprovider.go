@@ -90,7 +90,9 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 
 	var _iconFactory *IconFactory // out
 
-	_iconFactory = wrapIconFactory(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconFactory = wrapIconFactory(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _iconFactory
 }
@@ -112,7 +114,9 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 
 	var _styleProperties *StyleProperties // out
 
-	_styleProperties = wrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_styleProperties = wrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _styleProperties
 }

@@ -168,16 +168,20 @@ func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
 
-	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
+	if item != nil {
+		_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
+	}
 
 	_cret = C.pango_item_copy(_arg0)
 
 	var _ret *Item // out
 
-	_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_ret, func(v *Item) {
+			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _ret
 }

@@ -220,7 +220,9 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *Spin
 	var _arg3 C.guint          // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 	_arg2 = C.gdouble(climbRate)
 	_arg3 = C.guint(digits)
 
@@ -275,7 +277,9 @@ func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float6
 	var _arg3 C.guint          // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 	_arg2 = C.gdouble(climbRate)
 	_arg3 = C.guint(digits)
 

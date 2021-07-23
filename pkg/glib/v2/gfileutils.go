@@ -848,7 +848,9 @@ func PathSkipRoot(fileName string) string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }

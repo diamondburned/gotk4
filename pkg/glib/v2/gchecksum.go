@@ -82,8 +82,10 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -106,8 +108,10 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -136,10 +140,12 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	var _checksum *Checksum // out
 
-	_checksum = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_checksum, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_checksum = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_checksum, func(v *Checksum) {
+			C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _checksum
 }

@@ -421,7 +421,9 @@ func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordTy
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _object
 }

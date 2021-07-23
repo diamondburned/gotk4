@@ -585,10 +585,12 @@ func ScriptGetSampleLanguage(script Script) *Language {
 
 	var _language *Language // out
 
-	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_language, func(v *Language) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	if _cret != nil {
+		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_language, func(v *Language) {
+			C.free(gextras.StructNative(unsafe.Pointer(v)))
+		})
+	}
 
 	return _language
 }

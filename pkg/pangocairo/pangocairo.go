@@ -76,7 +76,9 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _fontOptions
 }
@@ -108,7 +110,9 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 	var _arg2 *C.cairo_font_options_t // out
 
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	if options != nil {
+		_arg2 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	}
 
 	C.pango_cairo_context_set_font_options(_arg1, _arg2)
 }
@@ -139,9 +143,11 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 	var _arg4 C.GDestroyNotify
 
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
 }
@@ -499,7 +505,9 @@ func (fontmap *FontMap) Resolution() float64 {
 func (fontmap *FontMap) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
+	if fontmap != nil {
+		_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
+	}
 
 	C.pango_cairo_font_map_set_default(_arg0)
 }

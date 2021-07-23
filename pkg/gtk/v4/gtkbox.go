@@ -187,7 +187,9 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	if sibling != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	}
 
 	C.gtk_box_insert_child_after(_arg0, _arg1, _arg2)
 }
@@ -228,7 +230,9 @@ func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	if sibling != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	}
 
 	C.gtk_box_reorder_child_after(_arg0, _arg1, _arg2)
 }

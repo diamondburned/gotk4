@@ -102,15 +102,17 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -130,10 +132,12 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+		})
+	}
 
 	return _surface
 }

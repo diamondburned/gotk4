@@ -164,7 +164,9 @@ func (self *IconPaintable) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -187,7 +189,9 @@ func (self *IconPaintable) IconName() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }
@@ -323,10 +327,12 @@ func (self *IconTheme) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_display = &gdk.Display{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_display = &gdk.Display{
+				Object: obj,
+			}
 		}
 	}
 
@@ -410,18 +416,20 @@ func (self *IconTheme) ResourcePath() []string {
 
 	var _utf8s []string // out
 
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 
@@ -441,18 +449,20 @@ func (self *IconTheme) SearchPath() []string {
 
 	var _filenames []string // out
 
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_filenames = make([]string, i)
-		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_filenames = make([]string, i)
+			for i := range src {
+				_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 

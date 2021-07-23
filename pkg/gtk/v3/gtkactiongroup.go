@@ -316,7 +316,9 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg1 *C.GtkAccelGroup  // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	if accelGroup != nil {
+		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	}
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }

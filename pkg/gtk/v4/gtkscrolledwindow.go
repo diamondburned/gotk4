@@ -243,7 +243,9 @@ func (scrolledWindow *ScrolledWindow) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -521,7 +523,9 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_scrolled_window_set_child(_arg0, _arg1)
 }
@@ -532,7 +536,9 @@ func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment     // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	if hadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	}
 
 	C.gtk_scrolled_window_set_hadjustment(_arg0, _arg1)
 }
@@ -728,7 +734,9 @@ func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment     // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	if vadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	}
 
 	C.gtk_scrolled_window_set_vadjustment(_arg0, _arg1)
 }

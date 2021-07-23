@@ -101,8 +101,10 @@ func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, 
 	var text string          // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
-	text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
+	if arg1 != nil {
+		text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+		defer C.free(unsafe.Pointer(arg1))
+	}
 
 	fn := v.(ClipboardTextReceivedFunc)
 	fn(clipboard, text)
@@ -255,7 +257,9 @@ func (clipboard *Clipboard) Owner() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }
@@ -391,15 +395,17 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -420,8 +426,10 @@ func (clipboard *Clipboard) WaitForText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -439,18 +447,20 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 
 	var _utf8s []string // out
 
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 

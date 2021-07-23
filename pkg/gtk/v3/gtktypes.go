@@ -176,11 +176,15 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 	var _cret *C.GdkPixbuf       // in
 
 	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	if style != nil {
+		_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	}
 	_arg2 = C.GtkTextDirection(direction)
 	_arg3 = C.GtkStateType(state)
 	_arg4 = C.GtkIconSize(size)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -262,7 +266,9 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = C.int(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	if forWindow != nil {
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	}
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
@@ -781,15 +787,17 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -807,8 +815,10 @@ func (selectionData *SelectionData) Text() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -1281,7 +1291,9 @@ func (path *WidgetPath) IterGetName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1300,7 +1312,9 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

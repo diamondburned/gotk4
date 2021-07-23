@@ -237,7 +237,9 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -902,8 +904,10 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 
 	_startOffset = int(_arg3)
 	_endOffset = int(_arg4)
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _startOffset, _endOffset, _utf8
 }

@@ -175,7 +175,9 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 	}
 	_arg1 = C.GBusType(busType)
 	_arg2 = C.GDBusProxyFlags(flags)
-	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
@@ -236,7 +238,9 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 	}
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GDBusProxyFlags(flags)
-	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
 	if name != "" {
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg4))
@@ -316,11 +320,15 @@ func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters 
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	if parameters != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
-	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
@@ -401,7 +409,9 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	if parameters != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
 
@@ -444,12 +454,18 @@ func (proxy *DBusProxy) CallWithUnixFdList(ctx context.Context, methodName strin
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	if parameters != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
-	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	if fdList != nil {
+		_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	}
+	if callback != nil {
+		_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
@@ -511,10 +527,14 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(ctx context.Context, methodName s
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	if parameters != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
-	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	if fdList != nil {
+		_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	}
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
 
@@ -556,11 +576,13 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -576,18 +598,20 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 
 	var _utf8s []string // out
 
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 
@@ -659,10 +683,12 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
-		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
+			C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _dBusInterfaceInfo
 }
@@ -712,8 +738,10 @@ func (proxy *DBusProxy) NameOwner() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -772,7 +800,9 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	if value != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	}
 
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
 }
@@ -799,7 +829,9 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg1 *C.GDBusInterfaceInfo // out
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	if info != nil {
+		_arg1 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
 
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
 }
@@ -849,7 +881,9 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 	}
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GDBusProxyFlags(flags)
-	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
 	if name != "" {
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg4))
@@ -858,8 +892,10 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg6))
-	_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_proxy_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
@@ -886,15 +922,19 @@ func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFla
 	}
 	_arg1 = C.GBusType(busType)
 	_arg2 = C.GDBusProxyFlags(flags)
-	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg6))
-	_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_proxy_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }

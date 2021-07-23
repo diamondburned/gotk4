@@ -251,12 +251,16 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, pars
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
-	_arg3 = C.gpointer(gbox.Assign(uriFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
-	_arg6 = C.gpointer(gbox.Assign(parseNameFunc))
-	_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if uriFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
+		_arg3 = C.gpointer(gbox.Assign(uriFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if parseNameFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
+		_arg6 = C.gpointer(gbox.Assign(parseNameFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.g_vfs_register_uri_scheme(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 

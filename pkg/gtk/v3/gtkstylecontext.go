@@ -461,7 +461,9 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 
 	var _frameClock gdk.FrameClocker // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	if _cret != nil {
+		_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	}
 
 	return _frameClock
 }
@@ -533,7 +535,9 @@ func (context *StyleContext) Parent() *StyleContext {
 
 	var _styleContext *StyleContext // out
 
-	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _styleContext
 }
@@ -653,10 +657,12 @@ func (context *StyleContext) Section(property string) *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _cssSection
 }
@@ -851,10 +857,12 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _iconSet
 }
@@ -1098,7 +1106,9 @@ func (context *StyleContext) SetParent(parent *StyleContext) {
 	var _arg1 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(parent.Native()))
+	}
 
 	C.gtk_style_context_set_parent(_arg0, _arg1)
 }

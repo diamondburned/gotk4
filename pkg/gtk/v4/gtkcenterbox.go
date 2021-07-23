@@ -138,7 +138,9 @@ func (self *CenterBox) CenterWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -154,7 +156,9 @@ func (self *CenterBox) EndWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -170,7 +174,9 @@ func (self *CenterBox) StartWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -199,7 +205,9 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
@@ -212,7 +220,9 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
@@ -225,7 +235,9 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }

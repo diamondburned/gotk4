@@ -179,7 +179,9 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 
 	_width = int(_arg2)
 	_height = int(_arg3)
-	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _width, _height, _pixbufFormat
 }
@@ -206,8 +208,10 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
 }
@@ -232,7 +236,9 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 
 	_width = int(_arg2)
 	_height = int(_arg3)
-	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

@@ -72,8 +72,12 @@ func (guide *ConstraintGuide) MaxSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
-	_arg1 = (*C.int)(unsafe.Pointer(width))
-	_arg2 = (*C.int)(unsafe.Pointer(height))
+	if width != nil {
+		_arg1 = (*C.int)(unsafe.Pointer(width))
+	}
+	if height != nil {
+		_arg2 = (*C.int)(unsafe.Pointer(height))
+	}
 
 	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 }
@@ -85,8 +89,12 @@ func (guide *ConstraintGuide) MinSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
-	_arg1 = (*C.int)(unsafe.Pointer(width))
-	_arg2 = (*C.int)(unsafe.Pointer(height))
+	if width != nil {
+		_arg1 = (*C.int)(unsafe.Pointer(width))
+	}
+	if height != nil {
+		_arg2 = (*C.int)(unsafe.Pointer(height))
+	}
 
 	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
 }
@@ -102,7 +110,9 @@ func (guide *ConstraintGuide) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -114,8 +124,12 @@ func (guide *ConstraintGuide) NatSize(width *int, height *int) {
 	var _arg2 *C.int                // out
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
-	_arg1 = (*C.int)(unsafe.Pointer(width))
-	_arg2 = (*C.int)(unsafe.Pointer(height))
+	if width != nil {
+		_arg1 = (*C.int)(unsafe.Pointer(width))
+	}
+	if height != nil {
+		_arg2 = (*C.int)(unsafe.Pointer(height))
+	}
 
 	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
 }

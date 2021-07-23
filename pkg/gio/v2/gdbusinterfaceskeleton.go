@@ -170,7 +170,9 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _dBusConnection
 }
@@ -245,7 +247,9 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

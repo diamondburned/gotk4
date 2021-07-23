@@ -51,7 +51,9 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
 
@@ -73,7 +75,9 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 
 	var _selectionModel SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	if _cret != nil {
+		_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	}
 
 	return _selectionModel
 }
@@ -88,7 +92,9 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel       // out
 
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 }

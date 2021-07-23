@@ -325,8 +325,12 @@ func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 	var _cret *C.graphene_box_t     // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(min)))
-	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(max)))
+	if min != nil {
+		_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(min)))
+	}
+	if max != nil {
+		_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(max)))
+	}
 
 	_cret = C.graphene_box_init(_arg0, _arg1, _arg2)
 
@@ -390,8 +394,12 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	var _cret *C.graphene_box_t  // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
-	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(min)))
-	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(max)))
+	if min != nil {
+		_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(min)))
+	}
+	if max != nil {
+		_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(max)))
+	}
 
 	_cret = C.graphene_box_init_from_vec3(_arg0, _arg1, _arg2)
 

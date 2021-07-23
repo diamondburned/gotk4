@@ -101,7 +101,9 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 
 	var _event gdk.Eventer // out
 
-	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+	if _cret != nil {
+		_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+	}
 
 	return _event
 }
@@ -118,7 +120,9 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	}
 
 	return _device
 }

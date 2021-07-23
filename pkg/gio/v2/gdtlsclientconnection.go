@@ -143,7 +143,9 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
-	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
+	if serverIdentity != nil {
+		_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
+	}
 
 	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
 

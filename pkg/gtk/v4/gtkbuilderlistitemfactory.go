@@ -69,7 +69,9 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	var _arg2 *C.char               // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	if scope != nil {
+		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -93,7 +95,9 @@ func (self *BuilderListItemFactory) Resource() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -109,7 +113,9 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 
 	var _builderScope BuilderScoper // out
 
-	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
+	if _cret != nil {
+		_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
+	}
 
 	return _builderScope
 }

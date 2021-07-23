@@ -595,7 +595,9 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 	var _arg1 *C.GtkRecentFilter  // out
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	if filter != nil {
+		_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	}
 
 	C.gtk_recent_chooser_set_filter(_arg0, _arg1)
 }

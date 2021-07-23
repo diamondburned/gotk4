@@ -252,7 +252,9 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -308,7 +310,9 @@ func (comboBox *ComboBox) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -376,7 +380,9 @@ func (comboBox *ComboBox) Model() TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	if _cret != nil {
+		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	}
 
 	return _treeModel
 }
@@ -489,7 +495,9 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	var _arg1 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if iter != nil {
+		_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
@@ -512,7 +520,9 @@ func (comboBox *ComboBox) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_combo_box_set_child(_arg0, _arg1)
 }
@@ -562,7 +572,9 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }
@@ -596,9 +608,11 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeViewRowSeparatorFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeViewRowSeparatorFunc)
+		_arg2 = C.gpointer(gbox.Assign(fn))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_combo_box_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
 }

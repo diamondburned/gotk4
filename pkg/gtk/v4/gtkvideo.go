@@ -83,7 +83,9 @@ func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	_cret = C.gtk_video_new_for_file(_arg1)
 
@@ -121,7 +123,9 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	if stream != nil {
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	}
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
 
@@ -183,7 +187,9 @@ func (self *Video) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -217,7 +223,9 @@ func (self *Video) MediaStream() MediaStreamer {
 
 	var _mediaStream MediaStreamer // out
 
-	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
+	if _cret != nil {
+		_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
+	}
 
 	return _mediaStream
 }
@@ -242,7 +250,9 @@ func (self *Video) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile    // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	C.gtk_video_set_file(_arg0, _arg1)
 }
@@ -287,7 +297,9 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg1 *C.GtkMediaStream // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	if stream != nil {
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	}
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }

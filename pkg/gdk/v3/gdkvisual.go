@@ -432,7 +432,9 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _visual
 }

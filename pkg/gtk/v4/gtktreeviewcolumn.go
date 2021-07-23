@@ -601,7 +601,9 @@ func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -636,7 +638,9 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -743,9 +747,11 @@ func (treeColumn *TreeViewColumn) SetCellDataFunc(cellRenderer CellRendererer, f
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeCellDataFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeCellDataFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_tree_view_column_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -965,7 +971,9 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_tree_view_column_set_widget(_arg0, _arg1)
 }

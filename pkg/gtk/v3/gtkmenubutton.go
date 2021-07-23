@@ -185,7 +185,9 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -217,7 +219,9 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -234,7 +238,9 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _popover
 }
@@ -251,7 +257,9 @@ func (menuButton *MenuButton) Popup() *Menu {
 
 	var _menu *Menu // out
 
-	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _menu
 }
@@ -288,7 +296,9 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(alignWidget.Native()))
+	if alignWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(alignWidget.Native()))
+	}
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
 }
@@ -327,7 +337,9 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg1 *C.GMenuModel    // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+	if menuModel != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+	}
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
@@ -342,7 +354,9 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
+	if popover != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
+	}
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
@@ -357,7 +371,9 @@ func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
+	if menu != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
+	}
 
 	C.gtk_menu_button_set_popup(_arg0, _arg1)
 }

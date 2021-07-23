@@ -257,7 +257,9 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	if _cret != nil {
+		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	}
 
 	return _tlsCertificate
 }
@@ -309,8 +311,12 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	var _cret C.GTlsCertificateFlags // in
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
-	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
+	if identity != nil {
+		_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	}
+	if trustedCa != nil {
+		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
+	}
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
 

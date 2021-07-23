@@ -69,7 +69,9 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if factory != nil {
+		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
@@ -93,7 +95,9 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 
 	var _columnView *ColumnView // out
 
-	_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _columnView
 }
@@ -128,7 +132,9 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _listItemFactory
 }
@@ -161,7 +167,9 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -195,7 +203,9 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _sorter
 }
@@ -211,7 +221,9 @@ func (self *ColumnViewColumn) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -257,7 +269,9 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 	var _arg1 *C.GtkListItemFactory  // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if factory != nil {
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	C.gtk_column_view_column_set_factory(_arg0, _arg1)
 }
@@ -284,7 +298,9 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	var _arg1 *C.GMenuModel          // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
+	if menu != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
+	}
 
 	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
 }
@@ -317,7 +333,9 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 	var _arg1 *C.GtkSorter           // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	if sorter != nil {
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	}
 
 	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
 }

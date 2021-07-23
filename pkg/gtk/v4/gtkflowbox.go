@@ -248,7 +248,9 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_FlowBoxCreateWidgetFunc)
 	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -287,7 +289,9 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _flowBoxChild
 }
@@ -309,7 +313,9 @@ func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _flowBoxChild
 }
@@ -570,9 +576,11 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(filterFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if filterFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filterFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_flow_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -676,9 +684,11 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxSortFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxSortFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_flow_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -815,7 +825,9 @@ func (self *FlowBoxChild) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -861,7 +873,9 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 }

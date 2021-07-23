@@ -116,8 +116,12 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+	if icon1 != nil {
+		_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
+	}
+	if icon2 != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+	}
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 
@@ -145,11 +149,13 @@ func (icon *Icon) Serialize() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -179,8 +185,10 @@ func (icon *Icon) String() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -197,7 +205,9 @@ func IconDeserialize(value *glib.Variant) Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	}
 
 	return _icon
 }

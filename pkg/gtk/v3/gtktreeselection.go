@@ -386,9 +386,11 @@ func (selection *TreeSelection) SetSelectFunction(fn TreeSelectionFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeSelectionFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeSelectionFunc)
+		_arg2 = C.gpointer(gbox.Assign(fn))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_tree_selection_set_select_function(_arg0, _arg1, _arg2, _arg3)
 }

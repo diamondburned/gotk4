@@ -187,7 +187,9 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }

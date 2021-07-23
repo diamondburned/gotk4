@@ -97,7 +97,9 @@ func NewCancellable() *Cancellable {
 func (cancellable *Cancellable) Cancel() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_cancel(_arg0)
 }
@@ -117,7 +119,9 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
@@ -140,7 +144,9 @@ func (cancellable *Cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
@@ -156,7 +162,9 @@ func (cancellable *Cancellable) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
 
@@ -191,7 +199,9 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg1 *C.GPollFD      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(pollfd)))
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
@@ -210,7 +220,9 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 func (cancellable *Cancellable) PopCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_pop_current(_arg0)
 }
@@ -226,7 +238,9 @@ func (cancellable *Cancellable) PopCurrent() {
 func (cancellable *Cancellable) PushCurrent() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_push_current(_arg0)
 }
@@ -243,7 +257,9 @@ func (cancellable *Cancellable) PushCurrent() {
 func (cancellable *Cancellable) ReleaseFd() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_release_fd(_arg0)
 }
@@ -262,7 +278,9 @@ func (cancellable *Cancellable) ReleaseFd() {
 func (cancellable *Cancellable) Reset() {
 	var _arg0 *C.GCancellable // out
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_reset(_arg0)
 }
@@ -273,7 +291,9 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
 
@@ -299,7 +319,9 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	var _arg0 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	if cancellable != nil {
+		_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_cancellable_source_new(_arg0)
 
@@ -322,7 +344,9 @@ func CancellableGetCurrent() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _cancellable
 }

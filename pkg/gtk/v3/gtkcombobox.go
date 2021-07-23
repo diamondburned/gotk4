@@ -260,7 +260,9 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -612,7 +614,9 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	var _arg1 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if iter != nil {
+		_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
@@ -718,7 +722,9 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
 }

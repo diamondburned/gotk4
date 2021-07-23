@@ -187,8 +187,10 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -299,8 +301,10 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -394,8 +398,10 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain st
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -496,8 +502,10 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -576,7 +584,9 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 
 	var _socketAddress SocketAddresser // out
 
-	_socketAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
+	if _cret != nil {
+		_socketAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
+	}
 
 	return _socketAddress
 }
@@ -735,7 +745,9 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	var _arg1 *C.GSocketAddress // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	if address != nil {
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	}
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
 }
@@ -767,7 +779,9 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg1 *C.GProxyResolver // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
-	_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
+	if proxyResolver != nil {
+		_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
+	}
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 }

@@ -334,7 +334,9 @@ func (application *Application) ActiveWindow() *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _window
 }
@@ -356,12 +358,14 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 	var _menu *gio.Menu // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menu = &gio.Menu{
-			MenuModel: gio.MenuModel{
-				Object: obj,
-			},
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_menu = &gio.Menu{
+				MenuModel: gio.MenuModel{
+					Object: obj,
+				},
+			}
 		}
 	}
 
@@ -380,7 +384,9 @@ func (application *Application) Menubar() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -401,7 +407,9 @@ func (application *Application) WindowByID(id uint) *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _window
 }
@@ -464,7 +472,9 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	var _cret C.guint                      // in
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	if window != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	}
 	_arg2 = C.GtkApplicationInhibitFlags(flags)
 	if reason != "" {
 		_arg3 = (*C.char)(unsafe.Pointer(C.CString(reason)))
@@ -587,7 +597,9 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	if menubar != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	}
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
 }

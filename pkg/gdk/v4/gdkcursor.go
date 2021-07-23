@@ -101,13 +101,17 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	if fallback != nil {
+		_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	}
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _cursor
 }
@@ -123,7 +127,9 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg2 = C.int(hotspotX)
 	_arg3 = C.int(hotspotY)
-	_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	if fallback != nil {
+		_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+	}
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 
@@ -151,7 +157,9 @@ func (cursor *Cursor) Fallback() *Cursor {
 
 	var _ret *Cursor // out
 
-	_ret = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_ret = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _ret
 }
@@ -213,7 +221,9 @@ func (cursor *Cursor) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -231,7 +241,9 @@ func (cursor *Cursor) Texture() Texturer {
 
 	var _texture Texturer // out
 
-	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
+	if _cret != nil {
+		_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
+	}
 
 	return _texture
 }

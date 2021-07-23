@@ -383,7 +383,9 @@ func (editable *Editable) Delegate() Editabler {
 
 	var _ret Editabler // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
+	if _cret != nil {
+		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
+	}
 
 	return _ret
 }

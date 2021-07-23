@@ -198,8 +198,10 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -316,7 +318,9 @@ func (completion *EntryCompletion) Model() TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	if _cret != nil {
+		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	}
 
 	return _treeModel
 }
@@ -504,7 +508,9 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel       // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_entry_completion_set_model(_arg0, _arg1)
 }

@@ -99,16 +99,20 @@ func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
-	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	if matrix != nil {
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	}
 
 	_cret = C.pango_matrix_copy(_arg0)
 
 	var _ret *Matrix // out
 
-	_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.pango_matrix_free((*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_ret, func(v *Matrix) {
+			C.pango_matrix_free((*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _ret
 }
@@ -123,7 +127,9 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	if matrix != nil {
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	}
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -147,7 +153,9 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg1 C.double       // in
 	var _arg2 C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	if matrix != nil {
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	}
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 

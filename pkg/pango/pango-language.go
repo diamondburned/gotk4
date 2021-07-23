@@ -56,7 +56,9 @@ func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	if language != nil {
+		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	}
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -82,7 +84,9 @@ func (language *Language) IncludesScript(script Script) bool {
 	var _arg1 C.PangoScript    // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	if language != nil {
+		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	}
 	_arg1 = C.PangoScript(script)
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
@@ -107,7 +111,9 @@ func (language *Language) Matches(rangeList string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	if language != nil {
+		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -162,7 +168,9 @@ func LanguageFromString(language string) *Language {
 
 	var _ret *Language // out
 
-	_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _ret
 }

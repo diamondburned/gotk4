@@ -84,9 +84,11 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	var _arg3 C.GDestroyNotify
 	var _cret *C.GtkCustomFilter // in
 
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(matchFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if matchFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(matchFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.gtk_custom_filter_new(_arg1, _arg2, _arg3)
 
@@ -112,9 +114,11 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(matchFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if matchFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(matchFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_custom_filter_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 }

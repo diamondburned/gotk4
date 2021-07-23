@@ -312,10 +312,12 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_screen = &gdk.Screen{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_screen = &gdk.Screen{
+				Object: obj,
+			}
 		}
 	}
 
@@ -486,7 +488,9 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 
 	var _themingEngine *ThemingEngine // out
 
-	_themingEngine = wrapThemingEngine(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_themingEngine = wrapThemingEngine(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _themingEngine
 }

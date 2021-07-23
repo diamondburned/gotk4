@@ -87,7 +87,9 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -103,7 +105,9 @@ func (self *CenterLayout) EndWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -135,7 +139,9 @@ func (self *CenterLayout) StartWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -159,7 +165,9 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
@@ -172,7 +180,9 @@ func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
@@ -196,7 +206,9 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
 }

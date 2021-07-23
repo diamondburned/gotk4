@@ -199,7 +199,9 @@ func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side Position
 
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	if sibling != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(sibling.Native()))
+	}
 	_arg3 = C.GtkPositionType(side)
 	_arg4 = C.int(width)
 	_arg5 = C.int(height)
@@ -239,7 +241,9 @@ func (grid *Grid) ChildAt(column int, row int) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }

@@ -206,7 +206,9 @@ func (display *Display) DeviceManager() DeviceManagerer {
 
 	var _deviceManager DeviceManagerer // out
 
-	_deviceManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
+	if _cret != nil {
+		_deviceManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
+	}
 
 	return _deviceManager
 }
@@ -243,7 +245,9 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _monitor
 }
@@ -387,7 +391,9 @@ func (display *Display) PrimaryMonitor() *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _monitor
 }
@@ -435,7 +441,9 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _winX, _winY, _window
 }
@@ -804,7 +812,9 @@ func DisplayGetDefault() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }
@@ -821,7 +831,9 @@ func DisplayOpen(displayName string) *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }
@@ -840,7 +852,9 @@ func DisplayOpenDefaultLibgtkOnly() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }

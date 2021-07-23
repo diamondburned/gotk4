@@ -243,7 +243,9 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
 
@@ -355,7 +357,9 @@ func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)
 }

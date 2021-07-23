@@ -260,7 +260,9 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -280,7 +282,9 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -698,7 +702,9 @@ func (mountPoint *UnixMountPoint) Options() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -845,10 +851,12 @@ func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
 	var _unixMountPoint *UnixMountPoint // out
 
 	_timeRead = uint64(_arg2)
-	_unixMountPoint = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-		C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_unixMountPoint = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
+			C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _timeRead, _unixMountPoint
 }

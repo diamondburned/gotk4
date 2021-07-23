@@ -386,8 +386,10 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.int(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -463,8 +465,10 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.int(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_flush_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -619,8 +623,10 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -784,8 +790,10 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_write_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -875,8 +883,10 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_write_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -1071,8 +1081,10 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_writev_all_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -1158,8 +1170,10 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_output_stream_writev_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

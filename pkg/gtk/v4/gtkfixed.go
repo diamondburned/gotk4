@@ -139,10 +139,12 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
+			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _transform
 }
@@ -200,7 +202,9 @@ func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+	if transform != nil {
+		_arg2 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+	}
 
 	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)
 }

@@ -595,8 +595,12 @@ func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) S
 	var _arg2 C.GtkCellRendererState // out
 	var _cret C.GtkStateFlags        // in
 
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if cell != nil {
+		_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	}
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	_arg2 = C.GtkCellRendererState(cellState)
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
@@ -776,7 +780,9 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 	var _cret *C.GtkCellEditable     // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	if event != nil {
+		_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	}
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -788,7 +794,9 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 
 	var _cellEditable CellEditabler // out
 
-	_cellEditable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+	if _cret != nil {
+		_cellEditable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+	}
 
 	return _cellEditable
 }

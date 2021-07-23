@@ -165,7 +165,9 @@ func (context *GLContext) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }
@@ -222,7 +224,9 @@ func (context *GLContext) SharedContext() GLContexter {
 
 	var _glContext GLContexter // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	if _cret != nil {
+		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	}
 
 	return _glContext
 }
@@ -238,7 +242,9 @@ func (context *GLContext) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	if _cret != nil {
+		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	}
 
 	return _surface
 }
@@ -442,7 +448,9 @@ func GLContextGetCurrent() GLContexter {
 
 	var _glContext GLContexter // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	if _cret != nil {
+		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	}
 
 	return _glContext
 }

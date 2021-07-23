@@ -745,7 +745,9 @@ func (builder *Builder) Application() *Application {
 
 	var _application *Application // out
 
-	_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _application
 }
@@ -765,7 +767,9 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }

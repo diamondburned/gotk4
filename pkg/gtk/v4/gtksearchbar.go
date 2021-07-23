@@ -138,7 +138,9 @@ func (bar *SearchBar) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -201,7 +203,9 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
 }
@@ -222,7 +226,9 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
 }

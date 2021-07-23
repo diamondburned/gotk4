@@ -46,7 +46,9 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _arg1 *C.GtkExpression // out
 	var _cret *C.GtkBoolFilter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
@@ -69,7 +71,9 @@ func (self *BoolFilter) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	if _cret != nil {
+		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	}
 
 	return _expression
 }
@@ -101,7 +105,9 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }

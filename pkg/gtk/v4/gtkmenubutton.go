@@ -227,7 +227,9 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -245,7 +247,9 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _popover
 }
@@ -306,9 +310,11 @@ func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_MenuButtonCreatePopupFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_MenuButtonCreatePopupFunc)
+		_arg2 = C.gpointer(gbox.Assign(fn))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_menu_button_set_create_popup_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -385,7 +391,9 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg1 *C.GMenuModel    // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+	if menuModel != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
+	}
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
@@ -402,7 +410,9 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
+	if popover != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
+	}
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }

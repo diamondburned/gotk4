@@ -222,10 +222,12 @@ func MainCurrentSource() *Source {
 
 	var _source *Source // out
 
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_source, func(v *Source) {
+			C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _source
 }
@@ -417,7 +419,9 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 	var _arg1 *C.GPollFD      // out
 	var _arg2 C.gint          // out
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 	_arg2 = C.gint(priority)
 
@@ -477,7 +481,9 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	var _arg2 C.gpointer      // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
@@ -509,7 +515,9 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg1 C.guint         // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 	_arg1 = C.guint(sourceId)
 
 	_cret = C.g_main_context_find_source_by_id(_arg0, _arg1)
@@ -583,7 +591,9 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg1 C.gboolean      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 	if mayBlock {
 		_arg1 = C.TRUE
 	}
@@ -604,7 +614,9 @@ func (context *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 
 	_cret = C.g_main_context_pending(_arg0)
 
@@ -622,7 +634,9 @@ func (context *MainContext) Pending() bool {
 func (context *MainContext) PopThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 
 	C.g_main_context_pop_thread_default(_arg0)
 }
@@ -687,7 +701,9 @@ func (context *MainContext) Prepare() (int, bool) {
 func (context *MainContext) PushThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 
 	C.g_main_context_push_thread_default(_arg0)
 }
@@ -775,10 +791,12 @@ func MainContextGetThreadDefault() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _mainContext
 }
@@ -823,7 +841,9 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _arg2 C.gboolean      // out
 	var _cret *C.GMainLoop    // in
 
-	_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 	if isRunning {
 		_arg2 = C.TRUE
 	}
@@ -1026,7 +1046,9 @@ func (source *Source) Attach(context *MainContext) uint {
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	if context != nil {
+		_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	}
 
 	_cret = C.g_source_attach(_arg0, _arg1)
 
@@ -1090,10 +1112,12 @@ func (source *Source) Context() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _mainContext
 }
@@ -1148,7 +1172,9 @@ func (source *Source) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

@@ -103,11 +103,13 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
-	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_time_zone_ref(_cret)
+		runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+			C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _timeZone
 }

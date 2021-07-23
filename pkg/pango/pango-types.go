@@ -37,8 +37,12 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 
-	_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inclusive)))
-	_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(nearest)))
+	if inclusive != nil {
+		_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inclusive)))
+	}
+	if nearest != nil {
+		_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(nearest)))
+	}
 
 	C.pango_extents_to_pixels(_arg1, _arg2)
 }

@@ -181,7 +181,9 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.O
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.gpointer)(unsafe.Pointer(data))
@@ -200,10 +202,14 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gpointer)(unsafe.Pointer(data))
+	if data != nil {
+		_arg4 = (*C.gpointer)(unsafe.Pointer(data))
+	}
 
 	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -220,7 +226,9 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
 	defer C.free(unsafe.Pointer(_arg3))
 

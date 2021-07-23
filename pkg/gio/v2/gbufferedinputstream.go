@@ -226,8 +226,10 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioP
 	}
 	_arg1 = C.gssize(count)
 	_arg2 = C.int(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

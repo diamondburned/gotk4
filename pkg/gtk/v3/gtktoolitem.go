@@ -228,7 +228,9 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -487,7 +489,9 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	if menuItem != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	}
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
 }

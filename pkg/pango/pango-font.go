@@ -463,13 +463,17 @@ func (font *Font) FontMap() FontMapper {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	if font != nil {
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	}
 
 	_cret = C.pango_font_get_font_map(_arg0)
 
 	var _fontMap FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
+	if _cret != nil {
+		_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
+	}
 
 	return _fontMap
 }
@@ -491,7 +495,9 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rect
 	var _arg2 C.PangoRectangle // in
 	var _arg3 C.PangoRectangle // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	if font != nil {
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	}
 	_arg1 = C.guint32(glyph)
 
 	C.pango_font_get_glyph_extents(_arg0, _arg1, &_arg2, &_arg3)
@@ -518,8 +524,12 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _arg1 *C.PangoLanguage    // out
 	var _cret *C.PangoFontMetrics // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	if font != nil {
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	}
+	if language != nil {
+		_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	}
 
 	_cret = C.pango_font_get_metrics(_arg0, _arg1)
 
@@ -818,7 +828,9 @@ func (family *FontFamily) Face(name string) FontFacer {
 
 	var _fontFace FontFacer // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	if _cret != nil {
+		_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	}
 
 	return _fontFace
 }
@@ -970,7 +982,9 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 	var _cret C.gboolean              // in
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(oldMatch)))
+	if oldMatch != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(oldMatch)))
+	}
 	_arg2 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(newMatch)))
 
 	_cret = C.pango_font_description_better_match(_arg0, _arg1, _arg2)
@@ -989,16 +1003,20 @@ func (desc *FontDescription) Copy() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	if desc != nil {
+		_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	}
 
 	_cret = C.pango_font_description_copy(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
+			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _fontDescription
 }
@@ -1014,16 +1032,20 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	if desc != nil {
+		_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	}
 
 	_cret = C.pango_font_description_copy_static(_arg0)
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
+			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _fontDescription
 }
@@ -1066,7 +1088,9 @@ func (desc *FontDescription) Family() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1212,7 +1236,9 @@ func (desc *FontDescription) Variations() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -1268,7 +1294,9 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 	var _arg2 C.gboolean              // out
 
 	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(descToMerge)))
+	if descToMerge != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(descToMerge)))
+	}
 	if replaceExisting {
 		_arg2 = C.TRUE
 	}

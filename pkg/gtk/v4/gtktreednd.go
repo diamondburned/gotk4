@@ -276,10 +276,12 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_contentProvider = &gdk.ContentProvider{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_contentProvider = &gdk.ContentProvider{
+				Object: obj,
+			}
 		}
 	}
 

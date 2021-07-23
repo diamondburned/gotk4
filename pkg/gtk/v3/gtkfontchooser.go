@@ -250,8 +250,10 @@ func (fontchooser *FontChooser) Font() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -275,10 +277,12 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
+			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _fontDescription
 }
@@ -297,7 +301,9 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 
 	var _fontFace pango.FontFacer // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
+	if _cret != nil {
+		_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
+	}
 
 	return _fontFace
 }
@@ -316,7 +322,9 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 
 	var _fontFamily pango.FontFamilier // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
+	if _cret != nil {
+		_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
+	}
 
 	return _fontFamily
 }
@@ -350,7 +358,9 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	if _cret != nil {
+		_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	}
 
 	return _fontMap
 }
@@ -448,9 +458,11 @@ func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_FontFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(filter))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if filter != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_FontFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filter))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_font_chooser_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -503,7 +515,9 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap   // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
+	if fontmap != nil {
+		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
+	}
 
 	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
 }

@@ -225,7 +225,9 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 
 	var _pixbufAnimation *PixbufAnimation // out
 
-	_pixbufAnimation = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufAnimation = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _pixbufAnimation
 }
@@ -242,7 +244,9 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 
 	var _pixbufFormat *PixbufFormat // out
 
-	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _pixbufFormat
 }
@@ -272,7 +276,9 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _pixbuf
 }

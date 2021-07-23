@@ -216,7 +216,9 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _object
 }

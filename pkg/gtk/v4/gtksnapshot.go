@@ -468,7 +468,9 @@ func (snapshot *Snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphen
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
-	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
+	if childBounds != nil {
+		_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
+	}
 
 	C.gtk_snapshot_push_repeat(_arg0, _arg1, _arg2)
 }
@@ -725,7 +727,9 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	var _cret *C.GdkPaintable    // in
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(size)))
+	if size != nil {
+		_arg1 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(size)))
+	}
 
 	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
 
@@ -742,7 +746,9 @@ func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 	var _arg1 *C.GskTransform // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+	if transform != nil {
+		_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+	}
 
 	C.gtk_snapshot_transform(_arg0, _arg1)
 }

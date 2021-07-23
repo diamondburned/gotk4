@@ -114,7 +114,9 @@ func (self *TreeExpander) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -150,7 +152,9 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = wrapTreeListRow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _treeListRow
 }
@@ -161,7 +165,9 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
 }
@@ -172,7 +178,9 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	var _arg1 *C.GtkTreeListRow  // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))
+	if listRow != nil {
+		_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))
+	}
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 }

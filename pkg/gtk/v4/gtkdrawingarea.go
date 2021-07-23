@@ -271,9 +271,11 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
-	_arg2 = C.gpointer(gbox.Assign(drawFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if drawFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
+		_arg2 = C.gpointer(gbox.Assign(drawFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 }

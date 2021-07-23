@@ -431,7 +431,9 @@ func (appinfo *AppInfo) Commandline() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }
@@ -447,7 +449,9 @@ func (appinfo *AppInfo) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -496,7 +500,9 @@ func (appinfo *AppInfo) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	}
 
 	return _icon
 }
@@ -517,7 +523,9 @@ func (appinfo *AppInfo) ID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -603,14 +611,18 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	for i := len(files) - 1; i >= 0; i-- {
-		src := files[i]
-		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
-		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	if files != nil {
+		for i := len(files) - 1; i >= 0; i-- {
+			src := files[i]
+			var dst *C.GFile // out
+			dst = (*C.GFile)(unsafe.Pointer(src.Native()))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
 	}
-	defer C.g_list_free(_arg1)
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	}
 
 	C.g_app_info_launch(_arg0, _arg1, _arg2, &_cerr)
 
@@ -640,15 +652,19 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	for i := len(uris) - 1; i >= 0; i-- {
-		src := uris[i]
-		var dst *C.gchar // out
-		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
-		defer C.free(unsafe.Pointer(dst))
-		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.gchar // out
+			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
 	}
-	defer C.g_list_free(_arg1)
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	}
 
 	C.g_app_info_launch_uris(_arg0, _arg1, _arg2, &_cerr)
 
@@ -681,17 +697,23 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	for i := len(uris) - 1; i >= 0; i-- {
-		src := uris[i]
-		var dst *C.gchar // out
-		dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
-		defer C.free(unsafe.Pointer(dst))
-		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.gchar // out
+			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
 	}
-	defer C.g_list_free(_arg1)
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -963,7 +985,9 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	if _cret != nil {
+		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	}
 
 	return _appInfo
 }
@@ -982,7 +1006,9 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	if _cret != nil {
+		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	}
 
 	return _appInfo
 }
@@ -1053,7 +1079,9 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	}
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
 
@@ -1090,9 +1118,13 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -1230,8 +1262,10 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -1293,8 +1327,10 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

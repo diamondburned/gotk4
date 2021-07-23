@@ -83,7 +83,9 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 
 	var _fileInfo *FileInfo // out
 
-	_fileInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fileInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _fileInfo
 }

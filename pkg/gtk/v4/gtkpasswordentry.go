@@ -166,7 +166,9 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel       // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 }

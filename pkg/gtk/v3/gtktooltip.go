@@ -86,7 +86,9 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
+	if customWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
+	}
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
 }
@@ -98,7 +100,9 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
 }
@@ -112,7 +116,9 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	if gicon != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	}
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)

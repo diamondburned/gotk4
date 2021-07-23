@@ -132,7 +132,9 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	if accelGroup != nil {
+		_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	}
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
@@ -292,7 +294,9 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	if image != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	}
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }

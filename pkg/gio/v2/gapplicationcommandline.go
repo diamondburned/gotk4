@@ -181,7 +181,9 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }
@@ -309,11 +311,13 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -337,7 +341,9 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	if _cret != nil {
+		_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	}
 
 	return _inputStream
 }
@@ -366,7 +372,9 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

@@ -129,7 +129,9 @@ func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 	var _cret C._Bool                // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
+	if p != nil {
+		_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
+	}
 
 	_cret = C.graphene_triangle_get_barycoords(_arg0, _arg1, &_arg2)
 
@@ -259,7 +261,9 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 	var _cret C._Bool                // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
+	if p != nil {
+		_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
+	}
 	_arg2 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(uvA)))
 	_arg3 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(uvB)))
 	_arg4 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(uvC)))
@@ -333,9 +337,15 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 	var _cret *C.graphene_triangle_t // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(a)))
-	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
-	_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(c)))
+	if a != nil {
+		_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(a)))
+	}
+	if b != nil {
+		_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
+	}
+	if c != nil {
+		_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(c)))
+	}
 
 	_cret = C.graphene_triangle_init_from_point3d(_arg0, _arg1, _arg2, _arg3)
 
@@ -356,9 +366,15 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var _cret *C.graphene_triangle_t // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
-	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(a)))
-	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(b)))
-	_arg3 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(c)))
+	if a != nil {
+		_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(a)))
+	}
+	if b != nil {
+		_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(b)))
+	}
+	if c != nil {
+		_arg3 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(c)))
+	}
 
 	_cret = C.graphene_triangle_init_from_vec3(_arg0, _arg1, _arg2, _arg3)
 

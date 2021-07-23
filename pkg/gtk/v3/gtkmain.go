@@ -81,7 +81,9 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -195,7 +197,9 @@ func GetCurrentEventDevice() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	}
 
 	return _device
 }
@@ -389,7 +393,9 @@ func GrabGetCurrent() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }

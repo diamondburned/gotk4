@@ -124,7 +124,9 @@ func (overlay *Overlay) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -188,7 +190,9 @@ func (overlay *Overlay) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_overlay_set_child(_arg0, _arg1)
 }

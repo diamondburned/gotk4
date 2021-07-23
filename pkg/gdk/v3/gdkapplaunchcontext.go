@@ -113,7 +113,9 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon               // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	if icon != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	}
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }

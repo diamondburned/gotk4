@@ -140,7 +140,9 @@ func (actionable *Actionable) ActionName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -156,10 +158,12 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -211,7 +215,9 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg1 *C.GVariant      // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+	if targetValue != nil {
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+	}
 
 	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 }

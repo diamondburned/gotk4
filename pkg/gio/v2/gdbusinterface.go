@@ -92,7 +92,9 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 
 	var _dBusObject DBusObjector // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+	if _cret != nil {
+		_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+	}
 
 	return _dBusObject
 }
@@ -125,7 +127,9 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg1 *C.GDBusObject    // out
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
-	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	if object != nil {
+		_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	}
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

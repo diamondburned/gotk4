@@ -44,7 +44,9 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _arg3 *C.GtkCssLocation // out
 	var _cret *C.GtkCssSection  // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 	_arg2 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -113,10 +115,12 @@ func (section *CSSSection) Parent() *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _cssSection
 }

@@ -200,8 +200,10 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

@@ -49,7 +49,9 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 	fn := v.(TreeListModelCreateModelFunc)
 	listModel := fn(item)
 
-	cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
+	if listModel != nil {
+		cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
+	}
 
 	return cret
 }
@@ -149,7 +151,9 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _treeListRow
 }
@@ -222,7 +226,9 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _treeListRow
 }
@@ -285,7 +291,9 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _treeListRow
 }
@@ -306,7 +314,9 @@ func (self *TreeListRow) Children() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	if _cret != nil {
+		_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	}
 
 	return _listModel
 }
@@ -386,7 +396,9 @@ func (self *TreeListRow) Parent() *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _treeListRow
 }

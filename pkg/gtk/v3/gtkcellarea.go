@@ -881,7 +881,9 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 
 	var _cellRenderer CellRendererer // out
 
-	_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	if _cret != nil {
+		_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	}
 
 	return _cellRenderer
 }

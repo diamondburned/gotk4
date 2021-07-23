@@ -120,7 +120,9 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 		defer C.free(unsafe.Pointer(_arg4))
 	}
-	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	if manager != nil {
+		_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	}
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 

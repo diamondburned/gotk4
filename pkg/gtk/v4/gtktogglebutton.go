@@ -253,7 +253,9 @@ func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _arg1 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
-	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
+	if group != nil {
+		_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
+	}
 
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
 }

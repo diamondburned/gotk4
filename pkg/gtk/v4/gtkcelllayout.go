@@ -291,7 +291,9 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	var _cellArea CellAreaer // out
 
-	_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+	if _cret != nil {
+		_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+	}
 
 	return _cellArea
 }
@@ -388,9 +390,11 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_cell_layout_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

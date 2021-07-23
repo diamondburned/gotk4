@@ -288,7 +288,9 @@ func (table *Table) Caption() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _object
 }
@@ -367,7 +369,9 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _object
 }
@@ -460,7 +464,9 @@ func (table *Table) RowDescription(row int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -499,7 +505,9 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _object
 }

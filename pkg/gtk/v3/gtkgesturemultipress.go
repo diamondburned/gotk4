@@ -108,7 +108,9 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg1 *C.GdkRectangle         // out
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	if rect != nil {
+		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	}
 
 	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
 }

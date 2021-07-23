@@ -350,7 +350,9 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = wrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_shortcutTrigger = wrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _shortcutTrigger
 }

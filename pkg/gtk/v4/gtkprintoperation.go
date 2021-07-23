@@ -250,8 +250,12 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 	var _arg3 *C.GtkPrintSettings // out
 	var _cret *C.GtkPageSetup     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
+	if pageSetup != nil {
+		_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	}
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.gtk_print_run_page_setup_dialog(_arg1, _arg2, _arg3)
@@ -276,8 +280,12 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	var _arg4 C.GtkPageSetupDoneFunc // out
 	var _arg5 C.gpointer
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
+	if pageSetup != nil {
+		_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	}
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gtk4_PageSetupDoneFunc)
 	_arg5 = C.gpointer(gbox.AssignOnce(doneCb))
@@ -690,7 +698,9 @@ func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (Prin
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = C.GtkPrintOperationAction(action)
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	_cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, &_cerr)
 
@@ -761,7 +771,9 @@ func (op *PrintOperation) SetDefaultPageSetup(defaultPageSetup *PageSetup) {
 	var _arg1 *C.GtkPageSetup      // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(defaultPageSetup.Native()))
+	if defaultPageSetup != nil {
+		_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(defaultPageSetup.Native()))
+	}
 
 	C.gtk_print_operation_set_default_page_setup(_arg0, _arg1)
 }
@@ -879,7 +891,9 @@ func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 	var _arg1 *C.GtkPrintSettings  // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
+	if printSettings != nil {
+		_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
+	}
 
 	C.gtk_print_operation_set_print_settings(_arg0, _arg1)
 }

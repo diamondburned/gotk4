@@ -590,7 +590,9 @@ func (container *Container) FocusChild() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -607,7 +609,9 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _adjustment
 }
@@ -624,7 +628,9 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _adjustment
 }
@@ -785,7 +791,9 @@ func (container *Container) SetFocusChild(child Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }

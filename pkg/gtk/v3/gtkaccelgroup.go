@@ -146,7 +146,9 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, k
 	var _arg4 C.GdkModifierType // out
 	var _cret *C.gchar          // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	if display != nil {
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = C.GdkModifierType(acceleratorMods)
@@ -197,7 +199,9 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keyco
 	var _arg4 C.GdkModifierType // out
 	var _cret *C.gchar          // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	if display != nil {
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = C.GdkModifierType(acceleratorMods)

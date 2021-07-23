@@ -267,17 +267,19 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	var _goerr error    // out
 
 	_length = uint(_arg1)
-	{
-		var i int
-		var z C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_guint8s = make([]byte, i)
-		for i := range src {
-			_guint8s[i] = byte(src[i])
+			src := unsafe.Slice(_cret, i)
+			_guint8s = make([]byte, i)
+			for i := range src {
+				_guint8s[i] = byte(src[i])
+			}
 		}
 	}
 	if _cerr != nil {
@@ -306,8 +308,10 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gint(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -332,17 +336,19 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _goerr error    // out
 
 	_length = uint(_arg2)
-	{
-		var i int
-		var z C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_guint8s = make([]byte, i)
-		for i := range src {
-			_guint8s[i] = byte(src[i])
+			src := unsafe.Slice(_cret, i)
+			_guint8s = make([]byte, i)
+			for i := range src {
+				_guint8s[i] = byte(src[i])
+			}
 		}
 	}
 	if _cerr != nil {
@@ -371,8 +377,10 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _goerr error // out
 
 	_length = uint(_arg2)
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -406,8 +414,10 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 	var _goerr error // out
 
 	_length = uint(_arg1)
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -594,8 +604,10 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -706,8 +718,10 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

@@ -255,7 +255,9 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	}
 
 	return _device
 }
@@ -292,13 +294,17 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 	var _cret *C.GdkEvent         // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	if sequence != nil {
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	}
 
 	_cret = C.gtk_gesture_get_last_event(_arg0, _arg1)
 
 	var _event gdk.Eventer // out
 
-	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+	if _cret != nil {
+		_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+	}
 
 	return _event
 }
@@ -315,7 +321,9 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _eventSequence
 }
@@ -333,7 +341,9 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	if sequence != nil {
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	}
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -424,7 +434,9 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	if sequence != nil {
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	}
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
 

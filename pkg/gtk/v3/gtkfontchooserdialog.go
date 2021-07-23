@@ -83,7 +83,9 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 

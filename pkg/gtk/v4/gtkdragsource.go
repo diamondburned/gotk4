@@ -163,10 +163,12 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_contentProvider = &gdk.ContentProvider{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_contentProvider = &gdk.ContentProvider{
+				Object: obj,
+			}
 		}
 	}
 
@@ -184,7 +186,9 @@ func (source *DragSource) Drag() gdk.Dragger {
 
 	var _drag gdk.Dragger // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
+	if _cret != nil {
+		_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
+	}
 
 	return _drag
 }
@@ -222,7 +226,9 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	var _arg1 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
+	if content != nil {
+		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
+	}
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
 }
@@ -243,7 +249,9 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) 
 	var _arg3 C.int            // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
 	_arg2 = C.int(hotX)
 	_arg3 = C.int(hotY)
 

@@ -451,10 +451,14 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _arg3 C.gsize
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
-	_arg3 = (C.gsize)(len(children))
-	if len(children) > 0 {
-		_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+	if childType != nil {
+		_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
+	}
+	if children != nil {
+		_arg3 = (C.gsize)(len(children))
+		if len(children) > 0 {
+			_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+		}
 	}
 
 	_cret = C.g_variant_new_array(_arg1, _arg2, _arg3)
@@ -707,8 +711,12 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	var _arg2 *C.GVariant     // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(child)))
+	if childType != nil {
+		_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
+	}
+	if child != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(child)))
+	}
 
 	_cret = C.g_variant_new_maybe(_arg1, _arg2)
 
@@ -1381,11 +1389,13 @@ func (value *Variant) Maybe() *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -1753,7 +1763,9 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(dictionary)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	if expectedType != nil {
+		_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	}
 
 	_cret = C.g_variant_lookup_value(_arg0, _arg1, _arg2)
 
@@ -2193,7 +2205,9 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GVariantDict // in
 
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fromAsv)))
+	if fromAsv != nil {
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fromAsv)))
+	}
 
 	_cret = C.g_variant_dict_new(_arg1)
 
@@ -2309,7 +2323,9 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	if expectedType != nil {
+		_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	}
 
 	_cret = C.g_variant_dict_lookup_value(_arg0, _arg1, _arg2)
 

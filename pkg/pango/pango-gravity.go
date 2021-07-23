@@ -79,7 +79,9 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
 	var _cret C.PangoGravity // in
 
-	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	if matrix != nil {
+		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	}
 
 	_cret = C.pango_gravity_get_for_matrix(_arg1)
 

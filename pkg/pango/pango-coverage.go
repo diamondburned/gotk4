@@ -201,7 +201,9 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 
 	var _coverage *Coverage // out
 
-	_coverage = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_coverage = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _coverage
 }

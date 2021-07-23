@@ -429,7 +429,9 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	if action != nil {
+		_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	}
 
 	C.gtk_activatable_sync_action_properties(_arg0, _arg1)
 }

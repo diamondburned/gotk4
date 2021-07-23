@@ -88,7 +88,9 @@ func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -124,7 +126,9 @@ func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -160,7 +164,9 @@ func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -196,7 +202,9 @@ func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -229,7 +237,9 @@ func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -265,7 +275,9 @@ func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget 
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -297,7 +309,9 @@ func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadow
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -330,7 +344,9 @@ func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -361,7 +377,9 @@ func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -394,7 +412,9 @@ func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -425,7 +445,9 @@ func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -457,7 +479,9 @@ func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText b
 	if useText {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -489,7 +513,9 @@ func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -521,7 +547,9 @@ func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widge
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -555,7 +583,9 @@ func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -591,7 +621,9 @@ func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadow
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -628,7 +660,9 @@ func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -661,7 +695,9 @@ func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget W
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -695,7 +731,9 @@ func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))
@@ -725,7 +763,9 @@ func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.GtkStateType(stateType)
-	_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg4 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -989,7 +1029,9 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 	_arg2 = C.GtkTextDirection(direction)
 	_arg3 = C.GtkStateType(state)
 	_arg4 = C.GtkIconSize(size)
-	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	if detail != "" {
 		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 		defer C.free(unsafe.Pointer(_arg6))

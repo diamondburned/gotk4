@@ -271,7 +271,9 @@ func (device *Device) AssociatedDevice() Devicer {
 
 	var _ret Devicer // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	if _cret != nil {
+		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	}
 
 	return _ret
 }
@@ -403,7 +405,9 @@ func (device *Device) LastEventWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _window
 }
@@ -539,7 +543,9 @@ func (device *Device) ProductID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -610,7 +616,9 @@ func (device *Device) VendorID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -638,7 +646,9 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _winX, _winY, _window
 }
@@ -667,7 +677,9 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _winX, _winY, _window
 }
@@ -712,7 +724,9 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 		_arg3 = C.TRUE
 	}
 	_arg4 = C.GdkEventMask(eventMask)
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	if cursor != nil {
+		_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	}
 	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -737,13 +751,15 @@ func (device *Device) ListSlaveDevices() []Devicer {
 
 	var _list []Devicer // out
 
-	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkDevice)(v)
-		var dst Devicer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
-		_list = append(_list, dst)
-	})
+	if _cret != nil {
+		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+			src := (*C.GdkDevice)(v)
+			var dst Devicer // out
+			dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+			_list = append(_list, dst)
+		})
+	}
 
 	return _list
 }

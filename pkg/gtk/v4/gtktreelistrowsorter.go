@@ -58,7 +58,9 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	var _arg1 *C.GtkSorter            // out
 	var _cret *C.GtkTreeListRowSorter // in
 
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	if sorter != nil {
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	}
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
 
@@ -80,7 +82,9 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _sorter
 }
@@ -94,7 +98,9 @@ func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	var _arg1 *C.GtkSorter            // out
 
 	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	if sorter != nil {
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	}
 
 	C.gtk_tree_list_row_sorter_set_sorter(_arg0, _arg1)
 }

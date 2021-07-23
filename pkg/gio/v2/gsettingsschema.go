@@ -135,7 +135,9 @@ func (schema *SettingsSchema) Path() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -282,7 +284,9 @@ func (key *SettingsSchemaKey) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -377,7 +381,9 @@ func (key *SettingsSchemaKey) Summary() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -444,7 +450,9 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(directory)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(parent)))
+	if parent != nil {
+		_arg2 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(parent)))
+	}
 	if trusted {
 		_arg3 = C.TRUE
 	}
@@ -552,11 +560,13 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 	var _settingsSchema *SettingsSchema // out
 
-	_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_settings_schema_ref(_cret)
-	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
-		C.g_settings_schema_unref((*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_settings_schema_ref(_cret)
+		runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
+			C.g_settings_schema_unref((*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _settingsSchema
 }
@@ -580,10 +590,12 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
-	_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
+			C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _settingsSchemaSource
 }

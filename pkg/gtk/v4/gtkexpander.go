@@ -198,7 +198,9 @@ func (expander *Expander) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -239,7 +241,9 @@ func (expander *Expander) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -255,7 +259,9 @@ func (expander *Expander) LabelWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -321,7 +327,9 @@ func (expander *Expander) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_expander_set_child(_arg0, _arg1)
 }
@@ -366,7 +374,9 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	if labelWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	}
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
 }

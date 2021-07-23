@@ -137,7 +137,9 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg1 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
+	if groupSource != nil {
+		_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
+	}
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
 }

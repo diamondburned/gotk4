@@ -345,7 +345,9 @@ func (button *Button) Image() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -534,7 +536,9 @@ func (button *Button) SetImage(image Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	if image != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	}
 
 	C.gtk_button_set_image(_arg0, _arg1)
 }

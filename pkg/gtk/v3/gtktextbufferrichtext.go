@@ -90,7 +90,9 @@ func _gotk4_gtk3_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextB
 	length, guint8 := fn(registerBuffer, contentBuffer, start, end)
 
 	*arg4 = C.gsize(length)
-	cret = (*C.guint8)(unsafe.Pointer(guint8))
+	if guint8 != nil {
+		cret = (*C.guint8)(unsafe.Pointer(guint8))
+	}
 
 	return cret
 }

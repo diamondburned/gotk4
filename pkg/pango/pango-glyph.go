@@ -308,16 +308,20 @@ func (_string *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
-	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(_string)))
+	if _string != nil {
+		_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(_string)))
+	}
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.pango_glyph_string_free((*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
+			C.pango_glyph_string_free((*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _glyphString
 }

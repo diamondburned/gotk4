@@ -1693,10 +1693,12 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_targetList, func(v *TargetList) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _targetList
 }
@@ -1804,7 +1806,9 @@ func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 	var _arg1 *C.GtkTargetList // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
+	if targetList != nil {
+		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
+	}
 
 	C.gtk_drag_dest_set_target_list(_arg0, _arg1)
 }
@@ -1896,10 +1900,12 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_targetList, func(v *TargetList) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _targetList
 }
@@ -1986,7 +1992,9 @@ func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
 	var _arg1 *C.GtkTargetList // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
+	if targetList != nil {
+		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
+	}
 
 	C.gtk_drag_source_set_target_list(_arg0, _arg1)
 }
@@ -2126,7 +2134,9 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 
 	var _actionGroup gio.ActionGrouper // out
 
-	_actionGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ActionGrouper)
+	if _cret != nil {
+		_actionGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ActionGrouper)
+	}
 
 	return _actionGroup
 }
@@ -2262,7 +2272,9 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 
 	var _ret Widgetter // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _ret
 }
@@ -2580,7 +2592,9 @@ func (widget *Widget) FontMap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	if _cret != nil {
+		_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	}
 
 	return _fontMap
 }
@@ -2597,7 +2611,9 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _fontOptions
 }
@@ -2631,7 +2647,9 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 
 	var _frameClock gdk.FrameClocker // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	if _cret != nil {
+		_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	}
 
 	return _frameClock
 }
@@ -3008,7 +3026,9 @@ func (widget *Widget) Parent() Widgetter {
 
 	var _ret Widgetter // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _ret
 }
@@ -3024,7 +3044,9 @@ func (widget *Widget) ParentWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	}
 
 	return _window
 }
@@ -3607,8 +3629,10 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -3624,8 +3648,10 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -3827,7 +3853,9 @@ func (widget *Widget) Window() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	}
 
 	return _window
 }
@@ -4103,7 +4131,9 @@ func (widget *Widget) InputShapeCombineRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
 
 	C.gtk_widget_input_shape_combine_region(_arg0, _arg1)
 }
@@ -4122,7 +4152,9 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	if group != nil {
+		_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	}
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
 }
@@ -4454,7 +4486,9 @@ func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
 }
@@ -4480,7 +4514,9 @@ func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
 }
@@ -4498,8 +4534,12 @@ func (widget *Widget) ModifyCursor(primary *gdk.Color, secondary *gdk.Color) {
 	var _arg2 *C.GdkColor  // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
-	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
+	if primary != nil {
+		_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
+	}
+	if secondary != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
+	}
 
 	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
 }
@@ -4517,7 +4557,9 @@ func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
 }
@@ -4533,7 +4575,9 @@ func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	if fontDesc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	}
 
 	C.gtk_widget_modify_font(_arg0, _arg1)
 }
@@ -4580,7 +4624,9 @@ func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
 }
@@ -4602,7 +4648,9 @@ func (widget *Widget) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA)
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
 }
@@ -4638,7 +4686,9 @@ func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
 }
@@ -4660,8 +4710,12 @@ func (widget *Widget) OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA
 	var _arg2 *C.GdkRGBA   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(cursor)))
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(secondaryCursor)))
+	if cursor != nil {
+		_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(cursor)))
+	}
+	if secondaryCursor != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(secondaryCursor)))
+	}
 
 	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
 }
@@ -4678,7 +4732,9 @@ func (widget *Widget) OverrideFont(fontDesc *pango.FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	if fontDesc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+	}
 
 	C.gtk_widget_override_font(_arg0, _arg1)
 }
@@ -4700,7 +4756,9 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	if color != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	}
 
 	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
 }
@@ -5008,15 +5066,17 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -5048,15 +5108,17 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -5133,7 +5195,9 @@ func (widget *Widget) SetAccelPath(accelPath string, accelGroup *AccelGroup) {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	if accelGroup != nil {
+		_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	}
 
 	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
 }
@@ -5413,7 +5477,9 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	if fontMap != nil {
+		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	}
 
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
@@ -5426,7 +5492,9 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	var _arg1 *C.cairo_font_options_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	if options != nil {
+		_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	}
 
 	C.gtk_widget_set_font_options(_arg0, _arg1)
 }
@@ -5885,7 +5953,9 @@ func (widget *Widget) SetStyle(style *Style) {
 	var _arg1 *C.GtkStyle  // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	if style != nil {
+		_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	}
 
 	C.gtk_widget_set_style(_arg0, _arg1)
 }
@@ -5953,7 +6023,9 @@ func (widget *Widget) SetTooltipWindow(customWindow *Window) {
 	var _arg1 *C.GtkWindow // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(customWindow.Native()))
+	if customWindow != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(customWindow.Native()))
+	}
 
 	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
 }
@@ -6032,7 +6104,9 @@ func (widget *Widget) SetVisual(visual *gdk.Visual) {
 	var _arg1 *C.GdkVisual // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	if visual != nil {
+		_arg1 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	}
 
 	C.gtk_widget_set_visual(_arg0, _arg1)
 }
@@ -6065,7 +6139,9 @@ func (widget *Widget) ShapeCombineRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
 
 	C.gtk_widget_shape_combine_region(_arg0, _arg1)
 }

@@ -54,7 +54,9 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	if analysis != nil {
+		_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	}
 	_arg4 = (*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer(attrs)))
 	_arg5 = C.int(attrsLen)
 

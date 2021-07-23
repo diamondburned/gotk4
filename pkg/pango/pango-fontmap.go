@@ -226,7 +226,9 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 
 	var _font Fonter // out
 
-	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	if _cret != nil {
+		_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	}
 
 	return _font
 }
@@ -249,7 +251,9 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 
 	var _fontset Fontsetter // out
 
-	_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+	if _cret != nil {
+		_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+	}
 
 	return _fontset
 }

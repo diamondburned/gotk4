@@ -116,10 +116,12 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
+			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _transform
 }

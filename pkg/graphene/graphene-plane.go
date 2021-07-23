@@ -133,7 +133,9 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _cret *C.graphene_plane_t // in
 
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
-	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(normal)))
+	if normal != nil {
+		_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(normal)))
+	}
 	_arg2 = C.float(constant)
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
@@ -279,7 +281,9 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
-	_arg2 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(normalMatrix)))
+	if normalMatrix != nil {
+		_arg2 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(normalMatrix)))
+	}
 
 	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
 

@@ -594,17 +594,21 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	if expectedType != nil {
+		_arg3 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	}
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -629,7 +633,9 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 
 	var _menuModel MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+	}
 
 	return _menuModel
 }

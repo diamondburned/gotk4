@@ -138,8 +138,10 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -181,7 +183,9 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -273,7 +277,9 @@ func (info *FileInfo) AttributeObject(attribute string) *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }
@@ -312,7 +318,9 @@ func (info *FileInfo) AttributeString(attribute string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -332,17 +340,19 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 
 	var _utf8s []string // out
 
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			}
 		}
 	}
 
@@ -421,7 +431,9 @@ func (info *FileInfo) ContentType() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -471,7 +483,9 @@ func (info *FileInfo) Etag() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -505,7 +519,9 @@ func (info *FileInfo) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	}
 
 	return _icon
 }
@@ -646,7 +662,9 @@ func (info *FileInfo) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+	}
 
 	return _icon
 }
@@ -662,7 +680,9 @@ func (info *FileInfo) SymlinkTarget() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -727,18 +747,20 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 
 	var _utf8s []string // out
 
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z *C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 

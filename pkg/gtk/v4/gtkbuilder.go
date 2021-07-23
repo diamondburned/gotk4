@@ -680,7 +680,9 @@ func (builder *Builder) CurrentObject() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }
@@ -702,7 +704,9 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }
@@ -734,7 +738,9 @@ func (builder *Builder) TranslationDomain() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -775,7 +781,9 @@ func (builder *Builder) SetCurrentObject(currentObject *externglib.Object) {
 	var _arg1 *C.GObject    // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
+	if currentObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
+	}
 
 	C.gtk_builder_set_current_object(_arg0, _arg1)
 }
@@ -788,7 +796,9 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 	var _arg1 *C.GtkBuilderScope // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	if scope != nil {
+		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	}
 
 	C.gtk_builder_set_scope(_arg0, _arg1)
 }

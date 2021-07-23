@@ -298,11 +298,13 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
 
-	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_recent_info_ref(_cret)
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_recent_info_ref(_cret)
+		runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -506,7 +508,9 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _appInfo gio.AppInfor // out
 	var _goerr error          // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
+	if _cret != nil {
+		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -645,7 +649,9 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
+	}
 
 	return _icon
 }
@@ -663,15 +669,17 @@ func (info *RecentInfo) Icon(size int) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -779,8 +787,10 @@ func (info *RecentInfo) URIDisplay() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

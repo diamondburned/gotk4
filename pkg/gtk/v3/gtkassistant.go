@@ -287,7 +287,9 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -545,9 +547,11 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_AssistantPageFunc)
-	_arg2 = C.gpointer(gbox.Assign(pageFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if pageFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_AssistantPageFunc)
+		_arg2 = C.gpointer(gbox.Assign(pageFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_assistant_set_forward_page_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -597,7 +601,9 @@ func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf *gdkpixbuf
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_assistant_set_page_header_image(_arg0, _arg1, _arg2)
 }
@@ -615,7 +621,9 @@ func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf *gdkpixbuf.P
 
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_assistant_set_page_side_image(_arg0, _arg1, _arg2)
 }

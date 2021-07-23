@@ -145,7 +145,9 @@ func (bar *HeaderBar) DecorationLayout() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -182,7 +184,9 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -281,7 +285,9 @@ func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+	if titleWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+	}
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
 }

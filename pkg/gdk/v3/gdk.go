@@ -222,7 +222,9 @@ func (context *DragContext) DragWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _window
 }

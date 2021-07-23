@@ -235,7 +235,9 @@ func (drag *Drag) DragSurface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	if _cret != nil {
+		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	}
 
 	return _surface
 }
@@ -339,7 +341,9 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 
 	var _drag Dragger // out
 
-	_drag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Dragger)
+	if _cret != nil {
+		_drag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Dragger)
+	}
 
 	return _drag
 }

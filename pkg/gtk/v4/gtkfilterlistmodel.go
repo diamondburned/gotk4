@@ -59,8 +59,12 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
+	if filter != nil {
+		_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	}
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
 
@@ -82,7 +86,9 @@ func (self *FilterListModel) Filter() *Filter {
 
 	var _filter *Filter // out
 
-	_filter = wrapFilter(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filter = wrapFilter(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _filter
 }
@@ -118,7 +124,9 @@ func (self *FilterListModel) Model() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	if _cret != nil {
+		_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	}
 
 	return _listModel
 }
@@ -158,7 +166,9 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 	var _arg1 *C.GtkFilter          // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	if filter != nil {
+		_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	}
 
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
@@ -201,7 +211,9 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }

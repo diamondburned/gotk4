@@ -247,8 +247,10 @@ func NewTask(ctx context.Context, sourceObject *externglib.Object, callback Asyn
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -350,7 +352,9 @@ func (task *Task) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -646,7 +650,9 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 	var _arg1 *C.GValue // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&result.GValue))
+	if result != nil {
+		_arg1 = (*C.GValue)(unsafe.Pointer(&result.GValue))
+	}
 
 	C.g_task_return_value(_arg0, _arg1)
 }
@@ -813,8 +819,10 @@ func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallbac
 	var _arg5 *C.GError  // out
 
 	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 	_arg5 = (*C.GError)(gerror.New(err))
 

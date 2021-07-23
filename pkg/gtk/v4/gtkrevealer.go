@@ -159,7 +159,9 @@ func (revealer *Revealer) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -247,7 +249,9 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }

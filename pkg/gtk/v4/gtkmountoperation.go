@@ -57,7 +57,9 @@ func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
@@ -143,7 +145,9 @@ func (op *MountOperation) SetParent(parent *Window) {
 	var _arg1 *C.GtkWindow         // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }

@@ -276,8 +276,10 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -324,9 +326,13 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -407,7 +413,9 @@ func (volume *Volume) ActivationRoot() Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	}
 
 	return _file
 }
@@ -423,7 +431,9 @@ func (volume *Volume) Drive() Driver {
 
 	var _drive Driver // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	if _cret != nil {
+		_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	}
 
 	return _drive
 }
@@ -460,8 +470,10 @@ func (volume *Volume) Identifier(kind string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -477,7 +489,9 @@ func (volume *Volume) GetMount() Mounter {
 
 	var _mount Mounter // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	if _cret != nil {
+		_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	}
 
 	return _mount
 }
@@ -510,7 +524,9 @@ func (volume *Volume) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -544,8 +560,10 @@ func (volume *Volume) UUID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -568,9 +586,13 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountMountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

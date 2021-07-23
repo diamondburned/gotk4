@@ -136,7 +136,9 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -206,7 +208,9 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
+	if accelWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
+	}
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 }

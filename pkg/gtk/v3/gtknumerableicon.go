@@ -67,7 +67,9 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	}
 
 	return _icon
 }
@@ -86,7 +88,9 @@ func (self *NumerableIcon) BackgroundIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -122,7 +126,9 @@ func (self *NumerableIcon) Label() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -141,7 +147,9 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 
 	var _styleContext *StyleContext // out
 
-	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _styleContext
 }
@@ -161,7 +169,9 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg1 *C.GIcon            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	if icon != nil {
+		_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	}
 
 	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
 }

@@ -89,7 +89,9 @@ func (accessible *Accessible) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -104,7 +106,9 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 }

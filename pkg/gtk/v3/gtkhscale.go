@@ -72,7 +72,9 @@ func NewHScale(adjustment *Adjustment) *HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	_cret = C.gtk_hscale_new(_arg1)
 

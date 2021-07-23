@@ -276,10 +276,12 @@ func (entry *Entry) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _attrList
 }
@@ -347,7 +349,9 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _adjustment
 }
@@ -453,7 +457,9 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	if _cret != nil {
+		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+	}
 
 	return _icon
 }
@@ -473,7 +479,9 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -495,15 +503,17 @@ func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -586,8 +596,10 @@ func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -606,8 +618,10 @@ func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -628,7 +642,9 @@ func (entry *Entry) InnerBorder() *Border {
 
 	var _border *Border // out
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _border
 }
@@ -865,7 +881,9 @@ func (entry *Entry) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _tabArray
 }
@@ -1118,7 +1136,9 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 	var _arg1 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	if completion != nil {
+		_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	}
 
 	C.gtk_entry_set_completion(_arg0, _arg1)
 }
@@ -1135,7 +1155,9 @@ func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	C.gtk_entry_set_cursor_hadjustment(_arg0, _arg1)
 }
@@ -1206,7 +1228,9 @@ func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	if icon != nil {
+		_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	}
 
 	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
 }
@@ -1244,7 +1268,9 @@ func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixb
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_entry_set_icon_from_pixbuf(_arg0, _arg1, _arg2)
 }
@@ -1353,7 +1379,9 @@ func (entry *Entry) SetInnerBorder(border *Border) {
 	var _arg1 *C.GtkBorder // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
+	if border != nil {
+		_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
+	}
 
 	C.gtk_entry_set_inner_border(_arg0, _arg1)
 }

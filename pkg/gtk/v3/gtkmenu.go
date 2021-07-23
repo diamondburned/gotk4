@@ -381,7 +381,9 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg1 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	if accelGroup != nil {
+		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	}
 
 	C.gtk_menu_set_accel_group(_arg0, _arg1)
 }
@@ -470,7 +472,9 @@ func (menu *Menu) SetScreen(screen *gdk.Screen) {
 	var _arg1 *C.GdkScreen // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	if screen != nil {
+		_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	}
 
 	C.gtk_menu_set_screen(_arg0, _arg1)
 }

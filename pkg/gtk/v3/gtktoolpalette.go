@@ -224,7 +224,9 @@ func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
 
 	var _toolItemGroup *ToolItemGroup // out
 
-	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _toolItemGroup
 }
@@ -245,7 +247,9 @@ func (palette *ToolPalette) DropItem(x int, y int) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _toolItem
 }

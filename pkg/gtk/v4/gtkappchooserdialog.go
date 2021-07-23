@@ -121,7 +121,9 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 	var _arg3 *C.GFile         // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
@@ -144,7 +146,9 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 	var _arg3 *C.char          // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -169,7 +173,9 @@ func (self *AppChooserDialog) Heading() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

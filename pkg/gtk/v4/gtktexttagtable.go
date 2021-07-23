@@ -168,7 +168,9 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 
 	var _textTag *TextTag // out
 
-	_textTag = wrapTextTag(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_textTag = wrapTextTag(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _textTag
 }

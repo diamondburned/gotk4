@@ -267,15 +267,17 @@ func (iconInfo *IconInfo) BuiltinPixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -337,7 +339,9 @@ func (iconInfo *IconInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }
@@ -419,8 +423,10 @@ func (iconInfo *IconInfo) LoadIconAsync(ctx context.Context, callback gio.AsyncR
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gtk_icon_info_load_icon_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -476,7 +482,9 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	if forWindow != nil {
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	}
 
 	_cret = C.gtk_icon_info_load_surface(_arg0, _arg1, &_cerr)
 
@@ -524,9 +532,15 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
-	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
-	_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
+	if successColor != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
+	}
+	if warningColor != nil {
+		_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
+	}
+	if errorColor != nil {
+		_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
+	}
 
 	_cret = C.gtk_icon_info_load_symbolic(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 
@@ -577,11 +591,19 @@ func (iconInfo *IconInfo) LoadSymbolicAsync(ctx context.Context, fg *gdk.RGBA, s
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
-	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
-	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
-	_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
-	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	if successColor != nil {
+		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
+	}
+	if warningColor != nil {
+		_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
+	}
+	if errorColor != nil {
+		_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
+	}
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gtk_icon_info_load_symbolic_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
@@ -692,8 +714,10 @@ func (iconInfo *IconInfo) LoadSymbolicForContextAsync(ctx context.Context, conte
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gtk_icon_info_load_symbolic_for_context_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -984,7 +1008,9 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }
@@ -1027,7 +1053,9 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size int, sca
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }
@@ -1045,8 +1073,10 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -1223,15 +1253,17 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 	if _cerr != nil {
@@ -1273,15 +1305,17 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 	if _cerr != nil {
@@ -1313,7 +1347,9 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	if forWindow != nil {
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	}
 	_arg5 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_load_surface(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -1321,11 +1357,13 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 	var _surface *cairo.Surface // out
 	var _goerr error            // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
+		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+		})
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1358,7 +1396,9 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }
@@ -1384,7 +1424,9 @@ func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, sc
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }
@@ -1416,7 +1458,9 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLook
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }
@@ -1445,7 +1489,9 @@ func (iconTheme *IconTheme) LookupIconForScale(iconName string, size int, scale 
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _iconInfo
 }

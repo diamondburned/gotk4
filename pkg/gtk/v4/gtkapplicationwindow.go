@@ -187,7 +187,9 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
-	_shortcutsWindow = wrapShortcutsWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_shortcutsWindow = wrapShortcutsWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _shortcutsWindow
 }
@@ -240,7 +242,9 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg1 *C.GtkShortcutsWindow   // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
+	if helpOverlay != nil {
+		_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
+	}
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }

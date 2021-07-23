@@ -215,8 +215,10 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -383,8 +385,10 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 }

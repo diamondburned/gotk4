@@ -339,8 +339,10 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -448,8 +450,10 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -549,8 +553,10 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResolverNameLookupFlags(flags)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -660,8 +666,10 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResolverRecordType(recordType)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -792,8 +800,10 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service string
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

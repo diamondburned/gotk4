@@ -528,7 +528,9 @@ func (cell *CellRenderer) Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffs
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	if cellArea != nil {
+		_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	}
 
 	C.gtk_cell_renderer_get_size(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
@@ -553,8 +555,12 @@ func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) S
 	var _arg2 C.GtkCellRendererState // out
 	var _cret C.GtkStateFlags        // in
 
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if cell != nil {
+		_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	}
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 	_arg2 = C.GtkCellRendererState(cellState)
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)

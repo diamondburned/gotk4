@@ -131,7 +131,9 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
 
 	_cret = C.gtk_column_view_new(_arg1)
 
@@ -207,7 +209,9 @@ func (self *ColumnView) Model() SelectionModeller {
 
 	var _selectionModel SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	if _cret != nil {
+		_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	}
 
 	return _selectionModel
 }
@@ -314,7 +318,9 @@ func (self *ColumnView) Sorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _sorter
 }
@@ -367,7 +373,9 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_column_view_set_model(_arg0, _arg1)
 }
@@ -444,7 +452,9 @@ func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortTyp
 	var _arg2 C.GtkSortType          // out
 
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	if column != nil {
+		_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
+	}
 	_arg2 = C.GtkSortType(direction)
 
 	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)

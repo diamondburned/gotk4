@@ -128,7 +128,9 @@ func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	if relativeTo != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	}
 
 	_cret = C.gtk_popover_new(_arg1)
 
@@ -153,7 +155,9 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	if relativeTo != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	}
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
@@ -191,7 +195,9 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 	var _arg2 *C.gchar      // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 	if actionNamespace != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -229,7 +235,9 @@ func (popover *Popover) DefaultWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -375,7 +383,9 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
@@ -437,7 +447,9 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	if relativeTo != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
+	}
 
 	C.gtk_popover_set_relative_to(_arg0, _arg1)
 }

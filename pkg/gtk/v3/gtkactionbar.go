@@ -91,7 +91,9 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -126,7 +128,9 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+	if centerWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+	}
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }

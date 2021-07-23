@@ -84,8 +84,12 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	if hadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	}
+	if vadjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	}
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -112,7 +116,9 @@ func (viewport *Viewport) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -142,7 +148,9 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
 }

@@ -111,7 +111,9 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	}
 
 	return _window
 }

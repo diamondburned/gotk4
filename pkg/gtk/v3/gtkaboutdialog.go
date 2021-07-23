@@ -675,7 +675,9 @@ func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf      // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(logo.Native()))
+	if logo != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(logo.Native()))
+	}
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }

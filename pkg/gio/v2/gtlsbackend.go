@@ -228,7 +228,9 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg1 *C.GTlsDatabase // out
 
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
-	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	if database != nil {
+		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	}
 
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
 }

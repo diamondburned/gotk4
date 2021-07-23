@@ -424,7 +424,9 @@ func (application *Application) ApplicationID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -451,7 +453,9 @@ func (application *Application) DBusConnection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _dBusConnection
 }
@@ -481,7 +485,9 @@ func (application *Application) DBusObjectPath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -602,7 +608,9 @@ func (application *Application) ResourceBasePath() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -908,7 +916,9 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg1 *C.GActionGroup // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	if actionGroup != nil {
+		_arg1 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	}
 
 	C.g_application_set_action_group(_arg0, _arg1)
 }
@@ -941,7 +951,9 @@ func (application *Application) SetApplicationID(applicationId string) {
 func (application *Application) SetDefault() {
 	var _arg0 *C.GApplication // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
+	if application != nil {
+		_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
+	}
 
 	C.g_application_set_default(_arg0)
 }
@@ -1145,7 +1157,9 @@ func ApplicationGetDefault() *Application {
 
 	var _application *Application // out
 
-	_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _application
 }

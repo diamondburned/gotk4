@@ -89,7 +89,9 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 
 	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _inetSocketAddress
 }

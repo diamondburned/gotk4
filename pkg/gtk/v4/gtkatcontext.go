@@ -75,7 +75,9 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 
 	var _atContext *ATContext // out
 
-	_atContext = wrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_atContext = wrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _atContext
 }

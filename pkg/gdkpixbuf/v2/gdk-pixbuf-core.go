@@ -233,8 +233,10 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_pixbuf_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
 }
@@ -268,8 +270,10 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 	if preserveAspectRatio {
 		_arg4 = C.TRUE
 	}
-	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_pixbuf_new_from_stream_at_scale_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }

@@ -144,8 +144,10 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -239,8 +241,10 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -307,7 +311,9 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = C.GSocketType(typ)
 	_arg3 = C.GSocketProtocol(protocol)
-	_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	if sourceObject != nil {
+		_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
 
 	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 
@@ -340,7 +346,9 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
 
 	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
 
@@ -374,7 +382,9 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = C.guint16(port)
-	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	if sourceObject != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
 
 	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
 
@@ -406,7 +416,9 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	if sourceObject != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
 
 	C.g_socket_listener_add_socket(_arg0, _arg1, _arg2, &_cerr)
 

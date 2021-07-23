@@ -122,7 +122,9 @@ func (password *TLSPassword) Value(length *uint) *byte {
 	var _cret *C.guchar       // in
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
-	_arg1 = (*C.gsize)(unsafe.Pointer(length))
+	if length != nil {
+		_arg1 = (*C.gsize)(unsafe.Pointer(length))
+	}
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 

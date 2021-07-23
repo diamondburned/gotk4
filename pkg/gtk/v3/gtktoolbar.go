@@ -241,7 +241,9 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _toolItem
 }
@@ -327,7 +329,9 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	if toolItem != nil {
+		_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	}
 	_arg2 = C.gint(index_)
 
 	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)

@@ -183,8 +183,10 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

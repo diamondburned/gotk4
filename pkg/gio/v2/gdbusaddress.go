@@ -110,8 +110,10 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }

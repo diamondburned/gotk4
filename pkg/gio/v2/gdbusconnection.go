@@ -232,7 +232,9 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBu
 	fn := v.(DBusMessageFilterFunction)
 	dBusMessage := fn(connection, message, incoming)
 
-	cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
+	if dBusMessage != nil {
+		cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
+	}
 
 	return cret
 }
@@ -256,8 +258,10 @@ func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	var parameters *glib.Variant   // out
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
-	senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
+	if arg1 != nil {
+		senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+		defer C.free(unsafe.Pointer(arg1))
+	}
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
@@ -307,7 +311,9 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 	outUserData, dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node)
 
 	*arg5 = (C.gpointer)(unsafe.Pointer(outUserData))
-	cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
+	if dBusInterfaceVTable != nil {
+		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
+	}
 
 	return cret
 }
@@ -405,10 +411,12 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 	fn := v.(DBusSubtreeIntrospectFunc)
 	dBusInterfaceInfos := fn(connection, sender, objectPath, node)
 
-	{
-		var zero *DBusInterfaceInfo
-		dBusInterfaceInfos = append(dBusInterfaceInfos, zero)
-		cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(&dBusInterfaceInfos[0]))
+	if dBusInterfaceInfos != nil {
+		{
+			var zero *DBusInterfaceInfo
+			dBusInterfaceInfos = append(dBusInterfaceInfos, zero)
+			cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(&dBusInterfaceInfos[0]))
+		}
 	}
 
 	return cret
@@ -433,8 +441,10 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GBusType(busType)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
 }
@@ -546,9 +556,13 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 		defer C.free(unsafe.Pointer(_arg2))
 	}
 	_arg3 = C.GDBusConnectionFlags(flags)
-	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	if observer != nil {
+		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
+	}
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
@@ -588,9 +602,13 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GDBusConnectionFlags(flags)
-	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if observer != nil {
+		_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
+	}
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

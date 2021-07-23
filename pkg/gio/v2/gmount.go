@@ -307,8 +307,10 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -355,9 +357,13 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -416,7 +422,9 @@ func (mount *Mount) Drive() Driver {
 
 	var _drive Driver // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	if _cret != nil {
+		_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	}
 
 	return _drive
 }
@@ -481,7 +489,9 @@ func (mount *Mount) SortKey() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -515,8 +525,10 @@ func (mount *Mount) UUID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -532,7 +544,9 @@ func (mount *Mount) Volume() Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	if _cret != nil {
+		_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	}
 
 	return _volume
 }
@@ -564,8 +578,10 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -721,9 +737,13 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountMountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_remount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -781,8 +801,10 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_unmount(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -829,9 +851,13 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

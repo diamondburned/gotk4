@@ -406,7 +406,9 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	var _cret *C.graphene_euler_t // in
 
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
-	_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(src)))
+	if src != nil {
+		_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(src)))
+	}
 
 	_cret = C.graphene_euler_init_from_euler(_arg0, _arg1)
 
@@ -429,7 +431,9 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 	var _cret *C.graphene_euler_t      // in
 
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
-	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	if m != nil {
+		_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	}
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_matrix(_arg0, _arg1, _arg2)
@@ -453,7 +457,9 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 	var _cret *C.graphene_euler_t      // in
 
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
-	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
+	if q != nil {
+		_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
+	}
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_quaternion(_arg0, _arg1, _arg2)
@@ -502,7 +508,9 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 	var _cret *C.graphene_euler_t      // in
 
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
-	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
+	if v != nil {
+		_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
+	}
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_vec3(_arg0, _arg1, _arg2)

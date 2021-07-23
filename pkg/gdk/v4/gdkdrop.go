@@ -183,7 +183,9 @@ func (self *Drop) Drag() Dragger {
 
 	var _drag Dragger // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dragger)
+	if _cret != nil {
+		_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dragger)
+	}
 
 	return _drag
 }
@@ -254,8 +256,10 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 		}
 	}
 	_arg2 = C.int(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_drop_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -286,7 +290,9 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	if _cret != nil {
+		_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -319,8 +325,10 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPri
 	}
 	_arg1 = C.GType(typ)
 	_arg2 = C.int(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_drop_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

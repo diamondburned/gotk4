@@ -139,7 +139,9 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -165,7 +167,9 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -203,7 +207,9 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -226,7 +232,9 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -286,7 +294,9 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 	var _cret *C.GdkPixbufAnimationIter // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
-	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(startTime)))
+	if startTime != nil {
+		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(startTime)))
+	}
 
 	_cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
 
@@ -381,8 +391,10 @@ func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStre
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_pixbuf_animation_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
 }
@@ -491,7 +503,9 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
-	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(currentTime)))
+	if currentTime != nil {
+		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(currentTime)))
+	}
 
 	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
 

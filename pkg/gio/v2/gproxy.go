@@ -153,8 +153,10 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 	}
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -218,7 +220,9 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 
 	var _proxy Proxier // out
 
-	_proxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
+	if _cret != nil {
+		_proxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
+	}
 
 	return _proxy
 }

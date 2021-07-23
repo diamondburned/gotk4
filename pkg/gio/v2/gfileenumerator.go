@@ -187,8 +187,10 @@ func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.int(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_file_enumerator_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -395,7 +397,9 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -438,8 +442,10 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles i
 	}
 	_arg1 = C.int(numFiles)
 	_arg2 = C.int(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

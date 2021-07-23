@@ -323,7 +323,9 @@ func (device *Device) ProductID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -402,7 +404,9 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	if _cret != nil {
+		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	}
 
 	return _winX, _winY, _surface
 }
@@ -461,7 +465,9 @@ func (device *Device) VendorID() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

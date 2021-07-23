@@ -176,7 +176,9 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	if _cret != nil {
+		_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	}
 
 	return _action
 }

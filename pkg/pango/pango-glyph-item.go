@@ -58,16 +58,20 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _cret *C.PangoGlyphItem // in
 
-	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(orig)))
+	if orig != nil {
+		_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(orig)))
+	}
 
 	_cret = C.pango_glyph_item_copy(_arg0)
 
 	var _glyphItem *GlyphItem // out
 
-	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.pango_glyph_item_free((*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
+			C.pango_glyph_item_free((*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _glyphItem
 }
@@ -205,16 +209,20 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret *C.PangoGlyphItemIter // in
 
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(orig)))
+	if orig != nil {
+		_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(orig)))
+	}
 
 	_cret = C.pango_glyph_item_iter_copy(_arg0)
 
 	var _glyphItemIter *GlyphItemIter // out
 
-	_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-		C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
+			C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _glyphItemIter
 }

@@ -26,7 +26,9 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
@@ -55,12 +57,16 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

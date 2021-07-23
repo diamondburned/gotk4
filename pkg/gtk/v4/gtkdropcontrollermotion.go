@@ -93,7 +93,9 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 
 	var _drop gdk.Dropper // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
+	if _cret != nil {
+		_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
+	}
 
 	return _drop
 }

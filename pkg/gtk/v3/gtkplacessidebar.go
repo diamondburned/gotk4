@@ -243,7 +243,9 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -264,7 +266,9 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -480,7 +484,9 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	if location != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	}
 
 	C.gtk_places_sidebar_set_location(_arg0, _arg1)
 }

@@ -151,7 +151,9 @@ func (self *NativeDialog) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -167,7 +169,9 @@ func (self *NativeDialog) TransientFor() *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _window
 }
@@ -247,7 +251,9 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg1 *C.GtkWindow       // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
 }

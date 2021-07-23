@@ -190,10 +190,12 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_treePath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _treePath
 }
@@ -247,7 +249,9 @@ func (cellView *CellView) Model() TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	if _cret != nil {
+		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	}
 
 	return _treeModel
 }
@@ -262,7 +266,9 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
+	if path != nil {
+		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
+	}
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }
@@ -309,7 +315,9 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)
 }

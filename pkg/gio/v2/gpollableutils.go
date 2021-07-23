@@ -69,7 +69,9 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
-	_arg2 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
+	if childSource != nil {
+		_arg2 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
+	}
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 

@@ -78,7 +78,9 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 
@@ -100,7 +102,9 @@ func (self *DirectoryList) Attributes() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -123,7 +127,9 @@ func (self *DirectoryList) Error() error {
 
 	var _err error // out
 
-	_err = gerror.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_err = gerror.Take(unsafe.Pointer(_cret))
+	}
 
 	return _err
 }
@@ -139,7 +145,9 @@ func (self *DirectoryList) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -226,7 +234,9 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	C.gtk_directory_list_set_file(_arg0, _arg1)
 }

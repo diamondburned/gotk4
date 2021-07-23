@@ -1659,7 +1659,9 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(child.Native()))
-	_arg3 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
+	if childBounds != nil {
+		_arg3 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
+	}
 
 	_cret = C.gsk_repeat_node_new(_arg1, _arg2, _arg3)
 
@@ -2011,7 +2013,9 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 
 	var _textNode *TextNode // out
 
-	_textNode = wrapTextNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_textNode = wrapTextNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _textNode
 }

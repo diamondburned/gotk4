@@ -125,7 +125,9 @@ func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
 
@@ -166,7 +168,9 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
 
@@ -187,7 +191,9 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
@@ -235,7 +241,9 @@ func (self *Picture) AlternativeText() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -272,7 +280,9 @@ func (self *Picture) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -307,7 +317,9 @@ func (self *Picture) Paintable() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	if _cret != nil {
+		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	}
 
 	return _paintable
 }
@@ -363,7 +375,9 @@ func (self *Picture) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile      // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	C.gtk_picture_set_file(_arg0, _arg1)
 }
@@ -414,7 +428,9 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	if paintable != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	}
 
 	C.gtk_picture_set_paintable(_arg0, _arg1)
 }
@@ -429,7 +445,9 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
 }

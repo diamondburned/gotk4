@@ -102,7 +102,9 @@ func (switcher *StackSwitcher) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _stack
 }
@@ -113,7 +115,9 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg1 *C.GtkStack         // out
 
 	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	if stack != nil {
+		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	}
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }

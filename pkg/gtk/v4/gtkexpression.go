@@ -58,7 +58,9 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
+	if _cret != nil {
+		_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
+	}
 
 	return _expression
 }
@@ -74,7 +76,9 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	if _cret != nil {
+		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	}
 
 	return _expression
 }
@@ -100,7 +104,9 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
@@ -550,7 +556,9 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_object = externglib.Take(unsafe.Pointer(_cret))
+	}
 
 	return _object
 }
@@ -589,7 +597,9 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	var _cret *C.GtkExpression // in
 
 	_arg1 = C.GType(thisType)
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg3))
 

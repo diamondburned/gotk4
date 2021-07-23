@@ -621,7 +621,9 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _cret *C.gchar      // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
+	if matchInfo != nil {
+		_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stringToExpand)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -630,8 +632,10 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -665,8 +669,10 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -735,8 +741,10 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -1047,11 +1055,13 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	var _regex *Regex // out
 	var _goerr error  // out
 
-	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_regex_ref(_cret)
-	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_regex_ref(_cret)
+		runtime.SetFinalizer(_regex, func(v *Regex) {
+			C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

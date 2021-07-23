@@ -517,7 +517,9 @@ func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle,
 	var _arg3 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if iter != nil {
+		_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
 
 	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -603,7 +605,9 @@ func (textView *TextView) Gutter(win TextWindowType) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -959,10 +963,12 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
+			C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _tabArray
 }
@@ -1316,7 +1322,9 @@ func (textView *TextView) SetBuffer(buffer *TextBuffer) {
 	var _arg1 *C.GtkTextBuffer // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	if buffer != nil {
+		_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	}
 
 	C.gtk_text_view_set_buffer(_arg0, _arg1)
 }
@@ -1365,7 +1373,9 @@ func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel  // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_text_view_set_extra_menu(_arg0, _arg1)
 }
@@ -1381,7 +1391,9 @@ func (textView *TextView) SetGutter(win TextWindowType, widget Widgetter) {
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg1 = C.GtkTextWindowType(win)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_text_view_set_gutter(_arg0, _arg1, _arg2)
 }

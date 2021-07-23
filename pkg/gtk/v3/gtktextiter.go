@@ -233,7 +233,9 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
 	defer gbox.Delete(uintptr(_arg2))
-	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	if limit != nil {
+		_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	}
 
 	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
 
@@ -312,7 +314,9 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	if limit != nil {
+		_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	}
 
 	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
 
@@ -384,7 +388,9 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_backward_to_tag_toggle(_arg0, _arg1)
 
@@ -588,7 +594,9 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_begins_tag(_arg0, _arg1)
 
@@ -759,7 +767,9 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_ends_tag(_arg0, _arg1)
 
@@ -925,7 +935,9 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
 	defer gbox.Delete(uintptr(_arg2))
-	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	if limit != nil {
+		_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	}
 
 	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)
 
@@ -1005,7 +1017,9 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
-	_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	if limit != nil {
+		_arg5 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(limit)))
+	}
 
 	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
 
@@ -1111,7 +1125,9 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_forward_to_tag_toggle(_arg0, _arg1)
 
@@ -1952,7 +1968,9 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_starts_tag(_arg0, _arg1)
 
@@ -1994,7 +2012,9 @@ func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	if tag != nil {
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	}
 
 	_cret = C.gtk_text_iter_toggles_tag(_arg0, _arg1)
 

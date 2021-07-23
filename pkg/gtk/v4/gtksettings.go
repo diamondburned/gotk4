@@ -95,7 +95,9 @@ func SettingsGetDefault() *Settings {
 
 	var _settings *Settings // out
 
-	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _settings
 }

@@ -314,7 +314,9 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = C.GdkSurfaceEdge(edge)
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	if device != nil {
+		_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	}
 	_arg3 = C.int(button)
 	_arg4 = C.double(x)
 	_arg5 = C.double(y)
@@ -379,7 +381,9 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg1 *C.GdkEvent    // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	if event != nil {
+		_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	}
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
 }

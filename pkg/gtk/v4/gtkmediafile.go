@@ -193,7 +193,9 @@ func (self *MediaFile) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	if _cret != nil {
+		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	}
 
 	return _file
 }
@@ -211,7 +213,9 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 
 	var _inputStream gio.InputStreamer // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	if _cret != nil {
+		_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	}
 
 	return _inputStream
 }
@@ -224,7 +228,9 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg1 *C.GFile        // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	}
 
 	C.gtk_media_file_set_file(_arg0, _arg1)
 }
@@ -257,7 +263,9 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg1 *C.GInputStream // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	if stream != nil {
+		_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	}
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 }

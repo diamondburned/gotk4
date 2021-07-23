@@ -93,7 +93,9 @@ func (sidebar *StackSidebar) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _stack
 }

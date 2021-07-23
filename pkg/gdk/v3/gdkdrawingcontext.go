@@ -84,14 +84,16 @@ func (context *DrawingContext) Clip() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_pp))
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		C.cairo_region_reference(_cret)
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
 	}
-	C.cairo_region_reference(_cret)
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
 
 	return _region
 }

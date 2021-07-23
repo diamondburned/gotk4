@@ -293,8 +293,10 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	if childSetup != nil {
+		_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	}
 
 	C.g_spawn_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_cerr)
 
@@ -355,8 +357,10 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	if childSetup != nil {
+		_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	}
 	_arg8 = C.gint(stdinFd)
 	_arg9 = C.gint(stdoutFd)
 	_arg10 = C.gint(stderrFd)
@@ -420,8 +424,10 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	if childSetup != nil {
+		_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	}
 
 	C.g_spawn_async_with_pipes(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_arg10, &_cerr)
 
@@ -666,8 +672,10 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	if childSetup != nil {
+		_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	}
 	_arg7 = C.gint(stdinFd)
 	_arg8 = C.gint(stdoutFd)
 	_arg9 = C.gint(stderrFd)
@@ -926,8 +934,10 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	if childSetup != nil {
+		_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
+	}
 
 	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
 

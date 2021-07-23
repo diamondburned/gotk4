@@ -171,7 +171,9 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 	var _arg1 *C.GDBusConnection          // out
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	if connection != nil {
+		_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	}
 
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 }

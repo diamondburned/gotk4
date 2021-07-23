@@ -102,10 +102,12 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	var _deviceTool *gdk.DeviceTool // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_deviceTool = &gdk.DeviceTool{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_deviceTool = &gdk.DeviceTool{
+				Object: obj,
+			}
 		}
 	}
 

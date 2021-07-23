@@ -131,7 +131,9 @@ func (context *DrawContext) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }
@@ -154,13 +156,15 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_pp))
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
 
 	return _region
 }
@@ -176,7 +180,9 @@ func (context *DrawContext) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	if _cret != nil {
+		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	}
 
 	return _surface
 }

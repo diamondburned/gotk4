@@ -636,7 +636,9 @@ func (event *DNDEvent) Drop() Dropper {
 
 	var _drop Dropper // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
+	if _cret != nil {
+		_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
+	}
 
 	return _drop
 }
@@ -785,7 +787,9 @@ func (event *Event) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	}
 
 	return _device
 }
@@ -809,7 +813,9 @@ func (event *Event) DeviceTool() *DeviceTool {
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = wrapDeviceTool(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_deviceTool = wrapDeviceTool(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _deviceTool
 }
@@ -825,7 +831,9 @@ func (event *Event) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _display
 }
@@ -936,7 +944,9 @@ func (event *Event) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	if _cret != nil {
+		_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	}
 
 	return _seat
 }

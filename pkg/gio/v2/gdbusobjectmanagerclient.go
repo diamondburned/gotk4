@@ -213,9 +213,11 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
-	_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
-	_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
 
@@ -260,9 +262,11 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 	}
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
-	_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
-	_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.g_dbus_object_manager_client_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
 
@@ -339,8 +343,10 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -377,11 +383,15 @@ func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection,
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
-	_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
-	_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if callback != nil {
+		_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_object_manager_client_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
@@ -418,11 +428,15 @@ func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flag
 	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
-	_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
-	_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if callback != nil {
+		_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_dbus_object_manager_client_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }

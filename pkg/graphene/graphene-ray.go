@@ -221,8 +221,12 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 	var _cret *C.graphene_ray_t     // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(origin)))
-	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(direction)))
+	if origin != nil {
+		_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(origin)))
+	}
+	if direction != nil {
+		_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(direction)))
+	}
 
 	_cret = C.graphene_ray_init(_arg0, _arg1, _arg2)
 
@@ -260,8 +264,12 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 	var _cret *C.graphene_ray_t  // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
-	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(origin)))
-	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(direction)))
+	if origin != nil {
+		_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(origin)))
+	}
+	if direction != nil {
+		_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(direction)))
+	}
 
 	_cret = C.graphene_ray_init_from_vec3(_arg0, _arg1, _arg2)
 

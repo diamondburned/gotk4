@@ -74,7 +74,9 @@ func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (c
 
 	var cancellable *Cancellable // out
 
-	cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
+	if arg0 != nil {
+		cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
+	}
 
 	fn := v.(CancellableSourceFunc)
 	ok := fn(cancellable)
@@ -108,8 +110,10 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
-	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
+	if arg2 != nil {
+		interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+		defer C.free(unsafe.Pointer(arg2))
+	}
 
 	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName)
@@ -373,7 +377,9 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -435,18 +441,24 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 	var _arg1 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
-	_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(subtract)))
+	if matcher != nil {
+		_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
+	}
+	if subtract != nil {
+		_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(subtract)))
+	}
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_matcher_ref(_cret)
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_file_attribute_matcher_ref(_cret)
+		runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
+			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _fileAttributeMatcher
 }
@@ -459,7 +471,9 @@ func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
+	if matcher != nil {
+		_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
+	}
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
 

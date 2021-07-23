@@ -238,7 +238,9 @@ func (window *Window) Application() *Application {
 
 	var _application *Application // out
 
-	_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _application
 }
@@ -254,7 +256,9 @@ func (window *Window) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -311,7 +315,9 @@ func (window *Window) DefaultWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -368,7 +374,9 @@ func (window *Window) Focus() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -398,7 +406,9 @@ func (window *Window) Group() *WindowGroup {
 	var _arg0 *C.GtkWindow      // out
 	var _cret *C.GtkWindowGroup // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	if window != nil {
+		_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	}
 
 	_cret = C.gtk_window_get_group(_arg0)
 
@@ -458,7 +468,9 @@ func (window *Window) IconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -528,7 +540,9 @@ func (window *Window) Title() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -545,7 +559,9 @@ func (window *Window) Titlebar() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -561,7 +577,9 @@ func (window *Window) TransientFor() *Window {
 
 	var _ret *Window // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _ret
 }
@@ -758,7 +776,9 @@ func (window *Window) SetApplication(application *Application) {
 	var _arg1 *C.GtkApplication // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	if application != nil {
+		_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	}
 
 	C.gtk_window_set_application(_arg0, _arg1)
 }
@@ -769,7 +789,9 @@ func (window *Window) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_window_set_child(_arg0, _arg1)
 }
@@ -842,7 +864,9 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
+	if defaultWidget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
+	}
 
 	C.gtk_window_set_default_widget(_arg0, _arg1)
 }
@@ -913,7 +937,9 @@ func (window *Window) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	if focus != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	}
 
 	C.gtk_window_set_focus(_arg0, _arg1)
 }
@@ -1085,7 +1111,9 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
+	if titlebar != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
+	}
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
 }
@@ -1105,7 +1133,9 @@ func (window *Window) SetTransientFor(parent *Window) {
 	var _arg1 *C.GtkWindow // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 
 	C.gtk_window_set_transient_for(_arg0, _arg1)
 }
@@ -1175,7 +1205,9 @@ func WindowGetDefaultIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

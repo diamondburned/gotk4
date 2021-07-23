@@ -113,7 +113,9 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 
 	var _ret Widgetter // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _ret
 }

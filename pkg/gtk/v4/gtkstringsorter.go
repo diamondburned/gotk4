@@ -55,7 +55,9 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 	var _arg1 *C.GtkExpression   // out
 	var _cret *C.GtkStringSorter // in
 
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
@@ -78,7 +80,9 @@ func (self *StringSorter) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	if _cret != nil {
+		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	}
 
 	return _expression
 }
@@ -110,7 +114,9 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 	var _arg1 *C.GtkExpression   // out
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	if expression != nil {
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	}
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }

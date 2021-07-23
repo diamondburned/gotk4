@@ -178,10 +178,12 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_treePath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _treePath
 }
@@ -222,10 +224,12 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_treePath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _treePath
 }

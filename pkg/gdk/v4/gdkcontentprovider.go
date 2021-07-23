@@ -136,12 +136,14 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg2 C.gsize
 	var _cret *C.GdkContentProvider // in
 
-	_arg2 = (C.gsize)(len(providers))
-	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	{
-		out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
-		for i := range providers {
-			out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
+	if providers != nil {
+		_arg2 = (C.gsize)(len(providers))
+		_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
+			for i := range providers {
+				out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
+			}
 		}
 	}
 
@@ -265,8 +267,10 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.int(ioPriority)
-	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

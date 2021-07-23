@@ -196,7 +196,9 @@ func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg1 *C.GVariant // out
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	if parameter != nil {
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+	}
 
 	C.g_action_activate(_arg0, _arg1)
 }
@@ -276,7 +278,9 @@ func (action *Action) ParameterType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _variantType
 }
@@ -299,11 +303,13 @@ func (action *Action) State() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -335,11 +341,13 @@ func (action *Action) StateHint() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
+		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _variant
 }
@@ -365,7 +373,9 @@ func (action *Action) StateType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _variantType
 }
@@ -465,7 +475,9 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+	if targetValue != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+	}
 
 	_cret = C.g_action_print_detailed_name(_arg1, _arg2)
 

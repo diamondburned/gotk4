@@ -298,17 +298,19 @@ func DBusUnescapeObjectPath(s string) []byte {
 
 	var _guint8s []byte // out
 
-	{
-		var i int
-		var z C.guint8
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _cret != nil {
+		{
+			var i int
+			var z C.guint8
+			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_guint8s = make([]byte, i)
-		for i := range src {
-			_guint8s[i] = byte(src[i])
+			src := unsafe.Slice(_cret, i)
+			_guint8s = make([]byte, i)
+			for i := range src {
+				_guint8s[i] = byte(src[i])
+			}
 		}
 	}
 

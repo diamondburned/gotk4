@@ -559,7 +559,9 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (gdk.RGBA, bool) {
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	if props != nil {
+		_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	}
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
 

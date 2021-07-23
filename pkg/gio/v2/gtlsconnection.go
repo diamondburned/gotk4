@@ -206,7 +206,9 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	if _cret != nil {
+		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	}
 
 	return _tlsCertificate
 }
@@ -265,7 +267,9 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	if _cret != nil {
+		_tlsDatabase = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	}
 
 	return _tlsDatabase
 }
@@ -283,7 +287,9 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 
 	var _tlsInteraction *TLSInteraction // out
 
-	_tlsInteraction = wrapTLSInteraction(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_tlsInteraction = wrapTLSInteraction(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _tlsInteraction
 }
@@ -305,7 +311,9 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -323,7 +331,9 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	if _cret != nil {
+		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	}
 
 	return _tlsCertificate
 }
@@ -474,8 +484,10 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, c
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.int(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.g_tls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -571,7 +583,9 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg1 *C.GTlsDatabase   // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	if database != nil {
+		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+	}
 
 	C.g_tls_connection_set_database(_arg0, _arg1)
 }
@@ -587,7 +601,9 @@ func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg1 *C.GTlsInteraction // out
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	if interaction != nil {
+		_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	}
 
 	C.g_tls_connection_set_interaction(_arg0, _arg1)
 }

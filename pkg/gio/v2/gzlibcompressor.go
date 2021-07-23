@@ -81,7 +81,9 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 
 	var _fileInfo *FileInfo // out
 
-	_fileInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fileInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _fileInfo
 }
@@ -99,7 +101,9 @@ func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg1 *C.GFileInfo       // out
 
 	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(compressor.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
+	if fileInfo != nil {
+		_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
+	}
 
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }

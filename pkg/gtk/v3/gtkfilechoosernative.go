@@ -216,7 +216,9 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	if parent != nil {
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	}
 	_arg3 = C.GtkFileChooserAction(action)
 	if acceptLabel != "" {
 		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(acceptLabel)))
@@ -247,7 +249,9 @@ func (self *FileChooserNative) AcceptLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -263,7 +267,9 @@ func (self *FileChooserNative) CancelLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

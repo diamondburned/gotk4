@@ -205,7 +205,9 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 	var _arg3 C.gboolean      // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 	if actionNamespace != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
 		defer C.free(unsafe.Pointer(_arg2))

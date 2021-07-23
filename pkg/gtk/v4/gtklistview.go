@@ -167,8 +167,12 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
+	if factory != nil {
+		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
 
@@ -209,7 +213,9 @@ func (self *ListView) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _listItemFactory
 }
@@ -225,7 +231,9 @@ func (self *ListView) Model() SelectionModeller {
 
 	var _selectionModel SelectionModeller // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	if _cret != nil {
+		_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+	}
 
 	return _selectionModel
 }
@@ -288,7 +296,9 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	if factory != nil {
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	}
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
@@ -301,7 +311,9 @@ func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg1 *C.GtkSelectionModel // out
 
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_list_view_set_model(_arg0, _arg1)
 }

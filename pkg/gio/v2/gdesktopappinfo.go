@@ -131,7 +131,9 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInf
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	if _cret != nil {
+		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	}
 
 	return _appInfo
 }
@@ -183,7 +185,9 @@ func NewDesktopAppInfo(desktopId string) *DesktopAppInfo {
 
 	var _desktopAppInfo *DesktopAppInfo // out
 
-	_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _desktopAppInfo
 }
@@ -200,7 +204,9 @@ func NewDesktopAppInfoFromFilename(filename string) *DesktopAppInfo {
 
 	var _desktopAppInfo *DesktopAppInfo // out
 
-	_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _desktopAppInfo
 }
@@ -216,7 +222,9 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) *DesktopAppInfo {
 
 	var _desktopAppInfo *DesktopAppInfo // out
 
-	_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_desktopAppInfo = wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _desktopAppInfo
 }
@@ -278,7 +286,9 @@ func (info *DesktopAppInfo) Categories() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -296,7 +306,9 @@ func (info *DesktopAppInfo) Filename() string {
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _filename
 }
@@ -312,7 +324,9 @@ func (info *DesktopAppInfo) GenericName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -380,8 +394,10 @@ func (info *DesktopAppInfo) LocaleString(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -452,7 +468,9 @@ func (info *DesktopAppInfo) StartupWmClass() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -473,8 +491,10 @@ func (info *DesktopAppInfo) String(key string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -524,7 +544,9 @@ func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext *AppLa
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	if launchContext != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	}
 
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
@@ -564,13 +586,19 @@ func (appinfo *DesktopAppInfo) LaunchURIsAsManager(uris []string, launchContext 
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	if launchContext != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	}
 	_arg3 = C.GSpawnFlags(spawnFlags)
-	_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
-	_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
-	_arg7 = C.gpointer(gbox.Assign(pidCallback))
-	defer gbox.Delete(uintptr(_arg7))
+	if userSetup != nil {
+		_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
+	}
+	if pidCallback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
+		_arg7 = C.gpointer(gbox.Assign(pidCallback))
+		defer gbox.Delete(uintptr(_arg7))
+	}
 
 	C.g_desktop_app_info_launch_uris_as_manager(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
 
@@ -612,13 +640,19 @@ func (appinfo *DesktopAppInfo) LaunchURIsAsManagerWithFds(uris []string, launchC
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	if launchContext != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	}
 	_arg3 = C.GSpawnFlags(spawnFlags)
-	_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
-	_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
-	_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
-	_arg7 = C.gpointer(gbox.Assign(pidCallback))
-	defer gbox.Delete(uintptr(_arg7))
+	if userSetup != nil {
+		_arg4 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
+		_arg5 = C.gpointer(gbox.AssignOnce(userSetup))
+	}
+	if pidCallback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_DesktopAppLaunchCallback)
+		_arg7 = C.gpointer(gbox.Assign(pidCallback))
+		defer gbox.Delete(uintptr(_arg7))
+	}
 	_arg8 = C.gint(stdinFd)
 	_arg9 = C.gint(stdoutFd)
 	_arg10 = C.gint(stderrFd)

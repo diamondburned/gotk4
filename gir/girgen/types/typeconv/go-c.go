@@ -13,7 +13,7 @@ import (
 
 func (conv *Converter) gocConvert(value *ValueConverted) bool {
 	// Both a callback or a pointer can be nil.
-	if (value.Resolved.Ptr > 0 || value.Resolved.IsCallback()) && value.Optional {
+	if value.Resolved.CanNil() && (value.Optional || value.Nullable) {
 		value.p.Linef("if %s != nil {", value.In.Name)
 		defer value.p.Ascend()
 	}

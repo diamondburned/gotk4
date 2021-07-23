@@ -73,7 +73,9 @@ func (screen *Screen) ActiveWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
+	}
 
 	return _window
 }
@@ -106,7 +108,9 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _fontOptions
 }
@@ -263,8 +267,10 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -450,7 +456,9 @@ func (screen *Screen) RGBAVisual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _visual
 }
@@ -607,13 +615,15 @@ func (screen *Screen) WindowStack() []Windower {
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GdkWindow)(v)
-		var dst Windower // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
-		_list = append(_list, dst)
-	})
+	if _cret != nil {
+		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+			src := (*C.GdkWindow)(v)
+			var dst Windower // out
+			dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
+			_list = append(_list, dst)
+		})
+	}
 
 	return _list
 }
@@ -696,7 +706,9 @@ func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 	var _arg1 *C.cairo_font_options_t // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	if options != nil {
+		_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+	}
 
 	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
@@ -724,7 +736,9 @@ func ScreenGetDefault() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _screen
 }

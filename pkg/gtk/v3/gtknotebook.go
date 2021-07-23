@@ -168,7 +168,9 @@ func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
 
 	_cret = C.gtk_notebook_append_page(_arg0, _arg1, _arg2)
 
@@ -190,8 +192,12 @@ func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, me
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
+	if menuLabel != nil {
+		_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	}
 
 	_cret = C.gtk_notebook_append_page_menu(_arg0, _arg1, _arg2, _arg3)
 
@@ -231,7 +237,9 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -263,7 +271,9 @@ func (notebook *Notebook) GroupName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -281,7 +291,9 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -300,7 +312,9 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -334,7 +348,9 @@ func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -449,7 +465,9 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -468,7 +486,9 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -539,7 +559,9 @@ func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, positi
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
 	_arg3 = C.gint(position)
 
 	_cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
@@ -563,8 +585,12 @@ func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, me
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
+	if menuLabel != nil {
+		_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	}
 	_arg4 = C.gint(position)
 
 	_cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -632,7 +658,9 @@ func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
 
 	_cret = C.gtk_notebook_prepend_page(_arg0, _arg1, _arg2)
 
@@ -654,8 +682,12 @@ func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, m
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-	_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
+	if menuLabel != nil {
+		_arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	}
 
 	_cret = C.gtk_notebook_prepend_page_menu(_arg0, _arg1, _arg2, _arg3)
 
@@ -761,7 +793,9 @@ func (notebook *Notebook) SetMenuLabel(child Widgetter, menuLabel Widgetter) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	if menuLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
+	}
 
 	C.gtk_notebook_set_menu_label(_arg0, _arg1, _arg2)
 }
@@ -886,7 +920,9 @@ func (notebook *Notebook) SetTabLabel(child Widgetter, tabLabel Widgetter) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	if tabLabel != nil {
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
+	}
 
 	C.gtk_notebook_set_tab_label(_arg0, _arg1, _arg2)
 }

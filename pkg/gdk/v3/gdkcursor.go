@@ -439,7 +439,9 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _cursor
 }
@@ -532,7 +534,9 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _cursor
 }
@@ -652,15 +656,17 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -689,11 +695,13 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 
 	_xHot = float64(_arg1)
 	_yHot = float64(_arg2)
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
+		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+		})
+	}
 
 	return _xHot, _yHot, _surface
 }

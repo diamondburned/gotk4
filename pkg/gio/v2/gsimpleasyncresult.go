@@ -48,9 +48,13 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 	var _arg3 C.gpointer
 	var _arg4 *C.GError // out
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if object != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 	_arg4 = (*C.GError)(gerror.New(err))
 
 	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
@@ -253,9 +257,13 @@ func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCa
 	var _arg4 C.gpointer            // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
@@ -277,9 +285,13 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 	var _arg4 *C.GError             // out
 	var _cret *C.GSimpleAsyncResult // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 	_arg4 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
@@ -502,7 +514,9 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, s
 	var _cret C.gboolean      // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
+	if source != nil {
+		_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
+	}
 	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_simple_async_result_is_valid(_arg1, _arg2, _arg3)

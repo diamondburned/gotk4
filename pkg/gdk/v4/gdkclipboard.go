@@ -72,7 +72,9 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _contentProvider
 }
@@ -159,7 +161,9 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	if _arg2 != nil {
 		_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	}
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	if _cret != nil {
+		_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -188,8 +192,10 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_clipboard_read_text_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -211,8 +217,10 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -241,8 +249,10 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_clipboard_read_texture_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -264,7 +274,9 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _texture Texturer // out
 	var _goerr error      // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
+	if _cret != nil {
+		_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -297,8 +309,10 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 	}
 	_arg1 = C.GType(typ)
 	_arg2 = C.int(ioPriority)
-	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_clipboard_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -345,7 +359,9 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	if provider != nil {
+		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	}
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
 
@@ -397,8 +413,10 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, call
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.int(ioPriority)
-	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_clipboard_store_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

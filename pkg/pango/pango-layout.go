@@ -254,10 +254,12 @@ func (layout *Layout) Attributes() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_attrList, func(v *AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _attrList
 }
@@ -438,7 +440,9 @@ func (layout *Layout) FontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _fontDescription
 }
@@ -533,10 +537,12 @@ func (layout *Layout) Line(line int) *LayoutLine {
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _layoutLine
 }
@@ -573,10 +579,12 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _layoutLine
 }
@@ -765,10 +773,12 @@ func (layout *Layout) Tabs() *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_tabArray, func(v *TabArray) {
+			C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _tabArray
 }
@@ -1004,7 +1014,9 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	if attrs != nil {
+		_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	}
 
 	C.pango_layout_set_attributes(_arg0, _arg1)
 }
@@ -1066,7 +1078,9 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	if desc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	}
 
 	C.pango_layout_set_font_description(_arg0, _arg1)
 }
@@ -1270,7 +1284,9 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
+	if tabs != nil {
+		_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
+	}
 
 	C.pango_layout_set_tabs(_arg0, _arg1)
 }
@@ -1400,16 +1416,20 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutIter // in
 
-	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if iter != nil {
+		_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
 
 	_cret = C.pango_layout_iter_copy(_arg0)
 
 	var _layoutIter *LayoutIter // out
 
-	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.pango_layout_iter_free((*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
+			C.pango_layout_iter_free((*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _layoutIter
 }
@@ -1636,7 +1656,9 @@ func (iter *LayoutIter) Run() *LayoutRun {
 
 	var _layoutRun *LayoutRun // out
 
-	_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _layoutRun
 }
@@ -1678,7 +1700,9 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 
 	var _layoutRun *LayoutRun // out
 
-	_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _layoutRun
 }

@@ -55,7 +55,9 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 
 	_cret = C.gtk_no_selection_new(_arg1)
 
@@ -90,7 +92,9 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel     // out
 
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_no_selection_set_model(_arg0, _arg1)
 }

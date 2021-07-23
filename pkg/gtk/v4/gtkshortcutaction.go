@@ -91,11 +91,13 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	var args *glib.Variant // out
 
 	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
-	args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(args, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if arg1 != nil {
+		args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(args, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	fn := v.(ShortcutFunc)
 	ok := fn(widget, args)
@@ -171,9 +173,11 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _arg3 C.GDestroyNotify
 	var _cret *C.GtkShortcutAction // in
 
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
-	_arg2 = C.gpointer(gbox.Assign(callback))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if callback != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
+		_arg2 = C.gpointer(gbox.Assign(callback))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
 
@@ -398,7 +402,9 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 
 	var _shortcutAction *ShortcutAction // out
 
-	_shortcutAction = wrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_shortcutAction = wrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _shortcutAction
 }
@@ -420,7 +426,9 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GtkShortcutActionFlags(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
+	if args != nil {
+		_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
+	}
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 

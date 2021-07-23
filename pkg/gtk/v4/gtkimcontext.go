@@ -504,7 +504,9 @@ func (context *IMContext) SetClientWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_im_context_set_client_widget(_arg0, _arg1)
 }

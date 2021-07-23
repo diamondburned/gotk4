@@ -325,7 +325,9 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
@@ -398,7 +400,9 @@ func NewImageFromSurface(surface *cairo.Surface) *Image {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.GtkWidget       // in
 
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	if surface != nil {
+		_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	}
 
 	_cret = C.gtk_image_new_from_surface(_arg1)
 
@@ -432,10 +436,12 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 
 	var _pixbufAnimation *gdkpixbuf.PixbufAnimation // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_pixbufAnimation = &gdkpixbuf.PixbufAnimation{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_pixbufAnimation = &gdkpixbuf.PixbufAnimation{
+				Object: obj,
+			}
 		}
 	}
 
@@ -532,15 +538,17 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
 				},
-			},
+			}
 		}
 	}
 
@@ -683,7 +691,9 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if pixbuf != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	}
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
@@ -724,7 +734,9 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 	var _arg1 *C.cairo_surface_t // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	if surface != nil {
+		_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	}
 
 	C.gtk_image_set_from_surface(_arg0, _arg1)
 }

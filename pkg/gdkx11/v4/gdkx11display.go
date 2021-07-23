@@ -389,10 +389,12 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_display = &gdk.Display{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_display = &gdk.Display{
+				Object: obj,
+			}
 		}
 	}
 

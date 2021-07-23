@@ -91,7 +91,9 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 
 	var _renderer *Renderer // out
 
-	_renderer = wrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_renderer = wrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _renderer
 }
@@ -109,7 +111,9 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	if _cret != nil {
+		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	}
 
 	return _surface
 }
@@ -170,7 +174,9 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if region != nil {
+		_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
@@ -191,7 +197,9 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
+	if viewport != nil {
+		_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
+	}
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 

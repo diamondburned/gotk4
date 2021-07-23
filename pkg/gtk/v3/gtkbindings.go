@@ -287,7 +287,9 @@ func BindingSetFind(setName string) *BindingSet {
 
 	var _bindingSet *BindingSet // out
 
-	_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _bindingSet
 }

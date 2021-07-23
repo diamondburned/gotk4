@@ -465,7 +465,9 @@ func (chooser *FileChooser) Filter() *FileFilter {
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = wrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_fileFilter = wrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _fileFilter
 }

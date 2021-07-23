@@ -56,8 +56,10 @@ func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeT
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 	_arg4 = C.int(ioPriority)
-	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
 
 	C.gdk_content_serialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }

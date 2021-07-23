@@ -326,7 +326,9 @@ func (about *AboutDialog) Comments() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -342,7 +344,9 @@ func (about *AboutDialog) Copyright() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -387,7 +391,9 @@ func (about *AboutDialog) License() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -419,7 +425,9 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	if _cret != nil {
+		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	}
 
 	return _paintable
 }
@@ -435,7 +443,9 @@ func (about *AboutDialog) LogoIconName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -451,7 +461,9 @@ func (about *AboutDialog) ProgramName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -468,7 +480,9 @@ func (about *AboutDialog) SystemInformation() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -485,7 +499,9 @@ func (about *AboutDialog) TranslatorCredits() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -501,7 +517,9 @@ func (about *AboutDialog) Version() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -517,7 +535,9 @@ func (about *AboutDialog) Website() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -533,7 +553,9 @@ func (about *AboutDialog) WebsiteLabel() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -698,7 +720,9 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg1 *C.GdkPaintable   // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+	if logo != nil {
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+	}
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }

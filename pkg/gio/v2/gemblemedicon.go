@@ -65,7 +65,9 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _cret *C.GIcon   // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	if emblem != nil {
+		_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	}
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 

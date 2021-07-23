@@ -266,7 +266,9 @@ func (self *MediaStream) Error() error {
 
 	var _err error // out
 
-	_err = gerror.Take(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_err = gerror.Take(unsafe.Pointer(_cret))
+	}
 
 	return _err
 }

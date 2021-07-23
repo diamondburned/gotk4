@@ -54,9 +54,11 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	var _arg3 C.GDestroyNotify
 	var _cret *C.GtkCustomSorter // in
 
-	_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.gtk_custom_sorter_new(_arg1, _arg2, _arg3)
 
@@ -82,9 +84,11 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_custom_sorter_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 }

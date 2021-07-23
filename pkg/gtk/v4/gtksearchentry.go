@@ -167,7 +167,9 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 }

@@ -148,7 +148,9 @@ func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListB
 	var before *ListBoxRow // out
 
 	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
-	before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	if arg1 != nil {
+		before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	}
 
 	fn := v.(ListBoxUpdateHeaderFunc)
 	fn(row, before)
@@ -271,10 +273,14 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 	var _arg4 C.GDestroyNotify
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_ListBoxCreateWidgetFunc)
-	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
+	if createWidgetFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk3_ListBoxCreateWidgetFunc)
+		_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_list_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -353,7 +359,9 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _listBoxRow
 }
@@ -371,7 +379,9 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _listBoxRow
 }
@@ -511,7 +521,9 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+	if row != nil {
+		_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
+	}
 
 	C.gtk_list_box_select_row(_arg0, _arg1)
 }
@@ -558,7 +570,9 @@ func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	C.gtk_list_box_set_adjustment(_arg0, _arg1)
 }
@@ -582,9 +596,11 @@ func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(filterFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if filterFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filterFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_list_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -617,9 +633,11 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxUpdateHeaderFunc)
-	_arg2 = C.gpointer(gbox.Assign(updateHeader))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if updateHeader != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxUpdateHeaderFunc)
+		_arg2 = C.gpointer(gbox.Assign(updateHeader))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_list_box_set_header_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -631,7 +649,9 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
+	if placeholder != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
+	}
 
 	C.gtk_list_box_set_placeholder(_arg0, _arg1)
 }
@@ -664,9 +684,11 @@ func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxSortFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxSortFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_list_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -816,7 +838,9 @@ func (row *ListBoxRow) Header() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -895,7 +919,9 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
+	if header != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
+	}
 
 	C.gtk_list_box_row_set_header(_arg0, _arg1)
 }

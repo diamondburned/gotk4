@@ -296,10 +296,12 @@ func (self *Label) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _attrList
 }
@@ -321,7 +323,9 @@ func (self *Label) CurrentURI() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -357,7 +361,9 @@ func (self *Label) ExtraMenu() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	if _cret != nil {
+		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	}
 
 	return _menuModel
 }
@@ -521,7 +527,9 @@ func (self *Label) MnemonicWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -769,7 +777,9 @@ func (self *Label) SetAttributes(attrs *pango.AttrList) {
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	if attrs != nil {
+		_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	}
 
 	C.gtk_label_set_attributes(_arg0, _arg1)
 }
@@ -795,7 +805,9 @@ func (self *Label) SetExtraMenu(model gio.MenuModeller) {
 	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_label_set_extra_menu(_arg0, _arg1)
 }
@@ -936,7 +948,9 @@ func (self *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	}
 
 	C.gtk_label_set_mnemonic_widget(_arg0, _arg1)
 }

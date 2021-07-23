@@ -251,6 +251,15 @@ func isGpointer(ctype, gtype string, ptr int) bool {
 	return is
 }
 
+// CanNil returns true if the Go type can be nil.
+func (typ *Resolved) CanNil() bool {
+	if typ.IsClass() || typ.IsInterface() || typ.IsCallback() {
+		return true
+	}
+
+	return typ.Ptr > 0
+}
+
 // IsCallback returns true if the current ResolvedType is a callback.
 func (typ *Resolved) IsCallback() bool {
 	if typ.Extern == nil {

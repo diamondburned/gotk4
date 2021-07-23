@@ -118,7 +118,9 @@ func (self *Root) Focus() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -135,7 +137,9 @@ func (self *Root) SetFocus(focus Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	if focus != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	}
 
 	C.gtk_root_set_focus(_arg0, _arg1)
 }

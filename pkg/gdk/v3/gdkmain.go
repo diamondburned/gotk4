@@ -132,7 +132,9 @@ func GetDisplayArgName() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -257,8 +259,12 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 		_arg2 = C.TRUE
 	}
 	_arg3 = C.GdkEventMask(eventMask)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	if confineTo != nil {
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
+	}
+	if cursor != nil {
+		_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	}
 	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

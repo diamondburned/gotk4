@@ -81,8 +81,12 @@ func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	if hadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	}
+	if vadjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	}
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
@@ -216,7 +220,9 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
@@ -244,7 +250,9 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	}
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }

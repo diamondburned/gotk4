@@ -109,10 +109,14 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 	var _arg4 C.GDestroyNotify
 	var _cret *C.GtkMapListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
-	_arg3 = C.gpointer(gbox.Assign(mapFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
+	if mapFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
+		_arg3 = C.gpointer(gbox.Assign(mapFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	_cret = C.gtk_map_list_model_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -134,7 +138,9 @@ func (self *MapListModel) Model() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	if _cret != nil {
+		_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	}
 
 	return _listModel
 }
@@ -175,9 +181,11 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 	var _arg3 C.GDestroyNotify
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
-	_arg2 = C.gpointer(gbox.Assign(mapFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	if mapFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
+		_arg2 = C.gpointer(gbox.Assign(mapFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
 
 	C.gtk_map_list_model_set_map_func(_arg0, _arg1, _arg2, _arg3)
 }
@@ -192,7 +200,9 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg1 *C.GListModel      // out
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	}
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
 }

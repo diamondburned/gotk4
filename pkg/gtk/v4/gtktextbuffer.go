@@ -122,7 +122,9 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	var _arg1 *C.GtkTextTagTable // out
 	var _cret *C.GtkTextBuffer   // in
 
-	_arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+	if table != nil {
+		_arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+	}
 
 	_cret = C.gtk_text_buffer_new(_arg1)
 
@@ -867,7 +869,9 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_textMark = wrapTextMark(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _textMark
 }
@@ -1376,7 +1380,9 @@ func (buffer *TextBuffer) PasteClipboard(clipboard *gdk.Clipboard, overrideLocat
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(overrideLocation)))
+	if overrideLocation != nil {
+		_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(overrideLocation)))
+	}
 	if defaultEditable {
 		_arg3 = C.TRUE
 	}

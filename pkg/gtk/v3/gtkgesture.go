@@ -264,7 +264,9 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	if _cret != nil {
+		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	}
 
 	return _device
 }
@@ -303,7 +305,9 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _eventSequence
 }
@@ -319,7 +323,9 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	if sequence != nil {
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	}
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -389,7 +395,9 @@ func (gesture *Gesture) Window() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	if _cret != nil {
+		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	}
 
 	return _window
 }
@@ -423,7 +431,9 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	if sequence != nil {
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	}
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
 
@@ -581,7 +591,9 @@ func (gesture *Gesture) SetWindow(window gdk.Windower) {
 	var _arg1 *C.GdkWindow  // out
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	if window != nil {
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	}
 
 	C.gtk_gesture_set_window(_arg0, _arg1)
 }

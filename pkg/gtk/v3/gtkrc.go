@@ -541,7 +541,9 @@ func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, 
 
 	var _style *Style // out
 
-	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _style
 }
@@ -610,7 +612,9 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	var _cret C.guint       // in
 
 	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
-	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+	if style != nil {
+		_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
+	}
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
 

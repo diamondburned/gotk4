@@ -299,7 +299,9 @@ func (surface *Surface) Cursor() *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _cursor
 }
@@ -321,7 +323,9 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _cursor
 }
@@ -545,7 +549,9 @@ func (surface *Surface) SetCursor(cursor *Cursor) {
 	var _arg1 *C.GdkCursor  // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	if cursor != nil {
+		_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	}
 
 	C.gdk_surface_set_cursor(_arg0, _arg1)
 }
@@ -612,7 +618,9 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
 
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 }

@@ -201,7 +201,9 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	if hadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	}
 
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
@@ -226,7 +228,9 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	if vadjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	}
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 }

@@ -48,7 +48,9 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 	_arg3 = C.int(startIndex)
 	_arg4 = C.int(length)
 	_arg5 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
-	_arg6 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+	if cachedIter != nil {
+		_arg6 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+	}
 
 	_cret = C.pango_itemize(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -91,7 +93,9 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 	_arg4 = C.int(startIndex)
 	_arg5 = C.int(length)
 	_arg6 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
-	_arg7 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+	if cachedIter != nil {
+		_arg7 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+	}
 
 	_cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
@@ -310,7 +314,9 @@ func (context *Context) Matrix() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _matrix
 }
@@ -333,8 +339,12 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	var _cret *C.PangoFontMetrics     // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
-	_arg2 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	if desc != nil {
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	}
+	if language != nil {
+		_arg2 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	}
 
 	_cret = C.pango_context_get_metrics(_arg0, _arg1, _arg2)
 
@@ -432,7 +442,9 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 
 	var _font Fonter // out
 
-	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	if _cret != nil {
+		_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	}
 
 	return _font
 }
@@ -453,7 +465,9 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 
 	var _fontset Fontsetter // out
 
-	_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+	if _cret != nil {
+		_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+	}
 
 	return _fontset
 }
@@ -557,7 +571,9 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 	var _arg1 *C.PangoMatrix  // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	if matrix != nil {
+		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	}
 
 	C.pango_context_set_matrix(_arg0, _arg1)
 }

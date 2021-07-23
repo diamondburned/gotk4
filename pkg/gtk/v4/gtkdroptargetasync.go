@@ -79,7 +79,9 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 	var _arg2 C.GdkDragAction       // out
 	var _cret *C.GtkDropTargetAsync // in
 
-	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	if formats != nil {
+		_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	}
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
@@ -120,11 +122,13 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _cret != nil {
+		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_content_formats_ref(_cret)
+		runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 
 	return _contentFormats
 }
@@ -160,7 +164,9 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg1 *C.GdkContentFormats  // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	if formats != nil {
+		_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	}
 
 	C.gtk_drop_target_async_set_formats(_arg0, _arg1)
 }

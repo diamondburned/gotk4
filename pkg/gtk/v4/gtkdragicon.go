@@ -102,7 +102,9 @@ func (self *DragIcon) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }
@@ -113,7 +115,9 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	}
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }
@@ -137,7 +141,9 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgetter)
+	if _cret != nil {
+		_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgetter)
+	}
 
 	return _widget
 }

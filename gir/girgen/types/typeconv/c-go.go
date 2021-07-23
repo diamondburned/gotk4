@@ -12,7 +12,7 @@ import (
 // C to Go type conversions.
 
 func (conv *Converter) cgoConvert(value *ValueConverted) bool {
-	if types.CountPtr(value.In.Type) > 0 && value.Optional {
+	if types.CountPtr(value.In.Type) > 0 && (value.Optional || value.Nullable) {
 		value.p.Linef("if %s != nil {", value.In.Name)
 		defer value.p.Ascend()
 	}

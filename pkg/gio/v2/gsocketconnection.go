@@ -90,7 +90,9 @@ func (connection *SocketConnection) ConnectSocketConnectioner(ctx context.Contex
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -135,7 +137,9 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -154,7 +158,9 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socketAddress, _goerr
 }
@@ -179,7 +185,9 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socketAddress, _goerr
 }

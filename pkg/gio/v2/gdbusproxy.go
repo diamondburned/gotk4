@@ -125,7 +125,9 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusProxy, _goerr
 }
@@ -144,7 +146,9 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusProxy, _goerr
 }
@@ -185,7 +189,9 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusProxy, _goerr
 }
@@ -231,8 +237,10 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
+	if name != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -244,7 +252,9 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusProxy, _goerr
 }
@@ -335,7 +345,9 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _variant, _goerr
 }
@@ -403,7 +415,9 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _variant, _goerr
 }
@@ -458,13 +472,17 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	}
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outFdList, _variant, _goerr
 }
@@ -504,13 +522,17 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(ctx context.Context, methodName s
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))
+	if _arg6 != nil {
+		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))
+	}
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outFdList, _variant, _goerr
 }
@@ -828,8 +850,10 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
+	if name != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))

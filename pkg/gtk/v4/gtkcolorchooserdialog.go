@@ -101,8 +101,10 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)

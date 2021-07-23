@@ -81,8 +81,10 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg2 C.gboolean     // out
 	var _cret *C.GtkTextMark // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	if leftGravity {
 		_arg2 = C.TRUE
 	}

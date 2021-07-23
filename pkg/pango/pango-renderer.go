@@ -291,8 +291,10 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int
 	var _arg4 C.int             // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)

@@ -715,9 +715,11 @@ func (face *FontFace) ListSizes() []int {
 
 	var _sizes []int // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_sizes = make([]int, _arg2)
-	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		_sizes = make([]int, _arg2)
+		copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+	}
 
 	return _sizes
 }
@@ -807,8 +809,10 @@ func (family *FontFamily) Face(name string) FontFacer {
 	var _cret *C.PangoFontFace   // in
 
 	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
 
@@ -902,12 +906,14 @@ func (family *FontFamily) ListFaces() []FontFacer {
 
 	var _faces []FontFacer // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_faces = make([]FontFacer, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			src := unsafe.Slice(_arg1, _arg2)
+			_faces = make([]FontFacer, _arg2)
+			for i := 0; i < int(_arg2); i++ {
+				_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
+			}
 		}
 	}
 

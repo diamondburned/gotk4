@@ -55,8 +55,10 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = C.GType(typ)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if str != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	if warn {
 		_arg4 = C.TRUE
 	}
@@ -68,8 +70,10 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _ok bool               // out
 
 	_value = int(_arg3)
-	_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-	defer C.free(unsafe.Pointer(_arg5))
+	if _arg5 != nil {
+		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
 	if _cret != 0 {
 		_ok = true
 	}

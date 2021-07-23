@@ -473,7 +473,9 @@ func (op *PrintOperation) Error() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -696,7 +698,9 @@ func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (Prin
 	var _goerr error                               // out
 
 	_printOperationResult = PrintOperationResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _printOperationResult, _goerr
 }
@@ -739,8 +743,10 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
 }

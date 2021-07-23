@@ -301,7 +301,9 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 	var _goerr error                    // out
 
 	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificate, _goerr
 }
@@ -355,7 +357,9 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _goerr error                    // out
 
 	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificate, _goerr
 }
@@ -392,7 +396,9 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 	var _goerr error                    // out
 
 	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificate, _goerr
 }
@@ -442,7 +448,9 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	var _goerr error                    // out
 
 	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificate, _goerr
 }
@@ -488,7 +496,9 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		_list = append(_list, dst)
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _list, _goerr
 }
@@ -552,7 +562,9 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		_list = append(_list, dst)
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _list, _goerr
 }
@@ -621,7 +633,9 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 	var _goerr error                             // out
 
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificateFlags, _goerr
 }
@@ -682,7 +696,9 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	var _goerr error                             // out
 
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsCertificateFlags, _goerr
 }

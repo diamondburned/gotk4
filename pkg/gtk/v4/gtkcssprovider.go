@@ -154,8 +154,10 @@ func (provider *CSSProvider) LoadNamed(name string, variant string) {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if variant != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(variant)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_css_provider_load_named(_arg0, _arg1, _arg2)
 }

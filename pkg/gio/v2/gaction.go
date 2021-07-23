@@ -440,7 +440,9 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 	runtime.SetFinalizer(_targetValue, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _actionName, _targetValue, _goerr
 }

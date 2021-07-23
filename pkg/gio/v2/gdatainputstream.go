@@ -131,7 +131,9 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _goerr error // out
 
 	_guint8 = byte(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint8, _goerr
 }
@@ -160,7 +162,9 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _goerr error  // out
 
 	_gint16 = int16(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint16, _goerr
 }
@@ -193,7 +197,9 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _goerr error  // out
 
 	_gint32 = int32(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint32, _goerr
 }
@@ -226,7 +232,9 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _goerr error  // out
 
 	_gint64 = int64(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint64, _goerr
 }
@@ -272,7 +280,9 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 			_guint8s[i] = byte(src[i])
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _guint8s, _goerr
 }
@@ -335,7 +345,9 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 			_guint8s[i] = byte(src[i])
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _guint8s, _goerr
 }
@@ -361,7 +373,9 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	_length = uint(_arg2)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }
@@ -394,7 +408,9 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 	_length = uint(_arg1)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }
@@ -423,7 +439,9 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _goerr error    // out
 
 	_guint16 = uint16(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint16, _goerr
 }
@@ -456,7 +474,9 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _goerr error    // out
 
 	_guint32 = uint32(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint32, _goerr
 }
@@ -488,7 +508,9 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _goerr error    // out
 
 	_guint64 = uint64(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint64, _goerr
 }
@@ -532,7 +554,9 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	_length = uint(_arg2)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }
@@ -600,7 +624,9 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	_length = uint(_arg2)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }
@@ -643,7 +669,9 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 	_length = uint(_arg3)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }
@@ -711,7 +739,9 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	_length = uint(_arg2)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }

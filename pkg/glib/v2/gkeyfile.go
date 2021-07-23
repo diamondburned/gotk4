@@ -159,7 +159,9 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -179,10 +181,14 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if key != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_key_file_get_comment(_arg0, _arg1, _arg2, &_cerr)
 
@@ -191,7 +197,9 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -222,7 +230,9 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _goerr error     // out
 
 	_gdouble = float64(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gdouble, _goerr
 }
@@ -282,7 +292,9 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _goerr error  // out
 
 	_gint64 = int64(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint64, _goerr
 }
@@ -312,7 +324,9 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -353,7 +367,9 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8s, _goerr
 }
@@ -378,8 +394,10 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if locale != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	_cret = C.g_key_file_get_locale_for_key(_arg0, _arg1, _arg2, _arg3)
 
@@ -416,8 +434,10 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if locale != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	_cret = C.g_key_file_get_locale_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -426,7 +446,9 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -474,7 +496,9 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -501,7 +525,9 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _goerr error    // out
 
 	_guint64 = uint64(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint64, _goerr
 }
@@ -532,7 +558,9 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -577,7 +605,9 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -603,9 +633,13 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 	var _fullPath string // out
 	var _goerr error     // out
 
-	_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _arg2 != nil {
+		_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _fullPath, _goerr
 }
@@ -650,9 +684,13 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 	var _fullPath string // out
 	var _goerr error     // out
 
-	_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _arg3 != nil {
+		_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _fullPath, _goerr
 }
@@ -680,7 +718,9 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -695,16 +735,22 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if key != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.g_key_file_remove_comment(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -723,7 +769,9 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -745,7 +793,9 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -770,7 +820,9 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -834,10 +886,14 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if key != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(comment)))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -845,7 +901,9 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1126,7 +1184,9 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	_length = uint(_arg1)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _length, _utf8, _goerr
 }

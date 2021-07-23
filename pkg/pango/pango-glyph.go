@@ -168,8 +168,10 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if paragraphText != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
@@ -202,8 +204,10 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if paragraphText != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))

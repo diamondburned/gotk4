@@ -246,7 +246,9 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 			C.free(unsafe.Pointer(&(*v)[0]))
 		})
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _data, _goerr
 }
@@ -449,7 +451,9 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -490,7 +494,9 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

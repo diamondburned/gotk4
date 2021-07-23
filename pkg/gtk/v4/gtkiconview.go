@@ -355,11 +355,15 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _cell CellRendererer // out
 	var _ok bool             // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg2 != nil {
+		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -386,10 +390,12 @@ func (iconView *IconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconVi
 	var _pos IconViewDropPosition // out
 	var _ok bool                  // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	_pos = IconViewDropPosition(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -412,10 +418,12 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	_pos = IconViewDropPosition(_arg2)
 
 	return _path, _pos
@@ -440,11 +448,15 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 	var _cell CellRendererer // out
 	var _ok bool             // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg4 != nil {
+		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -793,11 +805,15 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 	var _iter TreeIter      // out
 	var _ok bool            // out
 
-	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg4 != nil {
+		_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
+	}
+	if _arg5 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 	if _cret != 0 {
 		_ok = true
@@ -824,14 +840,18 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	var _endPath *TreePath   // out
 	var _ok bool             // out
 
-	_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_startPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(_endPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg1 != nil {
+		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_startPath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg2 != nil {
+		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(_endPath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}

@@ -429,7 +429,9 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -460,7 +462,9 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -493,7 +497,9 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -538,7 +544,9 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -583,7 +591,9 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -630,7 +640,9 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -708,7 +720,9 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -814,8 +828,10 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg1 *C.gchar      // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if domain != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
 }
@@ -845,7 +861,9 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 	var _goerr error            // out
 
 	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _value, _goerr
 }

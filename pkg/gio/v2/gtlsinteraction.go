@@ -196,7 +196,9 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }
@@ -261,7 +263,9 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }
@@ -305,7 +309,9 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }
@@ -353,7 +359,9 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }
@@ -399,7 +407,9 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }
@@ -461,7 +471,9 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	var _goerr error                               // out
 
 	_tlsInteractionResult = TLSInteractionResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsInteractionResult, _goerr
 }

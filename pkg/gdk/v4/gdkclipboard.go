@@ -156,9 +156,13 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	var _inputStream gio.InputStreamer // out
 	var _goerr error                   // out
 
-	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	if _arg2 != nil {
+		_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	}
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outMimeType, _inputStream, _goerr
 }
@@ -209,7 +213,9 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -259,7 +265,9 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _goerr error      // out
 
 	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _texture, _goerr
 }
@@ -313,7 +321,9 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	var _goerr error             // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _value, _goerr
 }
@@ -408,7 +418,9 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

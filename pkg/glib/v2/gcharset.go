@@ -38,7 +38,9 @@ func GetCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -85,7 +87,9 @@ func GetConsoleCharset() (string, bool) {
 	var _charset string // out
 	var _ok bool        // out
 
-	_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_charset = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
 	if _cret != 0 {
 		_ok = true
 	}

@@ -247,10 +247,12 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_arg1))
-		_screen = &gdk.Screen{
-			Object: obj,
+	if _arg1 != nil {
+		{
+			obj := externglib.Take(unsafe.Pointer(_arg1))
+			_screen = &gdk.Screen{
+				Object: obj,
+			}
 		}
 	}
 	_area = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
@@ -757,8 +759,10 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if markup != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_status_icon_set_tooltip_markup(_arg0, _arg1)
 }

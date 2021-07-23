@@ -1014,8 +1014,10 @@ func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName stri
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if iconName != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
 }
@@ -1066,8 +1068,10 @@ func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip stri
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if tooltip != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
 }
@@ -1091,8 +1095,10 @@ func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if tooltip != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
 }
@@ -1179,8 +1185,10 @@ func (entry *Entry) SetPlaceholderText(text string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
 }

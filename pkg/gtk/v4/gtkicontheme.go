@@ -651,8 +651,10 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(themeName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if themeName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(themeName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
 }

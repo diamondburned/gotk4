@@ -66,6 +66,8 @@ type NativeDialog struct {
 type NativeDialogger interface {
 	gextras.Objector
 
+	// Destroy destroys a dialog.
+	Destroy()
 	// Modal returns whether the dialog is modal.
 	Modal() bool
 	// Title gets the title of the GtkNativeDialog.
@@ -99,6 +101,25 @@ func marshalNativeDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeDialog(obj), nil
+}
+
+// Destroy destroys a dialog.
+//
+// When a dialog is destroyed, it will break any references it holds to other
+// objects.
+//
+// If it is visible it will be hidden and any underlying window system resources
+// will be destroyed.
+//
+// Note that this does not release any reference to the object (as opposed to
+// destroying a GtkWindow) because there is no reference from the windowing
+// system to the GtkNativeDialog.
+func (self *NativeDialog) Destroy() {
+	var _arg0 *C.GtkNativeDialog // out
+
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+
+	C.gtk_native_dialog_destroy(_arg0)
 }
 
 // Modal returns whether the dialog is modal.

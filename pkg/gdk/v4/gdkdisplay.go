@@ -402,12 +402,16 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _keyvals []uint   // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(_arg2))
-	_keys = make([]KeymapKey, _arg4)
-	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
-	defer C.free(unsafe.Pointer(_arg3))
-	_keyvals = make([]uint, _arg4)
-	copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
+	if _arg2 != nil {
+		defer C.free(unsafe.Pointer(_arg2))
+		_keys = make([]KeymapKey, _arg4)
+		copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+	}
+	if _arg3 != nil {
+		defer C.free(unsafe.Pointer(_arg3))
+		_keyvals = make([]uint, _arg4)
+		copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
+	}
 	if _cret != 0 {
 		_ok = true
 	}

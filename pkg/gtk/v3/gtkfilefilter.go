@@ -338,8 +338,10 @@ func (filter *FileFilter) SetName(name string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }

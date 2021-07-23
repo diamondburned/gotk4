@@ -222,8 +222,10 @@ func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _arg2 C.GApplicationFlags // out
 	var _cret *C.GApplication     // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if applicationId != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.g_application_new(_arg1, _arg2)
@@ -278,8 +280,10 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 	_arg4 = C.GOptionArg(arg)
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg5))
-	_arg6 = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
-	defer C.free(unsafe.Pointer(_arg6))
+	if argDescription != "" {
+		_arg6 = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
+		defer C.free(unsafe.Pointer(_arg6))
+	}
 
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -735,7 +739,9 @@ func (application *Application) Register(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -881,8 +887,10 @@ func (application *Application) SendNotification(id string, notification *Notifi
 	var _arg2 *C.GNotification // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if id != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
@@ -917,8 +925,10 @@ func (application *Application) SetApplicationID(applicationId string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if applicationId != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_application_set_application_id(_arg0, _arg1)
 }
@@ -978,8 +988,10 @@ func (application *Application) SetOptionContextDescription(description string) 
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if description != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_application_set_option_context_description(_arg0, _arg1)
 }
@@ -996,8 +1008,10 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if parameterString != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
 }
@@ -1010,8 +1024,10 @@ func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if summary != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_application_set_option_context_summary(_arg0, _arg1)
 }
@@ -1052,8 +1068,10 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if resourcePath != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
 }

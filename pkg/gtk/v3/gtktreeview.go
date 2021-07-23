@@ -868,11 +868,15 @@ func (treeView *TreeView) Cursor() (*TreePath, *TreeViewColumn) {
 	var _path *TreePath              // out
 	var _focusColumn *TreeViewColumn // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_focusColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg2)))
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg2 != nil {
+		_focusColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg2)))
+	}
 
 	return _path, _focusColumn
 }
@@ -899,10 +903,12 @@ func (treeView *TreeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeVie
 	var _pos TreeViewDropPosition // out
 	var _ok bool                  // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	_pos = TreeViewDropPosition(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -924,10 +930,12 @@ func (treeView *TreeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
 	var _path *TreePath           // out
 	var _pos TreeViewDropPosition // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg1 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	_pos = TreeViewDropPosition(_arg2)
 
 	return _path, _pos
@@ -1201,11 +1209,15 @@ func (treeView *TreeView) PathAtPos(x int, y int) (path *TreePath, column *TreeV
 	var _cellY int              // out
 	var _ok bool                // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg4)))
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg4 != nil {
+		_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg4)))
+	}
 	_cellX = int(_arg5)
 	_cellY = int(_arg6)
 	if _cret != 0 {
@@ -1395,14 +1407,18 @@ func (treeView *TreeView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	var _endPath *TreePath   // out
 	var _ok bool             // out
 
-	_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-	runtime.SetFinalizer(_startPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(_endPath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg1 != nil {
+		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		runtime.SetFinalizer(_startPath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg2 != nil {
+		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(_endPath, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1525,11 +1541,15 @@ func (treeView *TreeView) IsBlankAtPos(x int, y int) (path *TreePath, column *Tr
 	var _cellY int              // out
 	var _ok bool                // out
 
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg4)))
+	if _arg3 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_path, func(v *TreePath) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg4 != nil {
+		_column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_arg4)))
+	}
 	_cellX = int(_arg5)
 	_cellY = int(_arg6)
 	if _cret != 0 {

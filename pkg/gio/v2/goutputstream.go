@@ -355,7 +355,9 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -403,7 +405,9 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -433,7 +437,9 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -476,7 +482,9 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -549,7 +557,9 @@ func (stream *OutputStream) SetPending() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -578,7 +588,9 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -629,7 +641,9 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -678,7 +692,9 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -726,7 +742,9 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }
@@ -796,7 +814,9 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }
@@ -877,7 +897,9 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -898,7 +920,9 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -951,7 +975,9 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }
@@ -1002,7 +1028,9 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg3)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }
@@ -1073,7 +1101,9 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }
@@ -1150,7 +1180,9 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg2)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }

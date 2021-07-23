@@ -490,7 +490,9 @@ func (device *Device) Position() (screen *Screen, x int, y int) {
 	var _x int          // out
 	var _y int          // out
 
-	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	}
 	_x = int(_arg2)
 	_y = int(_arg3)
 
@@ -515,7 +517,9 @@ func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 	var _x float64      // out
 	var _y float64      // out
 
-	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	}
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 

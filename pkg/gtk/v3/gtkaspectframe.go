@@ -75,8 +75,10 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 	var _arg5 C.gboolean   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.gfloat(xalign)
 	_arg3 = C.gfloat(yalign)
 	_arg4 = C.gfloat(ratio)

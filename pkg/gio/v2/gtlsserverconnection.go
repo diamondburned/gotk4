@@ -86,7 +86,9 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	var _goerr error                               // out
 
 	_tlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSServerConnectioner)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsServerConnection, _goerr
 }

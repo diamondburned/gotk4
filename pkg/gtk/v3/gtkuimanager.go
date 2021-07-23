@@ -425,8 +425,10 @@ func (manager *UIManager) AddUi(mergeId uint, path string, name string, action s
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-	defer C.free(unsafe.Pointer(_arg4))
+	if action != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
 	_arg5 = C.GtkUIManagerItemType(typ)
 	if top {
 		_arg6 = C.TRUE
@@ -455,7 +457,9 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -480,7 +484,9 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -508,7 +514,9 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }

@@ -52,8 +52,10 @@ func NewPaperSize(name string) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkPaperSize // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_paper_size_new(_arg1)
 
@@ -147,8 +149,10 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
 
@@ -159,7 +163,9 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
 		C.gtk_paper_size_free((*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _paperSize, _goerr
 }

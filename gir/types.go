@@ -13,7 +13,7 @@ type Alias struct {
 	InfoAttrs
 	InfoElements
 
-	Type Type
+	Type Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
 }
 
 type AnyType struct {
@@ -116,7 +116,7 @@ type Constant struct {
 	Value   string   `xml:"value,attr"`
 	CType   string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
 
-	Type Type
+	Type Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
 
 	InfoAttrs
 	InfoElements
@@ -295,8 +295,8 @@ type ParameterAttrs struct {
 	Destroy         *int   `xml:"destroy,attr"`
 	CallerAllocates bool   `xml:"caller-allocates,attr"`
 	Skip            bool   `xml:"skip,attr"`
-	Nullable        bool   `xml:"nullable,attr"`
 	Optional        bool   `xml:"optional,attr"`
+	Nullable        bool   `xml:"nullable,attr"`
 
 	TransferOwnership
 	AnyType

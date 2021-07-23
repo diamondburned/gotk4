@@ -215,8 +215,10 @@ func (self *StringFilter) SetSearch(search string) {
 	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(search)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if search != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(search)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_string_filter_set_search(_arg0, _arg1)
 }

@@ -361,7 +361,9 @@ func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierTy
 	var _y int             // out
 	var _mask ModifierType // out
 
-	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	if _arg1 != nil {
+		_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
+	}
 	_x = int(_arg2)
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)

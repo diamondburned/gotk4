@@ -71,8 +71,10 @@ func NewTimeZone(identifier string) *TimeZone {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GTimeZone // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if identifier != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_time_zone_new(_arg1)
 
@@ -92,8 +94,10 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GTimeZone // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if identifier != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(identifier)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_time_zone_new_identifier(_arg1)
 

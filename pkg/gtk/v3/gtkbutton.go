@@ -154,8 +154,10 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)

@@ -804,16 +804,20 @@ func VariantTypeStringScan(_string string, limit string) (string, bool) {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if limit != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
 
 	var _endptr string // out
 	var _ok bool       // out
 
-	_endptr = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if _arg3 != nil {
+		_endptr = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	if _cret != 0 {
 		_ok = true
 	}

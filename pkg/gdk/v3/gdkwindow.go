@@ -775,6 +775,9 @@ type Windower interface {
 	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// Deiconify: attempt to deiconify (unminimize) window.
 	Deiconify()
+	// Destroy destroys the window system resources associated with window and
+	// decrements window's reference count.
+	Destroy()
 	// EnableSynchronizedConfigure does nothing, present only for compatiblity.
 	EnableSynchronizedConfigure()
 	// EndDrawFrame indicates that the drawing of the contents of window started
@@ -1493,7 +1496,9 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _goerr error           // out
 
 	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _glContext, _goerr
 }
@@ -1594,6 +1599,21 @@ func (window *Window) Deiconify() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_deiconify(_arg0)
+}
+
+// Destroy destroys the window system resources associated with window and
+// decrements window's reference count. The window system resources for all
+// children of window are also destroyed, but the children’s reference counts
+// are not decremented.
+//
+// Note that a window will not be destroyed automatically when its reference
+// count reaches zero. You must call this function yourself before that happens.
+func (window *Window) Destroy() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	C.gdk_window_destroy(_arg0)
 }
 
 // EnableSynchronizedConfigure does nothing, present only for compatiblity.
@@ -2080,7 +2100,9 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _target Windower           // out
 	var _dragProtocol DragProtocol // out
 
-	_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
+	if _arg1 != nil {
+		_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
+	}
 	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
@@ -3722,8 +3744,10 @@ func (window *Window) SetIconName(name string) {
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gdk_window_set_icon_name(_arg0, _arg1)
 }

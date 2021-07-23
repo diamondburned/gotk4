@@ -65,8 +65,10 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 	var _arg2 *C.GtkListItemFactory  // out
 	var _cret *C.GtkColumnViewColumn // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
@@ -329,8 +331,10 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 	var _arg1 *C.char                // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_column_view_column_set_title(_arg0, _arg1)
 }

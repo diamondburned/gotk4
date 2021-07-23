@@ -288,6 +288,8 @@ func (conv *Converter) convertType(
 	}
 
 	attrs := of.ParameterAttrs
+	attrs.Nullable = false
+	attrs.Optional = false
 	attrs.AnyType = gir.AnyType{Type: typ}
 	attrs.TransferOwnership.TransferOwnership = owner
 

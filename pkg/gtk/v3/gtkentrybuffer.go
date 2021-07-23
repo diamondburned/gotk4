@@ -87,8 +87,10 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _arg2 C.gint            // out
 	var _cret *C.GtkEntryBuffer // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(initialChars)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if initialChars != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(initialChars)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.gint(nInitialChars)
 
 	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)

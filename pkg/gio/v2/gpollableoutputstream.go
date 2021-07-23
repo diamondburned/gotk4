@@ -262,7 +262,9 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -310,7 +312,9 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 
 	_bytesWritten = uint(_arg3)
 	_pollableReturn = PollableReturn(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _pollableReturn, _goerr
 }

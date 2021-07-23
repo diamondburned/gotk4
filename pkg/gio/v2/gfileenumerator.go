@@ -160,7 +160,9 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -214,7 +216,9 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -350,9 +354,15 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 	var _outChild Filer    // out
 	var _goerr error       // out
 
-	_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
-	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _arg1 != nil {
+		_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
+	}
+	if _arg2 != nil {
+		_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outInfo, _outChild, _goerr
 }
@@ -386,7 +396,9 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 	var _goerr error        // out
 
 	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _fileInfo, _goerr
 }
@@ -455,7 +467,9 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 		dst = *wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _list, _goerr
 }

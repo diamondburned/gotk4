@@ -277,7 +277,9 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _goerr error                               // out
 
 	_tlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsClientConnection, _goerr
 }

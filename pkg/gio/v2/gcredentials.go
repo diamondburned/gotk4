@@ -111,7 +111,9 @@ func (credentials *Credentials) UnixPid() (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -134,7 +136,9 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 	var _goerr error // out
 
 	_guint = uint(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint, _goerr
 }
@@ -154,7 +158,9 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -195,7 +201,9 @@ func (credentials *Credentials) SetUnixUser(uid uint) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

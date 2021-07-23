@@ -423,8 +423,10 @@ func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(desktopEnv)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if desktopEnv != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(desktopEnv)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
 
@@ -574,7 +576,9 @@ func (appinfo *DesktopAppInfo) LaunchURIsAsManager(uris []string, launchContext 
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -623,7 +627,9 @@ func (appinfo *DesktopAppInfo) LaunchURIsAsManagerWithFds(uris []string, launchC
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

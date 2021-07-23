@@ -138,8 +138,10 @@ func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object,
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if typ != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
 }

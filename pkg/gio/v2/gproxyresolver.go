@@ -176,7 +176,9 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8s, _goerr
 }
@@ -235,7 +237,9 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8s, _goerr
 }

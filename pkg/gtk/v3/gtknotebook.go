@@ -745,8 +745,10 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if groupName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_notebook_set_group_name(_arg0, _arg1)
 }

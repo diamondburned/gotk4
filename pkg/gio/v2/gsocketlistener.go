@@ -117,9 +117,13 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	if _arg1 != nil {
+		_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	}
 	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _sourceObject, _socketConnection, _goerr
 }
@@ -164,9 +168,13 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	}
 	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _sourceObject, _socketConnection, _goerr
 }
@@ -203,9 +211,13 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 	var _socket *Socket                  // out
 	var _goerr error                     // out
 
-	_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	if _arg1 != nil {
+		_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	}
 	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _sourceObject, _socket, _goerr
 }
@@ -251,9 +263,13 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	var _socket *Socket                  // out
 	var _goerr error                     // out
 
-	_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	}
 	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _sourceObject, _socket, _goerr
 }
@@ -298,8 +314,12 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _effectiveAddress SocketAddresser // out
 	var _goerr error                      // out
 
-	_effectiveAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _arg5 != nil {
+		_effectiveAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _effectiveAddress, _goerr
 }
@@ -328,7 +348,9 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 	var _goerr error    // out
 
 	_guint16 = uint16(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _guint16, _goerr
 }
@@ -358,7 +380,9 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -388,7 +412,9 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

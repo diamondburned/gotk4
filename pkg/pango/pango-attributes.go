@@ -949,15 +949,21 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	C.pango_attr_list_ref(_arg2)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if _arg2 != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		C.pango_attr_list_ref(_arg2)
+		runtime.SetFinalizer(_attrList, func(v *AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg3 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_accelChar = uint32(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _attrList, _text, _accelChar, _goerr
 }
@@ -1040,15 +1046,21 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-	C.pango_attr_list_ref(_arg4)
-	runtime.SetFinalizer(_attrList, func(v *AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-	defer C.free(unsafe.Pointer(_arg5))
+	if _arg4 != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		C.pango_attr_list_ref(_arg4)
+		runtime.SetFinalizer(_attrList, func(v *AttrList) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg5 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
 	_accelChar = uint32(_arg6)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _attrList, _text, _accelChar, _goerr
 }
@@ -1233,6 +1245,15 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	})
 
 	return _attrIterator
+}
+
+// Destroy a PangoAttrIterator and free all associated memory.
+func (iterator *AttrIterator) Destroy() {
+	var _arg0 *C.PangoAttrIterator // out
+
+	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+
+	C.pango_attr_iterator_destroy(_arg0)
 }
 
 // Get: find the current attribute of a particular type at the iterator
@@ -1704,6 +1725,15 @@ func (attr *Attribute) Copy() *Attribute {
 	})
 
 	return _attribute
+}
+
+// Destroy a PangoAttribute and free all associated memory.
+func (attr *Attribute) Destroy() {
+	var _arg0 *C.PangoAttribute // out
+
+	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+
+	C.pango_attribute_destroy(_arg0)
 }
 
 // Equal: compare two attributes for equality. This compares only the actual

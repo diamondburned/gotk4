@@ -87,8 +87,10 @@ func NewLabel(str string) *Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if str != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_label_new(_arg1)
 
@@ -116,8 +118,10 @@ func NewLabelWithMnemonic(str string) *Label {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if str != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
 

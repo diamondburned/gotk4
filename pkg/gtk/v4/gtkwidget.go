@@ -1389,8 +1389,10 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _cret *C.PangoLayout // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
 
@@ -3586,8 +3588,10 @@ func (widget *Widget) SetCursorFromName(name string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_widget_set_cursor_from_name(_arg0, _arg1)
 }
@@ -4035,8 +4039,10 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if markup != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
 }
@@ -4054,8 +4060,10 @@ func (widget *Widget) SetTooltipText(text string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
 }

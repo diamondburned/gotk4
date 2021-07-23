@@ -632,7 +632,9 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -952,7 +954,9 @@ func (matchInfo *MatchInfo) Next() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1048,7 +1052,9 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _regex, _goerr
 }
@@ -1248,11 +1254,13 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
 
-	_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	C.g_match_info_ref(_arg3)
-	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-		C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg3 != nil {
+		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		C.g_match_info_ref(_arg3)
+		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1290,11 +1298,13 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
 
-	_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	C.g_match_info_ref(_arg3)
-	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-		C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg3 != nil {
+		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		C.g_match_info_ref(_arg3)
+		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1374,7 +1384,9 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 	if _arg2 != 0 {
 		_hasReferences = true
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _hasReferences, _goerr
 }

@@ -238,7 +238,9 @@ func NewIconForString(str string) (Iconner, error) {
 	var _goerr error  // out
 
 	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _icon, _goerr
 }

@@ -313,7 +313,9 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -614,7 +616,9 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -650,7 +654,9 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -703,7 +709,9 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -722,7 +730,9 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -742,7 +752,9 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -762,7 +774,9 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -784,7 +798,9 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -862,8 +878,10 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(commandline)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(applicationName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if applicationName != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(applicationName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_arg3 = C.GAppInfoCreateFlags(flags)
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
@@ -872,7 +890,9 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _goerr error      // out
 
 	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _appInfo, _goerr
 }
@@ -1039,7 +1059,9 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1087,7 +1109,9 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

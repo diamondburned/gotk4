@@ -239,7 +239,9 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -288,7 +290,9 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -328,7 +332,9 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, e
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -386,7 +392,9 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -410,7 +418,9 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -451,7 +461,9 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -487,7 +499,9 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -540,7 +554,9 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -560,7 +576,9 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	var _goerr error    // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -1256,7 +1274,9 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 	defer C.free(unsafe.Pointer(_arg1))
 	_buffer = make([]byte, _arg2)
 	copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _buffer, _goerr
 }
@@ -1315,7 +1335,9 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1374,7 +1396,9 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1491,7 +1515,9 @@ func (pixbuf *Pixbuf) Savev(filename string, typ string, optionKeys []string, op
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

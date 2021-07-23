@@ -201,14 +201,20 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 	var _arg5 *C.char                 // out
 	var _cret *C.GtkFileChooserNative // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg3 = C.GtkFileChooserAction(action)
-	_arg4 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
-	defer C.free(unsafe.Pointer(_arg5))
+	if acceptLabel != "" {
+		_arg4 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+	if cancelLabel != "" {
+		_arg5 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
 
 	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -264,8 +270,10 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if acceptLabel != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
 }
@@ -283,8 +291,10 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if cancelLabel != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 }

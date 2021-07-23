@@ -474,7 +474,9 @@ func (task *Task) PropagateBoolean() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -499,7 +501,9 @@ func (task *Task) PropagateInt() (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -525,7 +529,9 @@ func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	var _goerr error         // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gpointer, _goerr
 }
@@ -553,7 +559,9 @@ func (task *Task) PropagateValue() (externglib.Value, error) {
 	var _goerr error            // out
 
 	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg1)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _value, _goerr
 }
@@ -682,8 +690,10 @@ func (task *Task) SetName(name string) {
 	var _arg1 *C.gchar // out
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.g_task_set_name(_arg0, _arg1)
 }

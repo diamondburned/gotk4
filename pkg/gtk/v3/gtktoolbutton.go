@@ -116,8 +116,10 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_tool_button_new(_arg1, _arg2)
 
@@ -270,8 +272,10 @@ func (button *ToolButton) SetIconName(iconName string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_tool_button_set_icon_name(_arg0, _arg1)
 }
@@ -300,8 +304,10 @@ func (button *ToolButton) SetLabel(label string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_tool_button_set_label(_arg0, _arg1)
 }
@@ -332,8 +338,10 @@ func (button *ToolButton) SetStockID(stockId string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if stockId != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_tool_button_set_stock_id(_arg0, _arg1)
 }

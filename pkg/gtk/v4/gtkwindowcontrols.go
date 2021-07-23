@@ -183,8 +183,10 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if layout != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
 }

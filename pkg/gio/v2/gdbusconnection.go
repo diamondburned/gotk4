@@ -461,7 +461,9 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _goerr error                    // out
 
 	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusConnection, _goerr
 }
@@ -500,7 +502,9 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	var _goerr error                    // out
 
 	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusConnection, _goerr
 }
@@ -537,8 +541,10 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if guid != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

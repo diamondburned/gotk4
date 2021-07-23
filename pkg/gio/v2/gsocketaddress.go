@@ -163,7 +163,9 @@ func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

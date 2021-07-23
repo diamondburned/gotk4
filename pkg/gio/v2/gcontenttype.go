@@ -217,8 +217,10 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg4 C.gboolean // in
 	var _cret *C.gchar   // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if filename != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg3 = (C.gsize)(len(data))
 	if len(data) > 0 {
 		_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))

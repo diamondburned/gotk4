@@ -106,7 +106,9 @@ func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Cred
 	var _goerr error              // out
 
 	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _credentials, _goerr
 }
@@ -154,7 +156,9 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 	var _goerr error              // out
 
 	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _credentials, _goerr
 }
@@ -183,7 +187,9 @@ func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -227,7 +233,9 @@ func (connection *UnixConnection) SendCredentials(ctx context.Context) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -272,7 +280,9 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -301,7 +311,9 @@ func (connection *UnixConnection) SendFd(ctx context.Context, fd int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

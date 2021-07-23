@@ -364,7 +364,9 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 		dst = *wrapConstraint(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _list, _goerr
 }

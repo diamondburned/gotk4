@@ -416,7 +416,9 @@ func (builder *Builder) AddFromFile(filename string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -446,7 +448,9 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -478,7 +482,9 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -519,7 +525,9 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -561,7 +569,9 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -605,7 +615,9 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -649,7 +661,9 @@ func (builder *Builder) ExtendWithTemplate(object *externglib.Object, templateTy
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -785,8 +799,10 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if domain != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
 }
@@ -819,7 +835,9 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 	var _goerr error            // out
 
 	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _value, _goerr
 }

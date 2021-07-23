@@ -527,10 +527,14 @@ func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, 
 	var _cret *C.GtkStyle    // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(classPath)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if widgetPath != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if classPath != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(classPath)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_arg4 = C.GType(typ)
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)

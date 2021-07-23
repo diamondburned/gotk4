@@ -283,7 +283,9 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -305,7 +307,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	var _goerr error               // out
 
 	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _object, _goerr
 }

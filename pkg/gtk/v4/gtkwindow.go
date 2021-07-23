@@ -182,6 +182,15 @@ func (window *Window) Close() {
 	C.gtk_window_close(_arg0)
 }
 
+// Destroy: drop the internal reference GTK holds on toplevel windows.
+func (window *Window) Destroy() {
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+
+	C.gtk_window_destroy(_arg0)
+}
+
 // Fullscreen asks to place window in the fullscreen state.
 //
 // Note that you shouldn’t assume the window is definitely fullscreen afterward,
@@ -962,8 +971,10 @@ func (window *Window) SetIconName(name string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
 }
@@ -1052,8 +1063,10 @@ func (window *Window) SetTitle(title string) {
 	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_window_set_title(_arg0, _arg1)
 }

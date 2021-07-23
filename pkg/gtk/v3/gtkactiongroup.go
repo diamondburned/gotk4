@@ -161,8 +161,10 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if accelerator != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
 }
@@ -368,8 +370,10 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if domain != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
 }

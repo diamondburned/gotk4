@@ -459,7 +459,9 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _settingsSchemaSource, _goerr
 }

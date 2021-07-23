@@ -697,24 +697,32 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	if _arg2 != 0 {
 		_enabled = true
 	}
-	_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	runtime.SetFinalizer(_parameterType, func(v *glib.VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-	runtime.SetFinalizer(_stateType, func(v *glib.VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-	C.g_variant_ref(_arg5)
-	runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
-	_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
-	C.g_variant_ref(_arg6)
-	runtime.SetFinalizer(_state, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg3 != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(_parameterType, func(v *glib.VariantType) {
+			C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg4 != nil {
+		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		runtime.SetFinalizer(_stateType, func(v *glib.VariantType) {
+			C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg5 != nil {
+		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
+		C.g_variant_ref(_arg5)
+		runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
+	if _arg6 != nil {
+		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
+		C.g_variant_ref(_arg6)
+		runtime.SetFinalizer(_state, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}

@@ -237,6 +237,15 @@ func (scanner *Scanner) CurToken() TokenType {
 	return _tokenType
 }
 
+// Destroy frees all memory used by the #GScanner.
+func (scanner *Scanner) Destroy() {
+	var _arg0 *C.GScanner // out
+
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+
+	C.g_scanner_destroy(_arg0)
+}
+
 // EOF returns TRUE if the scanner has reached the end of the file or text
 // buffer.
 func (scanner *Scanner) EOF() bool {

@@ -127,8 +127,10 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 

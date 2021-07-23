@@ -113,10 +113,14 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _typ, _inputStream, _goerr
 }
@@ -162,10 +166,14 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _typ, _inputStream, _goerr
 }

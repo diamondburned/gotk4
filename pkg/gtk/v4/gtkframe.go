@@ -108,8 +108,10 @@ func NewFrame(label string) *Frame {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_frame_new(_arg1)
 
@@ -204,8 +206,10 @@ func (frame *Frame) SetLabel(label string) {
 	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_frame_set_label(_arg0, _arg1)
 }

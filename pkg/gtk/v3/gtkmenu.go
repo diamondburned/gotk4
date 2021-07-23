@@ -412,8 +412,10 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 	var _arg1 *C.gchar   // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if accelPath != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_menu_set_accel_path(_arg0, _arg1)
 }
@@ -503,8 +505,10 @@ func (menu *Menu) SetTitle(title string) {
 	var _arg1 *C.gchar   // out
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if title != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_menu_set_title(_arg0, _arg1)
 }

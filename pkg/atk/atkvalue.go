@@ -444,8 +444,10 @@ func (obj *Value) ValueAndText() (float64, string) {
 	var _text string   // out
 
 	_value = float64(_arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	return _value, _text
 }

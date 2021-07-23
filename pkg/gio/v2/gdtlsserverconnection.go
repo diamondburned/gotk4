@@ -81,7 +81,9 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _goerr error                                 // out
 
 	_dtlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSServerConnectioner)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dtlsServerConnection, _goerr
 }

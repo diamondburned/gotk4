@@ -151,7 +151,9 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -170,7 +172,9 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -190,7 +194,9 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -256,8 +262,10 @@ func CSSProviderGetNamed(name string, variant string) *CSSProvider {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if variant != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variant)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
 

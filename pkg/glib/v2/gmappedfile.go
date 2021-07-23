@@ -58,7 +58,9 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _mappedFile, _goerr
 }
@@ -85,7 +87,9 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
 		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _mappedFile, _goerr
 }

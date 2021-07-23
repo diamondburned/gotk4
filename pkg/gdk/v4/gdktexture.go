@@ -107,7 +107,9 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _goerr error      // out
 
 	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _texture, _goerr
 }

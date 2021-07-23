@@ -187,7 +187,9 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 	var _iter TreeIter      // out
 	var _ok bool            // out
 
-	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+	if _arg1 != nil {
+		_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+	}
 	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
@@ -216,7 +218,9 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	var _model TreeModeller // out
 	var _list []*TreePath   // out
 
-	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+	if _arg1 != nil {
+		_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+	}
 	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTreePath)(v)

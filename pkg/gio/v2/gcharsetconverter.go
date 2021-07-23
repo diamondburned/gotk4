@@ -75,7 +75,9 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 	var _goerr error                        // out
 
 	_charsetConverter = wrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _charsetConverter, _goerr
 }

@@ -58,8 +58,10 @@ func NewTextTag(name string) *TextTag {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GtkTextTag // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_text_tag_new(_arg1)
 

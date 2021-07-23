@@ -122,7 +122,9 @@ func (list *UnixFDList) Append(fd int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -152,7 +154,9 @@ func (list *UnixFDList) Get(index_ int) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }

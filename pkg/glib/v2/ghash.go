@@ -367,6 +367,27 @@ func HashTableContains(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool
 	return _ok
 }
 
+// HashTableDestroy destroys all keys and values in the Table and decrements its
+// reference count by 1. If keys and/or values are dynamically allocated, you
+// should either free them first or create the Table with destroy notifiers
+// using g_hash_table_new_full(). In the latter case the destroy functions you
+// supplied will be called on all keys and values during the destruction phase.
+func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
+	var _arg1 *C.GHashTable // out
+
+	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
+	for ksrc, vsrc := range hashTable {
+		var kdst *C.gpointer // out
+		var vdst *C.gpointer // out
+		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
+	}
+	defer C.g_hash_table_unref(_arg1)
+
+	C.g_hash_table_destroy(_arg1)
+}
+
 // HashTableInsert inserts a new key and value into a Table.
 //
 // If the key already exists in the Table its current value is replaced with the

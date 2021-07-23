@@ -108,7 +108,9 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 	var _goerr error                  // out
 
 	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _printSettings, _goerr
 }
@@ -141,8 +143,10 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 	var _cerr *C.GError           // in
 
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, &_cerr)
 
@@ -150,7 +154,9 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 	var _goerr error                  // out
 
 	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _printSettings, _goerr
 }
@@ -792,7 +798,9 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -808,14 +816,18 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -829,8 +841,10 @@ func (settings *PrintSettings) Set(key string, value string) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if value != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_print_settings_set(_arg0, _arg1, _arg2)
 }
@@ -1214,7 +1228,9 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1246,8 +1262,10 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_print_settings_to_key_file(_arg0, _arg1, _arg2)
 }

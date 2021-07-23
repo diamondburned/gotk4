@@ -60,7 +60,9 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8s, _goerr
 }
@@ -88,7 +90,9 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 
 	_size = uint(_arg3)
 	_flags = uint32(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _size, _flags, _goerr
 }
@@ -114,7 +118,9 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 	var _goerr error               // out
 
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _inputStream, _goerr
 }
@@ -167,7 +173,9 @@ func ResourceLoad(filename string) (*Resource, error) {
 	runtime.SetFinalizer(_resource, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _resource, _goerr
 }

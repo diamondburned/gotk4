@@ -339,8 +339,10 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 	var _cret *C.GtkTextMark   // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if markName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 	if leftGravity {
 		_arg3 = C.TRUE

@@ -746,7 +746,9 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8s, _goerr
 }
@@ -776,7 +778,9 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 
 	_size = uint(_arg3)
 	_flags = uint32(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _size, _flags, _goerr
 }
@@ -803,7 +807,9 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _goerr error               // out
 
 	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _inputStream, _goerr
 }

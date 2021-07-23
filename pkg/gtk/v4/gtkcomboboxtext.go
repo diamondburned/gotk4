@@ -163,8 +163,10 @@ func (comboBox *ComboBoxText) Append(id string, text string) {
 	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if id != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -221,8 +223,10 @@ func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = C.int(position)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if id != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg3))
 
@@ -259,8 +263,10 @@ func (comboBox *ComboBoxText) Prepend(id string, text string) {
 	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if id != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 

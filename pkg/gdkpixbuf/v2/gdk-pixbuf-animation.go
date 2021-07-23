@@ -140,7 +140,9 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _goerr error                      // out
 
 	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufAnimation, _goerr
 }
@@ -164,7 +166,9 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 	var _goerr error                      // out
 
 	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufAnimation, _goerr
 }
@@ -200,7 +204,9 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 	var _goerr error                      // out
 
 	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufAnimation, _goerr
 }
@@ -221,7 +227,9 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _goerr error                      // out
 
 	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufAnimation, _goerr
 }

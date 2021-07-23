@@ -591,8 +591,10 @@ func (about *AboutDialog) SetComments(comments string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(comments)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if comments != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(comments)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_comments(_arg0, _arg1)
 }
@@ -604,8 +606,10 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(copyright)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if copyright != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(copyright)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
 }
@@ -641,8 +645,10 @@ func (about *AboutDialog) SetLicense(license string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(license)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if license != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(license)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
 }
@@ -682,8 +688,10 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
 }
@@ -721,8 +729,10 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(translatorCredits)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if translatorCredits != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(translatorCredits)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
 }
@@ -733,8 +743,10 @@ func (about *AboutDialog) SetVersion(version string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(version)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if version != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(version)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_version(_arg0, _arg1)
 }
@@ -745,8 +757,10 @@ func (about *AboutDialog) SetWebsite(website string) {
 	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(website)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if website != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(website)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_about_dialog_set_website(_arg0, _arg1)
 }

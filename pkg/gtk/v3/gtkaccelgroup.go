@@ -271,17 +271,19 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	var _acceleratorMods gdk.ModifierType // out
 
 	_acceleratorKey = uint(_arg2)
-	{
-		var i int
-		var z C.guint
-		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _arg3 != nil {
+		{
+			var i int
+			var z C.guint
+			for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_arg3, i)
-		_acceleratorCodes = make([]uint, i)
-		for i := range src {
-			_acceleratorCodes[i] = uint(src[i])
+			src := unsafe.Slice(_arg3, i)
+			_acceleratorCodes = make([]uint, i)
+			for i := range src {
+				_acceleratorCodes[i] = uint(src[i])
+			}
 		}
 	}
 	_acceleratorMods = gdk.ModifierType(_arg4)

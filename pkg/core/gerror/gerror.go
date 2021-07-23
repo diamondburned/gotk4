@@ -2,6 +2,7 @@ package gerror
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gmodule.h>
 // #include <glib.h>
 import "C"
@@ -11,8 +12,15 @@ import (
 	"sync"
 	"unsafe"
 
+	"github.com/gotk3/gotk3/glib"
 	"golang.org/x/sync/singleflight"
 )
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		{T: glib.Type(C.g_error_get_type()), F: marshalGError},
+	})
+}
 
 // ErrorCoder is an interface that returns a GError code. Errors may optionally
 // implement this interface to override the default error code.
@@ -83,24 +91,29 @@ func New(err error) unsafe.Pointer {
 	return unsafe.Pointer(C.g_error_new_literal(getQuark(err), C.gint(code), errString))
 }
 
-// glibError is converted from a GError to implement Go's error interface.
-type glibError struct {
+// GError is converted from a C.GError to implement Go's error interface.
+type GError struct {
 	quark uint32
 	code  int
 	err   string
 }
 
+func marshalGError(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return Copy(unsafe.Pointer(b)), nil
+}
+
 // Quark returns the internal quark for the error. Callers that want this quark
 // must manually type assert using their own interface.
-func (err glibError) Quark() uint32 {
+func (err *GError) Quark() uint32 {
 	return err.quark
 }
 
-func (err glibError) ErrorCode() int {
+func (err *GError) ErrorCode() int {
 	return err.code
 }
 
-func (err glibError) Error() string {
+func (err *GError) Error() string {
 	return err.err
 }
 
@@ -114,7 +127,20 @@ func Take(gerror unsafe.Pointer) error {
 	v := (*C.GError)(gerror)
 	defer C.g_error_free(v)
 
-	return glibError{
+	return newGError(v)
+}
+
+// Copy return a new Go error from a *GError without freeing.
+func Copy(gerror unsafe.Pointer) error {
+	if gerror == nil {
+		return nil
+	}
+
+	return newGError((*C.GError)(gerror))
+}
+
+func newGError(v *C.GError) *GError {
+	return &GError{
 		quark: uint32(v.domain),
 		code:  int(v.code),
 		err:   C.GoString(v.message),

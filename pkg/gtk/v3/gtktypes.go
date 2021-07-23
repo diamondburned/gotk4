@@ -181,8 +181,10 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 	_arg3 = C.GtkStateType(state)
 	_arg4 = C.GtkIconSize(size)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
+	if detail != "" {
+		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+		defer C.free(unsafe.Pointer(_arg6))
+	}
 
 	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
@@ -577,8 +579,10 @@ func (source *IconSource) SetIconName(iconName string) {
 	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 }
@@ -1591,8 +1595,10 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if name != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
 }

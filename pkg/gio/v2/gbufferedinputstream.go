@@ -197,7 +197,9 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -246,7 +248,9 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -340,7 +344,9 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }

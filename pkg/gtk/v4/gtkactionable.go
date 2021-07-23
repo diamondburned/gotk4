@@ -181,8 +181,10 @@ func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg1 *C.char          // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if actionName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
 }

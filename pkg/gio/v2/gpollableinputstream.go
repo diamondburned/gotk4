@@ -234,7 +234,9 @@ func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer [
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }

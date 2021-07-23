@@ -12,6 +12,12 @@ import (
 // Go to C type conversions.
 
 func (conv *Converter) gocConvert(value *ValueConverted) bool {
+	// Both a callback or a pointer can be nil.
+	if (value.Resolved.Ptr > 0 || value.Resolved.IsCallback()) && value.Optional {
+		value.p.Linef("if %s != nil {", value.In.Name)
+		defer value.p.Ascend()
+	}
+
 	switch {
 	case value.AnyType.Array != nil:
 		return conv.gocArrayConverter(value)
@@ -369,6 +375,12 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 }
 
 func (conv *Converter) gocConverter(value *ValueConverted) bool {
+	if value.Resolved.Ptr > 0 && value.Optional {
+		// Wrap the whole conversion block.
+		value.p.Linef("if %s != nil {", value.In.Name)
+		defer value.p.Ascend()
+	}
+
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle"):
 		value.header.Import("runtime/cgo")
@@ -387,6 +399,13 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// Cast using an unsafe.Pointer in case the output type is uchar and Go
 		// refuses to compile it.
 		value.header.Import("unsafe")
+
+		// Handle optional/nullable cases.
+		if value.Optional || value.Nullable {
+			value.p.Linef(`if %s != "" {`, value.InName)
+			defer value.p.Ascend()
+		}
+
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(C.CString(%s)))",
 			value.Out.Set, value.Out.Type, value.InName,
@@ -506,9 +525,11 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")
+		value.p.Linef(
+			"%s = %s(unsafe.Pointer(%s.Native()))",
+			value.Out.Set, value.OutCast(1), value.InNamePtrPubl(1),
+		)
 
-		name := value.InNamePtrPubl(1)
-		value.p.Linef("%s = %s(unsafe.Pointer(%s.Native()))", value.Out.Set, value.OutCast(1), name)
 		return true
 
 	case *gir.Record:
@@ -537,13 +558,15 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// pointer.
 		if value.Closure == nil {
 			conv.Logln(logger.Debug, exportedName, "missing closure")
-			return false
+			// Maybe we can use this function with a NULL argument if the
+			// callback is nullable.
+			return value.Nullable
 		}
 
 		closure := conv.param(*value.Closure)
 		if closure == nil || closure.Type == nil {
 			value.Logln(logger.Debug, exportedName, "closure", *value.Closure, "not found")
-			return false
+			return value.Nullable
 		}
 
 		value.header.ImportCore("gbox")

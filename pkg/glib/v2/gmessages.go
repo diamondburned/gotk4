@@ -242,11 +242,15 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	var _arg3 *C.gchar         // out
 	var _arg4 C.gpointer       // out
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if logDomain != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.GLogLevelFlags(logLevel)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if message != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(unusedData))
 
 	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
@@ -373,8 +377,10 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg2 C.GLogLevelFlags // out
 	var _arg3 *C.GVariant      // out
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if logDomain != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fields)))
 
@@ -470,8 +476,10 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _cret C.gboolean       // in
 
 	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if logDomain != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 

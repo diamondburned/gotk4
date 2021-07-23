@@ -137,8 +137,10 @@ func NewButtonFromIconName(iconName string) *Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if iconName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1)
 

@@ -306,7 +306,9 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioChannel, _goerr
 }
@@ -358,7 +360,9 @@ func (channel *IOChannel) Flush() (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }
@@ -539,7 +543,9 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 	_length = uint(_arg2)
 	_terminatorPos = uint(_arg3)
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _strReturn, _length, _terminatorPos, _ioStatus, _goerr
 }
@@ -564,7 +570,9 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	_strReturn = make([]byte, _arg2)
 	copy(_strReturn, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _strReturn, _ioStatus, _goerr
 }
@@ -587,7 +595,9 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 
 	_thechar = uint32(_arg1)
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _thechar, _ioStatus, _goerr
 }
@@ -633,7 +643,9 @@ func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, er
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }
@@ -716,8 +728,10 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _cerr *C.GError     // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(encoding)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if encoding != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(encoding)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
 
@@ -725,7 +739,9 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }
@@ -747,7 +763,9 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }
@@ -760,8 +778,10 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(lineTerm)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if lineTerm != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(lineTerm)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.gint(length)
 
 	C.g_io_channel_set_line_term(_arg0, _arg1, _arg2)
@@ -787,7 +807,9 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }
@@ -864,7 +886,9 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 
 	_bytesWritten = uint(_arg3)
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _ioStatus, _goerr
 }
@@ -886,7 +910,9 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _goerr error       // out
 
 	_ioStatus = IOStatus(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ioStatus, _goerr
 }

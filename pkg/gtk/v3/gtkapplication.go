@@ -218,8 +218,10 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 	var _arg2 C.GApplicationFlags // out
 	var _cret *C.GtkApplication   // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if applicationId != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
@@ -527,8 +529,10 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.GtkApplicationInhibitFlags(flags)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(reason)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if reason != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(reason)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 

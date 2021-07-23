@@ -134,7 +134,9 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _goerr error                // out
 
 	_pixbufLoader = wrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufLoader, _goerr
 }
@@ -166,7 +168,9 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _goerr error                // out
 
 	_pixbufLoader = wrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbufLoader, _goerr
 }
@@ -196,7 +200,9 @@ func (loader *PixbufLoader) Close() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -308,7 +314,9 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

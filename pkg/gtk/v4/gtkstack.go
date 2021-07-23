@@ -265,8 +265,10 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if name != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 
@@ -290,8 +292,10 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if name != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg3))
 

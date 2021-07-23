@@ -73,7 +73,9 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 	var _goerr error                      // out
 
 	_inetAddressMask = wrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _inetAddressMask, _goerr
 }
@@ -96,7 +98,9 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _goerr error                      // out
 
 	_inetAddressMask = wrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _inetAddressMask, _goerr
 }

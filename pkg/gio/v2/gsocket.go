@@ -138,7 +138,9 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 	var _goerr error    // out
 
 	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socket, _goerr
 }
@@ -168,7 +170,9 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 	var _goerr error    // out
 
 	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socket, _goerr
 }
@@ -202,7 +206,9 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 	var _goerr error // out
 
 	_ret = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ret, _goerr
 }
@@ -245,7 +251,9 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -263,7 +271,9 @@ func (socket *Socket) CheckConnectResult() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -304,7 +314,9 @@ func (socket *Socket) Close() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -375,7 +387,9 @@ func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOC
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -407,7 +421,9 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -446,7 +462,9 @@ func (socket *Socket) ConnectSocketter(ctx context.Context, address SocketAddres
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -567,7 +585,9 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 	var _goerr error              // out
 
 	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _credentials, _goerr
 }
@@ -659,7 +679,9 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socketAddress, _goerr
 }
@@ -730,7 +752,9 @@ func (socket *Socket) Option(level int, optname int) (int, error) {
 	var _goerr error // out
 
 	_value = int(_arg3)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _value, _goerr
 }
@@ -767,7 +791,9 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _socketAddress, _goerr
 }
@@ -889,14 +915,18 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -925,14 +955,18 @@ func (socket *Socket) JoinMulticastGroupSSM(group *InetAddress, sourceSpecific *
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -958,14 +992,18 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -986,14 +1024,18 @@ func (socket *Socket) LeaveMulticastGroupSSM(group *InetAddress, sourceSpecific 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1016,7 +1058,9 @@ func (socket *Socket) Listen() error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1094,7 +1138,9 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -1138,7 +1184,9 @@ func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -1222,7 +1270,9 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -1279,7 +1329,9 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 
 	_bytesWritten = uint(_arg8)
 	_pollableReturn = PollableReturn(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _pollableReturn, _goerr
 }
@@ -1344,7 +1396,9 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -1380,7 +1434,9 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -1417,7 +1473,9 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, block
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -1551,7 +1609,9 @@ func (socket *Socket) SetOption(level int, optname int, value int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -1627,7 +1687,9 @@ func (socket *Socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

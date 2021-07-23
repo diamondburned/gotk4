@@ -35,6 +35,19 @@ func marshalTree(p uintptr) (interface{}, error) {
 	return &Tree{native: (*C.GTree)(unsafe.Pointer(b))}, nil
 }
 
+// Destroy removes all keys and values from the #GTree and decreases its
+// reference count by one. If keys and/or values are dynamically allocated, you
+// should either free them first or create the #GTree using g_tree_new_full().
+// In the latter case the destroy functions you supplied will be called on all
+// keys and values before destroying the #GTree.
+func (tree *Tree) Destroy() {
+	var _arg0 *C.GTree // out
+
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
+
+	C.g_tree_destroy(_arg0)
+}
+
 // Height gets the height of a #GTree.
 //
 // If the #GTree contains no nodes, the height is 0. If the #GTree contains only

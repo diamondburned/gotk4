@@ -46,7 +46,6 @@ var IgnoredNames = []string{
 	"ref",
 	"unref",
 	"free",
-	"destroy",
 }
 
 // NewGenerator creates a new callable generator from the given generator.

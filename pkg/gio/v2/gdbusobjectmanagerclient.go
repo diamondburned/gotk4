@@ -154,7 +154,9 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }
@@ -174,7 +176,9 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }
@@ -219,7 +223,9 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }
@@ -248,8 +254,10 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 	}
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = C.GDBusObjectManagerClientFlags(flags)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if name != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
@@ -262,7 +270,9 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusObjectManagerClient, _goerr
 }

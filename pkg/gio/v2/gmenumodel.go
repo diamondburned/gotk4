@@ -141,12 +141,16 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _value *glib.Variant // out
 	var _ok bool             // out
 
-	_outName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	C.g_variant_ref(_arg2)
-	runtime.SetFinalizer(_value, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	if _arg1 != nil {
+		_outName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
+	if _arg2 != nil {
+		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		C.g_variant_ref(_arg2)
+		runtime.SetFinalizer(_value, func(v *glib.Variant) {
+			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -301,8 +305,12 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _value MenuModeller // out
 	var _ok bool            // out
 
-	_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(MenuModeller)
+	if _arg1 != nil {
+		_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
+	if _arg2 != nil {
+		_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(MenuModeller)
+	}
 	if _cret != 0 {
 		_ok = true
 	}

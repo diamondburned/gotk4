@@ -82,7 +82,9 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	var _goerr error                      // out
 
 	_tlsFileDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSFileDatabaser)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _tlsFileDatabase, _goerr
 }

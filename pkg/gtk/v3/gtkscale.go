@@ -208,8 +208,10 @@ func (scale *Scale) AddMark(value float64, position PositionType, markup string)
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 	_arg1 = C.gdouble(value)
 	_arg2 = C.GtkPositionType(position)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg3))
+	if markup != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
 
 	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
 }

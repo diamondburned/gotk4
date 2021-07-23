@@ -79,7 +79,9 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -133,10 +135,14 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outGuid, _ioStream, _goerr
 }
@@ -173,10 +179,14 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _outGuid, _ioStream, _goerr
 }
@@ -219,7 +229,9 @@ func DBusIsSupportedAddress(_string string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

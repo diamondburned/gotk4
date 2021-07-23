@@ -1037,6 +1037,23 @@ func (source *Source) Attach(context *MainContext) uint {
 	return _guint
 }
 
+// Destroy removes a source from its Context, if any, and mark it as destroyed.
+// The source cannot be subsequently added to another context. It is safe to
+// call this on sources which have already been removed from their context.
+//
+// This does not unref the #GSource: if you still hold a reference, use
+// g_source_unref() to drop it.
+//
+// This function is safe to call from any thread, regardless of which thread the
+// Context is running in.
+func (source *Source) Destroy() {
+	var _arg0 *C.GSource // out
+
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	C.g_source_destroy(_arg0)
+}
+
 // CanRecurse checks whether a source is allowed to be called recursively. see
 // g_source_set_can_recurse().
 func (source *Source) CanRecurse() bool {

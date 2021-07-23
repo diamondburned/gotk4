@@ -303,7 +303,9 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _recentInfo, _goerr
 }
@@ -322,14 +324,18 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(newUri)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if newUri != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(newUri)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -348,7 +354,9 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	var _goerr error // out
 
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gint, _goerr
 }
@@ -368,7 +376,9 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -486,8 +496,10 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if appName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(appName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
 
@@ -495,7 +507,9 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _goerr error          // out
 
 	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _appInfo, _goerr
 }

@@ -113,8 +113,10 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 

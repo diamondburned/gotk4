@@ -151,7 +151,9 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _goerr error                                 // out
 
 	_dtlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSClientConnectioner)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dtlsClientConnection, _goerr
 }

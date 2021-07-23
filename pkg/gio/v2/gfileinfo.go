@@ -718,8 +718,10 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	var _cret **C.char     // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if nameSpace != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_file_info_list_attributes(_arg0, _arg1)
 

@@ -268,7 +268,9 @@ func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags Converter
 	_bytesRead = uint(_arg6)
 	_bytesWritten = uint(_arg7)
 	_converterResult = ConverterResult(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesRead, _bytesWritten, _converterResult, _goerr
 }

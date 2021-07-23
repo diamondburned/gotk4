@@ -238,8 +238,10 @@ func (self *MediaFile) SetFilename(filename string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if filename != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_media_file_set_filename(_arg0, _arg1)
 }
@@ -269,8 +271,10 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if resourcePath != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 }

@@ -71,12 +71,18 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if tooltip != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if stockId != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -102,12 +108,18 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if tooltip != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if stockId != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
 	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)

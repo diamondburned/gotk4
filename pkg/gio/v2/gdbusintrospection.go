@@ -518,7 +518,9 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _dBusNodeInfo, _goerr
 }

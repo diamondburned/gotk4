@@ -633,8 +633,10 @@ func (self *Text) SetPlaceholderText(text string) {
 	var _arg1 *C.char    // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if text != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_text_set_placeholder_text(_arg0, _arg1)
 }

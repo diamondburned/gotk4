@@ -31,8 +31,10 @@ func init() {
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if smClientId != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
@@ -248,8 +250,10 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg2 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if theme != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	_arg2 = C.int(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
@@ -376,8 +380,10 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkDisplay // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if displayName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gdk_x11_display_open(_arg1)
 

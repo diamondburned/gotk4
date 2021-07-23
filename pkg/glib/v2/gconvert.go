@@ -146,11 +146,15 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 	var _filename string // out
 	var _goerr error     // out
 
-	_hostname = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if _arg2 != nil {
+		_hostname = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _hostname, _filename, _goerr
 }
@@ -188,7 +192,9 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	_bytesWritten = uint(_arg4)
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesRead, _bytesWritten, _filename, _goerr
 }
@@ -203,8 +209,10 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if hostname != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_filename_to_uri(_arg1, _arg2, &_cerr)
 
@@ -213,7 +221,9 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _utf8, _goerr
 }
@@ -252,7 +262,9 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesRead, _bytesWritten, _utf8, _goerr
 }
@@ -343,7 +355,9 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	_bytesWritten = uint(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesRead, _bytesWritten, _utf8, _goerr
 }

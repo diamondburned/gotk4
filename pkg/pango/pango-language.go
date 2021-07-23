@@ -153,8 +153,10 @@ func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out
 	var _cret *C.PangoLanguage // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if language != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.pango_language_from_string(_arg1)
 

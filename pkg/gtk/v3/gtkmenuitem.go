@@ -329,8 +329,10 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if accelPath != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
 }

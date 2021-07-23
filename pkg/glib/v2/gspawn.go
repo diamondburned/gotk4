@@ -262,8 +262,10 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var _arg7 C.GPid    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if workingDirectory != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -300,7 +302,9 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var _goerr error  // out
 
 	_childPid = int(_arg7)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _childPid, _goerr
 }
@@ -320,8 +324,10 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var _arg10 C.gint   // out
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if workingDirectory != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -361,7 +367,9 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var _goerr error  // out
 
 	_childPid = int(_arg7)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _childPid, _goerr
 }
@@ -381,8 +389,10 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	var _arg10 C.gint   // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if workingDirectory != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -425,7 +435,9 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	_standardInput = int(_arg8)
 	_standardOutput = int(_arg9)
 	_standardError = int(_arg10)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _childPid, _standardInput, _standardOutput, _standardError, _goerr
 }
@@ -623,8 +635,10 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 	var _arg16 C.gint   // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if workingDirectory != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -678,7 +692,9 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 	_stdinPipeOut = int(_arg14)
 	_stdoutPipeOut = int(_arg15)
 	_stderrPipeOut = int(_arg16)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _childPidOut, _stdinPipeOut, _stdoutPipeOut, _stderrPipeOut, _goerr
 }
@@ -728,7 +744,9 @@ func SpawnCheckExitStatus(exitStatus int) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -765,7 +783,9 @@ func SpawnCommandLineAsync(commandLine string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -807,34 +827,40 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var _exitStatus int        // out
 	var _goerr error           // out
 
-	{
-		var i int
-		var z C.gchar
-		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _arg2 != nil {
+		{
+			var i int
+			var z C.gchar
+			for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_arg2, i)
-		_standardOutput = make([]byte, i)
-		for i := range src {
-			_standardOutput[i] = byte(src[i])
+			src := unsafe.Slice(_arg2, i)
+			_standardOutput = make([]byte, i)
+			for i := range src {
+				_standardOutput[i] = byte(src[i])
+			}
 		}
 	}
-	{
-		var i int
-		var z C.gchar
-		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _arg3 != nil {
+		{
+			var i int
+			var z C.gchar
+			for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_arg3, i)
-		_standardError = make([]byte, i)
-		for i := range src {
-			_standardError[i] = byte(src[i])
+			src := unsafe.Slice(_arg3, i)
+			_standardError = make([]byte, i)
+			for i := range src {
+				_standardError[i] = byte(src[i])
+			}
 		}
 	}
 	_exitStatus = int(_arg4)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _standardOutput, _standardError, _exitStatus, _goerr
 }
@@ -869,8 +895,10 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var _arg9 C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if workingDirectory != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -908,34 +936,40 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var _exitStatus int        // out
 	var _goerr error           // out
 
-	{
-		var i int
-		var z C.gchar
-		for p := _arg7; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _arg7 != nil {
+		{
+			var i int
+			var z C.gchar
+			for p := _arg7; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_arg7, i)
-		_standardOutput = make([]byte, i)
-		for i := range src {
-			_standardOutput[i] = byte(src[i])
+			src := unsafe.Slice(_arg7, i)
+			_standardOutput = make([]byte, i)
+			for i := range src {
+				_standardOutput[i] = byte(src[i])
+			}
 		}
 	}
-	{
-		var i int
-		var z C.gchar
-		for p := _arg8; *p != z; p = &unsafe.Slice(p, i+1)[i] {
-			i++
-		}
+	if _arg8 != nil {
+		{
+			var i int
+			var z C.gchar
+			for p := _arg8; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+				i++
+			}
 
-		src := unsafe.Slice(_arg8, i)
-		_standardError = make([]byte, i)
-		for i := range src {
-			_standardError[i] = byte(src[i])
+			src := unsafe.Slice(_arg8, i)
+			_standardError = make([]byte, i)
+			for i := range src {
+				_standardError[i] = byte(src[i])
+			}
 		}
 	}
 	_exitStatus = int(_arg9)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _standardOutput, _standardError, _exitStatus, _goerr
 }

@@ -198,9 +198,11 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _points []gdk.Point // out
 	var _ok bool            // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_points = make([]gdk.Point, _arg2)
-	copy(_points, unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2))
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		_points = make([]gdk.Point, _arg2)
+		copy(_points, unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2))
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -393,7 +395,9 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -448,7 +452,9 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -482,7 +488,9 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _surface, _goerr
 }
@@ -540,7 +548,9 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _wasSymbolic, _pixbuf, _goerr
 }
@@ -608,7 +618,9 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _wasSymbolic, _pixbuf, _goerr
 }
@@ -653,7 +665,9 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _wasSymbolic, _pixbuf, _goerr
 }
@@ -716,7 +730,9 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _wasSymbolic, _pixbuf, _goerr
 }
@@ -763,7 +779,9 @@ func (iconInfo *IconInfo) LoadSymbolicForStyle(style *Style, state StateType) (b
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _wasSymbolic, _pixbuf, _goerr
 }
@@ -1079,13 +1097,15 @@ func (iconTheme *IconTheme) SearchPath() []string {
 
 	var _path []string // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		src := unsafe.Slice(_arg1, _arg2)
-		_path = make([]string, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			src := unsafe.Slice(_arg1, _arg2)
+			_path = make([]string, _arg2)
+			for i := 0; i < int(_arg2); i++ {
+				_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 
@@ -1152,8 +1172,10 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 	var _cret *C.GList        // in
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if context != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gtk_icon_theme_list_icons(_arg0, _arg1)
 
@@ -1212,7 +1234,9 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -1260,7 +1284,9 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 			},
 		}
 	}
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pixbuf, _goerr
 }
@@ -1300,7 +1326,9 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _surface, _goerr
 }
@@ -1464,8 +1492,10 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if themeName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	C.gtk_icon_theme_set_custom_theme(_arg0, _arg1)
 }

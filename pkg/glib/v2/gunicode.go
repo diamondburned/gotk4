@@ -1072,7 +1072,9 @@ func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
 	_guint16 = (*uint16)(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
@@ -1101,7 +1103,9 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _utf8, _goerr
 }
@@ -1877,7 +1881,9 @@ func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
 	_gunichar = (*uint32)(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
@@ -1915,7 +1921,9 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 	_itemsWritten = int32(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _utf8, _goerr
 }
@@ -2047,8 +2055,10 @@ func UTF8FindNextChar(p string, end string) string {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(p)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(end)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if end != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(end)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_utf8_find_next_char(_arg1, _arg2)
 
@@ -2494,7 +2504,9 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
 	_gunichar = (*uint32)(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
@@ -2548,7 +2560,9 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	_itemsRead = int32(_arg3)
 	_itemsWritten = int32(_arg4)
 	_guint16 = (*uint16)(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _itemsRead, _itemsWritten, _guint16, _goerr
 }
@@ -2582,7 +2596,9 @@ func UTF8Validate(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	if _arg3 != nil {
+		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	}
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2610,7 +2626,9 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	var _end string // out
 	var _ok bool    // out
 
-	_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	if _arg3 != nil {
+		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	}
 	if _cret != 0 {
 		_ok = true
 	}

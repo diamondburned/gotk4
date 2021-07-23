@@ -204,8 +204,10 @@ func (window *X11Window) SetUTF8Property(name string, value string) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if value != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gdk_x11_window_set_utf8_property(_arg0, _arg1, _arg2)
 }

@@ -196,7 +196,9 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	var _goerr error                    // out
 
 	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _networkAddress, _goerr
 }
@@ -222,7 +224,9 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	var _goerr error                    // out
 
 	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _networkAddress, _goerr
 }

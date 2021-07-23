@@ -398,8 +398,10 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(relativeTo)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if relativeTo != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(relativeTo)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.g_canonicalize_filename(_arg1, _arg2)
 
@@ -460,7 +462,9 @@ func FileGetContents(filename string) ([]byte, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 	_contents = make([]byte, _arg3)
 	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _contents, _goerr
 }
@@ -485,8 +489,10 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tmpl)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if tmpl != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tmpl)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.g_file_open_tmp(_arg1, &_arg2, &_cerr)
 
@@ -497,7 +503,9 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	_nameUsed = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_gint = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _nameUsed, _gint, _goerr
 }
@@ -520,7 +528,9 @@ func FileReadLink(filename string) (string, error) {
 
 	_ret = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _ret, _goerr
 }
@@ -546,7 +556,9 @@ func FileSetContents(filename string, contents []byte) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -627,7 +639,9 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

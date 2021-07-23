@@ -193,7 +193,9 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -241,7 +243,9 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }

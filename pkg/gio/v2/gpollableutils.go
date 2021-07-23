@@ -122,7 +122,9 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -165,7 +167,9 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 	var _goerr error // out
 
 	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _gssize, _goerr
 }
@@ -215,7 +219,9 @@ func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer [
 	var _goerr error       // out
 
 	_bytesWritten = uint(_arg5)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _bytesWritten, _goerr
 }

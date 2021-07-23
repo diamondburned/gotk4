@@ -113,7 +113,9 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _goerr error          // out
 
 	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pageSetup, _goerr
 }
@@ -145,8 +147,10 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
 
@@ -154,7 +158,9 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _goerr error          // out
 
 	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _pageSetup, _goerr
 }
@@ -378,7 +384,9 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -393,14 +401,18 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -506,7 +518,9 @@ func (setup *PageSetup) ToFile(fileName string) error {
 
 	var _goerr error // out
 
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
 	return _goerr
 }
@@ -538,8 +552,10 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
+	if groupName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
 
 	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)
 }

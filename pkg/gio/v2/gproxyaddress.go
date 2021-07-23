@@ -77,10 +77,14 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHo
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.guint16(destPort)
-	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(username)))
-	defer C.free(unsafe.Pointer(_arg6))
-	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
-	defer C.free(unsafe.Pointer(_arg7))
+	if username != "" {
+		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(username)))
+		defer C.free(unsafe.Pointer(_arg6))
+	}
+	if password != "" {
+		_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
+		defer C.free(unsafe.Pointer(_arg7))
+	}
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 

@@ -45,8 +45,7 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 	];
 };
 
-# Expose pkgs for external use.
-in { pkgs = unstable; } // (unstable.mkShell {
+in unstable.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
@@ -84,4 +83,7 @@ in { pkgs = unstable; } // (unstable.mkShell {
 	# See https://github.com/NixOS/nix/issues/395.
 	TMP    = "/tmp";
 	TMPDIR = "/tmp";
-})
+} // {
+	# Expose pkgs for external use.
+	pkgs = unstable;
+}

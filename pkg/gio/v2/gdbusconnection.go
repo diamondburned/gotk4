@@ -313,6 +313,7 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 	*arg5 = (C.gpointer)(unsafe.Pointer(outUserData))
 	if dBusInterfaceVTable != nil {
 		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
+		runtime.SetFinalizer(dBusInterfaceVTable, nil)
 	}
 
 	return cret

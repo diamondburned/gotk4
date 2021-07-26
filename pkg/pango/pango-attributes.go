@@ -1413,6 +1413,7 @@ func (list *AttrList) Change(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_change(_arg0, _arg1)
 }
@@ -1520,6 +1521,7 @@ func (list *AttrList) Insert(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert(_arg0, _arg1)
 }
@@ -1533,6 +1535,7 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert_before(_arg0, _arg1)
 }

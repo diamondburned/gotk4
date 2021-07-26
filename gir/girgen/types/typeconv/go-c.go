@@ -539,16 +539,15 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			"<.Out.Set> = <.OutCast 1>(gextras.StructNative(unsafe.Pointer(<.InNamePtr 1>)))",
 		)
 
-		// This code might trigger a double-free.
-		// // If ShouldFree is true, then ideally, we'll be freeing the C copy of
-		// // the value once we're done. However, since we're passing by reference,
-		// // we can't simply do that. Instead, if we cannot free the data once
-		// // we're done, then we detach the finalizer so Go can't.
-		// if !value.ShouldFree() && types.RecordHasRef(v) == nil {
-		// 	// value.header.Import("runtime")
-		// 	value.Logln(logger.Error, "adding runtime")
-		// 	value.p.Linef("runtime.SetFinalizer(%s, nil)", value.InName)
-		// }
+		// If ShouldFree is true, then ideally, we'll be freeing the C copy of
+		// the value once we're done. However, since the C code is taking
+		// ownership, we can't do that, since the Finalizer won't know that and
+		// free the record. Instead, if we cannot free the data once we're done,
+		// then we detach the finalizer so Go can't.
+		if !value.ShouldFree() && types.RecordHasRef(v) == nil {
+			value.header.Import("runtime")
+			value.p.Linef("runtime.SetFinalizer(%s, nil)", value.InName)
+		}
 		return true
 
 	case *gir.Callback:

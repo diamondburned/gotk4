@@ -25,7 +25,7 @@ section of the Nix guides. The prerequisite is "any Linux distribution, macOS
 Afterwards, to use Nix for developing, simply run
 
 ```sh
-nix-shell ./shell.nix
+nix-shell
 ```
 
 This will drop the user into a new shell with Go, GLib libraries and more, and
@@ -36,7 +36,7 @@ shell.nix file.
 
 In case a new release of something is added to Nixpkgs Unstable, for example, a
 new Go version, then the `rev` and `sha256` of the `unstable` variable inside
-the [shell.nix][shell.nix] file should be updated appropriately. The structure
+the [.nix/overlay.nix][shell.nix] file should be updated appropriately. The structure
 of the [shell.nix][shell.nix] file is commented inside the file itself.
 
 Care should be taken when updating Nixpkgs, as the output could change
@@ -60,10 +60,11 @@ This project is divided into several parts:
   convenience.
 - pkg/ is the directory for all generated code.
 - gotk4.go contains the `//go:generate` boilerplate.
-- [shell.nix][shell.nix] contains the pinned Nixpkgs that ensures constant
-  development environments.
+- [shell.nix][shell.nix] and [`.nix`][dot-nix] contain the pinned Nixpkgs that
+  ensures constant development environments.
 
 [shell.nix]: https://github.com/diamondburned/gotk4/blob/4/shell.nix
+[dot-nix]: https://github.com/diamondburned/gotk4/tree/4/.nix/
 
 ## Project Guidelines
 

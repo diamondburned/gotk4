@@ -1,17 +1,17 @@
-{ unstable ? (import ./pkgs.nix {}) }:
+{ pkgs ? (import ./pkgs.nix {}) }:
 
 # minitime is a mini-output time wrapper.
-let minitime = unstable.writeShellScriptBin
+let minitime = pkgs.writeShellScriptBin
 	"minitime"
 	"command time --format $'%C -> %es\\n' \"$@\"";
 
 	buildInputs = buildInputs;
 	nativeBuildInputs = nativeBuildInputs;
 
-in unstable.mkShell {
+in pkgs.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
-	buildInputs = with unstable; [
+	buildInputs = with pkgs; [
 		gobjectIntrospection
 		glib
 		graphene
@@ -23,7 +23,7 @@ in unstable.mkShell {
 
 	# The native build inputs, which contains dependencies only needed during
 	# generation time and build time.
-	nativeBuildInputs = with unstable; [
+	nativeBuildInputs = with pkgs; [
 		pkgconfig
 		go
 		minitime

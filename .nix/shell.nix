@@ -1,7 +1,6 @@
-{
+{ 
 	unstable ? (import ./pkgs.nix {}),
-	buildInputs ? [],
-	nativeBuildInputs ? [],
+	extra ? {},
 }:
 
 # minitime is a mini-output time wrapper.
@@ -9,7 +8,10 @@ let minitime = unstable.writeShellScriptBin
 	"minitime"
 	"command time --format $'%C -> %es\\n' \"$@\"";
 
-in unstable.mkShell rec {
+	buildInputs = buildInputs;
+	nativeBuildInputs = nativeBuildInputs;
+
+in unstable.mkShell ({
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
@@ -20,7 +22,7 @@ in unstable.mkShell rec {
 		gnome3.gtk
 		gtk4
 		vulkan-headers
-	] ++ buildInputs;
+	];
 
 	# The native build inputs, which contains dependencies only needed during
 	# generation time and build time.
@@ -28,7 +30,7 @@ in unstable.mkShell rec {
 		pkgconfig
 		go
 		minitime
-	] ++ nativeBuildInputs;
+	];
 
 	CGO_ENABLED = "1";
 
@@ -36,4 +38,4 @@ in unstable.mkShell rec {
 	# See https://github.com/NixOS/nix/issues/395.
 	TMP    = "/tmp";
 	TMPDIR = "/tmp";
-}
+} // extra)

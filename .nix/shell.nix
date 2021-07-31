@@ -1,7 +1,4 @@
-{ 
-	unstable ? (import ./pkgs.nix {}),
-	extra ? {},
-}:
+{ unstable ? (import ./pkgs.nix {}) }:
 
 # minitime is a mini-output time wrapper.
 let minitime = unstable.writeShellScriptBin
@@ -11,7 +8,7 @@ let minitime = unstable.writeShellScriptBin
 	buildInputs = buildInputs;
 	nativeBuildInputs = nativeBuildInputs;
 
-in unstable.mkShell ({
+in unstable.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
@@ -38,4 +35,4 @@ in unstable.mkShell ({
 	# See https://github.com/NixOS/nix/issues/395.
 	TMP    = "/tmp";
 	TMPDIR = "/tmp";
-} // extra)
+}

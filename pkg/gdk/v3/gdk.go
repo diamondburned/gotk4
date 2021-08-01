@@ -40,7 +40,7 @@ func GLErrorQuark() glib.Quark {
 type Status int
 
 const (
-	Ok         Status = 0
+	OK         Status = 0
 	Error      Status = -1
 	ErrorParam Status = -2
 	ErrorFile  Status = -3
@@ -54,8 +54,8 @@ func marshalStatus(p uintptr) (interface{}, error) {
 // String returns the name in string for Status.
 func (s Status) String() string {
 	switch s {
-	case Ok:
-		return "Ok"
+	case OK:
+		return "OK"
 	case Error:
 		return "Error"
 	case ErrorParam:

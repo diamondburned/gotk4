@@ -268,6 +268,7 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 
 	_length = uint(_arg1)
 	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z C.char
@@ -337,6 +338,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 
 	_length = uint(_arg2)
 	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z C.char

@@ -176,6 +176,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -209,6 +210,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -501,6 +503,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	var _nonRelocatable []string // out
 	var _relocatable []string    // out
 
+	defer C.free(unsafe.Pointer(_arg2))
 	{
 		var i int
 		var z *C.gchar
@@ -515,6 +518,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
+	defer C.free(unsafe.Pointer(_arg3))
 	{
 		var i int
 		var z *C.gchar

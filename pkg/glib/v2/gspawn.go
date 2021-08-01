@@ -836,6 +836,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var _goerr error           // out
 
 	if _arg2 != nil {
+		defer C.free(unsafe.Pointer(_arg2))
 		{
 			var i int
 			var z C.gchar
@@ -851,6 +852,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		}
 	}
 	if _arg3 != nil {
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			var i int
 			var z C.gchar
@@ -947,6 +949,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var _goerr error           // out
 
 	if _arg7 != nil {
+		defer C.free(unsafe.Pointer(_arg7))
 		{
 			var i int
 			var z C.gchar
@@ -962,6 +965,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		}
 	}
 	if _arg8 != nil {
+		defer C.free(unsafe.Pointer(_arg8))
 		{
 			var i int
 			var z C.gchar

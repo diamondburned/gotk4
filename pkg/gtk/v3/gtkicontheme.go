@@ -1097,6 +1097,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 
 	var _gints []int // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z C.gint

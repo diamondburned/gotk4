@@ -339,6 +339,7 @@ func (format *PixbufFormat) Extensions() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -389,6 +390,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

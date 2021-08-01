@@ -350,6 +350,7 @@ func (self *IconTheme) IconNames() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.char
@@ -386,6 +387,7 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 
 	var _gints []int // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z C.int
@@ -417,6 +419,7 @@ func (self *IconTheme) ResourcePath() []string {
 	var _utf8s []string // out
 
 	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z *C.char
@@ -450,6 +453,7 @@ func (self *IconTheme) SearchPath() []string {
 	var _filenames []string // out
 
 	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z *C.char

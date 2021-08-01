@@ -252,6 +252,7 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _utf8s []string // out
 
 	_length = uint(_arg1)
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -353,6 +354,7 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _goerr error    // out
 
 	_length = uint(_arg2)
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

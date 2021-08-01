@@ -306,6 +306,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -351,6 +352,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -589,6 +591,7 @@ func (application *Application) ListActionDescriptions() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

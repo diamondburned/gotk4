@@ -637,6 +637,7 @@ func (actionGroup *ActionGroup) ListActions() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

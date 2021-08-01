@@ -198,6 +198,11 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.header.ApplyFrom(inner.Header())
 
+		if value.ShouldFree() {
+			// Just a regular array pointer.
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
+		}
+
 		value.p.Descend()
 
 		// Scan for the length.

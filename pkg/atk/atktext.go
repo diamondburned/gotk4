@@ -663,6 +663,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 
 	var _textRanges []*TextRange // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.AtkTextRange

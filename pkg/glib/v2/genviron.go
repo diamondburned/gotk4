@@ -75,6 +75,7 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 
 	var _filenames []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -118,6 +119,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 
 	var _filenames []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -153,6 +155,7 @@ func GetEnviron() []string {
 
 	var _filenames []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -208,6 +211,7 @@ func Listenv() []string {
 
 	var _filenames []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

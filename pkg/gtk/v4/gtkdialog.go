@@ -42,8 +42,8 @@ const (
 	ResponseAccept ResponseType = -3
 	// ResponseDeleteEvent: returned if the dialog is deleted
 	ResponseDeleteEvent ResponseType = -4
-	// ResponseOk: returned by OK buttons in GTK dialogs
-	ResponseOk ResponseType = -5
+	// ResponseOK: returned by OK buttons in GTK dialogs
+	ResponseOK ResponseType = -5
 	// ResponseCancel: returned by Cancel buttons in GTK dialogs
 	ResponseCancel ResponseType = -6
 	// ResponseClose: returned by Close buttons in GTK dialogs
@@ -73,8 +73,8 @@ func (r ResponseType) String() string {
 		return "Accept"
 	case ResponseDeleteEvent:
 		return "DeleteEvent"
-	case ResponseOk:
-		return "Ok"
+	case ResponseOK:
+		return "OK"
 	case ResponseCancel:
 		return "Cancel"
 	case ResponseClose:

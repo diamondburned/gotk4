@@ -702,6 +702,7 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -1352,6 +1353,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -1502,6 +1504,7 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 
 	var _utf8s []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

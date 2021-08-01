@@ -1462,8 +1462,8 @@ const (
 	// PollableReturnFailed: generic error condition for when an operation
 	// fails.
 	PollableReturnFailed PollableReturn = 0
-	// PollableReturnOk: operation was successfully finished.
-	PollableReturnOk PollableReturn = 1
+	// PollableReturnOK: operation was successfully finished.
+	PollableReturnOK PollableReturn = 1
 	// PollableReturnWouldBlock: operation would block.
 	PollableReturnWouldBlock PollableReturn = -27
 )
@@ -1477,8 +1477,8 @@ func (p PollableReturn) String() string {
 	switch p {
 	case PollableReturnFailed:
 		return "Failed"
-	case PollableReturnOk:
-		return "Ok"
+	case PollableReturnOK:
+		return "OK"
 	case PollableReturnWouldBlock:
 		return "WouldBlock"
 	default:

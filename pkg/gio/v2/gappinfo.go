@@ -1283,6 +1283,7 @@ func (context *AppLaunchContext) Environment() []string {
 
 	var _filenames []string // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.char

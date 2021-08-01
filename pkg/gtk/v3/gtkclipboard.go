@@ -125,6 +125,7 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 	var uris []string        // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 		var i int
 		var z *C.gchar
@@ -448,6 +449,7 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 	var _utf8s []string // out
 
 	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z *C.gchar

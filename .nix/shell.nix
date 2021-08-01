@@ -5,9 +5,6 @@ let minitime = pkgs.writeShellScriptBin
 	"minitime"
 	"command time --format $'%C -> %es\\n' \"$@\"";
 
-	buildInputs = buildInputs;
-	nativeBuildInputs = nativeBuildInputs;
-
 in pkgs.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.

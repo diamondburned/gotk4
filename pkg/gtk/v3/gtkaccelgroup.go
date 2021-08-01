@@ -276,6 +276,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 
 	_acceleratorKey = uint(_arg2)
 	if _arg3 != nil {
+		defer C.free(unsafe.Pointer(_arg3))
 		{
 			var i int
 			var z C.guint

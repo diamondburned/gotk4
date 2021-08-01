@@ -162,6 +162,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	var _utf8s []string // out
 	var _goerr error    // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -225,6 +226,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	var _utf8s []string // out
 	var _goerr error    // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

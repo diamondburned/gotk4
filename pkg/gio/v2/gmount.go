@@ -604,6 +604,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	var _utf8s []string // out
 	var _goerr error    // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
@@ -656,6 +657,7 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	var _utf8s []string // out
 	var _goerr error    // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar

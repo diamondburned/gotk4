@@ -426,10 +426,10 @@ func (fsd *FontSelectionDialog) FontSelection() Widgetter {
 	return _widget
 }
 
-// OkButton gets the “OK” button.
+// OKButton gets the “OK” button.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialog) OkButton() Widgetter {
+func (fsd *FontSelectionDialog) OKButton() Widgetter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 

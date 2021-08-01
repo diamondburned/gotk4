@@ -38,16 +38,16 @@ type ButtonsType int
 const (
 	// ButtonsNone: no buttons at all
 	ButtonsNone ButtonsType = iota
-	// ButtonsOk: OK button
-	ButtonsOk
+	// ButtonsOK: OK button
+	ButtonsOK
 	// ButtonsClose: close button
 	ButtonsClose
 	// ButtonsCancel: cancel button
 	ButtonsCancel
 	// ButtonsYesNo yes and No buttons
 	ButtonsYesNo
-	// ButtonsOkCancel: OK and Cancel buttons
-	ButtonsOkCancel
+	// ButtonsOKCancel: OK and Cancel buttons
+	ButtonsOKCancel
 )
 
 func marshalButtonsType(p uintptr) (interface{}, error) {
@@ -59,16 +59,16 @@ func (b ButtonsType) String() string {
 	switch b {
 	case ButtonsNone:
 		return "None"
-	case ButtonsOk:
-		return "Ok"
+	case ButtonsOK:
+		return "OK"
 	case ButtonsClose:
 		return "Close"
 	case ButtonsCancel:
 		return "Cancel"
 	case ButtonsYesNo:
 		return "YesNo"
-	case ButtonsOkCancel:
-		return "OkCancel"
+	case ButtonsOKCancel:
+		return "OKCancel"
 	default:
 		return fmt.Sprintf("ButtonsType(%d)", b)
 	}

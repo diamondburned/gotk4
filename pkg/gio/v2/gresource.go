@@ -46,6 +46,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	var _utf8s []string // out
 	var _goerr error    // out
 
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.char

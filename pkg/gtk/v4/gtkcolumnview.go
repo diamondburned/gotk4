@@ -133,7 +133,7 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 
 	if model != nil {
 		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
+		C.g_object_ref(C.gpointer(model.Native()))
 	}
 
 	_cret = C.gtk_column_view_new(_arg1)

@@ -62,7 +62,7 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
+		C.g_object_ref(C.gpointer(model.Native()))
 	}
 	if sorter != nil {
 		_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))

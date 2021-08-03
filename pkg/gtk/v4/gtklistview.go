@@ -169,7 +169,7 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 
 	if model != nil {
 		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
+		C.g_object_ref(C.gpointer(model.Native()))
 	}
 	if factory != nil {
 		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))

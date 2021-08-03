@@ -536,8 +536,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			if !value.IsPublic {
 				value.p.Linef("%s.Ref()", value.InNamePtrPubl(1))
 			} else {
-				value.vtmpl(
-					"C.g_object_ref((*C.GObject)(unsafe.Pointer(<.InNamePtrPubl 1>.Native())))")
+				value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
 			}
 		}
 

@@ -48,7 +48,7 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 
 	if expression != nil {
 		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(expression.Native())))
+		C.g_object_ref(C.gpointer(expression.Native()))
 	}
 
 	_cret = C.gtk_bool_filter_new(_arg1)

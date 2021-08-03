@@ -106,7 +106,7 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 	if expression != nil {
 		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(expression.Native())))
+		C.g_object_ref(C.gpointer(expression.Native()))
 	}
 
 	C.gtk_value_take_expression(_arg1, _arg2)
@@ -601,7 +601,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	_arg1 = C.GType(thisType)
 	if expression != nil {
 		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(expression.Native())))
+		C.g_object_ref(C.gpointer(expression.Native()))
 	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg3))

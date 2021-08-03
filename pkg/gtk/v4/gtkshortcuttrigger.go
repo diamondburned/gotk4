@@ -60,9 +60,9 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 	var _cret *C.GtkShortcutTrigger // in
 
 	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(first.Native()))
-	C.g_object_ref((*C.GObject)(unsafe.Pointer(first.Native())))
+	C.g_object_ref(C.gpointer(first.Native()))
 	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
-	C.g_object_ref((*C.GObject)(unsafe.Pointer(second.Native())))
+	C.g_object_ref(C.gpointer(second.Native()))
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 

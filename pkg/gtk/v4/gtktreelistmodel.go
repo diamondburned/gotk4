@@ -91,7 +91,7 @@ func NewTreeListModel(root gio.ListModeller, passthrough bool, autoexpand bool, 
 	var _cret *C.GtkTreeListModel // in
 
 	_arg1 = (*C.GListModel)(unsafe.Pointer(root.Native()))
-	C.g_object_ref((*C.GObject)(unsafe.Pointer(root.Native())))
+	C.g_object_ref(C.gpointer(root.Native()))
 	if passthrough {
 		_arg2 = C.TRUE
 	}

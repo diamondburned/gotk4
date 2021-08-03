@@ -111,7 +111,7 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
+		C.g_object_ref(C.gpointer(model.Native()))
 	}
 	if mapFunc != nil {
 		_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)

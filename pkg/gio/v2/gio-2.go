@@ -2959,6 +2959,7 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName string, errorM
 	var _arg2 *C.gchar                 // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	invocation.Ref()
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
@@ -2979,6 +2980,7 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 	var _arg3 *C.gchar                 // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	invocation.Ref()
 	_arg1 = C.guint32(domain)
 	_arg2 = C.gint(code)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
@@ -2997,6 +2999,7 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg1 *C.GError                // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	invocation.Ref()
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
@@ -3035,6 +3038,7 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg1 *C.GVariant              // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	invocation.Ref()
 	if parameters != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
@@ -3055,6 +3059,7 @@ func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *gl
 	var _arg2 *C.GUnixFDList           // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	invocation.Ref()
 	if parameters != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}

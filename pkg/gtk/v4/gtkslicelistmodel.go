@@ -60,6 +60,7 @@ func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceLis
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 	_arg2 = C.guint(offset)
 	_arg3 = C.guint(size)

@@ -57,6 +57,7 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 
 	_cret = C.gtk_no_selection_new(_arg1)

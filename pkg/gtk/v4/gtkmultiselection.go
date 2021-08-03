@@ -54,6 +54,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 
 	_cret = C.gtk_multi_selection_new(_arg1)

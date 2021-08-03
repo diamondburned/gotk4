@@ -57,6 +57,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 
 	if expression != nil {
 		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(expression.Native())))
 	}
 
 	_cret = C.gtk_string_sorter_new(_arg1)

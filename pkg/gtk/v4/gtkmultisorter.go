@@ -81,6 +81,7 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	sorter.Ref()
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }

@@ -61,9 +61,11 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 	if filter != nil {
 		_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+		filter.Ref()
 	}
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)

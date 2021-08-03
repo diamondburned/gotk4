@@ -62,9 +62,11 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 
 	if trigger != nil {
 		_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(trigger.Native())))
 	}
 	if action != nil {
 		_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(action.Native())))
 	}
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
@@ -141,6 +143,7 @@ func (self *Shortcut) SetAction(action ShortcutActioner) {
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
 	if action != nil {
 		_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(action.Native())))
 	}
 
 	C.gtk_shortcut_set_action(_arg0, _arg1)
@@ -167,6 +170,7 @@ func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
 	if trigger != nil {
 		_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(trigger.Native())))
 	}
 
 	C.gtk_shortcut_set_trigger(_arg0, _arg1)

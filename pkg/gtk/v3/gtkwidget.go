@@ -6128,6 +6128,7 @@ func (widget *Widget) SetWindow(window gdk.Windower) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	C.g_object_ref((*C.GObject)(unsafe.Pointer(window.Native())))
 
 	C.gtk_widget_set_window(_arg0, _arg1)
 }

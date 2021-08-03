@@ -143,6 +143,7 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 			out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
 			for i := range providers {
 				out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
+				providers[i].Ref()
 			}
 		}
 	}

@@ -92,9 +92,11 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 	if expression != nil {
 		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(expression.Native())))
 	}
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)

@@ -1071,6 +1071,7 @@ func (widget *Widget) AddController(controller EventControllerer) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	C.g_object_ref((*C.GObject)(unsafe.Pointer(controller.Native())))
 
 	C.gtk_widget_add_controller(_arg0, _arg1)
 }
@@ -3852,6 +3853,7 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if layoutManager != nil {
 		_arg1 = (*C.GtkLayoutManager)(unsafe.Pointer(layoutManager.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(layoutManager.Native())))
 	}
 
 	C.gtk_widget_set_layout_manager(_arg0, _arg1)

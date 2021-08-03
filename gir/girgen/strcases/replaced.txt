@@ -12,6 +12,8 @@ Gvalue -> GValue
 Gvariant -> GVariant
 Hadj -> HAdj
 Vadj -> VAdj
+Hscroll -> HScroll
+Vscroll -> VScroll
 Halign -> HAlign
 Valign -> VAlign
 Xalign -> XAlign

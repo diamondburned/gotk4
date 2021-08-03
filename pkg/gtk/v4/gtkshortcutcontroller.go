@@ -136,6 +136,7 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	shortcut.Ref()
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 }

@@ -108,9 +108,11 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 
 	if model != nil {
 		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 	if factory != nil {
 		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		factory.Ref()
 	}
 
 	_cret = C.gtk_grid_view_new(_arg1, _arg2)

@@ -62,9 +62,11 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 
 	if model != nil {
 		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		C.g_object_ref((*C.GObject)(unsafe.Pointer(model.Native())))
 	}
 	if sorter != nil {
 		_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+		sorter.Ref()
 	}
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)

@@ -287,8 +287,8 @@ func (scrolledWindow *ScrolledWindow) HasFrame() bool {
 	return _ok
 }
 
-// Hscrollbar returns the horizontal scrollbar of scrolled_window.
-func (scrolledWindow *ScrolledWindow) Hscrollbar() Widgetter {
+// HScrollbar returns the horizontal scrollbar of scrolled_window.
+func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 
@@ -501,8 +501,8 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	return _adjustment
 }
 
-// Vscrollbar returns the vertical scrollbar of scrolled_window.
-func (scrolledWindow *ScrolledWindow) Vscrollbar() Widgetter {
+// VScrollbar returns the vertical scrollbar of scrolled_window.
+func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 

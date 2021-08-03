@@ -60,6 +60,7 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 
 	if sorter != nil {
 		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+		sorter.Ref()
 	}
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)

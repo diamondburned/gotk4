@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -856,7 +856,6 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	var _regex *Regex // out
 
 	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_regex, func(v *Regex) {
 		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1058,7 +1057,6 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	if _cret != nil {
 		_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_regex_ref(_cret)
 		runtime.SetFinalizer(_regex, func(v *Regex) {
 			C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1267,7 +1265,6 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		C.g_match_info_ref(_arg3)
 		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1311,7 +1308,6 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		C.g_match_info_ref(_arg3)
 		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
 			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})

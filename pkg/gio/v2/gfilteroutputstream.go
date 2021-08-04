@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -41,7 +40,7 @@ type FilterOutputStream struct {
 
 // FilterOutputStreamer describes FilterOutputStream's abstract methods.
 type FilterOutputStreamer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() OutputStreamer
@@ -80,7 +79,7 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 
 	var _outputStream OutputStreamer // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
 
 	return _outputStream
 }

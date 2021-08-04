@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -89,7 +89,7 @@ type Actionable struct {
 
 // Actionabler describes Actionable's abstract methods.
 type Actionabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ActionName gets the action name for actionable.
 	ActionName() string
@@ -164,6 +164,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

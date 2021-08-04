@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -44,7 +44,6 @@ func CairoCreate(window Windower) *cairo.Context {
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
@@ -174,7 +173,6 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
@@ -265,7 +263,6 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})

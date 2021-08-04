@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -55,7 +54,7 @@ type TableCell struct {
 
 // TableCeller describes TableCell's abstract methods.
 type TableCeller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.

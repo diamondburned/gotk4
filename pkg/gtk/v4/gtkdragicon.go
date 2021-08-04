@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -86,11 +85,6 @@ func marshalDragIconner(p uintptr) (interface{}, error) {
 	return wrapDragIcon(obj), nil
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *DragIcon) Native() uintptr {
-	return self.Object.Native()
-}
-
 // Child gets the widget currently used as drag icon.
 func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out
@@ -103,7 +97,7 @@ func (self *DragIcon) Child() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -135,14 +129,14 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	var _arg1 *C.GValue    // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
 
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -161,7 +155,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

@@ -6,8 +6,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -76,7 +75,7 @@ type SocketControlMessage struct {
 
 // SocketControlMessager describes SocketControlMessage's abstract methods.
 type SocketControlMessager interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Level returns the "level" (i.e.
 	Level() int
@@ -194,7 +193,7 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketCont
 
 	var _socketControlMessage SocketControlMessager // out
 
-	_socketControlMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketControlMessager)
+	_socketControlMessage = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketControlMessager)
 
 	return _socketControlMessage
 }

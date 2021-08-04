@@ -6,8 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -119,7 +119,7 @@ type Gesture struct {
 
 // Gesturer describes Gesture's abstract methods.
 type Gesturer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BoundingBox: if there are touch sequences being currently handled by
 	// gesture, returns TRUE and fills in rect with the bounding box containing
@@ -256,7 +256,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 	}
 
 	return _device
@@ -277,7 +277,7 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
 		_list = append(_list, dst)
 	})
 
@@ -303,7 +303,7 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
-		_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+		_event = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
 	}
 
 	return _event

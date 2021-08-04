@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -58,7 +58,7 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	var _arg3 *C.GtkTreePath  // in
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 
@@ -67,7 +67,7 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	var _ok bool                // out
 
 	if _arg2 != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -109,7 +109,7 @@ type TreeDragDest struct {
 
 // TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from value.
@@ -146,7 +146,7 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *externglib
 
 	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(dest)))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
 
@@ -172,7 +172,7 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 
 	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(destPath)))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
 
@@ -212,7 +212,7 @@ type TreeDragSource struct {
 
 // TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.

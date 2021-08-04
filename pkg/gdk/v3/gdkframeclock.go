@@ -9,7 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -132,7 +132,7 @@ type FrameClock struct {
 
 // FrameClocker describes FrameClock's abstract methods.
 type FrameClocker interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BeginUpdating starts updates for an animation.
 	BeginUpdating()
@@ -211,6 +211,7 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_frame_timings_ref(_cret)
 		runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
 			C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -317,6 +318,7 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_frame_timings_ref(_cret)
 		runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
 			C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
 		})

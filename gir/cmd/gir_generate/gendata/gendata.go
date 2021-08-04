@@ -34,6 +34,7 @@ func (pkg *Package) HasNamespace(n *gir.Namespace) bool {
 // pkg/.
 var PkgExceptions = []string{
 	"core",
+	"cairo",
 	"go.mod",
 	"go.sum",
 	"LICENSE",

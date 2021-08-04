@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -108,7 +108,6 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
 	_settingsSchemaKey = (*SettingsSchemaKey)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_settings_schema_key_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
 		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -256,7 +255,6 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -354,7 +352,6 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -465,7 +462,6 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _goerr error                                // out
 
 	_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -566,7 +562,6 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 	if _cret != nil {
 		_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_settings_schema_ref(_cret)
 		runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
 			C.g_settings_schema_unref((*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -596,6 +591,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 
 	if _cret != nil {
 		_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_settings_schema_source_ref(_cret)
 		runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 			C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 		})

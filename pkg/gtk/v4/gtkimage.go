@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -329,7 +328,7 @@ func (image *Image) GIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon
@@ -389,7 +388,7 @@ func (image *Image) Paintable() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 	}
 
 	return _paintable

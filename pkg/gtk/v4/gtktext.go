@@ -7,9 +7,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -165,11 +165,6 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	return _text
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *Text) Native() uintptr {
-	return self.Object.Native()
-}
-
 // ActivatesDefault retrieves the value set by gtk_text_set_activates_default().
 func (self *Text) ActivatesDefault() bool {
 	var _arg0 *C.GtkText // out
@@ -202,6 +197,7 @@ func (self *Text) Attributes() *pango.AttrList {
 
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -257,7 +253,7 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+		_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 	}
 
 	return _menuModel

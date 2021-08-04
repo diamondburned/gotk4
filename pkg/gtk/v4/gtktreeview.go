@@ -9,8 +9,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -143,7 +143,7 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 	var model TreeModeller // out
 	var iter *TreeIter     // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -177,7 +177,7 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 	var key string         // out
 	var iter *TreeIter     // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	column = int(arg1)
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
@@ -373,11 +373,6 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	_treeView = wrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (treeView *TreeView) Native() uintptr {
-	return treeView.Object.Native()
 }
 
 // AppendColumn appends column to the list of columns. If tree_view has
@@ -598,7 +593,7 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 	}
 
 	return _paintable
@@ -1090,7 +1085,7 @@ func (treeView *TreeView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel
@@ -1237,7 +1232,7 @@ func (treeView *TreeView) SearchEntry() Editabler {
 	var _editable Editabler // out
 
 	if _cret != nil {
-		_editable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
+		_editable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
 	}
 
 	return _editable
@@ -1330,7 +1325,7 @@ func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 	var _ok bool            // out
 
 	if _arg4 != nil {
-		_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
+		_model = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))

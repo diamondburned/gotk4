@@ -3,11 +3,11 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4-x11 gtk4
@@ -116,7 +116,7 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -324,9 +324,10 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
-	defer C.free(unsafe.Pointer(_arg4))
-	_ctext = make([]byte, _arg5)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
+	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
+	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	_gint = int(_cret)
 
 	return _encoding, _format, _ctext, _gint
@@ -364,9 +365,10 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
-	defer C.free(unsafe.Pointer(_arg4))
-	_ctext = make([]byte, _arg5)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
+	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
+	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

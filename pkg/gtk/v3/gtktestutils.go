@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -38,7 +37,7 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -63,7 +62,7 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 
 	var _ret Widgetter // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -86,7 +85,7 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -114,7 +113,7 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret

@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -48,7 +48,6 @@ func NewToplevelLayout() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -68,7 +67,6 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
 		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})

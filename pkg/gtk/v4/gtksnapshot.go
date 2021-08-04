@@ -6,13 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -102,7 +102,6 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
@@ -710,7 +709,7 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 
 	var _renderNode gsk.RenderNoder // out
 
-	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
+	_renderNode = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
 
 	return _renderNode
 }
@@ -735,7 +734,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

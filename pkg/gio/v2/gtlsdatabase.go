@@ -11,7 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -182,7 +182,7 @@ type TLSDatabase struct {
 
 // TLSDatabaser describes TLSDatabase's abstract methods.
 type TLSDatabaser interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CreateCertificateHandle: create a handle string for the certificate.
 	CreateCertificateHandle(certificate TLSCertificater) string
@@ -305,7 +305,7 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 	var _goerr error                    // out
 
 	if _cret != nil {
-		_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
+		_tlsCertificate = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -366,7 +366,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -407,7 +407,7 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -463,7 +463,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSCertificater)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -511,7 +511,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -581,7 +581,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

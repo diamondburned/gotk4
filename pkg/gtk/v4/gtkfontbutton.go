@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -102,11 +102,6 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	_fontButton = wrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (fontButton *FontButton) Native() uintptr {
-	return fontButton.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

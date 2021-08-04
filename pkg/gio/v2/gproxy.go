@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -72,7 +71,7 @@ type Proxy struct {
 
 // Proxier describes Proxy's abstract methods.
 type Proxier interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ConnectProxier: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
@@ -128,7 +127,7 @@ func (proxy *Proxy) ConnectProxier(ctx context.Context, connection IOStreamer, p
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -176,7 +175,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -221,7 +220,7 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	var _proxy Proxier // out
 
 	if _cret != nil {
-		_proxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
+		_proxy = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
 	}
 
 	return _proxy

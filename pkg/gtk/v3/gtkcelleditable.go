@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -44,7 +43,7 @@ type CellEditable struct {
 
 // CellEditabler describes CellEditable's abstract methods.
 type CellEditabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()

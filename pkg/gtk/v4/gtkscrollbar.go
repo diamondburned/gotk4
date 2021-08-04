@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -115,11 +115,6 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	_scrollbar = wrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *Scrollbar) Native() uintptr {
-	return self.Object.Native()
 }
 
 // Adjustment returns the scrollbar's adjustment.

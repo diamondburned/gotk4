@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -45,7 +44,7 @@ type Misc struct {
 
 // Miscer describes Misc's abstract methods.
 type Miscer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Alignment gets the X and Y alignment of the widget within its allocation.
 	Alignment() (xalign float32, yalign float32)

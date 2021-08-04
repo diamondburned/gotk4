@@ -271,9 +271,9 @@ func (prop *ConversionValue) MustRealloc() bool {
 	goGiving := prop.ParameterIndex > -1 && !prop.ParameterIsOutput()
 	// If we're not converting Go to C, then we're probably in a callback, so
 	// the ownership is flipped.
-	if prop.Direction != ConvertGoToC {
-		goGiving = !goGiving
-	}
+	// if prop.Direction != ConvertGoToC {
+	// 	goGiving = !goGiving
+	// }
 
 	if goGiving {
 		return prop.ownershipIsTransferring()

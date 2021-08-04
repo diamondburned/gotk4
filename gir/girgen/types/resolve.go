@@ -90,26 +90,17 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		typ.CType = ctyp
 	}
 
-	implImport := ResolvedImport{
-		Path:    "github.com/gotk3/gotk3/glib",
+	imp := ResolvedImport{
+		Path:    "github.com/diamondburned/gotk4/pkg/core/glib",
 		Package: "externglib",
-	}
-	publImport := implImport
-
-	switch strings.ReplaceAll(goType, "*", "") {
-	case "InitiallyUnowned", "Object":
-		publImport = ResolvedImport{
-			Path:    InternalImportPath + "/gextras",
-			Package: "gextras",
-		}
 	}
 
 	goType = "externglib." + strings.TrimPrefix(goType, "*")
 
 	return &Resolved{
 		Builtin:    &goType,
-		ImplImport: implImport,
-		PublImport: publImport,
+		ImplImport: imp,
+		PublImport: imp,
 		GType:      typ.Name,
 		CType:      typ.CType,
 		Ptr:        countPtrs(typ, nil),
@@ -155,7 +146,7 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 		// gotk3/cairo structs already contain a pointer.
 		ignoreOpaque = true
 		resolvedImport = ResolvedImport{
-			Path:    "github.com/gotk3/gotk3/cairo",
+			Path:    "github.com/diamondburned/gotk4/pkg/cairo",
 			Package: "cairo",
 		}
 	default:
@@ -212,7 +203,7 @@ func TypeFromResult(gen FileGenerator, v interface{}) *Resolved {
 // the given name. Pointers are not compared.
 func (typ *Resolved) IsExternGLib(glibType string) bool {
 	// Use ImplImport for comparison, so we're not comparing gextras types.
-	if typ.Builtin == nil || typ.ImplImport.Path != "github.com/gotk3/gotk3/glib" {
+	if typ.Builtin == nil || typ.ImplImport.Path != "github.com/diamondburned/gotk4/pkg/core/glib" {
 		return false
 	}
 
@@ -538,7 +529,7 @@ func (typ *Resolved) PublicType(needsNamespace bool) string {
 			return typ.ptr(true) + "Objector"
 		}
 
-		return typ.ptr(true) + "gextras.Objector"
+		return typ.ptr(true) + "externglib.Objector"
 	}
 
 	if typ.Builtin != nil {

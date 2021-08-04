@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -32,7 +31,7 @@ type EventController struct {
 
 // EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// PropagationPhase gets the propagation phase at which controller handles
 	// events.
@@ -88,7 +87,7 @@ func (controller *EventController) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -75,7 +74,7 @@ type TLSClientConnection struct {
 
 // TLSClientConnectioner describes TLSClientConnection's abstract methods.
 type TLSClientConnectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
@@ -164,7 +163,7 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _socketConnectable SocketConnectabler // out
 
 	if _cret != nil {
-		_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
+		_socketConnectable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
 	}
 
 	return _socketConnectable
@@ -280,7 +279,7 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _tlsClientConnection TLSClientConnectioner // out
 	var _goerr error                               // out
 
-	_tlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
+	_tlsClientConnection = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

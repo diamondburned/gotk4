@@ -9,8 +9,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -84,7 +84,7 @@ type Icon struct {
 
 // Iconner describes Icon's abstract methods.
 type Iconner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Equal checks if two icons are equal.
 	Equal(icon2 Iconner) bool
@@ -151,7 +151,6 @@ func (icon *Icon) Serialize() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -206,7 +205,7 @@ func IconDeserialize(value *glib.Variant) Iconner {
 	var _icon Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+		_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 	}
 
 	return _icon
@@ -247,7 +246,7 @@ func NewIconForString(str string) (Iconner, error) {
 	var _icon Iconner // out
 	var _goerr error  // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

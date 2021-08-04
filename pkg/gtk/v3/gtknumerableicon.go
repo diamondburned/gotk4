@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -68,7 +67,7 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon
@@ -274,7 +273,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }
@@ -296,7 +295,7 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 
 	var _icon gio.Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }

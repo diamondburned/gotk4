@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -65,7 +65,7 @@ type MenuAttributeIter struct {
 
 // MenuAttributeIterer describes MenuAttributeIter's abstract methods.
 type MenuAttributeIterer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Name gets the name of the attribute at the current iterator position, as
 	// a string.
@@ -146,7 +146,6 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	}
 	if _arg2 != nil {
 		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		C.g_variant_ref(_arg2)
 		runtime.SetFinalizer(_value, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -172,7 +171,6 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -233,7 +231,7 @@ type MenuLinkIter struct {
 
 // MenuLinkIterer describes MenuLinkIter's abstract methods.
 type MenuLinkIterer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Name gets the name of the link at the current iterator position.
 	Name() string
@@ -309,7 +307,7 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 		_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	}
 	if _arg2 != nil {
-		_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(MenuModeller)
+		_value = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(MenuModeller)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -331,7 +329,7 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 
 	var _menuModel MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+	_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
 
 	return _menuModel
 }
@@ -535,7 +533,7 @@ type MenuModel struct {
 
 // MenuModeller describes MenuModel's abstract methods.
 type MenuModeller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ItemAttributeValue queries the item at position item_index in model for
 	// the attribute specified by attribute.
@@ -604,7 +602,6 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -634,7 +631,7 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _menuModel MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+		_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
 	}
 
 	return _menuModel
@@ -722,7 +719,7 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 
 	var _menuAttributeIter MenuAttributeIterer // out
 
-	_menuAttributeIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuAttributeIterer)
+	_menuAttributeIter = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuAttributeIterer)
 
 	return _menuAttributeIter
 }
@@ -743,7 +740,7 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 
 	var _menuLinkIter MenuLinkIterer // out
 
-	_menuLinkIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuLinkIterer)
+	_menuLinkIter = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuLinkIterer)
 
 	return _menuLinkIter
 }

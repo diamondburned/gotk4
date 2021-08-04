@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -90,7 +90,7 @@ func (self *Shortcut) Action() ShortcutActioner {
 	var _shortcutAction ShortcutActioner // out
 
 	if _cret != nil {
-		_shortcutAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutActioner)
+		_shortcutAction = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutActioner)
 	}
 
 	return _shortcutAction
@@ -109,6 +109,7 @@ func (self *Shortcut) Arguments() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -129,7 +130,7 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	if _cret != nil {
-		_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+		_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 	}
 
 	return _shortcutTrigger

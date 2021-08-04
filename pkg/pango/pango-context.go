@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -238,7 +238,7 @@ func (context *Context) FontMap() FontMapper {
 
 	var _fontMap FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
+	_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
 
 	return _fontMap
 }
@@ -351,7 +351,6 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -421,7 +420,7 @@ func (context *Context) ListFamilies() []FontFamilier {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
+			_families[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
 		}
 	}
 
@@ -443,7 +442,7 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	var _font Fonter // out
 
 	if _cret != nil {
-		_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+		_font = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 	}
 
 	return _font
@@ -466,7 +465,7 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 	var _fontset Fontsetter // out
 
 	if _cret != nil {
-		_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+		_fontset = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
 	}
 
 	return _fontset

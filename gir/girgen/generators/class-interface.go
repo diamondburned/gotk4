@@ -35,7 +35,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .Abstract }}
 	// {{ .InterfaceName }} describes {{ .StructName }}'s abstract methods.
 	type {{ .InterfaceName }} interface {
-		gextras.Objector
+		externglib.Objector
 
 		{{ range .Methods -}}
 		{{- Synopsis . 1 TrailingNewLine -}}
@@ -64,13 +64,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ range .Constructors }}
 	{{ GoDoc . 0 }}
 	func {{ .Name }}{{ .Tail }} {{ .Block }}
-	{{ end }}
-
-	{{ if .Tree.HasAmbiguousNative }}
-	// Native solves the ambiguous selector of this class or interface.
-	func ({{ .Recv }} *{{ $.StructName }}) Native() uintptr {
-		return {{ .Recv }}.Object.Native()
-	}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -137,11 +130,6 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
 		data.HasMarshaler = true
 		writer.Header().AddMarshaler(igen.GLibGetType, igen.InterfaceName)
-	}
-
-	if data.Abstract() {
-		// Import gextras for Objector.
-		writer.Header().ImportCore("gextras")
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)

@@ -7,8 +7,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -48,7 +48,7 @@ type CellAccessibleParent struct {
 
 // CellAccessibleParenter describes CellAccessibleParent's abstract methods.
 type CellAccessibleParenter interface {
-	gextras.Objector
+	externglib.Objector
 
 	Activate(cell *CellAccessible)
 	Edit(cell *CellAccessible)

@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -114,7 +113,7 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	var _builderScope BuilderScoper // out
 
 	if _cret != nil {
-		_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
+		_builderScope = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
 	}
 
 	return _builderScope

@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -34,7 +33,7 @@ type StyleProvider struct {
 
 // StyleProviderer describes StyleProvider's abstract methods.
 type StyleProviderer interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateStyleProvider()
 }

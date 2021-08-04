@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -1301,9 +1301,10 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 	var _buffer []byte // out
 	var _goerr error   // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_buffer = make([]byte, _arg2)
-	copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
+	_buffer = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_buffer, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

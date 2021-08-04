@@ -9,12 +9,12 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -632,7 +632,7 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 
 	var window Windower // out
 
-	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
+	window = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window)
@@ -653,7 +653,7 @@ func GetDefaultRootWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -670,7 +670,7 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _ret Windower // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _ret
@@ -691,6 +691,7 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 
 	if _cret != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 		})
@@ -731,7 +732,7 @@ type Window struct {
 
 // Windower describes Window's abstract methods.
 type Windower interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Beep emits a short beep associated to window in the appropriate display,
 	// if supported.
@@ -1501,7 +1502,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1554,7 +1555,6 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, 
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -1588,7 +1588,6 @@ func (window *Window) CreateSimilarSurface(content cairo.Content, width int, hei
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -1828,6 +1827,7 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 		}
+		C.cairo_pattern_reference(_cret)
 		runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 			C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 		})
@@ -1855,7 +1855,7 @@ func (window *Window) Children() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		_list = append(_list, dst)
 	})
 
@@ -1885,7 +1885,7 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		_list = append(_list, dst)
 	})
 
@@ -1910,7 +1910,6 @@ func (window *Window) ClipRegion() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
@@ -1956,7 +1955,7 @@ func (window *Window) Cursor() Cursorrer {
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
-		_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
+		_cursor = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
 	}
 
 	return _cursor
@@ -2001,7 +2000,7 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
-		_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
+		_cursor = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
 	}
 
 	return _cursor
@@ -2052,7 +2051,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _x, _y, _mask, _ret
@@ -2083,7 +2082,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _x, _y, _mask, _ret
@@ -2119,7 +2118,7 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _dragProtocol DragProtocol // out
 
 	if _arg1 != nil {
-		_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
+		_target = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
 	}
 	_dragProtocol = DragProtocol(_cret)
 
@@ -2141,7 +2140,7 @@ func (window *Window) EffectiveParent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2162,7 +2161,7 @@ func (window *Window) EffectiveToplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2233,7 +2232,7 @@ func (window *Window) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }
@@ -2327,7 +2326,7 @@ func (window *Window) Group() Windower {
 
 	var _ret Windower // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2415,7 +2414,7 @@ func (window *Window) Parent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2465,7 +2464,7 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _x, _y, _mask, _ret
@@ -2656,7 +2655,7 @@ func (window *Window) Toplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2697,7 +2696,6 @@ func (window *Window) UpdateArea() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
@@ -2739,7 +2737,6 @@ func (window *Window) VisibleRegion() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
@@ -3235,7 +3232,7 @@ func (window *Window) PeekChildren() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		_list = append(_list, dst)
 	})
 
@@ -4353,7 +4350,7 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -4634,7 +4631,7 @@ func (w *WindowAttr) WindowType() WindowType {
 // Cursor: cursor for the window (see gdk_window_set_cursor())
 func (w *WindowAttr) Cursor() Cursorrer {
 	var v Cursorrer // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorrer)
+	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorrer)
 	return v
 }
 

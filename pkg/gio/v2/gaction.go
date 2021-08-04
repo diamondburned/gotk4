@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -148,7 +148,7 @@ type Action struct {
 
 // Actioner describes Action's abstract methods.
 type Actioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Activate activates the action.
 	Activate(parameter *glib.Variant)
@@ -305,7 +305,6 @@ func (action *Action) State() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -343,7 +342,6 @@ func (action *Action) StateHint() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -446,7 +444,6 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_targetValue = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-	C.g_variant_ref(_arg3)
 	runtime.SetFinalizer(_targetValue, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

@@ -11,7 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -166,7 +166,7 @@ type Drive struct {
 
 // Driver describes Drive's abstract methods.
 type Driver interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CanEject checks if a drive can be ejected.
 	CanEject() bool
@@ -477,7 +477,7 @@ func (drive *Drive) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -567,7 +567,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -590,7 +590,7 @@ func (drive *Drive) Volumes() []Volumer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
 		_list = append(_list, dst)
 	})
 

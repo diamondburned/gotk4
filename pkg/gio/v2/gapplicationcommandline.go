@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -158,7 +158,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -286,6 +286,7 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _variantDict *glib.VariantDict // out
 
 	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -313,7 +314,6 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -342,7 +342,7 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+		_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	}
 
 	return _inputStream

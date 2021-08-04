@@ -11,9 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -54,7 +53,7 @@ func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeT
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 	_arg4 = C.int(ioPriority)
 	if callback != nil {
 		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -183,7 +182,7 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 
 	var _outputStream gio.OutputStreamer // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
+	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
 
 	return _outputStream
 }

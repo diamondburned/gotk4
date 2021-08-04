@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -689,7 +689,6 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -776,7 +775,6 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName string, 
 	var _goerr error           // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -885,7 +883,6 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
 	}
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -955,7 +952,6 @@ func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, bu
 		_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg10)))
 	}
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1382,7 +1378,7 @@ func (connection *DBusConnection) Stream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }
@@ -2057,6 +2053,7 @@ func (message *DBusMessage) Body() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -2153,6 +2150,7 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -2841,6 +2839,7 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 
 	if _cret != nil {
 		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_method_info_ref(_cret)
 		runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 			C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -2895,6 +2894,7 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -2925,6 +2925,7 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 
 	if _cret != nil {
 		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_property_info_ref(_cret)
 		runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 			C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -3761,7 +3762,6 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -3785,7 +3785,7 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _menuModel MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+		_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
 	}
 
 	return _menuModel
@@ -4883,7 +4883,7 @@ func (subprocess *Subprocess) StderrPipe() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 	}
 
 	return _inputStream
@@ -4905,7 +4905,7 @@ func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 	var _outputStream OutputStreamer // out
 
 	if _cret != nil {
-		_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+		_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
 	}
 
 	return _outputStream
@@ -4927,7 +4927,7 @@ func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 	}
 
 	return _inputStream

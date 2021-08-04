@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -86,7 +85,7 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -104,7 +103,7 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -294,7 +293,7 @@ type ShortcutTrigger struct {
 
 // ShortcutTriggerer describes ShortcutTrigger's abstract methods.
 type ShortcutTriggerer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Compare types of trigger1 and trigger2 are #gconstpointer only to allow
 	// use of this function as a Func.

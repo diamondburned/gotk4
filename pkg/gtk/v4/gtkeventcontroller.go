@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -40,7 +39,7 @@ type EventController struct {
 
 // EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CurrentEvent returns the event that is currently being handled by the
 	// controller, and NULL at other times.
@@ -102,7 +101,7 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
-		_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+		_event = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
 	}
 
 	return _event
@@ -121,7 +120,7 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 	}
 
 	return _device
@@ -221,7 +220,7 @@ func (controller *EventController) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

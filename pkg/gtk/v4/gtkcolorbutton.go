@@ -6,8 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -108,11 +108,6 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (button *ColorButton) Native() uintptr {
-	return button.Object.Native()
 }
 
 // Modal gets whether the dialog is modal.

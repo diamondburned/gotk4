@@ -3,12 +3,13 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -372,9 +373,10 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _colors []gdk.Color // out
 	var _ok bool            // out
 
-	defer C.free(unsafe.Pointer(_arg2))
-	_colors = make([]gdk.Color, _arg3)
-	copy(_colors, unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3))
+	_colors = unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_colors, func(v *[]gdk.Color) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

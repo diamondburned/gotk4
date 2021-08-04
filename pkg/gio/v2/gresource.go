@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -118,7 +118,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -170,7 +170,6 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _goerr error        // out
 
 	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_resource, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -218,6 +217,7 @@ func (staticResource *StaticResource) Resource() *Resource {
 	var _resource *Resource // out
 
 	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_resource, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})

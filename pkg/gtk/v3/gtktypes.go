@@ -6,13 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -51,7 +51,6 @@ func NewIconSet() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -71,7 +70,6 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -128,7 +126,6 @@ func (iconSet *IconSet) Copy() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -151,9 +148,10 @@ func (iconSet *IconSet) Sizes() []int {
 
 	var _sizes []int // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_sizes = make([]int, _arg2)
-	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_sizes, func(v *[]int) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	return _sizes
 }
@@ -275,7 +273,6 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -1063,7 +1060,6 @@ func NewWidgetPath() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1148,7 +1144,6 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1375,6 +1370,7 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})

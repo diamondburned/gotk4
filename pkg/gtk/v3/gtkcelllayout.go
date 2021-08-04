@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -43,9 +43,9 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 	var treeModel TreeModeller  // out
 	var iter *TreeIter          // out
 
-	cellLayout = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
-	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
-	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
+	cellLayout = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
+	cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
+	treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -197,7 +197,7 @@ type CellLayout struct {
 
 // CellLayouter describes CellLayout's abstract methods.
 type CellLayouter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddAttribute adds an attribute mapping to the list in cell_layout.
 	AddAttribute(cell CellRendererer, attribute string, column int)
@@ -292,7 +292,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 	var _cellArea CellAreaer // out
 
 	if _cret != nil {
-		_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+		_cellArea = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
 	}
 
 	return _cellArea
@@ -313,7 +313,7 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
 		_list = append(_list, dst)
 	})
 

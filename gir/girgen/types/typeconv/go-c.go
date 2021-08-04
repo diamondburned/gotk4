@@ -492,10 +492,9 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case "GObject.Value":
-		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		value.header.NeedsGLibObject()
 		value.p.LineTmpl(value,
-			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(&<.InNamePtr 1>.GValue))")
+			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>.Native()))")
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":

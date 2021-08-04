@@ -6,9 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -47,7 +46,7 @@ type AppChooser struct {
 
 // AppChooserer describes AppChooser's abstract methods.
 type AppChooserer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AppInfo returns the currently selected application.
 	AppInfo() gio.AppInfor
@@ -95,7 +94,7 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _appInfo gio.AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
+		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
 	}
 
 	return _appInfo

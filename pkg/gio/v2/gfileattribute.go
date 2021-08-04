@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -80,7 +80,6 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -130,7 +129,6 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
 		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
 	})

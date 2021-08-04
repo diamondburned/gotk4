@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -112,7 +112,7 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 
 	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
 	})
 	if _cret != 0 {
 		_ok = true
@@ -138,6 +138,7 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -194,7 +195,7 @@ func (props *StyleProperties) SetPropertyStylePropertieser(property string, stat
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -257,7 +258,6 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_gradient_ref(_cret)
 	runtime.SetFinalizer(_gradient, func(v *Gradient) {
 		C.gtk_gradient_unref((*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -287,7 +287,6 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_gradient_ref(_cret)
 	runtime.SetFinalizer(_gradient, func(v *Gradient) {
 		C.gtk_gradient_unref((*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -334,7 +333,6 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
 		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
-	C.cairo_pattern_reference(_arg2)
 	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
 		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
@@ -361,7 +359,6 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
-	C.cairo_pattern_reference(_cret)
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
@@ -425,7 +422,6 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -445,7 +441,6 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -469,7 +464,6 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -490,7 +484,6 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -512,7 +505,6 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -535,7 +527,6 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})

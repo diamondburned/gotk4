@@ -394,10 +394,10 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 
 	if value.IsPublic {
 		// Require the abstract cast if we have an abstract type.
-		value.header.ImportCore("gextras")
+		value.header.NeedsExternGLib()
 		// CastObject returns an interface.
 		value.p.LineTmpl(m,
-			"<.Value.Out.Set> = (< .Value.OutPtr 0 ->gextras.CastObject(externglib.<.Func>("+
+			"<.Value.Out.Set> = (< .Value.OutPtr 0 ->externglib.CastObject(externglib.<.Func>("+
 				"unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))).(<.Value.Out.Type>)")
 		return true
 	}

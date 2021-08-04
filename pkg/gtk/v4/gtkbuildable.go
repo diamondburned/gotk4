@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -66,7 +66,7 @@ type Buildable struct {
 
 // Buildabler describes Buildable's abstract methods.
 type Buildabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BuildableID gets the ID of the buildable object.
 	BuildableID() string

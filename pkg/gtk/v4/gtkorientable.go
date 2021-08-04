@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -32,7 +31,7 @@ type Orientable struct {
 
 // Orientabler describes Orientable's abstract methods.
 type Orientabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Orientation retrieves the orientation of the orientable.
 	Orientation() Orientation

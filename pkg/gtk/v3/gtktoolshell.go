@@ -6,9 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -77,7 +76,7 @@ type ToolShell struct {
 
 // ToolSheller describes ToolShell's abstract methods.
 type ToolSheller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	EllipsizeMode() pango.EllipsizeMode

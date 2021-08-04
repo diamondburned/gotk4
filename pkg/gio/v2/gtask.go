@@ -12,8 +12,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -334,6 +334,7 @@ func (task *Task) Context() *glib.MainContext {
 	var _mainContext *glib.MainContext // out
 
 	_mainContext = (*glib.MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *glib.MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -651,7 +652,7 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	if result != nil {
-		_arg1 = (*C.GValue)(unsafe.Pointer(&result.GValue))
+		_arg1 = (*C.GValue)(unsafe.Pointer(result.Native()))
 	}
 
 	C.g_task_return_value(_arg0, _arg1)

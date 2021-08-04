@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -33,7 +33,7 @@ type Popup struct {
 
 // Popupper describes Popup's abstract methods.
 type Popupper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
@@ -96,7 +96,7 @@ func (popup *Popup) Parent() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

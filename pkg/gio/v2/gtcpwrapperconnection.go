@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -87,7 +86,7 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }

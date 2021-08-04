@@ -7,9 +7,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -75,7 +75,6 @@ func NewTextAttributes() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -200,7 +199,6 @@ func (src *TextAttributes) Copy() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})

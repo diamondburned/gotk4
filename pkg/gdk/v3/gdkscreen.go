@@ -5,9 +5,9 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -74,7 +74,7 @@ func (screen *Screen) ActiveWindow() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _window
@@ -474,7 +474,7 @@ func (screen *Screen) RootWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -492,7 +492,7 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
 
@@ -542,7 +542,7 @@ func (screen *Screen) ToplevelWindows() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		_list = append(_list, dst)
 	})
 
@@ -620,7 +620,7 @@ func (screen *Screen) WindowStack() []Windower {
 		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 			src := (*C.GdkWindow)(v)
 			var dst Windower // out
-			dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
+			dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
 			_list = append(_list, dst)
 		})
 	}

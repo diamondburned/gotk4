@@ -5,11 +5,10 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -281,7 +280,7 @@ func (self *Picture) File() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+		_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 	}
 
 	return _file
@@ -318,7 +317,7 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 	}
 
 	return _paintable

@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -84,7 +84,7 @@ type Buildable struct {
 
 // Buildabler describes Buildable's abstract methods.
 type Buildabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddChild adds a child to buildable.
 	AddChild(builder *Builder, child *externglib.Object, typ string)
@@ -314,7 +314,7 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
 }

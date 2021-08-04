@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -78,7 +77,7 @@ type GLContext struct {
 
 // GLContexter describes GLContext's abstract methods.
 type GLContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DebugEnabled retrieves whether the context is doing extra validations and
 	// runtime checking.
@@ -225,7 +224,7 @@ func (context *GLContext) SharedContext() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 	}
 
 	return _glContext
@@ -243,7 +242,7 @@ func (context *GLContext) Surface() Surfacer {
 	var _surface Surfacer // out
 
 	if _cret != nil {
-		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 	}
 
 	return _surface
@@ -449,7 +448,7 @@ func GLContextGetCurrent() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 	}
 
 	return _glContext

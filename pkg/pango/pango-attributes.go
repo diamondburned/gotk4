@@ -12,8 +12,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pango
@@ -953,7 +953,6 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 
 	if _arg2 != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		C.pango_attr_list_ref(_arg2)
 		runtime.SetFinalizer(_attrList, func(v *AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1003,6 +1002,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _markupParseContext *glib.MarkupParseContext // out
 
 	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_markup_parse_context_ref(_cret)
 	runtime.SetFinalizer(_markupParseContext, func(v *glib.MarkupParseContext) {
 		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1050,7 +1050,6 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 
 	if _arg4 != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-		C.pango_attr_list_ref(_arg4)
 		runtime.SetFinalizer(_attrList, func(v *AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1390,7 +1389,6 @@ func NewAttrList() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1433,7 +1431,6 @@ func (list *AttrList) Copy() *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1483,7 +1480,6 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})

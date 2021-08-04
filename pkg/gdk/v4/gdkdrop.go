@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -48,7 +48,7 @@ type Drop struct {
 
 // Dropper describes Drop's abstract methods.
 type Dropper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Finish ends the drag operation after a drop.
 	Finish(action DragAction)
@@ -148,7 +148,7 @@ func (self *Drop) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -184,7 +184,7 @@ func (self *Drop) Drag() Dragger {
 	var _drag Dragger // out
 
 	if _cret != nil {
-		_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dragger)
+		_drag = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dragger)
 	}
 
 	return _drag
@@ -203,6 +203,7 @@ func (self *Drop) Formats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -221,7 +222,7 @@ func (self *Drop) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -291,7 +292,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
 	if _cret != nil {
-		_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+		_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

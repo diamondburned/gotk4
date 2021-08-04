@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -96,7 +95,7 @@ type MemoryMonitor struct {
 
 // MemoryMonitorrer describes MemoryMonitor's abstract methods.
 type MemoryMonitorrer interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateMemoryMonitor()
 }
@@ -128,7 +127,7 @@ func MemoryMonitorDupDefault() MemoryMonitorrer {
 
 	var _memoryMonitor MemoryMonitorrer // out
 
-	_memoryMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MemoryMonitorrer)
+	_memoryMonitor = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MemoryMonitorrer)
 
 	return _memoryMonitor
 }

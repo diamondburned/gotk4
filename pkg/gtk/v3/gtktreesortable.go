@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -49,7 +49,7 @@ func _gotk4_gtk3_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	var a *TreeIter        // out
 	var b *TreeIter        // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	a = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(a, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -119,7 +119,7 @@ type TreeSortable struct {
 
 // TreeSortabler describes TreeSortable's abstract methods.
 type TreeSortabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// SortColumnID fills in sort_column_id and order with the current sort
 	// column and the order.

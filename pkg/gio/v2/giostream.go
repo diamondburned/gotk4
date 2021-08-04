@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -114,7 +113,7 @@ type IOStream struct {
 
 // IOStreamer describes IOStream's abstract methods.
 type IOStreamer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
@@ -281,7 +280,7 @@ func (stream *IOStream) InputStream() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }
@@ -298,7 +297,7 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 
 	var _outputStream OutputStreamer // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
 
 	return _outputStream
 }

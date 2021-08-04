@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -105,7 +105,7 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
 
@@ -179,7 +179,7 @@ func (provider *ContentProvider) Value(value *externglib.Value) error {
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
 
@@ -205,7 +205,6 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -230,7 +229,6 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})

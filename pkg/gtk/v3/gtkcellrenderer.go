@@ -7,10 +7,10 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -208,7 +208,7 @@ type CellRenderer struct {
 
 // CellRendererer describes CellRenderer's abstract methods.
 type CellRendererer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AlignedArea gets the aligned area used by cell inside cell_area.
 	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle

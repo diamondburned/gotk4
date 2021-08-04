@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -66,7 +66,7 @@ type Scrollable struct {
 
 // Scrollabler describes Scrollable's abstract methods.
 type Scrollabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.

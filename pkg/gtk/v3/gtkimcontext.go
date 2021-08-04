@@ -7,9 +7,9 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -152,7 +152,7 @@ type IMContext struct {
 
 // IMContexter describes IMContext's abstract methods.
 type IMContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
@@ -304,7 +304,6 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	C.pango_attr_list_ref(_arg2)
 	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 	})

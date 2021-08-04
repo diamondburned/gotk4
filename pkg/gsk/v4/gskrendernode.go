@@ -6,13 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -75,7 +75,7 @@ type RenderNode struct {
 
 // RenderNoder describes RenderNode's abstract methods.
 type RenderNoder interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Draw the contents of node to the given cairo context.
 	Draw(cr *cairo.Context)

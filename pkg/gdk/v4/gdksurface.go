@@ -6,10 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -39,7 +38,7 @@ type Surface struct {
 
 // Surfacer describes Surface's abstract methods.
 type Surfacer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Beep emits a short beep associated to surface.
 	Beep()
@@ -175,7 +174,7 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 
 	var _cairoContext CairoContexter // out
 
-	_cairoContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
+	_cairoContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
 
 	return _cairoContext
 }
@@ -198,7 +197,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -237,7 +236,6 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, h
 	var _ret *cairo.Surface // out
 
 	_ret = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -260,7 +258,7 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _vulkanContext VulkanContexter // out
 	var _goerr error                   // out
 
-	_vulkanContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
+	_vulkanContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -392,7 +390,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }

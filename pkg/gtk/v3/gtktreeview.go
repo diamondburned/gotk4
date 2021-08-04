@@ -8,11 +8,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -173,7 +173,7 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 	var model TreeModeller // out
 	var iter *TreeIter     // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -207,7 +207,7 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 	var key string         // out
 	var iter *TreeIter     // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	column = int(arg1)
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
@@ -239,7 +239,7 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidg
 	var searchDialog Widgetter // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
-	searchDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Widgetter)
+	searchDialog = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Widgetter)
 
 	fn := v.(TreeViewSearchPositionFunc)
 	fn(treeView, searchDialog)
@@ -625,7 +625,6 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *cairo.Surface {
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -781,7 +780,7 @@ func (treeView *TreeView) BinWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 	}
 
 	return _window
@@ -1163,7 +1162,7 @@ func (treeView *TreeView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel

@@ -9,9 +9,9 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -248,7 +248,6 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.gtk_recent_info_ref(src)
 		runtime.SetFinalizer(dst, func(v *RecentInfo) {
 			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -300,7 +299,6 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 
 	if _cret != nil {
 		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_recent_info_ref(_cret)
 		runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -509,7 +507,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _goerr error          // out
 
 	if _cret != nil {
-		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
+		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -650,7 +648,7 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon

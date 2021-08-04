@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -34,7 +33,7 @@ type ATContext struct {
 
 // ATContexter describes ATContext's abstract methods.
 type ATContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Accessible retrieves the GtkAccessible using this context.
 	Accessible() Accessibler
@@ -93,7 +92,7 @@ func (self *ATContext) Accessible() Accessibler {
 
 	var _accessible Accessibler // out
 
-	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
+	_accessible = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
 
 	return _accessible
 }

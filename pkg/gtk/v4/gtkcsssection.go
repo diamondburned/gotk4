@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -55,7 +55,6 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -93,7 +92,7 @@ func (section *CSSSection) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -117,6 +116,7 @@ func (section *CSSSection) Parent() *CSSSection {
 
 	if _cret != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_css_section_ref(_cret)
 		runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 			C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
 		})

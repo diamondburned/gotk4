@@ -4,11 +4,10 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -119,10 +118,8 @@ func QueryDepths() []int {
 
 	var _depths []int // out
 
-	_depths = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_depths, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	_depths = make([]int, _arg2)
+	copy(_depths, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _depths
 }

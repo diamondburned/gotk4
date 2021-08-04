@@ -7,8 +7,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -205,11 +205,6 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	return _comboBox
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (comboBox *ComboBox) Native() uintptr {
-	return comboBox.Object.Native()
-}
-
 // Active returns the index of the currently active item.
 //
 // If the model is a non-flat treemodel, and the active item is not an immediate
@@ -311,7 +306,7 @@ func (comboBox *ComboBox) Child() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -381,7 +376,7 @@ func (comboBox *ComboBox) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel

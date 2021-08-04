@@ -6,9 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -38,7 +37,7 @@ type DrawContext struct {
 
 // DrawContexter describes DrawContext's abstract methods.
 type DrawContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BeginFrame indicates that you are beginning the process of redrawing
 	// region on the context's surface.
@@ -161,6 +160,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
+		C.cairo_region_reference(_cret)
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
 			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 		})
@@ -181,7 +181,7 @@ func (context *DrawContext) Surface() Surfacer {
 	var _surface Surfacer // out
 
 	if _cret != nil {
-		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 	}
 
 	return _surface

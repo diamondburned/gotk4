@@ -7,8 +7,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -189,7 +188,7 @@ type Paintable struct {
 
 // Paintabler describes Paintable's abstract methods.
 type Paintabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
@@ -284,7 +283,7 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 
 	var _ret Paintabler // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
+	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _ret
 }
@@ -466,7 +465,7 @@ func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 
 	var _paintable Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
+	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _paintable
 }

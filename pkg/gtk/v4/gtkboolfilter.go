@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -73,7 +72,7 @@ func (self *BoolFilter) Expression() Expressioner {
 	var _expression Expressioner // out
 
 	if _cret != nil {
-		_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+		_expression = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 	}
 
 	return _expression

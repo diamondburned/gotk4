@@ -9,7 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -84,8 +84,8 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 	var iter *TreeIter             // out
 
 	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
-	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
-	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
+	cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
+	treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -163,11 +163,6 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (treeColumn *TreeViewColumn) Native() uintptr {
-	return treeColumn.Object.Native()
 }
 
 // AddAttribute adds an attribute mapping to the list in tree_column. The column
@@ -359,7 +354,7 @@ func (treeColumn *TreeViewColumn) Button() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -602,7 +597,7 @@ func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -639,7 +634,7 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget

@@ -7,7 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -67,7 +67,7 @@ type TLSCertificate struct {
 
 // TLSCertificater describes TLSCertificate's abstract methods.
 type TLSCertificater interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Issuer gets the Certificate representing cert's issuer, if known
 	Issuer() TLSCertificater
@@ -258,7 +258,7 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 	}
 
 	return _tlsCertificate
@@ -348,7 +348,7 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

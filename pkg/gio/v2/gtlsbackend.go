@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -53,7 +52,7 @@ type TLSBackend struct {
 
 // TLSBackender describes TLSBackend's abstract methods.
 type TLSBackender interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CertificateType gets the #GType of backend's Certificate implementation.
 	CertificateType() externglib.Type
@@ -143,7 +142,7 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	_tlsDatabase = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
 
 	return _tlsDatabase
 }
@@ -281,7 +280,7 @@ func TLSBackendGetDefault() TLSBackender {
 
 	var _tlsBackend TLSBackender // out
 
-	_tlsBackend = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
+	_tlsBackend = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
 
 	return _tlsBackend
 }

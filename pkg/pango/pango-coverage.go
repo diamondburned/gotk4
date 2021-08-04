@@ -4,9 +4,10 @@ package pango
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -176,9 +177,10 @@ func (coverage *Coverage) ToBytes() []byte {
 
 	var _bytes []byte // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_bytes = make([]byte, _arg2)
-	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
+	_bytes = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_bytes, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	return _bytes
 }

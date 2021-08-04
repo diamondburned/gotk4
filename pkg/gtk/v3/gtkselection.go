@@ -9,7 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -199,7 +199,6 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})

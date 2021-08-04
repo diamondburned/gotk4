@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -259,7 +259,7 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 	{
 		out := unsafe.Slice((*C.GValue)(_arg5), len(values))
 		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 
@@ -453,7 +453,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = C.int(column)
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
 }
@@ -481,7 +481,7 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externgl
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 

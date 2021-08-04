@@ -6,9 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -220,7 +219,7 @@ func (area *GLArea) Context() gdk.GLContexter {
 
 	var _glContext gdk.GLContexter // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
+	_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
 
 	return _glContext
 }

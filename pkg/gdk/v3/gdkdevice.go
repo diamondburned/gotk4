@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -165,7 +165,7 @@ type Device struct {
 
 // Devicer describes Device's abstract methods.
 type Devicer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AssociatedDevice returns the associated device to device, if device is of
 	// type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
@@ -272,7 +272,7 @@ func (device *Device) AssociatedDevice() Devicer {
 	var _ret Devicer // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _ret
@@ -406,7 +406,7 @@ func (device *Device) LastEventWindow() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _window
@@ -561,7 +561,7 @@ func (device *Device) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -647,7 +647,7 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	_winX = int(_arg1)
 	_winY = int(_arg2)
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _winX, _winY, _window
@@ -678,7 +678,7 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _winX, _winY, _window
@@ -756,7 +756,7 @@ func (device *Device) ListSlaveDevices() []Devicer {
 		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 			src := (*C.GdkDevice)(v)
 			var dst Devicer // out
-			dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+			dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 			_list = append(_list, dst)
 		})
 	}
@@ -874,7 +874,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _ownerEvents bool    // out
 	var _ok bool             // out
 
-	_grabWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
+	_grabWindow = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
 	if _arg4 != 0 {
 		_ownerEvents = true
 	}

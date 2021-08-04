@@ -1,10 +1,9 @@
 // Package gextras contains supplemental types to gotk3.
 package gextras
 
-// #cgo pkg-config: glib-2.0 gobject-2.0
+// #cgo pkg-config: glib-2.0
 // #include <glib.h>
 // #include <gmodule.h> // HashTable
-// #include <glib-object.h>
 import "C"
 
 import (
@@ -14,33 +13,11 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// Nativer is an interface for an object that can return its native pointer.
-type Nativer interface {
-	Native() uintptr
-}
-
-// Objector is an interface that describes partially the glib.Object type.
-type Objector interface {
-	Nativer
-
-	Connect(string, interface{}) glib.SignalHandle
-	ConnectAfter(string, interface{}) glib.SignalHandle
-
-	HandlerBlock(glib.SignalHandle)
-	HandlerDisconnect(glib.SignalHandle)
-	HandlerUnblock(glib.SignalHandle)
-
-	GetProperty(string) (interface{}, error)
-	SetProperty(string, interface{}) error
-}
-
-var _ Objector = (*glib.Object)(nil)
-
 // MustSet panics if the given property cannot be set into the given object.
-func MustSet(obj Objector, k string, v interface{}) {
+func MustSet(obj glib.Objector, k string, v interface{}) {
 	if err := obj.SetProperty(k, v); err != nil {
 		log.Panicf("cannot set object property %q: %s", k, err)
 	}
@@ -48,8 +25,8 @@ func MustSet(obj Objector, k string, v interface{}) {
 
 // MustGet panics if the given property cannot be retrieved from the given
 // object.
-func MustGet(obj Objector, k string) interface{} {
-	v, err := obj.GetProperty(k)
+func MustGet(obj glib.Objector, k string) interface{} {
+	v, err := obj.Property(k)
 	if err != nil {
 		log.Panicf("cannot get object property %q: %s", k, err)
 	}
@@ -59,18 +36,18 @@ func MustGet(obj Objector, k string) interface{} {
 // GetInto gets the given property key from the object into the given pointer.
 // An error is returned if it cannot get the property or the type is wrong. This
 // method is mostly useful for avoiding type assertions.
-func GetInto(obj Objector, k string, ptr interface{}) error {
+func GetInto(obj glib.Objector, k string, ptr interface{}) error {
 	return getInto(obj, k, ptr, false)
 }
 
 // MustGetInto is similar to GetInfo, except it does not do safety checks and
 // will panic on an error. Code that uses constants should use this function
 // over GetInto.
-func MustGetInto(obj Objector, k string, ptr interface{}) {
+func MustGetInto(obj glib.Objector, k string, ptr interface{}) {
 	getInto(obj, k, ptr, true)
 }
 
-func getInto(obj Objector, k string, ptr interface{}, must bool) error {
+func getInto(obj glib.Objector, k string, ptr interface{}, must bool) error {
 	dst := reflect.ValueOf(ptr)
 	if !must {
 		typ := dst.Type()
@@ -86,7 +63,7 @@ func getInto(obj Objector, k string, ptr interface{}, must bool) error {
 		}
 	}
 
-	v, err := obj.GetProperty(k)
+	v, err := obj.Property(k)
 	if err != nil {
 		if !must {
 			return fmt.Errorf("cannot get object property %q: %s", k, err)
@@ -108,36 +85,6 @@ func getInto(obj Objector, k string, ptr interface{}, must bool) error {
 
 	elem.Set(val)
 	return nil
-}
-
-// InternObject gets the internal Object type. This is used for calling methods
-// not in the Objector.
-func InternObject(nativer Nativer) *glib.Object {
-	obj := glib.Object{
-		GObject: glib.ToGObject(unsafe.Pointer(nativer.Native())),
-	}
-
-	if typ := obj.TypeFromInstance(); typ != glib.TYPE_OBJECT {
-		log.Panicf("InternObject cast: expected type object, got %v", typ)
-	}
-
-	return &obj
-}
-
-// CastObject casts the given object pointer to the class name. The caller is
-// responsible for recasting the interface to the wanted type.
-func CastObject(obj *glib.Object) interface{} {
-	var gvalue C.GValue
-
-	C.g_value_init_from_instance(&gvalue, C.gpointer(unsafe.Pointer(obj.GObject)))
-	defer C.g_value_unset(&gvalue)
-
-	v, err := glib.ValueFromNative(unsafe.Pointer(&gvalue)).GoValue()
-	if err != nil {
-		return Objector(obj)
-	}
-
-	return v
 }
 
 type record struct {

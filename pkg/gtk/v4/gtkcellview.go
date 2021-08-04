@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -173,11 +173,6 @@ func NewCellViewWithTexture(texture gdk.Texturer) *CellView {
 	return _cellView
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (cellView *CellView) Native() uintptr {
-	return cellView.Object.Native()
-}
-
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
 // no row is currently displayed, NULL is returned.
 func (cellView *CellView) DisplayedRow() *TreePath {
@@ -250,7 +245,7 @@ func (cellView *CellView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel

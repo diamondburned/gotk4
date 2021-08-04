@@ -7,8 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -63,7 +62,7 @@ type SocketAddress struct {
 
 // SocketAddresser describes SocketAddress's abstract methods.
 type SocketAddresser interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Family gets the socket family type of address.
 	Family() SocketFamily

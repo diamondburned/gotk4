@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -59,7 +58,7 @@ type PrintOperationPreview struct {
 
 // PrintOperationPreviewer describes PrintOperationPreview's abstract methods.
 type PrintOperationPreviewer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// EndPreview ends a preview.
 	EndPreview()

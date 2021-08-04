@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -66,7 +66,7 @@ type ActionMap struct {
 
 // ActionMapper describes ActionMap's abstract methods.
 type ActionMapper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
@@ -177,7 +177,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	var _action Actioner // out
 
 	if _cret != nil {
-		_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+		_action = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 	}
 
 	return _action

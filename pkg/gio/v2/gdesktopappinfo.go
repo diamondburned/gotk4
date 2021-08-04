@@ -8,8 +8,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -87,7 +87,7 @@ type DesktopAppInfoLookup struct {
 
 // DesktopAppInfoLookupper describes DesktopAppInfoLookup's abstract methods.
 type DesktopAppInfoLookupper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
@@ -132,7 +132,7 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInf
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	}
 
 	return _appInfo

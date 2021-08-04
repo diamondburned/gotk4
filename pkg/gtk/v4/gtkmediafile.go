@@ -5,10 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -46,7 +45,7 @@ type MediaFile struct {
 
 // MediaFiler describes MediaFile's abstract methods.
 type MediaFiler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Clear resets the media file to be empty.
 	Clear()
@@ -194,7 +193,7 @@ func (self *MediaFile) File() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+		_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 	}
 
 	return _file
@@ -214,7 +213,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 	var _inputStream gio.InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	}
 
 	return _inputStream

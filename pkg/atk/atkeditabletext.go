@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -56,7 +55,7 @@ type EditableText struct {
 
 // EditableTexter describes EditableText's abstract methods.
 type EditableTexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.

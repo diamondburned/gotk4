@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -60,7 +59,7 @@ type HyperlinkImpl struct {
 
 // HyperlinkImpler describes HyperlinkImpl's abstract methods.
 type HyperlinkImpler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Hyperlink gets the hyperlink associated with this object.
 	Hyperlink() *Hyperlink

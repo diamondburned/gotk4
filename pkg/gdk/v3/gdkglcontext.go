@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -74,7 +73,7 @@ type GLContext struct {
 
 // GLContexter describes GLContext's abstract methods.
 type GLContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
@@ -216,7 +215,7 @@ func (context *GLContext) SharedContext() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 	}
 
 	return _glContext
@@ -273,7 +272,7 @@ func (context *GLContext) Window() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _window
@@ -436,7 +435,7 @@ func GLContextGetCurrent() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 	}
 
 	return _glContext

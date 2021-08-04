@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -127,11 +126,6 @@ func NewSearchEntry() *SearchEntry {
 	return _searchEntry
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (entry *SearchEntry) Native() uintptr {
-	return entry.Object.Native()
-}
-
 // KeyCaptureWidget gets the widget that entry is capturing key events from.
 func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 	var _arg0 *C.GtkSearchEntry // out
@@ -143,7 +137,7 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

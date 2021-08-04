@@ -9,7 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -102,8 +102,8 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 	var seat Seater     // out
 	var window Windower // out
 
-	seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
-	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
+	seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
+	window = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window)
@@ -116,7 +116,7 @@ type Seat struct {
 
 // Seater describes Seat's abstract methods.
 type Seater interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
@@ -190,7 +190,7 @@ func (seat *Seat) Keyboard() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _device
@@ -208,7 +208,7 @@ func (seat *Seat) Pointer() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _device
@@ -231,7 +231,7 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		_list = append(_list, dst)
 	})
 

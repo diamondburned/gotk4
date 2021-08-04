@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -42,9 +42,10 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 	runtime.SetFinalizer(iter, func(v *TextIter) {
 		C.gtk_text_iter_free((*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	defer C.free(unsafe.Pointer(arg3))
-	data = make([]byte, arg4)
-	copy(data, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
+	data = unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4)
+	runtime.SetFinalizer(&data, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if arg5 != 0 {
 		createTags = true
 	}

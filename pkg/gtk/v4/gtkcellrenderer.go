@@ -8,8 +8,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -205,7 +205,7 @@ type CellRenderer struct {
 
 // CellRendererer describes CellRenderer's abstract methods.
 type CellRendererer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Activate passes an activate event to the cell renderer for possible
 	// processing.
@@ -795,7 +795,7 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 	var _cellEditable CellEditabler // out
 
 	if _cret != nil {
-		_cellEditable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+		_cellEditable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
 	}
 
 	return _cellEditable

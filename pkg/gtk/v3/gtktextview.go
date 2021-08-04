@@ -8,11 +8,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -581,7 +581,6 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
 		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1042,7 +1041,7 @@ func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 	var _window gdk.Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 	}
 
 	return _window

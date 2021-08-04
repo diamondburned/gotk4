@@ -13,8 +13,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -212,7 +212,7 @@ type Resolver struct {
 
 // Resolverer describes Resolver's abstract methods.
 type Resolverer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// LookupByAddress: synchronously reverse-resolves address to determine its
 	// associated hostname.
@@ -632,7 +632,6 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 		src := (*C.GVariant)(v)
 		var dst *glib.Variant // out
 		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.g_variant_ref(src)
 		runtime.SetFinalizer(dst, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -700,7 +699,6 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 		src := (*C.GVariant)(v)
 		var dst *glib.Variant // out
 		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.g_variant_ref(src)
 		runtime.SetFinalizer(dst, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -872,7 +870,7 @@ func ResolverGetDefault() Resolverer {
 
 	var _resolver Resolverer // out
 
-	_resolver = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Resolverer)
+	_resolver = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Resolverer)
 
 	return _resolver
 }

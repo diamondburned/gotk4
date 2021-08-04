@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -256,6 +256,7 @@ func (layout *Layout) Attributes() *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -539,6 +540,7 @@ func (layout *Layout) Line(line int) *LayoutLine {
 
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_layout_line_ref(_cret)
 		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -581,6 +583,7 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_layout_line_ref(_cret)
 		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -620,9 +623,10 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	var _attrs []LogAttr // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = make([]LogAttr, _arg2)
-	copy(_attrs, unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2))
+	_attrs = unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_attrs, func(v *[]LogAttr) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	return _attrs
 }
@@ -1560,6 +1564,7 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1605,6 +1610,7 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1903,9 +1909,10 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 
 	var _ranges []int // out
 
-	defer C.free(unsafe.Pointer(_arg3))
-	_ranges = make([]int, _arg4)
-	copy(_ranges, unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4))
+	_ranges = unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4)
+	runtime.SetFinalizer(&_ranges, func(v *[]int) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	return _ranges
 }

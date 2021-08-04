@@ -6,8 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -77,11 +77,6 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRange(obj), nil
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (_range *Range) Native() uintptr {
-	return _range.Object.Native()
 }
 
 // Adjustment: get the adjustment which is the “model” object for GtkRange.

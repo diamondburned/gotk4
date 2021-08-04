@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -118,6 +118,7 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	if _cret != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gsk_transform_ref(_cret)
 		runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
 			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 		})

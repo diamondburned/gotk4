@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -119,11 +118,6 @@ func NewPasswordEntry() *PasswordEntry {
 	return _passwordEntry
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (entry *PasswordEntry) Native() uintptr {
-	return entry.Object.Native()
-}
-
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkPasswordEntry // out
@@ -135,7 +129,7 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }

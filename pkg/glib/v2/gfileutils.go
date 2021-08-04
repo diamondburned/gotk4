@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -459,9 +460,10 @@ func FileGetContents(filename string) ([]byte, error) {
 	var _contents []byte // out
 	var _goerr error     // out
 
-	defer C.free(unsafe.Pointer(_arg2))
-	_contents = make([]byte, _arg3)
-	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
+	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

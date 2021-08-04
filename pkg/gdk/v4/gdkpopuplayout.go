@@ -9,7 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -167,7 +167,6 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
 		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -187,7 +186,6 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
 		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})

@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -115,7 +114,7 @@ type SocketConnectable struct {
 
 // SocketConnectabler describes SocketConnectable's abstract methods.
 type SocketConnectabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() SocketAddressEnumeratorrer
@@ -152,7 +151,7 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
-	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
+	_socketAddressEnumerator = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
 
 	return _socketAddressEnumerator
 }
@@ -172,7 +171,7 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
-	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
+	_socketAddressEnumerator = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
 
 	return _socketAddressEnumerator
 }

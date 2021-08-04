@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -328,7 +328,6 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})

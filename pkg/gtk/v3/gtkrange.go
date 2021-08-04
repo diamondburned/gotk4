@@ -7,8 +7,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -54,7 +54,7 @@ type Range struct {
 
 // Ranger describes Range's abstract methods.
 type Ranger interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Adjustment: get the Adjustment which is the “model” object for Range.
 	Adjustment() *Adjustment
@@ -158,11 +158,6 @@ func marshalRanger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRange(obj), nil
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (_range *Range) Native() uintptr {
-	return _range.Object.Native()
 }
 
 // Adjustment: get the Adjustment which is the “model” object for Range. See

@@ -6,9 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -35,7 +34,7 @@ type CairoContext struct {
 
 // CairoContexter describes CairoContext's abstract methods.
 type CairoContexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CairoCreate retrieves a Cairo context to be used to draw on the
 	// GdkSurface of context.
@@ -78,7 +77,6 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 
 	if _cret != nil {
 		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-		C.cairo_reference(_cret)
 		runtime.SetFinalizer(_context, func(v *cairo.Context) {
 			C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 		})

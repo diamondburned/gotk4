@@ -92,7 +92,7 @@ func (h *Header) ImportAlias(path, alias string) {
 
 // needsExternGLib adds the external gotk3/glib import.
 func (h *Header) NeedsExternGLib() {
-	h.ImportAlias("github.com/gotk3/gotk3/glib", "externglib")
+	h.ImportAlias("github.com/diamondburned/gotk4/pkg/core/glib", "externglib")
 }
 
 func (h *Header) ImportPubl(resolved *types.Resolved) {

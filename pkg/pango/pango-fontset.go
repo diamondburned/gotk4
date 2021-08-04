@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -39,8 +39,8 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 	var fontset Fontsetter // out
 	var font Fonter        // out
 
-	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Fontsetter)
-	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Fonter)
+	fontset = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Fontsetter)
+	font = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Fonter)
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font)
@@ -83,7 +83,7 @@ type Fontset struct {
 
 // Fontsetter describes Fontset's abstract methods.
 type Fontsetter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
@@ -140,7 +140,7 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 
 	var _font Fonter // out
 
-	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	_font = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 
 	return _font
 }
@@ -157,7 +157,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
 	})

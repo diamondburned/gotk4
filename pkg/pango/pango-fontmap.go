@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -69,7 +69,7 @@ type FontMap struct {
 
 // FontMapper describes FontMap's abstract methods.
 type FontMapper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Changed forces a change in the context, which will cause any PangoContext
 	// using this fontmap to change.
@@ -155,7 +155,7 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 
 	var _fontFamily FontFamilier // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
+	_fontFamily = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
 
 	return _fontFamily
 }
@@ -204,7 +204,7 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
+			_families[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
 		}
 	}
 
@@ -227,7 +227,7 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 	var _font Fonter // out
 
 	if _cret != nil {
-		_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+		_font = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 	}
 
 	return _font
@@ -252,7 +252,7 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	var _fontset Fontsetter // out
 
 	if _cret != nil {
-		_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+		_fontset = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
 	}
 
 	return _fontset

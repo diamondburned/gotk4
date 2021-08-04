@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -182,11 +182,6 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *CheckButton) Native() uintptr {
-	return self.Object.Native()
 }
 
 // Active returns whether the check button is active.

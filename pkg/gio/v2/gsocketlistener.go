@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -321,7 +320,7 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _goerr error                      // out
 
 	if _arg5 != nil {
-		_effectiveAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
+		_effectiveAddress = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

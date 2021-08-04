@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -40,7 +39,7 @@ type TLSServerConnection struct {
 
 // TLSServerConnectioner describes TLSServerConnection's abstract methods.
 type TLSServerConnectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateTLSServerConnection()
 }
@@ -87,7 +86,7 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	var _tlsServerConnection TLSServerConnectioner // out
 	var _goerr error                               // out
 
-	_tlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSServerConnectioner)
+	_tlsServerConnection = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSServerConnectioner)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

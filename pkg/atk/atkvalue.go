@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -278,7 +278,7 @@ type Value struct {
 
 // Valueer describes Value's abstract methods.
 type Valueer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CurrentValue gets the value of this object.
 	CurrentValue() externglib.Value
@@ -463,7 +463,7 @@ func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	var _cret C.gboolean  // in
 
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
 

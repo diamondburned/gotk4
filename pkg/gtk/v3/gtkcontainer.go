@@ -7,10 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -263,7 +263,7 @@ type Container struct {
 
 // Containerer describes Container's abstract methods.
 type Containerer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Add adds widget to container.
 	Add(widget Widgetter)
@@ -402,7 +402,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -437,7 +437,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -537,7 +537,7 @@ func (container *Container) Children() []Widgetter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		_list = append(_list, dst)
 	})
 
@@ -567,7 +567,7 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		_focusableWidgets = append(_focusableWidgets, dst)
 	})
 	if _cret != 0 {
@@ -591,7 +591,7 @@ func (container *Container) FocusChild() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -650,7 +650,6 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})

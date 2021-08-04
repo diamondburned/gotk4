@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -32,7 +31,7 @@ type ListBase struct {
 
 // ListBaser describes ListBase's abstract methods.
 type ListBaser interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateListBase()
 }
@@ -70,11 +69,6 @@ func marshalListBaser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListBase(obj), nil
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (v *ListBase) Native() uintptr {
-	return v.Object.Native()
 }
 
 func (*ListBase) privateListBase() {}

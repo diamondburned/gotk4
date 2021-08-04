@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -217,7 +217,7 @@ type AppInfo struct {
 
 // AppInfor describes AppInfo's abstract methods.
 type AppInfor interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
@@ -391,7 +391,7 @@ func (appinfo *AppInfo) Dup() AppInfor {
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
@@ -501,7 +501,7 @@ func (appinfo *AppInfo) Icon() Iconner {
 	var _icon Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
 	}
 
 	return _icon
@@ -911,7 +911,7 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -937,7 +937,7 @@ func AppInfoGetAll() []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		_list = append(_list, dst)
 	})
 
@@ -962,7 +962,7 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		_list = append(_list, dst)
 	})
 
@@ -986,7 +986,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	}
 
 	return _appInfo
@@ -1007,7 +1007,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	}
 
 	return _appInfo
@@ -1031,7 +1031,7 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		_list = append(_list, dst)
 	})
 
@@ -1058,7 +1058,7 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		_list = append(_list, dst)
 	})
 

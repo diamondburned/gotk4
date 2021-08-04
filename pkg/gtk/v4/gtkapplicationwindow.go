@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -167,11 +167,6 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (window *ApplicationWindow) Native() uintptr {
-	return window.Object.Native()
 }
 
 // HelpOverlay gets the GtkShortcutsWindow that is associated with window.

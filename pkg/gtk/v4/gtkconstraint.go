@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -32,7 +31,7 @@ type ConstraintTarget struct {
 
 // ConstraintTargetter describes ConstraintTarget's abstract methods.
 type ConstraintTargetter interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateConstraintTarget()
 }
@@ -210,7 +209,7 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 	var _constraintTarget ConstraintTargetter // out
 
 	if _cret != nil {
-		_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+		_constraintTarget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
 	}
 
 	return _constraintTarget
@@ -265,7 +264,7 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 	var _constraintTarget ConstraintTargetter // out
 
 	if _cret != nil {
-		_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+		_constraintTarget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
 	}
 
 	return _constraintTarget

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -334,11 +334,6 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 	_spinButton = wrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (spinButton *SpinButton) Native() uintptr {
-	return spinButton.Object.Native()
 }
 
 // Configure changes the properties of an existing spin button.

@@ -6,9 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -66,6 +65,7 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 	var _ret *cairo.Context // out
 
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
@@ -89,7 +89,6 @@ func (context *DrawingContext) Clip() *cairo.Region {
 			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
-		C.cairo_region_reference(_cret)
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
 			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 		})
@@ -109,7 +108,7 @@ func (context *DrawingContext) Window() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }

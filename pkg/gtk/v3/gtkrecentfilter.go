@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -210,11 +210,6 @@ func NewRecentFilter() *RecentFilter {
 	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (filter *RecentFilter) Native() uintptr {
-	return filter.Object.Native()
 }
 
 // AddAge adds a rule that allows resources based on their age - that is, the

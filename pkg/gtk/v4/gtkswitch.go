@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -108,11 +108,6 @@ func NewSwitch() *Switch {
 	__switch = wrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *Switch) Native() uintptr {
-	return self.Object.Native()
 }
 
 // Active gets whether the GtkSwitch is in its “on” or “off” state.

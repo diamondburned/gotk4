@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -180,9 +181,10 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	var fields []LogField      // out
 
 	logLevel = LogLevelFlags(arg0)
-	defer C.free(unsafe.Pointer(arg1))
-	fields = make([]LogField, arg2)
-	copy(fields, unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2))
+	fields = unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2)
+	runtime.SetFinalizer(&fields, func(v *[]LogField) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	fn := v.(LogWriterFunc)
 	logWriterOutput := fn(logLevel, fields)

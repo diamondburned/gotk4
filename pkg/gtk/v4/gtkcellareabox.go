@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -82,11 +82,6 @@ func NewCellAreaBox() *CellAreaBox {
 	_cellAreaBox = wrapCellAreaBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellAreaBox
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (box *CellAreaBox) Native() uintptr {
-	return box.Object.Native()
 }
 
 // Spacing gets the spacing added between cell renderers.

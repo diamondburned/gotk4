@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -180,7 +179,7 @@ type Mount struct {
 
 // Mounter describes Mount's abstract methods.
 type Mounter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CanEject checks if mount can be ejected.
 	CanEject() bool
@@ -403,7 +402,7 @@ func (mount *Mount) DefaultLocation() Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -423,7 +422,7 @@ func (mount *Mount) Drive() Driver {
 	var _drive Driver // out
 
 	if _cret != nil {
-		_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+		_drive = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
 	}
 
 	return _drive
@@ -440,7 +439,7 @@ func (mount *Mount) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -473,7 +472,7 @@ func (mount *Mount) Root() Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -507,7 +506,7 @@ func (mount *Mount) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -545,7 +544,7 @@ func (mount *Mount) Volume() Volumer {
 	var _volume Volumer // out
 
 	if _cret != nil {
-		_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+		_volume = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 	}
 
 	return _volume

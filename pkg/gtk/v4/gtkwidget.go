@@ -6,16 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -51,8 +51,8 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 	var widget Widgetter            // out
 	var frameClock gdk.FrameClocker // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
-	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
+	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
@@ -551,7 +551,7 @@ type Widget struct {
 
 // Widgetter describes Widget's abstract methods.
 type Widgetter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ActionSetEnabled: enable or disable an action installed with
 	// gtk_widget_class_install_action().
@@ -964,11 +964,6 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (widget *Widget) Native() uintptr {
-	return widget.Object.Native()
 }
 
 // ActionSetEnabled: enable or disable an action installed with
@@ -1560,7 +1555,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -1787,7 +1782,7 @@ func (widget *Widget) FirstChild() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -1805,7 +1800,7 @@ func (widget *Widget) FocusChild() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -1866,7 +1861,7 @@ func (widget *Widget) FontMap() pango.FontMapper {
 	var _fontMap pango.FontMapper // out
 
 	if _cret != nil {
-		_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+		_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
 	}
 
 	return _fontMap
@@ -1923,7 +1918,7 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 	var _frameClock gdk.FrameClocker // out
 
 	if _cret != nil {
-		_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+		_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 	}
 
 	return _frameClock
@@ -2059,7 +2054,7 @@ func (widget *Widget) LastChild() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -2079,7 +2074,7 @@ func (widget *Widget) LayoutManager() LayoutManagerer {
 	var _layoutManager LayoutManagerer // out
 
 	if _cret != nil {
-		_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
+		_layoutManager = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
 	}
 
 	return _layoutManager
@@ -2202,7 +2197,7 @@ func (widget *Widget) GetNative() NativeSurfacer {
 	var _native NativeSurfacer // out
 
 	if _cret != nil {
-		_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
+		_native = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
 	}
 
 	return _native
@@ -2222,7 +2217,7 @@ func (widget *Widget) NextSibling() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -2302,7 +2297,7 @@ func (widget *Widget) Parent() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -2354,7 +2349,7 @@ func (widget *Widget) PrevSibling() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -2464,7 +2459,7 @@ func (widget *Widget) Root() Rooter {
 	var _root Rooter // out
 
 	if _cret != nil {
-		_root = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Rooter)
+		_root = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Rooter)
 	}
 
 	return _root
@@ -3228,7 +3223,7 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		_list = append(_list, dst)
 	})
 
@@ -3324,7 +3319,7 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	_listModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -3348,7 +3343,7 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	_listModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -3383,7 +3378,7 @@ func (widget *Widget) Pick(x float64, y float64, flags PickFlags) Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret

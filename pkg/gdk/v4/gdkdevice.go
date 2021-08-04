@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -85,7 +85,7 @@ type Device struct {
 
 // Devicer describes Device's abstract methods.
 type Devicer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 	// locked.
@@ -362,7 +362,7 @@ func (device *Device) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -405,7 +405,7 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
 	if _cret != nil {
-		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 	}
 
 	return _winX, _winY, _surface

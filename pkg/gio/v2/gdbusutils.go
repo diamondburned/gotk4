@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -139,7 +139,7 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(&gvalue.GValue))
+	_arg1 = (*C.GValue)(unsafe.Pointer(gvalue.Native()))
 	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
@@ -147,7 +147,6 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

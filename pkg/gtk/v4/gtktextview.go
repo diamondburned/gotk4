@@ -8,10 +8,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -256,11 +256,6 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 	_textView = wrapTextView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textView
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (textView *TextView) Native() uintptr {
-	return textView.Object.Native()
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
@@ -582,7 +577,7 @@ func (textView *TextView) ExtraMenu() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -606,7 +601,7 @@ func (textView *TextView) Gutter(win TextWindowType) Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget

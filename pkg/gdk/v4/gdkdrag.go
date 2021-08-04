@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -91,7 +91,7 @@ type Drag struct {
 
 // Dragger describes Drag's abstract methods.
 type Dragger interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
@@ -197,7 +197,7 @@ func (drag *Drag) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -236,7 +236,7 @@ func (drag *Drag) DragSurface() Surfacer {
 	var _surface Surfacer // out
 
 	if _cret != nil {
-		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 	}
 
 	return _surface
@@ -254,6 +254,7 @@ func (drag *Drag) Formats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -288,7 +289,7 @@ func (drag *Drag) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -342,7 +343,7 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 	var _drag Dragger // out
 
 	if _cret != nil {
-		_drag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Dragger)
+		_drag = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Dragger)
 	}
 
 	return _drag

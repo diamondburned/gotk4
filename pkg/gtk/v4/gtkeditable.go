@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -199,7 +198,7 @@ type Editable struct {
 
 // Editabler describes Editable's abstract methods.
 type Editabler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
@@ -384,7 +383,7 @@ func (editable *Editable) Delegate() Editabler {
 	var _ret Editabler // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
 	}
 
 	return _ret

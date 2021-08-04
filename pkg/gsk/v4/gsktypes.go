@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -51,7 +51,6 @@ func NewTransform() *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -121,7 +120,6 @@ func (self *Transform) Invert() *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gsk_transform_ref(_cret)
 		runtime.SetFinalizer(_transform, func(v *Transform) {
 			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -146,7 +144,6 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -174,7 +171,6 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -198,7 +194,6 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -226,7 +221,6 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -254,7 +248,6 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -282,7 +275,6 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -445,7 +437,6 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -507,7 +498,6 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -531,7 +521,6 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})

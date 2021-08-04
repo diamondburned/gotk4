@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -96,7 +96,7 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		_list = append(_list, dst)
 	})
 

@@ -11,8 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -167,9 +167,10 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GErr
 
 	var buf []byte // out
 
-	defer C.free(unsafe.Pointer(arg0))
-	buf = make([]byte, arg1)
-	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
+	buf = unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1)
+	runtime.SetFinalizer(&buf, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	fn := v.(PixbufSaveFunc)
 	err, ok := fn(buf)

@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -48,7 +48,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, 
 	var _ok bool                // out
 
 	if _arg2 != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -112,7 +112,7 @@ type TreeDragDest struct {
 
 // TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from selection_data.
@@ -215,7 +215,7 @@ type TreeDragSource struct {
 
 // TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.

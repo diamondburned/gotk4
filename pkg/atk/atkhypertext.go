@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -49,7 +48,7 @@ type Hypertext struct {
 
 // Hypertexter describes Hypertext's abstract methods.
 type Hypertexter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Link gets the link in this hypertext document at index link_index
 	Link(linkIndex int) *Hyperlink

@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -109,12 +109,10 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 	var b *RecentInfo // out
 
 	a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	C.gtk_recent_info_ref(arg0)
 	runtime.SetFinalizer(a, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.gtk_recent_info_ref(arg1)
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -185,7 +183,7 @@ type RecentChooser struct {
 
 // RecentChooserer describes RecentChooser's abstract methods.
 type RecentChooserer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddFilter adds filter to the list of RecentFilter objects held by
 	// chooser.
@@ -308,7 +306,6 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	var _recentInfo *RecentInfo // out
 
 	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -369,7 +366,6 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.gtk_recent_info_ref(src)
 		runtime.SetFinalizer(dst, func(v *RecentInfo) {
 			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})

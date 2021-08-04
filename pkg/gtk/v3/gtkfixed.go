@@ -7,7 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -140,7 +140,7 @@ type FixedChild struct {
 
 func (f *FixedChild) Widget() Widgetter {
 	var v Widgetter // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(Widgetter)
+	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(Widgetter)
 	return v
 }
 

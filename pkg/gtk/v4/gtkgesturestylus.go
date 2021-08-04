@@ -3,10 +3,11 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -112,9 +113,10 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _backlog []gdk.TimeCoord // out
 	var _ok bool                 // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_backlog = make([]gdk.TimeCoord, _arg2)
-	copy(_backlog, unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2))
+	_backlog = unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_backlog, func(v *[]gdk.TimeCoord) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

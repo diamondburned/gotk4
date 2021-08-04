@@ -9,15 +9,15 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -199,9 +199,10 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _ok bool            // out
 
 	if _arg1 != nil {
-		defer C.free(unsafe.Pointer(_arg1))
-		_points = make([]gdk.Point, _arg2)
-		copy(_points, unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2))
+		_points = unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2)
+		runtime.SetFinalizer(&_points, func(v *[]gdk.Point) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 	if _cret != 0 {
 		_ok = true
@@ -492,7 +493,6 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	var _goerr error            // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -1360,7 +1360,6 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 
 	if _cret != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 		})

@@ -5,8 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -115,11 +115,6 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	_appChooserButton = wrapAppChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserButton
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *AppChooserButton) Native() uintptr {
-	return self.Object.Native()
 }
 
 // AppendCustomItem appends a custom item to the list of applications that is

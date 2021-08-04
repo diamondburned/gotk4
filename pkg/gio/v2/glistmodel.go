@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -104,7 +103,7 @@ type ListModel struct {
 
 // ListModeller describes ListModel's abstract methods.
 type ListModeller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ItemType gets the type of the items in list.
 	ItemType() externglib.Type

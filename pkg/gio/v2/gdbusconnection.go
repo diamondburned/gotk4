@@ -12,8 +12,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -97,7 +97,6 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gc
 	methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -135,7 +134,6 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.g
 	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -269,7 +267,6 @@ func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

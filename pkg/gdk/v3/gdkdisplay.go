@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -156,7 +156,7 @@ func (display *Display) DefaultGroup() Windower {
 
 	var _window Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -188,7 +188,7 @@ func (display *Display) DefaultSeat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -207,7 +207,7 @@ func (display *Display) DeviceManager() DeviceManagerer {
 	var _deviceManager DeviceManagerer // out
 
 	if _cret != nil {
-		_deviceManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
+		_deviceManager = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
 	}
 
 	return _deviceManager
@@ -442,7 +442,7 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
 
 	return _winX, _winY, _window
@@ -516,7 +516,7 @@ func (display *Display) ListDevices() []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		_list = append(_list, dst)
 	})
 
@@ -538,7 +538,7 @@ func (display *Display) ListSeats() []Seater {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkSeat)(v)
 		var dst Seater // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
 		_list = append(_list, dst)
 	})
 

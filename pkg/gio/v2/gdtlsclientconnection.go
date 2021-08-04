@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -40,7 +39,7 @@ type DTLSClientConnection struct {
 
 // DTLSClientConnectioner describes DTLSClientConnection's abstract methods.
 type DTLSClientConnectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ServerIdentity gets conn's expected server identity
 	ServerIdentity() SocketConnectabler
@@ -85,7 +84,7 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 
 	var _socketConnectable SocketConnectabler // out
 
-	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
+	_socketConnectable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
 
 	return _socketConnectable
 }
@@ -152,7 +151,7 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _dtlsClientConnection DTLSClientConnectioner // out
 	var _goerr error                                 // out
 
-	_dtlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSClientConnectioner)
+	_dtlsClientConnection = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSClientConnectioner)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -124,7 +124,6 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	if _cret != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gdk_content_formats_ref(_cret)
 		runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
 			C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 		})

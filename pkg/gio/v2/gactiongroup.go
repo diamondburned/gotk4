@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -248,7 +248,7 @@ type ActionGroup struct {
 
 // ActionGrouper describes ActionGroup's abstract methods.
 type ActionGrouper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ActionAdded emits the Group::action-added signal on action_group.
 	ActionAdded(actionName string)
@@ -517,7 +517,6 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -558,7 +557,6 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -722,14 +720,12 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	}
 	if _arg5 != nil {
 		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-		C.g_variant_ref(_arg5)
 		runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
 	}
 	if _arg6 != nil {
 		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
-		C.g_variant_ref(_arg6)
 		runtime.SetFinalizer(_state, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})

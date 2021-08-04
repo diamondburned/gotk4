@@ -8,8 +8,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -548,6 +548,7 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -819,6 +820,7 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})

@@ -4,11 +4,10 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -637,7 +636,7 @@ func (event *DNDEvent) Drop() Dropper {
 	var _drop Dropper // out
 
 	if _cret != nil {
-		_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
+		_drop = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
 	}
 
 	return _drop
@@ -676,7 +675,7 @@ type Event struct {
 
 // Eventer describes Event's abstract methods.
 type Eventer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Axes extracts all axis values from an event.
 	Axes() ([]float64, bool)
@@ -741,10 +740,8 @@ func (event *Event) Axes() ([]float64, bool) {
 	var _axes []float64 // out
 	var _ok bool        // out
 
-	_axes = unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_axes, func(v *[]float64) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	_axes = make([]float64, _arg2)
+	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -788,7 +785,7 @@ func (event *Event) Device() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _device
@@ -945,7 +942,7 @@ func (event *Event) Seat() Seater {
 	var _seat Seater // out
 
 	if _cret != nil {
-		_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+		_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 	}
 
 	return _seat
@@ -962,7 +959,7 @@ func (event *Event) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -1078,7 +1075,7 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

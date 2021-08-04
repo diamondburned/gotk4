@@ -36,7 +36,6 @@ func TransformParse(_string string) (*Transform, bool) {
 	var _ok bool                 // out
 
 	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	C.gsk_transform_ref(_arg2)
 	runtime.SetFinalizer(_outTransform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})

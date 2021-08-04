@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -26,7 +25,7 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.
 	var _arg2 *C.GValue               // out
 
 	_arg1 = C.GtkAccessibleProperty(property)
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_property_init_value(_arg1, _arg2)
 }
@@ -36,7 +35,7 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.
 	var _arg2 *C.GValue               // out
 
 	_arg1 = C.GtkAccessibleRelation(relation)
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_relation_init_value(_arg1, _arg2)
 }
@@ -46,7 +45,7 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	var _arg2 *C.GValue            // out
 
 	_arg1 = C.GtkAccessibleState(state)
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_state_init_value(_arg1, _arg2)
 }
@@ -74,7 +73,7 @@ type Accessible struct {
 
 // Accessibler describes Accessible's abstract methods.
 type Accessibler interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AccessibleRole retrieves the GtkAccessibleRole for the given
 	// GtkAccessible.
@@ -184,7 +183,7 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 
@@ -219,7 +218,7 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 
@@ -254,7 +253,7 @@ func (self *Accessible) UpdateState(states []AccessibleState, values []externgli
 	{
 		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 

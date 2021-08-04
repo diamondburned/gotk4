@@ -457,9 +457,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		if value.ShouldFree() {
 			value.header.Import("runtime")
 
-			// https://pkg.go.dev/github.com/gotk3/gotk3/glib?utm_source=godoc#Value
+			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
 			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
-			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))")
+			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
 			value.p.Linef("})")
 		}
 		return true

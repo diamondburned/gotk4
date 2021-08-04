@@ -8,14 +8,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -81,7 +81,7 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 
 	var widget Widgetter // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
 
 	fn := v.(Callback)
 	fn(widget)
@@ -101,8 +101,8 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 	var widget Widgetter            // out
 	var frameClock gdk.FrameClocker // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
-	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
+	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
@@ -549,7 +549,7 @@ type Widget struct {
 
 // Widgetter describes Widget's abstract methods.
 type Widgetter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
@@ -1229,11 +1229,6 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (widget *Widget) Native() uintptr {
-	return widget.Object.Native()
-}
-
 // Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 // this function activates them. Activation is what happens when you press Enter
 // on a widget during key navigation. If widget isn't activatable, the function
@@ -1695,6 +1690,7 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 
 	if _cret != nil {
 		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_target_list_ref(_cret)
 		runtime.SetFinalizer(_targetList, func(v *TargetList) {
 			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1902,6 +1898,7 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 
 	if _cret != nil {
 		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_target_list_ref(_cret)
 		runtime.SetFinalizer(_targetList, func(v *TargetList) {
 			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -2135,7 +2132,7 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 	var _actionGroup gio.ActionGrouper // out
 
 	if _cret != nil {
-		_actionGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ActionGrouper)
+		_actionGroup = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ActionGrouper)
 	}
 
 	return _actionGroup
@@ -2273,7 +2270,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -2593,7 +2590,7 @@ func (widget *Widget) FontMap() pango.FontMapper {
 	var _fontMap pango.FontMapper // out
 
 	if _cret != nil {
-		_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+		_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
 	}
 
 	return _fontMap
@@ -2648,7 +2645,7 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 	var _frameClock gdk.FrameClocker // out
 
 	if _cret != nil {
-		_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+		_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 	}
 
 	return _frameClock
@@ -3027,7 +3024,7 @@ func (widget *Widget) Parent() Widgetter {
 	var _ret Widgetter // out
 
 	if _cret != nil {
-		_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _ret
@@ -3045,7 +3042,7 @@ func (widget *Widget) ParentWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 	}
 
 	return _window
@@ -3064,6 +3061,7 @@ func (widget *Widget) GetPath() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -3379,7 +3377,7 @@ func (widget *Widget) RootWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -3711,7 +3709,7 @@ func (widget *Widget) Toplevel() Widgetter {
 
 	var _ret Widgetter // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -3854,7 +3852,7 @@ func (widget *Widget) Window() gdk.Windower {
 	var _window gdk.Windower // out
 
 	if _cret != nil {
-		_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 	}
 
 	return _window
@@ -4428,7 +4426,7 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		_list = append(_list, dst)
 	})
 
@@ -4959,7 +4957,6 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_ret = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
@@ -6291,7 +6288,7 @@ func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Va
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)
 }

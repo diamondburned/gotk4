@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -56,7 +56,7 @@ type DBusInterface struct {
 
 // DBusInterfacer describes DBusInterface's abstract methods.
 type DBusInterfacer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// GetObject gets the BusObject that interface_ belongs to, if any.
 	GetObject() DBusObjector
@@ -93,7 +93,7 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 	var _dBusObject DBusObjector // out
 
 	if _cret != nil {
-		_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+		_dBusObject = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
 	}
 
 	return _dBusObject
@@ -112,6 +112,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})

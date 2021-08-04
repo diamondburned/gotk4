@@ -3,11 +3,12 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -263,14 +264,16 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	var _ok bool          // out
 
 	if _arg2 != nil {
-		defer C.free(unsafe.Pointer(_arg2))
-		_keys = make([]KeymapKey, _arg4)
-		copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+		_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
+		runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 	if _arg3 != nil {
-		defer C.free(unsafe.Pointer(_arg3))
-		_keyvals = make([]uint, _arg4)
-		copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
+		_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
+		runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 	if _cret != 0 {
 		_ok = true
@@ -303,9 +306,10 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(_arg2))
-	_keys = make([]KeymapKey, _arg3)
-	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

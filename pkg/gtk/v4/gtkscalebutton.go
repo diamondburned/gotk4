@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -114,11 +113,6 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 	return _scaleButton
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (button *ScaleButton) Native() uintptr {
-	return button.Object.Native()
-}
-
 // Adjustment gets the GtkAdjustment associated with the GtkScaleButton’s scale.
 //
 // See gtk.Range.GetAdjustment() for details.
@@ -180,7 +174,7 @@ func (button *ScaleButton) Popup() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

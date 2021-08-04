@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -559,7 +559,7 @@ type Text struct {
 
 // Texter describes Text's abstract methods.
 type Texter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool

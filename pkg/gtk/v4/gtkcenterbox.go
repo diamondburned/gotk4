@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -105,11 +104,6 @@ func NewCenterBox() *CenterBox {
 	return _centerBox
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *CenterBox) Native() uintptr {
-	return self.Object.Native()
-}
-
 // BaselinePosition gets the value set by
 // gtk_center_box_set_baseline_position().
 func (self *CenterBox) BaselinePosition() BaselinePosition {
@@ -139,7 +133,7 @@ func (self *CenterBox) CenterWidget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -157,7 +151,7 @@ func (self *CenterBox) EndWidget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget
@@ -175,7 +169,7 @@ func (self *CenterBox) StartWidget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget

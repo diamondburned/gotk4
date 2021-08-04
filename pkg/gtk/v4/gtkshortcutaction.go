@@ -10,8 +10,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -90,10 +90,9 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	var widget Widgetter   // out
 	var args *glib.Variant // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
 	if arg1 != nil {
 		args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-		C.g_variant_ref(arg1)
 		runtime.SetFinalizer(args, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -353,7 +352,7 @@ type ShortcutAction struct {
 
 // ShortcutActioner describes ShortcutAction's abstract methods.
 type ShortcutActioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Activate activates the action on the widget with the given args.
 	Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool

@@ -10,8 +10,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -209,11 +209,6 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	return _fileFilter
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (filter *FileFilter) Native() uintptr {
-	return filter.Object.Native()
-}
-
 // AddCustom adds rule to a filter that allows files based on a custom callback
 // function. The bitfield needed which is passed in provides information about
 // what sorts of information that the filter function needs; this allows GTK+ to
@@ -360,6 +355,7 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

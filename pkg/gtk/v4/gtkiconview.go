@@ -9,8 +9,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -203,11 +203,6 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	return _iconView
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (iconView *IconView) Native() uintptr {
-	return iconView.Object.Native()
-}
-
 // CreateDragIcon creates a #cairo_surface_t representation of the item at path.
 // This image is used for a drag icon.
 func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
@@ -222,7 +217,7 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }
@@ -364,7 +359,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 		})
 	}
 	if _arg2 != nil {
-		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -457,7 +452,7 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 		})
 	}
 	if _arg4 != nil {
-		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -598,7 +593,7 @@ func (iconView *IconView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel
@@ -812,7 +807,7 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 	var _ok bool            // out
 
 	if _arg4 != nil {
-		_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
+		_model = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))

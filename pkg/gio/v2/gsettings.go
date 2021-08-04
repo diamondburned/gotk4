@@ -11,8 +11,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -125,10 +125,9 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
 	})
 	variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -159,7 +158,7 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
 	})
 	expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(expectedType, func(v *glib.VariantType) {
@@ -196,7 +195,6 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 	var value *glib.Variant // out
 
 	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	C.g_variant_ref(arg0)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -679,7 +677,7 @@ func (settings *Settings) CreateAction(key string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
+	_action = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }
@@ -779,7 +777,6 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1003,7 +1000,6 @@ func (settings *Settings) Range(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1152,7 +1148,6 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -1179,7 +1174,6 @@ func (settings *Settings) Value(key string) *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

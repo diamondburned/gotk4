@@ -6,8 +6,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -71,7 +70,7 @@ type Document struct {
 
 // Documenter describes Document's abstract methods.
 type Documenter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AttributeValue retrieves the value of the given attribute_name inside
 	// document.

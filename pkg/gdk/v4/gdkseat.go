@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -98,7 +98,7 @@ type Seat struct {
 
 // Seater describes Seat's abstract methods.
 type Seater interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Capabilities returns the capabilities this GdkSeat currently has.
 	Capabilities() SeatCapabilities
@@ -161,7 +161,7 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		_list = append(_list, dst)
 	})
 
@@ -196,7 +196,7 @@ func (seat *Seat) Keyboard() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _device
@@ -214,7 +214,7 @@ func (seat *Seat) Pointer() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 	}
 
 	return _device

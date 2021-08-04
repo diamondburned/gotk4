@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -219,7 +219,7 @@ type Toplevel struct {
 
 // Topleveller describes Toplevel's abstract methods.
 type Topleveller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)

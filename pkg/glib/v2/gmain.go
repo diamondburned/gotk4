@@ -9,7 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -112,7 +112,6 @@ func NewChildWatchSource(pid Pid) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -206,7 +205,6 @@ func NewIdleSource() *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -224,6 +222,7 @@ func MainCurrentSource() *Source {
 
 	if _cret != nil {
 		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_source_ref(_cret)
 		runtime.SetFinalizer(_source, func(v *Source) {
 			C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -319,7 +318,6 @@ func NewTimeoutSource(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -348,7 +346,6 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -377,7 +374,6 @@ func NewMainContext() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -492,6 +488,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -525,6 +522,7 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -548,6 +546,7 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -767,6 +766,7 @@ func MainContextDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -793,6 +793,7 @@ func MainContextGetThreadDefault() *MainContext {
 
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_main_context_ref(_cret)
 		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -815,7 +816,6 @@ func MainContextRefThreadDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -853,7 +853,6 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_loop_ref(_cret)
 	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
 		C.g_main_loop_unref((*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -873,6 +872,7 @@ func (loop *MainLoop) Context() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -948,7 +948,6 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -1114,6 +1113,7 @@ func (source *Source) Context() *MainContext {
 
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_main_context_ref(_cret)
 		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 		})

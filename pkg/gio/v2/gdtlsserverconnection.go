@@ -6,8 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -40,7 +39,7 @@ type DTLSServerConnection struct {
 
 // DTLSServerConnectioner describes DTLSServerConnection's abstract methods.
 type DTLSServerConnectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateDTLSServerConnection()
 }
@@ -82,7 +81,7 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _dtlsServerConnection DTLSServerConnectioner // out
 	var _goerr error                                 // out
 
-	_dtlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSServerConnectioner)
+	_dtlsServerConnection = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSServerConnectioner)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

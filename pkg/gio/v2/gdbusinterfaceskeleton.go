@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -65,7 +65,7 @@ type DBusInterfaceSkeleton struct {
 
 // DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's abstract methods.
 type DBusInterfaceSkeletonner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Export exports interface_ at object_path on connection.
 	Export(connection *DBusConnection, objectPath string) error
@@ -229,6 +229,7 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -266,7 +267,6 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})

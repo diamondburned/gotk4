@@ -9,11 +9,11 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -224,11 +224,6 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	return _entry
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (entry *Entry) Native() uintptr {
-	return entry.Object.Native()
-}
-
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
 func (entry *Entry) ActivatesDefault() bool {
@@ -278,6 +273,7 @@ func (entry *Entry) Attributes() *pango.AttrList {
 
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -458,7 +454,7 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon

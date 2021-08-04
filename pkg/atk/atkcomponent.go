@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -170,7 +170,7 @@ type Component struct {
 
 // Componenter describes Component's abstract methods.
 type Componenter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Contains checks whether the specified point is within the extent of the
 	// component.

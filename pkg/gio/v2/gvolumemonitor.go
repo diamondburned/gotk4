@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -114,7 +114,7 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDrive)(v)
 		var dst Driver // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
 		_list = append(_list, dst)
 	})
 
@@ -136,7 +136,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	var _mount Mounter // out
 
 	if _cret != nil {
-		_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+		_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 	}
 
 	return _mount
@@ -160,7 +160,7 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GMount)(v)
 		var dst Mounter // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
 		_list = append(_list, dst)
 	})
 
@@ -182,7 +182,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	var _volume Volumer // out
 
 	if _cret != nil {
-		_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+		_volume = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 	}
 
 	return _volume
@@ -206,7 +206,7 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
-		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
 		_list = append(_list, dst)
 	})
 
@@ -256,7 +256,7 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	_volume = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 
 	return _volume
 }

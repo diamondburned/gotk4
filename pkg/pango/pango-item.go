@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -47,7 +47,7 @@ func (a *Analysis) LangEngine() cgo.Handle {
 // Font: font for this segment.
 func (a *Analysis) Font() Fonter {
 	var v Fonter // out
-	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(a.native.font)))).(Fonter)
+	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(a.native.font)))).(Fonter)
 	return v
 }
 

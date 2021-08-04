@@ -11,7 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -246,7 +246,7 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -262,7 +262,7 @@ func (enumerator *FileEnumerator) Container() Filer {
 
 	var _file Filer // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
+	_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -360,7 +360,7 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 		_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
 	}
 	if _arg2 != nil {
-		_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
+		_outChild = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

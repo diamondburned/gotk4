@@ -6,8 +6,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -128,7 +127,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	_action = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

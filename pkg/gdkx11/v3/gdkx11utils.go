@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/cairo"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 )
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
@@ -30,7 +30,6 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
-	C.cairo_pattern_reference(_cret)
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})

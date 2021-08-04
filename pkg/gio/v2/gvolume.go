@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -162,7 +161,7 @@ type Volume struct {
 
 // Volumer describes Volume's abstract methods.
 type Volumer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
@@ -415,7 +414,7 @@ func (volume *Volume) ActivationRoot() Filer {
 	var _file Filer // out
 
 	if _cret != nil {
-		_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	}
 
 	return _file
@@ -433,7 +432,7 @@ func (volume *Volume) Drive() Driver {
 	var _drive Driver // out
 
 	if _cret != nil {
-		_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+		_drive = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
 	}
 
 	return _drive
@@ -450,7 +449,7 @@ func (volume *Volume) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -491,7 +490,7 @@ func (volume *Volume) GetMount() Mounter {
 	var _mount Mounter // out
 
 	if _cret != nil {
-		_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+		_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 	}
 
 	return _mount
@@ -543,7 +542,7 @@ func (volume *Volume) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }

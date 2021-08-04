@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -64,7 +63,7 @@ type Image struct {
 
 // Imager describes Image's abstract methods.
 type Imager interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ImageDescription: get a textual description of this image.
 	ImageDescription() string

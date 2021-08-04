@@ -8,11 +8,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -259,7 +259,6 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
@@ -412,7 +411,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 		})
 	}
 	if _arg2 != nil {
-		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -510,7 +509,7 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 		})
 	}
 	if _arg4 != nil {
-		_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -651,7 +650,7 @@ func (iconView *IconView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 	}
 
 	return _treeModel

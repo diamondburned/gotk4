@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -264,7 +264,6 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -302,7 +301,6 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _goerr error          // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -325,7 +323,6 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -566,9 +563,10 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	defer C.free(unsafe.Pointer(_arg1))
-	_strReturn = make([]byte, _arg2)
-	copy(_strReturn, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
+	_strReturn = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_strReturn, func(v *[]byte) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	_ioStatus = IOStatus(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

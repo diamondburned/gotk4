@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -154,11 +153,6 @@ func NewGrid() *Grid {
 	return _grid
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (grid *Grid) Native() uintptr {
-	return grid.Object.Native()
-}
-
 // Attach adds a widget to the grid.
 //
 // The position of child is determined by column and row. The number of “cells”
@@ -242,7 +236,7 @@ func (grid *Grid) ChildAt(column int, row int) Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget

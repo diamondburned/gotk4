@@ -7,11 +7,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -378,7 +377,7 @@ type Cursor struct {
 
 // Cursorrer describes Cursor's abstract methods.
 type Cursorrer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
@@ -697,7 +696,6 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	_yHot = float64(_arg2)
 	if _cret != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 		})

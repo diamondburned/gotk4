@@ -7,8 +7,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -268,7 +267,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	var _destWindow Windower   // out
 	var _protocol DragProtocol // out
 
-	_destWindow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(Windower)
+	_destWindow = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(Windower)
 	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol

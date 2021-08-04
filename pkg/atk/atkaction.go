@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -100,7 +99,7 @@ type Action struct {
 
 // Actioner describes Action's abstract methods.
 type Actioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// DoAction: perform the specified action on the object.
 	DoAction(i int) bool

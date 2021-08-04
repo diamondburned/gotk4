@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -585,7 +584,7 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 	var _socketAddress SocketAddresser // out
 
 	if _cret != nil {
-		_socketAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
+		_socketAddress = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
 	}
 
 	return _socketAddress
@@ -622,7 +621,7 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 
 	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
+	_proxyResolver = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
 
 	return _proxyResolver
 }

@@ -5,8 +5,7 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -242,7 +241,7 @@ func (cursor *Cursor) Texture() Texturer {
 	var _texture Texturer // out
 
 	if _cret != nil {
-		_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
+		_texture = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
 	}
 
 	return _texture

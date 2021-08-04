@@ -9,7 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: pango
@@ -336,7 +336,7 @@ type Font struct {
 
 // Fonter describes Font's abstract methods.
 type Fonter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Describe returns a description of the font, with font size set in points.
 	Describe() *FontDescription
@@ -444,7 +444,7 @@ func (font *Font) Face() FontFacer {
 
 	var _fontFace FontFacer // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	_fontFace = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 
 	return _fontFace
 }
@@ -472,7 +472,7 @@ func (font *Font) FontMap() FontMapper {
 	var _fontMap FontMapper // out
 
 	if _cret != nil {
-		_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
+		_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
 	}
 
 	return _fontMap
@@ -536,7 +536,6 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -602,7 +601,7 @@ type FontFace struct {
 
 // FontFacer describes FontFace's abstract methods.
 type FontFacer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Describe returns the family, style, variant, weight and stretch of a
 	// PangoFontFace.
@@ -684,7 +683,7 @@ func (face *FontFace) Family() FontFamilier {
 
 	var _fontFamily FontFamilier // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
+	_fontFamily = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
 
 	return _fontFamily
 }
@@ -726,9 +725,10 @@ func (face *FontFace) ListSizes() []int {
 	var _sizes []int // out
 
 	if _arg1 != nil {
-		defer C.free(unsafe.Pointer(_arg1))
-		_sizes = make([]int, _arg2)
-		copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+		_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
+		runtime.SetFinalizer(&_sizes, func(v *[]int) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 
 	return _sizes
@@ -782,7 +782,7 @@ type FontFamily struct {
 
 // FontFamilier describes FontFamily's abstract methods.
 type FontFamilier interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Face gets the PangoFontFace of family with the given name.
 	Face(name string) FontFacer
@@ -829,7 +829,7 @@ func (family *FontFamily) Face(name string) FontFacer {
 	var _fontFace FontFacer // out
 
 	if _cret != nil {
-		_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+		_fontFace = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 	}
 
 	return _fontFace
@@ -924,7 +924,7 @@ func (family *FontFamily) ListFaces() []FontFacer {
 			src := unsafe.Slice(_arg1, _arg2)
 			_faces = make([]FontFacer, _arg2)
 			for i := 0; i < int(_arg2); i++ {
-				_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
+				_faces[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
 			}
 		}
 	}

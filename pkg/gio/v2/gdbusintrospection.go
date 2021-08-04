@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -86,6 +86,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -170,6 +171,7 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -218,6 +220,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
 			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_method_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusMethodInfo) {
 				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -241,6 +244,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
 			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_signal_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusSignalInfo) {
 				C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -264,6 +268,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
 			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_property_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusPropertyInfo) {
 				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -287,6 +292,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -342,6 +348,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 
 	if _cret != nil {
 		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_method_info_ref(_cret)
 		runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 			C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -369,6 +376,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	if _cret != nil {
 		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_property_info_ref(_cret)
 		runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 			C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -396,6 +404,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 	if _cret != nil {
 		_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_signal_info_ref(_cret)
 		runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
 			C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -444,6 +453,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -467,6 +477,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -490,6 +501,7 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -524,7 +536,6 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _goerr error                // out
 
 	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_node_info_ref(_cret)
 	runtime.SetFinalizer(_dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -565,6 +576,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
 			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_interface_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusInterfaceInfo) {
 				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -588,6 +600,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
 			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_node_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusNodeInfo) {
 				C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -611,6 +624,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -637,6 +651,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 	if _cret != nil {
 		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_interface_info_ref(_cret)
 		runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 			C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -699,6 +714,7 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -747,6 +763,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})
@@ -770,6 +787,7 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(v))))
 			})

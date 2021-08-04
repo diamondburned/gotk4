@@ -7,11 +7,11 @@ import (
 	_ "runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangocairo pango
@@ -45,7 +45,6 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	var doPath bool           // out
 
 	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg0)))
-	C.cairo_reference(arg0)
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
@@ -410,7 +409,7 @@ type Font struct {
 
 // Fonter describes Font's abstract methods.
 type Fonter interface {
-	gextras.Objector
+	externglib.Objector
 
 	privateFont()
 }
@@ -444,7 +443,7 @@ type FontMap struct {
 
 // FontMapper describes FontMap's abstract methods.
 type FontMapper interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Resolution gets the resolution for the fontmap.
 	Resolution() float64
@@ -547,7 +546,7 @@ func FontMapGetDefault() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
 
 	return _fontMap
 }
@@ -574,7 +573,7 @@ func NewFontMap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	_fontMap = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
 
 	return _fontMap
 }

@@ -6,8 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -106,11 +106,6 @@ func NewProgressBar() *ProgressBar {
 	_progressBar = wrapProgressBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (pbar *ProgressBar) Native() uintptr {
-	return pbar.Object.Native()
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar. See

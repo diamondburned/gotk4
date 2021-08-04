@@ -11,7 +11,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // Cancellable is a wrapper around the GCancellable object. It satisfies the

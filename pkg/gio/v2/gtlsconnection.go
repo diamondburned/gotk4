@@ -10,8 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -93,7 +92,7 @@ type TLSConnection struct {
 
 // TLSConnectioner describes TLSConnection's abstract methods.
 type TLSConnectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
@@ -207,7 +206,7 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 	}
 
 	return _tlsCertificate
@@ -240,14 +239,8 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 	var _data []byte // out
 	var _goerr error // out
 
-	{
-		var len C.gsize
-		p := C.g_byte_array_steal(&_arg2, &len)
-		_data = unsafe.Slice((*byte)(p), uint(len))
-		runtime.SetFinalizer(&_data, func(v *[]byte) {
-			C.free(unsafe.Pointer(&(*v)[0]))
-		})
-	}
+	_data = make([]byte, _arg2.len)
+	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -268,7 +261,7 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 	var _tlsDatabase TLSDatabaser // out
 
 	if _cret != nil {
-		_tlsDatabase = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
+		_tlsDatabase = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
 	}
 
 	return _tlsDatabase
@@ -332,7 +325,7 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 	}
 
 	return _tlsCertificate

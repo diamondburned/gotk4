@@ -11,9 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -71,7 +70,7 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
 
@@ -168,7 +167,7 @@ func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 
 	var _inputStream gio.InputStreamer // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 
 	return _inputStream
 }

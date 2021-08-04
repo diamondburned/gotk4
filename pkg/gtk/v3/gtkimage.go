@@ -8,11 +8,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -465,7 +465,7 @@ func (image *Image) GIcon() (gio.Iconner, int) {
 	var _size int          // out
 
 	if _arg1 != nil {
-		_gicon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(gio.Iconner)
+		_gicon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(gio.Iconner)
 	}
 	_size = int(_arg2)
 
@@ -515,6 +515,7 @@ func (image *Image) IconSet() (*IconSet, int) {
 
 	if _arg1 != nil {
 		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
+		C.gtk_icon_set_ref(_arg1)
 		runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 			C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 		})

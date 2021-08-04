@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -131,7 +131,7 @@ type DeviceManager struct {
 
 // DeviceManagerer describes DeviceManager's abstract methods.
 type DeviceManagerer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ClientPointer returns the client pointer, that is, the master pointer
 	// that acts as the core pointer for this application.
@@ -176,7 +176,7 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 
 	var _device Devicer // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -220,7 +220,7 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		_list = append(_list, dst)
 	})
 

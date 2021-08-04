@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -76,7 +75,7 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
-		_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+		_selectionModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
 	}
 
 	return _selectionModel

@@ -5,8 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -36,7 +35,7 @@ type LayoutChild struct {
 
 // LayoutChilder describes LayoutChild's abstract methods.
 type LayoutChilder interface {
-	gextras.Objector
+	externglib.Objector
 
 	// ChildWidget retrieves the GtkWidget associated to the given layout_child.
 	ChildWidget() Widgetter
@@ -70,7 +69,7 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -87,7 +86,7 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 
 	var _layoutManager LayoutManagerer // out
 
-	_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
+	_layoutManager = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
 
 	return _layoutManager
 }

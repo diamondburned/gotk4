@@ -8,8 +8,8 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -42,7 +42,7 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 	var cellArea *gdk.Rectangle       // out
 	var cellBackground *gdk.Rectangle // out
 
-	renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
+	renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
 	cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(cellArea, func(v *gdk.Rectangle) {
 		C.free(gextras.StructNative(unsafe.Pointer(v)))
@@ -75,7 +75,7 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 
 	var renderer CellRendererer // out
 
-	renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
+	renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
 
 	fn := v.(CellCallback)
 	ok := fn(renderer)
@@ -326,7 +326,7 @@ type CellArea struct {
 
 // CellAreaer describes CellArea's abstract methods.
 type CellAreaer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Activate activates area, usually by activating the currently focused
 	// cell, however some subclasses which embed widgets in the area can also
@@ -463,11 +463,6 @@ func marshalCellAreaer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellArea(obj), nil
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (area *CellArea) Native() uintptr {
-	return area.Object.Native()
 }
 
 // Activate activates area, usually by activating the currently focused cell,
@@ -648,7 +643,7 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_cell_area_cell_get_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -664,7 +659,7 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_cell_area_cell_set_property(_arg0, _arg1, _arg2, _arg3)
 }
@@ -853,7 +848,7 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	var _cellRenderer CellRendererer // out
 
 	_allocArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
-	_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
 
 	return _allocArea, _cellRenderer
 }
@@ -888,7 +883,7 @@ func (area *CellArea) EditWidget() CellEditabler {
 
 	var _cellEditable CellEditabler // out
 
-	_cellEditable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+	_cellEditable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
 
 	return _cellEditable
 }
@@ -904,7 +899,7 @@ func (area *CellArea) EditedCell() CellRendererer {
 
 	var _cellRenderer CellRendererer // out
 
-	_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
 
 	return _cellRenderer
 }
@@ -920,7 +915,7 @@ func (area *CellArea) FocusCell() CellRendererer {
 
 	var _cellRenderer CellRendererer // out
 
-	_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
 
 	return _cellRenderer
 }
@@ -944,7 +939,7 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	if _cret != nil {
-		_cellRenderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+		_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
 	}
 
 	return _cellRenderer
@@ -967,7 +962,7 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
 		_list = append(_list, dst)
 	})
 

@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -81,7 +81,6 @@ func NewTimeZone(identifier string) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -105,7 +104,6 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	if _cret != nil {
 		_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_time_zone_ref(_cret)
 		runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 			C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -123,7 +121,6 @@ func NewTimeZoneLocal() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -143,7 +140,6 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -160,7 +156,6 @@ func NewTimeZoneUtc() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
 		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})

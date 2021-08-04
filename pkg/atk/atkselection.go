@@ -5,8 +5,7 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: atk
@@ -74,7 +73,7 @@ type Selection struct {
 
 // Selectioner describes Selection's abstract methods.
 type Selectioner interface {
-	gextras.Objector
+	externglib.Objector
 
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.

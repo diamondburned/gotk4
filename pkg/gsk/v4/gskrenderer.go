@@ -5,12 +5,12 @@ package gsk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
-	"github.com/gotk3/gotk3/cairo"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -40,7 +40,7 @@ type Renderer struct {
 
 // Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
 	Surface() gdk.Surfacer
@@ -112,7 +112,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _surface gdk.Surfacer // out
 
 	if _cret != nil {
-		_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 	}
 
 	return _surface
@@ -205,7 +205,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	var _texture gdk.Texturer // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
+	_texture = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
 
 	return _texture
 }

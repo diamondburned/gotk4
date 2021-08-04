@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -182,11 +182,6 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	_levelBar = wrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *LevelBar) Native() uintptr {
-	return self.Object.Native()
 }
 
 // AddOffsetValue adds a new offset marker on self at the position specified by

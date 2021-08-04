@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: atk
@@ -67,7 +67,7 @@ type StreamableContent struct {
 
 // StreamableContenter describes StreamableContent's abstract methods.
 type StreamableContenter interface {
-	gextras.Objector
+	externglib.Objector
 
 	// MIMEType gets the character string of the specified mime type.
 	MIMEType(i int) string
@@ -145,7 +145,6 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _ioChannel *glib.IOChannel // out
 
 	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *glib.IOChannel) {
 		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
 	})

@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -145,11 +144,6 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	return _columnView
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (self *ColumnView) Native() uintptr {
-	return self.Object.Native()
-}
-
 // AppendColumn appends the column to the end of the columns in self.
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
@@ -175,7 +169,7 @@ func (self *ColumnView) Columns() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -211,7 +205,7 @@ func (self *ColumnView) Model() SelectionModeller {
 	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
-		_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+		_selectionModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
 	}
 
 	return _selectionModel

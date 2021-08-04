@@ -3,11 +3,12 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -161,7 +162,7 @@ func (display *Display) DefaultSeat() Seater {
 	var _seat Seater // out
 
 	if _cret != nil {
-		_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+		_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 	}
 
 	return _seat
@@ -205,7 +206,7 @@ func (self *Display) Monitors() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -256,7 +257,7 @@ func (display *Display) Setting(name string, value *externglib.Value) bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 
@@ -374,7 +375,7 @@ func (display *Display) ListSeats() []Seater {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkSeat)(v)
 		var dst Seater // out
-		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
 		_list = append(_list, dst)
 	})
 
@@ -407,14 +408,16 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _ok bool          // out
 
 	if _arg2 != nil {
-		defer C.free(unsafe.Pointer(_arg2))
-		_keys = make([]KeymapKey, _arg4)
-		copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+		_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
+		runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 	if _arg3 != nil {
-		defer C.free(unsafe.Pointer(_arg3))
-		_keyvals = make([]uint, _arg4)
-		copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
+		_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
+		runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
 	}
 	if _cret != 0 {
 		_ok = true
@@ -453,9 +456,10 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(_arg2))
-	_keys = make([]KeymapKey, _arg3)
-	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
+	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

@@ -5,7 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/gotk3/gotk3/glib"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -108,11 +108,6 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	_appChooserWidget = wrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
-}
-
-// Native solves the ambiguous selector of this class or interface.
-func (self *AppChooserWidget) Native() uintptr {
-	return self.Object.Native()
 }
 
 // DefaultText returns the text that is shown if there are not applications that

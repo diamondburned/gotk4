@@ -5,9 +5,8 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -187,7 +186,7 @@ func (source *DragSource) Drag() gdk.Dragger {
 	var _drag gdk.Dragger // out
 
 	if _cret != nil {
-		_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
+		_drag = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
 	}
 
 	return _drag

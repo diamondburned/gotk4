@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -126,7 +126,7 @@ type SelectionModel struct {
 
 // SelectionModeller describes SelectionModel's abstract methods.
 type SelectionModeller interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Selection gets the set containing all currently selected items in the
 	// model.
@@ -186,7 +186,6 @@ func (model *SelectionModel) Selection() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -214,7 +213,6 @@ func (model *SelectionModel) SelectionInRange(position uint, nItems uint) *Bitse
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})

@@ -8,10 +8,10 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -35,7 +35,7 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 	var grabWidget Widgetter // out
 	var event *gdk.EventKey  // out
 
-	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	grabWidget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
 	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(event, func(v *gdk.EventKey) {
 		C.free(gextras.StructNative(unsafe.Pointer(v)))
@@ -198,7 +198,7 @@ func GetCurrentEventDevice() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 	}
 
 	return _device
@@ -377,7 +377,6 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _optionGroup *glib.OptionGroup // out
 
 	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
 		C.g_option_group_unref((*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -394,7 +393,7 @@ func GrabGetCurrent() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 	}
 
 	return _widget

@@ -5,10 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -45,7 +44,7 @@ type NativeSurface struct {
 
 // NativeSurfacer describes NativeSurface's abstract methods.
 type NativeSurfacer interface {
-	gextras.Objector
+	externglib.Objector
 
 	// Renderer returns the renderer that is used for this GtkNative.
 	Renderer() gsk.Rendererer
@@ -98,7 +97,7 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 
 	var _renderer gsk.Rendererer // out
 
-	_renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
+	_renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
 
 	return _renderer
 }
@@ -114,7 +113,7 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -174,7 +173,7 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 
 	var _native NativeSurfacer // out
 
-	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
+	_native = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
 
 	return _native
 }

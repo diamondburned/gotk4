@@ -10,8 +10,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -55,7 +55,7 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 
 	var res AsyncResulter // out
 
-	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
+	res = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
 
 	fn := v.(AsyncReadyCallback)
 	fn(res)
@@ -137,7 +137,7 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 	var datagramBased DatagramBasedder // out
 	var condition glib.IOCondition     // out
 
-	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBasedder)
+	datagramBased = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBasedder)
 	condition = glib.IOCondition(arg1)
 
 	fn := v.(DatagramBasedSourceFunc)
@@ -332,7 +332,6 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
 	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
 	})
@@ -454,7 +453,6 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 
 	if _cret != nil {
 		_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_file_attribute_matcher_ref(_cret)
 		runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -821,7 +819,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

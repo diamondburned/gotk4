@@ -8,10 +8,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -244,11 +244,6 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	return _entry
 }
 
-// Native solves the ambiguous selector of this class or interface.
-func (entry *Entry) Native() uintptr {
-	return entry.Object.Native()
-}
-
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
 func (entry *Entry) ActivatesDefault() bool {
@@ -301,6 +296,7 @@ func (entry *Entry) Attributes() *pango.AttrList {
 
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 		})
@@ -372,7 +368,7 @@ func (entry *Entry) ExtraMenu() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+		_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 	}
 
 	return _menuModel
@@ -482,7 +478,7 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 	}
 
 	return _icon
@@ -527,7 +523,7 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 	}
 
 	return _paintable

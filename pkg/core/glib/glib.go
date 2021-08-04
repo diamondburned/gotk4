@@ -29,7 +29,6 @@ import "C"
 import (
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 	"runtime"
 	"unsafe"

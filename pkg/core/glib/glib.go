@@ -419,6 +419,10 @@ func Take(ptr unsafe.Pointer) *Object {
 		return nil
 	}
 
+	// Ensure that the reference is sunken.
+	obj.RefSink()
+	defer obj.Unref()
+
 	obj.addToggleRef()
 
 	return obj
@@ -438,6 +442,9 @@ func AssumeOwnership(ptr unsafe.Pointer) *Object {
 	if obj == nil {
 		return nil
 	}
+
+	obj.RefSink()
+	defer obj.Unref()
 
 	obj.addToggleRef()
 	obj.Unref()

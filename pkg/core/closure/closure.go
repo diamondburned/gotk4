@@ -17,12 +17,12 @@ func NewRegistry() *Registry {
 
 // Register registers the given GClosure callback.
 func (r *Registry) Register(gclosure unsafe.Pointer, callback *FuncStack) {
-	r.reg.Store(gclosure, callback)
+	r.reg.Store(uintptr(gclosure), callback)
 }
 
 // Load loads the given GClosure's callback. Nil is returned if it's not found.
 func (r *Registry) Load(gclosure unsafe.Pointer) *FuncStack {
-	fs, ok := r.reg.Load(gclosure)
+	fs, ok := r.reg.Load(uintptr(gclosure))
 	if !ok {
 		return nil
 	}
@@ -31,5 +31,5 @@ func (r *Registry) Load(gclosure unsafe.Pointer) *FuncStack {
 
 // Delete deletes the given GClosure callback.
 func (r *Registry) Delete(gclosure unsafe.Pointer) {
-	r.reg.Delete(gclosure)
+	r.reg.Delete(uintptr(gclosure))
 }

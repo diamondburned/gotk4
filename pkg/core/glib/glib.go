@@ -29,6 +29,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 	"runtime"
 	"unsafe"
@@ -164,6 +165,9 @@ func goMarshal(
 	fs := intern.ObjectClosure(unsafe.Pointer(gobject), unsafe.Pointer(gclosure))
 	if fs == nil {
 		// Possible data race, bail.
+		log.Println("warning:",
+			"gobject", unsafe.Pointer(gobject),
+			"gclosure", unsafe.Pointer(gclosure), "not found")
 		return
 	}
 
@@ -454,17 +458,7 @@ func AssumeOwnership(ptr unsafe.Pointer) *Object {
 
 //export goToggleNotify
 func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
-	isLast := isLastInt != 0
-	if isLast {
-		// Only Go's reference remains. Since Go still has a reference, we
-		// should move the closures to the weak map so the finalizer checks can
-		// work.
-		intern.MakeWeak(unsafe.Pointer(obj))
-	} else {
-		// C still has the object, which might reference the closures. Until
-		// then, we have to keep strong references to the closures.
-		intern.MakeStrong(unsafe.Pointer(obj))
-	}
+	intern.Toggle(unsafe.Pointer(obj), isLastInt != 0)
 }
 
 // objectNative wraps around a native C object. It exists to work around

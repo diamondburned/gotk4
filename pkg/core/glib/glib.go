@@ -334,8 +334,8 @@ type Objector interface {
 	HandlerUnblock(SignalHandle)
 	HandlerDisconnect(SignalHandle)
 
-	Property(string) interface{}
-	SetProperty(string, interface{})
+	ObjectProperty(string) interface{}
+	SetObjectProperty(string, interface{})
 
 	Cast() Objector
 	Native() uintptr
@@ -1109,10 +1109,10 @@ func (v *Value) Pointer() unsafe.Pointer {
 // String is a wrapper around g_value_get_string().  String() returns a non-nil
 // error if g_value_get_string() returned a NULL pointer to distinguish between
 // returning a NULL pointer and returning an empty string.
-func (v *Value) String() (string, error) {
+func (v *Value) String() string {
 	c := C.g_value_get_string(v.native())
 	if c == nil {
-		return "", nil
+		return ""
 	}
-	return C.GoString((*C.char)(c)), nil
+	return C.GoString((*C.char)(c))
 }

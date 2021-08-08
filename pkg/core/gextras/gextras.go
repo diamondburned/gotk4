@@ -7,85 +7,8 @@ package gextras
 import "C"
 
 import (
-	"errors"
-	"fmt"
-	"log"
-	"reflect"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/glib"
 )
-
-// MustSet panics if the given property cannot be set into the given object.
-func MustSet(obj glib.Objector, k string, v interface{}) {
-	if err := obj.SetProperty(k, v); err != nil {
-		log.Panicf("cannot set object property %q: %s", k, err)
-	}
-}
-
-// MustGet panics if the given property cannot be retrieved from the given
-// object.
-func MustGet(obj glib.Objector, k string) interface{} {
-	v, err := obj.Property(k)
-	if err != nil {
-		log.Panicf("cannot get object property %q: %s", k, err)
-	}
-	return v
-}
-
-// GetInto gets the given property key from the object into the given pointer.
-// An error is returned if it cannot get the property or the type is wrong. This
-// method is mostly useful for avoiding type assertions.
-func GetInto(obj glib.Objector, k string, ptr interface{}) error {
-	return getInto(obj, k, ptr, false)
-}
-
-// MustGetInto is similar to GetInfo, except it does not do safety checks and
-// will panic on an error. Code that uses constants should use this function
-// over GetInto.
-func MustGetInto(obj glib.Objector, k string, ptr interface{}) {
-	getInto(obj, k, ptr, true)
-}
-
-func getInto(obj glib.Objector, k string, ptr interface{}, must bool) error {
-	dst := reflect.ValueOf(ptr)
-	if !must {
-		typ := dst.Type()
-		if !(typ.Kind() == reflect.Ptr || typ.Kind() == reflect.Interface) {
-			return fmt.Errorf("ptr type %s is not a pointer", typ)
-		}
-	}
-
-	elem := dst.Elem()
-	if !must {
-		if !elem.CanSet() {
-			return errors.New("ptr's value cannot be set")
-		}
-	}
-
-	v, err := obj.Property(k)
-	if err != nil {
-		if !must {
-			return fmt.Errorf("cannot get object property %q: %s", k, err)
-		}
-
-		log.Panicf("cannot get object property %q: %s", k, err)
-	}
-
-	val := reflect.ValueOf(v)
-
-	if !must {
-		property := val.Type()
-		given := elem.Type()
-
-		if !property.AssignableTo(given) {
-			return fmt.Errorf("property type %s not assignable to given %s", property, given)
-		}
-	}
-
-	elem.Set(val)
-	return nil
-}
 
 type record struct {
 	_ NoCopy

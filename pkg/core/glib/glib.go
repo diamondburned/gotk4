@@ -743,7 +743,7 @@ func NewValue(v interface{}) *Value {
 func newValuePrimitive(v interface{}) *Value {
 	var val *Value
 	switch e := v.(type) {
-	case *Vaulue:
+	case *Value:
 		val = e
 	case bool:
 		val = InitValue(TypeBoolean)

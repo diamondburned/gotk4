@@ -80,7 +80,6 @@ const (
 	TypeString    Type = C.G_TYPE_STRING
 	TypePointer   Type = C.G_TYPE_POINTER
 	TypeBoxed     Type = C.G_TYPE_BOXED
-	TypeValue     Type = C.G_TYPE_VALUE
 	TypeParam     Type = C.G_TYPE_PARAM
 	TypeObject    Type = C.G_TYPE_OBJECT
 	TypeVariant   Type = C.G_TYPE_VARIANT
@@ -888,9 +887,14 @@ var gValueMarshalers = marshalMap{
 	TypeString:    marshalString,
 	TypePointer:   marshalPointer,
 	TypeBoxed:     marshalBoxed,
-	TypeValue:     marshalValue,
 	TypeObject:    marshalObject,
 	TypeVariant:   marshalVariant,
+}
+
+func init() {
+	gValueMarshalers.register([]TypeMarshaler{
+		{Type(C.g_value_get_type()), marshalValue},
+	})
 }
 
 func (m marshalMap) register(tm []TypeMarshaler) {

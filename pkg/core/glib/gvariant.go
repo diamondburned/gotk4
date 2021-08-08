@@ -1,6 +1,3 @@
-//GVariant : GVariant — strongly typed value datatype
-// https://developer.gnome.org/glib/2.26/glib-GVariant.html
-
 package glib
 
 // #include "glib.go.h"
@@ -10,10 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 )
-
-/*
- * GVariant
- */
 
 // A Variant is a representation of GLib's GVariant.
 type Variant struct {
@@ -106,9 +99,14 @@ func (v *Variant) IsContainer() bool {
 	return gobool(C.g_variant_is_container(v.native()))
 }
 
-// GetString is a wrapper around g_variant_get_string.
-// It returns the string value of the variant.
-func (v *Variant) GetString() string {
+// String is a wrapper around g_variant_get_string. If the Variant type is not a
+// string, then Print is called instead. This is done to satisfy fmt.Stringer;
+// it behaves similarly to reflect.Value.String().
+func (v *Variant) String() string {
+	if C.g_variant_get_type(v.native()) != C.G_VARIANT_TYPE_STRING {
+		return v.Print(false)
+	}
+
 	// The string value remains valid as long as the GVariant exists, do NOT free the cstring in this function.
 	var len C.gsize
 	gc := C.g_variant_get_string(v.native(), &len)
@@ -131,20 +129,55 @@ func (v *Variant) IsType(t *VariantType) bool {
 	return gobool(C.g_variant_is_of_type(v.native(), t.native()))
 }
 
-// String wraps g_variant_print().  It returns a string understood
-// by g_variant_parse().
-func (v *Variant) String() string {
-	gc := C.g_variant_print(v.native(), gbool(false))
+// Print wraps g_variant_print(). It returns a string understood by
+// g_variant_parse().
+func (v *Variant) Print(typeAnnotate bool) string {
+	gc := C.g_variant_print(v.native(), gbool(typeAnnotate))
 	defer C.g_free(C.gpointer(gc))
+
 	return C.GoString((*C.char)(gc))
 }
 
-// AnnotatedString wraps g_variant_print(), but returns a type-annotated
-// string.
-func (v *Variant) AnnotatedString() string {
-	gc := C.g_variant_print(v.native(), gbool(true))
-	defer C.g_free(C.gpointer(gc))
-	return C.GoString((*C.char)(gc))
+// GoValue converts the variant's value to the Go value. It only supports the
+// following types for now:
+//
+//    s: string
+//    b: bool
+//    d: float64
+//    n: int16
+//    i: int32
+//    x: int64
+//    y: byte
+//    q: uint16
+//    u: uint32
+//    t: uint64
+//
+// Variants with unsupported types will cause the function to return nil.
+func (v *Variant) GoValue() interface{} {
+	var val interface{}
+	switch C.g_variant_get_type(v.native()) {
+	case C.G_VARIANT_TYPE_STRING:
+		val = v.String()
+	case C.G_VARIANT_TYPE_BOOLEAN:
+		val = gobool(C.g_variant_get_boolean(v.native()))
+	case C.G_VARIANT_TYPE_DOUBLE:
+		val = float64(C.g_variant_get_double(v.native()))
+	case C.G_VARIANT_TYPE_INT16:
+		val = int16(C.g_variant_get_int16(v.native()))
+	case C.G_VARIANT_TYPE_INT32:
+		val = int32(C.g_variant_get_int32(v.native()))
+	case C.G_VARIANT_TYPE_INT64:
+		val = int64(C.g_variant_get_int64(v.native()))
+	case C.G_VARIANT_TYPE_BYTE:
+		val = uint8(C.g_variant_get_byte(v.native()))
+	case C.G_VARIANT_TYPE_UINT16:
+		val = uint16(C.g_variant_get_uint16(v.native()))
+	case C.G_VARIANT_TYPE_UINT32:
+		val = uint32(C.g_variant_get_uint32(v.native()))
+	case C.G_VARIANT_TYPE_UINT64:
+		val = uint64(C.g_variant_get_uint64(v.native()))
+	}
+	return val
 }
 
 // A VariantType is a wrapper for the GVariantType, which encodes type
@@ -192,9 +225,8 @@ func takeVariantType(v *C.GVariantType) *VariantType {
 	return obj
 }
 
-// Variant types for comparing between them.  Cannot be const because
-// they are pointers.
-// Note that variant types cannot be compared by value, use VariantTypeEqual() instead.
+// Variant types for comparison. Note that variant types cannot be compared by
+// value; use VariantType.Equal instead.
 var (
 	VariantTypeBoolean         = newVariantType(C.G_VARIANT_TYPE_BOOLEAN)
 	VariantTypeByte            = newVariantType(C.G_VARIANT_TYPE_BYTE)
@@ -232,8 +264,8 @@ func (v *VariantType) Free() {
 	C.g_variant_type_free(v.native())
 }
 
-// VariantTypeNew is a wrapper around g_variant_type_new.
-func VariantTypeNew(typeString string) *VariantType {
+// NewVariantType is a wrapper around g_variant_type_new.
+func NewVariantTypeNew(typeString string) *VariantType {
 	cstr := (*C.gchar)(C.CString(typeString))
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -249,12 +281,12 @@ func VariantTypeStringIsValid(typeString string) bool {
 	return gobool(C.g_variant_type_string_is_valid(cstr))
 }
 
-// VariantTypeEqual is a wrapper around g_variant_type_equal
-func VariantTypeEqual(type1, type2 *VariantType) bool {
-	return gobool(C.g_variant_type_equal(C.gconstpointer(type1.native()), C.gconstpointer(type2.native())))
+// Equal is a wrapper around g_variant_type_equal.
+func (v *VariantType) Equal(to *VariantType) bool {
+	return gobool(C.g_variant_type_equal(C.gconstpointer(v.native()), C.gconstpointer(to.native())))
 }
 
-// IsSubtypeOf is a wrapper around g_variant_type_is_subtype_of
+// IsSubtypeOf is a wrapper around g_variant_type_is_subtype_of.
 func (v *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	return gobool(C.g_variant_type_is_subtype_of(v.native(), supertype.native()))
 }

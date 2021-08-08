@@ -1,21 +1,4 @@
-// Copyright (c) 2013-2014 Conformal Systems <info@conformal.com>
-//
-// This file originated from: http://opensource.conformal.com/
-//
-// Permission to use, copy, modify, and distribute this software for any
-// purpose with or without fee is hereby granted, provided that the above
-// copyright notice and this permission notice appear in all copies.
-//
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-// ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-// OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-// Package glib provides Go bindings for GLib 2. It supports version 2.36 and
-// later.
+// Package glib provides some hand-written GObject and GLib bindings.
 package glib
 
 // #cgo pkg-config: gio-2.0 glib-2.0 gobject-2.0
@@ -28,7 +11,6 @@ import "C"
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"reflect"
 	"runtime"
@@ -47,10 +29,7 @@ func gbool(b bool) C.gboolean {
 }
 
 func gobool(b C.gboolean) bool {
-	if b != 0 {
-		return true
-	}
-	return false
+	return b != 0
 }
 
 // InitI18n initializes the i18n subsystem. It runs the following C code:
@@ -60,7 +39,7 @@ func gobool(b C.gboolean) bool {
 //    bind_textdomain_codeset(domain, "UTF-8");
 //    textdomain(domain);
 //
-func InitI18n(domain string, dir string) {
+func InitI18n(domain, dir string) {
 	domainStr := C.CString(domain)
 	defer C.free(unsafe.Pointer(domainStr))
 
@@ -77,10 +56,6 @@ func Local(input string) string {
 
 	return C.GoString(C.localize(cstr))
 }
-
-/*
- * Constants
- */
 
 // Type is a representation of GLib's GType.
 type Type uint
@@ -135,14 +110,15 @@ func (t Type) IsA(isAType Type) bool {
 	return gobool(C.g_type_is_a(C.GType(t), C.GType(isAType)))
 }
 
-// TypeFromName is a wrapper around g_type_from_name
+// TypeFromName is a wrapper around g_type_from_name().
 func TypeFromName(typeName string) Type {
 	cstr := (*C.gchar)(C.CString(typeName))
 	defer C.free(unsafe.Pointer(cstr))
+
 	return Type(C.g_type_from_name(cstr))
 }
 
-//TypeNextBase is a wrapper around g_type_next_base
+// TypeNextBase is a wrapper around g_type_next_base.
 func TypeNextBase(leafType, rootType Type) Type {
 	return Type(C.g_type_next_base(C.GType(leafType), C.GType(rootType)))
 }
@@ -171,6 +147,12 @@ func goMarshal(
 		return
 	}
 
+	// Fast path for an empty function.
+	if fn, ok := fs.Func.Interface().(func()); ok {
+		fn()
+		return
+	}
+
 	fsType := fs.Func.Type()
 
 	// Get number of parameters passed in.
@@ -195,48 +177,20 @@ func goMarshal(
 	// parameters and parameters from the glib runtime.
 	for i := 0; i < nCbParams && i < nGLibParams; i++ {
 		v := (*Value)(unsafe.Pointer(&gValues[i]))
-
-		val, err := v.GoValue()
-		if err != nil {
-			fs.Panicf("no suitable Go value for arg %d: %v", i, err)
-		}
+		val := v.GoValue()
 
 		// Parameters that are descendants of GObject come wrapped in another
 		// GObject. For C applications, the default marshaller
 		// (g_cclosure_marshal_VOID__VOID in gmarshal.c in the GTK glib library)
 		// 'peeks' into the enclosing object and passes the wrapped object to
-		// the handler. Use the *Object.goValue function to emulate that for Go
+		// the handler. Use the Object.Cast() function to emulate that for Go
 		// signal handlers.
-		switch objVal := val.(type) {
+		switch v := val.(type) {
 		case *Object:
-			if innerVal, err := objVal.goValue(); err == nil {
-				val = innerVal
-			}
-
+			val = v.Cast()
 		case *Variant:
-			switch ts := objVal.TypeString(); ts {
-			case "s":
-				val = objVal.GetString()
-			case "b":
-				val = gobool(C.g_variant_get_boolean(objVal.native()))
-			case "d":
-				val = float64(C.g_variant_get_double(objVal.native()))
-			case "n":
-				val = int16(C.g_variant_get_int16(objVal.native()))
-			case "i":
-				val = int32(C.g_variant_get_int32(objVal.native()))
-			case "x":
-				val = int64(C.g_variant_get_int64(objVal.native()))
-			case "y":
-				val = uint8(C.g_variant_get_byte(objVal.native()))
-			case "q":
-				val = uint16(C.g_variant_get_uint16(objVal.native()))
-			case "u":
-				val = uint32(C.g_variant_get_uint32(objVal.native()))
-			case "t":
-				val = uint64(C.g_variant_get_uint64(objVal.native()))
-			default:
-				fs.Panicf("variant conversion not yet implemented for type %s", ts)
+			if g := v.GoValue(); g != nil {
+				val = g
 			}
 		}
 
@@ -247,14 +201,11 @@ func goMarshal(
 	// the GValue equivalent of the first.
 	rv := fs.Func.Call(args)
 	if retValue != nil && len(rv) > 0 {
-		g, err := GValue(rv[0].Interface())
-		if err != nil {
-			fs.Panicf("cannot save callback return value: %v", err)
-		}
+		g := NewValue(rv[0].Interface())
 
-		t, _, err := g.Type()
-		if err != nil {
-			fs.Panicf("cannot determine callback return value: %v", err)
+		t, _ := g.Type()
+		if t == TypeInvalid {
+			fs.Panicf("cannot convert to GValue return type %s.", rv[0].Type())
 		}
 
 		// Explicitly copy the return value as it may point to go-owned memory.
@@ -263,10 +214,6 @@ func goMarshal(
 		C.g_value_copy(g.native(), retValue)
 	}
 }
-
-/*
- * Main event loop
- */
 
 // Priority is the enumerated type for GLib priority event sources.
 type Priority int
@@ -377,23 +324,22 @@ func SourceRemove(src SourceHandle) bool {
 	return gobool(C.g_source_remove(C.guint(src)))
 }
 
-/*
- * GObject
- */
-
-// Objector is an interface that describes partially the Object type.
+// Objector is an interface that describes the Object type's methods. Only this
+// package's Object types and types that embed it can satisfy this interface.
 type Objector interface {
 	Connect(string, interface{}) SignalHandle
 	ConnectAfter(string, interface{}) SignalHandle
 
 	HandlerBlock(SignalHandle)
-	HandlerDisconnect(SignalHandle)
 	HandlerUnblock(SignalHandle)
+	HandlerDisconnect(SignalHandle)
 
-	Property(string) (interface{}, error)
-	SetProperty(string, interface{}) error
+	Property(string) interface{}
+	SetProperty(string, interface{})
 
+	Cast() Objector
 	Native() uintptr
+
 	baseObject() *Object
 }
 
@@ -504,23 +450,25 @@ func finalizeObjectNative(native *objectNative) {
 	native.removeToggleRef()
 }
 
-// goValue converts a *Object to a Go type (e.g. *Object => *gtk.Entry).
-// It is used in goMarshal to convert generic GObject parameters to
-// signal handlers to the actual types expected by the signal handler.
-func (v *Object) goValue() (interface{}, error) {
+// Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
+func (v *Object) Cast() Objector {
 	objType := Type(C._g_type_from_instance(C.gpointer(v.native())))
 
-	f, err := gValueMarshalers.lookupType(objType)
-	if err != nil {
-		return nil, err
+	f := gValueMarshalers.lookupType(objType)
+	if f == nil {
+		return v
 	}
 
 	// The marshalers expect Values, not Objects
-	val := ValueInit(objType)
-	val.SetInstance(uintptr(unsafe.Pointer(v.GObject)))
+	val := InitValue(objType)
+	val.SetInstance(v.Native())
 
-	rv, err := f(uintptr(unsafe.Pointer(val.native())))
-	return rv, err
+	g, err := f(v.Native())
+	if err != nil {
+		return v
+	}
+
+	return g.(Objector)
 }
 
 func (v *Object) baseObject() *Object {
@@ -593,75 +541,57 @@ func (v *Object) StopEmission(s string) {
 		(*C.gchar)(cstr))
 }
 
-// Set calls SetProperty.
-func (v *Object) Set(name string, value interface{}) error {
-	return v.SetProperty(name, value)
-}
-
-// PropertyType returns the Type of a property of the underlying GObject.  If
-// the property is missing it will return TYPE_INVALID and an error.
-func (v *Object) PropertyType(name string) (Type, error) {
+// PropertyType returns the Type of a property of the underlying GObject. If the
+// property is missing, it will return TypeInvalid.
+func (v *Object) PropertyType(name string) Type {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
 	return v.propertyType(cstr)
 }
 
-func (v *Object) propertyType(cstr *C.gchar) (Type, error) {
+func (v *Object) propertyType(cstr *C.gchar) Type {
 	paramSpec := C.g_object_class_find_property(C._g_object_get_class(v.native()), (*C.gchar)(cstr))
 	if paramSpec == nil {
-		return TypeInvalid, errors.New("couldn't find Property")
+		return TypeInvalid
 	}
 
-	return Type(paramSpec.value_type), nil
+	return Type(paramSpec.value_type)
 }
 
-// Property is a wrapper around g_object_get_property().
-func (v *Object) Property(name string) (interface{}, error) {
+// Property is a wrapper around g_object_get_property(). If the property's type
+// cannot be resolved to a Go type, then InvalidValue is returned.
+func (v *Object) Property(name string) interface{} {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
-	t, err := v.propertyType((*C.gchar)(cstr))
-	if err != nil {
-		return nil, err
+	t := v.propertyType((*C.gchar)(cstr))
+	if t == TypeInvalid {
+		return InvalidValue
 	}
 
-	p := ValueInit(t)
+	p := InitValue(t)
 	C.g_object_get_property(v.GObject, (*C.gchar)(cstr), p.native())
 	return p.GoValue()
 }
 
 // SetProperty is a wrapper around g_object_set_property().
-func (v *Object) SetProperty(name string, value interface{}) error {
+func (v *Object) SetProperty(name string, value interface{}) {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
-	if _, ok := value.(Object); ok {
-		value = value.(Object).GObject
-	}
-
-	p, err := GValue(value)
-	if err != nil {
-		return errors.New("Unable to perform type conversion")
-	}
-
+	p := NewValue(value)
 	C.g_object_set_property(v.GObject, (*C.gchar)(cstr), p.native())
-	return nil
 }
 
-/*
- * GObject Signals
- */
-
-// Emit is a wrapper around g_signal_emitv() and emits the signal
-// specified by the string s to an Object.  Arguments to callback
-// functions connected to this signal must be specified in args.  Emit()
-// returns an interface{} which must be type asserted as the Go
-// equivalent type to the return value for native C callback.
+// Emit emits the signal specified by the string s to an Object. Arguments to
+// callback functions connected to this signal must be specified in args. Emit
+// returns an interface{} which must be type asserted to an equivalent Go type.
+// The return value is the return value for the native C callback.
 //
-// Note that this code is unsafe in that the types of values in args are
-// not checked against whether they are suitable for the callback.
-func (v *Object) Emit(s string, args ...interface{}) (interface{}, error) {
+// Note that this code is unsafe in that the types of values in args are not
+// checked against whether they are suitable for the callback.
+func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	cstr := C.CString(s)
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -670,18 +600,11 @@ func (v *Object) Emit(s string, args ...interface{}) (interface{}, error) {
 	defer C.free(unsafe.Pointer(valv))
 
 	// Add args and valv
-	val, err := GValue(v)
-	if err != nil {
-		return nil, errors.New("Error converting Object to GValue: " + err.Error())
-	}
-
+	val := NewValue(v)
 	C.val_list_insert(valv, C.int(0), val.native())
 
 	for i := range args {
-		val, err := GValue(args[i])
-		if err != nil {
-			return nil, fmt.Errorf("Error converting arg %d to GValue: %s", i, err.Error())
-		}
+		val := NewValue(args[i])
 		C.val_list_insert(valv, C.int(i+1), val.native())
 	}
 
@@ -689,7 +612,7 @@ func (v *Object) Emit(s string, args ...interface{}) (interface{}, error) {
 	// TODO: use just the signal name
 	id := C.g_signal_lookup((*C.gchar)(cstr), C.GType(t))
 
-	ret := ValueAlloc()
+	ret := AllocateValue()
 	C.g_signal_emitv(valv, id, C.GQuark(0), ret.native())
 
 	return ret.GoValue()
@@ -711,30 +634,164 @@ func (v *Object) HandlerDisconnect(handle SignalHandle) {
 	C.g_signal_handler_disconnect(C.gpointer(v.GObject), C.gulong(handle))
 }
 
-/*
- * GInitiallyUnowned
- */
-
 // InitiallyUnowned is a representation of GLib's GInitiallyUnowned.
 type InitiallyUnowned struct {
 	*Object
 }
 
-/*
- * GValue
- */
+type invalidValueType struct{}
+
+var (
+	// InvalidValue is returned from Value methods, such as GoValue, to indicate
+	// that the value obtained is invalid.
+	InvalidValue = invalidValueType{}
+)
 
 // Value is a representation of GLib's GValue.
-//
-// Don't allocate Values on the stack or heap manually as they may not
-// be properly unset when going out of scope. Instead, use ValueAlloc(),
-// which will set the runtime finalizer to unset the Value after it has
-// left scope.
 type Value struct {
 	gvalue C.GValue
 }
 
+// AllocateValue allocates a Value but does not initialize it. It sets a
+// runtime finalizer to call g_value_unset() on the underlying GValue after
+// leaving scope. ValueAlloc() returns a non-nil error if the allocation failed.
+func AllocateValue() *Value {
+	v := new(Value)
+
+	//An allocated GValue is not guaranteed to hold a value that can be unset
+	//We need to double check before unsetting, to prevent:
+	//`g_value_unset: assertion 'G_IS_VALUE (value)' failed`
+	runtime.SetFinalizer(v, func(f *Value) {
+		if f.IsValue() {
+			f.Unset()
+		}
+	})
+
+	return v
+}
+
+// InitValue is a wrapper around g_value_init() and allocates and initializes a
+// new Value with the Type t. A runtime finalizer is set to call g_value_unset()
+// on the underlying GValue after leaving scope.  ValueInit() returns a non-nil
+// error if the allocation failed.
+func InitValue(t Type) *Value {
+	v := new(Value)
+	C.g_value_init(v.native(), C.GType(t))
+
+	runtime.SetFinalizer(v, (*Value).Unset)
+	return v
+}
+
+// ValueFromNative returns a type-asserted pointer to the Value.
+func ValueFromNative(l unsafe.Pointer) *Value {
+	//TODO why it does not add finalizer to the value?
+	return (*Value)(l)
+}
+
+// NewValue converts a Go type to a comparable GValue. It will panic if the
+// given type is unknown. Most Go primitive types and all Object types are
+// supported.
+func NewValue(v interface{}) *Value {
+	if v == nil {
+		val := InitValue(TypePointer)
+		val.SetPointer(uintptr(unsafe.Pointer(nil)))
+		return val
+	}
+
+	if val := newValuePrimitive(v); val != nil {
+		return val
+	}
+
+	if v == InvalidValue {
+		return InitValue(TypeInvalid)
+	}
+
+	// Try this since above doesn't catch constants under other types.
+	rval := reflect.Indirect(reflect.ValueOf(v))
+
+	switch rval.Kind() {
+	case reflect.Bool:
+		return newValuePrimitive(rval.Bool())
+	case reflect.Int8:
+		return newValuePrimitive(int8(rval.Int()))
+	case reflect.Int32:
+		return newValuePrimitive(int32(rval.Int()))
+	case reflect.Int64:
+		return newValuePrimitive(int64(rval.Int()))
+	case reflect.Int:
+		return newValuePrimitive(int(rval.Int()))
+	case reflect.Uint8:
+		return newValuePrimitive(uint8(rval.Uint()))
+	case reflect.Uint32:
+		return newValuePrimitive(uint32(rval.Uint()))
+	case reflect.Uint64:
+		return newValuePrimitive(uint64(rval.Uint()))
+	case reflect.Uint:
+		return newValuePrimitive(uint(rval.Uint()))
+	case reflect.Float32:
+		return newValuePrimitive(float32(rval.Float()))
+	case reflect.Float64:
+		return newValuePrimitive(float64(rval.Float()))
+	case reflect.String:
+		return newValuePrimitive(rval.String())
+	}
+
+	log.Panicf("type %T not implemented", v)
+	return nil
+}
+
+func newValuePrimitive(v interface{}) *Value {
+	var val *Value
+	switch e := v.(type) {
+	case *Vaulue:
+		val = e
+	case bool:
+		val = InitValue(TypeBoolean)
+		val.SetBool(e)
+	case int8:
+		val = InitValue(TypeChar)
+		val.SetSchar(e)
+	case int32:
+		val = InitValue(TypeLong)
+		val.SetLong(e)
+	case int64:
+		val = InitValue(TypeInt64)
+		val.SetInt64(e)
+	case int:
+		val = InitValue(TypeInt)
+		val.SetInt(e)
+	case uint8:
+		val = InitValue(TypeUchar)
+		val.SetUchar(e)
+	case uint32:
+		val = InitValue(TypeUlong)
+		val.SetUlong(e)
+	case uint64:
+		val = InitValue(TypeUint64)
+		val.SetUint64(e)
+	case uint:
+		val = InitValue(TypeUint)
+		val.SetUint(e)
+	case float32:
+		val = InitValue(TypeFloat)
+		val.SetFloat(e)
+	case float64:
+		val = InitValue(TypeDouble)
+		val.SetDouble(e)
+	case string:
+		val = InitValue(TypeString)
+		val.SetString(e)
+	case Objector:
+		val = InitValue(TypeObject)
+		val.SetInstance(uintptr(unsafe.Pointer(e.Native())))
+	}
+	return val
+}
+
 func (v *Value) native() *C.GValue {
+	if v == nil {
+		return nil
+	}
 	return &v.gvalue
 }
 
@@ -753,172 +810,29 @@ func (v *Value) TypeName() string {
 	return C.GoString((*C.char)(C._g_value_type_name(v.native())))
 }
 
-// ValueAlloc allocates a Value and sets a runtime finalizer to call
-// g_value_unset() on the underlying GValue after leaving scope.
-// ValueAlloc() returns a non-nil error if the allocation failed.
-func ValueAlloc() *Value {
-	v := new(Value)
-
-	//An allocated GValue is not guaranteed to hold a value that can be unset
-	//We need to double check before unsetting, to prevent:
-	//`g_value_unset: assertion 'G_IS_VALUE (value)' failed`
-	runtime.SetFinalizer(v, func(f *Value) {
-		if f.IsValue() {
-			f.unset()
-		}
-	})
-
-	return v
-}
-
-// ValueInit is a wrapper around g_value_init() and allocates and
-// initializes a new Value with the Type t.  A runtime finalizer is set
-// to call g_value_unset() on the underlying GValue after leaving scope.
-// ValueInit() returns a non-nil error if the allocation failed.
-func ValueInit(t Type) *Value {
-	v := new(Value)
-	C.g_value_init(v.native(), C.GType(t))
-
-	runtime.SetFinalizer(v, (*Value).unset)
-	return v
-}
-
-// ValueFromNative returns a type-asserted pointer to the Value.
-func ValueFromNative(l unsafe.Pointer) *Value {
-	//TODO why it does not add finalizer to the value?
-	return (*Value)(l)
-}
-
-func (v *Value) unset() {
+// Unset is wrapper for g_value_unset
+func (v *Value) Unset() {
 	C.g_value_unset(v.native())
 }
 
-// Unset is wrapper for g_value_unset
-func (v *Value) Unset() {
-	v.unset()
-}
-
-// Type is a wrapper around the G_VALUE_HOLDS_GTYPE() macro and
-// the g_value_get_gtype() function.  GetType() returns TYPE_INVALID if v
-// does not hold a Type, or otherwise returns the Type of v.
-func (v *Value) Type() (actual, fundamental Type, err error) {
+// Type is a wrapper around the G_VALUE_HOLDS_GTYPE() macro and the
+// g_value_get_gtype() function. It returns TYPE_INVALID if v does not hold a
+// Type, or otherwise returns the Type of v.
+func (v *Value) Type() (actual, fundamental Type) {
 	if !v.IsValue() {
-		return actual, fundamental, errors.New("invalid GValue")
+		return TypeInvalid, TypeInvalid
 	}
 	cActual := C._g_value_type(v.native())
 	cFundamental := C._g_value_fundamental(cActual)
-	return Type(cActual), Type(cFundamental), nil
-}
-
-// GValue converts a Go type to a comparable GValue.  GValue()
-// returns a non-nil error if the conversion was unsuccessful.
-func GValue(v interface{}) (gvalue *Value, err error) {
-	if v == nil {
-		val := ValueInit(TypePointer)
-		val.SetPointer(uintptr(unsafe.Pointer(nil)))
-		return val, nil
-	}
-
-	switch e := v.(type) {
-	case bool:
-		val := ValueInit(TypeBoolean)
-		val.SetBool(e)
-		return val, nil
-
-	case int8:
-		val := ValueInit(TypeChar)
-		val.SetSchar(e)
-		return val, nil
-
-	case int64:
-		val := ValueInit(TypeInt64)
-		val.SetInt64(e)
-		return val, nil
-
-	case int:
-		val := ValueInit(TypeInt)
-		val.SetInt(e)
-		return val, nil
-
-	case uint8:
-		val := ValueInit(TypeUchar)
-		val.SetUchar(e)
-		return val, nil
-
-	case uint64:
-		val := ValueInit(TypeUint64)
-		val.SetUint64(e)
-		return val, nil
-
-	case uint:
-		val := ValueInit(TypeUint)
-		val.SetUint(e)
-		return val, nil
-
-	case float32:
-		val := ValueInit(TypeFloat)
-		val.SetFloat(e)
-		return val, nil
-
-	case float64:
-		val := ValueInit(TypeDouble)
-		val.SetDouble(e)
-		return val, nil
-
-	case string:
-		val := ValueInit(TypeString)
-		val.SetString(e)
-		return val, nil
-
-	case *Object:
-		val := ValueInit(TypeObject)
-		val.SetInstance(uintptr(unsafe.Pointer(e.GObject)))
-		return val, nil
-
-	default:
-		/* Try this since above doesn't catch constants under other types */
-		rval := reflect.ValueOf(v)
-		switch rval.Kind() {
-		case reflect.Int8:
-			val := ValueInit(TypeChar)
-			val.SetSchar(int8(rval.Int()))
-			return val, nil
-
-		case reflect.Int64:
-			val := ValueInit(TypeInt64)
-			val.SetInt64(rval.Int())
-			return val, nil
-
-		case reflect.Int:
-			val := ValueInit(TypeInt)
-			val.SetInt(int(rval.Int()))
-			return val, nil
-
-		case reflect.Uintptr, reflect.Ptr:
-			val := ValueInit(TypePointer)
-			val.SetPointer(rval.Pointer())
-			return val, nil
-		}
-	}
-
-	return nil, errors.New("Type not implemented")
+	return Type(cActual), Type(cFundamental)
 }
 
 // CastObject casts the given object pointer to the Go concrete type. The caller
 // is responsible for recasting the interface to the wanted type.
+//
+// Deprecated: Use obj.Cast() instead.
 func CastObject(obj *Object) interface{} {
-	var gvalue C.GValue
-	C.g_value_init_from_instance(&gvalue, C.gpointer(unsafe.Pointer(obj.GObject)))
-
-	value := ValueFromNative(unsafe.Pointer(&gvalue))
-	defer value.unset()
-
-	v, err := value.GoValue()
-	if err != nil {
-		return obj
-	}
-
-	return v
+	return obj.Cast()
 }
 
 // GValueMarshaler is a marshal function to convert a GValue into an
@@ -973,26 +887,22 @@ func (m marshalMap) register(tm []TypeMarshaler) {
 	}
 }
 
-func (m marshalMap) lookup(v *Value) (GValueMarshaler, error) {
-	actual, fundamental, err := v.Type()
-	if err != nil {
-		return nil, err
-	}
-
+func (m marshalMap) lookup(v *Value) GValueMarshaler {
+	actual, fundamental := v.Type()
 	if f, ok := m[actual]; ok {
-		return f, nil
+		return f
 	}
 	if f, ok := m[fundamental]; ok {
-		return f, nil
+		return f
 	}
-	return nil, errors.New("missing marshaler for type")
+	return nil
 }
 
-func (m marshalMap) lookupType(t Type) (GValueMarshaler, error) {
+func (m marshalMap) lookupType(t Type) GValueMarshaler {
 	if f, ok := m[t]; ok {
-		return f, nil
+		return f
 	}
-	return nil, errors.New("missing marshaler for type")
+	return nil
 }
 
 func marshalInvalid(uintptr) (interface{}, error) {
@@ -1097,22 +1007,26 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	return newVariant((*C.GVariant)(c)), nil
 }
 
-// GoValue converts a Value to comparable Go type.  GoValue()
-// returns a non-nil error if the conversion was unsuccessful.  The
-// returned interface{} must be type asserted as the actual Go
-// representation of the Value.
+// GoValue converts a Value to comparable Go type. GoValue() returns
+// InvalidValue if the conversion was unsuccessful. The returned value must be
+// type asserted to the actual Go type.
 //
-// This function is a wrapper around the many g_value_get_*()
-// functions, depending on the type of the Value.
-func (v *Value) GoValue() (interface{}, error) {
-	f, err := gValueMarshalers.lookup(v)
-	if err != nil {
-		return nil, err
+// Unlike the type getters, although this method is not type-safe, it can get
+// any concrete object type out, as long as there exists a marshaler for it.
+func (v *Value) GoValue() interface{} {
+	f := gValueMarshalers.lookup(v)
+	if f == nil {
+		return InvalidValue
 	}
 
-	//No need to add finalizer because it is already done by ValueAlloc and ValueInit
-	rv, err := f(uintptr(unsafe.Pointer(v.native())))
-	return rv, err
+	// No need to add finalizer because it is already done by AllocateValue and
+	// InitValue. (?)
+	g, err := f(uintptr(unsafe.Pointer(v.native())))
+	if err != nil {
+		return InvalidValue
+	}
+
+	return g
 }
 
 // SetBool is a wrapper around g_value_set_boolean().
@@ -1130,6 +1044,11 @@ func (v *Value) SetInt64(val int64) {
 	C.g_value_set_int64(v.native(), C.gint64(val))
 }
 
+// SetLong is a wrapper around g_value_set_long().
+func (v *Value) SetLong(long int32) {
+	C.g_value_set_long(v.native(), C.glong(long))
+}
+
 // SetInt is a wrapper around g_value_set_int().
 func (v *Value) SetInt(val int) {
 	C.g_value_set_int(v.native(), C.gint(val))
@@ -1143,6 +1062,11 @@ func (v *Value) SetUchar(val uint8) {
 // SetUint64 is a wrapper around g_value_set_uint64().
 func (v *Value) SetUint64(val uint64) {
 	C.g_value_set_uint64(v.native(), C.guint64(val))
+}
+
+// SetUlong is a wrapper around g_value_set_ulong().
+func (v *Value) SetUlong(ulong uint32) {
+	C.g_value_set_ulong(v.native(), C.gulong(ulong))
 }
 
 // SetUint is a wrapper around g_value_set_uint().

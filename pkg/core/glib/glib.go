@@ -85,6 +85,11 @@ const (
 	TypeVariant   Type = C.G_TYPE_VARIANT
 )
 
+// FundamentalType returns the fundamental type of the given actual type.
+func FundamentalType(actual Type) Type {
+	return Type(C._g_value_fundamental(C.GType(actual)))
+}
+
 // IsValue checks whether the passed in type can be used for g_value_init().
 func (t Type) IsValue() bool {
 	return gobool(C._g_type_is_value(C.GType(t)))
@@ -203,7 +208,7 @@ func goMarshal(
 	if retValue != nil && len(rv) > 0 {
 		g := NewValue(rv[0].Interface())
 
-		t, _ := g.Type()
+		t := g.Type()
 		if t == TypeInvalid {
 			fs.Panicf("cannot convert to GValue return type %s.", rv[0].Type())
 		}
@@ -815,16 +820,16 @@ func (v *Value) Unset() {
 	C.g_value_unset(v.native())
 }
 
-// Type is a wrapper around the G_VALUE_HOLDS_GTYPE() macro and the
-// g_value_get_gtype() function. It returns TYPE_INVALID if v does not hold a
-// Type, or otherwise returns the Type of v.
-func (v *Value) Type() (actual, fundamental Type) {
+// Type returns the Value's actual type. is a wrapper around the G_VALUE_TYPE()
+// macro. It returns TYPE_INVALID if v does not hold a Type, or otherwise
+// returns the Type of v.
+//
+// To get the fundamental type, use FundamentalType.
+func (v *Value) Type() (actual Type) {
 	if !v.IsValue() {
-		return TypeInvalid, TypeInvalid
+		return TypeInvalid
 	}
-	cActual := C._g_value_type(v.native())
-	cFundamental := C._g_value_fundamental(cActual)
-	return Type(cActual), Type(cFundamental)
+	return Type(C._g_value_type(v.native()))
 }
 
 // CastObject casts the given object pointer to the Go concrete type. The caller
@@ -888,13 +893,16 @@ func (m marshalMap) register(tm []TypeMarshaler) {
 }
 
 func (m marshalMap) lookup(v *Value) GValueMarshaler {
-	actual, fundamental := v.Type()
+	actual := v.Type()
 	if f, ok := m[actual]; ok {
 		return f
 	}
+
+	fundamental := FundamentalType(actual)
 	if f, ok := m[fundamental]; ok {
 		return f
 	}
+
 	return nil
 }
 

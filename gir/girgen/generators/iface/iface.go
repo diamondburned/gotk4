@@ -206,7 +206,7 @@ func (g *Generator) renameGetters(methods Methods) {
 			}
 
 			// Field is duplicate even when it wasn't renamed; work around this.
-			newName += g.InterfaceName
+			newName += g.StructName
 		}
 
 		methods[i].Name = newName

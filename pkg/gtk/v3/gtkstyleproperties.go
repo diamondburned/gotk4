@@ -182,10 +182,10 @@ func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool)
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-// SetPropertyStylePropertieser sets a styling property in props.
+// SetProperty sets a styling property in props.
 //
 // Deprecated: StyleProperties are deprecated.
-func (props *StyleProperties) SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value) {
+func (props *StyleProperties) SetProperty(property string, state StateFlags, value *externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.GtkStateFlags       // out

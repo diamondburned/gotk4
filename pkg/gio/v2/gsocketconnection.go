@@ -69,9 +69,8 @@ func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 	return wrapSocketConnection(obj), nil
 }
 
-// ConnectSocketConnectioner: connect connection to the specified remote
-// address.
-func (connection *SocketConnection) ConnectSocketConnectioner(ctx context.Context, address SocketAddresser) error {
+// ConnectSocketConnection: connect connection to the specified remote address.
+func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg2 *C.GCancellable      // out
 	var _arg1 *C.GSocketAddress    // out

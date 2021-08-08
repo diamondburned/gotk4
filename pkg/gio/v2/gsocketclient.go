@@ -113,7 +113,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
-// ConnectSocketClienter tries to resolve the connectable and make a network
+// ConnectSocketClient tries to resolve the connectable and make a network
 // connection to it.
 //
 // Upon a successful connection, a new Connection is constructed and returned.
@@ -132,7 +132,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 //
 // If a local address is specified with g_socket_client_set_local_address() the
 // socket will be bound to this address before connecting.
-func (client *SocketClient) ConnectSocketClienter(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
+func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GSocketConnectable // out

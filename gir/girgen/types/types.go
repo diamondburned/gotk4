@@ -145,11 +145,13 @@ var objectorMethods = map[string]struct{}{
 	"Connect":           {},
 	"ConnectAfter":      {},
 	"HandlerBlock":      {},
-	"HandlerDisconnect": {},
 	"HandlerUnblock":    {},
-	"GetProperty":       {},
-	"SetProperty":       {},
+	"HandlerDisconnect": {},
+	"ObjectProperty":    {},
+	"SetObjectProperty": {},
+	"Cast":              {},
 	"Native":            {},
+	"baseObject":        {},
 }
 
 func IsObjectorMethod(goName string) bool {

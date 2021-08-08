@@ -41,11 +41,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ProxyOverrider interface {
-	// ConnectProxier: given connection to communicate with a proxy (eg, a
+	// ConnectProxy: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProxier(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
+	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
@@ -73,11 +73,11 @@ type Proxy struct {
 type Proxier interface {
 	externglib.Objector
 
-	// ConnectProxier: given connection to communicate with a proxy (eg, a
+	// ConnectProxy: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProxier(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
+	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
@@ -101,11 +101,11 @@ func marshalProxier(p uintptr) (interface{}, error) {
 	return wrapProxy(obj), nil
 }
 
-// ConnectProxier: given connection to communicate with a proxy (eg, a
-// Connection that is connected to the proxy server), this does the necessary
-// handshake to connect to proxy_address, and if required, wraps the OStream to
-// handle proxy payload.
-func (proxy *Proxy) ConnectProxier(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
+// ConnectProxy: given connection to communicate with a proxy (eg, a Connection
+// that is connected to the proxy server), this does the necessary handshake to
+// connect to proxy_address, and if required, wraps the OStream to handle proxy
+// payload.
+func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg3 *C.GCancellable  // out
 	var _arg1 *C.GIOStream     // out

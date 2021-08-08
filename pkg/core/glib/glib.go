@@ -559,9 +559,9 @@ func (v *Object) propertyType(cstr *C.gchar) Type {
 	return Type(paramSpec.value_type)
 }
 
-// Property is a wrapper around g_object_get_property(). If the property's type
-// cannot be resolved to a Go type, then InvalidValue is returned.
-func (v *Object) Property(name string) interface{} {
+// ObjectProperty is a wrapper around g_object_get_property(). If the property's
+// type cannot be resolved to a Go type, then InvalidValue is returned.
+func (v *Object) ObjectProperty(name string) interface{} {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
@@ -575,8 +575,8 @@ func (v *Object) Property(name string) interface{} {
 	return p.GoValue()
 }
 
-// SetProperty is a wrapper around g_object_set_property().
-func (v *Object) SetProperty(name string, value interface{}) {
+// SetObjectProperty is a wrapper around g_object_set_property().
+func (v *Object) SetObjectProperty(name string, value interface{}) {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 

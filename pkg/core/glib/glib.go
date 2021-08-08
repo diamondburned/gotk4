@@ -100,6 +100,11 @@ func (t Type) Name() string {
 	return C.GoString((*C.char)(C.g_type_name(C.GType(t))))
 }
 
+// String calls t.Name(). It satisfies fmt.Stringer.
+func (t Type) String() string {
+	return t.Name()
+}
+
 // Depth is a wrapper around g_type_depth().
 func (t Type) Depth() uint {
 	return uint(C.g_type_depth(C.GType(t)))
@@ -206,17 +211,14 @@ func goMarshal(
 	// the GValue equivalent of the first.
 	rv := fs.Func.Call(args)
 	if retValue != nil && len(rv) > 0 {
-		g := NewValue(rv[0].Interface())
+		gv := NewValue(rv[0].Interface())
+		ok := C.g_value_transform(gv.native(), retValue) != 0
 
-		t := g.Type()
-		if t == TypeInvalid {
-			fs.Panicf("cannot convert to GValue return type %s.", rv[0].Type())
+		if !ok {
+			fs.Panicf(
+				"failed to transform return value from %s to %s",
+				gv.Type(), (*Value)(unsafe.Pointer(retValue)).Type())
 		}
-
-		// Explicitly copy the return value as it may point to go-owned memory.
-		C.g_value_unset(retValue)
-		C.g_value_init(retValue, C.GType(t))
-		C.g_value_copy(g.native(), retValue)
 	}
 }
 

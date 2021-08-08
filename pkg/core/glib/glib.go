@@ -80,6 +80,7 @@ const (
 	TypeString    Type = C.G_TYPE_STRING
 	TypePointer   Type = C.G_TYPE_POINTER
 	TypeBoxed     Type = C.G_TYPE_BOXED
+	TypeValue     Type = C.G_TYPE_VALUE
 	TypeParam     Type = C.G_TYPE_PARAM
 	TypeObject    Type = C.G_TYPE_OBJECT
 	TypeVariant   Type = C.G_TYPE_VARIANT
@@ -657,6 +658,11 @@ type Value struct {
 	gvalue C.GValue
 }
 
+func marshalValue(p uintptr) (interface{}, error) {
+	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return (*Value)(unsafe.Pointer(c)), nil
+}
+
 // AllocateValue allocates a Value but does not initialize it. It sets a
 // runtime finalizer to call g_value_unset() on the underlying GValue after
 // leaving scope. ValueAlloc() returns a non-nil error if the allocation failed.
@@ -882,6 +888,7 @@ var gValueMarshalers = marshalMap{
 	TypeString:    marshalString,
 	TypePointer:   marshalPointer,
 	TypeBoxed:     marshalBoxed,
+	TypeValue:     marshalValue,
 	TypeObject:    marshalObject,
 	TypeVariant:   marshalVariant,
 }
@@ -997,7 +1004,7 @@ func marshalString(p uintptr) (interface{}, error) {
 
 func marshalBoxed(p uintptr) (interface{}, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return uintptr(unsafe.Pointer(c)), nil
+	return unsafe.Pointer(c), nil
 }
 
 func marshalPointer(p uintptr) (interface{}, error) {

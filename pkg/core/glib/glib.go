@@ -459,23 +459,19 @@ func finalizeObjectNative(native *objectNative) {
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
 func (v *Object) Cast() Objector {
-	objType := Type(C._g_type_from_instance(C.gpointer(v.native())))
+	var gvalue C.GValue
+	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))
 
-	f := gValueMarshalers.lookupType(objType)
-	if f == nil {
-		return v
+	value := ValueFromNative(unsafe.Pointer(&gvalue))
+	defer value.Unset()
+
+	// Note that if GoValue successfully unmarshaled into a nil object type,
+	// then the interface would actually be non-nil.
+	if gv := value.GoValue(); gv != nil && gv != InvalidValue {
+		return gv.(Objector)
 	}
 
-	// The marshalers expect Values, not Objects
-	val := InitValue(objType)
-	val.SetInstance(v.Native())
-
-	g, err := f(v.Native())
-	if err != nil {
-		return v
-	}
-
-	return g.(Objector)
+	return v
 }
 
 func (v *Object) baseObject() *Object {
@@ -833,7 +829,7 @@ func (v *Value) Unset() {
 //
 // To get the fundamental type, use FundamentalType.
 func (v *Value) Type() (actual Type) {
-	if !v.IsValue() {
+	if v == nil || !v.IsValue() {
 		return TypeInvalid
 	}
 	return Type(C._g_value_type(v.native()))

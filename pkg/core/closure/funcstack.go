@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"sync"
 )
 
 // FrameSize is the number of frames that FuncStack should trace back from.
@@ -15,72 +14,50 @@ const FrameSize = 3
 // FuncStack wraps a function value and provides function frames containing the
 // caller trace for debugging.
 type FuncStack struct {
-	Func   reflect.Value
+	Func   interface{}
 	Frames []uintptr
 }
-
-var zeroFuncStack = FuncStack{}
 
 // NewFuncStack creates a new FuncStack. It panics if fn is not a function. The
 // given frameSkip is added 2, meaning the first frame from 0 will start from
 // the caller of NewFuncStack.
 func NewFuncStack(fn interface{}, frameSkip int) *FuncStack {
-	// Create a reflect.Value from f.  This is called when the returned
-	// GClosure runs.
-	rf := reflect.ValueOf(fn)
-
-	// Closures can only be created from funcs.
-	if rf.Type().Kind() != reflect.Func {
+	if reflect.TypeOf(fn).Kind() != reflect.Func {
 		panic("closure value is not a func")
 	}
 
+	return newFuncStack(fn, frameSkip)
+}
+
+func newFuncStack(fn interface{}, frameSkip int) *FuncStack {
 	frames := make([]uintptr, FrameSize)
-	frames = frames[:runtime.Callers(frameSkip+2, frames)]
+	frames = frames[:runtime.Callers(frameSkip+3, frames)]
 
 	return &FuncStack{
-		Func:   rf,
+		Func:   fn,
 		Frames: frames,
 	}
 }
-
-var (
-	idleTypeCache    sync.Map
-	idleTypeSentinel = struct{}{}
-)
 
 // NewIdleFuncStack works akin to NewFuncStack, but it also validates the given
 // function type for the correct acceptable signatures for SourceFunc while also
 // caching the checks.
 func NewIdleFuncStack(fn interface{}, frameSkip int) *FuncStack {
-	fs := NewFuncStack(fn, frameSkip+1)
-	funcType := fs.Func.Type()
+	switch fn.(type) {
+	case func(), func() bool:
+		return newFuncStack(fn, frameSkip)
 
-	// LoadOrStore will actually ensure that only 1 check is done at a time, but
-	// future checks on failed functions may trigger a late panic.
-	_, checked := idleTypeCache.LoadOrStore(funcType, idleTypeSentinel)
-	if checked {
-		return fs
-	}
-
-	// Ensure no parameters prematurely.
-	if funcType.NumIn() > 0 {
-		fs.Panicf("timeout source should have no parameters")
-	}
-
-	// Ensure proper return types.
-	switch out := funcType.NumOut(); out {
-	case 0:
-		break
-	case 1:
-		out0 := funcType.Out(0)
-		if out0.Kind() != reflect.Bool {
-			fs.Panicf("expected bool in return type, got %v", out0.Kind())
-		}
 	default:
-		fs.Panicf("unexpected return count (expecting 0 or 1): %d", out)
+		fs := newFuncStack(fn, frameSkip)
+		fs.Panicf("unexpected func type %T, expected func() (error?)", fn)
 	}
 
-	return fs
+	return nil
+}
+
+// Func returns the function as a reflect.Value.
+func (fs *FuncStack) Value() reflect.Value {
+	return reflect.ValueOf(fs.Func)
 }
 
 // IsValid returns true if the given FuncStack is not a zero-value i.e.  valid.

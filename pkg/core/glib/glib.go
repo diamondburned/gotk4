@@ -158,12 +158,13 @@ func goMarshal(
 	}
 
 	// Fast path for an empty function.
-	if fn, ok := fs.Func.Interface().(func()); ok {
+	if fn, ok := fs.Func.(func()); ok {
 		fn()
 		return
 	}
 
-	fsType := fs.Func.Type()
+	fsValue := fs.Value()
+	fsType := fsValue.Type()
 
 	// Get number of parameters passed in.
 	nGLibParams := int(nParams)
@@ -209,7 +210,7 @@ func goMarshal(
 
 	// Call closure with args. If the callback returns one or more values, save
 	// the GValue equivalent of the first.
-	rv := fs.Func.Call(args)
+	rv := fsValue.Call(args)
 	if retValue != nil && len(rv) > 0 {
 		gv := NewValue(rv[0].Interface())
 		ok := C.g_value_transform(gv.native(), retValue) != 0
@@ -240,11 +241,24 @@ type SourceHandle uint
 //
 //export sourceFunc
 func sourceFunc(data C.gpointer) C.gboolean {
-	v := gbox.Get(uintptr(data))
-	fs := v.(*closure.FuncStack)
+	fs, ok := gbox.Get(uintptr(data)).(*closure.FuncStack)
+	if !ok {
+		log.Println("warning: idle handler", data, "not found")
+		return C.FALSE
+	}
 
-	rv := fs.Func.Call(nil)
-	if len(rv) == 1 && rv[0].Bool() {
+	defer fs.TryRepanic()
+
+	var result bool
+
+	switch f := fs.Func.(type) {
+	case func():
+		f()
+	case func() bool:
+		result = f()
+	}
+
+	if result {
 		return C.TRUE
 	}
 

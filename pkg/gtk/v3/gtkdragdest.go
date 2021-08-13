@@ -52,7 +52,7 @@ const (
 )
 
 func marshalDestDefaults(p uintptr) (interface{}, error) {
-	return DestDefaults(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DestDefaults(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for DestDefaults.

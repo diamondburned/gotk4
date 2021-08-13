@@ -45,7 +45,7 @@ const (
 )
 
 func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
-	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventControllerScrollFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for EventControllerScrollFlags.

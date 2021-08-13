@@ -54,7 +54,7 @@ const (
 )
 
 func marshalFrameClockPhase(p uintptr) (interface{}, error) {
-	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FrameClockPhase(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for FrameClockPhase.

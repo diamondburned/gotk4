@@ -39,7 +39,7 @@ const (
 )
 
 func marshalPaintableFlags(p uintptr) (interface{}, error) {
-	return PaintableFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PaintableFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for PaintableFlags.

@@ -47,7 +47,7 @@ const (
 )
 
 func marshalTargetFlags(p uintptr) (interface{}, error) {
-	return TargetFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TargetFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for TargetFlags.

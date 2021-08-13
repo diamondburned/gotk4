@@ -82,7 +82,7 @@ const (
 )
 
 func marshalCellRendererState(p uintptr) (interface{}, error) {
-	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CellRendererState(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for CellRendererState.

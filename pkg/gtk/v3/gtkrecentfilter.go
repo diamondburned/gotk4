@@ -53,7 +53,7 @@ const (
 )
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
-	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentFilterFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for RecentFilterFlags.

@@ -299,7 +299,7 @@ const (
 )
 
 func marshalAnchorHints(p uintptr) (interface{}, error) {
-	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AnchorHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for AnchorHints.
@@ -372,7 +372,7 @@ const (
 )
 
 func marshalWMDecoration(p uintptr) (interface{}, error) {
-	return WMDecoration(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WMDecoration(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for WMDecoration.
@@ -439,7 +439,7 @@ const (
 )
 
 func marshalWMFunction(p uintptr) (interface{}, error) {
-	return WMFunction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WMFunction(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for WMFunction.
@@ -511,7 +511,7 @@ const (
 )
 
 func marshalWindowAttributesType(p uintptr) (interface{}, error) {
-	return WindowAttributesType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowAttributesType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for WindowAttributesType.
@@ -593,7 +593,7 @@ const (
 )
 
 func marshalWindowHints(p uintptr) (interface{}, error) {
-	return WindowHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for WindowHints.

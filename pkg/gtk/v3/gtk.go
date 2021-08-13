@@ -269,7 +269,7 @@ const (
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
-	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DebugFlag(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for DebugFlag.

@@ -713,7 +713,7 @@ const (
 )
 
 func marshalWindowState(p uintptr) (interface{}, error) {
-	return WindowState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return WindowState(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for WindowState.

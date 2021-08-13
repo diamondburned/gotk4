@@ -1815,7 +1815,7 @@ const (
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
-	return InputHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputHints(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for InputHints.
@@ -1896,7 +1896,7 @@ const (
 )
 
 func marshalJunctionSides(p uintptr) (interface{}, error) {
-	return JunctionSides(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return JunctionSides(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for JunctionSides.
@@ -1965,7 +1965,7 @@ const (
 )
 
 func marshalRegionFlags(p uintptr) (interface{}, error) {
-	return RegionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RegionFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for RegionFlags.
@@ -2048,7 +2048,7 @@ const (
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
-	return StateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StateFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for StateFlags.

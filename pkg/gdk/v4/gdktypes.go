@@ -272,7 +272,7 @@ const (
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
-	return AxisFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AxisFlags(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for AxisFlags.
@@ -345,7 +345,7 @@ const (
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
-	return DragAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DragAction(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for DragAction.
@@ -427,7 +427,7 @@ const (
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
-	return ModifierType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ModifierType(C.g_value_get_flags((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // String returns the names in string for ModifierType.

@@ -20,6 +20,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// PIXBUF_MAGIC_NUMBER: magic number for Pixdata structures.
+const PIXBUF_MAGIC_NUMBER = 1197763408
+
+// PIXDATA_HEADER_LENGTH: length of a Pixdata structure without the pixel_data
+// pointer.
+//
+// Deprecated: since version 2.32.
+const PIXDATA_HEADER_LENGTH = 24
+
 // PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource() to
 // determine the form of C source to be generated. The three values
 // GDK_PIXDATA_DUMP_PIXDATA_STREAM, GDK_PIXDATA_DUMP_PIXDATA_STRUCT and

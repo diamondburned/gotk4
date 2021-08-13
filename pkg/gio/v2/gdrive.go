@@ -37,6 +37,10 @@ func init() {
 	})
 }
 
+// DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path
+// with g_drive_get_identifier().
+const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
+
 // DriveOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

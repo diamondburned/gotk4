@@ -29,7 +29,7 @@ var (
 	cmtNamespaceRegex = regexp.MustCompile(`#[A-Z]\w+?[A-Z]`)
 	cmtArgumentRegex  = regexp.MustCompile(`@\w+`)
 	cmtPrimitiveRegex = regexp.MustCompile(`%\w+`)
-	cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
+	// cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
 	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
 	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n\]\|\n*`)

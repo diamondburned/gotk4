@@ -14,6 +14,14 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
+// PRIORITY_RESIZE: use this priority for functionality related to size
+// allocation.
+//
+// It is used internally by GTK+ to compute the sizes of widgets. This priority
+// is higher than GDK_PRIORITY_REDRAW to avoid resizing a widget which was just
+// redrawn.
+const PRIORITY_RESIZE = 110
+
 // DisableSetlocale prevents gtk_init and gtk_init_check from automatically
 // calling setlocale (LC_ALL, "").
 //

@@ -30,6 +30,10 @@ func init() {
 	})
 }
 
+// MEMORY_MONITOR_EXTENSION_POINT_NAME: extension point for memory usage
+// monitoring functionality. See [Extending GIO][extending-gio].
+const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
+
 // MemoryMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

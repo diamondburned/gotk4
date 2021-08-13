@@ -26,6 +26,43 @@ func init() {
 	})
 }
 
+// PRIORITY_DEFAULT: use this for default priority event sources.
+//
+// In GLib this priority is used when adding timeout functions with
+// g_timeout_add(). In GDK this priority is used for events from the X server.
+const PRIORITY_DEFAULT = 0
+
+// PRIORITY_DEFAULT_IDLE: use this for default priority idle functions.
+//
+// In GLib this priority is used when adding idle functions with g_idle_add().
+const PRIORITY_DEFAULT_IDLE = 200
+
+// PRIORITY_HIGH: use this for high priority event sources.
+//
+// It is not used within GLib or GTK+.
+const PRIORITY_HIGH = -100
+
+// PRIORITY_HIGH_IDLE: use this for high priority idle functions.
+//
+// GTK+ uses PRIORITY_HIGH_IDLE + 10 for resizing operations, and
+// PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is done to ensure
+// that any pending resizes are processed before any pending redraws, so that
+// widgets are not redrawn twice unnecessarily.)
+const PRIORITY_HIGH_IDLE = 100
+
+// PRIORITY_LOW: use this for very low priority background tasks.
+//
+// It is not used within GLib or GTK+.
+const PRIORITY_LOW = 300
+
+// SOURCE_CONTINUE: use this macro as the return value of a Func to leave the
+// #GSource in the main loop.
+const SOURCE_CONTINUE = true
+
+// SOURCE_REMOVE: use this macro as the return value of a Func to remove the
+// #GSource from the main loop.
+const SOURCE_REMOVE = false
+
 // ChildWatchFunc: prototype of a WatchSource callback, called when a child
 // process has exited. To interpret status, see the documentation for
 // g_spawn_check_exit_status().

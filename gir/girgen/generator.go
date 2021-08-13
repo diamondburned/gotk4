@@ -2,7 +2,6 @@ package girgen
 
 import (
 	"log"
-	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -20,9 +19,6 @@ type Generator struct {
 
 	filters   []types.FilterMatcher
 	convProcs []typeconv.ConversionProcessor
-
-	preprocs    []types.Preprocessor
-	preprocOnce sync.Once
 }
 
 // NewGenerator creates a new generator with sane defaults.

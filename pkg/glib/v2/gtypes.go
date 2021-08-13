@@ -15,6 +15,86 @@ import (
 // #include <glib.h>
 import "C"
 
+// BIG_ENDIAN specifies one of the possible types of byte order. See BYTE_ORDER.
+const BIG_ENDIAN = 4321
+
+// E: base of natural logarithms.
+const E = 2.718282
+
+// IEEE754_DOUBLE_BIAS bias by which exponents in double-precision floats are
+// offset.
+const IEEE754_DOUBLE_BIAS = 1023
+
+// IEEE754_FLOAT_BIAS bias by which exponents in single-precision floats are
+// offset.
+const IEEE754_FLOAT_BIAS = 127
+
+// LITTLE_ENDIAN specifies one of the possible types of byte order. See
+// BYTE_ORDER.
+const LITTLE_ENDIAN = 1234
+
+// LN10: natural logarithm of 10.
+const LN10 = 2.302585
+
+// LN2: natural logarithm of 2.
+const LN2 = 0.693147
+
+// LOG_2_BASE_10: multiplying the base 2 exponent by this number yields the base
+// 10 exponent.
+const LOG_2_BASE_10 = 0.301030
+
+// MAXINT16: maximum value which can be held in a #gint16.
+const MAXINT16 = 32767
+
+// MAXINT32: maximum value which can be held in a #gint32.
+const MAXINT32 = 2147483647
+
+// MAXINT64: maximum value which can be held in a #gint64.
+const MAXINT64 = 9223372036854775807
+
+// MAXINT8: maximum value which can be held in a #gint8.
+const MAXINT8 = 127
+
+// MAXUINT16: maximum value which can be held in a #guint16.
+const MAXUINT16 = 65535
+
+// MAXUINT32: maximum value which can be held in a #guint32.
+const MAXUINT32 = 4294967295
+
+// MAXUINT64: maximum value which can be held in a #guint64.
+const MAXUINT64 = 18446744073709551615
+
+// MAXUINT8: maximum value which can be held in a #guint8.
+const MAXUINT8 = 255
+
+// MININT16: minimum value which can be held in a #gint16.
+const MININT16 = -32768
+
+// MININT32: minimum value which can be held in a #gint32.
+const MININT32 = -2147483648
+
+// MININT64: minimum value which can be held in a #gint64.
+const MININT64 = -9223372036854775808
+
+// MININT8: minimum value which can be held in a #gint8.
+const MININT8 = -128
+
+// PDP_ENDIAN specifies one of the possible types of byte order (currently
+// unused). See BYTE_ORDER.
+const PDP_ENDIAN = 3412
+
+// PI: value of pi (ratio of circle's circumference to its diameter).
+const PI = 3.141593
+
+// PI_2: pi divided by 2.
+const PI_2 = 1.570796
+
+// PI_4: pi divided by 4.
+const PI_4 = 0.785398
+
+// SQRT2: square root of two.
+const SQRT2 = 1.414214
+
 // CompareDataFunc specifies the type of a comparison function used to compare
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the

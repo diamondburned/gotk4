@@ -25,6 +25,8 @@ func init() {
 	})
 }
 
+const MAX_TIMECOORD_AXES = 128
+
 // DeviceType indicates the device type. See
 // [above][GdkDeviceManager.description] for more information about the meaning
 // of these device types.

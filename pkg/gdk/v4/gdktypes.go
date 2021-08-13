@@ -32,6 +32,19 @@ func init() {
 	})
 }
 
+// ACTION_ALL defines all possible DND actions.
+//
+// This can be used in gdk.Drop.Status() messages when any drop can be accepted
+// or a more specific drop method is not yet known.
+const ACTION_ALL = 7
+
+// CURRENT_TIME represents the current time, and can be used anywhere a time is
+// expected.
+const CURRENT_TIME = 0
+
+// MODIFIER_MASK: mask covering all entries in GdkModifierType.
+const MODIFIER_MASK = 469769999
+
 // AxisUse defines how device axes are interpreted by GTK.
 //
 // Note that the X and Y axes are not really needed; pointer devices report

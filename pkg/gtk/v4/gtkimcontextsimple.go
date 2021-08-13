@@ -20,6 +20,8 @@ func init() {
 	})
 }
 
+const MAX_COMPOSE_LEN = 7
+
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based
 // input methods.
 //

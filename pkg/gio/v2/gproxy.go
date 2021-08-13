@@ -36,6 +36,10 @@ func init() {
 	})
 }
 
+// PROXY_EXTENSION_POINT_NAME: extension point for proxy functionality. See
+// [Extending GIO][extending-gio].
+const PROXY_EXTENSION_POINT_NAME = "gio-proxy"
+
 // ProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

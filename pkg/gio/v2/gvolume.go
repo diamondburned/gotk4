@@ -36,6 +36,40 @@ func init() {
 	})
 }
 
+// VOLUME_IDENTIFIER_KIND_CLASS: string used to obtain the volume class with
+// g_volume_get_identifier().
+//
+// Known volume classes include device, network, and loop. Other classes may be
+// added in the future.
+//
+// This is intended to be used by applications to classify #GVolume instances
+// into different sections - for example a file manager or file chooser can use
+// this information to show network volumes under a "Network" heading and device
+// volumes under a "Devices" heading.
+const VOLUME_IDENTIFIER_KIND_CLASS = "class"
+
+// VOLUME_IDENTIFIER_KIND_HAL_UDI: string used to obtain a Hal UDI with
+// g_volume_get_identifier().
+//
+// Deprecated: Do not use, HAL is deprecated.
+const VOLUME_IDENTIFIER_KIND_HAL_UDI = "hal-udi"
+
+// VOLUME_IDENTIFIER_KIND_LABEL: string used to obtain a filesystem label with
+// g_volume_get_identifier().
+const VOLUME_IDENTIFIER_KIND_LABEL = "label"
+
+// VOLUME_IDENTIFIER_KIND_NFS_MOUNT: string used to obtain a NFS mount with
+// g_volume_get_identifier().
+const VOLUME_IDENTIFIER_KIND_NFS_MOUNT = "nfs-mount"
+
+// VOLUME_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path
+// with g_volume_get_identifier().
+const VOLUME_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
+
+// VOLUME_IDENTIFIER_KIND_UUID: string used to obtain a UUID with
+// g_volume_get_identifier().
+const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
+
 // VolumeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

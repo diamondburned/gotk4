@@ -30,6 +30,8 @@ func init() {
 	})
 }
 
+const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"
+
 type NativeVolumeMonitor struct {
 	VolumeMonitor
 }

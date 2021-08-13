@@ -31,6 +31,10 @@ func init() {
 	})
 }
 
+// VOLUME_MONITOR_EXTENSION_POINT_NAME: extension point for volume monitor
+// functionality. See [Extending GIO][extending-gio].
+const VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-volume-monitor"
+
 // VolumeMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

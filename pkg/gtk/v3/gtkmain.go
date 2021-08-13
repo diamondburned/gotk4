@@ -21,6 +21,14 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
+// PRIORITY_RESIZE: use this priority for functionality related to size
+// allocation.
+//
+// It is used internally by GTK+ to compute the sizes of widgets. This priority
+// is higher than GDK_PRIORITY_REDRAW to avoid resizing a widget which was just
+// redrawn.
+const PRIORITY_RESIZE = 110
+
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
 type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int)

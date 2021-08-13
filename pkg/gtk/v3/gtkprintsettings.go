@@ -28,6 +28,53 @@ func init() {
 	})
 }
 
+const PRINT_SETTINGS_COLLATE = "collate"
+const PRINT_SETTINGS_DEFAULT_SOURCE = "default-source"
+const PRINT_SETTINGS_DITHER = "dither"
+const PRINT_SETTINGS_DUPLEX = "duplex"
+const PRINT_SETTINGS_FINISHINGS = "finishings"
+const PRINT_SETTINGS_MEDIA_TYPE = "media-type"
+const PRINT_SETTINGS_NUMBER_UP = "number-up"
+const PRINT_SETTINGS_NUMBER_UP_LAYOUT = "number-up-layout"
+const PRINT_SETTINGS_N_COPIES = "n-copies"
+const PRINT_SETTINGS_ORIENTATION = "orientation"
+
+// PRINT_SETTINGS_OUTPUT_BASENAME: key used by the “Print to file” printer to
+// store the file name of the output without the path to the directory and the
+// file extension.
+const PRINT_SETTINGS_OUTPUT_BASENAME = "output-basename"
+const PRINT_SETTINGS_OUTPUT_BIN = "output-bin"
+
+// PRINT_SETTINGS_OUTPUT_DIR: key used by the “Print to file” printer to store
+// the directory to which the output should be written.
+const PRINT_SETTINGS_OUTPUT_DIR = "output-dir"
+
+// PRINT_SETTINGS_OUTPUT_FILE_FORMAT: key used by the “Print to file” printer to
+// store the format of the output. The supported values are “PS” and “PDF”.
+const PRINT_SETTINGS_OUTPUT_FILE_FORMAT = "output-file-format"
+
+// PRINT_SETTINGS_OUTPUT_URI: key used by the “Print to file” printer to store
+// the URI to which the output should be written. GTK+ itself supports only
+// “file://” URIs.
+const PRINT_SETTINGS_OUTPUT_URI = "output-uri"
+const PRINT_SETTINGS_PAGE_RANGES = "page-ranges"
+const PRINT_SETTINGS_PAGE_SET = "page-set"
+const PRINT_SETTINGS_PAPER_FORMAT = "paper-format"
+const PRINT_SETTINGS_PAPER_HEIGHT = "paper-height"
+const PRINT_SETTINGS_PAPER_WIDTH = "paper-width"
+const PRINT_SETTINGS_PRINTER = "printer"
+const PRINT_SETTINGS_PRINTER_LPI = "printer-lpi"
+const PRINT_SETTINGS_PRINT_PAGES = "print-pages"
+const PRINT_SETTINGS_QUALITY = "quality"
+const PRINT_SETTINGS_RESOLUTION = "resolution"
+const PRINT_SETTINGS_RESOLUTION_X = "resolution-x"
+const PRINT_SETTINGS_RESOLUTION_Y = "resolution-y"
+const PRINT_SETTINGS_REVERSE = "reverse"
+const PRINT_SETTINGS_SCALE = "scale"
+const PRINT_SETTINGS_USE_COLOR = "use-color"
+const PRINT_SETTINGS_WIN32_DRIVER_EXTRA = "win32-driver-extra"
+const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
+
 type PrintSettingsFunc func(key string, value string)
 
 //export _gotk4_gtk3_PrintSettingsFunc

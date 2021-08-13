@@ -24,6 +24,15 @@ func init() {
 	})
 }
 
+// OPTION_REMAINING: if a long option in the main group has this name, it is not
+// treated as a regular option. Instead it collects all non-option arguments
+// which would otherwise be left in argv. The option must be of type
+// G_OPTION_ARG_CALLBACK, G_OPTION_ARG_STRING_ARRAY or
+// G_OPTION_ARG_FILENAME_ARRAY.
+//
+//    Using OPTION_REMAINING instead of simply scanning argv for leftover arguments has the advantage that GOption takes care of necessary encoding conversions for strings or filenames.
+const OPTION_REMAINING = ""
+
 // OptionArg enum values determine which type of extra argument the options
 // expect to find. If an option expects an extra argument, it can be specified
 // in several ways; with a short option: -x arg, with a long option: --name arg

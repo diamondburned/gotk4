@@ -14,6 +14,12 @@ import (
 // #include <glib.h>
 import "C"
 
+// UNICHAR_MAX_DECOMPOSITION_LENGTH: maximum length (in codepoints) of a
+// compatibility or canonical decomposition of a single Unicode character.
+//
+// This is as defined by Unicode 6.1.
+const UNICHAR_MAX_DECOMPOSITION_LENGTH = 18
+
 // NormalizeMode defines how a Unicode string is transformed in a canonical
 // form, standardizing such issues as whether a character with an accent is
 // represented as a base character and combining accent or as a single

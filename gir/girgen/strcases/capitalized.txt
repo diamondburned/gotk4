@@ -48,6 +48,7 @@ Tcp
 Udp
 Ipp
 Ppd
+Osk
 Nfc
 Nfd
 Nfkc

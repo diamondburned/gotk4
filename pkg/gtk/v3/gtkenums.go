@@ -1803,9 +1803,9 @@ const (
 	// InputHintUppercaseSentences: suggest to capitalize the first word of each
 	// sentence
 	InputHintUppercaseSentences InputHints = 0b1000000
-	// InputHintInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
+	// InputHintInhibitOSK: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
-	InputHintInhibitOsk InputHints = 0b10000000
+	InputHintInhibitOSK InputHints = 0b10000000
 	// InputHintVerticalWriting: text is vertical. Since 3.18
 	InputHintVerticalWriting InputHints = 0b100000000
 	// InputHintEmoji: suggest offering Emoji support. Since 3.22.20
@@ -1848,8 +1848,8 @@ func (i InputHints) String() string {
 			builder.WriteString("UppercaseWords|")
 		case InputHintUppercaseSentences:
 			builder.WriteString("UppercaseSentences|")
-		case InputHintInhibitOsk:
-			builder.WriteString("InhibitOsk|")
+		case InputHintInhibitOSK:
+			builder.WriteString("InhibitOSK|")
 		case InputHintVerticalWriting:
 			builder.WriteString("VerticalWriting|")
 		case InputHintEmoji:

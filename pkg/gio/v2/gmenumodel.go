@@ -35,6 +35,49 @@ func init() {
 	})
 }
 
+// MENU_ATTRIBUTE_ACTION: menu item attribute which holds the action name of the
+// item. Action names are namespaced with an identifier for the action group in
+// which the action resides. For example, "win." for window-specific actions and
+// "app." for application-wide actions.
+//
+// See also g_menu_model_get_item_attribute() and g_menu_item_set_attribute().
+const MENU_ATTRIBUTE_ACTION = "action"
+
+// MENU_ATTRIBUTE_ACTION_NAMESPACE: menu item attribute that holds the namespace
+// for all action names in menus that are linked from this item.
+const MENU_ATTRIBUTE_ACTION_NAMESPACE = "action-namespace"
+
+// MENU_ATTRIBUTE_ICON: menu item attribute which holds the icon of the item.
+//
+// The icon is stored in the format returned by g_icon_serialize().
+//
+// This attribute is intended only to represent 'noun' icons such as favicons
+// for a webpage, or application icons. It should not be used for 'verbs' (ie:
+// stock icons).
+const MENU_ATTRIBUTE_ICON = "icon"
+
+// MENU_ATTRIBUTE_LABEL: menu item attribute which holds the label of the item.
+const MENU_ATTRIBUTE_LABEL = "label"
+
+// MENU_ATTRIBUTE_TARGET: menu item attribute which holds the target with which
+// the item's action will be activated.
+//
+// See also g_menu_item_set_action_and_target()
+const MENU_ATTRIBUTE_TARGET = "target"
+
+// MENU_LINK_SECTION: name of the link that associates a menu item with a
+// section. The linked menu will usually be shown in place of the menu item,
+// using the item's label as a header.
+//
+// See also g_menu_item_set_link().
+const MENU_LINK_SECTION = "section"
+
+// MENU_LINK_SUBMENU: name of the link that associates a menu item with a
+// submenu.
+//
+// See also g_menu_item_set_link().
+const MENU_LINK_SUBMENU = "submenu"
+
 // MenuAttributeIterOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

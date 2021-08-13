@@ -32,6 +32,10 @@ func init() {
 	})
 }
 
+// TEXT_VIEW_PRIORITY_VALIDATE: priority at which the text view validates
+// onscreen lines in an idle job in the background.
+const TEXT_VIEW_PRIORITY_VALIDATE = 125
+
 // TextExtendSelection: granularity types that extend the text selection. Use
 // the TextView::extend-selection signal to customize the selection.
 type TextExtendSelection int

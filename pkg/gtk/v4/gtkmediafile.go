@@ -22,6 +22,8 @@ func init() {
 	})
 }
 
+const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
+
 // MediaFileOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

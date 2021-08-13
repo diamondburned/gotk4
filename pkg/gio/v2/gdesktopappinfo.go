@@ -37,6 +37,12 @@ func init() {
 	})
 }
 
+// DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: extension point for default
+// handler to URI association. See [Extending GIO][extending-gio].
+//
+// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
+const DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = "gio-desktop-app-info-lookup"
+
 // DesktopAppLaunchCallback: during invocation,
 // g_desktop_app_info_launch_uris_as_manager() may create one or more child
 // processes. This callback is invoked once for each, providing the process ID.

@@ -26,6 +26,10 @@ func init() {
 	})
 }
 
+// INPUT_ERROR: constant to return from a signal handler for the
+// SpinButton::input signal in case of conversion failure.
+const INPUT_ERROR = -1
+
 // SpinButtonUpdatePolicy: spin button update policy determines whether the spin
 // button displays values even if they are outside the bounds of its adjustment.
 // See gtk_spin_button_set_update_policy().

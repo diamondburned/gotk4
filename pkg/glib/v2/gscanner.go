@@ -15,6 +15,18 @@ import (
 // #include <glib.h>
 import "C"
 
+// CSET_A_2_Z: set of uppercase ASCII alphabet characters. Used for specifying
+// valid identifier characters in Config.
+const CSET_A_2_Z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+// CSET_DIGITS: set of ASCII digits. Used for specifying valid identifier
+// characters in Config.
+const CSET_DIGITS = "0123456789"
+
+// CSET_a_2_z: set of lowercase ASCII alphabet characters. Used for specifying
+// valid identifier characters in Config.
+const CSET_a_2_z = "abcdefghijklmnopqrstuvwxyz"
+
 // ErrorType: possible errors, used in the v_error field of Value, when the
 // token is a G_TOKEN_ERROR.
 type ErrorType int

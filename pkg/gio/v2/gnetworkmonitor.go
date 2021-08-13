@@ -36,6 +36,10 @@ func init() {
 	})
 }
 
+// NETWORK_MONITOR_EXTENSION_POINT_NAME: extension point for network status
+// monitoring functionality. See [Extending GIO][extending-gio].
+const NETWORK_MONITOR_EXTENSION_POINT_NAME = "gio-network-monitor"
+
 // NetworkMonitorOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

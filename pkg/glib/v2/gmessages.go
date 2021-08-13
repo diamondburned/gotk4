@@ -19,6 +19,38 @@ import (
 // #include <glib.h>
 import "C"
 
+// LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
+//
+// Libraries should define this so that any messages which they log can be
+// differentiated from messages from other libraries and application code. But
+// be careful not to define it in any public header files.
+//
+// Log domains must be unique, and it is recommended that they are the
+// application or library name, optionally followed by a hyphen and a sub-domain
+// name. For example, bloatpad or bloatpad-io.
+//
+// If undefined, it defaults to the default NULL (or "") log domain; this is not
+// advisable, as it cannot be filtered against using the G_MESSAGES_DEBUG
+// environment variable.
+//
+// For example, GTK+ uses this in its Makefile.am:
+//
+//    AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
+//
+// Applications can choose to leave it as the default NULL (or "") domain.
+// However, defining the domain offers the same advantages as above.
+const LOG_DOMAIN = 0
+
+// LOG_FATAL_MASK: GLib log levels that are considered fatal by default.
+//
+// This is not used if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+const LOG_FATAL_MASK = 5
+
+// LOG_LEVEL_USER_SHIFT: log levels below 1<<G_LOG_LEVEL_USER_SHIFT are used by
+// GLib. Higher bits can be used for user-defined log levels.
+const LOG_LEVEL_USER_SHIFT = 8
+
 // LogWriterOutput: return values from WriterFuncs to indicate whether the given
 // log entry was successfully handled by the writer, or whether there was an
 // error in handling it (and hence a fallback writer should be used).

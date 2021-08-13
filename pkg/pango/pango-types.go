@@ -13,6 +13,16 @@ import (
 // #include <pango/pango.h>
 import "C"
 
+// SCALE: scale between dimensions used for Pango distances and device units.
+//
+// The definition of device units is dependent on the output device; it will
+// typically be pixels for a screen, and points for a printer. PANGO_SCALE is
+// currently 1024, but this may be changed in the future.
+//
+// When setting font sizes, device units are always considered to be points (as
+// in "12 point font"), rather than pixels.
+const SCALE = 1024
+
 // Glyph: PangoGlyph represents a single glyph in the output form of a string.
 type Glyph = uint32
 

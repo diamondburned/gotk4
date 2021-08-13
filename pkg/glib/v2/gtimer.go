@@ -13,6 +13,10 @@ import (
 // #include <glib.h>
 import "C"
 
+// USEC_PER_SEC: number of microseconds in one second (1 million). This macro is
+// provided for code readability.
+const USEC_PER_SEC = 1000000
+
 // Usleep pauses the current thread for the given number of microseconds.
 //
 // There are 1 million microseconds per second (represented by the USEC_PER_SEC

@@ -104,7 +104,6 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _region *cairo.Region // out

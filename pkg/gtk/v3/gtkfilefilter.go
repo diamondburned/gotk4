@@ -83,6 +83,11 @@ func (f FileFilterFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FileFilterFlags) Has(other FileFilterFlags) bool {
+	return (f & other) == other
+}
+
 // FileFilterFunc: type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
 type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
@@ -201,7 +206,6 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
-
 	runtime.KeepAlive(variant)
 
 	var _fileFilter *FileFilter // out
@@ -288,7 +292,6 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	_arg1 = (*C.GtkFileFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
-
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterInfo)
 
@@ -310,7 +313,6 @@ func (filter *FileFilter) Name() string {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
@@ -334,7 +336,6 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_needed(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _fileFilterFlags FileFilterFlags // out
@@ -370,7 +371,6 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out

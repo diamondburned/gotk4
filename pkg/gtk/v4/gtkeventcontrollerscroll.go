@@ -84,6 +84,11 @@ func (e EventControllerScrollFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if e contains other.
+func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
+	return (e & other) == other
+}
+
 // EventControllerScroll: GtkEventControllerScroll is an event controller that
 // handles scroll events.
 //
@@ -146,7 +151,6 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) *EventController
 	_arg1 = C.GtkEventControllerScrollFlags(flags)
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1)
-
 	runtime.KeepAlive(flags)
 
 	var _eventControllerScroll *EventControllerScroll // out
@@ -164,7 +168,6 @@ func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(scroll.Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
-
 	runtime.KeepAlive(scroll)
 
 	var _eventControllerScrollFlags EventControllerScrollFlags // out

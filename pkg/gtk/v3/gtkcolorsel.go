@@ -90,7 +90,6 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_get_current_alpha(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _guint16 uint16 // out
@@ -146,7 +145,6 @@ func (colorsel *ColorSelection) HasOpacityControl() bool {
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_get_has_opacity_control(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -166,7 +164,6 @@ func (colorsel *ColorSelection) HasPalette() bool {
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_get_has_palette(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -186,7 +183,6 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_get_previous_alpha(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _guint16 uint16 // out
@@ -240,7 +236,6 @@ func (colorsel *ColorSelection) IsAdjusting() bool {
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_is_adjusting(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -399,7 +394,6 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(str)
 
 	var _colors []gdk.Color // out
@@ -429,7 +423,6 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	}
 
 	_cret = C.gtk_color_selection_palette_to_string(_arg1, _arg2)
-
 	runtime.KeepAlive(colors)
 
 	var _utf8 string // out

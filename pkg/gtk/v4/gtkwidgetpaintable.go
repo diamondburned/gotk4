@@ -72,7 +72,6 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	}
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _widgetPaintable *WidgetPaintable // out
@@ -90,7 +89,6 @@ func (self *WidgetPaintable) Widget() Widgetter {
 	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

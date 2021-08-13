@@ -353,7 +353,6 @@ func (activatable *Activatable) RelatedAction() *Action {
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
-
 	runtime.KeepAlive(activatable)
 
 	var _action *Action // out
@@ -375,7 +374,6 @@ func (activatable *Activatable) UseActionAppearance() bool {
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
-
 	runtime.KeepAlive(activatable)
 
 	var _ok bool // out

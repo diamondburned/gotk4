@@ -101,7 +101,6 @@ func (image *Image) ImageDescription() string {
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.atk_image_get_image_description(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
@@ -119,7 +118,6 @@ func (image *Image) ImageLocale() string {
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.atk_image_get_image_locale(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
@@ -194,7 +192,6 @@ func (image *Image) SetImageDescription(description string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_image_set_image_description(_arg0, _arg1)
-
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(description)
 

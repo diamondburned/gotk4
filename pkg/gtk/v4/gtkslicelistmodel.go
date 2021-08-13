@@ -66,7 +66,6 @@ func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceLis
 	_arg3 = C.guint(size)
 
 	_cret = C.gtk_slice_list_model_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(size)
@@ -86,7 +85,6 @@ func (self *SliceListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -106,7 +104,6 @@ func (self *SliceListModel) Offset() uint {
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -124,7 +121,6 @@ func (self *SliceListModel) Size() uint {
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out

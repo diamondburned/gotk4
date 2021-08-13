@@ -20,7 +20,6 @@ func X11DeviceGetID(device *X11DeviceXI2) int {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_x11_device_get_id(_arg1)
-
 	runtime.KeepAlive(device)
 
 	var _gint int // out

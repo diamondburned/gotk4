@@ -229,7 +229,6 @@ func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.g_application_new(_arg1, _arg2)
-
 	runtime.KeepAlive(applicationId)
 	runtime.KeepAlive(flags)
 
@@ -439,7 +438,6 @@ func (application *Application) ApplicationID() string {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_application_id(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -470,7 +468,6 @@ func (application *Application) DBusConnection() *DBusConnection {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_dbus_connection(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _dBusConnection *DBusConnection // out
@@ -504,7 +501,6 @@ func (application *Application) DBusObjectPath() string {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_dbus_object_path(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -526,7 +522,6 @@ func (application *Application) Flags() ApplicationFlags {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_flags(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _applicationFlags ApplicationFlags // out
@@ -547,7 +542,6 @@ func (application *Application) InactivityTimeout() uint {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _guint uint // out
@@ -566,7 +560,6 @@ func (application *Application) IsBusy() bool {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_is_busy(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -589,7 +582,6 @@ func (application *Application) IsRegistered() bool {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_is_registered(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -617,7 +609,6 @@ func (application *Application) IsRemote() bool {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_is_remote(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -639,7 +630,6 @@ func (application *Application) ResourceBasePath() string {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_resource_base_path(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -902,7 +892,6 @@ func (application *Application) Run(argv []string) int {
 	}
 
 	_cret = C.g_application_run(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(argv)
 
@@ -1292,7 +1281,6 @@ func ApplicationIDIsValid(applicationId string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_id_is_valid(_arg1)
-
 	runtime.KeepAlive(applicationId)
 
 	var _ok bool // out

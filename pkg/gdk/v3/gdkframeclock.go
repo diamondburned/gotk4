@@ -97,6 +97,11 @@ func (f FrameClockPhase) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FrameClockPhase) Has(other FrameClockPhase) bool {
+	return (f & other) == other
+}
+
 // FrameClock tells the application when to update and repaint a window. This
 // may be synced to the vertical refresh rate of the monitor, for example. Even
 // when the frame clock uses a simple timer rather than a hardware-based
@@ -208,7 +213,6 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
-
 	runtime.KeepAlive(frameClock)
 
 	var _frameTimings *FrameTimings // out
@@ -232,7 +236,6 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
-
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
@@ -254,7 +257,6 @@ func (frameClock *FrameClock) FrameTime() int64 {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
-
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
@@ -276,7 +278,6 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_history_start(_arg0)
-
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
@@ -325,7 +326,6 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	_arg1 = C.gint64(frameCounter)
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
-
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(frameCounter)
 

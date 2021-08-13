@@ -149,7 +149,6 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
@@ -173,7 +172,6 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
@@ -224,7 +222,6 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 	}
 
 	_cret = C.g_dbus_object_manager_client_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(busType)
 	runtime.KeepAlive(flags)
@@ -280,7 +277,6 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 	}
 
 	_cret = C.g_dbus_object_manager_client_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(flags)
@@ -307,7 +303,6 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_connection(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _dBusConnection *DBusConnection // out
@@ -325,7 +320,6 @@ func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_flags(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _dBusObjectManagerClientFlags DBusObjectManagerClientFlags // out
@@ -344,7 +338,6 @@ func (manager *DBusObjectManagerClient) Name() string {
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
@@ -364,7 +357,6 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out

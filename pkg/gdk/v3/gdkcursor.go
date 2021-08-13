@@ -417,7 +417,6 @@ func NewCursor(cursorType CursorType) *Cursor {
 	_arg1 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new(_arg1)
-
 	runtime.KeepAlive(cursorType)
 
 	var _cursor *Cursor // out
@@ -437,7 +436,6 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	_arg2 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(cursorType)
 
@@ -535,7 +533,6 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
 
@@ -576,7 +573,6 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int, y in
 	_arg4 = C.gint(y)
 
 	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(x)
@@ -613,7 +609,6 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x float64, y
 	_arg4 = C.gdouble(y)
 
 	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(x)
@@ -634,7 +629,6 @@ func (cursor *Cursor) CursorType() CursorType {
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_cursor_type(_arg0)
-
 	runtime.KeepAlive(cursor)
 
 	var _cursorType CursorType // out
@@ -652,7 +646,6 @@ func (cursor *Cursor) Display() *Display {
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_display(_arg0)
-
 	runtime.KeepAlive(cursor)
 
 	var _display *Display // out
@@ -674,7 +667,6 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_image(_arg0)
-
 	runtime.KeepAlive(cursor)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -711,7 +703,6 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(cursor)
 
 	var _xHot float64           // out

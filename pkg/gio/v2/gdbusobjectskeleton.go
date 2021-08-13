@@ -74,7 +74,6 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_skeleton_new(_arg1)
-
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectSkeleton *DBusObjectSkeleton // out

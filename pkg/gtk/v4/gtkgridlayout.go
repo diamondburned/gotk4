@@ -75,7 +75,6 @@ func (grid *GridLayout) BaselineRow() int {
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_layout_get_baseline_row(_arg0)
-
 	runtime.KeepAlive(grid)
 
 	var _gint int // out
@@ -94,7 +93,6 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
-
 	runtime.KeepAlive(grid)
 
 	var _ok bool // out
@@ -115,7 +113,6 @@ func (grid *GridLayout) ColumnSpacing() uint {
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_layout_get_column_spacing(_arg0)
-
 	runtime.KeepAlive(grid)
 
 	var _guint uint // out
@@ -138,7 +135,6 @@ func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 	_arg1 = C.int(row)
 
 	_cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
-
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(row)
 
@@ -157,7 +153,6 @@ func (grid *GridLayout) RowHomogeneous() bool {
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
-
 	runtime.KeepAlive(grid)
 
 	var _ok bool // out
@@ -177,7 +172,6 @@ func (grid *GridLayout) RowSpacing() uint {
 	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_layout_get_row_spacing(_arg0)
-
 	runtime.KeepAlive(grid)
 
 	var _guint uint // out
@@ -306,7 +300,6 @@ func (child *GridLayoutChild) Column() int {
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_column(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _gint int // out
@@ -324,7 +317,6 @@ func (child *GridLayoutChild) ColumnSpan() int {
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_column_span(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _gint int // out
@@ -342,7 +334,6 @@ func (child *GridLayoutChild) Row() int {
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_row(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _gint int // out
@@ -360,7 +351,6 @@ func (child *GridLayoutChild) RowSpan() int {
 	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_grid_layout_child_get_row_span(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _gint int // out

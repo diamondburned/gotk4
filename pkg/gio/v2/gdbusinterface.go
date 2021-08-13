@@ -89,7 +89,6 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _dBusObject DBusObjector // out
@@ -110,7 +109,6 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out

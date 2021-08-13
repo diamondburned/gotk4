@@ -124,7 +124,6 @@ func (obj *Socket) IsOccupied() bool {
 	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_socket_is_occupied(_arg0)
-
 	runtime.KeepAlive(obj)
 
 	var _ok bool // out

@@ -77,7 +77,6 @@ func NewTimeZone(identifier string) *TimeZone {
 	}
 
 	_cret = C.g_time_zone_new(_arg1)
-
 	runtime.KeepAlive(identifier)
 
 	var _timeZone *TimeZone // out
@@ -101,7 +100,6 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 	}
 
 	_cret = C.g_time_zone_new_identifier(_arg1)
-
 	runtime.KeepAlive(identifier)
 
 	var _timeZone *TimeZone // out
@@ -140,7 +138,6 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	_arg1 = C.gint32(seconds)
 
 	_cret = C.g_time_zone_new_offset(_arg1)
-
 	runtime.KeepAlive(seconds)
 
 	var _timeZone *TimeZone // out
@@ -194,7 +191,6 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	_arg2 = (*C.gint64)(unsafe.Pointer(time_))
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(tz)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
@@ -233,7 +229,6 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	_arg2 = C.gint64(time_)
 
 	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(tz)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
@@ -259,7 +254,6 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
-
 	runtime.KeepAlive(tz)
 	runtime.KeepAlive(interval)
 
@@ -285,7 +279,6 @@ func (tz *TimeZone) Identifier() string {
 	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
-
 	runtime.KeepAlive(tz)
 
 	var _utf8 string // out
@@ -310,7 +303,6 @@ func (tz *TimeZone) Offset(interval int) int32 {
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
-
 	runtime.KeepAlive(tz)
 	runtime.KeepAlive(interval)
 
@@ -332,7 +324,6 @@ func (tz *TimeZone) IsDst(interval int) bool {
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
-
 	runtime.KeepAlive(tz)
 	runtime.KeepAlive(interval)
 

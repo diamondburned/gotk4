@@ -56,7 +56,6 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _gestureStylus *GestureStylus // out
@@ -79,7 +78,6 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	_arg1 = C.GdkAxisUse(axis)
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(axis)
 
@@ -105,7 +103,6 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _deviceTool *gdk.DeviceTool // out

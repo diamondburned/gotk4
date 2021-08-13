@@ -236,6 +236,11 @@ func (f FileSetContentsFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FileSetContentsFlags) Has(other FileSetContentsFlags) bool {
+	return (f & other) == other
+}
+
 // FileTest: test to perform on a file using g_file_test().
 type FileTest int
 
@@ -289,6 +294,11 @@ func (f FileTest) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FileTest) Has(other FileTest) bool {
+	return (f & other) == other
+}
+
 // Basename gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.
 //
@@ -303,7 +313,6 @@ func Basename(fileName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_basename(_arg1)
-
 	runtime.KeepAlive(fileName)
 
 	var _filename string // out
@@ -335,7 +344,6 @@ func BuildFilenamev(args []string) string {
 	}
 
 	_cret = C.g_build_filenamev(_arg1)
-
 	runtime.KeepAlive(args)
 
 	var _filename string // out
@@ -371,7 +379,6 @@ func BuildPathv(separator string, args []string) string {
 	}
 
 	_cret = C.g_build_pathv(_arg1, _arg2)
-
 	runtime.KeepAlive(separator)
 	runtime.KeepAlive(args)
 
@@ -412,7 +419,6 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 	}
 
 	_cret = C.g_canonicalize_filename(_arg1, _arg2)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(relativeTo)
 
@@ -438,7 +444,6 @@ func FileErrorFromErrno(errNo int) FileError {
 	_arg1 = C.gint(errNo)
 
 	_cret = C.g_file_error_from_errno(_arg1)
-
 	runtime.KeepAlive(errNo)
 
 	var _fileError FileError // out
@@ -510,7 +515,6 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	}
 
 	_cret = C.g_file_open_tmp(_arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(tmpl)
 
 	var _nameUsed string // out
@@ -539,7 +543,6 @@ func FileReadLink(filename string) (string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_read_link(_arg1, &_cerr)
-
 	runtime.KeepAlive(filename)
 
 	var _ret string  // out
@@ -721,7 +724,6 @@ func TestFile(filename string, test FileTest) bool {
 	_arg2 = C.GFileTest(test)
 
 	_cret = C.g_file_test(_arg1, _arg2)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(test)
 
@@ -768,7 +770,6 @@ func MkdirWithParents(pathname string, mode int) int {
 	_arg2 = C.gint(mode)
 
 	_cret = C.g_mkdir_with_parents(_arg1, _arg2)
-
 	runtime.KeepAlive(pathname)
 	runtime.KeepAlive(mode)
 
@@ -793,7 +794,6 @@ func PathGetBasename(fileName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_get_basename(_arg1)
-
 	runtime.KeepAlive(fileName)
 
 	var _filename string // out
@@ -818,7 +818,6 @@ func PathGetDirname(fileName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_get_dirname(_arg1)
-
 	runtime.KeepAlive(fileName)
 
 	var _filename string // out
@@ -859,7 +858,6 @@ func PathIsAbsolute(fileName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_is_absolute(_arg1)
-
 	runtime.KeepAlive(fileName)
 
 	var _ok bool // out
@@ -882,7 +880,6 @@ func PathSkipRoot(fileName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_path_skip_root(_arg1)
-
 	runtime.KeepAlive(fileName)
 
 	var _filename string // out

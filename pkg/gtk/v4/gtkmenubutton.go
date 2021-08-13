@@ -158,7 +158,6 @@ func (menuButton *MenuButton) Direction() ArrowType {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _arrowType ArrowType // out
@@ -176,7 +175,6 @@ func (menuButton *MenuButton) HasFrame() bool {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_has_frame(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out
@@ -196,7 +194,6 @@ func (menuButton *MenuButton) IconName() string {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_icon_name(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _utf8 string // out
@@ -214,7 +211,6 @@ func (menuButton *MenuButton) Label() string {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_label(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _utf8 string // out
@@ -232,7 +228,6 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _menuModel gio.MenuModeller // out
@@ -254,7 +249,6 @@ func (menuButton *MenuButton) Popover() *Popover {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _popover *Popover // out
@@ -275,7 +269,6 @@ func (menuButton *MenuButton) UseUnderline() bool {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_use_underline(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out

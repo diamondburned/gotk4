@@ -79,7 +79,6 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out

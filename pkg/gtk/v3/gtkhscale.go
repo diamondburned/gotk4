@@ -78,7 +78,6 @@ func NewHScale(adjustment *Adjustment) *HScale {
 	}
 
 	_cret = C.gtk_hscale_new(_arg1)
-
 	runtime.KeepAlive(adjustment)
 
 	var _hScale *HScale // out
@@ -110,7 +109,6 @@ func NewHScaleWithRange(min float64, max float64, step float64) *HScale {
 	_arg3 = C.gdouble(step)
 
 	_cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
 	runtime.KeepAlive(step)

@@ -103,7 +103,6 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	_arg1 = C.gint(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
-
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)
 

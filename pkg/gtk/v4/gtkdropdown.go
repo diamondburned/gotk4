@@ -100,7 +100,6 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	}
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(expression)
 
@@ -132,7 +131,6 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 	}
 
 	_cret = C.gtk_drop_down_new_from_strings(_arg1)
-
 	runtime.KeepAlive(strings)
 
 	var _dropDown *DropDown // out
@@ -150,7 +148,6 @@ func (self *DropDown) EnableSearch() bool {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -172,7 +169,6 @@ func (self *DropDown) Expression() Expressioner {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -196,7 +192,6 @@ func (self *DropDown) Factory() *ListItemFactory {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
@@ -217,7 +212,6 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
@@ -237,7 +231,6 @@ func (self *DropDown) Model() gio.ListModeller {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -257,7 +250,6 @@ func (self *DropDown) Selected() uint {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -276,7 +268,6 @@ func (self *DropDown) SelectedItem() *externglib.Object {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out

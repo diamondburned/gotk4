@@ -148,7 +148,6 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_wayland_toplevel_export_handle(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(callback)
 
@@ -193,7 +192,6 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
-
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parentHandleStr)
 

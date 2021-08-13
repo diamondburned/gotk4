@@ -221,7 +221,6 @@ func (assistant *Assistant) AppendPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -256,7 +255,6 @@ func (assistant *Assistant) CurrentPage() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_current_page(_arg0)
-
 	runtime.KeepAlive(assistant)
 
 	var _gint int // out
@@ -274,7 +272,6 @@ func (assistant *Assistant) NPages() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
-
 	runtime.KeepAlive(assistant)
 
 	var _gint int // out
@@ -294,7 +291,6 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	_arg1 = C.gint(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
 
@@ -317,7 +313,6 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -340,7 +335,6 @@ func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -366,7 +360,6 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_header_image(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -399,7 +392,6 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_side_image(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -430,7 +422,6 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -451,7 +442,6 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
@@ -474,7 +464,6 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 	_arg2 = C.gint(position)
 
 	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(position)
@@ -511,7 +500,6 @@ func (assistant *Assistant) PrependPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
-
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 

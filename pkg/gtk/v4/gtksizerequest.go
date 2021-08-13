@@ -34,7 +34,6 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	}
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(extraSpace)
 	runtime.KeepAlive(sizes)
 

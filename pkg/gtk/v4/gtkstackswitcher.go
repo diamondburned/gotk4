@@ -100,7 +100,6 @@ func (switcher *StackSwitcher) Stack() *Stack {
 	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
-
 	runtime.KeepAlive(switcher)
 
 	var _stack *Stack // out

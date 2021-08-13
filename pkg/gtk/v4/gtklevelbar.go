@@ -189,7 +189,6 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 	_arg2 = C.double(maxValue)
 
 	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
-
 	runtime.KeepAlive(minValue)
 	runtime.KeepAlive(maxValue)
 
@@ -233,7 +232,6 @@ func (self *LevelBar) Inverted() bool {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_inverted(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -253,7 +251,6 @@ func (self *LevelBar) MaxValue() float64 {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_max_value(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
@@ -271,7 +268,6 @@ func (self *LevelBar) MinValue() float64 {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_min_value(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
@@ -289,7 +285,6 @@ func (self *LevelBar) Mode() LevelBarMode {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_mode(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _levelBarMode LevelBarMode // out
@@ -313,7 +308,6 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	}
 
 	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 
@@ -336,7 +330,6 @@ func (self *LevelBar) Value() float64 {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_value(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out

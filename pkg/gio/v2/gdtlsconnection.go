@@ -334,7 +334,6 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_dtls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(peerCert)
 	runtime.KeepAlive(errors)
@@ -357,7 +356,6 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_certificate(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -416,7 +414,6 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_database(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsDatabase TLSDatabaser // out
@@ -438,7 +435,6 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_interaction(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsInteraction *TLSInteraction // out
@@ -464,7 +460,6 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_negotiated_protocol(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _utf8 string // out
@@ -486,7 +481,6 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_peer_certificate(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -508,7 +502,6 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_peer_certificate_errors(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
@@ -531,7 +524,6 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_rehandshake_mode(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsRehandshakeMode TLSRehandshakeMode // out
@@ -551,7 +543,6 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_require_close_notify(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out

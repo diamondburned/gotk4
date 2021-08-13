@@ -30,7 +30,6 @@ func X11GetServerTime(window *X11Window) uint32 {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
-
 	runtime.KeepAlive(window)
 
 	var _guint32 uint32 // out
@@ -66,7 +65,6 @@ func (window *X11Window) Desktop() uint32 {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_x11_window_get_desktop(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _guint32 uint32 // out

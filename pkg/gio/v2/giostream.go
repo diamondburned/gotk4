@@ -286,7 +286,6 @@ func (stream *IOStream) InputStream() InputStreamer {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _inputStream InputStreamer // out
@@ -305,7 +304,6 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _outputStream OutputStreamer // out
@@ -323,7 +321,6 @@ func (stream *IOStream) HasPending() bool {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_io_stream_has_pending(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -343,7 +340,6 @@ func (stream *IOStream) IsClosed() bool {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_io_stream_is_closed(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out

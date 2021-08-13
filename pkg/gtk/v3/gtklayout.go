@@ -89,7 +89,6 @@ func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
 	}
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
-
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
@@ -108,7 +107,6 @@ func (layout *Layout) BinWindow() gdk.Windower {
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _window gdk.Windower // out
@@ -133,7 +131,6 @@ func (layout *Layout) HAdjustment() *Adjustment {
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _adjustment *Adjustment // out
@@ -179,7 +176,6 @@ func (layout *Layout) VAdjustment() *Adjustment {
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _adjustment *Adjustment // out

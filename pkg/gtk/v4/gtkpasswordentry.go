@@ -127,7 +127,6 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
-
 	runtime.KeepAlive(entry)
 
 	var _menuModel gio.MenuModeller // out
@@ -146,7 +145,6 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
-
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out

@@ -118,7 +118,6 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
-
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(path)
 
@@ -145,7 +144,6 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)
-
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(path)
 

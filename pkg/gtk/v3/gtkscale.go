@@ -156,7 +156,6 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	}
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
-
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(adjustment)
 
@@ -188,7 +187,6 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	_arg4 = C.gdouble(step)
 
 	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
@@ -249,7 +247,6 @@ func (scale *Scale) Digits() int {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_digits(_arg0)
-
 	runtime.KeepAlive(scale)
 
 	var _gint int // out
@@ -268,7 +265,6 @@ func (scale *Scale) DrawValue() bool {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
-
 	runtime.KeepAlive(scale)
 
 	var _ok bool // out
@@ -288,7 +284,6 @@ func (scale *Scale) HasOrigin() bool {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
-
 	runtime.KeepAlive(scale)
 
 	var _ok bool // out
@@ -309,7 +304,6 @@ func (scale *Scale) Layout() *pango.Layout {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_layout(_arg0)
-
 	runtime.KeepAlive(scale)
 
 	var _layout *pango.Layout // out
@@ -358,7 +352,6 @@ func (scale *Scale) ValuePos() PositionType {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_value_pos(_arg0)
-
 	runtime.KeepAlive(scale)
 
 	var _positionType PositionType // out

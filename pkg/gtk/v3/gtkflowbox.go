@@ -274,7 +274,6 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -296,7 +295,6 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 	_arg1 = C.gint(idx)
 
 	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
-
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(idx)
 
@@ -321,7 +319,6 @@ func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
 	_arg2 = C.gint(y)
 
 	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -343,7 +340,6 @@ func (box *FlowBox) ColumnSpacing() uint {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _guint uint // out
@@ -362,7 +358,6 @@ func (box *FlowBox) Homogeneous() bool {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -382,7 +377,6 @@ func (box *FlowBox) MaxChildrenPerLine() uint {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _guint uint // out
@@ -400,7 +394,6 @@ func (box *FlowBox) MinChildrenPerLine() uint {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _guint uint // out
@@ -418,7 +411,6 @@ func (box *FlowBox) RowSpacing() uint {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _guint uint // out
@@ -436,7 +428,6 @@ func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_selected_children(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _list []FlowBoxChild // out
@@ -460,7 +451,6 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _selectionMode SelectionMode // out
@@ -873,7 +863,6 @@ func (child *FlowBoxChild) Index() int {
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_flow_box_child_get_index(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _gint int // out
@@ -892,7 +881,6 @@ func (child *FlowBoxChild) IsSelected() bool {
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_flow_box_child_is_selected(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _ok bool // out

@@ -82,6 +82,11 @@ func (a ApplicationInhibitFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a ApplicationInhibitFlags) Has(other ApplicationInhibitFlags) bool {
+	return (a & other) == other
+}
+
 // ApplicationOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -226,7 +231,6 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
-
 	runtime.KeepAlive(applicationId)
 	runtime.KeepAlive(flags)
 
@@ -313,7 +317,6 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(detailedActionName)
 
@@ -362,7 +365,6 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(accel)
 
@@ -400,7 +402,6 @@ func (application *Application) ActiveWindow() *Window {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_active_window(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _window *Window // out
@@ -421,7 +422,6 @@ func (application *Application) AppMenu() gio.MenuModeller {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_app_menu(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _menuModel gio.MenuModeller // out
@@ -445,7 +445,6 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
 
@@ -472,7 +471,6 @@ func (application *Application) Menubar() gio.MenuModeller {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_menubar(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _menuModel gio.MenuModeller // out
@@ -495,7 +493,6 @@ func (application *Application) WindowByID(id uint) *Window {
 	_arg1 = C.guint(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
 
@@ -523,7 +520,6 @@ func (application *Application) Windows() []Window {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_windows(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _list []Window // out
@@ -577,7 +573,6 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	}
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(flags)
@@ -604,7 +599,6 @@ func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool 
 	_arg1 = C.GtkApplicationInhibitFlags(flags)
 
 	_cret = C.gtk_application_is_inhibited(_arg0, _arg1)
-
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(flags)
 
@@ -626,7 +620,6 @@ func (application *Application) ListActionDescriptions() []string {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _utf8s []string // out
@@ -687,7 +680,6 @@ func (application *Application) PrefersAppMenu() bool {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_prefers_app_menu(_arg0)
-
 	runtime.KeepAlive(application)
 
 	var _ok bool // out

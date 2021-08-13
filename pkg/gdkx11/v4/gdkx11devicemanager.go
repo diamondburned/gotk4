@@ -24,7 +24,6 @@ func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int) *X
 	_arg2 = C.int(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
-
 	runtime.KeepAlive(deviceManager)
 	runtime.KeepAlive(deviceId)
 

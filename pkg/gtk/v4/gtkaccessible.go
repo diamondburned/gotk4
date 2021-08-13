@@ -121,7 +121,6 @@ func (self *Accessible) AccessibleRole() AccessibleRole {
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_accessible_get_accessible_role(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _accessibleRole AccessibleRole // out

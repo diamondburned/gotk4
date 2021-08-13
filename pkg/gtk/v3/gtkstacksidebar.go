@@ -91,7 +91,6 @@ func (sidebar *StackSidebar) Stack() *Stack {
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _stack *Stack // out

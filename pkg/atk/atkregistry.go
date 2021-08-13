@@ -71,7 +71,6 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	_arg1 = C.GType(typ)
 
 	_cret = C.atk_registry_get_factory(_arg0, _arg1)
-
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 
@@ -93,7 +92,6 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	_arg1 = C.GType(typ)
 
 	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
-
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 

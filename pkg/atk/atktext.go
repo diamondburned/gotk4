@@ -200,7 +200,6 @@ func TextAttributeForName(name string) TextAttribute {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_for_name(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _textAttribute TextAttribute // out
@@ -218,7 +217,6 @@ func TextAttributeGetName(attr TextAttribute) string {
 	_arg1 = C.AtkTextAttribute(attr)
 
 	_cret = C.atk_text_attribute_get_name(_arg1)
-
 	runtime.KeepAlive(attr)
 
 	var _utf8 string // out
@@ -238,7 +236,6 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	_arg2 = C.gint(index_)
 
 	_cret = C.atk_text_attribute_get_value(_arg1, _arg2)
-
 	runtime.KeepAlive(attr)
 	runtime.KeepAlive(index_)
 
@@ -260,7 +257,6 @@ func TextAttributeRegister(name string) TextAttribute {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_register(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _textAttribute TextAttribute // out
@@ -643,7 +639,6 @@ func (text *Text) AddSelection(startOffset int, endOffset int) bool {
 	_arg2 = C.gint(endOffset)
 
 	_cret = C.atk_text_add_selection(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
@@ -673,7 +668,6 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 	_arg4 = C.AtkTextClipType(yClipType)
 
 	_cret = C.atk_text_get_bounded_ranges(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(rect)
 	runtime.KeepAlive(coordType)
@@ -711,7 +705,6 @@ func (text *Text) CaretOffset() int {
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_caret_offset(_arg0)
-
 	runtime.KeepAlive(text)
 
 	var _gint int // out
@@ -731,7 +724,6 @@ func (text *Text) CharacterAtOffset(offset int) uint32 {
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_get_character_at_offset(_arg0, _arg1)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 
@@ -750,7 +742,6 @@ func (text *Text) CharacterCount() int {
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_character_count(_arg0)
-
 	runtime.KeepAlive(text)
 
 	var _gint int // out
@@ -804,7 +795,6 @@ func (text *Text) NSelections() int {
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 
 	_cret = C.atk_text_get_n_selections(_arg0)
-
 	runtime.KeepAlive(text)
 
 	var _gint int // out
@@ -830,7 +820,6 @@ func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 	_arg3 = C.AtkCoordType(coords)
 
 	_cret = C.atk_text_get_offset_at_point(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -884,7 +873,6 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_get_selection(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 
@@ -941,7 +929,6 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 	_arg2 = C.AtkTextGranularity(granularity)
 
 	_cret = C.atk_text_get_string_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(granularity)
@@ -972,7 +959,6 @@ func (text *Text) Text(startOffset int, endOffset int) string {
 	_arg2 = C.gint(endOffset)
 
 	_cret = C.atk_text_get_text(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
@@ -1001,7 +987,6 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
 	_cret = C.atk_text_get_text_after_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
@@ -1058,7 +1043,6 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
 	_cret = C.atk_text_get_text_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
@@ -1091,7 +1075,6 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
 	_cret = C.atk_text_get_text_before_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
@@ -1118,7 +1101,6 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_remove_selection(_arg0, _arg1)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 
@@ -1146,7 +1128,6 @@ func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollTy
 	_arg3 = C.AtkScrollType(typ)
 
 	_cret = C.atk_text_scroll_substring_to(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
@@ -1180,7 +1161,6 @@ func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords 
 	_arg5 = C.gint(y)
 
 	_cret = C.atk_text_scroll_substring_to_point(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
@@ -1223,7 +1203,6 @@ func (text *Text) SetCaretOffset(offset int) bool {
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_set_caret_offset(_arg0, _arg1)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 
@@ -1250,7 +1229,6 @@ func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int)
 	_arg3 = C.gint(endOffset)
 
 	_cret = C.atk_text_set_selection(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 	runtime.KeepAlive(startOffset)

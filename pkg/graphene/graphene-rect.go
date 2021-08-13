@@ -69,7 +69,6 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_rect_contains_point(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(p)
 
@@ -93,7 +92,6 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_rect_contains_rect(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -116,7 +114,6 @@ func (a *Rect) Equal(b *Rect) bool {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_rect_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -157,7 +154,6 @@ func (r *Rect) Area() float32 {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_get_area(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _gfloat float32 // out
@@ -228,7 +224,6 @@ func (r *Rect) Height() float32 {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_get_height(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _gfloat float32 // out
@@ -299,7 +294,6 @@ func (r *Rect) Width() float32 {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_get_width(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _gfloat float32 // out
@@ -317,7 +311,6 @@ func (r *Rect) X() float32 {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_get_x(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _gfloat float32 // out
@@ -335,7 +328,6 @@ func (r *Rect) Y() float32 {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_get_y(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _gfloat float32 // out
@@ -364,7 +356,6 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	_arg4 = C.float(height)
 
 	_cret = C.graphene_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -391,7 +382,6 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_rect_init_from_rect(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(src)
 
@@ -426,7 +416,6 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_inset(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(dX)
 	runtime.KeepAlive(dY)
@@ -515,7 +504,6 @@ func (a *Rect) Intersection(b *Rect) (Rect, bool) {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_rect_intersection(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -541,7 +529,6 @@ func (r *Rect) Normalize() *Rect {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_normalize(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _rect *Rect // out
@@ -585,7 +572,6 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	_arg2 = C.float(dY)
 
 	_cret = C.graphene_rect_offset(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(dX)
 	runtime.KeepAlive(dY)
@@ -693,7 +679,6 @@ func (r *Rect) RoundToPixel() *Rect {
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_rect_round_to_pixel(_arg0)
-
 	runtime.KeepAlive(r)
 
 	var _rect *Rect // out

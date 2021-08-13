@@ -88,7 +88,6 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 	_arg4 = C.gfloat(yscale)
 
 	_cret = C.gtk_alignment_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
 	runtime.KeepAlive(xscale)

@@ -259,7 +259,6 @@ func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags Converter
 	_arg5 = C.GConverterFlags(flags)
 
 	_cret = C.g_converter_convert(_arg0, unsafe.Pointer(_arg1), _arg2, unsafe.Pointer(_arg3), _arg4, _arg5, &_arg6, &_arg7, &_cerr)
-
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(inbuf)
 	runtime.KeepAlive(outbuf)

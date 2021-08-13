@@ -47,7 +47,6 @@ func KeyvalFromName(keyvalName string) uint {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_keyval_from_name(_arg1)
-
 	runtime.KeepAlive(keyvalName)
 
 	var _guint uint // out
@@ -65,7 +64,6 @@ func KeyvalIsLower(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
@@ -85,7 +83,6 @@ func KeyvalIsUpper(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
@@ -108,7 +105,6 @@ func KeyvalName(keyval uint) string {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_name(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _utf8 string // out
@@ -128,7 +124,6 @@ func KeyvalToLower(keyval uint) uint {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint uint // out
@@ -150,7 +145,6 @@ func KeyvalToUnicode(keyval uint) uint32 {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint32 uint32 // out
@@ -168,7 +162,6 @@ func KeyvalToUpper(keyval uint) uint {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint uint // out
@@ -186,7 +179,6 @@ func UnicodeToKeyval(wc uint32) uint {
 	_arg1 = C.guint32(wc)
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
-
 	runtime.KeepAlive(wc)
 
 	var _guint uint // out

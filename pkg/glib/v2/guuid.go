@@ -28,7 +28,6 @@ func UUIDStringIsValid(str string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uuid_string_is_valid(_arg1)
-
 	runtime.KeepAlive(str)
 
 	var _ok bool // out

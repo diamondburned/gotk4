@@ -142,7 +142,6 @@ func (list *ListModel) ItemType() externglib.Type {
 	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_list_model_get_item_type(_arg0)
-
 	runtime.KeepAlive(list)
 
 	var _gType externglib.Type // out
@@ -164,7 +163,6 @@ func (list *ListModel) NItems() uint {
 	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_list_model_get_n_items(_arg0)
-
 	runtime.KeepAlive(list)
 
 	var _guint uint // out
@@ -188,7 +186,6 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 	_arg1 = C.guint(position)
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
-
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 

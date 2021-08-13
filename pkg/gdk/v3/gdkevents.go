@@ -774,6 +774,11 @@ func (w WindowState) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if w contains other.
+func (w WindowState) Has(other WindowState) bool {
+	return (w & other) == other
+}
+
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
 	var _cret C.gboolean // in
@@ -830,7 +835,6 @@ func SettingGet(name string, value *externglib.Value) bool {
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_setting_get(_arg1, _arg2)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
 

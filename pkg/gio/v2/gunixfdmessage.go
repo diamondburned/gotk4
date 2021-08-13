@@ -83,7 +83,6 @@ func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
-
 	runtime.KeepAlive(fdList)
 
 	var _unixFDMessage *UnixFDMessage // out
@@ -132,7 +131,6 @@ func (message *UnixFDMessage) FdList() *UnixFDList {
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _unixFDList *UnixFDList // out

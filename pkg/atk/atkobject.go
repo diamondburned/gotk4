@@ -788,7 +788,6 @@ func RoleForName(name string) Role {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_for_name(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _role Role // out
@@ -807,7 +806,6 @@ func RoleGetLocalizedName(role Role) string {
 	_arg1 = C.AtkRole(role)
 
 	_cret = C.atk_role_get_localized_name(_arg1)
-
 	runtime.KeepAlive(role)
 
 	var _utf8 string // out
@@ -825,7 +823,6 @@ func RoleGetName(role Role) string {
 	_arg1 = C.AtkRole(role)
 
 	_cret = C.atk_role_get_name(_arg1)
-
 	runtime.KeepAlive(role)
 
 	var _utf8 string // out
@@ -849,7 +846,6 @@ func RoleRegister(name string) Role {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_register(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _role Role // out
@@ -1028,7 +1024,6 @@ func (object *ObjectClass) AddRelationship(relationship RelationType, target *Ob
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(relationship)
 	runtime.KeepAlive(target)
@@ -1050,7 +1045,6 @@ func (accessible *ObjectClass) AccessibleID() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_accessible_id(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
@@ -1068,7 +1062,6 @@ func (accessible *ObjectClass) Description() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_description(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
@@ -1087,7 +1080,6 @@ func (accessible *ObjectClass) IndexInParent() int {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_index_in_parent(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _gint int // out
@@ -1107,7 +1099,6 @@ func (accessible *ObjectClass) Layer() Layer {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_layer(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _layer Layer // out
@@ -1128,7 +1119,6 @@ func (accessible *ObjectClass) MDIZOrder() int {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_mdi_zorder(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _gint int // out
@@ -1146,7 +1136,6 @@ func (accessible *ObjectClass) NAccessibleChildren() int {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_n_accessible_children(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _gint int // out
@@ -1164,7 +1153,6 @@ func (accessible *ObjectClass) Name() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_name(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
@@ -1183,7 +1171,6 @@ func (accessible *ObjectClass) ObjectLocale() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_object_locale(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
@@ -1208,7 +1195,6 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_parent(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _object *ObjectClass // out
@@ -1226,7 +1212,6 @@ func (accessible *ObjectClass) Role() Role {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_get_role(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _role Role // out
@@ -1287,7 +1272,6 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_peek_parent(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _object *ObjectClass // out
@@ -1309,7 +1293,6 @@ func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
-
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(i)
 
@@ -1328,7 +1311,6 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_ref_relation_set(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _relationSet *RelationSet // out
@@ -1347,7 +1329,6 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.atk_object_ref_state_set(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _stateSet *StateSet // out
@@ -1385,7 +1366,6 @@ func (object *ObjectClass) RemoveRelationship(relationship RelationType, target 
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(relationship)
 	runtime.KeepAlive(target)

@@ -68,7 +68,6 @@ func (context *AppLaunchContext) Display() *Display {
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_app_launch_context_get_display(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _display *Display // out

@@ -111,7 +111,6 @@ func (handleBox *HandleBox) ChildDetached() bool {
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_child_detached(_arg0)
-
 	runtime.KeepAlive(handleBox)
 
 	var _ok bool // out
@@ -134,7 +133,6 @@ func (handleBox *HandleBox) HandlePosition() PositionType {
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_handle_position(_arg0)
-
 	runtime.KeepAlive(handleBox)
 
 	var _positionType PositionType // out
@@ -155,7 +153,6 @@ func (handleBox *HandleBox) ShadowType() ShadowType {
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_shadow_type(_arg0)
-
 	runtime.KeepAlive(handleBox)
 
 	var _shadowType ShadowType // out
@@ -176,7 +173,6 @@ func (handleBox *HandleBox) SnapEdge() PositionType {
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_snap_edge(_arg0)
-
 	runtime.KeepAlive(handleBox)
 
 	var _positionType PositionType // out

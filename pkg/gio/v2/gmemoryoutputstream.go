@@ -93,7 +93,6 @@ func (ostream *MemoryOutputStream) Data() cgo.Handle {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
-
 	runtime.KeepAlive(ostream)
 
 	var _gpointer cgo.Handle // out
@@ -112,7 +111,6 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
-
 	runtime.KeepAlive(ostream)
 
 	var _gsize uint // out
@@ -143,7 +141,6 @@ func (ostream *MemoryOutputStream) Size() uint {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
-
 	runtime.KeepAlive(ostream)
 
 	var _gsize uint // out
@@ -165,7 +162,6 @@ func (ostream *MemoryOutputStream) StealData() cgo.Handle {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
-
 	runtime.KeepAlive(ostream)
 
 	var _gpointer cgo.Handle // out

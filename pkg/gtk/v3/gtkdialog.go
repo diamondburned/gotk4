@@ -143,6 +143,11 @@ func (d DialogFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DialogFlags) Has(other DialogFlags) bool {
+	return (d & other) == other
+}
+
 // AlternativeDialogButtonOrder returns TRUE if dialogs are expected to use an
 // alternative button order on the screen screen. See
 // gtk_dialog_set_alternative_button_order() for more details about alternative
@@ -163,7 +168,6 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	}
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
-
 	runtime.KeepAlive(screen)
 
 	var _ok bool // out
@@ -384,7 +388,6 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	_arg2 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(buttonText)
 	runtime.KeepAlive(responseId)
@@ -407,7 +410,6 @@ func (dialog *Dialog) ActionArea() *Box {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_action_area(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _box *Box // out
@@ -425,7 +427,6 @@ func (dialog *Dialog) ContentArea() *Box {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _box *Box // out
@@ -444,7 +445,6 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _headerBar *HeaderBar // out
@@ -465,7 +465,6 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(widget)
 
@@ -487,7 +486,6 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	_arg1 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 
@@ -565,7 +563,6 @@ func (dialog *Dialog) Run() int {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_run(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _gint int // out

@@ -357,7 +357,6 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	defer C.g_hash_table_unref(_arg5)
 
 	_cret = C.gtk_constraint_layout_add_constraints_from_descriptionv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(lines)
 	runtime.KeepAlive(hspacing)
@@ -416,7 +415,6 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _listModel gio.ListModeller // out
@@ -442,7 +440,6 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _listModel gio.ListModeller // out

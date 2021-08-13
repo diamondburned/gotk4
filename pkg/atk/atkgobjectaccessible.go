@@ -51,7 +51,6 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_gobject_accessible_get_object(_arg0)
-
 	runtime.KeepAlive(obj)
 
 	var _object *externglib.Object // out
@@ -69,7 +68,6 @@ func GObjectAccessibleForObject(obj *externglib.Object) *ObjectClass {
 	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_gobject_accessible_for_object(_arg1)
-
 	runtime.KeepAlive(obj)
 
 	var _object *ObjectClass // out

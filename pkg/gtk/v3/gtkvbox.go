@@ -99,7 +99,6 @@ func NewVBox(homogeneous bool, spacing int) *VBox {
 	_arg2 = C.gint(spacing)
 
 	_cret = C.gtk_vbox_new(_arg1, _arg2)
-
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)
 

@@ -85,7 +85,6 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 	}
 
 	_cret = C.pango_gravity_get_for_matrix(_arg1)
-
 	runtime.KeepAlive(matrix)
 
 	var _gravity Gravity // out
@@ -113,7 +112,6 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 	_arg3 = C.PangoGravityHint(hint)
 
 	_cret = C.pango_gravity_get_for_script(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(script)
 	runtime.KeepAlive(baseGravity)
 	runtime.KeepAlive(hint)
@@ -154,7 +152,6 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 	_arg4 = C.PangoGravityHint(hint)
 
 	_cret = C.pango_gravity_get_for_script_and_width(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(script)
 	runtime.KeepAlive(wide)
 	runtime.KeepAlive(baseGravity)
@@ -180,7 +177,6 @@ func GravityToRotation(gravity Gravity) float64 {
 	_arg1 = C.PangoGravity(gravity)
 
 	_cret = C.pango_gravity_to_rotation(_arg1)
-
 	runtime.KeepAlive(gravity)
 
 	var _gdouble float64 // out

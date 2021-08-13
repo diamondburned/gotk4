@@ -78,7 +78,6 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	}
 
 	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)
 

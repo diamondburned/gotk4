@@ -171,7 +171,6 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(child)
 
@@ -190,7 +189,6 @@ func (manager *LayoutManager) RequestMode() SizeRequestMode {
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _sizeRequestMode SizeRequestMode // out
@@ -208,7 +206,6 @@ func (manager *LayoutManager) Widget() Widgetter {
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _widget Widgetter // out

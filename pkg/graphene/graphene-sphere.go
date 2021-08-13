@@ -60,7 +60,6 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_sphere_contains_point(_arg0, _arg1)
-
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(point)
 
@@ -84,7 +83,6 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_sphere_distance(_arg0, _arg1)
-
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(point)
 
@@ -105,7 +103,6 @@ func (a *Sphere) Equal(b *Sphere) bool {
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_sphere_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -161,7 +158,6 @@ func (s *Sphere) Radius() float32 {
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_sphere_get_radius(_arg0)
-
 	runtime.KeepAlive(s)
 
 	var _gfloat float32 // out
@@ -186,7 +182,6 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	_arg2 = C.float(radius)
 
 	_cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(center)
 	runtime.KeepAlive(radius)
@@ -220,7 +215,6 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	}
 
 	_cret = C.graphene_sphere_init_from_points(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(points)
 	runtime.KeepAlive(center)
@@ -254,7 +248,6 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	}
 
 	_cret = C.graphene_sphere_init_from_vectors(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(vectors)
 	runtime.KeepAlive(center)
@@ -274,7 +267,6 @@ func (s *Sphere) IsEmpty() bool {
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_sphere_is_empty(_arg0)
-
 	runtime.KeepAlive(s)
 
 	var _ok bool // out

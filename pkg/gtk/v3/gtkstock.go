@@ -668,7 +668,6 @@ func StockLookup(stockId string) (StockItem, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
-
 	runtime.KeepAlive(stockId)
 
 	var _item StockItem // out

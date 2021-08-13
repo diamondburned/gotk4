@@ -94,7 +94,6 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interfaceName)
 
@@ -115,7 +114,6 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_get_interfaces(_arg0)
-
 	runtime.KeepAlive(object)
 
 	var _list []DBusInterfacer // out
@@ -139,7 +137,6 @@ func (object *DBusObject) ObjectPath() string {
 	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_get_object_path(_arg0)
-
 	runtime.KeepAlive(object)
 
 	var _utf8 string // out

@@ -174,7 +174,6 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
-
 	runtime.KeepAlive(deviceManager)
 
 	var _device Devicer // out
@@ -192,7 +191,6 @@ func (deviceManager *DeviceManager) Display() *Display {
 	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
 
 	_cret = C.gdk_device_manager_get_display(_arg0)
-
 	runtime.KeepAlive(deviceManager)
 
 	var _display *Display // out
@@ -218,7 +216,6 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	_arg1 = C.GdkDeviceType(typ)
 
 	_cret = C.gdk_device_manager_list_devices(_arg0, _arg1)
-
 	runtime.KeepAlive(deviceManager)
 	runtime.KeepAlive(typ)
 

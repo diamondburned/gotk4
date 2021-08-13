@@ -95,7 +95,6 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_get_renderer(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _renderer gsk.Rendererer // out
@@ -113,7 +112,6 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_get_surface(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _surface gdk.Surfacer // out
@@ -178,7 +176,6 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gtk_native_get_for_surface(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _native NativeSurfacer // out

@@ -68,7 +68,6 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
-
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(socket)
 
@@ -87,7 +86,6 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _ioStream IOStreamer // out

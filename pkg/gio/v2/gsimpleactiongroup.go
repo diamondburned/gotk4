@@ -130,7 +130,6 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
-
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
 

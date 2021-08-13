@@ -142,7 +142,6 @@ func (bar *HeaderBar) DecorationLayout() string {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
-
 	runtime.KeepAlive(bar)
 
 	var _utf8 string // out
@@ -163,7 +162,6 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
-
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
@@ -185,7 +183,6 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_title_widget(_arg0)
-
 	runtime.KeepAlive(bar)
 
 	var _widget Widgetter // out

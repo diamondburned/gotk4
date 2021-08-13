@@ -86,7 +86,6 @@ func (self *WindowHandle) Child() Widgetter {
 	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

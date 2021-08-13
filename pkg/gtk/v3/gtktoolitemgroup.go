@@ -88,7 +88,6 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tool_item_group_new(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _toolItemGroup *ToolItemGroup // out
@@ -106,7 +105,6 @@ func (group *ToolItemGroup) Collapsed() bool {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_collapsed(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _ok bool // out
@@ -130,7 +128,6 @@ func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
 	_arg2 = C.gint(y)
 
 	_cret = C.gtk_tool_item_group_get_drop_item(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -150,7 +147,6 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_ellipsize(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
@@ -168,7 +164,6 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_header_relief(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _reliefStyle ReliefStyle // out
@@ -188,7 +183,6 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(item)
 
@@ -207,7 +201,6 @@ func (group *ToolItemGroup) Label() string {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_label(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _utf8 string // out
@@ -226,7 +219,6 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _widget Widgetter // out
@@ -244,7 +236,6 @@ func (group *ToolItemGroup) NItems() uint {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_n_items(_arg0)
-
 	runtime.KeepAlive(group)
 
 	var _guint uint // out
@@ -264,7 +255,6 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	_arg1 = C.guint(index)
 
 	_cret = C.gtk_tool_item_group_get_nth_item(_arg0, _arg1)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(index)
 

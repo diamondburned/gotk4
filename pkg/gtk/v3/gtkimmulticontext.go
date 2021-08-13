@@ -81,7 +81,6 @@ func (context *IMMulticontext) ContextID() string {
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _utf8 string // out

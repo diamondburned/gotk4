@@ -194,7 +194,6 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
@@ -214,7 +213,6 @@ func (parent *CellAccessibleParent) RendererState(cell *CellAccessible) CellRend
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
@@ -234,7 +232,6 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 

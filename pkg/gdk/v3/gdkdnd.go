@@ -170,6 +170,11 @@ func (d DragAction) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DragAction) Has(other DragAction) bool {
+	return (d & other) == other
+}
+
 // DragAbort aborts a drag without dropping.
 //
 // This function is called by the drag source.
@@ -239,7 +244,6 @@ func DragDropSucceeded(context *DragContext) bool {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
-
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -315,7 +319,6 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 	_arg8 = C.guint32(time_)
 
 	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(destWindow)
 	runtime.KeepAlive(protocol)

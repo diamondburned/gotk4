@@ -71,7 +71,6 @@ func (display *X11Display) ErrorTrapPop() int {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _gint int // out
@@ -118,7 +117,6 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_default_group(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _surface gdk.Surfacer // out
@@ -138,7 +136,6 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(display)
 
 	var _major int // out
@@ -170,7 +167,6 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_primary_monitor(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _monitor *gdk.Monitor // out
@@ -193,7 +189,6 @@ func (display *X11Display) Screen() *X11Screen {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_screen(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _x11Screen *X11Screen // out
@@ -211,7 +206,6 @@ func (display *X11Display) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -231,7 +225,6 @@ func (display *X11Display) UserTime() uint32 {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _guint32 uint32 // out
@@ -341,7 +334,6 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(str)
 
@@ -386,7 +378,6 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(str)
 
@@ -420,7 +411,6 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 	}
 
 	_cret = C.gdk_x11_display_open(_arg1)
-
 	runtime.KeepAlive(displayName)
 
 	var _display *gdk.Display // out

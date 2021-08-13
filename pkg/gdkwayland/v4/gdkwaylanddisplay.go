@@ -58,7 +58,6 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -82,7 +81,6 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(global)
 

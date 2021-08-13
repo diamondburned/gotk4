@@ -42,7 +42,6 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label(_arg1, _arg2)
-
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(acceleratorMods)
 
@@ -78,7 +77,6 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, k
 	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label_with_keycode(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(keycode)
@@ -109,7 +107,6 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name(_arg1, _arg2)
-
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(acceleratorMods)
 
@@ -142,7 +139,6 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keyco
 	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name_with_keycode(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(keycode)
@@ -177,7 +173,6 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accelerator_parse(_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(accelerator)
 
 	var _acceleratorKey uint              // out
@@ -222,7 +217,6 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 	}
 
 	_cret = C.gtk_accelerator_parse_with_keycode(_arg1, _arg2, &_arg3, &_arg4, &_arg5)
-
 	runtime.KeepAlive(accelerator)
 	runtime.KeepAlive(display)
 
@@ -271,7 +265,6 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	_arg2 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_accelerator_valid(_arg1, _arg2)
-
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)
 

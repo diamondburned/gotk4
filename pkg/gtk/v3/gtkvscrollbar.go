@@ -78,7 +78,6 @@ func NewVScrollbar(adjustment *Adjustment) *VScrollbar {
 	}
 
 	_cret = C.gtk_vscrollbar_new(_arg1)
-
 	runtime.KeepAlive(adjustment)
 
 	var _vScrollbar *VScrollbar // out

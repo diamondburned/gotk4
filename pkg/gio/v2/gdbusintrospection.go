@@ -114,7 +114,6 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
-
 	runtime.KeepAlive(annotations)
 	runtime.KeepAlive(name)
 
@@ -348,7 +347,6 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -379,7 +377,6 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -410,7 +407,6 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -545,7 +541,6 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
-
 	runtime.KeepAlive(xmlData)
 
 	var _dBusNodeInfo *DBusNodeInfo // out
@@ -662,7 +657,6 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 

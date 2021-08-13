@@ -67,7 +67,6 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_box_layout_new(_arg1)
-
 	runtime.KeepAlive(orientation)
 
 	var _boxLayout *BoxLayout // out
@@ -86,7 +85,6 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
-
 	runtime.KeepAlive(boxLayout)
 
 	var _baselinePosition BaselinePosition // out
@@ -104,7 +102,6 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
-
 	runtime.KeepAlive(boxLayout)
 
 	var _ok bool // out
@@ -124,7 +121,6 @@ func (boxLayout *BoxLayout) Spacing() uint {
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
-
 	runtime.KeepAlive(boxLayout)
 
 	var _guint uint // out

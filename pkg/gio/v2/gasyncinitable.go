@@ -309,7 +309,6 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
 

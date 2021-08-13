@@ -135,7 +135,6 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInf
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
-
 	runtime.KeepAlive(lookup)
 	runtime.KeepAlive(uriScheme)
 
@@ -192,7 +191,6 @@ func NewDesktopAppInfo(desktopId string) *DesktopAppInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new(_arg1)
-
 	runtime.KeepAlive(desktopId)
 
 	var _desktopAppInfo *DesktopAppInfo // out
@@ -213,7 +211,6 @@ func NewDesktopAppInfoFromFilename(filename string) *DesktopAppInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_new_from_filename(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _desktopAppInfo *DesktopAppInfo // out
@@ -233,7 +230,6 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) *DesktopAppInfo {
 	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_desktop_app_info_new_from_keyfile(_arg1)
-
 	runtime.KeepAlive(keyFile)
 
 	var _desktopAppInfo *DesktopAppInfo // out
@@ -259,7 +255,6 @@ func (info *DesktopAppInfo) ActionName(actionName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_action_name(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(actionName)
 
@@ -284,7 +279,6 @@ func (info *DesktopAppInfo) Boolean(key string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_boolean(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(key)
 
@@ -305,7 +299,6 @@ func (info *DesktopAppInfo) Categories() string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_categories(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -327,7 +320,6 @@ func (info *DesktopAppInfo) Filename() string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_filename(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _filename string // out
@@ -347,7 +339,6 @@ func (info *DesktopAppInfo) GenericName() string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_generic_name(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -367,7 +358,6 @@ func (info *DesktopAppInfo) IsHidden() bool {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_is_hidden(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
@@ -387,7 +377,6 @@ func (info *DesktopAppInfo) Keywords() []string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_keywords(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
@@ -423,7 +412,6 @@ func (info *DesktopAppInfo) LocaleString(key string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_locale_string(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(key)
 
@@ -447,7 +435,6 @@ func (info *DesktopAppInfo) Nodisplay() bool {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_nodisplay(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
@@ -482,7 +469,6 @@ func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 	}
 
 	_cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(desktopEnv)
 
@@ -505,7 +491,6 @@ func (info *DesktopAppInfo) StartupWmClass() string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_get_startup_wm_class(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -530,7 +515,6 @@ func (info *DesktopAppInfo) String(key string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_string(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(key)
 
@@ -556,7 +540,6 @@ func (info *DesktopAppInfo) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_has_key(_arg0, _arg1)
-
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(key)
 
@@ -746,7 +729,6 @@ func (info *DesktopAppInfo) ListActions() []string {
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_desktop_app_info_list_actions(_arg0)
-
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
@@ -781,7 +763,6 @@ func DesktopAppInfoGetImplementations(_interface string) []DesktopAppInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_desktop_app_info_get_implementations(_arg1)
-
 	runtime.KeepAlive(_interface)
 
 	var _list []DesktopAppInfo // out

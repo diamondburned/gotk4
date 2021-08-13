@@ -113,7 +113,6 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	_arg1 = C.GtkSizeGroupMode(mode)
 
 	_cret = C.gtk_size_group_new(_arg1)
-
 	runtime.KeepAlive(mode)
 
 	var _sizeGroup *SizeGroup // out
@@ -153,7 +152,6 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
-
 	runtime.KeepAlive(sizeGroup)
 
 	var _sizeGroupMode SizeGroupMode // out

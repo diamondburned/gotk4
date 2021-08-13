@@ -79,7 +79,6 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
-
 	runtime.KeepAlive(baseStream)
 
 	var _bufferedOutputStream *BufferedOutputStream // out
@@ -100,7 +99,6 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
-
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
 
@@ -119,7 +117,6 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -139,7 +136,6 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out

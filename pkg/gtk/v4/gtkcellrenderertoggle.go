@@ -73,7 +73,6 @@ func (toggle *CellRendererToggle) Activatable() bool {
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(toggle.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
-
 	runtime.KeepAlive(toggle)
 
 	var _ok bool // out
@@ -94,7 +93,6 @@ func (toggle *CellRendererToggle) Active() bool {
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(toggle.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
-
 	runtime.KeepAlive(toggle)
 
 	var _ok bool // out
@@ -114,7 +112,6 @@ func (toggle *CellRendererToggle) Radio() bool {
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(toggle.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
-
 	runtime.KeepAlive(toggle)
 
 	var _ok bool // out

@@ -39,7 +39,6 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	_arg5 = C.int(height)
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -76,7 +75,6 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
-
 	runtime.KeepAlive(texture)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out

@@ -92,7 +92,6 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	}
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
-
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
@@ -111,7 +110,6 @@ func (viewport *Viewport) Child() Widgetter {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _widget Widgetter // out
@@ -132,7 +130,6 @@ func (viewport *Viewport) ScrollToFocus() bool {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _ok bool // out

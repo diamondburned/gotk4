@@ -83,7 +83,6 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	}
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
-
 	runtime.KeepAlive(attributes)
 	runtime.KeepAlive(file)
 
@@ -102,7 +101,6 @@ func (self *DirectoryList) Attributes() string {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -129,7 +127,6 @@ func (self *DirectoryList) Error() error {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _err error // out
@@ -149,7 +146,6 @@ func (self *DirectoryList) File() gio.Filer {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_file(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
@@ -169,7 +165,6 @@ func (self *DirectoryList) IOPriority() int {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -188,7 +183,6 @@ func (self *DirectoryList) Monitored() bool {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -211,7 +205,6 @@ func (self *DirectoryList) IsLoading() bool {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

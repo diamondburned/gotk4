@@ -250,7 +250,6 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_network_monitor_get_connectivity(_arg0)
-
 	runtime.KeepAlive(monitor)
 
 	var _networkConnectivity NetworkConnectivity // out
@@ -271,7 +270,6 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_network_monitor_get_network_available(_arg0)
-
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
@@ -292,7 +290,6 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_network_monitor_get_network_metered(_arg0)
-
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out

@@ -101,7 +101,6 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 	_arg1 = C.AtkValueType(valueType)
 
 	_cret = C.atk_value_type_get_localized_name(_arg1)
-
 	runtime.KeepAlive(valueType)
 
 	var _utf8 string // out
@@ -120,7 +119,6 @@ func ValueTypeGetName(valueType ValueType) string {
 	_arg1 = C.AtkValueType(valueType)
 
 	_cret = C.atk_value_type_get_name(_arg1)
-
 	runtime.KeepAlive(valueType)
 
 	var _utf8 string // out
@@ -350,7 +348,6 @@ func (obj *Value) Increment() float64 {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_value_get_increment(_arg0)
-
 	runtime.KeepAlive(obj)
 
 	var _gdouble float64 // out
@@ -427,7 +424,6 @@ func (obj *Value) Range() *Range {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_value_get_range(_arg0)
-
 	runtime.KeepAlive(obj)
 
 	var __range *Range // out
@@ -479,7 +475,6 @@ func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
-
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(value)
 

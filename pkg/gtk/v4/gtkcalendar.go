@@ -130,7 +130,6 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
-
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
 
@@ -154,7 +153,6 @@ func (self *Calendar) ShowDayNames() bool {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_day_names(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -176,7 +174,6 @@ func (self *Calendar) ShowHeading() bool {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_heading(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -198,7 +195,6 @@ func (self *Calendar) ShowWeekNumbers() bool {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

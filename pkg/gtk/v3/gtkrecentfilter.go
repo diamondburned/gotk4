@@ -92,6 +92,11 @@ func (r RecentFilterFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if r contains other.
+func (r RecentFilterFlags) Has(other RecentFilterFlags) bool {
+	return (r & other) == other
+}
+
 // RecentFilterFunc: type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
 type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
@@ -337,7 +342,6 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	_arg1 = (*C.GtkRecentFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
-
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterInfo)
 
@@ -359,7 +363,6 @@ func (filter *RecentFilter) Name() string {
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
@@ -383,7 +386,6 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_recent_filter_get_needed(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _recentFilterFlags RecentFilterFlags // out

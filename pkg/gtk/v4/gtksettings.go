@@ -114,7 +114,6 @@ func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_settings_get_for_display(_arg1)
-
 	runtime.KeepAlive(display)
 
 	var _settings *Settings // out

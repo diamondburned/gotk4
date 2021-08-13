@@ -93,7 +93,6 @@ func NewHBox(homogeneous bool, spacing int) *HBox {
 	_arg2 = C.gint(spacing)
 
 	_cret = C.gtk_hbox_new(_arg1, _arg2)
-
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)
 

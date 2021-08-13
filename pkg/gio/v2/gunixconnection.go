@@ -101,7 +101,6 @@ func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Cred
 	}
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 
@@ -159,7 +158,6 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(result)
 
@@ -193,7 +191,6 @@ func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	}
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 

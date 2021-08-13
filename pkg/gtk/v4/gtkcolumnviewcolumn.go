@@ -75,7 +75,6 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 	}
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
-
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(factory)
 
@@ -96,7 +95,6 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_column_view(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _columnView *ColumnView // out
@@ -116,7 +114,6 @@ func (self *ColumnViewColumn) Expand() bool {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_expand(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -137,7 +134,6 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_factory(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
@@ -157,7 +153,6 @@ func (self *ColumnViewColumn) FixedWidth() int {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -176,7 +171,6 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
@@ -196,7 +190,6 @@ func (self *ColumnViewColumn) Resizable() bool {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_resizable(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -216,7 +209,6 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_sorter(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
@@ -236,7 +228,6 @@ func (self *ColumnViewColumn) Title() string {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_title(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -256,7 +247,6 @@ func (self *ColumnViewColumn) Visible() bool {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_visible(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

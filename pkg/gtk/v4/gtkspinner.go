@@ -87,7 +87,6 @@ func (spinner *Spinner) Spinning() bool {
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	_cret = C.gtk_spinner_get_spinning(_arg0)
-
 	runtime.KeepAlive(spinner)
 
 	var _ok bool // out

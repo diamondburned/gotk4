@@ -1370,7 +1370,6 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 	_arg1 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -1434,7 +1433,6 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -1474,7 +1472,6 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 	_arg1 = C.GFileCopyFlags(flags)
 
 	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -1662,7 +1659,6 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 	_arg1 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -1727,7 +1723,6 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -1778,7 +1773,6 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 	_arg1 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -1843,7 +1837,6 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -1971,7 +1964,6 @@ func (file *File) Dup() Filer {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_dup(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _ret Filer // out
@@ -2142,7 +2134,6 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -2213,7 +2204,6 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -2243,7 +2233,6 @@ func (file1 *File) Equal(file2 Filer) bool {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
 
 	_cret = C.g_file_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(file1)
 	runtime.KeepAlive(file2)
 
@@ -2279,7 +2268,6 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	}
 
 	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -2339,7 +2327,6 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -2375,7 +2362,6 @@ func (file *File) Basename() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_basename(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _filename string // out
@@ -2405,7 +2391,6 @@ func (file *File) Child(name string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(name)
 
@@ -2434,7 +2419,6 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
 
@@ -2460,7 +2444,6 @@ func (file *File) Parent() Filer {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_parent(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _ret Filer // out
@@ -2491,7 +2474,6 @@ func (file *File) ParseName() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_parse_name(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
@@ -2513,7 +2495,6 @@ func (file *File) Path() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_path(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _filename string // out
@@ -2538,7 +2519,6 @@ func (parent *File) RelativePath(descendant Filer) string {
 	_arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(descendant)
 
@@ -2562,7 +2542,6 @@ func (file *File) URI() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_uri(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
@@ -2591,7 +2570,6 @@ func (file *File) URIScheme() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_uri_scheme(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
@@ -2620,7 +2598,6 @@ func (file *File) HasParent(parent Filer) bool {
 	}
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(parent)
 
@@ -2654,7 +2631,6 @@ func (file *File) HasPrefix(prefix Filer) bool {
 	_arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(prefix)
 
@@ -2680,7 +2656,6 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(uriScheme)
 
@@ -2703,7 +2678,6 @@ func (file *File) Hash() uint {
 	_arg0 = C.gconstpointer(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_hash(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _guint uint // out
@@ -2731,7 +2705,6 @@ func (file *File) IsNative() bool {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_is_native(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _ok bool // out
@@ -3150,7 +3123,6 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 	_arg1 = C.GFileMonitorFlags(flags)
 
 	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -3194,7 +3166,6 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 	_arg1 = C.GFileMonitorFlags(flags)
 
 	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -3239,7 +3210,6 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	_arg1 = C.GFileMonitorFlags(flags)
 
 	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -3375,7 +3345,6 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -3489,7 +3458,6 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	}
 
 	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -3549,7 +3517,6 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -3577,7 +3544,6 @@ func (file *File) PeekPath() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_peek_path(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _filename string // out
@@ -3666,7 +3632,6 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	}
 
 	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -3720,7 +3685,6 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -3771,7 +3735,6 @@ func (file *File) QueryExists(ctx context.Context) bool {
 	}
 
 	_cret = C.g_file_query_exists(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -3804,7 +3767,6 @@ func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) F
 	_arg1 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
@@ -3855,7 +3817,6 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -3922,7 +3883,6 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -3982,7 +3942,6 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -4053,7 +4012,6 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -4092,7 +4050,6 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 	}
 
 	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -4131,7 +4088,6 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	}
 
 	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -4174,7 +4130,6 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	}
 
 	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -4234,7 +4189,6 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -4311,7 +4265,6 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 	_arg3 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(etag)
@@ -4549,7 +4502,6 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -4599,7 +4551,6 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 	_arg3 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(etag)
@@ -4677,7 +4628,6 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -4705,7 +4655,6 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(relativePath)
 
@@ -5151,7 +5100,6 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
@@ -5216,7 +5164,6 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -5374,7 +5321,6 @@ func (file *File) SupportsThreadContexts() bool {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_supports_thread_contexts(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _ok bool // out
@@ -5621,7 +5567,6 @@ func NewFileForCommandlineArg(arg string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
-
 	runtime.KeepAlive(arg)
 
 	var _file Filer // out
@@ -5653,7 +5598,6 @@ func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_file_new_for_commandline_arg_and_cwd(_arg1, _arg2)
-
 	runtime.KeepAlive(arg)
 	runtime.KeepAlive(cwd)
 
@@ -5675,7 +5619,6 @@ func NewFileForPath(path string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_path(_arg1)
-
 	runtime.KeepAlive(path)
 
 	var _file Filer // out
@@ -5696,7 +5639,6 @@ func NewFileForURI(uri string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_uri(_arg1)
-
 	runtime.KeepAlive(uri)
 
 	var _file Filer // out
@@ -5728,7 +5670,6 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	}
 
 	_cret = C.g_file_new_tmp(_arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(tmpl)
 
 	var _iostream *FileIOStream // out
@@ -5756,7 +5697,6 @@ func FileParseName(parseName string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_parse_name(_arg1)
-
 	runtime.KeepAlive(parseName)
 
 	var _file Filer // out

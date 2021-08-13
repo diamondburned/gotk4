@@ -82,7 +82,6 @@ func (plug *Plug) ID() string {
 	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.atk_plug_get_id(_arg0)
-
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out

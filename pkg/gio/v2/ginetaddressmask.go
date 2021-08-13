@@ -69,7 +69,6 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 	_arg2 = C.guint(length)
 
 	_cret = C.g_inet_address_mask_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(addr)
 	runtime.KeepAlive(length)
 
@@ -97,7 +96,6 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_mask_new_from_string(_arg1, &_cerr)
-
 	runtime.KeepAlive(maskString)
 
 	var _inetAddressMask *InetAddressMask // out
@@ -121,7 +119,6 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	_arg1 = (*C.GInetAddressMask)(unsafe.Pointer(mask2.Native()))
 
 	_cret = C.g_inet_address_mask_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(mask2)
 
@@ -142,7 +139,6 @@ func (mask *InetAddressMask) Address() *InetAddress {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_get_address(_arg0)
-
 	runtime.KeepAlive(mask)
 
 	var _inetAddress *InetAddress // out
@@ -160,7 +156,6 @@ func (mask *InetAddressMask) Family() SocketFamily {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_get_family(_arg0)
-
 	runtime.KeepAlive(mask)
 
 	var _socketFamily SocketFamily // out
@@ -178,7 +173,6 @@ func (mask *InetAddressMask) Length() uint {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_get_length(_arg0)
-
 	runtime.KeepAlive(mask)
 
 	var _guint uint // out
@@ -198,7 +192,6 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_mask_matches(_arg0, _arg1)
-
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(address)
 
@@ -219,7 +212,6 @@ func (mask *InetAddressMask) String() string {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_to_string(_arg0)
-
 	runtime.KeepAlive(mask)
 
 	var _utf8 string // out

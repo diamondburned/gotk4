@@ -127,7 +127,6 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -185,7 +184,6 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(result)
 
@@ -213,7 +211,6 @@ func (proxy *Proxy) SupportsHostname() bool {
 	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _ok bool // out
@@ -235,7 +232,6 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_proxy_get_default_for_protocol(_arg1)
-
 	runtime.KeepAlive(protocol)
 
 	var _proxy Proxier // out

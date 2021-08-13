@@ -129,7 +129,6 @@ func (seekable *Seekable) CanSeek() bool {
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_can_seek(_arg0)
-
 	runtime.KeepAlive(seekable)
 
 	var _ok bool // out
@@ -150,7 +149,6 @@ func (seekable *Seekable) CanTruncate() bool {
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_can_truncate(_arg0)
-
 	runtime.KeepAlive(seekable)
 
 	var _ok bool // out
@@ -215,7 +213,6 @@ func (seekable *Seekable) Tell() int64 {
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_tell(_arg0)
-
 	runtime.KeepAlive(seekable)
 
 	var _gint64 int64 // out

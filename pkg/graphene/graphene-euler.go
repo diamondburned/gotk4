@@ -235,7 +235,6 @@ func (a *Euler) Equal(b *Euler) bool {
 	_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_euler_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -259,7 +258,6 @@ func (e *Euler) Alpha() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_alpha(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -280,7 +278,6 @@ func (e *Euler) Beta() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_beta(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -301,7 +298,6 @@ func (e *Euler) Gamma() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_gamma(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -324,7 +320,6 @@ func (e *Euler) Order() EulerOrder {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_order(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _eulerOrder EulerOrder // out
@@ -342,7 +337,6 @@ func (e *Euler) X() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_x(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -360,7 +354,6 @@ func (e *Euler) Y() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_y(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -378,7 +371,6 @@ func (e *Euler) Z() float32 {
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_euler_get_z(_arg0)
-
 	runtime.KeepAlive(e)
 
 	var _gfloat float32 // out
@@ -404,7 +396,6 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	_arg3 = C.float(z)
 
 	_cret = C.graphene_euler_init(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -433,7 +424,6 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	}
 
 	_cret = C.graphene_euler_init_from_euler(_arg0, _arg1)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(src)
 
@@ -462,7 +452,6 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_matrix(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(m)
 	runtime.KeepAlive(order)
@@ -492,7 +481,6 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_quaternion(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(q)
 	runtime.KeepAlive(order)
@@ -521,7 +509,6 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 	_arg4 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_radians(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -553,7 +540,6 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 	_arg2 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_from_vec3(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(order)
@@ -582,7 +568,6 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 	_arg4 = C.graphene_euler_order_t(order)
 
 	_cret = C.graphene_euler_init_with_order(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(e)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)

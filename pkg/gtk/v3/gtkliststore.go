@@ -113,7 +113,6 @@ func NewListStore(types []externglib.Type) *ListStore {
 	}
 
 	_cret = C.gtk_list_store_newv(_arg1, _arg2)
-
 	runtime.KeepAlive(types)
 
 	var _listStore *ListStore // out
@@ -280,7 +279,6 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_list_store_iter_is_valid(_arg0, _arg1)
-
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(iter)
 
@@ -364,7 +362,6 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_list_store_remove(_arg0, _arg1)
-
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(iter)
 

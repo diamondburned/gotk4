@@ -205,7 +205,6 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 	_arg5 = C.int(height)
 
 	_cret = C.gdk_pixbuf_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(colorspace)
 	runtime.KeepAlive(hasAlpha)
 	runtime.KeepAlive(bitsPerSample)
@@ -242,7 +241,6 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_file(_arg1, &_cerr)
-
 	runtime.KeepAlive(filename)
 
 	var _pixbuf *Pixbuf // out
@@ -297,7 +295,6 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	}
 
 	_cret = C.gdk_pixbuf_new_from_file_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -346,7 +343,6 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, e
 	_arg3 = C.int(height)
 
 	_cret = C.gdk_pixbuf_new_from_file_at_size(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -412,7 +408,6 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	}
 
 	_cret = C.gdk_pixbuf_new_from_inline(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(data)
 	runtime.KeepAlive(copyPixels)
 
@@ -441,7 +436,6 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_resource(_arg1, &_cerr)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _pixbuf *Pixbuf // out
@@ -488,7 +482,6 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	}
 
 	_cret = C.gdk_pixbuf_new_from_resource_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(resourcePath)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -533,7 +526,6 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 
@@ -593,7 +585,6 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 	}
 
 	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(width)
@@ -623,7 +614,6 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(asyncResult)
 
 	var _pixbuf *Pixbuf // out
@@ -662,7 +652,6 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 	}
 
 	_cret = C.gdk_pixbuf_new_from_xpm_data(_arg1)
-
 	runtime.KeepAlive(data)
 
 	var _pixbuf *Pixbuf // out
@@ -700,7 +689,6 @@ func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pi
 	_arg4 = C.guchar(b)
 
 	_cret = C.gdk_pixbuf_add_alpha(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(substituteColor)
 	runtime.KeepAlive(r)
@@ -730,7 +718,6 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
 
 	_cret = C.gdk_pixbuf_apply_embedded_orientation(_arg0)
-
 	runtime.KeepAlive(src)
 
 	var _pixbuf *Pixbuf // out
@@ -887,7 +874,6 @@ func (src *Pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpTyp
 	_arg7 = C.guint32(color2)
 
 	_cret = C.gdk_pixbuf_composite_color_simple(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(destWidth)
 	runtime.KeepAlive(destHeight)
@@ -918,7 +904,6 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _ret *Pixbuf // out
@@ -982,7 +967,6 @@ func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(destPixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy_options(_arg0, _arg1)
-
 	runtime.KeepAlive(srcPixbuf)
 	runtime.KeepAlive(destPixbuf)
 
@@ -1025,7 +1009,6 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	}
 
 	_cret = C.gdk_pixbuf_flip(_arg0, _arg1)
-
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(horizontal)
 
@@ -1046,7 +1029,6 @@ func (pixbuf *Pixbuf) BitsPerSample() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_bits_per_sample(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
@@ -1064,7 +1046,6 @@ func (pixbuf *Pixbuf) ByteLength() uint {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_byte_length(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gsize uint // out
@@ -1082,7 +1063,6 @@ func (pixbuf *Pixbuf) Colorspace() Colorspace {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_colorspace(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _colorspace Colorspace // out
@@ -1100,7 +1080,6 @@ func (pixbuf *Pixbuf) HasAlpha() bool {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_has_alpha(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _ok bool // out
@@ -1120,7 +1099,6 @@ func (pixbuf *Pixbuf) Height() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_height(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
@@ -1138,7 +1116,6 @@ func (pixbuf *Pixbuf) NChannels() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_n_channels(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
@@ -1172,7 +1149,6 @@ func (pixbuf *Pixbuf) Option(key string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_get_option(_arg0, _arg1)
-
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(key)
 
@@ -1195,7 +1171,6 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_options(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _hashTable map[string]string // out
@@ -1223,7 +1198,6 @@ func (pixbuf *Pixbuf) Rowstride() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_rowstride(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
@@ -1241,7 +1215,6 @@ func (pixbuf *Pixbuf) Width() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_width(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
@@ -1275,7 +1248,6 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int)
 	_arg4 = C.int(height)
 
 	_cret = C.gdk_pixbuf_new_subpixbuf(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(srcPixbuf)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -1300,7 +1272,6 @@ func (pixbuf *Pixbuf) ReadPixels() *byte {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_read_pixels(_arg0)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _guint8 *byte // out
@@ -1321,7 +1292,6 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_remove_option(_arg0, _arg1)
-
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(key)
 
@@ -1347,7 +1317,6 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	_arg1 = C.GdkPixbufRotation(angle)
 
 	_cret = C.gdk_pixbuf_rotate_simple(_arg0, _arg1)
-
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(angle)
 
@@ -1807,7 +1776,6 @@ func (src *Pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpT
 	_arg3 = C.GdkInterpType(interpType)
 
 	_cret = C.gdk_pixbuf_scale_simple(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(destWidth)
 	runtime.KeepAlive(destHeight)
@@ -1839,7 +1807,6 @@ func (pixbuf *Pixbuf) SetOption(key string, value string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_pixbuf_set_option(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(value)

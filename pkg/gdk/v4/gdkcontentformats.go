@@ -34,7 +34,6 @@ func InternMIMEType(_string string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_intern_mime_type(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _utf8 string // out
@@ -127,7 +126,6 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
-
 	runtime.KeepAlive(builder)
 
 	var _contentFormats *ContentFormats // out

@@ -207,7 +207,6 @@ func (scanner *Scanner) CurLine() uint {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_line(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _guint uint // out
@@ -227,7 +226,6 @@ func (scanner *Scanner) CurPosition() uint {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_position(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _guint uint // out
@@ -246,7 +244,6 @@ func (scanner *Scanner) CurToken() TokenType {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_token(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _tokenType TokenType // out
@@ -275,7 +272,6 @@ func (scanner *Scanner) EOF() bool {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_eof(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _ok bool // out
@@ -297,7 +293,6 @@ func (scanner *Scanner) NextToken() TokenType {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_get_next_token(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _tokenType TokenType // out
@@ -349,7 +344,6 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
-
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(symbol)
 
@@ -378,7 +372,6 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_peek_next_token(_arg0)
-
 	runtime.KeepAlive(scanner)
 
 	var _tokenType TokenType // out
@@ -422,7 +415,6 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(scopeId)
 	runtime.KeepAlive(symbol)
@@ -461,7 +453,6 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 	_arg1 = C.guint(scopeId)
 
 	_cret = C.g_scanner_set_scope(_arg0, _arg1)
-
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(scopeId)
 

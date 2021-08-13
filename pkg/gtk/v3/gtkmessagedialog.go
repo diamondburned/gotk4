@@ -155,7 +155,6 @@ func (dialog *MessageDialog) Image() Widgetter {
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _widget Widgetter // out
@@ -177,7 +176,6 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
-
 	runtime.KeepAlive(messageDialog)
 
 	var _widget Widgetter // out

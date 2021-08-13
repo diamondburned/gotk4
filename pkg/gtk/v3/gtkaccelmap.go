@@ -168,7 +168,6 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 	}
 
 	_cret = C.gtk_accel_map_change_entry(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(accelPath)
 	runtime.KeepAlive(accelKey)
 	runtime.KeepAlive(accelMods)
@@ -267,7 +266,6 @@ func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_map_lookup_entry(_arg1, &_arg2)
-
 	runtime.KeepAlive(accelPath)
 
 	var _key AccelKey // out

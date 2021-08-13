@@ -67,7 +67,6 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(layoutChild.Native()))
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
-
 	runtime.KeepAlive(layoutChild)
 
 	var _widget Widgetter // out
@@ -86,7 +85,6 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(layoutChild.Native()))
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
-
 	runtime.KeepAlive(layoutChild)
 
 	var _layoutManager LayoutManagerer // out

@@ -249,7 +249,6 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
-
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
 
@@ -271,7 +270,6 @@ func (stack *Stack) Hhomogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
@@ -292,7 +290,6 @@ func (stack *Stack) Homogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_homogeneous(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
@@ -313,7 +310,6 @@ func (stack *Stack) InterpolateSize() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_interpolate_size(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
@@ -334,7 +330,6 @@ func (stack *Stack) TransitionDuration() uint {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _guint uint // out
@@ -353,7 +348,6 @@ func (stack *Stack) TransitionRunning() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_transition_running(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
@@ -374,7 +368,6 @@ func (stack *Stack) TransitionType() StackTransitionType {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_transition_type(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _stackTransitionType StackTransitionType // out
@@ -393,7 +386,6 @@ func (stack *Stack) Vhomogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
@@ -414,7 +406,6 @@ func (stack *Stack) VisibleChild() Widgetter {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _widget Widgetter // out
@@ -435,7 +426,6 @@ func (stack *Stack) VisibleChildName() string {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_visible_child_name(_arg0)
-
 	runtime.KeepAlive(stack)
 
 	var _utf8 string // out

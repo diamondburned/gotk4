@@ -111,7 +111,6 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 	}
 
 	_cret = C.g_socket_listener_accept(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
 
@@ -170,7 +169,6 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
 
@@ -216,7 +214,6 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 	}
 
 	_cret = C.g_socket_listener_accept_socket(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
 
@@ -276,7 +273,6 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
 
@@ -373,7 +369,6 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 	}
 
 	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(sourceObject)
 

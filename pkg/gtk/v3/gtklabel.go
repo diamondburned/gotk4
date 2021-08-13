@@ -93,7 +93,6 @@ func NewLabel(str string) *Label {
 	}
 
 	_cret = C.gtk_label_new(_arg1)
-
 	runtime.KeepAlive(str)
 
 	var _label *Label // out
@@ -126,7 +125,6 @@ func NewLabelWithMnemonic(str string) *Label {
 	}
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(str)
 
 	var _label *Label // out
@@ -144,7 +142,6 @@ func (label *Label) Angle() float64 {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_angle(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gdouble float64 // out
@@ -166,7 +163,6 @@ func (label *Label) Attributes() *pango.AttrList {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_attributes(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _attrList *pango.AttrList // out
@@ -195,7 +191,6 @@ func (label *Label) CurrentURI() string {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_current_uri(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _utf8 string // out
@@ -214,7 +209,6 @@ func (label *Label) Ellipsize() pango.EllipsizeMode {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_ellipsize(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
@@ -232,7 +226,6 @@ func (label *Label) Justify() Justification {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_justify(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _justification Justification // out
@@ -251,7 +244,6 @@ func (label *Label) Label() string {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_label(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _utf8 string // out
@@ -273,7 +265,6 @@ func (label *Label) Layout() *pango.Layout {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_layout(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _layout *pango.Layout // out
@@ -324,7 +315,6 @@ func (label *Label) LineWrap() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_line_wrap(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -345,7 +335,6 @@ func (label *Label) LineWrapMode() pango.WrapMode {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _wrapMode pango.WrapMode // out
@@ -364,7 +353,6 @@ func (label *Label) Lines() int {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_lines(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gint int // out
@@ -383,7 +371,6 @@ func (label *Label) MaxWidthChars() int {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gint int // out
@@ -403,7 +390,6 @@ func (label *Label) MnemonicKeyval() uint {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _guint uint // out
@@ -422,7 +408,6 @@ func (label *Label) MnemonicWidget() Widgetter {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _widget Widgetter // out
@@ -442,7 +427,6 @@ func (label *Label) Selectable() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_selectable(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -465,7 +449,6 @@ func (label *Label) SelectionBounds() (start int, end int, ok bool) {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(label)
 
 	var _start int // out
@@ -489,7 +472,6 @@ func (label *Label) SingleLineMode() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_single_line_mode(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -511,7 +493,6 @@ func (label *Label) Text() string {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_text(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _utf8 string // out
@@ -530,7 +511,6 @@ func (label *Label) TrackVisitedLinks() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_track_visited_links(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -552,7 +532,6 @@ func (label *Label) UseMarkup() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_use_markup(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -573,7 +552,6 @@ func (label *Label) UseUnderline() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_use_underline(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _ok bool // out
@@ -594,7 +572,6 @@ func (label *Label) WidthChars() int {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_width_chars(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gint int // out
@@ -612,7 +589,6 @@ func (label *Label) XAlign() float32 {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_xalign(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gfloat float32 // out
@@ -630,7 +606,6 @@ func (label *Label) YAlign() float32 {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_yalign(_arg0)
-
 	runtime.KeepAlive(label)
 
 	var _gfloat float32 // out

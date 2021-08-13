@@ -137,7 +137,6 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 	}
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
-
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(accelGroup)
 
@@ -159,7 +158,6 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _imageMenuItem *ImageMenuItem // out
@@ -182,7 +180,6 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _imageMenuItem *ImageMenuItem // out
@@ -203,7 +200,6 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
-
 	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out
@@ -226,7 +222,6 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
-
 	runtime.KeepAlive(imageMenuItem)
 
 	var _widget Widgetter // out
@@ -247,7 +242,6 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
-
 	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out

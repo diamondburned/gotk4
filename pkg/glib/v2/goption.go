@@ -197,6 +197,11 @@ func (o OptionFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if o contains other.
+func (o OptionFlags) Has(other OptionFlags) bool {
+	return (o & other) == other
+}
+
 // OptionEntry struct defines a single option. To have an effect, they must be
 // added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().

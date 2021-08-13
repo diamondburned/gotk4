@@ -143,7 +143,6 @@ func NewButtonFromIconName(iconName string) *Button {
 	}
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1)
-
 	runtime.KeepAlive(iconName)
 
 	var _button *Button // out
@@ -162,7 +161,6 @@ func NewButtonWithLabel(label string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _button *Button // out
@@ -187,7 +185,6 @@ func NewButtonWithMnemonic(label string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _button *Button // out
@@ -205,7 +202,6 @@ func (button *Button) Child() Widgetter {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_child(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
@@ -225,7 +221,6 @@ func (button *Button) HasFrame() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_has_frame(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -249,7 +244,6 @@ func (button *Button) IconName() string {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_icon_name(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -273,7 +267,6 @@ func (button *Button) Label() string {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_label(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -295,7 +288,6 @@ func (button *Button) UseUnderline() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out

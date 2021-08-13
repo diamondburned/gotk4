@@ -179,7 +179,6 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	_arg3 = C.guint32(time_)
 
 	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(ownerEvents)
 	runtime.KeepAlive(time_)
@@ -276,7 +275,6 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 	_arg6 = C.guint32(time_)
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(ownerEvents)
 	runtime.KeepAlive(eventMask)

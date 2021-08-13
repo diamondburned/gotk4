@@ -186,7 +186,6 @@ func NewLayout(context *Context) *Layout {
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_layout_new(_arg1)
-
 	runtime.KeepAlive(context)
 
 	var _layout *Layout // out
@@ -221,7 +220,6 @@ func (src *Layout) Copy() *Layout {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(src.Native()))
 
 	_cret = C.pango_layout_copy(_arg0)
-
 	runtime.KeepAlive(src)
 
 	var _layout *Layout // out
@@ -240,7 +238,6 @@ func (layout *Layout) Alignment() Alignment {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_alignment(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _alignment Alignment // out
@@ -258,7 +255,6 @@ func (layout *Layout) Attributes() *AttrList {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_attributes(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _attrList *AttrList // out
@@ -285,7 +281,6 @@ func (layout *Layout) AutoDir() bool {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_auto_dir(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
@@ -305,7 +300,6 @@ func (layout *Layout) Baseline() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_baseline(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -324,7 +318,6 @@ func (layout *Layout) CharacterCount() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_character_count(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -342,7 +335,6 @@ func (layout *Layout) Context() *Context {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_context(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _context *Context // out
@@ -392,7 +384,6 @@ func (layout *Layout) Direction(index int) Direction {
 	_arg1 = C.int(index)
 
 	_cret = C.pango_layout_get_direction(_arg0, _arg1)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index)
 
@@ -416,7 +407,6 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_ellipsize(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ellipsizeMode EllipsizeMode // out
@@ -463,7 +453,6 @@ func (layout *Layout) FontDescription() *FontDescription {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_font_description(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _fontDescription *FontDescription // out
@@ -485,7 +474,6 @@ func (layout *Layout) Height() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_height(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -505,7 +493,6 @@ func (layout *Layout) Indent() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_indent(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -523,7 +510,6 @@ func (layout *Layout) Iter() *LayoutIter {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_iter(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _layoutIter *LayoutIter // out
@@ -545,7 +531,6 @@ func (layout *Layout) Justify() bool {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_justify(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
@@ -570,7 +555,6 @@ func (layout *Layout) Line(line int) *LayoutLine {
 	_arg1 = C.int(line)
 
 	_cret = C.pango_layout_get_line(_arg0, _arg1)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
 
@@ -595,7 +579,6 @@ func (layout *Layout) LineCount() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_line_count(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -618,7 +601,6 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	_arg1 = C.int(line)
 
 	_cret = C.pango_layout_get_line_readonly(_arg0, _arg1)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
 
@@ -645,7 +627,6 @@ func (layout *Layout) LineSpacing() float32 {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_line_spacing(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gfloat float32 // out
@@ -744,7 +725,6 @@ func (layout *Layout) Serial() uint {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_serial(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _guint uint // out
@@ -764,7 +744,6 @@ func (layout *Layout) SingleParagraphMode() bool {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_single_paragraph_mode(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
@@ -806,7 +785,6 @@ func (layout *Layout) Spacing() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_spacing(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -829,7 +807,6 @@ func (layout *Layout) Tabs() *TabArray {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_tabs(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _tabArray *TabArray // out
@@ -853,7 +830,6 @@ func (layout *Layout) Text() string {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_text(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _utf8 string // out
@@ -876,7 +852,6 @@ func (layout *Layout) UnknownGlyphsCount() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -894,7 +869,6 @@ func (layout *Layout) Width() int {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_width(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gint int // out
@@ -915,7 +889,6 @@ func (layout *Layout) Wrap() WrapMode {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_get_wrap(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _wrapMode WrapMode // out
@@ -994,7 +967,6 @@ func (layout *Layout) IsEllipsized() bool {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_is_ellipsized(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
@@ -1018,7 +990,6 @@ func (layout *Layout) IsWrapped() bool {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.pango_layout_is_wrapped(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
@@ -1484,7 +1455,6 @@ func (layout *Layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool
 	_arg2 = C.int(y)
 
 	_cret = C.pango_layout_xy_to_index(_arg0, _arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -1526,7 +1496,6 @@ func (iter *LayoutIter) AtLastLine() bool {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_at_last_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1548,7 +1517,6 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 	}
 
 	_cret = C.pango_layout_iter_copy(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layoutIter *LayoutIter // out
@@ -1572,7 +1540,6 @@ func (iter *LayoutIter) Baseline() int {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_baseline(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1634,7 +1601,6 @@ func (iter *LayoutIter) Index() int {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_index(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1652,7 +1618,6 @@ func (iter *LayoutIter) Layout() *Layout {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_layout(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layout *Layout // out
@@ -1694,7 +1659,6 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layoutLine *LayoutLine // out
@@ -1743,7 +1707,6 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_line_readonly(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layoutLine *LayoutLine // out
@@ -1799,7 +1762,6 @@ func (iter *LayoutIter) Run() *LayoutRun {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_run(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layoutRun *LayoutRun // out
@@ -1846,7 +1808,6 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_get_run_readonly(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _layoutRun *LayoutRun // out
@@ -1867,7 +1828,6 @@ func (iter *LayoutIter) NextChar() bool {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_next_char(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1888,7 +1848,6 @@ func (iter *LayoutIter) NextCluster() bool {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_next_cluster(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1909,7 +1868,6 @@ func (iter *LayoutIter) NextLine() bool {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_next_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1930,7 +1888,6 @@ func (iter *LayoutIter) NextRun() bool {
 	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_layout_iter_next_run(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -2121,7 +2078,6 @@ func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 	_arg1 = C.int(xPos)
 
 	_cret = C.pango_layout_line_x_to_index(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(xPos)
 

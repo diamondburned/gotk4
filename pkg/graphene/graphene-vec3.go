@@ -125,7 +125,6 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_vec3_dot(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -146,7 +145,6 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v2)))
 
 	_cret = C.graphene_vec3_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 
@@ -167,7 +165,6 @@ func (v *Vec3) X() float32 {
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec3_get_x(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -278,7 +275,6 @@ func (v *Vec3) Y() float32 {
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec3_get_y(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -296,7 +292,6 @@ func (v *Vec3) Z() float32 {
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec3_get_z(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -322,7 +317,6 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	_arg3 = C.float(z)
 
 	_cret = C.graphene_vec3_init(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -345,7 +339,6 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	_arg1 = (*C.float)(unsafe.Pointer(&src))
 
 	_cret = C.graphene_vec3_init_from_float(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -367,7 +360,6 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_vec3_init_from_vec3(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -409,7 +401,6 @@ func (v *Vec3) Length() float32 {
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec3_length(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -494,7 +485,6 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec3_near(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 	runtime.KeepAlive(epsilon)

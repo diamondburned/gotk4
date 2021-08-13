@@ -107,6 +107,11 @@ func (p PixdataDumpType) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if p contains other.
+func (p PixdataDumpType) Has(other PixdataDumpType) bool {
+	return (p & other) == other
+}
+
 // PixdataType: enumeration containing three sets of flags for a Pixdata struct:
 // one for the used colorspace, one for the width of the samples and one for the
 // encoding of the pixel data.
@@ -178,6 +183,11 @@ func (p PixdataType) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if p contains other.
+func (p PixdataType) Has(other PixdataType) bool {
+	return (p & other) == other
+}
+
 // PixbufFromPixdata converts a GdkPixdata to a GdkPixbuf.
 //
 // If copy_pixels is TRUE or if the pixel data is run-length-encoded, the pixel
@@ -196,7 +206,6 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	}
 
 	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(copyPixels)
 

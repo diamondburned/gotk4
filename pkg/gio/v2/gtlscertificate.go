@@ -113,7 +113,6 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 
 	var _tlsCertificate *TLSCertificate // out
@@ -150,7 +149,6 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificat
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(certFile)
 	runtime.KeepAlive(keyFile)
 
@@ -189,7 +187,6 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(data)
 	runtime.KeepAlive(length)
 
@@ -243,7 +240,6 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri string, privateKeyPkcs11Uri strin
 	}
 
 	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(pkcs11Uri)
 	runtime.KeepAlive(privateKeyPkcs11Uri)
 
@@ -266,7 +262,6 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(cert.Native()))
 
 	_cret = C.g_tls_certificate_get_issuer(_arg0)
-
 	runtime.KeepAlive(cert)
 
 	var _tlsCertificate TLSCertificater // out
@@ -292,7 +287,6 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
-
 	runtime.KeepAlive(certOne)
 	runtime.KeepAlive(certTwo)
 
@@ -336,7 +330,6 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	}
 
 	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(cert)
 	runtime.KeepAlive(identity)
 	runtime.KeepAlive(trustedCa)
@@ -361,7 +354,6 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_list_new_from_file(_arg1, &_cerr)
-
 	runtime.KeepAlive(file)
 
 	var _list []TLSCertificater // out

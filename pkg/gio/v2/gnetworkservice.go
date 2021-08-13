@@ -76,7 +76,6 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(service)
 	runtime.KeepAlive(protocol)
 	runtime.KeepAlive(domain)
@@ -97,7 +96,6 @@ func (srv *NetworkService) Domain() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_domain(_arg0)
-
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
@@ -115,7 +113,6 @@ func (srv *NetworkService) Protocol() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_protocol(_arg0)
-
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
@@ -134,7 +131,6 @@ func (srv *NetworkService) Scheme() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_scheme(_arg0)
-
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
@@ -152,7 +148,6 @@ func (srv *NetworkService) Service() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_service(_arg0)
-
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out

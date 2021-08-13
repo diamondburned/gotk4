@@ -76,7 +76,6 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 	_arg6 = C.double(pageSize)
 
 	_cret = C.gtk_adjustment_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(lower)
 	runtime.KeepAlive(upper)
@@ -154,7 +153,6 @@ func (adjustment *Adjustment) Lower() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_lower(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -172,7 +170,6 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_minimum_increment(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -190,7 +187,6 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_page_increment(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -208,7 +204,6 @@ func (adjustment *Adjustment) PageSize() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_page_size(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -226,7 +221,6 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_step_increment(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -244,7 +238,6 @@ func (adjustment *Adjustment) Upper() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_upper(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -262,7 +255,6 @@ func (adjustment *Adjustment) Value() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_value(_arg0)
-
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out

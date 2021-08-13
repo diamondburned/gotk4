@@ -147,7 +147,6 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_new_from_model(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _menu *Menu // out
@@ -209,7 +208,6 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_accel_group(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _accelGroup *AccelGroup // out
@@ -227,7 +225,6 @@ func (menu *Menu) AccelPath() string {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_accel_path(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _utf8 string // out
@@ -246,7 +243,6 @@ func (menu *Menu) Active() Widgetter {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_active(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _widget Widgetter // out
@@ -264,7 +260,6 @@ func (menu *Menu) AttachWidget() Widgetter {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_attach_widget(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _widget Widgetter // out
@@ -282,7 +277,6 @@ func (menu *Menu) Monitor() int {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_monitor(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _gint int // out
@@ -301,7 +295,6 @@ func (menu *Menu) ReserveToggleSize() bool {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
@@ -324,7 +317,6 @@ func (menu *Menu) TearoffState() bool {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_tearoff_state(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
@@ -346,7 +338,6 @@ func (menu *Menu) Title() string {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_title(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _utf8 string // out
@@ -575,7 +566,6 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out

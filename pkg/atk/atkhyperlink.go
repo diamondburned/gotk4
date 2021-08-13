@@ -62,6 +62,11 @@ func (h HyperlinkStateFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if h contains other.
+func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
+	return (h & other) == other
+}
+
 // HyperlinkOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -132,7 +137,6 @@ func (link_ *Hyperlink) EndIndex() int {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _gint int // out
@@ -150,7 +154,6 @@ func (link_ *Hyperlink) NAnchors() int {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _gint int // out
@@ -174,7 +177,6 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
-
 	runtime.KeepAlive(link_)
 	runtime.KeepAlive(i)
 
@@ -194,7 +196,6 @@ func (link_ *Hyperlink) StartIndex() int {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _gint int // out
@@ -216,7 +217,6 @@ func (link_ *Hyperlink) URI(i int) string {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
-
 	runtime.KeepAlive(link_)
 	runtime.KeepAlive(i)
 
@@ -238,7 +238,6 @@ func (link_ *Hyperlink) IsInline() bool {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_inline(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _ok bool // out
@@ -261,7 +260,6 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_selected_link(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _ok bool // out
@@ -283,7 +281,6 @@ func (link_ *Hyperlink) IsValid() bool {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_valid(_arg0)
-
 	runtime.KeepAlive(link_)
 
 	var _ok bool // out

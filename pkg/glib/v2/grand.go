@@ -36,7 +36,6 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 	_arg2 = C.gdouble(end)
 
 	_cret = C.g_random_double_range(_arg1, _arg2)
-
 	runtime.KeepAlive(begin)
 	runtime.KeepAlive(end)
 
@@ -72,7 +71,6 @@ func RandomIntRange(begin int32, end int32) int32 {
 	_arg2 = C.gint32(end)
 
 	_cret = C.g_random_int_range(_arg1, _arg2)
-
 	runtime.KeepAlive(begin)
 	runtime.KeepAlive(end)
 

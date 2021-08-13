@@ -135,7 +135,6 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
-
 	runtime.KeepAlive(entry)
 
 	var _widget Widgetter // out

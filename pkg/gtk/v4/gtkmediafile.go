@@ -106,7 +106,6 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_media_file_new_for_file(_arg1)
-
 	runtime.KeepAlive(file)
 
 	var _mediaFile *MediaFile // out
@@ -128,7 +127,6 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _mediaFile *MediaFile // out
@@ -149,7 +147,6 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
-
 	runtime.KeepAlive(stream)
 
 	var _mediaFile *MediaFile // out
@@ -171,7 +168,6 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _mediaFile *MediaFile // out
@@ -201,7 +197,6 @@ func (self *MediaFile) File() gio.Filer {
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_file_get_file(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
@@ -223,7 +218,6 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_file_get_input_stream(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _inputStream gio.InputStreamer // out

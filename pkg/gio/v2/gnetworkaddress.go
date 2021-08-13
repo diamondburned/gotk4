@@ -78,7 +78,6 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
-
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(port)
 
@@ -107,7 +106,6 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	_arg1 = C.guint16(port)
 
 	_cret = C.g_network_address_new_loopback(_arg1)
-
 	runtime.KeepAlive(port)
 
 	var _networkAddress *NetworkAddress // out
@@ -126,7 +124,6 @@ func (addr *NetworkAddress) Hostname() string {
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_hostname(_arg0)
-
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
@@ -144,7 +141,6 @@ func (addr *NetworkAddress) Port() uint16 {
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_port(_arg0)
-
 	runtime.KeepAlive(addr)
 
 	var _guint16 uint16 // out
@@ -162,7 +158,6 @@ func (addr *NetworkAddress) Scheme() string {
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_scheme(_arg0)
-
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
@@ -205,7 +200,6 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(hostAndPort)
 	runtime.KeepAlive(defaultPort)
 
@@ -236,7 +230,6 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(defaultPort)
 

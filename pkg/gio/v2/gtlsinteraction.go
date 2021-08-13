@@ -191,7 +191,6 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(password)
@@ -268,7 +267,6 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(result)
 
@@ -317,7 +315,6 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(password)
@@ -371,7 +368,6 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -424,7 +420,6 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -500,7 +495,6 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(result)
 

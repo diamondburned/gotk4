@@ -112,7 +112,6 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 
 	_cret = C.g_volume_monitor_get_connected_drives(_arg0)
-
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []Driver // out
@@ -139,7 +138,6 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
-
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
 
@@ -163,7 +161,6 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 
 	_cret = C.g_volume_monitor_get_mounts(_arg0)
-
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []Mounter // out
@@ -190,7 +187,6 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
-
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
 
@@ -214,7 +210,6 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 
 	_cret = C.g_volume_monitor_get_volumes(_arg0)
-
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []Volumer // out
@@ -270,7 +265,6 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	_arg1 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_volume_monitor_adopt_orphan_mount(_arg1)
-
 	runtime.KeepAlive(mount)
 
 	var _volume Volumer // out

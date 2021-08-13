@@ -121,7 +121,6 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	}
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
-
 	runtime.KeepAlive(iconWidget)
 	runtime.KeepAlive(label)
 
@@ -145,7 +144,6 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
-
 	runtime.KeepAlive(stockId)
 
 	var _menuToolButton *MenuToolButton // out
@@ -163,7 +161,6 @@ func (button *MenuToolButton) Menu() Widgetter {
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out

@@ -122,7 +122,6 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_file(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _statusIcon *StatusIcon // out
@@ -144,7 +143,6 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.gtk_status_icon_new_from_gicon(_arg1)
-
 	runtime.KeepAlive(icon)
 
 	var _statusIcon *StatusIcon // out
@@ -168,7 +166,6 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_icon_name(_arg1)
-
 	runtime.KeepAlive(iconName)
 
 	var _statusIcon *StatusIcon // out
@@ -192,7 +189,6 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_status_icon_new_from_pixbuf(_arg1)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _statusIcon *StatusIcon // out
@@ -217,7 +213,6 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_stock(_arg1)
-
 	runtime.KeepAlive(stockId)
 
 	var _statusIcon *StatusIcon // out
@@ -252,7 +247,6 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_geometry(_arg0, &_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _screen *gdk.Screen      // out
@@ -293,7 +287,6 @@ func (statusIcon *StatusIcon) GIcon() gio.Iconner {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_gicon(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _icon gio.Iconner // out
@@ -317,7 +310,6 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_has_tooltip(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _ok bool // out
@@ -343,7 +335,6 @@ func (statusIcon *StatusIcon) IconName() string {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_icon_name(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _utf8 string // out
@@ -369,7 +360,6 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_pixbuf(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -403,7 +393,6 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_screen(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _screen *gdk.Screen // out
@@ -436,7 +425,6 @@ func (statusIcon *StatusIcon) Size() int {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_size(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _gint int // out
@@ -459,7 +447,6 @@ func (statusIcon *StatusIcon) Stock() string {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_stock(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _utf8 string // out
@@ -485,7 +472,6 @@ func (statusIcon *StatusIcon) StorageType() ImageType {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_storage_type(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _imageType ImageType // out
@@ -506,7 +492,6 @@ func (statusIcon *StatusIcon) Title() string {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_title(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _utf8 string // out
@@ -527,7 +512,6 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_tooltip_markup(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _utf8 string // out
@@ -551,7 +535,6 @@ func (statusIcon *StatusIcon) TooltipText() string {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_tooltip_text(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _utf8 string // out
@@ -577,7 +560,6 @@ func (statusIcon *StatusIcon) Visible() bool {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_visible(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _ok bool // out
@@ -610,7 +592,6 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_get_x11_window_id(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _guint32 uint32 // out
@@ -632,7 +613,6 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
 	_cret = C.gtk_status_icon_is_embedded(_arg0)
-
 	runtime.KeepAlive(statusIcon)
 
 	var _ok bool // out

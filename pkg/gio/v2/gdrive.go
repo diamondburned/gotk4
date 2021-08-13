@@ -256,7 +256,6 @@ func (drive *Drive) CanEject() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_eject(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -276,7 +275,6 @@ func (drive *Drive) CanPollForMedia() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_poll_for_media(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -296,7 +294,6 @@ func (drive *Drive) CanStart() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_start(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -316,7 +313,6 @@ func (drive *Drive) CanStartDegraded() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_start_degraded(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -336,7 +332,6 @@ func (drive *Drive) CanStop() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_stop(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -471,7 +466,6 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_enumerate_identifiers(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _utf8s []string // out
@@ -503,7 +497,6 @@ func (drive *Drive) Icon() Iconner {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_icon(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _icon Iconner // out
@@ -525,7 +518,6 @@ func (drive *Drive) Identifier(kind string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
-
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(kind)
 
@@ -547,7 +539,6 @@ func (drive *Drive) Name() string {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_name(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
@@ -566,7 +557,6 @@ func (drive *Drive) SortKey() string {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_sort_key(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
@@ -586,7 +576,6 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_start_stop_type(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _driveStartStopType DriveStartStopType // out
@@ -604,7 +593,6 @@ func (drive *Drive) SymbolicIcon() Iconner {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _icon Iconner // out
@@ -625,7 +613,6 @@ func (drive *Drive) Volumes() []Volumer {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_volumes(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _list []Volumer // out
@@ -651,7 +638,6 @@ func (drive *Drive) HasMedia() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_has_media(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -671,7 +657,6 @@ func (drive *Drive) HasVolumes() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_has_volumes(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -692,7 +677,6 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_is_media_check_automatic(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -712,7 +696,6 @@ func (drive *Drive) IsMediaRemovable() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_is_media_removable(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -733,7 +716,6 @@ func (drive *Drive) IsRemovable() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_is_removable(_arg0)
-
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out

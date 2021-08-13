@@ -125,7 +125,6 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_buffered_input_stream_new(_arg1)
-
 	runtime.KeepAlive(baseStream)
 
 	var _bufferedInputStream *BufferedInputStream // out
@@ -146,7 +145,6 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
-
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
 
@@ -197,7 +195,6 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	_arg1 = C.gssize(count)
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(count)
@@ -259,7 +256,6 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -282,7 +278,6 @@ func (stream *BufferedInputStream) Available() uint {
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_input_stream_get_available(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
@@ -300,7 +295,6 @@ func (stream *BufferedInputStream) BufferSize() uint {
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_input_stream_get_buffer_size(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
@@ -327,7 +321,6 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	_arg2 = C.gsize(offset)
 
 	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(offset)
@@ -366,7 +359,6 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	}
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 

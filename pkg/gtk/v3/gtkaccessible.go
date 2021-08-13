@@ -87,7 +87,6 @@ func (accessible *Accessible) Widget() Widgetter {
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
-
 	runtime.KeepAlive(accessible)
 
 	var _widget Widgetter // out

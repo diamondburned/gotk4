@@ -188,7 +188,6 @@ func (item *Item) Copy() *Item {
 	}
 
 	_cret = C.pango_item_copy(_arg0)
-
 	runtime.KeepAlive(item)
 
 	var _ret *Item // out
@@ -224,7 +223,6 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	_arg2 = C.int(splitOffset)
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(orig)
 	runtime.KeepAlive(splitIndex)
 	runtime.KeepAlive(splitOffset)

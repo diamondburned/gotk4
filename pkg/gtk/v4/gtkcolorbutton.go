@@ -103,7 +103,6 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
-
 	runtime.KeepAlive(rgba)
 
 	var _colorButton *ColorButton // out
@@ -121,7 +120,6 @@ func (button *ColorButton) Modal() bool {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -141,7 +139,6 @@ func (button *ColorButton) Title() string {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out

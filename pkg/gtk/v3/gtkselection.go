@@ -82,6 +82,11 @@ func (t TargetFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if t contains other.
+func (t TargetFlags) Has(other TargetFlags) bool {
+	return (t & other) == other
+}
+
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
@@ -119,7 +124,6 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	_arg3 = C.guint(info)
 
 	_cret = C.gtk_target_entry_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(info)
@@ -165,7 +169,6 @@ func (data *TargetEntry) Copy() *TargetEntry {
 	_arg0 = (*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = C.gtk_target_entry_copy(_arg0)
-
 	runtime.KeepAlive(data)
 
 	var _targetEntry *TargetEntry // out
@@ -202,7 +205,6 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	}
 
 	_cret = C.gtk_target_list_new(_arg1, _arg2)
-
 	runtime.KeepAlive(targets)
 
 	var _targetList *TargetList // out

@@ -106,7 +106,6 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceName)
@@ -129,7 +128,6 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 
@@ -148,7 +146,6 @@ func (manager *DBusObjectManager) ObjectPath() string {
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
@@ -166,7 +163,6 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_get_objects(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _list []DBusObjector // out

@@ -124,7 +124,6 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	}
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(icon1)
 	runtime.KeepAlive(icon2)
 
@@ -149,7 +148,6 @@ func (icon *Icon) Serialize() *glib.Variant {
 	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_icon_serialize(_arg0)
-
 	runtime.KeepAlive(icon)
 
 	var _variant *glib.Variant // out
@@ -186,7 +184,6 @@ func (icon *Icon) String() string {
 	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_icon_to_string(_arg0)
-
 	runtime.KeepAlive(icon)
 
 	var _utf8 string // out
@@ -208,7 +205,6 @@ func IconDeserialize(value *glib.Variant) Iconner {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_icon_deserialize(_arg1)
-
 	runtime.KeepAlive(value)
 
 	var _icon Iconner // out
@@ -228,7 +224,6 @@ func IconHash(icon cgo.Handle) uint {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(icon))
 
 	_cret = C.g_icon_hash(_arg1)
-
 	runtime.KeepAlive(icon)
 
 	var _guint uint // out
@@ -253,7 +248,6 @@ func NewIconForString(str string) (Iconner, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
-
 	runtime.KeepAlive(str)
 
 	var _icon Iconner // out

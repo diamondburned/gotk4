@@ -139,6 +139,11 @@ func (d DialogFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DialogFlags) Has(other DialogFlags) bool {
+	return (d & other) == other
+}
+
 // DialogOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -380,7 +385,6 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(buttonText)
 	runtime.KeepAlive(responseId)
@@ -400,7 +404,6 @@ func (dialog *Dialog) ContentArea() *Box {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _box *Box // out
@@ -421,7 +424,6 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
-
 	runtime.KeepAlive(dialog)
 
 	var _headerBar *HeaderBar // out
@@ -442,7 +444,6 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(widget)
 
@@ -464,7 +465,6 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	_arg1 = C.int(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
-
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 

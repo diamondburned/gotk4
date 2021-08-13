@@ -74,7 +74,6 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
-
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(nItems)
 
@@ -98,7 +97,6 @@ func (self *Bitset) Add(value uint) bool {
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_add(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
@@ -179,7 +177,6 @@ func (self *Bitset) Contains(value uint) bool {
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_contains(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
@@ -200,7 +197,6 @@ func (self *Bitset) Copy() *Bitset {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_copy(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _bitset *Bitset // out
@@ -243,7 +239,6 @@ func (self *Bitset) Equals(other *Bitset) bool {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gtk_bitset_equals(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 
@@ -266,7 +261,6 @@ func (self *Bitset) Maximum() uint {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_maximum(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -286,7 +280,6 @@ func (self *Bitset) Minimum() uint {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_minimum(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -308,7 +301,6 @@ func (self *Bitset) Nth(nth uint) uint {
 	_arg1 = C.guint(nth)
 
 	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(nth)
 
@@ -333,7 +325,6 @@ func (self *Bitset) Size() uint64 {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_size(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint64 uint64 // out
@@ -360,7 +351,6 @@ func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 	_arg2 = C.guint(last)
 
 	_cret = C.gtk_bitset_get_size_in_range(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(last)
@@ -398,7 +388,6 @@ func (self *Bitset) IsEmpty() bool {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_is_empty(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -420,7 +409,6 @@ func (self *Bitset) Remove(value uint) bool {
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_remove(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 

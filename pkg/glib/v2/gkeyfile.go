@@ -229,6 +229,11 @@ func (k KeyFileFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if k contains other.
+func (k KeyFileFlags) Has(other KeyFileFlags) bool {
+	return (k & other) == other
+}
+
 // KeyFile struct contains only private data and should not be accessed
 // directly.
 type KeyFile struct {
@@ -314,7 +319,6 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	}
 
 	_cret = C.g_key_file_get_comment(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -352,7 +356,6 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_double(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -378,7 +381,6 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_groups(_arg0, &_arg1)
-
 	runtime.KeepAlive(keyFile)
 
 	var _length uint    // out
@@ -421,7 +423,6 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_int64(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -457,7 +458,6 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_integer(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -489,7 +489,6 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_key_file_get_keys(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 
@@ -546,7 +545,6 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 	}
 
 	_cret = C.g_key_file_get_locale_for_key(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -593,7 +591,6 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	}
 
 	_cret = C.g_key_file_get_locale_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -619,7 +616,6 @@ func (keyFile *KeyFile) StartGroup() string {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_start_group(_arg0)
-
 	runtime.KeepAlive(keyFile)
 
 	var _utf8 string // out
@@ -652,7 +648,6 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_string(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -686,7 +681,6 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_uint64(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -722,7 +716,6 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_value(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
@@ -750,7 +743,6 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_key_file_has_group(_arg0, _arg1)
-
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 
@@ -1437,7 +1429,6 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_to_data(_arg0, &_arg1, &_cerr)
-
 	runtime.KeepAlive(keyFile)
 
 	var _length uint // out

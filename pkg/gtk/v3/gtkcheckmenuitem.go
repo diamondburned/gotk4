@@ -122,7 +122,6 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkMenuItem *CheckMenuItem // out
@@ -143,7 +142,6 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkMenuItem *CheckMenuItem // out
@@ -162,7 +160,6 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	_cret = C.gtk_check_menu_item_get_active(_arg0)
-
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
@@ -182,7 +179,6 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
-
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
@@ -203,7 +199,6 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
-
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out

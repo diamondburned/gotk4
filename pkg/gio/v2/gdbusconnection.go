@@ -467,7 +467,6 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
@@ -510,7 +509,6 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	_arg1 = C.GBusType(busType)
 
 	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(busType)
 

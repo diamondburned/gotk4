@@ -156,7 +156,6 @@ func (stream *PollableOutputStream) CanPoll() bool {
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -189,7 +188,6 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 	}
 
 	_cret = C.g_pollable_output_stream_create_source(_arg0, _arg1)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -217,7 +215,6 @@ func (stream *PollableOutputStream) IsWritable() bool {
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -263,7 +260,6 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 	}
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -315,7 +311,6 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 	}
 
 	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(vectors)

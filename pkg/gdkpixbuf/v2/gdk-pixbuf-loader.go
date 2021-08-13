@@ -130,7 +130,6 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
-
 	runtime.KeepAlive(mimeType)
 
 	var _pixbufLoader *PixbufLoader // out
@@ -166,7 +165,6 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_loader_new_with_type(_arg1, &_cerr)
-
 	runtime.KeepAlive(imageType)
 
 	var _pixbufLoader *PixbufLoader // out
@@ -228,7 +226,6 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
-
 	runtime.KeepAlive(loader)
 
 	var _pixbufAnimation *PixbufAnimation // out
@@ -249,7 +246,6 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
-
 	runtime.KeepAlive(loader)
 
 	var _pixbufFormat *PixbufFormat // out
@@ -283,7 +279,6 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
-
 	runtime.KeepAlive(loader)
 
 	var _pixbuf *Pixbuf // out

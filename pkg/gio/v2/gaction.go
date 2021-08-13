@@ -238,7 +238,6 @@ func (action *Action) Enabled() bool {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_enabled(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -258,7 +257,6 @@ func (action *Action) Name() string {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_name(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -283,7 +281,6 @@ func (action *Action) ParameterType() *glib.VariantType {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_parameter_type(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _variantType *glib.VariantType // out
@@ -310,7 +307,6 @@ func (action *Action) State() *glib.Variant {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _variant *glib.Variant // out
@@ -349,7 +345,6 @@ func (action *Action) StateHint() *glib.Variant {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state_hint(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _variant *glib.Variant // out
@@ -382,7 +377,6 @@ func (action *Action) StateType() *glib.VariantType {
 	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.g_action_get_state_type(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _variantType *glib.VariantType // out
@@ -409,7 +403,6 @@ func ActionNameIsValid(actionName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_name_is_valid(_arg1)
-
 	runtime.KeepAlive(actionName)
 
 	var _ok bool // out
@@ -496,7 +489,6 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	}
 
 	_cret = C.g_action_print_detailed_name(_arg1, _arg2)
-
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(targetValue)
 

@@ -139,7 +139,6 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
-
 	runtime.KeepAlive(fontset)
 	runtime.KeepAlive(wc)
 
@@ -158,7 +157,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
-
 	runtime.KeepAlive(fontset)
 
 	var _fontMetrics *FontMetrics // out
@@ -202,7 +200,6 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_fontset_simple_new(_arg1)
-
 	runtime.KeepAlive(language)
 
 	var _fontsetSimple *FontsetSimple // out
@@ -233,7 +230,6 @@ func (fontset *FontsetSimple) Size() int {
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_simple_size(_arg0)
-
 	runtime.KeepAlive(fontset)
 
 	var _gint int // out

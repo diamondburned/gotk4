@@ -230,7 +230,6 @@ func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
 	_arg2 = C.gint(nChars)
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(nChars)
@@ -256,7 +255,6 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(event)
 
@@ -342,7 +340,6 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 
 	var _text string     // out

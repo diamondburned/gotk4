@@ -1755,7 +1755,6 @@ func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	_arg1 = C.int(cmpfuncResult)
 
 	_cret = C.gtk_ordering_from_cmpfunc(_arg1)
-
 	runtime.KeepAlive(cmpfuncResult)
 
 	var _ordering Ordering // out
@@ -2791,6 +2790,11 @@ func (i InputHints) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if i contains other.
+func (i InputHints) Has(other InputHints) bool {
+	return (i & other) == other
+}
+
 // PickFlags flags that influence the behavior of gtk_widget_pick().
 type PickFlags int
 
@@ -2836,6 +2840,11 @@ func (p PickFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if p contains other.
+func (p PickFlags) Has(other PickFlags) bool {
+	return (p & other) == other
 }
 
 // StateFlags describes a widget state.
@@ -2937,4 +2946,9 @@ func (s StateFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if s contains other.
+func (s StateFlags) Has(other StateFlags) bool {
+	return (s & other) == other
 }

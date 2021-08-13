@@ -30,7 +30,6 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _guint32 uint32 // out
@@ -66,7 +65,6 @@ func (surface *X11Surface) Desktop() uint32 {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
-
 	runtime.KeepAlive(surface)
 
 	var _guint32 uint32 // out
@@ -84,7 +82,6 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
-
 	runtime.KeepAlive(surface)
 
 	var _ret gdk.Surfacer // out

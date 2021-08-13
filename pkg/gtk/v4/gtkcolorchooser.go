@@ -158,7 +158,6 @@ func (chooser *ColorChooser) UseAlpha() bool {
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out

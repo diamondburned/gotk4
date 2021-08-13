@@ -90,7 +90,6 @@ func (self *Root) Display() *gdk.Display {
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_root_get_display(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _display *gdk.Display // out
@@ -117,7 +116,6 @@ func (self *Root) Focus() Widgetter {
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_root_get_focus(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

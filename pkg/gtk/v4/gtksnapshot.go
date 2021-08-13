@@ -102,7 +102,6 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gtk_snapshot_append_cairo(_arg0, _arg1)
-
 	runtime.KeepAlive(snapshot)
 	runtime.KeepAlive(bounds)
 
@@ -838,7 +837,6 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	_cret = C.gtk_snapshot_to_node(_arg0)
-
 	runtime.KeepAlive(snapshot)
 
 	var _renderNode gsk.RenderNoder // out
@@ -865,7 +863,6 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	}
 
 	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
-
 	runtime.KeepAlive(snapshot)
 	runtime.KeepAlive(size)
 

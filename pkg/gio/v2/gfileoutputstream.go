@@ -126,7 +126,6 @@ func (stream *FileOutputStream) Etag() string {
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_file_output_stream_get_etag(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _utf8 string // out
@@ -171,7 +170,6 @@ func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -235,7 +233,6 @@ func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 

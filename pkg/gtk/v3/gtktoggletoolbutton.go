@@ -122,7 +122,6 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
-
 	runtime.KeepAlive(stockId)
 
 	var _toggleToolButton *ToggleToolButton // out
@@ -141,7 +140,6 @@ func (button *ToggleToolButton) Active() bool {
 	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out

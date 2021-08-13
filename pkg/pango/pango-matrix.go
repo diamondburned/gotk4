@@ -106,7 +106,6 @@ func (matrix *Matrix) Copy() *Matrix {
 	}
 
 	_cret = C.pango_matrix_copy(_arg0)
-
 	runtime.KeepAlive(matrix)
 
 	var _ret *Matrix // out
@@ -136,7 +135,6 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 	}
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
-
 	runtime.KeepAlive(matrix)
 
 	var _gdouble float64 // out

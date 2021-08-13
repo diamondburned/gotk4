@@ -235,7 +235,6 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 	_arg2 = C.gint(endPos)
 
 	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -257,7 +256,6 @@ func (editable *Editable) Editable() bool {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_editable(_arg0)
-
 	runtime.KeepAlive(editable)
 
 	var _ok bool // out
@@ -280,7 +278,6 @@ func (editable *Editable) Position() int {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_position(_arg0)
-
 	runtime.KeepAlive(editable)
 
 	var _gint int // out
@@ -304,7 +301,6 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(editable)
 
 	var _startPos int // out

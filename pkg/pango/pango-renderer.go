@@ -450,7 +450,6 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
-
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(part)
 
@@ -471,7 +470,6 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
-
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(part)
 
@@ -497,7 +495,6 @@ func (renderer *Renderer) Layout() *Layout {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_layout(_arg0)
-
 	runtime.KeepAlive(renderer)
 
 	var _layout *Layout // out
@@ -522,7 +519,6 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_layout_line(_arg0)
-
 	runtime.KeepAlive(renderer)
 
 	var _layoutLine *LayoutLine // out
@@ -548,7 +544,6 @@ func (renderer *Renderer) Matrix() *Matrix {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
-
 	runtime.KeepAlive(renderer)
 
 	var _matrix *Matrix // out

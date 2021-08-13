@@ -198,7 +198,6 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_settings_get_for_screen(_arg1)
-
 	runtime.KeepAlive(screen)
 
 	var _settings *Settings // out

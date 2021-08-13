@@ -78,7 +78,6 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
-
 	runtime.KeepAlive(screen)
 
 	var _invisible *Invisible // out
@@ -96,7 +95,6 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(invisible.Native()))
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
-
 	runtime.KeepAlive(invisible)
 
 	var _screen *gdk.Screen // out

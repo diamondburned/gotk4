@@ -110,6 +110,11 @@ func (a AnchorHints) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AnchorHints) Has(other AnchorHints) bool {
+	return (a & other) == other
+}
+
 // PopupLayout: GdkPopupLayout struct contains information that is necessary
 // position a gdk.Popup relative to its parent.
 //
@@ -163,7 +168,6 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	_arg3 = C.GdkGravity(surfaceAnchor)
 
 	_cret = C.gdk_popup_layout_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(anchorRect)
 	runtime.KeepAlive(rectAnchor)
 	runtime.KeepAlive(surfaceAnchor)
@@ -186,7 +190,6 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_copy(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _popupLayout *PopupLayout // out
@@ -209,7 +212,6 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	_arg1 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gdk_popup_layout_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(other)
 
@@ -230,7 +232,6 @@ func (layout *PopupLayout) AnchorHints() AnchorHints {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_anchor_hints(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _anchorHints AnchorHints // out
@@ -248,7 +249,6 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_anchor_rect(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _rectangle *Rectangle // out
@@ -286,7 +286,6 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_rect_anchor(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gravity Gravity // out
@@ -330,7 +329,6 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_surface_anchor(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _gravity Gravity // out

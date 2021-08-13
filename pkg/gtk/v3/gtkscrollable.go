@@ -120,7 +120,6 @@ func (scrollable *Scrollable) Border() (Border, bool) {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
-
 	runtime.KeepAlive(scrollable)
 
 	var _border Border // out
@@ -142,7 +141,6 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
-
 	runtime.KeepAlive(scrollable)
 
 	var _adjustment *Adjustment // out
@@ -160,7 +158,6 @@ func (scrollable *Scrollable) HScrollPolicy() ScrollablePolicy {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
-
 	runtime.KeepAlive(scrollable)
 
 	var _scrollablePolicy ScrollablePolicy // out
@@ -178,7 +175,6 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
-
 	runtime.KeepAlive(scrollable)
 
 	var _adjustment *Adjustment // out
@@ -196,7 +192,6 @@ func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
-
 	runtime.KeepAlive(scrollable)
 
 	var _scrollablePolicy ScrollablePolicy // out

@@ -134,7 +134,6 @@ func (hsv *HSV) IsAdjusting() bool {
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
 
 	_cret = C.gtk_hsv_is_adjusting(_arg0)
-
 	runtime.KeepAlive(hsv)
 
 	var _ok bool // out

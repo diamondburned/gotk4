@@ -52,7 +52,6 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_key_new(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _eventControllerKey *EventControllerKey // out
@@ -71,7 +70,6 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
-
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(widget)
 
@@ -91,7 +89,6 @@ func (controller *EventControllerKey) Group() uint {
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
-
 	runtime.KeepAlive(controller)
 
 	var _guint uint // out
@@ -109,7 +106,6 @@ func (controller *EventControllerKey) ImContext() IMContexter {
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
-
 	runtime.KeepAlive(controller)
 
 	var _imContext IMContexter // out

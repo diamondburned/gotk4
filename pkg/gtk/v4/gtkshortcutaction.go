@@ -77,6 +77,11 @@ func (s ShortcutActionFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s ShortcutActionFlags) Has(other ShortcutActionFlags) bool {
+	return (s & other) == other
+}
+
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
 type ShortcutFunc func(widget Widgetter, args *glib.Variant) (ok bool)
 
@@ -179,7 +184,6 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	}
 
 	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(callback)
 
 	var _callbackAction *CallbackAction // out
@@ -261,7 +265,6 @@ func NewNamedAction(name string) *NamedAction {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_named_action_new(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _namedAction *NamedAction // out
@@ -279,7 +282,6 @@ func (self *NamedAction) ActionName() string {
 	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -404,7 +406,6 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _shortcutAction *ShortcutAction // out
@@ -438,7 +439,6 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 	}
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(widget)
@@ -464,7 +464,6 @@ func (self *ShortcutAction) String() string {
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -509,7 +508,6 @@ func NewSignalAction(signalName string) *SignalAction {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_signal_action_new(_arg1)
-
 	runtime.KeepAlive(signalName)
 
 	var _signalAction *SignalAction // out
@@ -527,7 +525,6 @@ func (self *SignalAction) SignalName() string {
 	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out

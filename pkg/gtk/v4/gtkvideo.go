@@ -88,7 +88,6 @@ func NewVideoForFile(file gio.Filer) *Video {
 	}
 
 	_cret = C.gtk_video_new_for_file(_arg1)
-
 	runtime.KeepAlive(file)
 
 	var _video *Video // out
@@ -112,7 +111,6 @@ func NewVideoForFilename(filename string) *Video {
 	}
 
 	_cret = C.gtk_video_new_for_filename(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _video *Video // out
@@ -132,7 +130,6 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	}
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
-
 	runtime.KeepAlive(stream)
 
 	var _video *Video // out
@@ -156,7 +153,6 @@ func NewVideoForResource(resourcePath string) *Video {
 	}
 
 	_cret = C.gtk_video_new_for_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _video *Video // out
@@ -174,7 +170,6 @@ func (self *Video) Autoplay() bool {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -194,7 +189,6 @@ func (self *Video) File() gio.Filer {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_file(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
@@ -214,7 +208,6 @@ func (self *Video) Loop() bool {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_loop(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -234,7 +227,6 @@ func (self *Video) MediaStream() MediaStreamer {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _mediaStream MediaStreamer // out

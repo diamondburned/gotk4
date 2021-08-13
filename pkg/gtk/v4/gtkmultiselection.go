@@ -58,7 +58,6 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	}
 
 	_cret = C.gtk_multi_selection_new(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _multiSelection *MultiSelection // out
@@ -76,7 +75,6 @@ func (self *MultiSelection) Model() gio.ListModeller {
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_multi_selection_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out

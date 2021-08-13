@@ -71,7 +71,6 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(toCharset)
 	runtime.KeepAlive(fromCharset)
 
@@ -94,7 +93,6 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
-
 	runtime.KeepAlive(converter)
 
 	var _guint uint // out
@@ -112,7 +110,6 @@ func (converter *CharsetConverter) UseFallback() bool {
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
-
 	runtime.KeepAlive(converter)
 
 	var _ok bool // out

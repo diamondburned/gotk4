@@ -62,7 +62,6 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out

@@ -199,7 +199,6 @@ func NewVariantType(typeString string) *VariantType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_new(_arg1)
-
 	runtime.KeepAlive(typeString)
 
 	var _variantType *VariantType // out
@@ -220,7 +219,6 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(element)))
 
 	_cret = C.g_variant_type_new_array(_arg1)
-
 	runtime.KeepAlive(element)
 
 	var _variantType *VariantType // out
@@ -243,7 +241,6 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_type_new_dict_entry(_arg1, _arg2)
-
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(value)
 
@@ -265,7 +262,6 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(element)))
 
 	_cret = C.g_variant_type_new_maybe(_arg1)
-
 	runtime.KeepAlive(element)
 
 	var _variantType *VariantType // out
@@ -290,7 +286,6 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	}
 
 	_cret = C.g_variant_type_new_tuple(_arg1, _arg2)
-
 	runtime.KeepAlive(items)
 
 	var _variantType *VariantType // out
@@ -312,7 +307,6 @@ func (typ *VariantType) Copy() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_copy(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -335,7 +329,6 @@ func (typ *VariantType) DupString() string {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_dup_string(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
@@ -356,7 +349,6 @@ func (typ *VariantType) Element() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_element(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -385,7 +377,6 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(type2)))
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(type1)
 	runtime.KeepAlive(type2)
 
@@ -416,7 +407,6 @@ func (typ *VariantType) First() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_first(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -436,7 +426,6 @@ func (typ *VariantType) StringLength() uint {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_get_string_length(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _gsize uint // out
@@ -457,7 +446,6 @@ func (typ *VariantType) Hash() uint {
 	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_hash(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _guint uint // out
@@ -479,7 +467,6 @@ func (typ *VariantType) IsArray() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_array(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -507,7 +494,6 @@ func (typ *VariantType) IsBasic() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_basic(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -533,7 +519,6 @@ func (typ *VariantType) IsContainer() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_container(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -561,7 +546,6 @@ func (typ *VariantType) IsDefinite() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_definite(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -585,7 +569,6 @@ func (typ *VariantType) IsDictEntry() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_dict_entry(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -609,7 +592,6 @@ func (typ *VariantType) IsMaybe() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_maybe(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -635,7 +617,6 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(supertype)))
 
 	_cret = C.g_variant_type_is_subtype_of(_arg0, _arg1)
-
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(supertype)
 
@@ -660,7 +641,6 @@ func (typ *VariantType) IsTuple() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_tuple(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -680,7 +660,6 @@ func (typ *VariantType) IsVariant() bool {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_is_variant(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -703,7 +682,6 @@ func (typ *VariantType) Key() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_key(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -727,7 +705,6 @@ func (typ *VariantType) NItems() uint {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_n_items(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _gsize uint // out
@@ -754,7 +731,6 @@ func (typ *VariantType) Next() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_next(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -774,7 +750,6 @@ func (typ *VariantType) Value() *VariantType {
 	_arg0 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_value(_arg0)
-
 	runtime.KeepAlive(typ)
 
 	var _variantType *VariantType // out
@@ -792,7 +767,6 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_checked_(_arg1)
-
 	runtime.KeepAlive(arg0)
 
 	var _variantType *VariantType // out
@@ -810,7 +784,6 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_get_depth_(_arg1)
-
 	runtime.KeepAlive(typeString)
 
 	var _gsize uint // out
@@ -831,7 +804,6 @@ func VariantTypeStringIsValid(typeString string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_is_valid(_arg1)
-
 	runtime.KeepAlive(typeString)
 
 	var _ok bool // out
@@ -869,7 +841,6 @@ func VariantTypeStringScan(_string string, limit string) (string, bool) {
 	}
 
 	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
-
 	runtime.KeepAlive(_string)
 	runtime.KeepAlive(limit)
 

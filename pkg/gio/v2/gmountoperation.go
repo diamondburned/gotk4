@@ -106,7 +106,6 @@ func (op *MountOperation) Anonymous() bool {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_anonymous(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -126,7 +125,6 @@ func (op *MountOperation) Choice() int {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_choice(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _gint int // out
@@ -144,7 +142,6 @@ func (op *MountOperation) Domain() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_domain(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -165,7 +162,6 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -186,7 +182,6 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -206,7 +201,6 @@ func (op *MountOperation) Password() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_password(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -226,7 +220,6 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_password_save(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _passwordSave PasswordSave // out
@@ -244,7 +237,6 @@ func (op *MountOperation) Pim() uint {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_pim(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _guint uint // out
@@ -262,7 +254,6 @@ func (op *MountOperation) Username() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_username(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out

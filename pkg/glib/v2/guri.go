@@ -181,6 +181,11 @@ func (u URIFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if u contains other.
+func (u URIFlags) Has(other URIFlags) bool {
+	return (u & other) == other
+}
+
 // URIHideFlags flags describing what parts of the URI to hide in
 // g_uri_to_string_partial(). Note that G_URI_HIDE_PASSWORD and
 // G_URI_HIDE_AUTH_PARAMS will only work if the #GUri was parsed with the
@@ -238,6 +243,11 @@ func (u URIHideFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if u contains other.
+func (u URIHideFlags) Has(other URIHideFlags) bool {
+	return (u & other) == other
+}
+
 // URIParamsFlags flags modifying the way parameters are handled by
 // g_uri_parse_params() and ParamsIter.
 type URIParamsFlags int
@@ -284,6 +294,11 @@ func (u URIParamsFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if u contains other.
+func (u URIParamsFlags) Has(other URIParamsFlags) bool {
+	return (u & other) == other
 }
 
 // URI type and related functions can be used to parse URIs into their
@@ -415,7 +430,6 @@ func (uri *URI) AuthParams() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_auth_params(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -435,7 +449,6 @@ func (uri *URI) Flags() URIFlags {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_flags(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _uriFlags URIFlags // out
@@ -454,7 +467,6 @@ func (uri *URI) Fragment() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_fragment(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -482,7 +494,6 @@ func (uri *URI) Host() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_host(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -504,7 +515,6 @@ func (uri *URI) Password() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_password(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -525,7 +535,6 @@ func (uri *URI) Path() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_path(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -543,7 +552,6 @@ func (uri *URI) Port() int {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_port(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _gint int // out
@@ -565,7 +573,6 @@ func (uri *URI) Query() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_query(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -586,7 +593,6 @@ func (uri *URI) Scheme() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_scheme(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -607,7 +613,6 @@ func (uri *URI) User() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_user(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -628,7 +633,6 @@ func (uri *URI) Userinfo() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_userinfo(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -658,7 +662,6 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(baseUri)
 	runtime.KeepAlive(uriRef)
 	runtime.KeepAlive(flags)
@@ -695,7 +698,6 @@ func (uri *URI) String() string {
 	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_to_string(_arg0)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -717,7 +719,6 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	_arg1 = C.GUriHideFlags(flags)
 
 	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
-
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(flags)
 
@@ -768,7 +769,6 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 	}
 
 	_cret = C.g_uri_build(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(scheme)
 	runtime.KeepAlive(userinfo)
@@ -841,7 +841,6 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 	}
 
 	_cret = C.g_uri_build_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(scheme)
 	runtime.KeepAlive(user)
@@ -888,7 +887,6 @@ func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	}
 
 	_cret = C.g_uri_escape_bytes(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(unescaped)
 	runtime.KeepAlive(reservedCharsAllowed)
 
@@ -924,7 +922,6 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bo
 	}
 
 	_cret = C.g_uri_escape_string(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(unescaped)
 	runtime.KeepAlive(reservedCharsAllowed)
 	runtime.KeepAlive(allowUtf8)
@@ -1018,7 +1015,6 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 	}
 
 	_cret = C.g_uri_join(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(scheme)
 	runtime.KeepAlive(userinfo)
@@ -1092,7 +1088,6 @@ func URIJoinWithUser(flags URIFlags, scheme string, user string, password string
 	}
 
 	_cret = C.g_uri_join_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(scheme)
 	runtime.KeepAlive(user)
@@ -1126,7 +1121,6 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(uriString)
 	runtime.KeepAlive(flags)
 
@@ -1183,7 +1177,6 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 	_arg4 = C.GUriParamsFlags(flags)
 
 	_cret = C.g_uri_parse_params(_arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(params)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(separators)
@@ -1225,7 +1218,6 @@ func URIParseScheme(uri string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_parse_scheme(_arg1)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -1255,7 +1247,6 @@ func URIPeekScheme(uri string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_peek_scheme(_arg1)
-
 	runtime.KeepAlive(uri)
 
 	var _utf8 string // out
@@ -1290,7 +1281,6 @@ func URIResolveRelative(baseUriString string, uriRef string, flags URIFlags) (st
 	_arg3 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_resolve_relative(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(baseUriString)
 	runtime.KeepAlive(uriRef)
 	runtime.KeepAlive(flags)
@@ -1538,7 +1528,6 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 	}
 
 	_cret = C.g_uri_unescape_segment(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(escapedString)
 	runtime.KeepAlive(escapedStringEnd)
 	runtime.KeepAlive(illegalCharacters)
@@ -1573,7 +1562,6 @@ func URIUnescapeString(escapedString string, illegalCharacters string) string {
 	}
 
 	_cret = C.g_uri_unescape_string(_arg1, _arg2)
-
 	runtime.KeepAlive(escapedString)
 	runtime.KeepAlive(illegalCharacters)
 

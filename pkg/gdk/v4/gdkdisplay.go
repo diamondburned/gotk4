@@ -88,7 +88,6 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(device)
 
@@ -129,7 +128,6 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _appLaunchContext *AppLaunchContext // out
@@ -147,7 +145,6 @@ func (display *Display) Clipboard() *Clipboard {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_clipboard(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _clipboard *Clipboard // out
@@ -168,7 +165,6 @@ func (display *Display) DefaultSeat() Seater {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _seat Seater // out
@@ -193,7 +189,6 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(surface)
 
@@ -218,7 +213,6 @@ func (self *Display) Monitors() gio.ListModeller {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_display_get_monitors(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -236,7 +230,6 @@ func (display *Display) Name() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -257,7 +250,6 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_primary_clipboard(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _clipboard *Clipboard // out
@@ -281,7 +273,6 @@ func (display *Display) Setting(name string, value *externglib.Value) bool {
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
@@ -304,7 +295,6 @@ func (display *Display) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_get_startup_notification_id(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -324,7 +314,6 @@ func (display *Display) IsClosed() bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
@@ -352,7 +341,6 @@ func (display *Display) IsComposited() bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_is_composited(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
@@ -381,7 +369,6 @@ func (display *Display) IsRGBA() bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_is_rgba(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
@@ -401,7 +388,6 @@ func (display *Display) ListSeats() []Seater {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_list_seats(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _list []Seater // out
@@ -437,7 +423,6 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	_arg1 = C.guint(keycode)
 
 	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(keycode)
 
@@ -490,7 +475,6 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(keyval)
 
@@ -557,7 +541,6 @@ func (display *Display) SupportsInputShapes() bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
@@ -623,7 +606,6 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 	_arg3 = C.int(group)
 
 	_cret = C.gdk_display_translate_key(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(keycode)
 	runtime.KeepAlive(state)
@@ -673,7 +655,6 @@ func DisplayOpen(displayName string) *Display {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_open(_arg1)
-
 	runtime.KeepAlive(displayName)
 
 	var _display *Display // out

@@ -65,7 +65,6 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_pango_context_get_for_display(_arg1)
-
 	runtime.KeepAlive(display)
 
 	var _context *pango.Context // out
@@ -100,7 +99,6 @@ func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_pango_context_get_for_screen(_arg1)
-
 	runtime.KeepAlive(screen)
 
 	var _context *pango.Context // out

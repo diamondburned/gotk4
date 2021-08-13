@@ -89,7 +89,6 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gsk_renderer_new_for_surface(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _renderer *Renderer // out
@@ -111,7 +110,6 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gsk_renderer_get_surface(_arg0)
-
 	runtime.KeepAlive(renderer)
 
 	var _surface gdk.Surfacer // out
@@ -131,7 +129,6 @@ func (renderer *Renderer) IsRealized() bool {
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gsk_renderer_is_realized(_arg0)
-
 	runtime.KeepAlive(renderer)
 
 	var _ok bool // out
@@ -214,7 +211,6 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	}
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(root)
 	runtime.KeepAlive(viewport)

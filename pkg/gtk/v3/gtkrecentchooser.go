@@ -304,7 +304,6 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _recentInfo *RecentInfo // out
@@ -325,7 +324,6 @@ func (chooser *RecentChooser) CurrentURI() string {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -345,7 +343,6 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_filter(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _recentFilter *RecentFilter // out
@@ -366,7 +363,6 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_items(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _list []*RecentInfo // out
@@ -394,7 +390,6 @@ func (chooser *RecentChooser) Limit() int {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_limit(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _gint int // out
@@ -413,7 +408,6 @@ func (chooser *RecentChooser) LocalOnly() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -433,7 +427,6 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -453,7 +446,6 @@ func (chooser *RecentChooser) ShowIcons() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -474,7 +466,6 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -495,7 +486,6 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -516,7 +506,6 @@ func (chooser *RecentChooser) ShowTips() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -536,7 +525,6 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _recentSortType RecentSortType // out

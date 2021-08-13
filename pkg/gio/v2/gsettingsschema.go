@@ -82,7 +82,6 @@ func (schema *SettingsSchema) ID() string {
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_get_id(_arg0)
-
 	runtime.KeepAlive(schema)
 
 	var _utf8 string // out
@@ -106,7 +105,6 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_get_key(_arg0, _arg1)
-
 	runtime.KeepAlive(schema)
 	runtime.KeepAlive(name)
 
@@ -136,7 +134,6 @@ func (schema *SettingsSchema) Path() string {
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_get_path(_arg0)
-
 	runtime.KeepAlive(schema)
 
 	var _utf8 string // out
@@ -159,7 +156,6 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_has_key(_arg0, _arg1)
-
 	runtime.KeepAlive(schema)
 	runtime.KeepAlive(name)
 
@@ -182,7 +178,6 @@ func (schema *SettingsSchema) ListChildren() []string {
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_children(_arg0)
-
 	runtime.KeepAlive(schema)
 
 	var _utf8s []string // out
@@ -218,7 +213,6 @@ func (schema *SettingsSchema) ListKeys() []string {
 	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_keys(_arg0)
-
 	runtime.KeepAlive(schema)
 
 	var _utf8s []string // out
@@ -265,7 +259,6 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_default_value(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
@@ -297,7 +290,6 @@ func (key *SettingsSchemaKey) Description() string {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_description(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _utf8 string // out
@@ -317,7 +309,6 @@ func (key *SettingsSchemaKey) Name() string {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_name(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _utf8 string // out
@@ -368,7 +359,6 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_range(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
@@ -399,7 +389,6 @@ func (key *SettingsSchemaKey) Summary() string {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_summary(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _utf8 string // out
@@ -419,7 +408,6 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_value_type(_arg0)
-
 	runtime.KeepAlive(key)
 
 	var _variantType *glib.VariantType // out
@@ -443,7 +431,6 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_schema_key_range_check(_arg0, _arg1)
-
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(value)
 
@@ -486,7 +473,6 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	}
 
 	_cret = C.g_settings_schema_source_new_from_directory(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(directory)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(trusted)
@@ -592,7 +578,6 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 	}
 
 	_cret = C.g_settings_schema_source_lookup(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(schemaId)
 	runtime.KeepAlive(recursive)

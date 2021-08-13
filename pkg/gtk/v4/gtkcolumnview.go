@@ -137,7 +137,6 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 	}
 
 	_cret = C.gtk_column_view_new(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _columnView *ColumnView // out
@@ -171,7 +170,6 @@ func (self *ColumnView) Columns() gio.ListModeller {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_columns(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -190,7 +188,6 @@ func (self *ColumnView) EnableRubberband() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_enable_rubberband(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -210,7 +207,6 @@ func (self *ColumnView) Model() SelectionModeller {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _selectionModel SelectionModeller // out
@@ -230,7 +226,6 @@ func (self *ColumnView) Reorderable() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_reorderable(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -251,7 +246,6 @@ func (self *ColumnView) ShowColumnSeparators() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_show_column_separators(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -272,7 +266,6 @@ func (self *ColumnView) ShowRowSeparators() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_show_row_separators(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -293,7 +286,6 @@ func (self *ColumnView) SingleClickActivate() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_single_click_activate(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -329,7 +321,6 @@ func (self *ColumnView) Sorter() *Sorter {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_sorter(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out

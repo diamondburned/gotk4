@@ -116,7 +116,6 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 	}
 
 	_cret = C.gtk_lock_button_new(_arg1)
-
 	runtime.KeepAlive(permission)
 
 	var _lockButton *LockButton // out
@@ -134,7 +133,6 @@ func (button *LockButton) Permission() gio.Permissioner {
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _permission gio.Permissioner // out

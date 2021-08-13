@@ -105,7 +105,6 @@ func (a *Vec4) Dot(b *Vec4) float32 {
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_vec4_dot(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -126,7 +125,6 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v2)))
 
 	_cret = C.graphene_vec4_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 
@@ -147,7 +145,6 @@ func (v *Vec4) W() float32 {
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec4_get_w(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -165,7 +162,6 @@ func (v *Vec4) X() float32 {
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec4_get_x(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -219,7 +215,6 @@ func (v *Vec4) Y() float32 {
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec4_get_y(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -237,7 +232,6 @@ func (v *Vec4) Z() float32 {
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec4_get_z(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -265,7 +259,6 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 	_arg4 = C.float(w)
 
 	_cret = C.graphene_vec4_init(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -290,7 +283,6 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	_arg1 = (*C.float)(unsafe.Pointer(&src))
 
 	_cret = C.graphene_vec4_init_from_float(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -316,7 +308,6 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 	_arg3 = C.float(w)
 
 	_cret = C.graphene_vec4_init_from_vec2(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(z)
@@ -342,7 +333,6 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 	_arg2 = C.float(w)
 
 	_cret = C.graphene_vec4_init_from_vec3(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(w)
@@ -365,7 +355,6 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_vec4_init_from_vec4(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -407,7 +396,6 @@ func (v *Vec4) Length() float32 {
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec4_length(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -492,7 +480,6 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec4_near(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 	runtime.KeepAlive(epsilon)

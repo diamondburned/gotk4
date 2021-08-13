@@ -286,7 +286,6 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_auth_observer_allow_mechanism(_arg0, _arg1)
-
 	runtime.KeepAlive(observer)
 	runtime.KeepAlive(mechanism)
 
@@ -314,7 +313,6 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	}
 
 	_cret = C.g_dbus_auth_observer_authorize_authenticated_peer(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(observer)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(credentials)
@@ -414,7 +412,6 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_new_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
@@ -438,7 +435,6 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_new_for_address_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
@@ -488,7 +484,6 @@ func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags 
 	}
 
 	_cret = C.g_dbus_connection_new_for_address_sync(_arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(flags)
@@ -544,7 +539,6 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 	}
 
 	_cret = C.g_dbus_connection_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(guid)
@@ -600,7 +594,6 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.g_dbus_connection_add_filter(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterFunction)
 
@@ -720,7 +713,6 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_call_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -809,7 +801,6 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName string, 
 	_arg8 = C.gint(timeoutMsec)
 
 	_cret = C.g_dbus_connection_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(busName)
@@ -936,7 +927,6 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -1008,7 +998,6 @@ func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, bu
 	}
 
 	_cret = C.g_dbus_connection_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_arg10, _arg11, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(busName)
@@ -1214,7 +1203,6 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.g_dbus_connection_export_action_group(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(actionGroup)
@@ -1254,7 +1242,6 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.g_dbus_connection_export_menu_model(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(menu)
@@ -1364,7 +1351,6 @@ func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_capabilities(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _dBusCapabilityFlags DBusCapabilityFlags // out
@@ -1383,7 +1369,6 @@ func (connection *DBusConnection) ExitOnClose() bool {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_exit_on_close(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -1403,7 +1388,6 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_flags(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _dBusConnectionFlags DBusConnectionFlags // out
@@ -1422,7 +1406,6 @@ func (connection *DBusConnection) GUID() string {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_guid(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _utf8 string // out
@@ -1444,7 +1427,6 @@ func (connection *DBusConnection) LastSerial() uint32 {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_last_serial(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _guint32 uint32 // out
@@ -1469,7 +1451,6 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_peer_credentials(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _credentials *Credentials // out
@@ -1492,7 +1473,6 @@ func (connection *DBusConnection) Stream() IOStreamer {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_stream(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _ioStream IOStreamer // out
@@ -1512,7 +1492,6 @@ func (connection *DBusConnection) UniqueName() string {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_get_unique_name(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _utf8 string // out
@@ -1532,7 +1511,6 @@ func (connection *DBusConnection) IsClosed() bool {
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_connection_is_closed(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -1700,7 +1678,6 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_connection_send_message_with_reply_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -1764,7 +1741,6 @@ func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, 
 	_arg3 = C.gint(timeoutMsec)
 
 	_cret = C.g_dbus_connection_send_message_with_reply_sync(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(message)
@@ -1893,7 +1869,6 @@ func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName s
 	_arg9 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.g_dbus_connection_signal_subscribe(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(sender)
 	runtime.KeepAlive(interfaceName)
@@ -1989,7 +1964,6 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 	_arg1 = C.guint(registrationId)
 
 	_cret = C.g_dbus_connection_unregister_object(_arg0, _arg1)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)
 
@@ -2012,7 +1986,6 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	_arg1 = C.guint(registrationId)
 
 	_cret = C.g_dbus_connection_unregister_subtree(_arg0, _arg1)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)
 
@@ -2099,7 +2072,6 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 	_arg3 = C.GDBusCapabilityFlags(capabilities)
 
 	_cret = C.g_dbus_message_new_from_blob(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(blob)
 	runtime.KeepAlive(capabilities)
 
@@ -2136,7 +2108,6 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 	defer C.free(unsafe.Pointer(_arg4))
 
 	_cret = C.g_dbus_message_new_method_call(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(interface_)
@@ -2164,7 +2135,6 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) *DBusMe
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_message_new_signal(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(signal)
@@ -2189,7 +2159,6 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_copy(_arg0, &_cerr)
-
 	runtime.KeepAlive(message)
 
 	var _dBusMessage *DBusMessage // out
@@ -2211,7 +2180,6 @@ func (message *DBusMessage) Arg0() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_arg0(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2231,7 +2199,6 @@ func (message *DBusMessage) Body() *glib.Variant {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_body(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _variant *glib.Variant // out
@@ -2255,7 +2222,6 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_byte_order(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _dBusMessageByteOrder DBusMessageByteOrder // out
@@ -2274,7 +2240,6 @@ func (message *DBusMessage) Destination() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_destination(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2295,7 +2260,6 @@ func (message *DBusMessage) ErrorName() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_error_name(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2315,7 +2279,6 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_flags(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _dBusMessageFlags DBusMessageFlags // out
@@ -2338,7 +2301,6 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 	_arg1 = C.GDBusMessageHeaderField(headerField)
 
 	_cret = C.g_dbus_message_get_header(_arg0, _arg1)
-
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(headerField)
 
@@ -2363,7 +2325,6 @@ func (message *DBusMessage) HeaderFields() []byte {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_header_fields(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _guint8s []byte // out
@@ -2394,7 +2355,6 @@ func (message *DBusMessage) Interface() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_interface(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2416,7 +2376,6 @@ func (message *DBusMessage) Locked() bool {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_locked(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _ok bool // out
@@ -2437,7 +2396,6 @@ func (message *DBusMessage) Member() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_member(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2457,7 +2415,6 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_message_type(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _dBusMessageType DBusMessageType // out
@@ -2476,7 +2433,6 @@ func (message *DBusMessage) NumUnixFds() uint32 {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_num_unix_fds(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _guint32 uint32 // out
@@ -2495,7 +2451,6 @@ func (message *DBusMessage) Path() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_path(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2516,7 +2471,6 @@ func (message *DBusMessage) ReplySerial() uint32 {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_reply_serial(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _guint32 uint32 // out
@@ -2535,7 +2489,6 @@ func (message *DBusMessage) Sender() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_sender(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2555,7 +2508,6 @@ func (message *DBusMessage) Serial() uint32 {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_serial(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _guint32 uint32 // out
@@ -2574,7 +2526,6 @@ func (message *DBusMessage) Signature() string {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_signature(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -2599,7 +2550,6 @@ func (message *DBusMessage) UnixFdList() *UnixFDList {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_dbus_message_get_unix_fd_list(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _unixFDList *UnixFDList // out
@@ -2636,7 +2586,6 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName string, er
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_message_new_method_error_literal(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(methodCallMessage)
 	runtime.KeepAlive(errorName)
 	runtime.KeepAlive(errorMessage)
@@ -2657,7 +2606,6 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(methodCallMessage.Native()))
 
 	_cret = C.g_dbus_message_new_method_reply(_arg0)
-
 	runtime.KeepAlive(methodCallMessage)
 
 	var _dBusMessage *DBusMessage // out
@@ -2707,7 +2655,6 @@ func (message *DBusMessage) Print(indent uint) string {
 	_arg1 = C.guint(indent)
 
 	_cret = C.g_dbus_message_print(_arg0, _arg1)
-
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(indent)
 
@@ -3035,7 +2982,6 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_connection(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _dBusConnection *DBusConnection // out
@@ -3057,7 +3003,6 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_interface_name(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
@@ -3081,7 +3026,6 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_message(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _dBusMessage *DBusMessage // out
@@ -3104,7 +3048,6 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_method_info(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _dBusMethodInfo *DBusMethodInfo // out
@@ -3128,7 +3071,6 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_method_name(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
@@ -3146,7 +3088,6 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_object_path(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
@@ -3166,7 +3107,6 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_parameters(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _variant *glib.Variant // out
@@ -3198,7 +3138,6 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_property_info(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
@@ -3222,7 +3161,6 @@ func (invocation *DBusMethodInvocation) Sender() string {
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
 
 	_cret = C.g_dbus_method_invocation_get_sender(_arg0)
-
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
@@ -3451,7 +3389,6 @@ func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlag
 	}
 
 	_cret = C.g_dbus_server_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(flags)
@@ -3479,7 +3416,6 @@ func (server *DBusServer) ClientAddress() string {
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
 
 	_cret = C.g_dbus_server_get_client_address(_arg0)
-
 	runtime.KeepAlive(server)
 
 	var _utf8 string // out
@@ -3497,7 +3433,6 @@ func (server *DBusServer) Flags() DBusServerFlags {
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
 
 	_cret = C.g_dbus_server_get_flags(_arg0)
-
 	runtime.KeepAlive(server)
 
 	var _dBusServerFlags DBusServerFlags // out
@@ -3515,7 +3450,6 @@ func (server *DBusServer) GUID() string {
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
 
 	_cret = C.g_dbus_server_get_guid(_arg0)
-
 	runtime.KeepAlive(server)
 
 	var _utf8 string // out
@@ -3533,7 +3467,6 @@ func (server *DBusServer) IsActive() bool {
 	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
 
 	_cret = C.g_dbus_server_is_active(_arg0)
-
 	runtime.KeepAlive(server)
 
 	var _ok bool // out
@@ -3961,7 +3894,6 @@ func NewMenuItem(label string, detailedAction string) *MenuItem {
 	}
 
 	_cret = C.g_menu_item_new(_arg1, _arg2)
-
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(detailedAction)
 
@@ -3986,7 +3918,6 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	_arg2 = C.gint(itemIndex)
 
 	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(itemIndex)
 
@@ -4066,7 +3997,6 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
 	_cret = C.g_menu_item_new_section(_arg1, _arg2)
-
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(section)
 
@@ -4093,7 +4023,6 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
 	_cret = C.g_menu_item_new_submenu(_arg1, _arg2)
-
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(submenu)
 
@@ -4122,7 +4051,6 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 	}
 
 	_cret = C.g_menu_item_get_attribute_value(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(expectedType)
@@ -4150,7 +4078,6 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_menu_item_get_link(_arg0, _arg1)
-
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(link)
 
@@ -4437,7 +4364,6 @@ func NewNotification(title string) *Notification {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_notification_new(_arg1)
-
 	runtime.KeepAlive(title)
 
 	var _notification *Notification // out
@@ -4713,7 +4639,6 @@ func NewPropertyAction(name string, object *externglib.Object, propertyName stri
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_property_action_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(propertyName)
@@ -4769,7 +4694,6 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 	}
 
 	_cret = C.g_simple_action_new(_arg1, _arg2)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
 
@@ -4799,7 +4723,6 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
 	_cret = C.g_simple_action_new_stateful(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
 	runtime.KeepAlive(state)
@@ -4906,7 +4829,6 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	_arg2 = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
 
 	_cret = C.g_simple_io_stream_new(_arg1, _arg2)
-
 	runtime.KeepAlive(inputStream)
 	runtime.KeepAlive(outputStream)
 
@@ -4953,7 +4875,6 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 	}
 
 	_cret = C.g_simple_permission_new(_arg1)
-
 	runtime.KeepAlive(allowed)
 
 	var _simplePermission *SimplePermission // out
@@ -5059,7 +4980,6 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	_arg2 = C.GSubprocessFlags(flags)
 
 	_cret = C.g_subprocess_newv(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(argv)
 	runtime.KeepAlive(flags)
 
@@ -5219,7 +5139,6 @@ func (subprocess *Subprocess) ExitStatus() int {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_exit_status(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _gint int // out
@@ -5239,7 +5158,6 @@ func (subprocess *Subprocess) Identifier() string {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_identifier(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _utf8 string // out
@@ -5264,7 +5182,6 @@ func (subprocess *Subprocess) IfExited() bool {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_if_exited(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _ok bool // out
@@ -5288,7 +5205,6 @@ func (subprocess *Subprocess) IfSignaled() bool {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_if_signaled(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _ok bool // out
@@ -5317,7 +5233,6 @@ func (subprocess *Subprocess) Status() int {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_status(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _gint int // out
@@ -5339,7 +5254,6 @@ func (subprocess *Subprocess) StderrPipe() InputStreamer {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_stderr_pipe(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _inputStream InputStreamer // out
@@ -5363,7 +5277,6 @@ func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_stdin_pipe(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _outputStream OutputStreamer // out
@@ -5387,7 +5300,6 @@ func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_stdout_pipe(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _inputStream InputStreamer // out
@@ -5411,7 +5323,6 @@ func (subprocess *Subprocess) Successful() bool {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_successful(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _ok bool // out
@@ -5437,7 +5348,6 @@ func (subprocess *Subprocess) TermSig() int {
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 
 	_cret = C.g_subprocess_get_term_sig(_arg0)
-
 	runtime.KeepAlive(subprocess)
 
 	var _gint int // out
@@ -5661,7 +5571,6 @@ func NewSubprocessLauncher(flags SubprocessFlags) *SubprocessLauncher {
 	_arg1 = C.GSubprocessFlags(flags)
 
 	_cret = C.g_subprocess_launcher_new(_arg1)
-
 	runtime.KeepAlive(flags)
 
 	var _subprocessLauncher *SubprocessLauncher // out
@@ -5705,7 +5614,6 @@ func (self *SubprocessLauncher) env(variable string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_subprocess_launcher_getenv(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(variable)
 
@@ -5934,7 +5842,6 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 	}
 
 	_cret = C.g_subprocess_launcher_spawnv(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(argv)
 
@@ -6175,7 +6082,6 @@ func NewTestDBus(flags TestDBusFlags) *TestDBus {
 	_arg1 = C.GTestDBusFlags(flags)
 
 	_cret = C.g_test_dbus_new(_arg1)
-
 	runtime.KeepAlive(flags)
 
 	var _testDBus *TestDBus // out
@@ -6224,7 +6130,6 @@ func (self *TestDBus) BusAddress() string {
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.g_test_dbus_get_bus_address(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -6244,7 +6149,6 @@ func (self *TestDBus) Flags() TestDBusFlags {
 	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.g_test_dbus_get_flags(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _testDBusFlags TestDBusFlags // out

@@ -149,6 +149,11 @@ func (l LogLevelFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if l contains other.
+func (l LogLevelFlags) Has(other LogLevelFlags) bool {
+	return (l & other) == other
+}
+
 // LogFunc specifies the prototype of log handler functions.
 //
 // The default log handler, g_log_default_handler(), automatically appends a
@@ -338,7 +343,6 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	_arg1 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_always_fatal(_arg1)
-
 	runtime.KeepAlive(fatalMask)
 
 	var _logLevelFlags LogLevelFlags // out
@@ -371,7 +375,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	_arg2 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_fatal_mask(_arg1, _arg2)
-
 	runtime.KeepAlive(logDomain)
 	runtime.KeepAlive(fatalMask)
 
@@ -476,7 +479,6 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(logLevel)
 	runtime.KeepAlive(fields)
 	runtime.KeepAlive(userData)
@@ -542,7 +544,6 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	}
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
-
 	runtime.KeepAlive(logLevel)
 	runtime.KeepAlive(logDomain)
 
@@ -581,7 +582,6 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	}
 
 	_cret = C.g_log_writer_format_fields(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(logLevel)
 	runtime.KeepAlive(fields)
 	runtime.KeepAlive(useColor)
@@ -609,7 +609,6 @@ func LogWriterIsJournald(outputFd int) bool {
 	_arg1 = C.gint(outputFd)
 
 	_cret = C.g_log_writer_is_journald(_arg1)
-
 	runtime.KeepAlive(outputFd)
 
 	var _ok bool // out
@@ -645,7 +644,6 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(logLevel)
 	runtime.KeepAlive(fields)
 	runtime.KeepAlive(userData)
@@ -685,7 +683,6 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(logLevel)
 	runtime.KeepAlive(fields)
 	runtime.KeepAlive(userData)
@@ -707,7 +704,6 @@ func LogWriterSupportsColor(outputFd int) bool {
 	_arg1 = C.gint(outputFd)
 
 	_cret = C.g_log_writer_supports_color(_arg1)
-
 	runtime.KeepAlive(outputFd)
 
 	var _ok bool // out

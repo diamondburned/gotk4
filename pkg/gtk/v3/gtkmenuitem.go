@@ -140,7 +140,6 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_item_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _menuItem *MenuItem // out
@@ -162,7 +161,6 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_item_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _menuItem *MenuItem // out
@@ -203,7 +201,6 @@ func (menuItem *MenuItem) AccelPath() string {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_accel_path(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _utf8 string // out
@@ -223,7 +220,6 @@ func (menuItem *MenuItem) Label() string {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_label(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _utf8 string // out
@@ -242,7 +238,6 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _ok bool // out
@@ -265,7 +260,6 @@ func (menuItem *MenuItem) RightJustified() bool {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_right_justified(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _ok bool // out
@@ -286,7 +280,6 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_submenu(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _widget Widgetter // out
@@ -307,7 +300,6 @@ func (menuItem *MenuItem) UseUnderline() bool {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_use_underline(_arg0)
-
 	runtime.KeepAlive(menuItem)
 
 	var _ok bool // out

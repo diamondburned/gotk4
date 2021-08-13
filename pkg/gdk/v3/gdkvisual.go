@@ -183,7 +183,6 @@ func (visual *Visual) BitsPerRGB() int {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _gint int // out
@@ -234,7 +233,6 @@ func (visual *Visual) ByteOrder() ByteOrder {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _byteOrder ByteOrder // out
@@ -257,7 +255,6 @@ func (visual *Visual) ColormapSize() int {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _gint int // out
@@ -275,7 +272,6 @@ func (visual *Visual) Depth() int {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_depth(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _gint int // out
@@ -348,7 +344,6 @@ func (visual *Visual) Screen() *Screen {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_screen(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _screen *Screen // out
@@ -366,7 +361,6 @@ func (visual *Visual) VisualType() VisualType {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
-
 	runtime.KeepAlive(visual)
 
 	var _visualType VisualType // out
@@ -442,7 +436,6 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	_arg2 = C.GdkVisualType(visualType)
 
 	_cret = C.gdk_visual_get_best_with_both(_arg1, _arg2)
-
 	runtime.KeepAlive(depth)
 	runtime.KeepAlive(visualType)
 
@@ -469,7 +462,6 @@ func VisualGetBestWithDepth(depth int) *Visual {
 	_arg1 = C.gint(depth)
 
 	_cret = C.gdk_visual_get_best_with_depth(_arg1)
-
 	runtime.KeepAlive(depth)
 
 	var _visual *Visual // out
@@ -493,7 +485,6 @@ func VisualGetBestWithType(visualType VisualType) *Visual {
 	_arg1 = C.GdkVisualType(visualType)
 
 	_cret = C.gdk_visual_get_best_with_type(_arg1)
-
 	runtime.KeepAlive(visualType)
 
 	var _visual *Visual // out

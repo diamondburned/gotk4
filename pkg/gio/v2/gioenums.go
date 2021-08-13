@@ -2248,6 +2248,11 @@ func (a AppInfoCreateFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AppInfoCreateFlags) Has(other AppInfoCreateFlags) bool {
+	return (a & other) == other
+}
+
 // ApplicationFlags flags used to define the behaviour of a #GApplication.
 type ApplicationFlags int
 
@@ -2344,6 +2349,11 @@ func (a ApplicationFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a ApplicationFlags) Has(other ApplicationFlags) bool {
+	return (a & other) == other
+}
+
 // AskPasswordFlags are used to request specific information from the user, or
 // to notify the user of their choices in an authentication situation.
 type AskPasswordFlags int
@@ -2403,6 +2413,11 @@ func (a AskPasswordFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AskPasswordFlags) Has(other AskPasswordFlags) bool {
+	return (a & other) == other
+}
+
 // BusNameOwnerFlags flags used in g_bus_own_name().
 type BusNameOwnerFlags int
 
@@ -2458,6 +2473,11 @@ func (b BusNameOwnerFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if b contains other.
+func (b BusNameOwnerFlags) Has(other BusNameOwnerFlags) bool {
+	return (b & other) == other
+}
+
 // BusNameWatcherFlags flags used in g_bus_watch_name().
 type BusNameWatcherFlags int
 
@@ -2499,6 +2519,11 @@ func (b BusNameWatcherFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if b contains other.
+func (b BusNameWatcherFlags) Has(other BusNameWatcherFlags) bool {
+	return (b & other) == other
 }
 
 // ConverterFlags flags used when calling a g_converter_convert().
@@ -2545,6 +2570,11 @@ func (c ConverterFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if c contains other.
+func (c ConverterFlags) Has(other ConverterFlags) bool {
+	return (c & other) == other
 }
 
 // DBusCallFlags flags used in g_dbus_connection_call() and similar APIs.
@@ -2595,6 +2625,11 @@ func (d DBusCallFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusCallFlags) Has(other DBusCallFlags) bool {
+	return (d & other) == other
+}
+
 // DBusCapabilityFlags capabilities negotiated with the remote peer.
 type DBusCapabilityFlags int
 
@@ -2636,6 +2671,11 @@ func (d DBusCapabilityFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusCapabilityFlags) Has(other DBusCapabilityFlags) bool {
+	return (d & other) == other
 }
 
 // DBusConnectionFlags flags used when creating a new BusConnection.
@@ -2709,6 +2749,11 @@ func (d DBusConnectionFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusConnectionFlags) Has(other DBusConnectionFlags) bool {
+	return (d & other) == other
+}
+
 // DBusInterfaceSkeletonFlags flags describing the behavior of a
 // BusInterfaceSkeleton instance.
 type DBusInterfaceSkeletonFlags int
@@ -2754,6 +2799,11 @@ func (d DBusInterfaceSkeletonFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusInterfaceSkeletonFlags) Has(other DBusInterfaceSkeletonFlags) bool {
+	return (d & other) == other
 }
 
 // DBusMessageFlags: message flags used in BusMessage.
@@ -2809,6 +2859,11 @@ func (d DBusMessageFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusMessageFlags) Has(other DBusMessageFlags) bool {
+	return (d & other) == other
+}
+
 // DBusObjectManagerClientFlags flags used when constructing a
 // BusObjectManagerClient.
 type DBusObjectManagerClientFlags int
@@ -2853,6 +2908,11 @@ func (d DBusObjectManagerClientFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusObjectManagerClientFlags) Has(other DBusObjectManagerClientFlags) bool {
+	return (d & other) == other
 }
 
 // DBusPropertyInfoFlags flags describing the access control of a D-Bus
@@ -2900,6 +2960,11 @@ func (d DBusPropertyInfoFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusPropertyInfoFlags) Has(other DBusPropertyInfoFlags) bool {
+	return (d & other) == other
 }
 
 // DBusProxyFlags flags used when constructing an instance of a BusProxy derived
@@ -2976,6 +3041,11 @@ func (d DBusProxyFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusProxyFlags) Has(other DBusProxyFlags) bool {
+	return (d & other) == other
+}
+
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.
 type DBusSendMessageFlags int
 
@@ -3017,6 +3087,11 @@ func (d DBusSendMessageFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusSendMessageFlags) Has(other DBusSendMessageFlags) bool {
+	return (d & other) == other
 }
 
 // DBusServerFlags flags used when creating a BusServer.
@@ -3071,6 +3146,11 @@ func (d DBusServerFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DBusServerFlags) Has(other DBusServerFlags) bool {
+	return (d & other) == other
 }
 
 // DBusSignalFlags flags used when subscribing to signals via
@@ -3129,6 +3209,11 @@ func (d DBusSignalFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusSignalFlags) Has(other DBusSignalFlags) bool {
+	return (d & other) == other
+}
+
 // DBusSubtreeFlags flags passed to g_dbus_connection_register_subtree().
 type DBusSubtreeFlags int
 
@@ -3173,6 +3258,11 @@ func (d DBusSubtreeFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DBusSubtreeFlags) Has(other DBusSubtreeFlags) bool {
+	return (d & other) == other
+}
+
 // DriveStartFlags flags used when starting a drive.
 type DriveStartFlags int
 
@@ -3209,6 +3299,11 @@ func (d DriveStartFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if d contains other.
+func (d DriveStartFlags) Has(other DriveStartFlags) bool {
+	return (d & other) == other
 }
 
 // FileAttributeInfoFlags flags specifying the behaviour of an attribute.
@@ -3257,6 +3352,11 @@ func (f FileAttributeInfoFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if f contains other.
+func (f FileAttributeInfoFlags) Has(other FileAttributeInfoFlags) bool {
+	return (f & other) == other
 }
 
 // FileCopyFlags flags used when copying or moving files.
@@ -3324,6 +3424,11 @@ func (f FileCopyFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FileCopyFlags) Has(other FileCopyFlags) bool {
+	return (f & other) == other
+}
+
 // FileCreateFlags flags used when an operation may create a file.
 type FileCreateFlags int
 
@@ -3376,6 +3481,11 @@ func (f FileCreateFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if f contains other.
+func (f FileCreateFlags) Has(other FileCreateFlags) bool {
+	return (f & other) == other
 }
 
 // FileMeasureFlags flags that can be used with g_file_measure_disk_usage().
@@ -3432,6 +3542,11 @@ func (f FileMeasureFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if f contains other.
+func (f FileMeasureFlags) Has(other FileMeasureFlags) bool {
+	return (f & other) == other
 }
 
 // FileMonitorFlags flags used to set what a Monitor will watch for.
@@ -3496,6 +3611,11 @@ func (f FileMonitorFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FileMonitorFlags) Has(other FileMonitorFlags) bool {
+	return (f & other) == other
+}
+
 // FileQueryInfoFlags flags used when querying a Info.
 type FileQueryInfoFlags int
 
@@ -3536,6 +3656,11 @@ func (f FileQueryInfoFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if f contains other.
+func (f FileQueryInfoFlags) Has(other FileQueryInfoFlags) bool {
+	return (f & other) == other
 }
 
 // IOStreamSpliceFlags determine how streams should be spliced.
@@ -3589,6 +3714,11 @@ func (i IOStreamSpliceFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if i contains other.
+func (i IOStreamSpliceFlags) Has(other IOStreamSpliceFlags) bool {
+	return (i & other) == other
+}
+
 // MountMountFlags flags used when mounting a mount.
 type MountMountFlags int
 
@@ -3625,6 +3755,11 @@ func (m MountMountFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if m contains other.
+func (m MountMountFlags) Has(other MountMountFlags) bool {
+	return (m & other) == other
 }
 
 // MountUnmountFlags flags used when an unmounting a mount.
@@ -3668,6 +3803,11 @@ func (m MountUnmountFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if m contains other.
+func (m MountUnmountFlags) Has(other MountUnmountFlags) bool {
+	return (m & other) == other
 }
 
 // OutputStreamSpliceFlags determine how streams should be spliced.
@@ -3716,6 +3856,11 @@ func (o OutputStreamSpliceFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if o contains other.
+func (o OutputStreamSpliceFlags) Has(other OutputStreamSpliceFlags) bool {
+	return (o & other) == other
+}
+
 // ResourceFlags give information about a particular file inside a resource
 // bundle.
 type ResourceFlags int
@@ -3759,6 +3904,11 @@ func (r ResourceFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if r contains other.
+func (r ResourceFlags) Has(other ResourceFlags) bool {
+	return (r & other) == other
+}
+
 // ResourceLookupFlags determine how resource path lookups are handled.
 type ResourceLookupFlags int
 
@@ -3795,6 +3945,11 @@ func (r ResourceLookupFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if r contains other.
+func (r ResourceLookupFlags) Has(other ResourceLookupFlags) bool {
+	return (r & other) == other
 }
 
 // SocketMsgFlags flags used in g_socket_receive_message() and
@@ -3851,6 +4006,11 @@ func (s SocketMsgFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if s contains other.
+func (s SocketMsgFlags) Has(other SocketMsgFlags) bool {
+	return (s & other) == other
 }
 
 // SubprocessFlags flags to define the behaviour of a #GSubprocess.
@@ -3941,6 +4101,11 @@ func (s SubprocessFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s SubprocessFlags) Has(other SubprocessFlags) bool {
+	return (s & other) == other
+}
+
 // TestDBusFlags flags to define future DBus behaviour.
 type TestDBusFlags int
 
@@ -3977,6 +4142,11 @@ func (t TestDBusFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if t contains other.
+func (t TestDBusFlags) Has(other TestDBusFlags) bool {
+	return (t & other) == other
 }
 
 // TLSCertificateFlags: set of flags describing TLS certification validation.
@@ -4052,6 +4222,11 @@ func (t TLSCertificateFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if t contains other.
+func (t TLSCertificateFlags) Has(other TLSCertificateFlags) bool {
+	return (t & other) == other
+}
+
 // TLSDatabaseVerifyFlags flags for g_tls_database_verify_chain().
 type TLSDatabaseVerifyFlags int
 
@@ -4088,6 +4263,11 @@ func (t TLSDatabaseVerifyFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if t contains other.
+func (t TLSDatabaseVerifyFlags) Has(other TLSDatabaseVerifyFlags) bool {
+	return (t & other) == other
 }
 
 // TLSPasswordFlags various flags for the password.
@@ -4140,4 +4320,9 @@ func (t TLSPasswordFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if t contains other.
+func (t TLSPasswordFlags) Has(other TLSPasswordFlags) bool {
+	return (t & other) == other
 }

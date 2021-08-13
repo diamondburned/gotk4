@@ -64,7 +64,6 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _icon gio.Iconner // out
@@ -87,7 +86,6 @@ func (self *NumerableIcon) BackgroundIconName() string {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -109,7 +107,6 @@ func (self *NumerableIcon) Count() int {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_count(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -129,7 +126,6 @@ func (self *NumerableIcon) Label() string {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_label(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -152,7 +148,6 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_style_context(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _styleContext *StyleContext // out
@@ -291,7 +286,6 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(baseIcon.Native()))
 
 	_cret = C.gtk_numerable_icon_new(_arg1)
-
 	runtime.KeepAlive(baseIcon)
 
 	var _icon gio.Iconner // out
@@ -315,7 +309,6 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)
-
 	runtime.KeepAlive(baseIcon)
 	runtime.KeepAlive(context)
 

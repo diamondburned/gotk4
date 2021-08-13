@@ -113,7 +113,6 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 	}
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
-
 	runtime.KeepAlive(group)
 
 	var _radioMenuItem *RadioMenuItem // out
@@ -140,7 +139,6 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 	}
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
@@ -171,7 +169,6 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 	}
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 

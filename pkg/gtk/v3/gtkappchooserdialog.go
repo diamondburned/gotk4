@@ -102,7 +102,6 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(file)
@@ -130,7 +129,6 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(contentType)
@@ -150,7 +148,6 @@ func (self *AppChooserDialog) Heading() string {
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -170,7 +167,6 @@ func (self *AppChooserDialog) Widget() Widgetter {
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

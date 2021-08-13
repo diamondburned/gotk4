@@ -76,6 +76,11 @@ func (a AttachOptions) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AttachOptions) Has(other AttachOptions) bool {
+	return (a & other) == other
+}
+
 // Table functions allow the programmer to arrange widgets in rows and columns,
 // making it easy to align many widgets next to each other, horizontally and
 // vertically.
@@ -148,7 +153,6 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 	}
 
 	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(rows)
 	runtime.KeepAlive(columns)
 	runtime.KeepAlive(homogeneous)
@@ -260,7 +264,6 @@ func (table *Table) ColSpacing(column uint) uint {
 	_arg1 = C.guint(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -283,7 +286,6 @@ func (table *Table) DefaultColSpacing() uint {
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _guint uint // out
@@ -305,7 +307,6 @@ func (table *Table) DefaultRowSpacing() uint {
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _guint uint // out
@@ -327,7 +328,6 @@ func (table *Table) Homogeneous() bool {
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _ok bool // out
@@ -352,7 +352,6 @@ func (table *Table) RowSpacing(row uint) uint {
 	_arg1 = C.guint(row)
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 

@@ -93,7 +93,6 @@ func (monitor *FileMonitor) Cancel() bool {
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_file_monitor_cancel(_arg0)
-
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
@@ -137,7 +136,6 @@ func (monitor *FileMonitor) IsCancelled() bool {
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
-
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out

@@ -89,7 +89,6 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _ok bool // out
@@ -109,7 +108,6 @@ func (child *OverlayLayoutChild) Measure() bool {
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _ok bool // out

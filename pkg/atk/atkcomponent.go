@@ -244,7 +244,6 @@ func (component *Component) Contains(x int, y int, coordType CoordType) bool {
 	_arg3 = C.AtkCoordType(coordType)
 
 	_cret = C.atk_component_contains(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -268,7 +267,6 @@ func (component *Component) Alpha() float64 {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_alpha(_arg0)
-
 	runtime.KeepAlive(component)
 
 	var _gdouble float64 // out
@@ -318,7 +316,6 @@ func (component *Component) Layer() Layer {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_layer(_arg0)
-
 	runtime.KeepAlive(component)
 
 	var _layer Layer // out
@@ -338,7 +335,6 @@ func (component *Component) MDIZOrder() int {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_mdi_zorder(_arg0)
-
 	runtime.KeepAlive(component)
 
 	var _gint int // out
@@ -410,7 +406,6 @@ func (component *Component) GrabFocus() bool {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_grab_focus(_arg0)
-
 	runtime.KeepAlive(component)
 
 	var _ok bool // out
@@ -437,7 +432,6 @@ func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordTy
 	_arg3 = C.AtkCoordType(coordType)
 
 	_cret = C.atk_component_ref_accessible_at_point(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -485,7 +479,6 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 	_arg1 = C.AtkScrollType(typ)
 
 	_cret = C.atk_component_scroll_to(_arg0, _arg1)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(typ)
 
@@ -513,7 +506,6 @@ func (component *Component) ScrollToPoint(coords CoordType, x int, y int) bool {
 	_arg3 = C.gint(y)
 
 	_cret = C.atk_component_scroll_to_point(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(coords)
 	runtime.KeepAlive(x)
@@ -546,7 +538,6 @@ func (component *Component) SetExtents(x int, y int, width int, height int, coor
 	_arg5 = C.AtkCoordType(coordType)
 
 	_cret = C.atk_component_set_extents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -580,7 +571,6 @@ func (component *Component) SetPosition(x int, y int, coordType CoordType) bool 
 	_arg3 = C.AtkCoordType(coordType)
 
 	_cret = C.atk_component_set_position(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -607,7 +597,6 @@ func (component *Component) SetSize(width int, height int) bool {
 	_arg2 = C.gint(height)
 
 	_cret = C.atk_component_set_size(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)

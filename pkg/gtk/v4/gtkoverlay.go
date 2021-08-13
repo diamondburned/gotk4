@@ -123,7 +123,6 @@ func (overlay *Overlay) Child() Widgetter {
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 
 	_cret = C.gtk_overlay_get_child(_arg0)
-
 	runtime.KeepAlive(overlay)
 
 	var _widget Widgetter // out
@@ -145,7 +144,6 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
-
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
 
@@ -169,7 +167,6 @@ func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
-
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
 

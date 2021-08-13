@@ -96,7 +96,6 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	}
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
-
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
@@ -115,7 +114,6 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_bin_window(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _window gdk.Windower // out
@@ -135,7 +133,6 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_hadjustment(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _adjustment *Adjustment // out
@@ -154,7 +151,6 @@ func (viewport *Viewport) ShadowType() ShadowType {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_shadow_type(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _shadowType ShadowType // out
@@ -174,7 +170,6 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_vadjustment(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _adjustment *Adjustment // out
@@ -192,7 +187,6 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_view_window(_arg0)
-
 	runtime.KeepAlive(viewport)
 
 	var _window gdk.Windower // out

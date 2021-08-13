@@ -86,7 +86,6 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	_arg3 = C.guint(requiredMicro)
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(requiredMajor)
 	runtime.KeepAlive(requiredMinor)
 	runtime.KeepAlive(requiredMicro)
@@ -390,7 +389,6 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	}
 
 	_cret = C.gtk_get_option_group(_arg1)
-
 	runtime.KeepAlive(openDefaultDisplay)
 
 	var _optionGroup *glib.OptionGroup // out
@@ -469,7 +467,6 @@ func MainIterationDo(blocking bool) bool {
 	}
 
 	_cret = C.gtk_main_iteration_do(_arg1)
-
 	runtime.KeepAlive(blocking)
 
 	var _ok bool // out

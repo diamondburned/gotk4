@@ -68,7 +68,6 @@ func (self *CenterLayout) BaselinePosition() BaselinePosition {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_baseline_position(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _baselinePosition BaselinePosition // out
@@ -86,7 +85,6 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_center_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -106,7 +104,6 @@ func (self *CenterLayout) EndWidget() Widgetter {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_end_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -126,7 +123,6 @@ func (self *CenterLayout) Orientation() Orientation {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_orientation(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _orientation Orientation // out
@@ -144,7 +140,6 @@ func (self *CenterLayout) StartWidget() Widgetter {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_start_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

@@ -113,7 +113,6 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
-
 	runtime.KeepAlive(child)
 
 	var _transform *gsk.Transform // out

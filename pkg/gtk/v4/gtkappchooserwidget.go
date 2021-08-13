@@ -103,7 +103,6 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
-
 	runtime.KeepAlive(contentType)
 
 	var _appChooserWidget *AppChooserWidget // out
@@ -122,7 +121,6 @@ func (self *AppChooserWidget) DefaultText() string {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -143,7 +141,6 @@ func (self *AppChooserWidget) ShowAll() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -164,7 +161,6 @@ func (self *AppChooserWidget) ShowDefault() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -185,7 +181,6 @@ func (self *AppChooserWidget) ShowFallback() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -206,7 +201,6 @@ func (self *AppChooserWidget) ShowOther() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -227,7 +221,6 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

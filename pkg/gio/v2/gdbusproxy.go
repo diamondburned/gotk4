@@ -120,7 +120,6 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_new_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusProxy *DBusProxy // out
@@ -143,7 +142,6 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_new_for_bus_finish(_arg1, &_cerr)
-
 	runtime.KeepAlive(res)
 
 	var _dBusProxy *DBusProxy // out
@@ -190,7 +188,6 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 	defer C.free(unsafe.Pointer(_arg6))
 
 	_cret = C.g_dbus_proxy_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(busType)
 	runtime.KeepAlive(flags)
@@ -263,7 +260,6 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 	defer C.free(unsafe.Pointer(_arg6))
 
 	_cret = C.g_dbus_proxy_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(flags)
@@ -371,7 +367,6 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(res)
 
@@ -445,7 +440,6 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 	_arg4 = C.gint(timeoutMsec)
 
 	_cret = C.g_dbus_proxy_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(methodName)
@@ -526,7 +520,6 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(res)
 
@@ -582,7 +575,6 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(ctx context.Context, methodName s
 	}
 
 	_cret = C.g_dbus_proxy_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(methodName)
@@ -625,7 +617,6 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_proxy_get_cached_property(_arg0, _arg1)
-
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(propertyName)
 
@@ -649,7 +640,6 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_cached_property_names(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _utf8s []string // out
@@ -683,7 +673,6 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_connection(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _dBusConnection *DBusConnection // out
@@ -705,7 +694,6 @@ func (proxy *DBusProxy) DefaultTimeout() int {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_default_timeout(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _gint int // out
@@ -723,7 +711,6 @@ func (proxy *DBusProxy) Flags() DBusProxyFlags {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_flags(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _dBusProxyFlags DBusProxyFlags // out
@@ -743,7 +730,6 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_interface_info(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
@@ -767,7 +753,6 @@ func (proxy *DBusProxy) InterfaceName() string {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_interface_name(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
@@ -785,7 +770,6 @@ func (proxy *DBusProxy) Name() string {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_name(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
@@ -805,7 +789,6 @@ func (proxy *DBusProxy) NameOwner() string {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_name_owner(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
@@ -826,7 +809,6 @@ func (proxy *DBusProxy) ObjectPath() string {
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_proxy_get_object_path(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out

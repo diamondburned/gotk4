@@ -85,6 +85,11 @@ func (e EventControllerScrollFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if e contains other.
+func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
+	return (e & other) == other
+}
+
 // EventControllerScroll is an event controller meant to handle scroll events
 // from mice and touchpads. It is capable of handling both discrete and
 // continuous scroll events, abstracting them both on the
@@ -148,7 +153,6 @@ func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags
 	_arg2 = C.GtkEventControllerScrollFlags(flags)
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(flags)
 
@@ -167,7 +171,6 @@ func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
-
 	runtime.KeepAlive(controller)
 
 	var _eventControllerScrollFlags EventControllerScrollFlags // out

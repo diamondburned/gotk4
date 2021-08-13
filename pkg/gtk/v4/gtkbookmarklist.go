@@ -66,7 +66,6 @@ func NewBookmarkList(filename string, attributes string) *BookmarkList {
 	}
 
 	_cret = C.gtk_bookmark_list_new(_arg1, _arg2)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(attributes)
 
@@ -85,7 +84,6 @@ func (self *BookmarkList) Attributes() string {
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_attributes(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -105,7 +103,6 @@ func (self *BookmarkList) Filename() string {
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_filename(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -123,7 +120,6 @@ func (self *BookmarkList) IOPriority() int {
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -144,7 +140,6 @@ func (self *BookmarkList) IsLoading() bool {
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bookmark_list_is_loading(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

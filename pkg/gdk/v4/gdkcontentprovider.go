@@ -108,7 +108,6 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
-
 	runtime.KeepAlive(value)
 
 	var _contentProvider *ContentProvider // out
@@ -151,7 +150,6 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	}
 
 	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
-
 	runtime.KeepAlive(providers)
 
 	var _contentProvider *ContentProvider // out
@@ -208,7 +206,6 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
-
 	runtime.KeepAlive(provider)
 
 	var _contentFormats *ContentFormats // out
@@ -234,7 +231,6 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
-
 	runtime.KeepAlive(provider)
 
 	var _contentFormats *ContentFormats // out

@@ -35,7 +35,6 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
-
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 
@@ -64,7 +63,6 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(value)
 
 	var _treeModel TreeModeller // out
@@ -154,7 +152,6 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *externglib
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(dragDest)
 	runtime.KeepAlive(dest)
 	runtime.KeepAlive(value)
@@ -184,7 +181,6 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(dragDest)
 	runtime.KeepAlive(destPath)
 	runtime.KeepAlive(value)
@@ -265,7 +261,6 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
-
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
 
@@ -289,7 +284,6 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1)
-
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
 
@@ -319,7 +313,6 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
-
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
 

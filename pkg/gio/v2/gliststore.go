@@ -69,7 +69,6 @@ func NewListStore(itemType externglib.Type) *ListStore {
 	_arg1 = C.GType(itemType)
 
 	_cret = C.g_list_store_new(_arg1)
-
 	runtime.KeepAlive(itemType)
 
 	var _listStore *ListStore // out
@@ -113,7 +112,6 @@ func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
 
@@ -173,7 +171,6 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 	defer gbox.Delete(uintptr(_arg3))
 
 	_cret = C.g_list_store_insert_sorted(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(compareFunc)

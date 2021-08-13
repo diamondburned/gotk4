@@ -125,7 +125,6 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
@@ -146,7 +145,6 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out

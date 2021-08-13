@@ -35,7 +35,6 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 	_arg1 = C.gint(errNo)
 
 	_cret = C.g_io_error_from_errno(_arg1)
-
 	runtime.KeepAlive(errNo)
 
 	var _ioErrorEnum IOErrorEnum // out

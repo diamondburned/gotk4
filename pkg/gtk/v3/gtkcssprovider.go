@@ -238,7 +238,6 @@ func (provider *CSSProvider) String() string {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
-
 	runtime.KeepAlive(provider)
 
 	var _utf8 string // out
@@ -279,7 +278,6 @@ func CSSProviderGetNamed(name string, variant string) *CSSProvider {
 	}
 
 	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(variant)
 

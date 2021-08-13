@@ -64,7 +64,6 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
-
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
 
@@ -90,7 +89,6 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 	_arg2 = C.guint(port)
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
-
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
 
@@ -111,7 +109,6 @@ func (address *InetSocketAddress) Address() *InetAddress {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
-
 	runtime.KeepAlive(address)
 
 	var _inetAddress *InetAddress // out
@@ -130,7 +127,6 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
-
 	runtime.KeepAlive(address)
 
 	var _guint32 uint32 // out
@@ -148,7 +144,6 @@ func (address *InetSocketAddress) Port() uint16 {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
-
 	runtime.KeepAlive(address)
 
 	var _guint16 uint16 // out
@@ -167,7 +162,6 @@ func (address *InetSocketAddress) ScopeID() uint32 {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
-
 	runtime.KeepAlive(address)
 
 	var _guint32 uint32 // out

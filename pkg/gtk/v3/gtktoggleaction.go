@@ -85,7 +85,6 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 	}
 
 	_cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -108,7 +107,6 @@ func (action *ToggleAction) Active() bool {
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_toggle_action_get_active(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -131,7 +129,6 @@ func (action *ToggleAction) DrawAsRadio() bool {
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _ok bool // out

@@ -123,7 +123,6 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_new(_arg1, _arg2)
-
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(actions)
 
@@ -142,7 +141,6 @@ func (self *DropTarget) Actions() gdk.DragAction {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_actions(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _dragAction gdk.DragAction // out
@@ -162,7 +160,6 @@ func (self *DropTarget) Drop() gdk.Dropper {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _drop gdk.Dropper // out
@@ -184,7 +181,6 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _contentFormats *gdk.ContentFormats // out
@@ -207,7 +203,6 @@ func (self *DropTarget) Preload() bool {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -227,7 +222,6 @@ func (self *DropTarget) Value() *externglib.Value {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _value *externglib.Value // out

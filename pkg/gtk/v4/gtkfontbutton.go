@@ -97,7 +97,6 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
-
 	runtime.KeepAlive(fontname)
 
 	var _fontButton *FontButton // out
@@ -115,7 +114,6 @@ func (fontButton *FontButton) Modal() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_modal(_arg0)
-
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
@@ -135,7 +133,6 @@ func (fontButton *FontButton) Title() string {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_title(_arg0)
-
 	runtime.KeepAlive(fontButton)
 
 	var _utf8 string // out
@@ -153,7 +150,6 @@ func (fontButton *FontButton) UseFont() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_font(_arg0)
-
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
@@ -173,7 +169,6 @@ func (fontButton *FontButton) UseSize() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_size(_arg0)
-
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out

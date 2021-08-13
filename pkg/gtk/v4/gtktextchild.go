@@ -71,7 +71,6 @@ func (anchor *TextChildAnchor) Deleted() bool {
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
-
 	runtime.KeepAlive(anchor)
 
 	var _ok bool // out

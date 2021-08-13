@@ -91,7 +91,6 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	}
 
 	_cret = C.gtk_text_mark_new(_arg1, _arg2)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(leftGravity)
 
@@ -112,7 +111,6 @@ func (mark *TextMark) Buffer() *TextBuffer {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
-
 	runtime.KeepAlive(mark)
 
 	var _textBuffer *TextBuffer // out
@@ -132,7 +130,6 @@ func (mark *TextMark) Deleted() bool {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
-
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out
@@ -152,7 +149,6 @@ func (mark *TextMark) LeftGravity() bool {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
-
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out
@@ -174,7 +170,6 @@ func (mark *TextMark) Name() string {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
-
 	runtime.KeepAlive(mark)
 
 	var _utf8 string // out
@@ -196,7 +191,6 @@ func (mark *TextMark) Visible() bool {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
-
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out

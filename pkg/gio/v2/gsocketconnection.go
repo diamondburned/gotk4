@@ -162,7 +162,6 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
-
 	runtime.KeepAlive(connection)
 
 	var _socketAddress SocketAddresser // out
@@ -191,7 +190,6 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
-
 	runtime.KeepAlive(connection)
 
 	var _socketAddress SocketAddresser // out
@@ -215,7 +213,6 @@ func (connection *SocketConnection) Socket() *Socket {
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_socket_connection_get_socket(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _socket *Socket // out
@@ -234,7 +231,6 @@ func (connection *SocketConnection) IsConnected() bool {
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_socket_connection_is_connected(_arg0)
-
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -262,7 +258,6 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 	_arg3 = C.gint(protocolId)
 
 	_cret = C.g_socket_connection_factory_lookup_type(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(family)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(protocolId)

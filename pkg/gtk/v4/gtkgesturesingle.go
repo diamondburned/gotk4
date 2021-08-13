@@ -66,7 +66,6 @@ func (gesture *GestureSingle) Button() uint {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_button(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _guint uint // out
@@ -85,7 +84,6 @@ func (gesture *GestureSingle) CurrentButton() uint {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _guint uint // out
@@ -106,7 +104,6 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _eventSequence *gdk.EventSequence // out
@@ -131,7 +128,6 @@ func (gesture *GestureSingle) Exclusive() bool {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _ok bool // out
@@ -151,7 +147,6 @@ func (gesture *GestureSingle) TouchOnly() bool {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _ok bool // out

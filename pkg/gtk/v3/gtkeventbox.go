@@ -80,7 +80,6 @@ func (eventBox *EventBox) AboveChild() bool {
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 
 	_cret = C.gtk_event_box_get_above_child(_arg0)
-
 	runtime.KeepAlive(eventBox)
 
 	var _ok bool // out
@@ -101,7 +100,6 @@ func (eventBox *EventBox) VisibleWindow() bool {
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(eventBox.Native()))
 
 	_cret = C.gtk_event_box_get_visible_window(_arg0)
-
 	runtime.KeepAlive(eventBox)
 
 	var _ok bool // out

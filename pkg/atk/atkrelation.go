@@ -31,7 +31,6 @@ func RelationTypeForName(name string) RelationType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_for_name(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _relationType RelationType // out
@@ -50,7 +49,6 @@ func RelationTypeGetName(typ RelationType) string {
 	_arg1 = C.AtkRelationType(typ)
 
 	_cret = C.atk_relation_type_get_name(_arg1)
-
 	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
@@ -69,7 +67,6 @@ func RelationTypeRegister(name string) RelationType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_register(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _relationType RelationType // out
@@ -118,7 +115,6 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 	_arg3 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(targets)
 	runtime.KeepAlive(relationship)
 
@@ -151,7 +147,6 @@ func (relation *Relation) RelationType() RelationType {
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	_cret = C.atk_relation_get_relation_type(_arg0)
-
 	runtime.KeepAlive(relation)
 
 	var _relationType RelationType // out
@@ -172,7 +167,6 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
-
 	runtime.KeepAlive(relation)
 	runtime.KeepAlive(target)
 

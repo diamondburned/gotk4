@@ -259,7 +259,6 @@ func (mount *Mount) CanEject() bool {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_can_eject(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _ok bool // out
@@ -279,7 +278,6 @@ func (mount *Mount) CanUnmount() bool {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _ok bool // out
@@ -416,7 +414,6 @@ func (mount *Mount) DefaultLocation() Filer {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_default_location(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _file Filer // out
@@ -437,7 +434,6 @@ func (mount *Mount) Drive() Driver {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_drive(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _drive Driver // out
@@ -457,7 +453,6 @@ func (mount *Mount) Icon() Iconner {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_icon(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _icon Iconner // out
@@ -475,7 +470,6 @@ func (mount *Mount) Name() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
@@ -494,7 +488,6 @@ func (mount *Mount) Root() Filer {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_root(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _file Filer // out
@@ -512,7 +505,6 @@ func (mount *Mount) SortKey() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
@@ -532,7 +524,6 @@ func (mount *Mount) SymbolicIcon() Iconner {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _icon Iconner // out
@@ -552,7 +543,6 @@ func (mount *Mount) UUID() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
@@ -573,7 +563,6 @@ func (mount *Mount) Volume() Volumer {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _volume Volumer // out
@@ -638,7 +627,6 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -694,7 +682,6 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	}
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(forceRescan)
@@ -751,7 +738,6 @@ func (mount *Mount) IsShadowed() bool {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_is_shadowed(_arg0)
-
 	runtime.KeepAlive(mount)
 
 	var _ok bool // out

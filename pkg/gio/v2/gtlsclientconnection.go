@@ -162,7 +162,6 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _socketConnectable SocketConnectabler // out
@@ -185,7 +184,6 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out
@@ -205,7 +203,6 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_validation_flags(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
@@ -290,7 +287,6 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	}
 
 	_cret = C.g_tls_client_connection_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(serverIdentity)
 

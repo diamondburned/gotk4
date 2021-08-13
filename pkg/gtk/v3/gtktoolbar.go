@@ -168,7 +168,6 @@ func (toolbar *Toolbar) DropIndex(x int, y int) int {
 	_arg2 = C.gint(y)
 
 	_cret = C.gtk_toolbar_get_drop_index(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -189,7 +188,6 @@ func (toolbar *Toolbar) IconSize() IconSize {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_icon_size(_arg0)
-
 	runtime.KeepAlive(toolbar)
 
 	var _iconSize IconSize // out
@@ -210,7 +208,6 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
-
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 
@@ -229,7 +226,6 @@ func (toolbar *Toolbar) NItems() int {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
-
 	runtime.KeepAlive(toolbar)
 
 	var _gint int // out
@@ -250,7 +246,6 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	_arg1 = C.gint(n)
 
 	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
-
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(n)
 
@@ -272,7 +267,6 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_relief_style(_arg0)
-
 	runtime.KeepAlive(toolbar)
 
 	var _reliefStyle ReliefStyle // out
@@ -291,7 +285,6 @@ func (toolbar *Toolbar) ShowArrow() bool {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
-
 	runtime.KeepAlive(toolbar)
 
 	var _ok bool // out
@@ -312,7 +305,6 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_style(_arg0)
-
 	runtime.KeepAlive(toolbar)
 
 	var _toolbarStyle ToolbarStyle // out

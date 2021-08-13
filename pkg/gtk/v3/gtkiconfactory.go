@@ -35,7 +35,6 @@ func IconSizeFromName(name string) int {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_size_from_name(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _gint int // out
@@ -56,7 +55,6 @@ func IconSizeGetName(size int) string {
 	_arg1 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_size_get_name(_arg1)
-
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
@@ -82,7 +80,6 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 	_arg1 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_size_lookup(_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(size)
 
 	var _width int  // out
@@ -119,7 +116,6 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(size)
 
@@ -152,7 +148,6 @@ func IconSizeRegister(name string, width int, height int) int {
 	_arg3 = C.gint(height)
 
 	_cret = C.gtk_icon_size_register(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -354,7 +349,6 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
-
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
 
@@ -398,7 +392,6 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_factory_lookup_default(_arg1)
-
 	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out

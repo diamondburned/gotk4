@@ -173,7 +173,6 @@ func (engine *ThemingEngine) Direction() TextDirection {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
-
 	runtime.KeepAlive(engine)
 
 	var _textDirection TextDirection // out
@@ -195,7 +194,6 @@ func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 	_arg1 = C.GtkStateFlags(state)
 
 	_cret = C.gtk_theming_engine_get_font(_arg0, _arg1)
-
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(state)
 
@@ -216,7 +214,6 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
-
 	runtime.KeepAlive(engine)
 
 	var _junctionSides JunctionSides // out
@@ -280,7 +277,6 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
-
 	runtime.KeepAlive(engine)
 
 	var _widgetPath *WidgetPath // out
@@ -334,7 +330,6 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
-
 	runtime.KeepAlive(engine)
 
 	var _screen *gdk.Screen // out
@@ -361,7 +356,6 @@ func (engine *ThemingEngine) State() StateFlags {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
-
 	runtime.KeepAlive(engine)
 
 	var _stateFlags StateFlags // out
@@ -408,7 +402,6 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
-
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(styleClass)
 
@@ -437,7 +430,6 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(styleRegion)
 
@@ -467,7 +459,6 @@ func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(colorName)
 
@@ -501,7 +492,6 @@ func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 	_arg1 = C.GtkStateType(state)
 
 	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(state)
 
@@ -528,7 +518,6 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_load(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _themingEngine *ThemingEngine // out

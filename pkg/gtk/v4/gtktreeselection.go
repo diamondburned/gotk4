@@ -143,7 +143,6 @@ func (selection *TreeSelection) CountSelectedRows() int {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
-
 	runtime.KeepAlive(selection)
 
 	var _gint int // out
@@ -162,7 +161,6 @@ func (selection *TreeSelection) Mode() SelectionMode {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_tree_selection_get_mode(_arg0)
-
 	runtime.KeepAlive(selection)
 
 	var _selectionMode SelectionMode // out
@@ -186,7 +184,6 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(selection)
 
 	var _model TreeModeller // out
@@ -220,7 +217,6 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
-
 	runtime.KeepAlive(selection)
 
 	var _model TreeModeller // out
@@ -251,7 +247,6 @@ func (selection *TreeSelection) TreeView() *TreeView {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.gtk_tree_selection_get_tree_view(_arg0)
-
 	runtime.KeepAlive(selection)
 
 	var _treeView *TreeView // out
@@ -271,7 +266,6 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
-
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(iter)
 
@@ -295,7 +289,6 @@ func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
-
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(path)
 

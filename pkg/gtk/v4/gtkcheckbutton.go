@@ -157,7 +157,6 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	}
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
@@ -179,7 +178,6 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	}
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
@@ -197,7 +195,6 @@ func (self *CheckButton) Active() bool {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -217,7 +214,6 @@ func (checkButton *CheckButton) Inconsistent() bool {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(checkButton.Native()))
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
-
 	runtime.KeepAlive(checkButton)
 
 	var _ok bool // out
@@ -237,7 +233,6 @@ func (self *CheckButton) Label() string {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_label(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -257,7 +252,6 @@ func (self *CheckButton) UseUnderline() bool {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

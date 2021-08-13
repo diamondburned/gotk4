@@ -100,7 +100,6 @@ func NewTreeStore(types []externglib.Type) *TreeStore {
 	}
 
 	_cret = C.gtk_tree_store_newv(_arg1, _arg2)
-
 	runtime.KeepAlive(types)
 
 	var _treeStore *TreeStore // out
@@ -305,7 +304,6 @@ func (treeStore *TreeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) boo
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(descendant)
@@ -330,7 +328,6 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
-
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
@@ -354,7 +351,6 @@ func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
-
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
@@ -447,7 +443,6 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
-
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 

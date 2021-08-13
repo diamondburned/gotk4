@@ -90,7 +90,6 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
 
 	_cret = C.gtk_window_group_list_windows(_arg0)
-
 	runtime.KeepAlive(windowGroup)
 
 	var _list []Window // out

@@ -95,7 +95,6 @@ func ShellQuote(unquotedString string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_quote(_arg1)
-
 	runtime.KeepAlive(unquotedString)
 
 	var _filename string // out
@@ -133,7 +132,6 @@ func ShellUnquote(quotedString string) (string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_unquote(_arg1, &_cerr)
-
 	runtime.KeepAlive(quotedString)
 
 	var _filename string // out

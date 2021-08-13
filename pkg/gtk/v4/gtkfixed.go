@@ -138,7 +138,6 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
-
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 

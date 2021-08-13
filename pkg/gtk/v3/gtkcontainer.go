@@ -467,7 +467,6 @@ func (container *Container) ChildType() externglib.Type {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_child_type(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _gType externglib.Type // out
@@ -533,7 +532,6 @@ func (container *Container) BorderWidth() uint {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_border_width(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _guint uint // out
@@ -552,7 +550,6 @@ func (container *Container) Children() []Widgetter {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_children(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _list []Widgetter // out
@@ -583,7 +580,6 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
-
 	runtime.KeepAlive(container)
 
 	var _focusableWidgets []Widgetter // out
@@ -613,7 +609,6 @@ func (container *Container) FocusChild() Widgetter {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_focus_child(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _widget Widgetter // out
@@ -634,7 +629,6 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_focus_hadjustment(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _adjustment *Adjustment // out
@@ -655,7 +649,6 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_focus_vadjustment(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _adjustment *Adjustment // out
@@ -678,7 +671,6 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
-
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
 
@@ -704,7 +696,6 @@ func (container *Container) ResizeMode() ResizeMode {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_resize_mode(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _resizeMode ResizeMode // out

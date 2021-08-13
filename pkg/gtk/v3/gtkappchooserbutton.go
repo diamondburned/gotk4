@@ -133,7 +133,6 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_button_new(_arg1)
-
 	runtime.KeepAlive(contentType)
 
 	var _appChooserButton *AppChooserButton // out
@@ -187,7 +186,6 @@ func (self *AppChooserButton) Heading() string {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -208,7 +206,6 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -229,7 +226,6 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

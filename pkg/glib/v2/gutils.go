@@ -125,6 +125,11 @@ func (f FormatSizeFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if f contains other.
+func (f FormatSizeFlags) Has(other FormatSizeFlags) bool {
+	return (f & other) == other
+}
+
 // BitNthLSF: find the position of the first bit set in mask, searching from
 // (but not including) nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
@@ -138,7 +143,6 @@ func BitNthLSF(mask uint32, nthBit int) int {
 	_arg2 = C.gint(nthBit)
 
 	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
-
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(nthBit)
 
@@ -162,7 +166,6 @@ func BitNthMSF(mask uint32, nthBit int) int {
 	_arg2 = C.gint(nthBit)
 
 	_cret = C.g_bit_nth_msf(_arg1, _arg2)
-
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(nthBit)
 
@@ -182,7 +185,6 @@ func BitStorage(number uint32) uint {
 	_arg1 = C.gulong(number)
 
 	_cret = C.g_bit_storage(_arg1)
-
 	runtime.KeepAlive(number)
 
 	var _guint uint // out
@@ -214,7 +216,6 @@ func FindProgramInPath(program string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_find_program_in_path(_arg1)
-
 	runtime.KeepAlive(program)
 
 	var _filename string // out
@@ -247,7 +248,6 @@ func FormatSize(size uint64) string {
 	_arg1 = C.guint64(size)
 
 	_cret = C.g_format_size(_arg1)
-
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
@@ -276,7 +276,6 @@ func FormatSizeForDisplay(size int64) string {
 	_arg1 = C.goffset(size)
 
 	_cret = C.g_format_size_for_display(_arg1)
-
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
@@ -300,7 +299,6 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	_arg2 = C.GFormatSizeFlags(flags)
 
 	_cret = C.g_format_size_full(_arg1, _arg2)
-
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(flags)
 
@@ -404,7 +402,6 @@ func GetOsInfo(keyName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_os_info(_arg1)
-
 	runtime.KeepAlive(keyName)
 
 	var _utf8 string // out
@@ -720,7 +717,6 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	_arg1 = C.GUserDirectory(directory)
 
 	_cret = C.g_get_user_special_dir(_arg1)
-
 	runtime.KeepAlive(directory)
 
 	var _filename string // out
@@ -756,7 +752,6 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	}
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(_string)
 	runtime.KeepAlive(keys)
 

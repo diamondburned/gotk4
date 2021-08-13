@@ -114,7 +114,6 @@ func (guide *ConstraintGuide) Name() string {
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	_cret = C.gtk_constraint_guide_get_name(_arg0)
-
 	runtime.KeepAlive(guide)
 
 	var _utf8 string // out
@@ -155,7 +154,6 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	_cret = C.gtk_constraint_guide_get_strength(_arg0)
-
 	runtime.KeepAlive(guide)
 
 	var _constraintStrength ConstraintStrength // out

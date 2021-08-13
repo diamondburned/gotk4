@@ -54,7 +54,6 @@ func TestSimulateButton(window Windower, x int, y int, button uint, modifiers Mo
 	_arg6 = C.GdkEventType(buttonPressrelease)
 
 	_cret = C.gdk_test_simulate_button(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -102,7 +101,6 @@ func TestSimulateKey(window Windower, x int, y int, keyval uint, modifiers Modif
 	_arg6 = C.GdkEventType(keyPressrelease)
 
 	_cret = C.gdk_test_simulate_key(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)

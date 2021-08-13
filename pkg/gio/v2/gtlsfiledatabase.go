@@ -77,7 +77,6 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
-
 	runtime.KeepAlive(anchors)
 
 	var _tlsFileDatabase TLSFileDatabaser // out

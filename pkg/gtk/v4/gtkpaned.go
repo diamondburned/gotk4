@@ -128,7 +128,6 @@ func NewPaned(orientation Orientation) *Paned {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_paned_new(_arg1)
-
 	runtime.KeepAlive(orientation)
 
 	var _paned *Paned // out
@@ -148,7 +147,6 @@ func (paned *Paned) EndChild() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
@@ -168,7 +166,6 @@ func (paned *Paned) Position() int {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _gint int // out
@@ -186,7 +183,6 @@ func (paned *Paned) ResizeEndChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_resize_end_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
@@ -206,7 +202,6 @@ func (paned *Paned) ResizeStartChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_resize_start_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
@@ -226,7 +221,6 @@ func (paned *Paned) ShrinkEndChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
@@ -246,7 +240,6 @@ func (paned *Paned) ShrinkStartChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
@@ -268,7 +261,6 @@ func (paned *Paned) StartChild() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
@@ -288,7 +280,6 @@ func (paned *Paned) WideHandle() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out

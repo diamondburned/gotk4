@@ -98,6 +98,11 @@ func (p PlacesOpenFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if p contains other.
+func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
+	return (p & other) == other
+}
+
 // PlacesSidebar is a widget that displays a list of frequently-used places in
 // the file system: the user’s home directory, the user’s bookmarks, and volumes
 // and drives. This widget is used as a sidebar in FileChooser and may be used
@@ -216,7 +221,6 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -244,7 +248,6 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _file gio.Filer // out
@@ -269,7 +272,6 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	_arg1 = C.gint(n)
 
 	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
-
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(n)
 
@@ -290,7 +292,6 @@ func (sidebar *PlacesSidebar) OpenFlags() PlacesOpenFlags {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _placesOpenFlags PlacesOpenFlags // out
@@ -312,7 +313,6 @@ func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -333,7 +333,6 @@ func (sidebar *PlacesSidebar) ShowDesktop() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -354,7 +353,6 @@ func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -375,7 +373,6 @@ func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -396,7 +393,6 @@ func (sidebar *PlacesSidebar) ShowRecent() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -417,7 +413,6 @@ func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
@@ -438,7 +433,6 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
-
 	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out

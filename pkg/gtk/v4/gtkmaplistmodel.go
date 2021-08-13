@@ -120,7 +120,6 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 	}
 
 	_cret = C.gtk_map_list_model_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(mapFunc)
 
@@ -139,7 +138,6 @@ func (self *MapListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_map_list_model_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -159,7 +157,6 @@ func (self *MapListModel) HasMap() bool {
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

@@ -116,7 +116,6 @@ func (sw *Switch) Active() bool {
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
-
 	runtime.KeepAlive(sw)
 
 	var _ok bool // out
@@ -136,7 +135,6 @@ func (sw *Switch) State() bool {
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
-
 	runtime.KeepAlive(sw)
 
 	var _ok bool // out

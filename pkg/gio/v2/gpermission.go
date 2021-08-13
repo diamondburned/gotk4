@@ -263,7 +263,6 @@ func (permission *Permission) Allowed() bool {
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_allowed(_arg0)
-
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out
@@ -285,7 +284,6 @@ func (permission *Permission) CanAcquire() bool {
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
-
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out
@@ -307,7 +305,6 @@ func (permission *Permission) CanRelease() bool {
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_can_release(_arg0)
-
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out

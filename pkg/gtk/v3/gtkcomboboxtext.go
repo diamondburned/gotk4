@@ -201,7 +201,6 @@ func (comboBox *ComboBoxText) ActiveText() string {
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
-
 	runtime.KeepAlive(comboBox)
 
 	var _utf8 string // out

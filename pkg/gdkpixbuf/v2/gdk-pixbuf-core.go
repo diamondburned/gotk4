@@ -205,7 +205,6 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 	_arg5 = C.int(height)
 
 	_cret = C.gdk_pixbuf_calculate_rowstride(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(colorspace)
 	runtime.KeepAlive(hasAlpha)
 	runtime.KeepAlive(bitsPerSample)

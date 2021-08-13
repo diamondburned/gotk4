@@ -129,7 +129,6 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
-
 	runtime.KeepAlive(color)
 
 	var _colorButton *ColorButton // out
@@ -147,7 +146,6 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
-
 	runtime.KeepAlive(rgba)
 
 	var _colorButton *ColorButton // out
@@ -167,7 +165,6 @@ func (button *ColorButton) Alpha() uint16 {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _guint16 uint16 // out
@@ -204,7 +201,6 @@ func (button *ColorButton) Title() string {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -224,7 +220,6 @@ func (button *ColorButton) UseAlpha() bool {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out

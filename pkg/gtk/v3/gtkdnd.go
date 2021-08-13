@@ -72,7 +72,6 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
-
 	runtime.KeepAlive(context)
 
 	var _widget Widgetter // out

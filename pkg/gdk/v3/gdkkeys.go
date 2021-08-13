@@ -56,7 +56,6 @@ func KeyvalFromName(keyvalName string) uint {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_keyval_from_name(_arg1)
-
 	runtime.KeepAlive(keyvalName)
 
 	var _guint uint // out
@@ -74,7 +73,6 @@ func KeyvalIsLower(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
@@ -94,7 +92,6 @@ func KeyvalIsUpper(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
@@ -117,7 +114,6 @@ func KeyvalName(keyval uint) string {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_name(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _utf8 string // out
@@ -137,7 +133,6 @@ func KeyvalToLower(keyval uint) uint {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint uint // out
@@ -156,7 +151,6 @@ func KeyvalToUnicode(keyval uint) uint32 {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint32 uint32 // out
@@ -174,7 +168,6 @@ func KeyvalToUpper(keyval uint) uint {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
-
 	runtime.KeepAlive(keyval)
 
 	var _guint uint // out
@@ -192,7 +185,6 @@ func UnicodeToKeyval(wc uint32) uint {
 	_arg1 = C.guint32(wc)
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
-
 	runtime.KeepAlive(wc)
 
 	var _guint uint // out
@@ -232,7 +224,6 @@ func (keymap *Keymap) CapsLockState() bool {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _ok bool // out
@@ -252,7 +243,6 @@ func (keymap *Keymap) Direction() pango.Direction {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_direction(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _direction pango.Direction // out
@@ -279,7 +269,6 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	_arg1 = C.guint(hardwareKeycode)
 
 	_cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(hardwareKeycode)
 
@@ -326,7 +315,6 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(keyval)
 
@@ -361,7 +349,6 @@ func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	_arg1 = C.GdkModifierIntent(intent)
 
 	_cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
-
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(intent)
 
@@ -380,7 +367,6 @@ func (keymap *Keymap) ModifierState() uint {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _guint uint // out
@@ -398,7 +384,6 @@ func (keymap *Keymap) NumLockState() bool {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _ok bool // out
@@ -418,7 +403,6 @@ func (keymap *Keymap) ScrollLockState() bool {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _ok bool // out
@@ -439,7 +423,6 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
 
 	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
-
 	runtime.KeepAlive(keymap)
 
 	var _ok bool // out
@@ -464,7 +447,6 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	_arg1 = (*C.GdkKeymapKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
-
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(key)
 
@@ -519,7 +501,6 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state Modifie
 	_arg3 = C.gint(group)
 
 	_cret = C.gdk_keymap_translate_keyboard_state(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
-
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(hardwareKeycode)
 	runtime.KeepAlive(state)
@@ -565,7 +546,6 @@ func KeymapGetForDisplay(display *Display) *Keymap {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_keymap_get_for_display(_arg1)
-
 	runtime.KeepAlive(display)
 
 	var _keymap *Keymap // out

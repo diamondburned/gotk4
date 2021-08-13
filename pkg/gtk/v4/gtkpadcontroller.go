@@ -143,7 +143,6 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	}
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(pad)
 

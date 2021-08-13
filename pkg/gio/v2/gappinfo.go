@@ -331,7 +331,6 @@ func (appinfo *AppInfo) CanDelete() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_can_delete(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -352,7 +351,6 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -376,7 +374,6 @@ func (appinfo *AppInfo) Delete() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_delete(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -396,7 +393,6 @@ func (appinfo *AppInfo) Dup() AppInfor {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_dup(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _appInfo AppInfor // out
@@ -420,7 +416,6 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(appinfo1)
 	runtime.KeepAlive(appinfo2)
 
@@ -441,7 +436,6 @@ func (appinfo *AppInfo) Commandline() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_commandline(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _filename string // out
@@ -461,7 +455,6 @@ func (appinfo *AppInfo) Description() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_description(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
@@ -482,7 +475,6 @@ func (appinfo *AppInfo) DisplayName() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_display_name(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
@@ -500,7 +492,6 @@ func (appinfo *AppInfo) Executable() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_executable(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _filename string // out
@@ -518,7 +509,6 @@ func (appinfo *AppInfo) Icon() Iconner {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_icon(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _icon Iconner // out
@@ -543,7 +533,6 @@ func (appinfo *AppInfo) ID() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_id(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
@@ -563,7 +552,6 @@ func (appinfo *AppInfo) Name() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_name(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
@@ -585,7 +573,6 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _utf8s []string // out
@@ -886,7 +873,6 @@ func (appinfo *AppInfo) ShouldShow() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_should_show(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -906,7 +892,6 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_supports_files(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -927,7 +912,6 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_supports_uris(_arg0)
-
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -963,7 +947,6 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	_arg3 = C.GAppInfoCreateFlags(flags)
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(commandline)
 	runtime.KeepAlive(applicationName)
 	runtime.KeepAlive(flags)
@@ -1015,7 +998,6 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_all_for_type(_arg1)
-
 	runtime.KeepAlive(contentType)
 
 	var _list []AppInfor // out
@@ -1044,7 +1026,6 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	}
 
 	_cret = C.g_app_info_get_default_for_type(_arg1, _arg2)
-
 	runtime.KeepAlive(contentType)
 	runtime.KeepAlive(mustSupportUris)
 
@@ -1068,7 +1049,6 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
-
 	runtime.KeepAlive(uriScheme)
 
 	var _appInfo AppInfor // out
@@ -1091,7 +1071,6 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
-
 	runtime.KeepAlive(contentType)
 
 	var _list []AppInfor // out
@@ -1120,7 +1099,6 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
-
 	runtime.KeepAlive(contentType)
 
 	var _list []AppInfor // out
@@ -1338,7 +1316,6 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	defer C.g_list_free(_arg2)
 
 	_cret = C.g_app_launch_context_get_display(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(files)
@@ -1363,7 +1340,6 @@ func (context *AppLaunchContext) Environment() []string {
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _filenames []string // out
@@ -1410,7 +1386,6 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 	defer C.g_list_free(_arg2)
 
 	_cret = C.g_app_launch_context_get_startup_notify_id(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(files)

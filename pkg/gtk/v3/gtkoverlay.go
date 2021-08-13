@@ -134,7 +134,6 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
-
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
 

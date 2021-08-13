@@ -186,7 +186,6 @@ func (self *Filter) Strictness() FilterMatch {
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _filterMatch FilterMatch // out
@@ -206,7 +205,6 @@ func (self *Filter) Match(item *externglib.Object) bool {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(item)
 

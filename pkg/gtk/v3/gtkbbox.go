@@ -117,7 +117,6 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_button_box_new(_arg1)
-
 	runtime.KeepAlive(orientation)
 
 	var _buttonBox *ButtonBox // out
@@ -138,7 +137,6 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 
@@ -162,7 +160,6 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 
@@ -184,7 +181,6 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _buttonBoxStyle ButtonBoxStyle // out

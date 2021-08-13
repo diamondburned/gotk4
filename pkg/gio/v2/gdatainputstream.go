@@ -71,7 +71,6 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_data_input_stream_new(_arg1)
-
 	runtime.KeepAlive(baseStream)
 
 	var _dataInputStream *DataInputStream // out
@@ -89,7 +88,6 @@ func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_data_input_stream_get_byte_order(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _dataStreamByteOrder DataStreamByteOrder // out
@@ -107,7 +105,6 @@ func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_data_input_stream_get_newline_type(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _dataStreamNewlineType DataStreamNewlineType // out
@@ -132,7 +129,6 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_byte(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -166,7 +162,6 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_int16(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -204,7 +199,6 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_int32(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -242,7 +236,6 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_int64(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -279,7 +272,6 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	}
 
 	_cret = C.g_data_input_stream_read_line(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -356,7 +348,6 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -401,7 +392,6 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -441,7 +431,6 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 	}
 
 	_cret = C.g_data_input_stream_read_line_utf8(_arg0, &_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -480,7 +469,6 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_uint16(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -518,7 +506,6 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_uint32(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -555,7 +542,6 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	}
 
 	_cret = C.g_data_input_stream_read_uint64(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -601,7 +587,6 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, &_arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stopChars)
@@ -682,7 +667,6 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -730,7 +714,6 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 	_arg2 = C.gssize(stopCharsLen)
 
 	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stopChars)
@@ -813,7 +796,6 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 

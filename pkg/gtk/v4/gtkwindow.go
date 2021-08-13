@@ -236,7 +236,6 @@ func (window *Window) Application() *Application {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_application(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _application *Application // out
@@ -256,7 +255,6 @@ func (window *Window) Child() Widgetter {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_child(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -276,7 +274,6 @@ func (window *Window) Decorated() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_decorated(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -320,7 +317,6 @@ func (window *Window) DefaultWidget() Widgetter {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_default_widget(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -340,7 +336,6 @@ func (window *Window) Deletable() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_deletable(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -361,7 +356,6 @@ func (window *Window) DestroyWithParent() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_destroy_with_parent(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -385,7 +379,6 @@ func (window *Window) Focus() Widgetter {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_focus(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -405,7 +398,6 @@ func (window *Window) FocusVisible() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_focus_visible(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -429,7 +421,6 @@ func (window *Window) Group() *WindowGroup {
 	}
 
 	_cret = C.gtk_window_get_group(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _windowGroup *WindowGroup // out
@@ -448,7 +439,6 @@ func (window *Window) HandleMenubarAccel() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_handle_menubar_accel(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -469,7 +459,6 @@ func (window *Window) HideOnClose() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_hide_on_close(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -489,7 +478,6 @@ func (window *Window) IconName() string {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_icon_name(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _utf8 string // out
@@ -509,7 +497,6 @@ func (window *Window) MnemonicsVisible() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_mnemonics_visible(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -529,7 +516,6 @@ func (window *Window) Modal() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_modal(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -549,7 +535,6 @@ func (window *Window) Resizable() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_resizable(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -569,7 +554,6 @@ func (window *Window) Title() string {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_title(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _utf8 string // out
@@ -590,7 +574,6 @@ func (window *Window) Titlebar() Widgetter {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_titlebar(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -610,7 +593,6 @@ func (window *Window) TransientFor() *Window {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_transient_for(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ret *Window // out
@@ -630,7 +612,6 @@ func (window *Window) HasGroup() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_has_group(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -656,7 +637,6 @@ func (window *Window) IsActive() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_is_active(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -684,7 +664,6 @@ func (window *Window) IsFullscreen() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_is_fullscreen(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -712,7 +691,6 @@ func (window *Window) IsMaximized() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_is_maximized(_arg0)
-
 	runtime.KeepAlive(window)
 
 	var _ok bool // out

@@ -77,7 +77,6 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_filter_output_stream_get_base_stream(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _outputStream OutputStreamer // out
@@ -96,7 +95,6 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out

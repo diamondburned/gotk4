@@ -92,7 +92,6 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
-
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(device)
 
@@ -114,7 +113,6 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
 
 	_cret = C.gtk_window_group_get_current_grab(_arg0)
-
 	runtime.KeepAlive(windowGroup)
 
 	var _widget Widgetter // out
@@ -132,7 +130,6 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
 
 	_cret = C.gtk_window_group_list_windows(_arg0)
-
 	runtime.KeepAlive(windowGroup)
 
 	var _list []Window // out

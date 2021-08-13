@@ -202,7 +202,6 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
 
 	_cret = C.gtk_image_new_from_animation(_arg1)
-
 	runtime.KeepAlive(animation)
 
 	var _image *Image // out
@@ -234,7 +233,6 @@ func NewImageFromFile(filename string) *Image {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _image *Image // out
@@ -257,7 +255,6 @@ func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
-
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(size)
 
@@ -284,7 +281,6 @@ func NewImageFromIconName(iconName string, size int) *Image {
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1, _arg2)
-
 	runtime.KeepAlive(iconName)
 	runtime.KeepAlive(size)
 
@@ -316,7 +312,6 @@ func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_icon_set(_arg1, _arg2)
-
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(size)
 
@@ -343,7 +338,6 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _image *Image // out
@@ -375,7 +369,6 @@ func NewImageFromResource(resourcePath string) *Image {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _image *Image // out
@@ -402,7 +395,6 @@ func NewImageFromStock(stockId string, size int) *Image {
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_stock(_arg1, _arg2)
-
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(size)
 
@@ -425,7 +417,6 @@ func NewImageFromSurface(surface *cairo.Surface) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_surface(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _image *Image // out
@@ -456,7 +447,6 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_animation(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _pixbufAnimation *gdkpixbuf.PixbufAnimation // out
@@ -564,7 +554,6 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixbuf(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -594,7 +583,6 @@ func (image *Image) PixelSize() int {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _gint int // out
@@ -641,7 +629,6 @@ func (image *Image) StorageType() ImageType {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _imageType ImageType // out

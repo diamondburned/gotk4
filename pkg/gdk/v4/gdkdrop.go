@@ -131,7 +131,6 @@ func (self *Drop) Actions() DragAction {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _dragAction DragAction // out
@@ -149,7 +148,6 @@ func (self *Drop) Device() Devicer {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _device Devicer // out
@@ -167,7 +165,6 @@ func (self *Drop) Display() *Display {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _display *Display // out
@@ -188,7 +185,6 @@ func (self *Drop) Drag() Dragger {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _drag Dragger // out
@@ -209,7 +205,6 @@ func (self *Drop) Formats() *ContentFormats {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _contentFormats *ContentFormats // out
@@ -231,7 +226,6 @@ func (self *Drop) Surface() Surfacer {
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _surface Surfacer // out
@@ -303,7 +297,6 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
@@ -374,7 +367,6 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 

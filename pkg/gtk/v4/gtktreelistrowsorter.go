@@ -65,7 +65,6 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	}
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
-
 	runtime.KeepAlive(sorter)
 
 	var _treeListRowSorter *TreeListRowSorter // out
@@ -83,7 +82,6 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out

@@ -295,7 +295,6 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 
 	_cret = C.gtk_cell_layout_get_area(_arg0)
-
 	runtime.KeepAlive(cellLayout)
 
 	var _cellArea CellAreaer // out
@@ -315,7 +314,6 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 
 	_cret = C.gtk_cell_layout_get_cells(_arg0)
-
 	runtime.KeepAlive(cellLayout)
 
 	var _list []CellRendererer // out

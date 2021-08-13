@@ -204,7 +204,6 @@ func (self *Sorter) Compare(item1 *externglib.Object, item2 *externglib.Object) 
 	_arg2 = C.gpointer(unsafe.Pointer(item2.Native()))
 
 	_cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(item1)
 	runtime.KeepAlive(item2)
@@ -228,7 +227,6 @@ func (self *Sorter) Order() SorterOrder {
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sorterOrder SorterOrder // out

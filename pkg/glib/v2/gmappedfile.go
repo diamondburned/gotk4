@@ -49,7 +49,6 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	}
 
 	_cret = C.g_mapped_file_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(writable)
 
@@ -80,7 +79,6 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	}
 
 	_cret = C.g_mapped_file_new_from_fd(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(fd)
 	runtime.KeepAlive(writable)
 
@@ -111,7 +109,6 @@ func (file *MappedFile) Contents() string {
 	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
@@ -130,7 +127,6 @@ func (file *MappedFile) Length() uint {
 	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	_cret = C.g_mapped_file_get_length(_arg0)
-
 	runtime.KeepAlive(file)
 
 	var _gsize uint // out

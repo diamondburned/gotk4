@@ -466,7 +466,6 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -502,7 +501,6 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -534,7 +532,6 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -577,7 +574,6 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -618,7 +614,6 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -642,7 +637,6 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_has_action(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -666,7 +660,6 @@ func (actionGroup *ActionGroup) ListActions() []string {
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.g_action_group_list_actions(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _utf8s []string // out
@@ -731,7 +724,6 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 

@@ -171,7 +171,6 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_connection(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _dBusConnection *DBusConnection // out
@@ -191,7 +190,6 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _list []DBusConnection // out
@@ -216,7 +214,6 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_flags(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
@@ -235,7 +232,6 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
@@ -257,7 +253,6 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_object_path(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _utf8 string // out
@@ -277,7 +272,6 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
-
 	runtime.KeepAlive(interface_)
 
 	var _variant *glib.Variant // out
@@ -300,7 +294,6 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
-
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
 

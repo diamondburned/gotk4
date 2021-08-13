@@ -62,7 +62,6 @@ func (dragSurface *DragSurface) Present(width int, height int) bool {
 	_arg2 = C.int(height)
 
 	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(dragSurface)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)

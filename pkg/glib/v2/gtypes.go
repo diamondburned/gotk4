@@ -250,7 +250,6 @@ func (time_ *TimeVal) ToISO8601() string {
 	_arg0 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(time_)))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
-
 	runtime.KeepAlive(time_)
 
 	var _utf8 string // out

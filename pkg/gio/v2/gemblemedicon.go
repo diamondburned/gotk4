@@ -71,7 +71,6 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	}
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
-
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(emblem)
 
@@ -113,7 +112,6 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	_cret = C.g_emblemed_icon_get_emblems(_arg0)
-
 	runtime.KeepAlive(emblemed)
 
 	var _list []Emblem // out
@@ -137,7 +135,6 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
-
 	runtime.KeepAlive(emblemed)
 
 	var _icon Iconner // out

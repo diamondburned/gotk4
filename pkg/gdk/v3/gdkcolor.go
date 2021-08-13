@@ -78,7 +78,6 @@ func (color *Color) Copy() *Color {
 	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_copy(_arg0)
-
 	runtime.KeepAlive(color)
 
 	var _ret *Color // out
@@ -103,7 +102,6 @@ func (colora *Color) Equal(colorb *Color) bool {
 	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(colorb)))
 
 	_cret = C.gdk_color_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(colora)
 	runtime.KeepAlive(colorb)
 
@@ -126,7 +124,6 @@ func (color *Color) Hash() uint {
 	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_hash(_arg0)
-
 	runtime.KeepAlive(color)
 
 	var _guint uint // out
@@ -150,7 +147,6 @@ func (color *Color) String() string {
 	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_to_string(_arg0)
-
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out
@@ -181,7 +177,6 @@ func ColorParse(spec string) (Color, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_color_parse(_arg1, &_arg2)
-
 	runtime.KeepAlive(spec)
 
 	var _color Color // out

@@ -56,7 +56,6 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 	}
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
-
 	runtime.KeepAlive(expression)
 
 	var _numericSorter *NumericSorter // out
@@ -75,7 +74,6 @@ func (self *NumericSorter) Expression() Expressioner {
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -95,7 +93,6 @@ func (self *NumericSorter) SortOrder() SortType {
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sortType SortType // out

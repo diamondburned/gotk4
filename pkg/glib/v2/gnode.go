@@ -115,6 +115,11 @@ func (t TraverseFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if t contains other.
+func (t TraverseFlags) Has(other TraverseFlags) bool {
+	return (t & other) == other
+}
+
 // Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
 type Node struct {
 	nocopy gextras.NoCopy
@@ -170,7 +175,6 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
-
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(data)
 
@@ -193,7 +197,6 @@ func (node *Node) ChildPosition(child *Node) int {
 	_arg1 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(child)))
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
-
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(child)
 
@@ -215,7 +218,6 @@ func (node *Node) Depth() uint {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	_cret = C.g_node_depth(_arg0)
-
 	runtime.KeepAlive(node)
 
 	var _guint uint // out
@@ -248,7 +250,6 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 	_arg1 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
-
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(descendant)
 
@@ -273,7 +274,6 @@ func (root *Node) MaxHeight() uint {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
 
 	_cret = C.g_node_max_height(_arg0)
-
 	runtime.KeepAlive(root)
 
 	var _guint uint // out
@@ -291,7 +291,6 @@ func (node *Node) NChildren() uint {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	_cret = C.g_node_n_children(_arg0)
-
 	runtime.KeepAlive(node)
 
 	var _guint uint // out
@@ -311,7 +310,6 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 	_arg1 = C.GTraverseFlags(flags)
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
-
 	runtime.KeepAlive(root)
 	runtime.KeepAlive(flags)
 

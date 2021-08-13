@@ -97,7 +97,6 @@ func (item *SeparatorToolItem) Draw() bool {
 	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
-
 	runtime.KeepAlive(item)
 
 	var _ok bool // out

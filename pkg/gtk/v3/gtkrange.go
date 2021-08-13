@@ -171,7 +171,6 @@ func (_range *Range) Adjustment() *Adjustment {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_adjustment(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _adjustment *Adjustment // out
@@ -189,7 +188,6 @@ func (_range *Range) FillLevel() float64 {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_fill_level(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
@@ -207,7 +205,6 @@ func (_range *Range) Flippable() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_flippable(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -227,7 +224,6 @@ func (_range *Range) Inverted() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_inverted(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -248,7 +244,6 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_lower_stepper_sensitivity(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _sensitivityType SensitivityType // out
@@ -270,7 +265,6 @@ func (_range *Range) MinSliderSize() int {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_min_slider_size(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gint int // out
@@ -308,7 +302,6 @@ func (_range *Range) RestrictToFillLevel() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -329,7 +322,6 @@ func (_range *Range) RoundDigits() int {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_round_digits(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gint int // out
@@ -347,7 +339,6 @@ func (_range *Range) ShowFillLevel() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_show_fill_level(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -392,7 +383,6 @@ func (_range *Range) SliderSizeFixed() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -413,7 +403,6 @@ func (_range *Range) UpperStepperSensitivity() SensitivityType {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_upper_stepper_sensitivity(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _sensitivityType SensitivityType // out
@@ -431,7 +420,6 @@ func (_range *Range) Value() float64 {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_value(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out

@@ -82,7 +82,6 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _socketConnectable SocketConnectabler // out
@@ -100,7 +99,6 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
@@ -156,7 +154,6 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	}
 
 	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(serverIdentity)
 

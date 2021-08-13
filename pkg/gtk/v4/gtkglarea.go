@@ -200,7 +200,6 @@ func (area *GLArea) AutoRender() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
@@ -220,7 +219,6 @@ func (area *GLArea) Context() gdk.GLContexter {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_context(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _glContext gdk.GLContexter // out
@@ -238,7 +236,6 @@ func (area *GLArea) Error() error {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _err error // out
@@ -258,7 +255,6 @@ func (area *GLArea) HasDepthBuffer() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
@@ -278,7 +274,6 @@ func (area *GLArea) HasStencilBuffer() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
@@ -322,7 +317,6 @@ func (area *GLArea) UseES() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _ok bool // out

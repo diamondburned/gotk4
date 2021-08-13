@@ -123,6 +123,11 @@ func (c CellRendererState) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if c contains other.
+func (c CellRendererState) Has(other CellRendererState) bool {
+	return (c & other) == other
+}
+
 // CellRendererOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -315,7 +320,6 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path str
 	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(event)
 	runtime.KeepAlive(widget)
@@ -408,7 +412,6 @@ func (cell *CellRenderer) IsExpanded() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_is_expanded(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _ok bool // out
@@ -428,7 +431,6 @@ func (cell *CellRenderer) IsExpander() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_is_expander(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _ok bool // out
@@ -593,7 +595,6 @@ func (cell *CellRenderer) RequestMode() SizeRequestMode {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_request_mode(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _sizeRequestMode SizeRequestMode // out
@@ -611,7 +612,6 @@ func (cell *CellRenderer) Sensitive() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_sensitive(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _ok bool // out
@@ -640,7 +640,6 @@ func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) S
 	_arg2 = C.GtkCellRendererState(cellState)
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(cellState)
@@ -660,7 +659,6 @@ func (cell *CellRenderer) Visible() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_visible(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _ok bool // out
@@ -681,7 +679,6 @@ func (cell *CellRenderer) IsActivatable() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_is_activatable(_arg0)
-
 	runtime.KeepAlive(cell)
 
 	var _ok bool // out
@@ -858,7 +855,6 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(event)
 	runtime.KeepAlive(widget)

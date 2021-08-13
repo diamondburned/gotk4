@@ -85,6 +85,11 @@ func (t TextSearchFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if t contains other.
+func (t TextSearchFlags) Has(other TextSearchFlags) bool {
+	return (t & other) == other
+}
+
 type TextCharPredicate func(ch uint32) (ok bool)
 
 //export _gotk4_gtk3_TextCharPredicate
@@ -147,7 +152,6 @@ func (iter *TextIter) BackwardChar() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_char(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -174,7 +178,6 @@ func (iter *TextIter) BackwardChars(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_chars(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -196,7 +199,6 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_cursor_position(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -219,7 +221,6 @@ func (iter *TextIter) BackwardCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_cursor_positions(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -250,7 +251,6 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 	}
 
 	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(pred)
 	runtime.KeepAlive(limit)
@@ -278,7 +278,6 @@ func (iter *TextIter) BackwardLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -305,7 +304,6 @@ func (iter *TextIter) BackwardLines(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_lines(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -340,7 +338,6 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 	}
 
 	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(flags)
@@ -371,7 +368,6 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_sentence_start(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -395,7 +391,6 @@ func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_sentence_starts(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -424,7 +419,6 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_backward_to_tag_toggle(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -446,7 +440,6 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_visible_cursor_position(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -469,7 +462,6 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_visible_cursor_positions(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -496,7 +488,6 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_visible_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -524,7 +515,6 @@ func (iter *TextIter) BackwardVisibleLines(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_visible_lines(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -549,7 +539,6 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_visible_word_start(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -572,7 +561,6 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_visible_word_starts(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -596,7 +584,6 @@ func (iter *TextIter) BackwardWordStart() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_backward_word_start(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -619,7 +606,6 @@ func (iter *TextIter) BackwardWordStarts(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_backward_word_starts(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -653,7 +639,6 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_begins_tag(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -682,7 +667,6 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 	}
 
 	_cret = C.gtk_text_iter_can_insert(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(defaultEditability)
 
@@ -708,7 +692,6 @@ func (lhs *TextIter) Compare(rhs *TextIter) int {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(rhs)))
 
 	_cret = C.gtk_text_iter_compare(_arg0, _arg1)
-
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
 
@@ -729,7 +712,6 @@ func (iter *TextIter) Copy() *TextIter {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_copy(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _textIter *TextIter // out
@@ -764,7 +746,6 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 	}
 
 	_cret = C.gtk_text_iter_editable(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(defaultSetting)
 
@@ -791,7 +772,6 @@ func (iter *TextIter) EndsLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_ends_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -813,7 +793,6 @@ func (iter *TextIter) EndsSentence() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_ends_sentence(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -844,7 +823,6 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_ends_tag(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -867,7 +845,6 @@ func (iter *TextIter) EndsWord() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_ends_word(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -892,7 +869,6 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(rhs)))
 
 	_cret = C.gtk_text_iter_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
 
@@ -919,7 +895,6 @@ func (iter *TextIter) ForwardChar() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_char(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -946,7 +921,6 @@ func (iter *TextIter) ForwardChars(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_chars(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -975,7 +949,6 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_cursor_position(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -998,7 +971,6 @@ func (iter *TextIter) ForwardCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_cursor_positions(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1030,7 +1002,6 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 	}
 
 	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(pred)
 	runtime.KeepAlive(limit)
@@ -1055,7 +1026,6 @@ func (iter *TextIter) ForwardLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1082,7 +1052,6 @@ func (iter *TextIter) ForwardLines(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_lines(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1121,7 +1090,6 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 	}
 
 	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, &_arg3, &_arg4, _arg5)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(flags)
@@ -1151,7 +1119,6 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_sentence_end(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1175,7 +1142,6 @@ func (iter *TextIter) ForwardSentenceEnds(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_sentence_ends(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1214,7 +1180,6 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_to_line_end(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1242,7 +1207,6 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_forward_to_tag_toggle(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -1264,7 +1228,6 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_visible_cursor_position(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1287,7 +1250,6 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_visible_cursor_positions(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1311,7 +1273,6 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_visible_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1338,7 +1299,6 @@ func (iter *TextIter) ForwardVisibleLines(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_visible_lines(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1362,7 +1322,6 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_visible_word_end(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1385,7 +1344,6 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_visible_word_ends(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1409,7 +1367,6 @@ func (iter *TextIter) ForwardWordEnd() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_forward_word_end(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1431,7 +1388,6 @@ func (iter *TextIter) ForwardWordEnds(count int) bool {
 	_arg1 = C.gint(count)
 
 	_cret = C.gtk_text_iter_forward_word_ends(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
 
@@ -1460,7 +1416,6 @@ func (iter *TextIter) Attributes() (TextAttributes, bool) {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_attributes(_arg0, &_arg1)
-
 	runtime.KeepAlive(iter)
 
 	var _values TextAttributes // out
@@ -1482,7 +1437,6 @@ func (iter *TextIter) Buffer() *TextBuffer {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_buffer(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _textBuffer *TextBuffer // out
@@ -1501,7 +1455,6 @@ func (iter *TextIter) BytesInLine() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_bytes_in_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1524,7 +1477,6 @@ func (iter *TextIter) Char() uint32 {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_char(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gunichar uint32 // out
@@ -1543,7 +1495,6 @@ func (iter *TextIter) CharsInLine() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_chars_in_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1562,7 +1513,6 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_child_anchor(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _textChildAnchor *TextChildAnchor // out
@@ -1582,7 +1532,6 @@ func (iter *TextIter) Language() *pango.Language {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_language(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _language *pango.Language // out
@@ -1604,7 +1553,6 @@ func (iter *TextIter) Line() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1624,7 +1572,6 @@ func (iter *TextIter) LineIndex() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_line_index(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1644,7 +1591,6 @@ func (iter *TextIter) LineOffset() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_line_offset(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1665,7 +1611,6 @@ func (iter *TextIter) Offset() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_offset(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1684,7 +1629,6 @@ func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_pixbuf(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -1720,7 +1664,6 @@ func (start *TextIter) Slice(end *TextIter) string {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_text_iter_get_slice(_arg0, _arg1)
-
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
@@ -1745,7 +1688,6 @@ func (start *TextIter) Text(end *TextIter) string {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_text_iter_get_text(_arg0, _arg1)
-
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
@@ -1767,7 +1709,6 @@ func (iter *TextIter) VisibleLineIndex() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_visible_line_index(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1787,7 +1728,6 @@ func (iter *TextIter) VisibleLineOffset() int {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_get_visible_line_offset(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _gint int // out
@@ -1809,7 +1749,6 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_text_iter_get_visible_slice(_arg0, _arg1)
-
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
@@ -1833,7 +1772,6 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_text_iter_get_visible_text(_arg0, _arg1)
-
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
@@ -1857,7 +1795,6 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_iter_has_tag(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -1883,7 +1820,6 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_text_iter_in_range(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -1909,7 +1845,6 @@ func (iter *TextIter) InsideSentence() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_inside_sentence(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1935,7 +1870,6 @@ func (iter *TextIter) InsideWord() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_inside_word(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1956,7 +1890,6 @@ func (iter *TextIter) IsCursorPosition() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_is_cursor_position(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1978,7 +1911,6 @@ func (iter *TextIter) IsEnd() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_is_end(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -1999,7 +1931,6 @@ func (iter *TextIter) IsStart() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_is_start(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -2130,7 +2061,6 @@ func (iter *TextIter) StartsLine() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_starts_line(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -2152,7 +2082,6 @@ func (iter *TextIter) StartsSentence() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_starts_sentence(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -2183,7 +2112,6 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_starts_tag(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 
@@ -2206,7 +2134,6 @@ func (iter *TextIter) StartsWord() bool {
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_iter_starts_word(_arg0)
-
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
@@ -2232,7 +2159,6 @@ func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 	}
 
 	_cret = C.gtk_text_iter_toggles_tag(_arg0, _arg1)
-
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
 

@@ -262,7 +262,6 @@ func (volume *Volume) CanEject() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_can_eject(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out
@@ -282,7 +281,6 @@ func (volume *Volume) CanMount() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_can_mount(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out
@@ -419,7 +417,6 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_enumerate_identifiers(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _utf8s []string // out
@@ -463,7 +460,6 @@ func (volume *Volume) ActivationRoot() Filer {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_activation_root(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _file Filer // out
@@ -483,7 +479,6 @@ func (volume *Volume) Drive() Driver {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_drive(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _drive Driver // out
@@ -503,7 +498,6 @@ func (volume *Volume) Icon() Iconner {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_icon(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _icon Iconner // out
@@ -526,7 +520,6 @@ func (volume *Volume) Identifier(kind string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
-
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(kind)
 
@@ -548,7 +541,6 @@ func (volume *Volume) GetMount() Mounter {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_mount(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _mount Mounter // out
@@ -568,7 +560,6 @@ func (volume *Volume) Name() string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_name(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -587,7 +578,6 @@ func (volume *Volume) SortKey() string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_sort_key(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -607,7 +597,6 @@ func (volume *Volume) SymbolicIcon() Iconner {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _icon Iconner // out
@@ -627,7 +616,6 @@ func (volume *Volume) UUID() string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_uuid(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -710,7 +698,6 @@ func (volume *Volume) ShouldAutomount() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_should_automount(_arg0)
-
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out

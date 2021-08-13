@@ -131,7 +131,6 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_cairo_should_draw_window(_arg1, _arg2)
-
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(window)
 
@@ -1246,7 +1245,6 @@ func (widget *Widget) Activate() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_activate(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -1371,7 +1369,6 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gtk_widget_add_tick_callback(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(callback)
 
@@ -1397,7 +1394,6 @@ func (widget *Widget) CanActivateAccel(signalId uint) bool {
 	_arg1 = C.guint(signalId)
 
 	_cret = C.gtk_widget_can_activate_accel(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(signalId)
 
@@ -1437,7 +1433,6 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(direction)
 
@@ -1520,7 +1515,6 @@ func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(orientation)
 
@@ -1543,7 +1537,6 @@ func (widget *Widget) CreatePangoContext() *pango.Context {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_create_pango_context(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _context *pango.Context // out
@@ -1576,7 +1569,6 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	}
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(text)
 
@@ -1643,7 +1635,6 @@ func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_device_is_shadowed(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(device)
 
@@ -1675,7 +1666,6 @@ func (widget *Widget) DragCheckThreshold(startX int, startY int, currentX int, c
 	_arg4 = C.gint(currentY)
 
 	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(startX)
 	runtime.KeepAlive(startY)
@@ -1739,7 +1729,6 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_drag_dest_get_target_list(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _targetList *TargetList // out
@@ -1764,7 +1753,6 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_drag_dest_get_track_motion(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -1968,7 +1956,6 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_drag_source_get_target_list(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _targetList *TargetList // out
@@ -2198,7 +2185,6 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_accessible(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _object *atk.ObjectClass // out
@@ -2228,7 +2214,6 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(prefix)
 
@@ -2252,7 +2237,6 @@ func (widget *Widget) AllocatedBaseline() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2272,7 +2256,6 @@ func (widget *Widget) AllocatedHeight() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_allocated_height(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2320,7 +2303,6 @@ func (widget *Widget) AllocatedWidth() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_allocated_width(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2377,7 +2359,6 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	_arg1 = C.GType(widgetType)
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(widgetType)
 
@@ -2401,7 +2382,6 @@ func (widget *Widget) AppPaintable() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_app_paintable(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2422,7 +2402,6 @@ func (widget *Widget) CanDefault() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_can_default(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2443,7 +2422,6 @@ func (widget *Widget) CanFocus() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_can_focus(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2501,7 +2479,6 @@ func (widget *Widget) ChildVisible() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_child_visible(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2547,7 +2524,6 @@ func (widget *Widget) CompositeName() string {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_composite_name(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8 string // out
@@ -2569,7 +2545,6 @@ func (widget *Widget) DeviceEnabled(device gdk.Devicer) bool {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_get_device_enabled(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(device)
 
@@ -2594,7 +2569,6 @@ func (widget *Widget) DeviceEvents(device gdk.Devicer) gdk.EventMask {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gtk_widget_get_device_events(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(device)
 
@@ -2614,7 +2588,6 @@ func (widget *Widget) Direction() TextDirection {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_direction(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _textDirection TextDirection // out
@@ -2638,7 +2611,6 @@ func (widget *Widget) Display() *gdk.Display {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_display(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _display *gdk.Display // out
@@ -2663,7 +2635,6 @@ func (widget *Widget) DoubleBuffered() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_double_buffered(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2689,7 +2660,6 @@ func (widget *Widget) Events() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_events(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2708,7 +2678,6 @@ func (widget *Widget) FocusOnClick() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_focus_on_click(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2728,7 +2697,6 @@ func (widget *Widget) FontMap() pango.FontMapper {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_font_map(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _fontMap pango.FontMapper // out
@@ -2749,7 +2717,6 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_font_options(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _fontOptions *cairo.FontOptions // out
@@ -2787,7 +2754,6 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_frame_clock(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _frameClock gdk.FrameClocker // out
@@ -2811,7 +2777,6 @@ func (widget *Widget) HAlign() Align {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_halign(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _align Align // out
@@ -2830,7 +2795,6 @@ func (widget *Widget) HasTooltip() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_has_tooltip(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2851,7 +2815,6 @@ func (widget *Widget) HasWindow() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_has_window(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2882,7 +2845,6 @@ func (widget *Widget) HExpand() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_hexpand(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2910,7 +2872,6 @@ func (widget *Widget) HExpandSet() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_hexpand_set(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2930,7 +2891,6 @@ func (widget *Widget) Mapped() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_mapped(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -2950,7 +2910,6 @@ func (widget *Widget) MarginBottom() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_bottom(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2968,7 +2927,6 @@ func (widget *Widget) MarginEnd() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_end(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -2988,7 +2946,6 @@ func (widget *Widget) MarginLeft() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_left(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -3008,7 +2965,6 @@ func (widget *Widget) MarginRight() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_right(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -3026,7 +2982,6 @@ func (widget *Widget) MarginStart() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_start(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -3044,7 +2999,6 @@ func (widget *Widget) MarginTop() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_margin_top(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -3067,7 +3021,6 @@ func (widget *Widget) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
 	_arg1 = C.GdkModifierIntent(intent)
 
 	_cret = C.gtk_widget_get_modifier_mask(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(intent)
 
@@ -3099,7 +3052,6 @@ func (widget *Widget) ModifierStyle() *RCStyle {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_modifier_style(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _rcStyle *RCStyle // out
@@ -3118,7 +3070,6 @@ func (widget *Widget) Name() string {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_name(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8 string // out
@@ -3137,7 +3088,6 @@ func (widget *Widget) NoShowAll() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_no_show_all(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3158,7 +3108,6 @@ func (widget *Widget) Opacity() float64 {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_opacity(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gdouble float64 // out
@@ -3182,7 +3131,6 @@ func (widget *Widget) PangoContext() *pango.Context {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_pango_context(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _context *pango.Context // out
@@ -3205,7 +3153,6 @@ func (widget *Widget) Parent() Widgetter {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_parent(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ret Widgetter // out
@@ -3225,7 +3172,6 @@ func (widget *Widget) ParentWindow() gdk.Windower {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_parent_window(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _window gdk.Windower // out
@@ -3246,7 +3192,6 @@ func (widget *Widget) GetPath() *WidgetPath {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_path(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _widgetPath *WidgetPath // out
@@ -3478,7 +3423,6 @@ func (widget *Widget) Realized() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_realized(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3502,7 +3446,6 @@ func (widget *Widget) ReceivesDefault() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_receives_default(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3527,7 +3470,6 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_request_mode(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _sizeRequestMode SizeRequestMode // out
@@ -3582,7 +3524,6 @@ func (widget *Widget) RootWindow() gdk.Windower {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_root_window(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _window gdk.Windower // out
@@ -3604,7 +3545,6 @@ func (widget *Widget) ScaleFactor() int {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_scale_factor(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _gint int // out
@@ -3628,7 +3568,6 @@ func (widget *Widget) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_screen(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _screen *gdk.Screen // out
@@ -3655,7 +3594,6 @@ func (widget *Widget) Sensitive() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_sensitive(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3678,7 +3616,6 @@ func (widget *Widget) Settings() *Settings {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_settings(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _settings *Settings // out
@@ -3723,7 +3660,6 @@ func (widget *Widget) State() StateType {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_state(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _stateType StateType // out
@@ -3746,7 +3682,6 @@ func (widget *Widget) StateFlags() StateFlags {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_state_flags(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _stateFlags StateFlags // out
@@ -3766,7 +3701,6 @@ func (widget *Widget) Style() *Style {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_style(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _style *Style // out
@@ -3785,7 +3719,6 @@ func (widget *Widget) StyleContext() *StyleContext {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_style_context(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _styleContext *StyleContext // out
@@ -3804,7 +3737,6 @@ func (widget *Widget) SupportMultidevice() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_support_multidevice(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3837,7 +3769,6 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(widgetType)
 	runtime.KeepAlive(name)
@@ -3857,7 +3788,6 @@ func (widget *Widget) TooltipMarkup() string {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_tooltip_markup(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8 string // out
@@ -3878,7 +3808,6 @@ func (widget *Widget) TooltipText() string {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_tooltip_text(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8 string // out
@@ -3901,7 +3830,6 @@ func (widget *Widget) TooltipWindow() *Window {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_tooltip_window(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _window *Window // out
@@ -3945,7 +3873,6 @@ func (widget *Widget) Toplevel() Widgetter {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_toplevel(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ret Widgetter // out
@@ -3969,7 +3896,6 @@ func (widget *Widget) VAlign() Align {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_valign(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _align Align // out
@@ -3988,7 +3914,6 @@ func (widget *Widget) VAlignWithBaseline() Align {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_valign_with_baseline(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _align Align // out
@@ -4009,7 +3934,6 @@ func (widget *Widget) VExpand() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_vexpand(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4032,7 +3956,6 @@ func (widget *Widget) VExpandSet() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_vexpand_set(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4058,7 +3981,6 @@ func (widget *Widget) Visible() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_visible(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4078,7 +4000,6 @@ func (widget *Widget) Visual() *gdk.Visual {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_visual(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _visual *gdk.Visual // out
@@ -4101,7 +4022,6 @@ func (widget *Widget) Window() gdk.Windower {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_get_window(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _window gdk.Windower // out
@@ -4188,7 +4108,6 @@ func (widget *Widget) HasDefault() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_default(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4210,7 +4129,6 @@ func (widget *Widget) HasFocus() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_focus(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4233,7 +4151,6 @@ func (widget *Widget) HasGrab() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_grab(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4256,7 +4173,6 @@ func (widget *Widget) HasRCStyle() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_rc_style(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4278,7 +4194,6 @@ func (widget *Widget) HasScreen() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_screen(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4305,7 +4220,6 @@ func (widget *Widget) HasVisibleFocus() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_has_visible_focus(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4341,7 +4255,6 @@ func (widget *Widget) HideOnDelete() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_hide_on_delete(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4362,7 +4275,6 @@ func (widget *Widget) InDestruction() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_in_destruction(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4453,7 +4365,6 @@ func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
 
 	_cret = C.gtk_widget_intersect(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(area)
 
@@ -4479,7 +4390,6 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(ancestor.Native()))
 
 	_cret = C.gtk_widget_is_ancestor(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(ancestor)
 
@@ -4508,7 +4418,6 @@ func (widget *Widget) IsComposited() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_composited(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4529,7 +4438,6 @@ func (widget *Widget) IsDrawable() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_drawable(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4552,7 +4460,6 @@ func (widget *Widget) IsFocus() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_focus(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4573,7 +4480,6 @@ func (widget *Widget) IsSensitive() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_sensitive(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4596,7 +4502,6 @@ func (widget *Widget) IsToplevel() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_toplevel(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4621,7 +4526,6 @@ func (widget *Widget) IsVisible() bool {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_is_visible(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -4664,7 +4568,6 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(direction)
 
@@ -4686,7 +4589,6 @@ func (widget *Widget) ListActionPrefixes() []string {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_list_action_prefixes(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8s []string // out
@@ -4724,7 +4626,6 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
-
 	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out
@@ -4763,7 +4664,6 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	}
 
 	_cret = C.gtk_widget_mnemonic_activate(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(groupCycling)
 
@@ -5308,7 +5208,6 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(region)
 
@@ -5360,7 +5259,6 @@ func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, a
 	_arg3 = C.GdkModifierType(accelMods)
 
 	_cret = C.gtk_widget_remove_accelerator(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(accelKey)
@@ -5433,7 +5331,6 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 	}
 
 	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(size)
@@ -5480,7 +5377,6 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(size)
@@ -6831,7 +6727,6 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, sr
 	_arg3 = C.gint(srcY)
 
 	_cret = C.gtk_widget_translate_coordinates(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-
 	runtime.KeepAlive(srcWidget)
 	runtime.KeepAlive(destWidget)
 	runtime.KeepAlive(srcX)
@@ -7028,7 +6923,6 @@ func (requisition *Requisition) Copy() *Requisition {
 	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	_cret = C.gtk_requisition_copy(_arg0)
-
 	runtime.KeepAlive(requisition)
 
 	var _ret *Requisition // out

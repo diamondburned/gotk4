@@ -110,7 +110,6 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 	_arg8 = C.int(strength)
 
 	_cret = C.gtk_constraint_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(targetAttribute)
 	runtime.KeepAlive(relation)
@@ -146,7 +145,6 @@ func NewConstraintConstant(target ConstraintTargetter, targetAttribute Constrain
 	_arg5 = C.int(strength)
 
 	_cret = C.gtk_constraint_new_constant(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(targetAttribute)
 	runtime.KeepAlive(relation)
@@ -168,7 +166,6 @@ func (constraint *Constraint) Constant() float64 {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_constant(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _gdouble float64 // out
@@ -187,7 +184,6 @@ func (constraint *Constraint) Multiplier() float64 {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_multiplier(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _gdouble float64 // out
@@ -205,7 +201,6 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_relation(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _constraintRelation ConstraintRelation // out
@@ -227,7 +222,6 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_source(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _constraintTarget ConstraintTargetter // out
@@ -248,7 +242,6 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_source_attribute(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _constraintAttribute ConstraintAttribute // out
@@ -266,7 +259,6 @@ func (constraint *Constraint) Strength() int {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_strength(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _gint int // out
@@ -288,7 +280,6 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_target(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _constraintTarget ConstraintTargetter // out
@@ -309,7 +300,6 @@ func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_get_target_attribute(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _constraintAttribute ConstraintAttribute // out
@@ -328,7 +318,6 @@ func (constraint *Constraint) IsAttached() bool {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_attached(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _ok bool // out
@@ -349,7 +338,6 @@ func (constraint *Constraint) IsConstant() bool {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_constant(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _ok bool // out
@@ -370,7 +358,6 @@ func (constraint *Constraint) IsRequired() bool {
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	_cret = C.gtk_constraint_is_required(_arg0)
-
 	runtime.KeepAlive(constraint)
 
 	var _ok bool // out

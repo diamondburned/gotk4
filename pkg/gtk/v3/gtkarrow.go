@@ -83,7 +83,6 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 	_arg2 = C.GtkShadowType(shadowType)
 
 	_cret = C.gtk_arrow_new(_arg1, _arg2)
-
 	runtime.KeepAlive(arrowType)
 	runtime.KeepAlive(shadowType)
 

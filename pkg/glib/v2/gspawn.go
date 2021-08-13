@@ -200,6 +200,11 @@ func (s SpawnFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s SpawnFlags) Has(other SpawnFlags) bool {
+	return (s & other) == other
+}
+
 // SpawnChildSetupFunc specifies the type of the setup function passed to
 // g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can, in
 // very limited ways, be used to affect the child's execution.

@@ -152,7 +152,6 @@ func (cancellable *Cancellable) Fd() int {
 	}
 
 	_cret = C.g_cancellable_get_fd(_arg0)
-
 	runtime.KeepAlive(cancellable)
 
 	var _gint int // out
@@ -172,7 +171,6 @@ func (cancellable *Cancellable) IsCancelled() bool {
 	}
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
-
 	runtime.KeepAlive(cancellable)
 
 	var _ok bool // out
@@ -212,7 +210,6 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(pollfd)))
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
-
 	runtime.KeepAlive(cancellable)
 	runtime.KeepAlive(pollfd)
 
@@ -339,7 +336,6 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	}
 
 	_cret = C.g_cancellable_source_new(_arg0)
-
 	runtime.KeepAlive(cancellable)
 
 	var _source *glib.Source // out

@@ -40,7 +40,6 @@ func CairoCreate(window Windower) *cairo.Context {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_cairo_create(_arg1)
-
 	runtime.KeepAlive(window)
 
 	var _context *cairo.Context // out
@@ -112,7 +111,6 @@ func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
-
 	runtime.KeepAlive(cr)
 
 	var _rect Rectangle // out
@@ -135,7 +133,6 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.gdk_cairo_get_drawing_context(_arg1)
-
 	runtime.KeepAlive(cr)
 
 	var _drawingContext *DrawingContext // out
@@ -185,7 +182,6 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
-
 	runtime.KeepAlive(surface)
 
 	var _region *cairo.Region // out
@@ -292,7 +288,6 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 	}
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(forWindow)

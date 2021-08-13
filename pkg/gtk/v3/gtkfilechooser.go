@@ -544,7 +544,6 @@ func (chooser *FileChooser) Action() FileChooserAction {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_action(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _fileChooserAction FileChooserAction // out
@@ -565,7 +564,6 @@ func (chooser *FileChooser) Choice(id string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 
@@ -585,7 +583,6 @@ func (chooser *FileChooser) CreateFolders() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -614,7 +611,6 @@ func (chooser *FileChooser) CurrentFolder() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _filename string // out
@@ -636,7 +632,6 @@ func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _file gio.Filer // out
@@ -663,7 +658,6 @@ func (chooser *FileChooser) CurrentFolderURI() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder_uri(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -691,7 +685,6 @@ func (chooser *FileChooser) CurrentName() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_name(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -711,7 +704,6 @@ func (chooser *FileChooser) DoOverwriteConfirmation() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_do_overwrite_confirmation(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -732,7 +724,6 @@ func (chooser *FileChooser) ExtraWidget() Widgetter {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_extra_widget(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _widget Widgetter // out
@@ -756,7 +747,6 @@ func (chooser *FileChooser) File() gio.Filer {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_file(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _file gio.Filer // out
@@ -779,7 +769,6 @@ func (chooser *FileChooser) Filename() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filename(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _filename string // out
@@ -800,7 +789,6 @@ func (chooser *FileChooser) Filter() *FileFilter {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filter(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _fileFilter *FileFilter // out
@@ -821,7 +809,6 @@ func (chooser *FileChooser) LocalOnly() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_local_only(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -842,7 +829,6 @@ func (chooser *FileChooser) PreviewFile() gio.Filer {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _file gio.Filer // out
@@ -863,7 +849,6 @@ func (chooser *FileChooser) PreviewFilename() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_filename(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _filename string // out
@@ -885,7 +870,6 @@ func (chooser *FileChooser) PreviewURI() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_uri(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -907,7 +891,6 @@ func (chooser *FileChooser) PreviewWidget() Widgetter {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_widget(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _widget Widgetter // out
@@ -929,7 +912,6 @@ func (chooser *FileChooser) PreviewWidgetActive() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_preview_widget_active(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -950,7 +932,6 @@ func (chooser *FileChooser) SelectMultiple() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -971,7 +952,6 @@ func (chooser *FileChooser) ShowHidden() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_show_hidden(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -995,7 +975,6 @@ func (chooser *FileChooser) URI() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_uri(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -1017,7 +996,6 @@ func (chooser *FileChooser) UsePreviewLabel() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_use_preview_label(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -1152,7 +1130,6 @@ func (chooser *FileChooser) SelectFilename(filename string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_select_filename(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filename)
 
@@ -1178,7 +1155,6 @@ func (chooser *FileChooser) SelectURI(uri string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_select_uri(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
@@ -1262,7 +1238,6 @@ func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_current_folder(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filename)
 
@@ -1315,7 +1290,6 @@ func (chooser *FileChooser) SetCurrentFolderURI(uri string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_current_folder_uri(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
@@ -1482,7 +1456,6 @@ func (chooser *FileChooser) SetFilename(filename string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_filename(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filename)
 
@@ -1650,7 +1623,6 @@ func (chooser *FileChooser) SetURI(uri string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_set_uri(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 

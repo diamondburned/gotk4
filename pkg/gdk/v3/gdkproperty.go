@@ -65,7 +65,6 @@ func UTF8ToStringTarget(str string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_utf8_to_string_target(_arg1)
-
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out

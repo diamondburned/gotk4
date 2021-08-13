@@ -167,7 +167,6 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *exter
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
@@ -252,7 +251,6 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(child)
@@ -285,7 +283,6 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *e
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(childname)
@@ -308,7 +305,6 @@ func (buildable *Buildable) Name() string {
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 
 	_cret = C.gtk_buildable_get_name(_arg0)
-
 	runtime.KeepAlive(buildable)
 
 	var _utf8 string // out

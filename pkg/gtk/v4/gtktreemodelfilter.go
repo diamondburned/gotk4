@@ -213,7 +213,6 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (Tree
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(childIter)))
 
 	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
-
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(childIter)
 
@@ -242,7 +241,6 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(childPath)))
 
 	_cret = C.gtk_tree_model_filter_convert_child_path_to_path(_arg0, _arg1)
-
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(childPath)
 
@@ -293,7 +291,6 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(filterPath)))
 
 	_cret = C.gtk_tree_model_filter_convert_path_to_child_path(_arg0, _arg1)
-
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterPath)
 
@@ -317,7 +314,6 @@ func (filter *TreeModelFilter) Model() TreeModeller {
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_tree_model_filter_get_model(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _treeModel TreeModeller // out

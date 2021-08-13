@@ -67,7 +67,6 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 	}
 
 	_cret = C.gtk_media_controls_new(_arg1)
-
 	runtime.KeepAlive(stream)
 
 	var _mediaControls *MediaControls // out
@@ -85,7 +84,6 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(controls.Native()))
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
-
 	runtime.KeepAlive(controls)
 
 	var _mediaStream MediaStreamer // out

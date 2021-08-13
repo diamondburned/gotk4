@@ -328,7 +328,6 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
-
 	runtime.KeepAlive(attributes)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
@@ -357,7 +356,6 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
-
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(ns)
 
@@ -378,7 +376,6 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	_cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
-
 	runtime.KeepAlive(matcher)
 
 	var _utf8 string // out
@@ -403,7 +400,6 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
-
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(attribute)
 
@@ -428,7 +424,6 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
-
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(attribute)
 
@@ -461,7 +456,6 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 	}
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
-
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(subtract)
 
@@ -490,7 +484,6 @@ func (matcher *FileAttributeMatcher) String() string {
 	}
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
-
 	runtime.KeepAlive(matcher)
 
 	var _utf8 string // out
@@ -758,7 +751,6 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(resource)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
@@ -840,7 +832,6 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(resource)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
@@ -893,7 +884,6 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	_arg4 = C.guint16(weight)
 
 	_cret = C.g_srv_target_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(port)
 	runtime.KeepAlive(priority)
@@ -917,7 +907,6 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_copy(_arg0)
-
 	runtime.KeepAlive(target)
 
 	var _srvTarget *SrvTarget // out
@@ -941,7 +930,6 @@ func (target *SrvTarget) Hostname() string {
 	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_hostname(_arg0)
-
 	runtime.KeepAlive(target)
 
 	var _utf8 string // out
@@ -959,7 +947,6 @@ func (target *SrvTarget) Port() uint16 {
 	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_port(_arg0)
-
 	runtime.KeepAlive(target)
 
 	var _guint16 uint16 // out
@@ -978,7 +965,6 @@ func (target *SrvTarget) Priority() uint16 {
 	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_priority(_arg0)
-
 	runtime.KeepAlive(target)
 
 	var _guint16 uint16 // out
@@ -997,7 +983,6 @@ func (target *SrvTarget) Weight() uint16 {
 	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_weight(_arg0)
-
 	runtime.KeepAlive(target)
 
 	var _guint16 uint16 // out

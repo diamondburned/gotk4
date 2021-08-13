@@ -136,7 +136,6 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_ellipsize_mode(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _ellipsizeMode pango.EllipsizeMode // out
@@ -155,7 +154,6 @@ func (shell *ToolShell) IconSize() int {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_icon_size(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _gint int // out
@@ -175,7 +173,6 @@ func (shell *ToolShell) Orientation() Orientation {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_orientation(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _orientation Orientation // out
@@ -195,7 +192,6 @@ func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_relief_style(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _reliefStyle ReliefStyle // out
@@ -215,7 +211,6 @@ func (shell *ToolShell) Style() ToolbarStyle {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_style(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _toolbarStyle ToolbarStyle // out
@@ -235,7 +230,6 @@ func (shell *ToolShell) TextAlignment() float32 {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_text_alignment(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _gfloat float32 // out
@@ -255,7 +249,6 @@ func (shell *ToolShell) TextOrientation() Orientation {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_text_orientation(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _orientation Orientation // out
@@ -275,7 +268,6 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_text_size_group(_arg0)
-
 	runtime.KeepAlive(shell)
 
 	var _sizeGroup *SizeGroup // out

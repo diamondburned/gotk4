@@ -262,7 +262,6 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(certificate)
 
@@ -312,7 +311,6 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(handle)
@@ -386,7 +384,6 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
@@ -430,7 +427,6 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 
 	_cret = C.g_tls_database_lookup_certificate_issuer(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(certificate)
@@ -498,7 +494,6 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
@@ -545,7 +540,6 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 
 	_cret = C.g_tls_database_lookup_certificates_issued_by(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(issuerRawDn)
@@ -627,7 +621,6 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificates_issued_by_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
@@ -711,7 +704,6 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
 
 	_cret = C.g_tls_database_verify_chain(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(chain)
@@ -796,7 +788,6 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 

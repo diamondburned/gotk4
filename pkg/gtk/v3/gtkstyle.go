@@ -1107,7 +1107,6 @@ func (style *Style) Copy() *Style {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_style_copy(_arg0)
-
 	runtime.KeepAlive(style)
 
 	var _ret *Style // out
@@ -1163,7 +1162,6 @@ func (style *Style) HasContext() bool {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_style_has_context(_arg0)
-
 	runtime.KeepAlive(style)
 
 	var _ok bool // out
@@ -1192,7 +1190,6 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(colorName)
 
@@ -1221,7 +1218,6 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_icon_set(_arg0, _arg1)
-
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(stockId)
 
@@ -1264,7 +1260,6 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 	}
 
 	_cret = C.gtk_style_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(direction)

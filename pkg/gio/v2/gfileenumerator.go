@@ -251,7 +251,6 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
-
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(info)
 
@@ -270,7 +269,6 @@ func (enumerator *FileEnumerator) Container() Filer {
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_get_container(_arg0)
-
 	runtime.KeepAlive(enumerator)
 
 	var _file Filer // out
@@ -288,7 +286,6 @@ func (enumerator *FileEnumerator) HasPending() bool {
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_has_pending(_arg0)
-
 	runtime.KeepAlive(enumerator)
 
 	var _ok bool // out
@@ -308,7 +305,6 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 
 	_cret = C.g_file_enumerator_is_closed(_arg0)
-
 	runtime.KeepAlive(enumerator)
 
 	var _ok bool // out
@@ -412,7 +408,6 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 	}
 
 	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 
@@ -489,7 +484,6 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 

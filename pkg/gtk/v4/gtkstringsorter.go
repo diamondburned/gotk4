@@ -61,7 +61,6 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 	}
 
 	_cret = C.gtk_string_sorter_new(_arg1)
-
 	runtime.KeepAlive(expression)
 
 	var _stringSorter *StringSorter // out
@@ -80,7 +79,6 @@ func (self *StringSorter) Expression() Expressioner {
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -100,7 +98,6 @@ func (self *StringSorter) IgnoreCase() bool {
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

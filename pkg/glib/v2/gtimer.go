@@ -60,7 +60,6 @@ func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_time_val_from_iso8601(_arg1, &_arg2)
-
 	runtime.KeepAlive(isoDate)
 
 	var _time_ TimeVal // out

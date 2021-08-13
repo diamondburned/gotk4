@@ -68,7 +68,6 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_color_selection_dialog_new(_arg1)
-
 	runtime.KeepAlive(title)
 
 	var _colorSelectionDialog *ColorSelectionDialog // out
@@ -86,7 +85,6 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
-
 	runtime.KeepAlive(colorsel)
 
 	var _widget Widgetter // out

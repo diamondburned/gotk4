@@ -107,7 +107,6 @@ func (credentials *Credentials) UnixPid() (int, error) {
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
-
 	runtime.KeepAlive(credentials)
 
 	var _gint int    // out
@@ -134,7 +133,6 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
-
 	runtime.KeepAlive(credentials)
 
 	var _guint uint  // out
@@ -230,7 +228,6 @@ func (credentials *Credentials) String() string {
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_to_string(_arg0)
-
 	runtime.KeepAlive(credentials)
 
 	var _utf8 string // out

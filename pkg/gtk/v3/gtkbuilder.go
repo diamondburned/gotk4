@@ -344,7 +344,6 @@ func NewBuilderFromFile(filename string) *Builder {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_new_from_file(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _builder *Builder // out
@@ -367,7 +366,6 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_new_from_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _builder *Builder // out
@@ -396,7 +394,6 @@ func NewBuilderFromString(_string string, length int) *Builder {
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_builder_new_from_string(_arg1, _arg2)
-
 	runtime.KeepAlive(_string)
 	runtime.KeepAlive(length)
 
@@ -432,7 +429,6 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_add_from_file(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
 
@@ -468,7 +464,6 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_add_from_resource(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
 
@@ -506,7 +501,6 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 	_arg2 = C.gsize(length)
 
 	_cret = C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
@@ -557,7 +551,6 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	}
 
 	_cret = C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(objectIds)
@@ -608,7 +601,6 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	}
 
 	_cret = C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
 	runtime.KeepAlive(objectIds)
@@ -661,7 +653,6 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	}
 
 	_cret = C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
@@ -751,7 +742,6 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 	_arg4 = C.gsize(length)
 
 	_cret = C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(templateType)
@@ -784,7 +774,6 @@ func (builder *Builder) Application() *Application {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_application(_arg0)
-
 	runtime.KeepAlive(builder)
 
 	var _application *Application // out
@@ -808,7 +797,6 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_get_object(_arg0, _arg1)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
 
@@ -829,7 +817,6 @@ func (builder *Builder) TranslationDomain() string {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_translation_domain(_arg0)
-
 	runtime.KeepAlive(builder)
 
 	var _utf8 string // out
@@ -852,7 +839,6 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
-
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(typeName)
 

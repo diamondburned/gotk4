@@ -343,6 +343,11 @@ func (r RCFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if r contains other.
+func (r RCFlags) Has(other RCFlags) bool {
+	return (r & other) == other
+}
+
 // RCAddDefaultFile adds a file to the list of files to be parsed at the end of
 // gtk_init().
 //
@@ -369,7 +374,6 @@ func RCFindModuleInPath(moduleFile string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
-
 	runtime.KeepAlive(moduleFile)
 
 	var _filename string // out
@@ -397,7 +401,6 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(pixmapFile)
@@ -506,7 +509,6 @@ func RCGetStyle(widget Widgetter) *Style {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_rc_get_style(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _style *Style // out
@@ -550,7 +552,6 @@ func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, 
 	_arg4 = C.GType(typ)
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(widgetPath)
 	runtime.KeepAlive(classPath)
@@ -609,7 +610,6 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
-
 	runtime.KeepAlive(scanner)
 
 	var _color gdk.Color // out
@@ -637,7 +637,6 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	}
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
-
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(style)
 
@@ -662,7 +661,6 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
-
 	runtime.KeepAlive(scanner)
 
 	var _state StateType // out
@@ -722,7 +720,6 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	}
 
 	_cret = C.gtk_rc_reparse_all_for_settings(_arg1, _arg2)
-
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(forceLoad)
 
@@ -834,7 +831,6 @@ func (orig *RCStyle) Copy() *RCStyle {
 	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(orig.Native()))
 
 	_cret = C.gtk_rc_style_copy(_arg0)
-
 	runtime.KeepAlive(orig)
 
 	var _rcStyle *RCStyle // out

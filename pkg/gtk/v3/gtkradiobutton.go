@@ -159,7 +159,6 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	}
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
-
 	runtime.KeepAlive(radioGroupMember)
 
 	var _radioButton *RadioButton // out
@@ -183,7 +182,6 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
-
 	runtime.KeepAlive(radioGroupMember)
 	runtime.KeepAlive(label)
 
@@ -209,7 +207,6 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
-
 	runtime.KeepAlive(radioGroupMember)
 	runtime.KeepAlive(label)
 

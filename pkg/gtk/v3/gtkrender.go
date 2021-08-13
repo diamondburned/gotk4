@@ -414,7 +414,6 @@ func RenderIconPixbuf(context *StyleContext, source *IconSource, size int) *gdkp
 	_arg3 = C.GtkIconSize(size)
 
 	_cret = C.gtk_render_icon_pixbuf(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(size)

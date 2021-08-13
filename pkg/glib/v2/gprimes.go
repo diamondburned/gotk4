@@ -24,7 +24,6 @@ func SpacedPrimesClosest(num uint) uint {
 	_arg1 = C.guint(num)
 
 	_cret = C.g_spaced_primes_closest(_arg1)
-
 	runtime.KeepAlive(num)
 
 	var _guint uint // out

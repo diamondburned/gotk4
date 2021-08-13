@@ -149,7 +149,6 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
-
 	runtime.KeepAlive(node)
 
 	var _renderNodeType RenderNodeType // out

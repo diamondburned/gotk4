@@ -40,7 +40,6 @@ func (queue *Queue) Length() uint {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_get_length(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _guint uint // out
@@ -60,7 +59,6 @@ func (queue *Queue) Index(data cgo.Handle) int {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_index(_arg0, _arg1)
-
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
@@ -91,7 +89,6 @@ func (queue *Queue) IsEmpty() bool {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_is_empty(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _ok bool // out
@@ -111,7 +108,6 @@ func (queue *Queue) PeekHead() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_peek_head(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
@@ -131,7 +127,6 @@ func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	_arg1 = C.guint(n)
 
 	_cret = C.g_queue_peek_nth(_arg0, _arg1)
-
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(n)
 
@@ -150,7 +145,6 @@ func (queue *Queue) PeekTail() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_peek_tail(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
@@ -168,7 +162,6 @@ func (queue *Queue) PopHead() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_head(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
@@ -188,7 +181,6 @@ func (queue *Queue) PopNth(n uint) cgo.Handle {
 	_arg1 = C.guint(n)
 
 	_cret = C.g_queue_pop_nth(_arg0, _arg1)
-
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(n)
 
@@ -207,7 +199,6 @@ func (queue *Queue) PopTail() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_tail(_arg0)
-
 	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
@@ -269,7 +260,6 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove(_arg0, _arg1)
-
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
@@ -292,7 +282,6 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove_all(_arg0, _arg1)
-
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 

@@ -89,7 +89,6 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 	}
 
 	_cret = C.gtk_popover_menu_bar_new_from_model(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _popoverMenuBar *PopoverMenuBar // out
@@ -115,7 +114,6 @@ func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_popover_menu_bar_add_child(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(id)
@@ -137,7 +135,6 @@ func (bar *PopoverMenuBar) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_popover_menu_bar_get_menu_model(_arg0)
-
 	runtime.KeepAlive(bar)
 
 	var _menuModel gio.MenuModeller // out
@@ -158,7 +155,6 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
-
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 

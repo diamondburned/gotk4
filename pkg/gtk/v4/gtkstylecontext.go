@@ -82,6 +82,11 @@ func (s StyleContextPrintFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
+	return (s & other) == other
+}
+
 // StyleContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -236,7 +241,6 @@ func (context *StyleContext) Display() *gdk.Display {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_display(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _display *gdk.Display // out
@@ -293,7 +297,6 @@ func (context *StyleContext) Scale() int {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gint int // out
@@ -315,7 +318,6 @@ func (context *StyleContext) State() StateFlags {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_state(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _stateFlags StateFlags // out
@@ -336,7 +338,6 @@ func (context *StyleContext) HasClass(className string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
 
@@ -361,7 +362,6 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(colorName)
 
@@ -495,7 +495,6 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	_arg1 = C.GtkStyleContextPrintFlags(flags)
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(flags)
 

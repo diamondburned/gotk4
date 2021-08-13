@@ -121,7 +121,6 @@ func NewPaned(orientation Orientation) *Paned {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_paned_new(_arg1)
-
 	runtime.KeepAlive(orientation)
 
 	var _paned *Paned // out
@@ -167,7 +166,6 @@ func (paned *Paned) Child1() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child1(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
@@ -187,7 +185,6 @@ func (paned *Paned) Child2() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child2(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
@@ -209,7 +206,6 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _window gdk.Windower // out
@@ -227,7 +223,6 @@ func (paned *Paned) Position() int {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _gint int // out
@@ -245,7 +240,6 @@ func (paned *Paned) WideHandle() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
-
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out

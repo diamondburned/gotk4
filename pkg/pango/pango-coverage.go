@@ -109,7 +109,6 @@ func (coverage *Coverage) Copy() *Coverage {
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	_cret = C.pango_coverage_copy(_arg0)
-
 	runtime.KeepAlive(coverage)
 
 	var _ret *Coverage // out
@@ -129,7 +128,6 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
-
 	runtime.KeepAlive(coverage)
 	runtime.KeepAlive(index_)
 
@@ -211,7 +209,6 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 	}
 
 	_cret = C.pango_coverage_from_bytes(_arg1, _arg2)
-
 	runtime.KeepAlive(bytes)
 
 	var _coverage *Coverage // out

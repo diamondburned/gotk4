@@ -85,7 +85,6 @@ func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream {
 	}
 
 	_cret = C.g_unix_output_stream_new(_arg1, _arg2)
-
 	runtime.KeepAlive(fd)
 	runtime.KeepAlive(closeFd)
 
@@ -105,7 +104,6 @@ func (stream *UnixOutputStream) CloseFd() bool {
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_output_stream_get_close_fd(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -125,7 +123,6 @@ func (stream *UnixOutputStream) Fd() int {
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_output_stream_get_fd(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _gint int // out

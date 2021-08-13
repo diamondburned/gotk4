@@ -76,7 +76,6 @@ func NewVScale(adjustment *Adjustment) *VScale {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_vscale_new(_arg1)
-
 	runtime.KeepAlive(adjustment)
 
 	var _vScale *VScale // out
@@ -108,7 +107,6 @@ func NewVScaleWithRange(min float64, max float64, step float64) *VScale {
 	_arg3 = C.gdouble(step)
 
 	_cret = C.gtk_vscale_new_with_range(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
 	runtime.KeepAlive(step)

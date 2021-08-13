@@ -69,7 +69,6 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gdk_clipboard_get_content(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _contentProvider *ContentProvider // out
@@ -89,7 +88,6 @@ func (clipboard *Clipboard) Display() *Display {
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gdk_clipboard_get_display(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _display *Display // out
@@ -108,7 +106,6 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _contentFormats *ContentFormats // out
@@ -136,7 +133,6 @@ func (clipboard *Clipboard) IsLocal() bool {
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gdk_clipboard_is_local(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out
@@ -162,7 +158,6 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
@@ -228,7 +223,6 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
@@ -291,7 +285,6 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
@@ -359,7 +352,6 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
@@ -396,7 +388,6 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	}
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(provider)
 

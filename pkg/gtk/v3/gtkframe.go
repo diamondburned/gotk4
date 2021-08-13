@@ -114,7 +114,6 @@ func NewFrame(label string) *Frame {
 	}
 
 	_cret = C.gtk_frame_new(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _frame *Frame // out
@@ -134,7 +133,6 @@ func (frame *Frame) Label() string {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_label(_arg0)
-
 	runtime.KeepAlive(frame)
 
 	var _utf8 string // out
@@ -176,7 +174,6 @@ func (frame *Frame) LabelWidget() Widgetter {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
-
 	runtime.KeepAlive(frame)
 
 	var _widget Widgetter // out
@@ -197,7 +194,6 @@ func (frame *Frame) ShadowType() ShadowType {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_shadow_type(_arg0)
-
 	runtime.KeepAlive(frame)
 
 	var _shadowType ShadowType // out

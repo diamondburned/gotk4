@@ -113,7 +113,6 @@ func (message *SocketControlMessage) Level() int {
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _gint int // out
@@ -132,7 +131,6 @@ func (message *SocketControlMessage) MsgType() int {
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _gint int // out
@@ -151,7 +149,6 @@ func (message *SocketControlMessage) Size() uint {
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
-
 	runtime.KeepAlive(message)
 
 	var _gsize uint // out
@@ -199,7 +196,6 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketCont
 	}
 
 	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(level)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(data)

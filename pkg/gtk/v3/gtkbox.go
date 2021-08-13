@@ -115,7 +115,6 @@ func NewBox(orientation Orientation, spacing int) *Box {
 	_arg2 = C.gint(spacing)
 
 	_cret = C.gtk_box_new(_arg1, _arg2)
-
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(spacing)
 
@@ -134,7 +133,6 @@ func (box *Box) BaselinePosition() BaselinePosition {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _baselinePosition BaselinePosition // out
@@ -152,7 +150,6 @@ func (box *Box) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _widget Widgetter // out
@@ -173,7 +170,6 @@ func (box *Box) Homogeneous() bool {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -193,7 +189,6 @@ func (box *Box) Spacing() int {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_spacing(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _gint int // out

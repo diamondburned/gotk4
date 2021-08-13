@@ -31,7 +31,6 @@ func Dcgettext(domain string, msgid string, category int) string {
 	_arg3 = C.gint(category)
 
 	_cret = C.g_dcgettext(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(msgid)
 	runtime.KeepAlive(category)
@@ -87,7 +86,6 @@ func Dgettext(domain string, msgid string) string {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dgettext(_arg1, _arg2)
-
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(msgid)
 
@@ -121,7 +119,6 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 	_arg4 = C.gulong(n)
 
 	_cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(msgid)
 	runtime.KeepAlive(msgidPlural)
@@ -160,7 +157,6 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	_arg3 = C.gsize(msgidoffset)
 
 	_cret = C.g_dpgettext(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(msgctxtid)
 	runtime.KeepAlive(msgidoffset)
@@ -197,7 +193,6 @@ func Dpgettext2(domain string, context string, msgid string) string {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dpgettext2(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(msgid)
@@ -221,7 +216,6 @@ func StripContext(msgid string, msgval string) string {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_strip_context(_arg1, _arg2)
-
 	runtime.KeepAlive(msgid)
 	runtime.KeepAlive(msgval)
 

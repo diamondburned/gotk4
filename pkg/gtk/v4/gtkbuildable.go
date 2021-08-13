@@ -98,7 +98,6 @@ func (buildable *Buildable) BuildableID() string {
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
-
 	runtime.KeepAlive(buildable)
 
 	var _utf8 string // out

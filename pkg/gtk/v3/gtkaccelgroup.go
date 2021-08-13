@@ -75,6 +75,11 @@ func (a AccelFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AccelFlags) Has(other AccelFlags) bool {
+	return (a & other) == other
+}
+
 // AccelGroupsActivate finds the first accelerator in any AccelGroup attached to
 // object that matches accel_key and accel_mods, and activates that accelerator.
 func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
@@ -88,7 +93,6 @@ func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk
 	_arg3 = C.GdkModifierType(accelMods)
 
 	_cret = C.gtk_accel_groups_activate(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(accelKey)
 	runtime.KeepAlive(accelMods)
@@ -129,7 +133,6 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label(_arg1, _arg2)
-
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(acceleratorMods)
 
@@ -162,7 +165,6 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, k
 	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_get_label_with_keycode(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(keycode)
@@ -191,7 +193,6 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name(_arg1, _arg2)
-
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(acceleratorMods)
 
@@ -223,7 +224,6 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keyco
 	_arg4 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name_with_keycode(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(acceleratorKey)
 	runtime.KeepAlive(keycode)
@@ -353,7 +353,6 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	_arg2 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_accelerator_valid(_arg1, _arg2)
-
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)
 
@@ -425,7 +424,6 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 	_arg4 = C.GdkModifierType(accelMods)
 
 	_cret = C.gtk_accel_group_activate(_arg0, _arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(accelQuark)
 	runtime.KeepAlive(acceleratable)
@@ -454,7 +452,6 @@ func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.Modifie
 	_arg2 = C.GdkModifierType(accelMods)
 
 	_cret = C.gtk_accel_group_disconnect_key(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(accelKey)
 	runtime.KeepAlive(accelMods)
@@ -477,7 +474,6 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
-
 	runtime.KeepAlive(accelGroup)
 
 	var _ok bool // out
@@ -498,7 +494,6 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
-
 	runtime.KeepAlive(accelGroup)
 
 	var _modifierType gdk.ModifierType // out

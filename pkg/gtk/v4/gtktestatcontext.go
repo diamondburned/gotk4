@@ -56,7 +56,6 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 	_arg2 = C.GtkAccessibleProperty(property)
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
-
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(property)
 
@@ -79,7 +78,6 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 	_arg2 = C.GtkAccessibleRelation(relation)
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
-
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(relation)
 
@@ -103,7 +101,6 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	_arg2 = C.GtkAccessibleRole(role)
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
-
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(role)
 
@@ -126,7 +123,6 @@ func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool 
 	_arg2 = C.GtkAccessibleState(state)
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
-
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(state)
 

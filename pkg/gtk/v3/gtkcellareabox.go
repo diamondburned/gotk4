@@ -93,7 +93,6 @@ func (box *CellAreaBox) Spacing() int {
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _gint int // out

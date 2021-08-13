@@ -124,7 +124,6 @@ func (vfs *VFS) FileForPath(path string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
-
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(path)
 
@@ -149,7 +148,6 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
-
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(uri)
 
@@ -168,7 +166,6 @@ func (vfs *VFS) SupportedURISchemes() []string {
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 
 	_cret = C.g_vfs_get_supported_uri_schemes(_arg0)
-
 	runtime.KeepAlive(vfs)
 
 	var _utf8s []string // out
@@ -198,7 +195,6 @@ func (vfs *VFS) IsActive() bool {
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 
 	_cret = C.g_vfs_is_active(_arg0)
-
 	runtime.KeepAlive(vfs)
 
 	var _ok bool // out
@@ -223,7 +219,6 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
-
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(parseName)
 
@@ -280,7 +275,6 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, pars
 	}
 
 	_cret = C.g_vfs_register_uri_scheme(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(scheme)
 	runtime.KeepAlive(uriFunc)
@@ -307,7 +301,6 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
-
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(scheme)
 

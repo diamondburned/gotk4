@@ -157,7 +157,6 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_tree_view_column_new_with_area(_arg1)
-
 	runtime.KeepAlive(area)
 
 	var _treeViewColumn *TreeViewColumn // out
@@ -205,7 +204,6 @@ func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 
 	_cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cellRenderer)
 
@@ -259,7 +257,6 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_cell_is_visible(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -358,7 +355,6 @@ func (treeColumn *TreeViewColumn) Alignment() float32 {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_alignment(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gfloat float32 // out
@@ -376,7 +372,6 @@ func (treeColumn *TreeViewColumn) Button() Widgetter {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_button(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -394,7 +389,6 @@ func (treeColumn *TreeViewColumn) Clickable() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_clickable(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -414,7 +408,6 @@ func (treeColumn *TreeViewColumn) Expand() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_expand(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -436,7 +429,6 @@ func (treeColumn *TreeViewColumn) FixedWidth() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_fixed_width(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -455,7 +447,6 @@ func (treeColumn *TreeViewColumn) MaxWidth() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_max_width(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -474,7 +465,6 @@ func (treeColumn *TreeViewColumn) MinWidth() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_min_width(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -492,7 +482,6 @@ func (treeColumn *TreeViewColumn) Reorderable() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_reorderable(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -512,7 +501,6 @@ func (treeColumn *TreeViewColumn) Resizable() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_resizable(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -532,7 +520,6 @@ func (treeColumn *TreeViewColumn) Sizing() TreeViewColumnSizing {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_sizing(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _treeViewColumnSizing TreeViewColumnSizing // out
@@ -552,7 +539,6 @@ func (treeColumn *TreeViewColumn) SortColumnID() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_sort_column_id(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -571,7 +557,6 @@ func (treeColumn *TreeViewColumn) SortIndicator() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_sort_indicator(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -591,7 +576,6 @@ func (treeColumn *TreeViewColumn) SortOrder() SortType {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_sort_order(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _sortType SortType // out
@@ -609,7 +593,6 @@ func (treeColumn *TreeViewColumn) Spacing() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_spacing(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -627,7 +610,6 @@ func (treeColumn *TreeViewColumn) Title() string {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_title(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _utf8 string // out
@@ -646,7 +628,6 @@ func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_tree_view(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -666,7 +647,6 @@ func (treeColumn *TreeViewColumn) Visible() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_visible(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -687,7 +667,6 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_widget(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -707,7 +686,6 @@ func (treeColumn *TreeViewColumn) Width() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_width(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -725,7 +703,6 @@ func (treeColumn *TreeViewColumn) XOffset() int {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 
 	_cret = C.gtk_tree_view_column_get_x_offset(_arg0)
-
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out

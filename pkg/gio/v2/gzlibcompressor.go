@@ -63,7 +63,6 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	_arg2 = C.int(level)
 
 	_cret = C.g_zlib_compressor_new(_arg1, _arg2)
-
 	runtime.KeepAlive(format)
 	runtime.KeepAlive(level)
 
@@ -82,7 +81,6 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(compressor.Native()))
 
 	_cret = C.g_zlib_compressor_get_file_info(_arg0)
-
 	runtime.KeepAlive(compressor)
 
 	var _fileInfo *FileInfo // out

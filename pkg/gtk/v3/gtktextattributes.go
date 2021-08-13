@@ -195,7 +195,6 @@ func (src *TextAttributes) Copy() *TextAttributes {
 	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
-
 	runtime.KeepAlive(src)
 
 	var _textAttributes *TextAttributes // out

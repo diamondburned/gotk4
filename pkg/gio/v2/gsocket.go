@@ -132,7 +132,6 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 	_arg3 = C.GSocketProtocol(protocol)
 
 	_cret = C.g_socket_new(_arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(family)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(protocol)
@@ -168,7 +167,6 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 	_arg1 = C.gint(fd)
 
 	_cret = C.g_socket_new_from_fd(_arg1, &_cerr)
-
 	runtime.KeepAlive(fd)
 
 	var _socket *Socket // out
@@ -206,7 +204,6 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 	}
 
 	_cret = C.g_socket_accept(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 
@@ -358,7 +355,6 @@ func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOConditio
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_socket_condition_check(_arg0, _arg1)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(condition)
 
@@ -504,7 +500,6 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_connection_factory_create_connection(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _socketConnection *SocketConnection // out
@@ -532,7 +527,6 @@ func (socket *Socket) AvailableBytes() int {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_available_bytes(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _gssize int // out
@@ -551,7 +545,6 @@ func (socket *Socket) Blocking() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_blocking(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -572,7 +565,6 @@ func (socket *Socket) Broadcast() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_broadcast(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -614,7 +606,6 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_credentials(_arg0, &_cerr)
-
 	runtime.KeepAlive(socket)
 
 	var _credentials *Credentials // out
@@ -636,7 +627,6 @@ func (socket *Socket) Family() SocketFamily {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_family(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _socketFamily SocketFamily // out
@@ -657,7 +647,6 @@ func (socket *Socket) Fd() int {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_fd(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _gint int // out
@@ -676,7 +665,6 @@ func (socket *Socket) Keepalive() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_keepalive(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -697,7 +685,6 @@ func (socket *Socket) ListenBacklog() int {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_listen_backlog(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _gint int // out
@@ -718,7 +705,6 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_local_address(_arg0, &_cerr)
-
 	runtime.KeepAlive(socket)
 
 	var _socketAddress SocketAddresser // out
@@ -742,7 +728,6 @@ func (socket *Socket) MulticastLoopback() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_multicast_loopback(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -763,7 +748,6 @@ func (socket *Socket) MulticastTTL() uint {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_multicast_ttl(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -821,7 +805,6 @@ func (socket *Socket) Protocol() SocketProtocol {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_protocol(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _socketProtocol SocketProtocol // out
@@ -841,7 +824,6 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_remote_address(_arg0, &_cerr)
-
 	runtime.KeepAlive(socket)
 
 	var _socketAddress SocketAddresser // out
@@ -863,7 +845,6 @@ func (socket *Socket) SocketType() SocketType {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_socket_type(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _socketType SocketType // out
@@ -882,7 +863,6 @@ func (socket *Socket) Timeout() uint {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_timeout(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -901,7 +881,6 @@ func (socket *Socket) TTL() uint {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_get_ttl(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -919,7 +898,6 @@ func (socket *Socket) IsClosed() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_is_closed(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -945,7 +923,6 @@ func (socket *Socket) IsConnected() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_is_connected(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -1221,7 +1198,6 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 	_arg3 = C.gint(flags)
 
 	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(messages)
@@ -1272,7 +1248,6 @@ func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 	}
 
 	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1366,7 +1341,6 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	_arg6 = C.gint(flags)
 
 	_cret = C.g_socket_send_message(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -1434,7 +1408,6 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	_arg7 = C.gint64(timeoutUs)
 
 	_cret = C.g_socket_send_message_with_timeout(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_arg8, _arg9, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -1511,7 +1484,6 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 	_arg3 = C.gint(flags)
 
 	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(messages)
@@ -1556,7 +1528,6 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	}
 
 	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -1600,7 +1571,6 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, block
 	}
 
 	_cret = C.g_socket_send_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1869,7 +1839,6 @@ func (socket *Socket) SpeaksIPv4() bool {
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	_cret = C.g_socket_speaks_ipv4(_arg0)
-
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out

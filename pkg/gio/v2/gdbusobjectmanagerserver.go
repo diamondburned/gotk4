@@ -87,7 +87,6 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_new(_arg1)
-
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectManagerServer *DBusObjectManagerServer // out
@@ -143,7 +142,6 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _dBusConnection *DBusConnection // out
@@ -163,7 +161,6 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
 
@@ -207,7 +204,6 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 

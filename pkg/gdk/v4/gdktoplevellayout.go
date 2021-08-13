@@ -63,7 +63,6 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_copy(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _toplevelLayout *ToplevelLayout // out
@@ -86,7 +85,6 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gdk_toplevel_layout_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(other)
 
@@ -110,7 +108,6 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen(_arg0, &_arg1)
-
 	runtime.KeepAlive(layout)
 
 	var _fullscreen bool // out
@@ -135,7 +132,6 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _monitor *Monitor // out
@@ -158,7 +154,6 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_maximized(_arg0, &_arg1)
-
 	runtime.KeepAlive(layout)
 
 	var _maximized bool // out
@@ -183,7 +178,6 @@ func (layout *ToplevelLayout) Resizable() bool {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_resizable(_arg0)
-
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out

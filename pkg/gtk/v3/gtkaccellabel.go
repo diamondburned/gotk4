@@ -97,7 +97,6 @@ func NewAccelLabel(_string string) *AccelLabel {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_label_new(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _accelLabel *AccelLabel // out
@@ -136,7 +135,6 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
-
 	runtime.KeepAlive(accelLabel)
 
 	var _widget Widgetter // out
@@ -158,7 +156,6 @@ func (accelLabel *AccelLabel) AccelWidth() uint {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
-
 	runtime.KeepAlive(accelLabel)
 
 	var _guint uint // out
@@ -178,7 +175,6 @@ func (accelLabel *AccelLabel) Refetch() bool {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
-
 	runtime.KeepAlive(accelLabel)
 
 	var _ok bool // out

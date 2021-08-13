@@ -88,7 +88,6 @@ func (border_ *Border) Copy() *Border {
 	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
 
 	_cret = C.gtk_border_copy(_arg0)
-
 	runtime.KeepAlive(border_)
 
 	var _border *Border // out

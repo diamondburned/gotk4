@@ -179,7 +179,6 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
-
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
 

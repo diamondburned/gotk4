@@ -70,7 +70,6 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 	}
 
 	_cret = C.gtk_shortcut_new(_arg1, _arg2)
-
 	runtime.KeepAlive(trigger)
 	runtime.KeepAlive(action)
 
@@ -89,7 +88,6 @@ func (self *Shortcut) Action() ShortcutActioner {
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_get_action(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _shortcutAction ShortcutActioner // out
@@ -109,7 +107,6 @@ func (self *Shortcut) Arguments() *glib.Variant {
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_get_arguments(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _variant *glib.Variant // out
@@ -133,7 +130,6 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_get_trigger(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _shortcutTrigger ShortcutTriggerer // out

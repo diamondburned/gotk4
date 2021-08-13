@@ -61,7 +61,6 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 	}
 
 	_cret = C.gtk_no_selection_new(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _noSelection *NoSelection // out
@@ -79,7 +78,6 @@ func (self *NoSelection) Model() gio.ListModeller {
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_no_selection_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out

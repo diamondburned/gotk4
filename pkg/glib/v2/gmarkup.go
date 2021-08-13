@@ -143,6 +143,11 @@ func (m MarkupCollectType) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if m contains other.
+func (m MarkupCollectType) Has(other MarkupCollectType) bool {
+	return (m & other) == other
+}
+
 // MarkupParseFlags flags that affect the behaviour of the parser.
 type MarkupParseFlags int
 
@@ -197,6 +202,11 @@ func (m MarkupParseFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if m contains other.
+func (m MarkupParseFlags) Has(other MarkupParseFlags) bool {
+	return (m & other) == other
+}
+
 // MarkupEscapeText escapes text so that the markup parser will parse it
 // verbatim. Less than, greater than, ampersand, etc. are replaced with the
 // corresponding entities. This function would typically be used when writing
@@ -220,7 +230,6 @@ func MarkupEscapeText(text string, length int) string {
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
@@ -281,7 +290,6 @@ func (context *MarkupParseContext) Element() string {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _utf8 string // out
@@ -326,7 +334,6 @@ func (context *MarkupParseContext) UserData() cgo.Handle {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gpointer cgo.Handle // out
@@ -389,7 +396,6 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gpointer cgo.Handle // out

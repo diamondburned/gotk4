@@ -163,7 +163,6 @@ func (context *CellAreaContext) Area() CellAreaer {
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_cell_area_context_get_area(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _cellArea CellAreaer // out

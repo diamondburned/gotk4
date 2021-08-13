@@ -84,7 +84,6 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	_arg1 = C.gint(linkIndex)
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
-
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(linkIndex)
 
@@ -106,7 +105,6 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	_arg1 = C.gint(charIndex)
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
-
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
 
@@ -125,7 +123,6 @@ func (hypertext *Hypertext) NLinks() int {
 	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
-
 	runtime.KeepAlive(hypertext)
 
 	var _gint int // out

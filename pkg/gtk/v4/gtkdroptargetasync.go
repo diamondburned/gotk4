@@ -85,7 +85,6 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
-
 	runtime.KeepAlive(formats)
 	runtime.KeepAlive(actions)
 
@@ -104,7 +103,6 @@ func (self *DropTargetAsync) Actions() gdk.DragAction {
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_async_get_actions(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _dragAction gdk.DragAction // out
@@ -124,7 +122,6 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_async_get_formats(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _contentFormats *gdk.ContentFormats // out

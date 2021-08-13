@@ -123,7 +123,6 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -190,7 +189,6 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 

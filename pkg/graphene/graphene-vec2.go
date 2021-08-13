@@ -105,7 +105,6 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_vec2_dot(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -126,7 +125,6 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v2)))
 
 	_cret = C.graphene_vec2_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 
@@ -147,7 +145,6 @@ func (v *Vec2) X() float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec2_get_x(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -165,7 +162,6 @@ func (v *Vec2) Y() float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec2_get_y(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -189,7 +185,6 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	_arg2 = C.float(y)
 
 	_cret = C.graphene_vec2_init(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -211,7 +206,6 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	_arg1 = (*C.float)(unsafe.Pointer(&src))
 
 	_cret = C.graphene_vec2_init_from_float(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -232,7 +226,6 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_vec2_init_from_vec2(_arg0, _arg1)
-
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(src)
 
@@ -274,7 +267,6 @@ func (v *Vec2) Length() float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec2_length(_arg0)
-
 	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
@@ -360,7 +352,6 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(v1)
 	runtime.KeepAlive(v2)
 	runtime.KeepAlive(epsilon)

@@ -343,7 +343,6 @@ func (chooser *FileChooser) Action() FileChooserAction {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_action(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _fileChooserAction FileChooserAction // out
@@ -364,7 +363,6 @@ func (chooser *FileChooser) Choice(id string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
-
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 
@@ -383,7 +381,6 @@ func (chooser *FileChooser) CreateFolders() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -403,7 +400,6 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _file gio.Filer // out
@@ -425,7 +421,6 @@ func (chooser *FileChooser) CurrentName() string {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_current_name(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -449,7 +444,6 @@ func (chooser *FileChooser) File() gio.Filer {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_file(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _file gio.Filer // out
@@ -468,7 +462,6 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_files(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _listModel gio.ListModeller // out
@@ -486,7 +479,6 @@ func (chooser *FileChooser) Filter() *FileFilter {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filter(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _fileFilter *FileFilter // out
@@ -512,7 +504,6 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_filters(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _listModel gio.ListModeller // out
@@ -531,7 +522,6 @@ func (chooser *FileChooser) SelectMultiple() bool {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -554,7 +544,6 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
-
 	runtime.KeepAlive(chooser)
 
 	var _listModel gio.ListModeller // out

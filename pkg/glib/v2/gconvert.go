@@ -89,7 +89,6 @@ func FilenameDisplayBasename(filename string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_display_basename(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _utf8 string // out
@@ -123,7 +122,6 @@ func FilenameDisplayName(filename string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_display_name(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _utf8 string // out
@@ -146,7 +144,6 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_from_uri(_arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(uri)
 
 	var _hostname string // out
@@ -189,7 +186,6 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_from_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
-
 	runtime.KeepAlive(utf8String)
 	runtime.KeepAlive(len)
 
@@ -225,7 +221,6 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 	}
 
 	_cret = C.g_filename_to_uri(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(hostname)
 
@@ -265,7 +260,6 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
-
 	runtime.KeepAlive(opsysstring)
 	runtime.KeepAlive(len)
 
@@ -361,7 +355,6 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	}
 
 	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
-
 	runtime.KeepAlive(opsysstring)
 
 	var _bytesRead uint    // out
@@ -391,7 +384,6 @@ func URIListExtractURIs(uriList string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_list_extract_uris(_arg1)
-
 	runtime.KeepAlive(uriList)
 
 	var _utf8s []string // out

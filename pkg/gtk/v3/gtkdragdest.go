@@ -86,3 +86,8 @@ func (d DestDefaults) String() string {
 
 	return strings.TrimSuffix(builder.String(), "|")
 }
+
+// Has returns true if d contains other.
+func (d DestDefaults) Has(other DestDefaults) bool {
+	return (d & other) == other
+}

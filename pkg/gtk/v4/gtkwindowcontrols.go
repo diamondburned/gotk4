@@ -107,7 +107,6 @@ func NewWindowControls(side PackType) *WindowControls {
 	_arg1 = C.GtkPackType(side)
 
 	_cret = C.gtk_window_controls_new(_arg1)
-
 	runtime.KeepAlive(side)
 
 	var _windowControls *WindowControls // out
@@ -125,7 +124,6 @@ func (self *WindowControls) DecorationLayout() string {
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -145,7 +143,6 @@ func (self *WindowControls) Empty() bool {
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -165,7 +162,6 @@ func (self *WindowControls) Side() PackType {
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_side(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _packType PackType // out

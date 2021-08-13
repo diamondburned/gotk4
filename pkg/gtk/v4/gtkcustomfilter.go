@@ -92,7 +92,6 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	}
 
 	_cret = C.gtk_custom_filter_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(matchFunc)
 
 	var _customFilter *CustomFilter // out

@@ -66,7 +66,6 @@ func (orientable *Orientable) Orientation() Orientation {
 	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(orientable.Native()))
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
-
 	runtime.KeepAlive(orientable)
 
 	var _orientation Orientation // out

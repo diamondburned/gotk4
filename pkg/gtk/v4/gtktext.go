@@ -157,7 +157,6 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_new_with_buffer(_arg1)
-
 	runtime.KeepAlive(buffer)
 
 	var _text *Text // out
@@ -175,7 +174,6 @@ func (self *Text) ActivatesDefault() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_activates_default(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -196,7 +194,6 @@ func (self *Text) Attributes() *pango.AttrList {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_attributes(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _attrList *pango.AttrList // out
@@ -220,7 +217,6 @@ func (self *Text) Buffer() *EntryBuffer {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_buffer(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _entryBuffer *EntryBuffer // out
@@ -239,7 +235,6 @@ func (self *Text) EnableEmojiCompletion() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_enable_emoji_completion(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -259,7 +254,6 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_extra_menu(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
@@ -279,7 +273,6 @@ func (self *Text) InputHints() InputHints {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_input_hints(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _inputHints InputHints // out
@@ -297,7 +290,6 @@ func (self *Text) InputPurpose() InputPurpose {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_input_purpose(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _inputPurpose InputPurpose // out
@@ -320,7 +312,6 @@ func (self *Text) InvisibleChar() uint32 {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_invisible_char(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gunichar uint32 // out
@@ -343,7 +334,6 @@ func (self *Text) MaxLength() int {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_max_length(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -361,7 +351,6 @@ func (self *Text) OverwriteMode() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_overwrite_mode(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -382,7 +371,6 @@ func (self *Text) PlaceholderText() string {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_placeholder_text(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -403,7 +391,6 @@ func (self *Text) PropagateTextWidth() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_propagate_text_width(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -424,7 +411,6 @@ func (self *Text) Tabs() *pango.TabArray {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_tabs(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _tabArray *pango.TabArray // out
@@ -447,7 +433,6 @@ func (self *Text) TextLength() uint16 {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_text_length(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint16 uint16 // out
@@ -466,7 +451,6 @@ func (self *Text) TruncateMultiline() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_truncate_multiline(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -486,7 +470,6 @@ func (self *Text) Visibility() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_visibility(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -511,7 +494,6 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_grab_focus_without_selecting(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

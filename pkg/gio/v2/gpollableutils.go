@@ -41,7 +41,6 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 	_arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
 
 	_cret = C.g_pollable_source_new(_arg1)
-
 	runtime.KeepAlive(pollableStream)
 
 	var _source *glib.Source // out
@@ -75,7 +74,6 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 	}
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(pollableStream)
 	runtime.KeepAlive(childSource)
@@ -123,7 +121,6 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 	}
 
 	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
@@ -173,7 +170,6 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 	}
 
 	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)

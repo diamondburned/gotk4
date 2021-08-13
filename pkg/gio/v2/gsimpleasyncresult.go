@@ -270,7 +270,6 @@ func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCa
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(sourceObject)
 	runtime.KeepAlive(callback)
 	runtime.KeepAlive(sourceTag)
@@ -302,7 +301,6 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 	_arg4 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(sourceObject)
 	runtime.KeepAlive(callback)
 	runtime.KeepAlive(err)
@@ -361,7 +359,6 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
-
 	runtime.KeepAlive(simple)
 
 	var _ok bool // out
@@ -383,7 +380,6 @@ func (simple *SimpleAsyncResult) OpResGssize() int {
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
-
 	runtime.KeepAlive(simple)
 
 	var _gssize int // out
@@ -548,7 +544,6 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, s
 	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_simple_async_result_is_valid(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(result)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(sourceTag)

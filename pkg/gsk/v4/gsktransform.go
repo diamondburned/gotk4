@@ -31,7 +31,6 @@ func TransformParse(_string string) (*Transform, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_transform_parse(_arg1, &_arg2)
-
 	runtime.KeepAlive(_string)
 
 	var _outTransform *Transform // out

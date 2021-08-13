@@ -134,7 +134,6 @@ func NewPopover(relativeTo Widgetter) *Popover {
 	}
 
 	_cret = C.gtk_popover_new(_arg1)
-
 	runtime.KeepAlive(relativeTo)
 
 	var _popover *Popover // out
@@ -164,7 +163,6 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
-
 	runtime.KeepAlive(relativeTo)
 	runtime.KeepAlive(model)
 
@@ -224,7 +222,6 @@ func (popover *Popover) ConstrainTo() PopoverConstraint {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_constrain_to(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _popoverConstraint PopoverConstraint // out
@@ -243,7 +240,6 @@ func (popover *Popover) DefaultWidget() Widgetter {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_default_widget(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
@@ -264,7 +260,6 @@ func (popover *Popover) Modal() bool {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_modal(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out
@@ -287,7 +282,6 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
-
 	runtime.KeepAlive(popover)
 
 	var _rect gdk.Rectangle // out
@@ -309,7 +303,6 @@ func (popover *Popover) Position() PositionType {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_position(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _positionType PositionType // out
@@ -327,7 +320,6 @@ func (popover *Popover) RelativeTo() Widgetter {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_relative_to(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
@@ -350,7 +342,6 @@ func (popover *Popover) TransitionsEnabled() bool {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_transitions_enabled(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out

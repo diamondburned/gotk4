@@ -145,7 +145,6 @@ func (action *Action) DoAction(i int) bool {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_do_action(_arg0, _arg1)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
@@ -168,7 +167,6 @@ func (action *Action) Description(i int) string {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_description(_arg0, _arg1)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
@@ -214,7 +212,6 @@ func (action *Action) Keybinding(i int) string {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_keybinding(_arg0, _arg1)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
@@ -238,7 +235,6 @@ func (action *Action) LocalizedName(i int) string {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_localized_name(_arg0, _arg1)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
@@ -261,7 +257,6 @@ func (action *Action) NActions() int {
 	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.atk_action_get_n_actions(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _gint int // out
@@ -292,7 +287,6 @@ func (action *Action) Name(i int) string {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_name(_arg0, _arg1)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
@@ -318,7 +312,6 @@ func (action *Action) SetDescription(i int, desc string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_action_set_description(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 	runtime.KeepAlive(desc)

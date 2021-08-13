@@ -130,7 +130,6 @@ func NewPictureForFile(file gio.Filer) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
-
 	runtime.KeepAlive(file)
 
 	var _picture *Picture // out
@@ -154,7 +153,6 @@ func NewPictureForFilename(filename string) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _picture *Picture // out
@@ -177,7 +175,6 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
-
 	runtime.KeepAlive(paintable)
 
 	var _picture *Picture // out
@@ -202,7 +199,6 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _picture *Picture // out
@@ -227,7 +223,6 @@ func NewPictureForResource(resourcePath string) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _picture *Picture // out
@@ -248,7 +243,6 @@ func (self *Picture) AlternativeText() string {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -268,7 +262,6 @@ func (self *Picture) CanShrink() bool {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -291,7 +284,6 @@ func (self *Picture) File() gio.Filer {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_file(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
@@ -312,7 +304,6 @@ func (self *Picture) KeepAspectRatio() bool {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -332,7 +323,6 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_paintable(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _paintable gdk.Paintabler // out

@@ -126,7 +126,6 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
-
 	runtime.KeepAlive(manager)
 
 	var _display *Display // out
@@ -149,7 +148,6 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
-
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(name)
 

@@ -83,7 +83,6 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	}
 
 	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(certificate)
 

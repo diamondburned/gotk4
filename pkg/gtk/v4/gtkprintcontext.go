@@ -112,7 +112,6 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ret *pango.Context // out
@@ -136,7 +135,6 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _layout *pango.Layout // out
@@ -160,7 +158,6 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ret *cairo.Context // out
@@ -183,7 +180,6 @@ func (context *PrintContext) DPIX() float64 {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -202,7 +198,6 @@ func (context *PrintContext) DPIY() float64 {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -225,7 +220,6 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
-
 	runtime.KeepAlive(context)
 
 	var _top float64    // out
@@ -253,7 +247,6 @@ func (context *PrintContext) Height() float64 {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_height(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -272,7 +265,6 @@ func (context *PrintContext) PageSetup() *PageSetup {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _pageSetup *PageSetup // out
@@ -291,7 +283,6 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _fontMap pango.FontMapper // out
@@ -309,7 +300,6 @@ func (context *PrintContext) Width() float64 {
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_print_context_get_width(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out

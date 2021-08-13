@@ -70,7 +70,6 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	}
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(sorter)
 
@@ -91,7 +90,6 @@ func (self *SortListModel) Incremental() bool {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -111,7 +109,6 @@ func (self *SortListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -145,7 +142,6 @@ func (self *SortListModel) Pending() uint {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -163,7 +159,6 @@ func (self *SortListModel) Sorter() *Sorter {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_sorter(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out

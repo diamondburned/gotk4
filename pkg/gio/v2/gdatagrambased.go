@@ -328,7 +328,6 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
-
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(condition)
 
@@ -404,7 +403,6 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(condition)
@@ -490,7 +488,6 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 	_arg4 = C.gint64(timeout)
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(messages)
@@ -571,7 +568,6 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 	_arg4 = C.gint64(timeout)
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(messages)

@@ -89,7 +89,6 @@ func (a *Ray) Equal(b *Ray) bool {
 	_arg1 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_ray_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -153,7 +152,6 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_ray_get_distance_to_plane(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(p)
 
@@ -178,7 +176,6 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_ray_get_distance_to_point(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(p)
 
@@ -244,7 +241,6 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 	}
 
 	_cret = C.graphene_ray_init(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(origin)
 	runtime.KeepAlive(direction)
@@ -267,7 +263,6 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 	_arg1 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_ray_init_from_ray(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(src)
 
@@ -294,7 +289,6 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 	}
 
 	_cret = C.graphene_ray_init_from_vec3(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(origin)
 	runtime.KeepAlive(direction)
@@ -318,7 +312,6 @@ func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_ray_intersect_box(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(b)
 
@@ -343,7 +336,6 @@ func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_ray_intersect_sphere(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(s)
 
@@ -368,7 +360,6 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 	_arg1 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	_cret = C.graphene_ray_intersect_triangle(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(t)
 
@@ -394,7 +385,6 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_ray_intersects_box(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(b)
 
@@ -420,7 +410,6 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_ray_intersects_sphere(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(s)
 
@@ -446,7 +435,6 @@ func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 	_arg1 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	_cret = C.graphene_ray_intersects_triangle(_arg0, _arg1)
-
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(t)
 

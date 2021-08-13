@@ -292,7 +292,6 @@ func (stream *InputStream) HasPending() bool {
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_input_stream_has_pending(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -312,7 +311,6 @@ func (stream *InputStream) IsClosed() bool {
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_input_stream_is_closed(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -416,7 +414,6 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_read_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -482,7 +479,6 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	_arg1 = C.gsize(count)
 
 	_cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(count)
@@ -561,7 +557,6 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_input_stream_skip_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 

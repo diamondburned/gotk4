@@ -175,7 +175,6 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	_arg2 = C.int(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(buttonText)
 	runtime.KeepAlive(responseId)
@@ -208,7 +207,6 @@ func (infoBar *InfoBar) MessageType() MessageType {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_message_type(_arg0)
-
 	runtime.KeepAlive(infoBar)
 
 	var _messageType MessageType // out
@@ -226,7 +224,6 @@ func (infoBar *InfoBar) Revealed() bool {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
-
 	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
@@ -247,7 +244,6 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
-
 	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out

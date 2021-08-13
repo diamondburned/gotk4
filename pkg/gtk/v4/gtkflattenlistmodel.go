@@ -59,7 +59,6 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	}
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _flattenListModel *FlattenListModel // out
@@ -77,7 +76,6 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -99,7 +97,6 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
-
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 

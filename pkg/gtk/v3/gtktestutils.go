@@ -35,7 +35,6 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widgetter {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_test_create_simple_window(_arg1, _arg2)
-
 	runtime.KeepAlive(windowTitle)
 	runtime.KeepAlive(dialogText)
 
@@ -63,7 +62,6 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_test_find_label(_arg1, _arg2)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(labelPattern)
 
@@ -89,7 +87,6 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 	_arg2 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
-
 	runtime.KeepAlive(baseWidget)
 	runtime.KeepAlive(widgetType)
 
@@ -119,7 +116,6 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 	_arg3 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(labelPattern)
 	runtime.KeepAlive(widgetType)
@@ -153,7 +149,6 @@ func TestSliderGetValue(widget Widgetter) float64 {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_test_slider_get_value(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _gdouble float64 // out
@@ -199,7 +194,6 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	}
 
 	_cret = C.gtk_test_spin_button_click(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(spinner)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(upwards)
@@ -224,7 +218,6 @@ func TestTextGet(widget Widgetter) string {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_test_text_get(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _utf8 string // out
@@ -273,7 +266,6 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 	_arg3 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(modifiers)
@@ -305,7 +297,6 @@ func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType
 	_arg3 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)

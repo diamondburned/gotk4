@@ -67,7 +67,6 @@ func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_threads_add_idle_full(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(function)
 
@@ -134,7 +133,6 @@ func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) ui
 	_arg5 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_threads_add_timeout_full(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)
@@ -164,7 +162,6 @@ func ThreadsAddTimeoutSeconds(priority int, interval uint, function glib.SourceF
 	_arg5 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_threads_add_timeout_seconds_full(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)

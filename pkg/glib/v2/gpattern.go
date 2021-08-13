@@ -27,7 +27,6 @@ func PatternMatchSimple(pattern string, _string string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_pattern_match_simple(_arg1, _arg2)
-
 	runtime.KeepAlive(pattern)
 	runtime.KeepAlive(_string)
 

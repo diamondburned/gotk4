@@ -271,7 +271,6 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
-
 	runtime.KeepAlive(menuShell)
 
 	var _widget Widgetter // out
@@ -289,7 +288,6 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
-
 	runtime.KeepAlive(menuShell)
 
 	var _widget Widgetter // out
@@ -308,7 +306,6 @@ func (menuShell *MenuShell) TakeFocus() bool {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
-
 	runtime.KeepAlive(menuShell)
 
 	var _ok bool // out

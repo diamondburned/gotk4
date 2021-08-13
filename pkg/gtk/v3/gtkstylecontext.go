@@ -613,6 +613,11 @@ func (s StyleContextPrintFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
+	return (s & other) == other
+}
+
 // DrawInsertionCursor draws a text caret on cr at location. This is not a style
 // function but merely a convenience function for drawing the standard cursor
 // shape.
@@ -986,7 +991,6 @@ func (context *StyleContext) Direction() TextDirection {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_direction(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _textDirection TextDirection // out
@@ -1009,7 +1013,6 @@ func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 	_arg1 = C.GtkStateFlags(state)
 
 	_cret = C.gtk_style_context_get_font(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
@@ -1028,7 +1031,6 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_frame_clock(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _frameClock gdk.FrameClocker // out
@@ -1049,7 +1051,6 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_junction_sides(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _junctionSides JunctionSides // out
@@ -1110,7 +1111,6 @@ func (context *StyleContext) Parent() *StyleContext {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_parent(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _styleContext *StyleContext // out
@@ -1130,7 +1130,6 @@ func (context *StyleContext) Path() *WidgetPath {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_path(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _widgetPath *WidgetPath // out
@@ -1190,7 +1189,6 @@ func (context *StyleContext) Scale() int {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _gint int // out
@@ -1208,7 +1206,6 @@ func (context *StyleContext) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_screen(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _screen *gdk.Screen // out
@@ -1244,7 +1241,6 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_get_section(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(property)
 
@@ -1273,7 +1269,6 @@ func (context *StyleContext) State() StateFlags {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_state(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _stateFlags StateFlags // out
@@ -1318,7 +1313,6 @@ func (context *StyleContext) HasClass(className string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
 
@@ -1346,7 +1340,6 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_region(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(regionName)
 
@@ -1383,7 +1376,6 @@ func (context *StyleContext) ListClasses() []string {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_list_classes(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _list []string // out
@@ -1409,7 +1401,6 @@ func (context *StyleContext) ListRegions() []string {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_list_regions(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _list []string // out
@@ -1437,7 +1428,6 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(colorName)
 
@@ -1466,7 +1456,6 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_icon_set(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(stockId)
 
@@ -1840,7 +1829,6 @@ func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 	_arg1 = C.GtkStateType(state)
 
 	_cret = C.gtk_style_context_state_is_running(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(state)
 
@@ -1873,7 +1861,6 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	_arg1 = C.GtkStyleContextPrintFlags(flags)
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(flags)
 

@@ -107,7 +107,6 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 	_arg1 = C.int(size)
 
 	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(size)
@@ -170,7 +169,6 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
-
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(res)
 

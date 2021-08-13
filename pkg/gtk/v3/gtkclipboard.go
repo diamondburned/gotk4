@@ -232,7 +232,6 @@ func (clipboard *Clipboard) Display() *gdk.Display {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_get_display(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _display *gdk.Display // out
@@ -258,7 +257,6 @@ func (clipboard *Clipboard) Owner() *externglib.Object {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_get_owner(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _object *externglib.Object // out
@@ -412,7 +410,6 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_image(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -445,7 +442,6 @@ func (clipboard *Clipboard) WaitForText() string {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_text(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _utf8 string // out
@@ -468,7 +464,6 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _utf8s []string // out
@@ -509,7 +504,6 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_image_available(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out
@@ -539,7 +533,6 @@ func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
-
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(buffer)
 
@@ -566,7 +559,6 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_text_available(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out
@@ -593,7 +585,6 @@ func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
-
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out
@@ -614,7 +605,6 @@ func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_clipboard_get_default(_arg1)
-
 	runtime.KeepAlive(display)
 
 	var _clipboard *Clipboard // out

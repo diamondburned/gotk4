@@ -63,7 +63,6 @@ func NewFileIcon(file Filer) *FileIcon {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_icon_new(_arg1)
-
 	runtime.KeepAlive(file)
 
 	var _fileIcon *FileIcon // out
@@ -81,7 +80,6 @@ func (icon *FileIcon) File() Filer {
 	_arg0 = (*C.GFileIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_file_icon_get_file(_arg0)
-
 	runtime.KeepAlive(icon)
 
 	var _file Filer // out

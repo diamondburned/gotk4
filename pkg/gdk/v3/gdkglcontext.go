@@ -137,7 +137,6 @@ func (context *GLContext) DebugEnabled() bool {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_debug_enabled(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -157,7 +156,6 @@ func (context *GLContext) Display() *Display {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_display(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _display *Display // out
@@ -178,7 +176,6 @@ func (context *GLContext) ForwardCompatible() bool {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_forward_compatible(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -219,7 +216,6 @@ func (context *GLContext) SharedContext() GLContexter {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_shared_context(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _glContext GLContexter // out
@@ -239,7 +235,6 @@ func (context *GLContext) UseES() bool {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_use_es(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -281,7 +276,6 @@ func (context *GLContext) Window() Windower {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_window(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _window Windower // out
@@ -316,7 +310,6 @@ func (context *GLContext) IsLegacy() bool {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_is_legacy(_arg0)
-
 	runtime.KeepAlive(context)
 
 	var _ok bool // out

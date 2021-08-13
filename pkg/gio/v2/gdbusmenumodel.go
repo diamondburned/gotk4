@@ -47,7 +47,6 @@ func DBusMenuModelGet(connection *DBusConnection, busName string, objectPath str
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_menu_model_get(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(busName)
 	runtime.KeepAlive(objectPath)

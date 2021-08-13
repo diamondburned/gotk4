@@ -181,7 +181,6 @@ func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
 
 	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(sortable)
 
 	var _sortColumnId int // out
@@ -207,7 +206,6 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
-
 	runtime.KeepAlive(sortable)
 
 	var _ok bool // out

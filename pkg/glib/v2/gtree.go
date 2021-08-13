@@ -62,7 +62,6 @@ func (tree *Tree) Height() int {
 	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_height(_arg0)
-
 	runtime.KeepAlive(tree)
 
 	var _gint int // out
@@ -103,7 +102,6 @@ func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
-
 	runtime.KeepAlive(tree)
 	runtime.KeepAlive(key)
 
@@ -128,7 +126,6 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(tree)
 	runtime.KeepAlive(lookupKey)
 
@@ -153,7 +150,6 @@ func (tree *Tree) Nnodes() int {
 	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_nnodes(_arg0)
-
 	runtime.KeepAlive(tree)
 
 	var _gint int // out
@@ -181,7 +177,6 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
-
 	runtime.KeepAlive(tree)
 	runtime.KeepAlive(key)
 
@@ -224,7 +219,6 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
-
 	runtime.KeepAlive(tree)
 	runtime.KeepAlive(key)
 

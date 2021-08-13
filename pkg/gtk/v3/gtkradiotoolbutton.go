@@ -103,7 +103,6 @@ func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	}
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
-
 	runtime.KeepAlive(group)
 
 	var _radioToolButton *RadioToolButton // out
@@ -130,7 +129,6 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
-
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(stockId)
 

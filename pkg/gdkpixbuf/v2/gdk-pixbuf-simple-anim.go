@@ -52,7 +52,6 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim 
 	_arg3 = C.gfloat(rate)
 
 	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 	runtime.KeepAlive(rate)
@@ -86,7 +85,6 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
-
 	runtime.KeepAlive(animation)
 
 	var _ok bool // out

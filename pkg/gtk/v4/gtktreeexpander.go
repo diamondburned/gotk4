@@ -111,7 +111,6 @@ func (self *TreeExpander) Child() Widgetter {
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -135,7 +134,6 @@ func (self *TreeExpander) Item() *externglib.Object {
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out
@@ -153,7 +151,6 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _treeListRow *TreeListRow // out

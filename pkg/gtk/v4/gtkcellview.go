@@ -111,7 +111,6 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 
@@ -133,7 +132,6 @@ func NewCellViewWithMarkup(markup string) *CellView {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
-
 	runtime.KeepAlive(markup)
 
 	var _cellView *CellView // out
@@ -153,7 +151,6 @@ func NewCellViewWithText(text string) *CellView {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
-
 	runtime.KeepAlive(text)
 
 	var _cellView *CellView // out
@@ -172,7 +169,6 @@ func NewCellViewWithTexture(texture gdk.Texturer) *CellView {
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gtk_cell_view_new_with_texture(_arg1)
-
 	runtime.KeepAlive(texture)
 
 	var _cellView *CellView // out
@@ -191,7 +187,6 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
-
 	runtime.KeepAlive(cellView)
 
 	var _treePath *TreePath // out
@@ -215,7 +210,6 @@ func (cellView *CellView) DrawSensitive() bool {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
-
 	runtime.KeepAlive(cellView)
 
 	var _ok bool // out
@@ -236,7 +230,6 @@ func (cellView *CellView) FitModel() bool {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
-
 	runtime.KeepAlive(cellView)
 
 	var _ok bool // out
@@ -256,7 +249,6 @@ func (cellView *CellView) Model() TreeModeller {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
-
 	runtime.KeepAlive(cellView)
 
 	var _treeModel TreeModeller // out

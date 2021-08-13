@@ -183,7 +183,6 @@ func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, error
 	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_tls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(peerCert)
 	runtime.KeepAlive(errors)
@@ -206,7 +205,6 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_certificate(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -265,7 +263,6 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_database(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsDatabase TLSDatabaser // out
@@ -287,7 +284,6 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_interaction(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsInteraction *TLSInteraction // out
@@ -313,7 +309,6 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_negotiated_protocol(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _utf8 string // out
@@ -335,7 +330,6 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_peer_certificate(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -357,7 +351,6 @@ func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_peer_certificate_errors(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
@@ -380,7 +373,6 @@ func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_rehandshake_mode(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _tlsRehandshakeMode TLSRehandshakeMode // out
@@ -400,7 +392,6 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_require_close_notify(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out
@@ -423,7 +414,6 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_connection_get_use_system_certdb(_arg0)
-
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out

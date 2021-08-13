@@ -145,7 +145,6 @@ func (source *DragSource) Actions() gdk.DragAction {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_actions(_arg0)
-
 	runtime.KeepAlive(source)
 
 	var _dragAction gdk.DragAction // out
@@ -163,7 +162,6 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
-
 	runtime.KeepAlive(source)
 
 	var _contentProvider *gdk.ContentProvider // out
@@ -188,7 +186,6 @@ func (source *DragSource) Drag() gdk.Dragger {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
-
 	runtime.KeepAlive(source)
 
 	var _drag gdk.Dragger // out

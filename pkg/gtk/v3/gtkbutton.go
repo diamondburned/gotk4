@@ -161,7 +161,6 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)
-
 	runtime.KeepAlive(iconName)
 	runtime.KeepAlive(size)
 
@@ -189,7 +188,6 @@ func NewButtonFromStock(stockId string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_from_stock(_arg1)
-
 	runtime.KeepAlive(stockId)
 
 	var _button *Button // out
@@ -209,7 +207,6 @@ func NewButtonWithLabel(label string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _button *Button // out
@@ -232,7 +229,6 @@ func NewButtonWithMnemonic(label string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _button *Button // out
@@ -296,7 +292,6 @@ func (button *Button) AlwaysShowImage() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_always_show_image(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -317,7 +312,6 @@ func (button *Button) EventWindow() gdk.Windower {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_event_window(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _window gdk.Windower // out
@@ -338,7 +332,6 @@ func (button *Button) FocusOnClick() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_focus_on_click(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -360,7 +353,6 @@ func (button *Button) Image() Widgetter {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_image(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
@@ -381,7 +373,6 @@ func (button *Button) ImagePosition() PositionType {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_image_position(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _positionType PositionType // out
@@ -402,7 +393,6 @@ func (button *Button) Label() string {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_label(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -420,7 +410,6 @@ func (button *Button) Relief() ReliefStyle {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_relief(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _reliefStyle ReliefStyle // out
@@ -440,7 +429,6 @@ func (button *Button) UseStock() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_stock(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -461,7 +449,6 @@ func (button *Button) UseUnderline() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out

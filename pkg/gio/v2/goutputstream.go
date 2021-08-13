@@ -517,7 +517,6 @@ func (stream *OutputStream) HasPending() bool {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_has_pending(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -537,7 +536,6 @@ func (stream *OutputStream) IsClosed() bool {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_is_closed(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -559,7 +557,6 @@ func (stream *OutputStream) IsClosing() bool {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_is_closing(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -610,7 +607,6 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(source)
@@ -676,7 +672,6 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -730,7 +725,6 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 	}
 
 	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -958,7 +952,6 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -984,7 +977,6 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 

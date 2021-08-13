@@ -88,7 +88,6 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
-
 	runtime.KeepAlive(actionBar)
 
 	var _widget Widgetter // out
@@ -108,7 +107,6 @@ func (actionBar *ActionBar) Revealed() bool {
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
 
 	_cret = C.gtk_action_bar_get_revealed(_arg0)
-
 	runtime.KeepAlive(actionBar)
 
 	var _ok bool // out

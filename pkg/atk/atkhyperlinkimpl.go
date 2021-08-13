@@ -88,7 +88,6 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(impl.Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
-
 	runtime.KeepAlive(impl)
 
 	var _hyperlink *Hyperlink // out

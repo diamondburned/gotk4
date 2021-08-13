@@ -91,7 +91,6 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
-
 	runtime.KeepAlive(container)
 
 	var _list []CellAccessible // out

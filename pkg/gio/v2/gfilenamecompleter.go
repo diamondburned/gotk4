@@ -82,7 +82,6 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
-
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
 
@@ -107,7 +106,6 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
-
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
 

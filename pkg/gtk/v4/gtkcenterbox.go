@@ -114,7 +114,6 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_baseline_position(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _baselinePosition BaselinePosition // out
@@ -132,7 +131,6 @@ func (self *CenterBox) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_center_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -152,7 +150,6 @@ func (self *CenterBox) EndWidget() Widgetter {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_end_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -172,7 +169,6 @@ func (self *CenterBox) StartWidget() Widgetter {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_start_widget(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out

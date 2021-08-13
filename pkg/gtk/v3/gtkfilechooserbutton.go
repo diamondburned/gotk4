@@ -116,7 +116,6 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 	_arg2 = C.GtkFileChooserAction(action)
 
 	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
-
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(action)
 
@@ -143,7 +142,6 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
-
 	runtime.KeepAlive(dialog)
 
 	var _fileChooserButton *FileChooserButton // out
@@ -164,7 +162,6 @@ func (button *FileChooserButton) FocusOnClick() bool {
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -185,7 +182,6 @@ func (button *FileChooserButton) Title() string {
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_title(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -204,7 +200,6 @@ func (button *FileChooserButton) WidthChars() int {
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
-
 	runtime.KeepAlive(button)
 
 	var _gint int // out

@@ -72,7 +72,6 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_password_new(_arg1, _arg2)
-
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(description)
 
@@ -92,7 +91,6 @@ func (password *TLSPassword) Description() string {
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_password_get_description(_arg0)
-
 	runtime.KeepAlive(password)
 
 	var _utf8 string // out
@@ -110,7 +108,6 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_password_get_flags(_arg0)
-
 	runtime.KeepAlive(password)
 
 	var _tlsPasswordFlags TLSPasswordFlags // out
@@ -135,7 +132,6 @@ func (password *TLSPassword) Value(length *uint) *byte {
 	}
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
-
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(length)
 
@@ -156,7 +152,6 @@ func (password *TLSPassword) Warning() string {
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_password_get_warning(_arg0)
-
 	runtime.KeepAlive(password)
 
 	var _utf8 string // out

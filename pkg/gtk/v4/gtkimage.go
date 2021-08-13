@@ -168,7 +168,6 @@ func NewImageFromFile(filename string) *Image {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
-
 	runtime.KeepAlive(filename)
 
 	var _image *Image // out
@@ -191,7 +190,6 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.gtk_image_new_from_gicon(_arg1)
-
 	runtime.KeepAlive(icon)
 
 	var _image *Image // out
@@ -217,7 +215,6 @@ func NewImageFromIconName(iconName string) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
-
 	runtime.KeepAlive(iconName)
 
 	var _image *Image // out
@@ -244,7 +241,6 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
-
 	runtime.KeepAlive(paintable)
 
 	var _image *Image // out
@@ -275,7 +271,6 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
-
 	runtime.KeepAlive(pixbuf)
 
 	var _image *Image // out
@@ -306,7 +301,6 @@ func NewImageFromResource(resourcePath string) *Image {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
-
 	runtime.KeepAlive(resourcePath)
 
 	var _image *Image // out
@@ -338,7 +332,6 @@ func (image *Image) GIcon() gio.Iconner {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_gicon(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _icon gio.Iconner // out
@@ -362,7 +355,6 @@ func (image *Image) IconName() string {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_icon_name(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
@@ -382,7 +374,6 @@ func (image *Image) IconSize() IconSize {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_icon_size(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _iconSize IconSize // out
@@ -404,7 +395,6 @@ func (image *Image) Paintable() gdk.Paintabler {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_paintable(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _paintable gdk.Paintabler // out
@@ -424,7 +414,6 @@ func (image *Image) PixelSize() int {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _gint int // out
@@ -445,7 +434,6 @@ func (image *Image) StorageType() ImageType {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
-
 	runtime.KeepAlive(image)
 
 	var _imageType ImageType // out

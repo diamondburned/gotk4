@@ -61,7 +61,6 @@ func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 	_arg1 = C.GZlibCompressorFormat(format)
 
 	_cret = C.g_zlib_decompressor_new(_arg1)
-
 	runtime.KeepAlive(format)
 
 	var _zlibDecompressor *ZlibDecompressor // out
@@ -83,7 +82,6 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(decompressor.Native()))
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
-
 	runtime.KeepAlive(decompressor)
 
 	var _fileInfo *FileInfo // out

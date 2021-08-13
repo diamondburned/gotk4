@@ -89,7 +89,6 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	}
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
-
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)
 

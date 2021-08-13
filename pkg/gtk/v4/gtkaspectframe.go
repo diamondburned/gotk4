@@ -76,7 +76,6 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 	}
 
 	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4)
-
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
 	runtime.KeepAlive(ratio)
@@ -97,7 +96,6 @@ func (self *AspectFrame) Child() Widgetter {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_child(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -118,7 +116,6 @@ func (self *AspectFrame) ObeyChild() bool {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_obey_child(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -138,7 +135,6 @@ func (self *AspectFrame) Ratio() float32 {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_ratio(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out
@@ -157,7 +153,6 @@ func (self *AspectFrame) XAlign() float32 {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_xalign(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out
@@ -176,7 +171,6 @@ func (self *AspectFrame) YAlign() float32 {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_yalign(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out

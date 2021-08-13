@@ -487,7 +487,6 @@ func (area *CellArea) Activate(context *CellAreaContext, widget Widgetter, cellA
 	}
 
 	_cret = C.gtk_cell_area_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -524,7 +523,6 @@ func (area *CellArea) ActivateCell(widget Widgetter, renderer CellRendererer, ev
 	_arg5 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_area_activate_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(renderer)
@@ -655,7 +653,6 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_cell_area_attribute_get_column(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
@@ -725,7 +722,6 @@ func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_cell_area_copy_context(_arg0, _arg1)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 
@@ -748,7 +744,6 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_create_context(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _cellAreaContext *CellAreaContext // out
@@ -776,7 +771,6 @@ func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event gd
 	_arg5 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_area_event(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -806,7 +800,6 @@ func (area *CellArea) Focus(direction DirectionType) bool {
 	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(direction)
 
@@ -914,7 +907,6 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	_arg5 = C.int(y)
 
 	_cret = C.gtk_cell_area_get_cell_at_position(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -941,7 +933,6 @@ func (area *CellArea) CurrentPathString() string {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_get_current_path_string(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _utf8 string // out
@@ -960,7 +951,6 @@ func (area *CellArea) EditWidget() CellEditabler {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_get_edit_widget(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _cellEditable CellEditabler // out
@@ -978,7 +968,6 @@ func (area *CellArea) EditedCell() CellRendererer {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_get_edited_cell(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _cellRenderer CellRendererer // out
@@ -996,7 +985,6 @@ func (area *CellArea) FocusCell() CellRendererer {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_get_focus_cell(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _cellRenderer CellRendererer // out
@@ -1021,7 +1009,6 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gtk_cell_area_get_focus_from_sibling(_arg0, _arg1)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
@@ -1044,7 +1031,6 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gtk_cell_area_get_focus_siblings(_arg0, _arg1)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
@@ -1215,7 +1201,6 @@ func (area *CellArea) RequestMode() SizeRequestMode {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_get_request_mode(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _sizeRequestMode SizeRequestMode // out
@@ -1235,7 +1220,6 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gtk_cell_area_has_renderer(_arg0, _arg1)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
@@ -1282,7 +1266,6 @@ func (area *CellArea) IsActivatable() bool {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_cell_area_is_activatable(_arg0)
-
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
@@ -1307,7 +1290,6 @@ func (area *CellArea) IsFocusSibling(renderer CellRendererer, sibling CellRender
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
 
 	_cret = C.gtk_cell_area_is_focus_sibling(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(sibling)

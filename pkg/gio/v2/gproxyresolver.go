@@ -122,7 +122,6 @@ func (resolver *ProxyResolver) IsSupported() bool {
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
-
 	runtime.KeepAlive(resolver)
 
 	var _ok bool // out
@@ -163,7 +162,6 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -235,7 +233,6 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 

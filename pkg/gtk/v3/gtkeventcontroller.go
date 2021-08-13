@@ -69,7 +69,6 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
-
 	runtime.KeepAlive(controller)
 
 	var _propagationPhase PropagationPhase // out
@@ -87,7 +86,6 @@ func (controller *EventController) Widget() Widgetter {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
-
 	runtime.KeepAlive(controller)
 
 	var _widget Widgetter // out

@@ -119,7 +119,6 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _shortcutController *ShortcutController // out
@@ -155,7 +154,6 @@ func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _modifierType gdk.ModifierType // out
@@ -174,7 +172,6 @@ func (self *ShortcutController) Scope() ShortcutScope {
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _shortcutScope ShortcutScope // out

@@ -92,7 +92,6 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _appInfo gio.AppInfor // out
@@ -113,7 +112,6 @@ func (self *AppChooser) ContentType() string {
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out

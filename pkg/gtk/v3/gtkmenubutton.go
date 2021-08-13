@@ -182,7 +182,6 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_align_widget(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _widget Widgetter // out
@@ -202,7 +201,6 @@ func (menuButton *MenuButton) Direction() ArrowType {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _arrowType ArrowType // out
@@ -220,7 +218,6 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _menuModel gio.MenuModeller // out
@@ -241,7 +238,6 @@ func (menuButton *MenuButton) Popover() *Popover {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _popover *Popover // out
@@ -262,7 +258,6 @@ func (menuButton *MenuButton) Popup() *Menu {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_popup(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _menu *Menu // out
@@ -283,7 +278,6 @@ func (menuButton *MenuButton) UsePopover() bool {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_use_popover(_arg0)
-
 	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out

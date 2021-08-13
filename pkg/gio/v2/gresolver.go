@@ -88,6 +88,11 @@ func (r ResolverNameLookupFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if r contains other.
+func (r ResolverNameLookupFlags) Has(other ResolverNameLookupFlags) bool {
+	return (r & other) == other
+}
+
 // ResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -309,7 +314,6 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -371,7 +375,6 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
@@ -424,7 +427,6 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_resolver_lookup_by_name(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostname)
@@ -493,7 +495,6 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
@@ -536,7 +537,6 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	_arg2 = C.GResolverNameLookupFlags(flags)
 
 	_cret = C.g_resolver_lookup_by_name_with_flags(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostname)
@@ -609,7 +609,6 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_with_flags_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
@@ -658,7 +657,6 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 	_arg2 = C.GResolverRecordType(recordType)
 
 	_cret = C.g_resolver_lookup_records(_arg0, _arg1, _arg2, _arg3, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(rrname)
@@ -735,7 +733,6 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_records_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
@@ -800,7 +797,6 @@ func (resolver *Resolver) LookupService(ctx context.Context, service string, pro
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_resolver_lookup_service(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(service)
@@ -882,7 +878,6 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_service_finish(_arg0, _arg1, &_cerr)
-
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 

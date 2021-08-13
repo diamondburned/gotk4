@@ -73,7 +73,6 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	}
 
 	_cret = C.pango_tab_array_new(_arg1, _arg2)
-
 	runtime.KeepAlive(initialSize)
 	runtime.KeepAlive(positionsInPixels)
 
@@ -95,7 +94,6 @@ func (src *TabArray) Copy() *TabArray {
 	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.pango_tab_array_copy(_arg0)
-
 	runtime.KeepAlive(src)
 
 	var _tabArray *TabArray // out
@@ -117,7 +115,6 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
-
 	runtime.KeepAlive(tabArray)
 
 	var _ok bool // out
@@ -137,7 +134,6 @@ func (tabArray *TabArray) Size() int {
 	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
-
 	runtime.KeepAlive(tabArray)
 
 	var _gint int // out

@@ -55,7 +55,6 @@ func NewMountOperation(parent *Window) *MountOperation {
 	}
 
 	_cret = C.gtk_mount_operation_new(_arg1)
-
 	runtime.KeepAlive(parent)
 
 	var _mountOperation *MountOperation // out
@@ -73,7 +72,6 @@ func (op *MountOperation) Parent() *Window {
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _window *Window // out
@@ -91,7 +89,6 @@ func (op *MountOperation) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_get_screen(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _screen *gdk.Screen // out
@@ -115,7 +112,6 @@ func (op *MountOperation) IsShowing() bool {
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out

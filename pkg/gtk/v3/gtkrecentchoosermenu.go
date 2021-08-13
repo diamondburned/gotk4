@@ -122,7 +122,6 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
-
 	runtime.KeepAlive(manager)
 
 	var _recentChooserMenu *RecentChooserMenu // out
@@ -141,7 +140,6 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
-
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out

@@ -259,7 +259,6 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.gtk_print_run_page_setup_dialog(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(pageSetup)
 	runtime.KeepAlive(settings)
@@ -446,7 +445,6 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_default_page_setup(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _pageSetup *PageSetup // out
@@ -464,7 +462,6 @@ func (op *PrintOperation) EmbedPageSetup() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_embed_page_setup(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -506,7 +503,6 @@ func (op *PrintOperation) HasSelection() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_has_selection(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -534,7 +530,6 @@ func (op *PrintOperation) NPagesToPrint() int {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _gint int // out
@@ -556,7 +551,6 @@ func (op *PrintOperation) PrintSettings() *PrintSettings {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_print_settings(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _printSettings *PrintSettings // out
@@ -575,7 +569,6 @@ func (op *PrintOperation) Status() PrintStatus {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_status(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _printStatus PrintStatus // out
@@ -598,7 +591,6 @@ func (op *PrintOperation) StatusString() string {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_status_string(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -616,7 +608,6 @@ func (op *PrintOperation) SupportSelection() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_support_selection(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -642,7 +633,6 @@ func (op *PrintOperation) IsFinished() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_is_finished(_arg0)
-
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -720,7 +710,6 @@ func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (Prin
 	}
 
 	_cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(parent)

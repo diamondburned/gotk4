@@ -172,7 +172,6 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _toggleButton *ToggleButton // out
@@ -194,7 +193,6 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
-
 	runtime.KeepAlive(label)
 
 	var _toggleButton *ToggleButton // out
@@ -214,7 +212,6 @@ func (toggleButton *ToggleButton) Active() bool {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
-
 	runtime.KeepAlive(toggleButton)
 
 	var _ok bool // out

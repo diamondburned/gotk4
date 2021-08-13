@@ -209,6 +209,11 @@ func (t ToplevelState) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if t contains other.
+func (t ToplevelState) Has(other ToplevelState) bool {
+	return (t & other) == other
+}
+
 // Toplevel: GdkToplevel is a freestanding toplevel surface.
 //
 // The GdkToplevel interface provides useful APIs for interacting with the
@@ -364,7 +369,6 @@ func (toplevel *Toplevel) State() ToplevelState {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_get_state(_arg0)
-
 	runtime.KeepAlive(toplevel)
 
 	var _toplevelState ToplevelState // out
@@ -418,7 +422,6 @@ func (toplevel *Toplevel) Lower() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_lower(_arg0)
-
 	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out
@@ -440,7 +443,6 @@ func (toplevel *Toplevel) Minimize() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_minimize(_arg0)
-
 	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out
@@ -639,7 +641,6 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
-
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(event)
 
@@ -661,7 +662,6 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
-
 	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out

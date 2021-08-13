@@ -65,7 +65,6 @@ func NewTextTag(name string) *TextTag {
 	}
 
 	_cret = C.gtk_text_tag_new(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _textTag *TextTag // out
@@ -102,7 +101,6 @@ func (tag *TextTag) Priority() int {
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
-
 	runtime.KeepAlive(tag)
 
 	var _gint int // out

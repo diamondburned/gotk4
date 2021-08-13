@@ -80,6 +80,11 @@ func (s ShapeFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s ShapeFlags) Has(other ShapeFlags) bool {
+	return (s & other) == other
+}
+
 // ReorderItems: reorder items from logical order to visual order.
 //
 // The visual order is determined from the associated directional levels of the
@@ -97,7 +102,6 @@ func ReorderItems(logicalItems []Item) []Item {
 	defer C.g_list_free(_arg1)
 
 	_cret = C.pango_reorder_items(_arg1)
-
 	runtime.KeepAlive(logicalItems)
 
 	var _list []Item // out
@@ -332,7 +336,6 @@ func (_string *GlyphString) Copy() *GlyphString {
 	}
 
 	_cret = C.pango_glyph_string_copy(_arg0)
-
 	runtime.KeepAlive(_string)
 
 	var _glyphString *GlyphString // out
@@ -423,7 +426,6 @@ func (glyphs *GlyphString) Width() int {
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
-
 	runtime.KeepAlive(glyphs)
 
 	var _gint int // out

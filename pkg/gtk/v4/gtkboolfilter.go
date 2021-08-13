@@ -52,7 +52,6 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 	}
 
 	_cret = C.gtk_bool_filter_new(_arg1)
-
 	runtime.KeepAlive(expression)
 
 	var _boolFilter *BoolFilter // out
@@ -71,7 +70,6 @@ func (self *BoolFilter) Expression() Expressioner {
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -91,7 +89,6 @@ func (self *BoolFilter) Invert() bool {
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

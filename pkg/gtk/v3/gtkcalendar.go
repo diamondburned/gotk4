@@ -90,6 +90,11 @@ func (c CalendarDisplayOptions) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if c contains other.
+func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
+	return (c & other) == other
+}
+
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns NULL when no information is available.
@@ -240,7 +245,6 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
-
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
 
@@ -262,7 +266,6 @@ func (calendar *Calendar) DetailHeightRows() int {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	_cret = C.gtk_calendar_get_detail_height_rows(_arg0)
-
 	runtime.KeepAlive(calendar)
 
 	var _gint int // out
@@ -281,7 +284,6 @@ func (calendar *Calendar) DetailWidthChars() int {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	_cret = C.gtk_calendar_get_detail_width_chars(_arg0)
-
 	runtime.KeepAlive(calendar)
 
 	var _gint int // out
@@ -299,7 +301,6 @@ func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	_cret = C.gtk_calendar_get_display_options(_arg0)
-
 	runtime.KeepAlive(calendar)
 
 	var _calendarDisplayOptions CalendarDisplayOptions // out

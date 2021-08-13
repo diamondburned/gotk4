@@ -94,7 +94,6 @@ func (self *DragIcon) Child() Widgetter {
 	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -137,7 +136,6 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
-
 	runtime.KeepAlive(value)
 
 	var _widget Widgetter // out
@@ -159,7 +157,6 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
-
 	runtime.KeepAlive(drag)
 
 	var _widget Widgetter // out

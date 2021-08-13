@@ -70,6 +70,11 @@ func (p PaintableFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if p contains other.
+func (p PaintableFlags) Has(other PaintableFlags) bool {
+	return (p & other) == other
+}
+
 // PaintableOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -286,7 +291,6 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_current_image(_arg0)
-
 	runtime.KeepAlive(paintable)
 
 	var _ret Paintabler // out
@@ -308,7 +312,6 @@ func (paintable *Paintable) Flags() PaintableFlags {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_flags(_arg0)
-
 	runtime.KeepAlive(paintable)
 
 	var _paintableFlags PaintableFlags // out
@@ -342,7 +345,6 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_aspect_ratio(_arg0)
-
 	runtime.KeepAlive(paintable)
 
 	var _gdouble float64 // out
@@ -370,7 +372,6 @@ func (paintable *Paintable) IntrinsicHeight() int {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_height(_arg0)
-
 	runtime.KeepAlive(paintable)
 
 	var _gint int // out
@@ -398,7 +399,6 @@ func (paintable *Paintable) IntrinsicWidth() int {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_width(_arg0)
-
 	runtime.KeepAlive(paintable)
 
 	var _gint int // out
@@ -484,7 +484,6 @@ func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 	_arg2 = C.int(intrinsicHeight)
 
 	_cret = C.gdk_paintable_new_empty(_arg1, _arg2)
-
 	runtime.KeepAlive(intrinsicWidth)
 	runtime.KeepAlive(intrinsicHeight)
 

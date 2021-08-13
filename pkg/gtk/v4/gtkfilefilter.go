@@ -118,7 +118,6 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
-
 	runtime.KeepAlive(variant)
 
 	var _fileFilter *FileFilter // out
@@ -182,7 +181,6 @@ func (filter *FileFilter) Attributes() []string {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _utf8s []string // out
@@ -214,7 +212,6 @@ func (filter *FileFilter) Name() string {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
@@ -253,7 +250,6 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
-
 	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out

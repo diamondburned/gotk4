@@ -89,7 +89,6 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _menuBar *MenuBar // out
@@ -108,7 +107,6 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
-
 	runtime.KeepAlive(menubar)
 
 	var _packDirection PackDirection // out
@@ -127,7 +125,6 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
-
 	runtime.KeepAlive(menubar)
 
 	var _packDirection PackDirection // out

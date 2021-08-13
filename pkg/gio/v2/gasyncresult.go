@@ -169,7 +169,6 @@ func (res *AsyncResult) SourceObject() *externglib.Object {
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_result_get_source_object(_arg0)
-
 	runtime.KeepAlive(res)
 
 	var _object *externglib.Object // out
@@ -189,7 +188,6 @@ func (res *AsyncResult) UserData() cgo.Handle {
 	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_result_get_user_data(_arg0)
-
 	runtime.KeepAlive(res)
 
 	var _gpointer cgo.Handle // out
@@ -210,7 +208,6 @@ func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
-
 	runtime.KeepAlive(res)
 	runtime.KeepAlive(sourceTag)
 

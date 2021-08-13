@@ -133,7 +133,6 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 	_arg1 = C.gunichar(ch)
 
 	_cret = C.pango_bidi_type_for_unichar(_arg1)
-
 	runtime.KeepAlive(ch)
 
 	var _bidiType BidiType // out
@@ -155,7 +154,6 @@ func FindBaseDir(text string, length int) Direction {
 	_arg2 = C.gint(length)
 
 	_cret = C.pango_find_base_dir(_arg1, _arg2)
-
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
@@ -181,7 +179,6 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
-
 	runtime.KeepAlive(ch)
 	runtime.KeepAlive(mirroredCh)
 
@@ -209,7 +206,6 @@ func UnicharDirection(ch uint32) Direction {
 	_arg1 = C.gunichar(ch)
 
 	_cret = C.pango_unichar_direction(_arg1)
-
 	runtime.KeepAlive(ch)
 
 	var _direction Direction // out

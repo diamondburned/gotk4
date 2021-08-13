@@ -65,6 +65,11 @@ func (p PopoverMenuFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if p contains other.
+func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
+	return (p & other) == other
+}
+
 // PopoverMenu: GtkPopoverMenu is a subclass of GtkPopover that implements menu
 // behavior.
 //
@@ -248,7 +253,6 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	}
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
-
 	runtime.KeepAlive(model)
 
 	var _popoverMenu *PopoverMenu // out
@@ -279,7 +283,6 @@ func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags)
 	_arg2 = C.GtkPopoverMenuFlags(flags)
 
 	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(flags)
 
@@ -306,7 +309,6 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(id)
@@ -328,7 +330,6 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_menu_get_menu_model(_arg0)
-
 	runtime.KeepAlive(popover)
 
 	var _menuModel gio.MenuModeller // out
@@ -349,7 +350,6 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
-
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(child)
 

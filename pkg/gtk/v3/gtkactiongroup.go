@@ -120,7 +120,6 @@ func NewActionGroup(name string) *ActionGroup {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_new(_arg1)
-
 	runtime.KeepAlive(name)
 
 	var _actionGroup *ActionGroup // out
@@ -187,7 +186,6 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _accelGroup *AccelGroup // out
@@ -210,7 +208,6 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -231,7 +228,6 @@ func (actionGroup *ActionGroup) Name() string {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_name(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _utf8 string // out
@@ -253,7 +249,6 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _ok bool // out
@@ -277,7 +272,6 @@ func (actionGroup *ActionGroup) Visible() bool {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _ok bool // out
@@ -299,7 +293,6 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_list_actions(_arg0)
-
 	runtime.KeepAlive(actionGroup)
 
 	var _list []Action // out
@@ -443,7 +436,6 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
-
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(_string)
 

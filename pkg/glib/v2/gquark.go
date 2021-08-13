@@ -34,7 +34,6 @@ func InternStaticString(_string string) string {
 	}
 
 	_cret = C.g_intern_static_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _utf8 string // out
@@ -61,7 +60,6 @@ func InternString(_string string) string {
 	}
 
 	_cret = C.g_intern_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _utf8 string // out
@@ -96,7 +94,6 @@ func QuarkFromStaticString(_string string) Quark {
 	}
 
 	_cret = C.g_quark_from_static_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _quark Quark // out
@@ -123,7 +120,6 @@ func QuarkFromString(_string string) Quark {
 	}
 
 	_cret = C.g_quark_from_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _quark Quark // out
@@ -141,7 +137,6 @@ func QuarkToString(quark Quark) string {
 	_arg1 = C.guint32(quark)
 
 	_cret = C.g_quark_to_string(_arg1)
-
 	runtime.KeepAlive(quark)
 
 	var _utf8 string // out
@@ -169,7 +164,6 @@ func QuarkTryString(_string string) Quark {
 	}
 
 	_cret = C.g_quark_try_string(_arg1)
-
 	runtime.KeepAlive(_string)
 
 	var _quark Quark // out

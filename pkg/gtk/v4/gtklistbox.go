@@ -333,7 +333,6 @@ func (box *ListBox) ActivateOnSingleClick() bool {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -354,7 +353,6 @@ func (box *ListBox) Adjustment() *Adjustment {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_adjustment(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _adjustment *Adjustment // out
@@ -377,7 +375,6 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 	_arg1 = C.int(index_)
 
 	_cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
-
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(index_)
 
@@ -400,7 +397,6 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 	_arg1 = C.int(y)
 
 	_cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
-
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(y)
 
@@ -424,7 +420,6 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_selected_row(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _listBoxRow *ListBoxRow // out
@@ -444,7 +439,6 @@ func (box *ListBox) SelectedRows() []ListBoxRow {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_selected_rows(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _list []ListBoxRow // out
@@ -468,7 +462,6 @@ func (box *ListBox) SelectionMode() SelectionMode {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_selection_mode(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _selectionMode SelectionMode // out
@@ -487,7 +480,6 @@ func (box *ListBox) ShowSeparators() bool {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_show_separators(_arg0)
-
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -949,7 +941,6 @@ func (row *ListBoxRow) Activatable() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_activatable(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _ok bool // out
@@ -969,7 +960,6 @@ func (row *ListBoxRow) Child() Widgetter {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_child(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _widget Widgetter // out
@@ -992,7 +982,6 @@ func (row *ListBoxRow) Header() Widgetter {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_header(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _widget Widgetter // out
@@ -1012,7 +1001,6 @@ func (row *ListBoxRow) Index() int {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_index(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _gint int // out
@@ -1030,7 +1018,6 @@ func (row *ListBoxRow) Selectable() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_selectable(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _ok bool // out
@@ -1051,7 +1038,6 @@ func (row *ListBoxRow) IsSelected() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_is_selected(_arg0)
-
 	runtime.KeepAlive(row)
 
 	var _ok bool // out

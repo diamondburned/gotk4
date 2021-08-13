@@ -118,7 +118,6 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
 
@@ -157,7 +156,6 @@ func (table *TextTagTable) Size() int {
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _gint int // out
@@ -178,7 +176,6 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(name)
 

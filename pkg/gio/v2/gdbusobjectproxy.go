@@ -67,7 +67,6 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
-
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 
@@ -86,7 +85,6 @@ func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
-
 	runtime.KeepAlive(proxy)
 
 	var _dBusConnection *DBusConnection // out

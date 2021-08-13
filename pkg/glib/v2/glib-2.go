@@ -82,6 +82,11 @@ func (i IOCondition) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if i contains other.
+func (i IOCondition) Has(other IOCondition) bool {
+	return (i & other) == other
+}
+
 // VariantParserGetErrorQuark: same as g_variant_error_quark().
 //
 // Deprecated: Use g_variant_parse_error_quark() instead.

@@ -80,7 +80,6 @@ func (bin *Bin) Child() Widgetter {
 	_arg0 = (*C.GtkBin)(unsafe.Pointer(bin.Native()))
 
 	_cret = C.gtk_bin_get_child(_arg0)
-
 	runtime.KeepAlive(bin)
 
 	var _widget Widgetter // out

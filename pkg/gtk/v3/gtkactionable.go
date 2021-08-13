@@ -140,7 +140,6 @@ func (actionable *Actionable) ActionName() string {
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
-
 	runtime.KeepAlive(actionable)
 
 	var _utf8 string // out
@@ -162,7 +161,6 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
-
 	runtime.KeepAlive(actionable)
 
 	var _variant *glib.Variant // out

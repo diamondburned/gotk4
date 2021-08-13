@@ -69,7 +69,6 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 	}
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(filter)
 
@@ -88,7 +87,6 @@ func (self *FilterListModel) Filter() *Filter {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_filter(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _filter *Filter // out
@@ -110,7 +108,6 @@ func (self *FilterListModel) Incremental() bool {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -130,7 +127,6 @@ func (self *FilterListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
@@ -163,7 +159,6 @@ func (self *FilterListModel) Pending() uint {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _guint uint // out

@@ -72,7 +72,6 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_cairo_context_get_font_options(_arg1)
-
 	runtime.KeepAlive(context)
 
 	var _fontOptions *cairo.FontOptions // out
@@ -93,7 +92,6 @@ func ContextGetResolution(context *pango.Context) float64 {
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_cairo_context_get_resolution(_arg1)
-
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -177,7 +175,6 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.pango_cairo_create_context(_arg1)
-
 	runtime.KeepAlive(cr)
 
 	var _context *pango.Context // out
@@ -211,7 +208,6 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.pango_cairo_create_layout(_arg1)
-
 	runtime.KeepAlive(cr)
 
 	var _layout *pango.Layout // out
@@ -524,7 +520,6 @@ func (fontmap *FontMap) Resolution() float64 {
 	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
-
 	runtime.KeepAlive(fontmap)
 
 	var _gdouble float64 // out

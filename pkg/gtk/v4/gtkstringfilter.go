@@ -99,7 +99,6 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 	}
 
 	_cret = C.gtk_string_filter_new(_arg1)
-
 	runtime.KeepAlive(expression)
 
 	var _stringFilter *StringFilter // out
@@ -118,7 +117,6 @@ func (self *StringFilter) Expression() Expressioner {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -138,7 +136,6 @@ func (self *StringFilter) IgnoreCase() bool {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -158,7 +155,6 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_match_mode(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _stringFilterMatchMode StringFilterMatchMode // out
@@ -176,7 +172,6 @@ func (self *StringFilter) Search() string {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_search(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out

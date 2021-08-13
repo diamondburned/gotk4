@@ -108,7 +108,6 @@ func (service *SocketService) IsActive() bool {
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	_cret = C.g_socket_service_is_active(_arg0)
-
 	runtime.KeepAlive(service)
 
 	var _ok bool // out

@@ -133,7 +133,6 @@ func (self *NativeDialog) Modal() bool {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -153,7 +152,6 @@ func (self *NativeDialog) Title() string {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -174,7 +172,6 @@ func (self *NativeDialog) TransientFor() *Window {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _window *Window // out
@@ -194,7 +191,6 @@ func (self *NativeDialog) Visible() bool {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -255,7 +251,6 @@ func (self *NativeDialog) Run() int {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_run(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out

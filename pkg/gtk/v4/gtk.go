@@ -206,6 +206,11 @@ func (d DebugFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if d contains other.
+func (d DebugFlags) Has(other DebugFlags) bool {
+	return (d & other) == other
+}
+
 func CSSParserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

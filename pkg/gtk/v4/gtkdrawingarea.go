@@ -192,7 +192,6 @@ func (self *DrawingArea) ContentHeight() int {
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -210,7 +209,6 @@ func (self *DrawingArea) ContentWidth() int {
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _gint int // out

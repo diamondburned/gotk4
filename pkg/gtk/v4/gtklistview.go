@@ -177,7 +177,6 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	}
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
-
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(factory)
 
@@ -197,7 +196,6 @@ func (self *ListView) EnableRubberband() bool {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -217,7 +215,6 @@ func (self *ListView) Factory() *ListItemFactory {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
@@ -237,7 +234,6 @@ func (self *ListView) Model() SelectionModeller {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_model(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _selectionModel SelectionModeller // out
@@ -258,7 +254,6 @@ func (self *ListView) ShowSeparators() bool {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -279,7 +274,6 @@ func (self *ListView) SingleClickActivate() bool {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

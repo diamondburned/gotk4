@@ -106,7 +106,6 @@ func NewEditableLabel(str string) *EditableLabel {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_editable_label_new(_arg1)
-
 	runtime.KeepAlive(str)
 
 	var _editableLabel *EditableLabel // out
@@ -124,7 +123,6 @@ func (self *EditableLabel) Editing() bool {
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

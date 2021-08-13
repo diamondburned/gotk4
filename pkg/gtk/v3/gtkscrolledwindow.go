@@ -241,7 +241,6 @@ func NewScrolledWindow(hadjustment *Adjustment, vadjustment *Adjustment) *Scroll
 	}
 
 	_cret = C.gtk_scrolled_window_new(_arg1, _arg2)
-
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
@@ -291,7 +290,6 @@ func (scrolledWindow *ScrolledWindow) CaptureButtonPress() bool {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_capture_button_press(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _ok bool // out
@@ -313,7 +311,6 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_hadjustment(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _adjustment *Adjustment // out
@@ -331,7 +328,6 @@ func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_hscrollbar(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _widget Widgetter // out
@@ -349,7 +345,6 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_kinetic_scrolling(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _ok bool // out
@@ -369,7 +364,6 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _gint int // out
@@ -387,7 +381,6 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _gint int // out
@@ -406,7 +399,6 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _gint int // out
@@ -425,7 +417,6 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _gint int // out
@@ -444,7 +435,6 @@ func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_overlay_scrolling(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _ok bool // out
@@ -465,7 +455,6 @@ func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_placement(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _cornerType CornerType // out
@@ -506,7 +495,6 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_propagate_natural_height(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _ok bool // out
@@ -528,7 +516,6 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_propagate_natural_width(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _ok bool // out
@@ -549,7 +536,6 @@ func (scrolledWindow *ScrolledWindow) ShadowType() ShadowType {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_shadow_type(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _shadowType ShadowType // out
@@ -568,7 +554,6 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_vadjustment(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _adjustment *Adjustment // out
@@ -586,7 +571,6 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
 
 	_cret = C.gtk_scrolled_window_get_vscrollbar(_arg0)
-
 	runtime.KeepAlive(scrolledWindow)
 
 	var _widget Widgetter // out

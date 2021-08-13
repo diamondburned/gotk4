@@ -62,7 +62,6 @@ func (p *Plane) Distance(point *Point3D) float32 {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_plane_distance(_arg0, _arg1)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(point)
 
@@ -83,7 +82,6 @@ func (a *Plane) Equal(b *Plane) bool {
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_plane_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
@@ -105,7 +103,6 @@ func (p *Plane) Constant() float32 {
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_plane_get_constant(_arg0)
-
 	runtime.KeepAlive(p)
 
 	var _gfloat float32 // out
@@ -148,7 +145,6 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	_arg2 = C.float(constant)
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(normal)
 	runtime.KeepAlive(constant)
@@ -171,7 +167,6 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_plane_init_from_plane(_arg0, _arg1)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(src)
 
@@ -195,7 +190,6 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_plane_init_from_point(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(normal)
 	runtime.KeepAlive(point)
@@ -225,7 +219,6 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(c)))
 
 	_cret = C.graphene_plane_init_from_points(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
@@ -249,7 +242,6 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_plane_init_from_vec4(_arg0, _arg1)
-
 	runtime.KeepAlive(p)
 	runtime.KeepAlive(src)
 

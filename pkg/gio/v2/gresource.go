@@ -42,7 +42,6 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
 
@@ -119,7 +118,6 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
-
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
 
@@ -175,7 +173,6 @@ func ResourceLoad(filename string) (*Resource, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_resource_load(_arg1, &_cerr)
-
 	runtime.KeepAlive(filename)
 
 	var _resource *Resource // out
@@ -226,7 +223,6 @@ func (staticResource *StaticResource) Resource() *Resource {
 	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	_cret = C.g_static_resource_get_resource(_arg0)
-
 	runtime.KeepAlive(staticResource)
 
 	var _resource *Resource // out

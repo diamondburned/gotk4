@@ -275,7 +275,6 @@ func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
 	_arg2 = C.int(nChars)
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(nChars)
@@ -314,7 +313,6 @@ func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk
 	_arg7 = C.int(group)
 
 	_cret = C.gtk_im_context_filter_key(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(press)
 	runtime.KeepAlive(surface)
@@ -347,7 +345,6 @@ func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
-
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(event)
 
@@ -443,7 +440,6 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
-
 	runtime.KeepAlive(context)
 
 	var _text string     // out
@@ -485,7 +481,6 @@ func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex i
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_im_context_get_surrounding_with_selection(_arg0, &_arg1, &_arg2, &_arg3)
-
 	runtime.KeepAlive(context)
 
 	var _text string     // out

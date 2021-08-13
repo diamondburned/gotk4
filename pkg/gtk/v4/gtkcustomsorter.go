@@ -62,7 +62,6 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	}
 
 	_cret = C.gtk_custom_sorter_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(sortFunc)
 
 	var _customSorter *CustomSorter // out

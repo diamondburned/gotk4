@@ -100,7 +100,6 @@ func (display *X11Display) ErrorTrapPop() int {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _gint int // out
@@ -149,7 +148,6 @@ func (display *X11Display) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -169,7 +167,6 @@ func (display *X11Display) UserTime() uint32 {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
-
 	runtime.KeepAlive(display)
 
 	var _guint32 uint32 // out

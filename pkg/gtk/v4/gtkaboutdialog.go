@@ -269,7 +269,6 @@ func (about *AboutDialog) Artists() []string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
@@ -300,7 +299,6 @@ func (about *AboutDialog) Authors() []string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
@@ -330,7 +328,6 @@ func (about *AboutDialog) Comments() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_comments(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -350,7 +347,6 @@ func (about *AboutDialog) Copyright() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_copyright(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -371,7 +367,6 @@ func (about *AboutDialog) Documenters() []string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
@@ -401,7 +396,6 @@ func (about *AboutDialog) License() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_license(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -421,7 +415,6 @@ func (about *AboutDialog) LicenseType() License {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_license_type(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _license License // out
@@ -439,7 +432,6 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _paintable gdk.Paintabler // out
@@ -459,7 +451,6 @@ func (about *AboutDialog) LogoIconName() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -479,7 +470,6 @@ func (about *AboutDialog) ProgramName() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_program_name(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -500,7 +490,6 @@ func (about *AboutDialog) SystemInformation() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_system_information(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -521,7 +510,6 @@ func (about *AboutDialog) TranslatorCredits() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -541,7 +529,6 @@ func (about *AboutDialog) Version() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_version(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -561,7 +548,6 @@ func (about *AboutDialog) Website() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_website(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -581,7 +567,6 @@ func (about *AboutDialog) WebsiteLabel() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_website_label(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -602,7 +587,6 @@ func (about *AboutDialog) WrapLicense() bool {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
-
 	runtime.KeepAlive(about)
 
 	var _ok bool // out

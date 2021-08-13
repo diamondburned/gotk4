@@ -67,7 +67,6 @@ func NewGesturePan(orientation Orientation) *GesturePan {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_gesture_pan_new(_arg1)
-
 	runtime.KeepAlive(orientation)
 
 	var _gesturePan *GesturePan // out
@@ -86,7 +85,6 @@ func (gesture *GesturePan) Orientation() Orientation {
 	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_pan_get_orientation(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _orientation Orientation // out

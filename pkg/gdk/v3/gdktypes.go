@@ -468,6 +468,11 @@ func (a AxisFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if a contains other.
+func (a AxisFlags) Has(other AxisFlags) bool {
+	return (a & other) == other
+}
+
 // EventMask: set of bit-flags to indicate which events a window is to receive.
 // Most of these masks map onto one or more of the EventType event types above.
 //
@@ -632,6 +637,11 @@ func (e EventMask) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if e contains other.
+func (e EventMask) Has(other EventMask) bool {
+	return (e & other) == other
 }
 
 // ModifierType: set of bit-flags to indicate the state of modifier keys and
@@ -820,6 +830,11 @@ func (m ModifierType) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if m contains other.
+func (m ModifierType) Has(other ModifierType) bool {
+	return (m & other) == other
+}
+
 // Point defines the x and y coordinates of a point.
 type Point struct {
 	nocopy gextras.NoCopy
@@ -886,7 +901,6 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect2)))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(rect1)
 	runtime.KeepAlive(rect2)
 
@@ -914,7 +928,6 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
-
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 

@@ -115,7 +115,6 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
 
 	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
-
 	runtime.KeepAlive(childModel)
 
 	var _treeModelSort *TreeModelSort // out
@@ -153,7 +152,6 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(childIter)))
 
 	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
-
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(childIter)
 
@@ -181,7 +179,6 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(childPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
-
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(childPath)
 
@@ -232,7 +229,6 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(sortedPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
-
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(sortedPath)
 
@@ -256,7 +252,6 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModel.Native()))
 
 	_cret = C.gtk_tree_model_sort_get_model(_arg0)
-
 	runtime.KeepAlive(treeModel)
 
 	var _treeModel TreeModeller // out
@@ -279,7 +274,6 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
-
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(iter)
 

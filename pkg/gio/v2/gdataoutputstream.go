@@ -69,7 +69,6 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	_cret = C.g_data_output_stream_new(_arg1)
-
 	runtime.KeepAlive(baseStream)
 
 	var _dataOutputStream *DataOutputStream // out
@@ -87,7 +86,6 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_data_output_stream_get_byte_order(_arg0)
-
 	runtime.KeepAlive(stream)
 
 	var _dataStreamByteOrder DataStreamByteOrder // out

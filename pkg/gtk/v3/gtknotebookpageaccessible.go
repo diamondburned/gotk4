@@ -58,7 +58,6 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
-
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
 

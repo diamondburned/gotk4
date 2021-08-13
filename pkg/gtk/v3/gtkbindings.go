@@ -33,7 +33,6 @@ func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.Modi
 	_arg3 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)
@@ -58,7 +57,6 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 	_arg2 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
-
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(event)
 
@@ -160,7 +158,6 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
-
 	runtime.KeepAlive(bindingSet)
 	runtime.KeepAlive(signalDesc)
 
@@ -258,7 +255,6 @@ func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, 
 	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(bindingSet)
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)
@@ -310,7 +306,6 @@ func BindingSetFind(setName string) *BindingSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_binding_set_find(_arg1)
-
 	runtime.KeepAlive(setName)
 
 	var _bindingSet *BindingSet // out

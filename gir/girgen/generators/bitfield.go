@@ -28,7 +28,7 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ $recv := FirstLetter .GoName }}
-	// String returns the names in string for {{ .GoName }}.
+	// String returns the names in string for {{.GoName}}.
 	func ({{$recv}} {{.GoName}}) String() string {
 		if {{$recv}} == 0 {
 			return "{{.GoName}}(0)"
@@ -52,6 +52,11 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 		}
 
 		return strings.TrimSuffix(builder.String(), "|")
+	}
+
+	// Has returns true if {{$recv}} contains other.
+	func ({{$recv}} {{.GoName}}) Has(other {{.GoName}}) bool {
+		return ({{$recv}} & other) == other
 	}
 `)
 

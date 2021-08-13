@@ -79,7 +79,6 @@ func (rgba *RGBA) Copy() *RGBA {
 	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_copy(_arg0)
-
 	runtime.KeepAlive(rgba)
 
 	var _rgbA *RGBA // out
@@ -102,7 +101,6 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p2)))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
-
 	runtime.KeepAlive(p1)
 	runtime.KeepAlive(p2)
 
@@ -123,7 +121,6 @@ func (p *RGBA) Hash() uint {
 	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.gdk_rgba_hash(_arg0)
-
 	runtime.KeepAlive(p)
 
 	var _guint uint // out
@@ -143,7 +140,6 @@ func (rgba *RGBA) IsClear() bool {
 	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
-
 	runtime.KeepAlive(rgba)
 
 	var _ok bool // out
@@ -166,7 +162,6 @@ func (rgba *RGBA) IsOpaque() bool {
 	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
-
 	runtime.KeepAlive(rgba)
 
 	var _ok bool // out
@@ -209,7 +204,6 @@ func (rgba *RGBA) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
-
 	runtime.KeepAlive(rgba)
 	runtime.KeepAlive(spec)
 
@@ -241,7 +235,6 @@ func (rgba *RGBA) String() string {
 	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
-
 	runtime.KeepAlive(rgba)
 
 	var _utf8 string // out

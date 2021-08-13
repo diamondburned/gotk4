@@ -67,7 +67,6 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_themed_icon_new(_arg1)
-
 	runtime.KeepAlive(iconname)
 
 	var _themedIcon *ThemedIcon // out
@@ -95,7 +94,6 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	}
 
 	_cret = C.g_themed_icon_new_from_names(_arg1, _arg2)
-
 	runtime.KeepAlive(iconnames)
 
 	var _themedIcon *ThemedIcon // out
@@ -127,7 +125,6 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
-
 	runtime.KeepAlive(iconname)
 
 	var _themedIcon *ThemedIcon // out
@@ -162,7 +159,6 @@ func (icon *ThemedIcon) Names() []string {
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
-
 	runtime.KeepAlive(icon)
 
 	var _utf8s []string // out

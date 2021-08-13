@@ -49,7 +49,6 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(lowerLimit)
 	runtime.KeepAlive(upperLimit)
 	runtime.KeepAlive(description)
@@ -72,7 +71,6 @@ func (src *Range) Copy() *Range {
 	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.atk_range_copy(_arg0)
-
 	runtime.KeepAlive(src)
 
 	var __range *Range // out
@@ -93,7 +91,6 @@ func (_range *Range) Description() string {
 	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_description(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _utf8 string // out
@@ -111,7 +108,6 @@ func (_range *Range) LowerLimit() float64 {
 	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_lower_limit(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
@@ -129,7 +125,6 @@ func (_range *Range) UpperLimit() float64 {
 	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_upper_limit(_arg0)
-
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out

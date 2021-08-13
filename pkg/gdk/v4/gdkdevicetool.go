@@ -99,7 +99,6 @@ func (tool *DeviceTool) Axes() AxisFlags {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_axes(_arg0)
-
 	runtime.KeepAlive(tool)
 
 	var _axisFlags AxisFlags // out
@@ -126,7 +125,6 @@ func (tool *DeviceTool) HardwareID() uint64 {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
-
 	runtime.KeepAlive(tool)
 
 	var _guint64 uint64 // out
@@ -147,7 +145,6 @@ func (tool *DeviceTool) Serial() uint64 {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
-
 	runtime.KeepAlive(tool)
 
 	var _guint64 uint64 // out
@@ -165,7 +162,6 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
-
 	runtime.KeepAlive(tool)
 
 	var _deviceToolType DeviceToolType // out

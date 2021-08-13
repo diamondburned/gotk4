@@ -231,7 +231,6 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 	}
 
 	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(action)
@@ -253,7 +252,6 @@ func (self *FileChooserNative) AcceptLabel() string {
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -273,7 +271,6 @@ func (self *FileChooserNative) CancelLabel() string {
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out

@@ -91,6 +91,11 @@ func (s SeatCapabilities) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if s contains other.
+func (s SeatCapabilities) Has(other SeatCapabilities) bool {
+	return (s & other) == other
+}
+
 // Seat: GdkSeat object represents a collection of input devices that belong to
 // a user.
 type Seat struct {
@@ -137,7 +142,6 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
-
 	runtime.KeepAlive(seat)
 
 	var _seatCapabilities SeatCapabilities // out
@@ -157,7 +161,6 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	_arg1 = C.GdkSeatCapabilities(capabilities)
 
 	_cret = C.gdk_seat_get_devices(_arg0, _arg1)
-
 	runtime.KeepAlive(seat)
 	runtime.KeepAlive(capabilities)
 
@@ -182,7 +185,6 @@ func (seat *Seat) Display() *Display {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
-
 	runtime.KeepAlive(seat)
 
 	var _display *Display // out
@@ -200,7 +202,6 @@ func (seat *Seat) Keyboard() Devicer {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
-
 	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
@@ -220,7 +221,6 @@ func (seat *Seat) Pointer() Devicer {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
-
 	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
@@ -240,7 +240,6 @@ func (seat *Seat) Tools() []DeviceTool {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_tools(_arg0)
-
 	runtime.KeepAlive(seat)
 
 	var _list []DeviceTool // out

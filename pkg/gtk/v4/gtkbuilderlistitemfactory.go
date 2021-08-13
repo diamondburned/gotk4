@@ -76,7 +76,6 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
-
 	runtime.KeepAlive(scope)
 	runtime.KeepAlive(resourcePath)
 
@@ -95,7 +94,6 @@ func (self *BuilderListItemFactory) Resource() string {
 	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -115,7 +113,6 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _builderScope BuilderScoper // out

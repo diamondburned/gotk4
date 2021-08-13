@@ -148,7 +148,6 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_entry_completion_new_with_area(_arg1)
-
 	runtime.KeepAlive(area)
 
 	var _entryCompletion *EntryCompletion // out
@@ -187,7 +186,6 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
-
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(key)
 
@@ -210,7 +208,6 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _utf8 string // out
@@ -230,7 +227,6 @@ func (completion *EntryCompletion) Entry() Widgetter {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_entry(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _widget Widgetter // out
@@ -249,7 +245,6 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_inline_completion(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _ok bool // out
@@ -269,7 +264,6 @@ func (completion *EntryCompletion) InlineSelection() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_inline_selection(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _ok bool // out
@@ -289,7 +283,6 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _gint int // out
@@ -309,7 +302,6 @@ func (completion *EntryCompletion) Model() TreeModeller {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_model(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _treeModel TreeModeller // out
@@ -330,7 +322,6 @@ func (completion *EntryCompletion) PopupCompletion() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_completion(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _ok bool // out
@@ -351,7 +342,6 @@ func (completion *EntryCompletion) PopupSetWidth() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _ok bool // out
@@ -372,7 +362,6 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _ok bool // out
@@ -392,7 +381,6 @@ func (completion *EntryCompletion) TextColumn() int {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
-
 	runtime.KeepAlive(completion)
 
 	var _gint int // out

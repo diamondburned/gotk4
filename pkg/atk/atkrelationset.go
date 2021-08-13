@@ -102,7 +102,6 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 	_arg1 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_set_contains(_arg0, _arg1)
-
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relationship)
 
@@ -128,7 +127,6 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *Object
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relationship)
 	runtime.KeepAlive(target)
@@ -150,7 +148,6 @@ func (set *RelationSet) NRelations() int {
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
-
 	runtime.KeepAlive(set)
 
 	var _gint int // out
@@ -171,7 +168,6 @@ func (set *RelationSet) Relation(i int) *Relation {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
-
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(i)
 
@@ -192,7 +188,6 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 	_arg1 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
-
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relationship)
 

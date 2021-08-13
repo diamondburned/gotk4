@@ -131,7 +131,6 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_cancellable(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _cancellable *gio.Cancellable // out
@@ -154,7 +153,6 @@ func (serializer *ContentSerializer) GType() externglib.Type {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_gtype(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _gType externglib.Type // out
@@ -172,7 +170,6 @@ func (serializer *ContentSerializer) MIMEType() string {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_mime_type(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _utf8 string // out
@@ -192,7 +189,6 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _outputStream gio.OutputStreamer // out
@@ -212,7 +208,6 @@ func (serializer *ContentSerializer) Priority() int {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _gint int // out
@@ -232,7 +227,6 @@ func (serializer *ContentSerializer) TaskData() cgo.Handle {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_task_data(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _gpointer cgo.Handle // out
@@ -251,7 +245,6 @@ func (serializer *ContentSerializer) UserData() cgo.Handle {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_user_data(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _gpointer cgo.Handle // out
@@ -269,7 +262,6 @@ func (serializer *ContentSerializer) Value() *externglib.Value {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_value(_arg0)
-
 	runtime.KeepAlive(serializer)
 
 	var _value *externglib.Value // out

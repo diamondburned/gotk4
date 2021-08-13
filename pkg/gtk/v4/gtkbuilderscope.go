@@ -69,6 +69,11 @@ func (b BuilderClosureFlags) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if b contains other.
+func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
+	return (b & other) == other
+}
+
 // BuilderScopeOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported

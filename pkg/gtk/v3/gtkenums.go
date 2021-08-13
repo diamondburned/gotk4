@@ -1866,6 +1866,11 @@ func (i InputHints) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if i contains other.
+func (i InputHints) Has(other InputHints) bool {
+	return (i & other) == other
+}
+
 // JunctionSides describes how a rendered element connects to adjacent elements.
 type JunctionSides int
 
@@ -1936,6 +1941,11 @@ func (j JunctionSides) String() string {
 	return strings.TrimSuffix(builder.String(), "|")
 }
 
+// Has returns true if j contains other.
+func (j JunctionSides) Has(other JunctionSides) bool {
+	return (j & other) == other
+}
+
 // RegionFlags describes a region within a widget.
 type RegionFlags int
 
@@ -1992,6 +2002,11 @@ func (r RegionFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if r contains other.
+func (r RegionFlags) Has(other RegionFlags) bool {
+	return (r & other) == other
 }
 
 // StateFlags describes a widget state. Widget states are used to match the
@@ -2086,4 +2101,9 @@ func (s StateFlags) String() string {
 	}
 
 	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if s contains other.
+func (s StateFlags) Has(other StateFlags) bool {
+	return (s & other) == other
 }

@@ -86,7 +86,6 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 	_arg5 = C.gint(value)
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -111,7 +110,6 @@ func (action *RadioAction) CurrentValue() int {
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
-
 	runtime.KeepAlive(action)
 
 	var _gint int // out

@@ -79,7 +79,6 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	}
 
 	_cret = C.g_compute_checksum_for_data(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(checksumType)
 	runtime.KeepAlive(data)
 
@@ -108,7 +107,6 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	_arg3 = C.gssize(length)
 
 	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
-
 	runtime.KeepAlive(checksumType)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
@@ -144,7 +142,6 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 	_arg1 = C.GChecksumType(checksumType)
 
 	_cret = C.g_checksum_new(_arg1)
-
 	runtime.KeepAlive(checksumType)
 
 	var _checksum *Checksum // out
@@ -169,7 +166,6 @@ func (checksum *Checksum) Copy() *Checksum {
 	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	_cret = C.g_checksum_copy(_arg0)
-
 	runtime.KeepAlive(checksum)
 
 	var _ret *Checksum // out
@@ -195,7 +191,6 @@ func (checksum *Checksum) String() string {
 	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	_cret = C.g_checksum_get_string(_arg0)
-
 	runtime.KeepAlive(checksum)
 
 	var _utf8 string // out
@@ -243,7 +238,6 @@ func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	_arg1 = C.GChecksumType(checksumType)
 
 	_cret = C.g_checksum_type_get_length(_arg1)
-
 	runtime.KeepAlive(checksumType)
 
 	var _gssize int // out

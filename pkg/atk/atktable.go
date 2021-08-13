@@ -247,7 +247,6 @@ func (table *Table) AddColumnSelection(column int) bool {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_add_column_selection(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -270,7 +269,6 @@ func (table *Table) AddRowSelection(row int) bool {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_add_row_selection(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
@@ -291,7 +289,6 @@ func (table *Table) Caption() *ObjectClass {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_caption(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _object *ObjectClass // out
@@ -315,7 +312,6 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_column_at_index(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
 
@@ -337,7 +333,6 @@ func (table *Table) ColumnDescription(column int) string {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_description(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -361,7 +356,6 @@ func (table *Table) ColumnExtentAt(row int, column int) int {
 	_arg2 = C.gint(column)
 
 	_cret = C.atk_table_get_column_extent_at(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
@@ -384,7 +378,6 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_header(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -412,7 +405,6 @@ func (table *Table) IndexAt(row int, column int) int {
 	_arg2 = C.gint(column)
 
 	_cret = C.atk_table_get_index_at(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
@@ -432,7 +424,6 @@ func (table *Table) NColumns() int {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_n_columns(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _gint int // out
@@ -450,7 +441,6 @@ func (table *Table) NRows() int {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_n_rows(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _gint int // out
@@ -472,7 +462,6 @@ func (table *Table) RowAtIndex(index_ int) int {
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_row_at_index(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
 
@@ -493,7 +482,6 @@ func (table *Table) RowDescription(row int) string {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_description(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
@@ -519,7 +507,6 @@ func (table *Table) RowExtentAt(row int, column int) int {
 	_arg2 = C.gint(column)
 
 	_cret = C.atk_table_get_row_extent_at(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
@@ -541,7 +528,6 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_header(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
@@ -566,7 +552,6 @@ func (table *Table) SelectedColumns(selected **int) int {
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_columns(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
 
@@ -588,7 +573,6 @@ func (table *Table) SelectedRows(selected **int) int {
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_rows(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
 
@@ -607,7 +591,6 @@ func (table *Table) Summary() *ObjectClass {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_summary(_arg0)
-
 	runtime.KeepAlive(table)
 
 	var _object *ObjectClass // out
@@ -628,7 +611,6 @@ func (table *Table) IsColumnSelected(column int) bool {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_is_column_selected(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -652,7 +634,6 @@ func (table *Table) IsRowSelected(row int) bool {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_is_row_selected(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
@@ -678,7 +659,6 @@ func (table *Table) IsSelected(row int, column int) bool {
 	_arg2 = C.gint(column)
 
 	_cret = C.atk_table_is_selected(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
@@ -705,7 +685,6 @@ func (table *Table) RefAt(row int, column int) *ObjectClass {
 	_arg2 = C.gint(column)
 
 	_cret = C.atk_table_ref_at(_arg0, _arg1, _arg2)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
@@ -727,7 +706,6 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_remove_column_selection(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
@@ -750,7 +728,6 @@ func (table *Table) RemoveRowSelection(row int) bool {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_remove_row_selection(_arg0, _arg1)
-
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 

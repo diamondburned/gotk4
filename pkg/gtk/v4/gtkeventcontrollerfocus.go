@@ -69,7 +69,6 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -89,7 +88,6 @@ func (self *EventControllerFocus) IsFocus() bool {
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
-
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

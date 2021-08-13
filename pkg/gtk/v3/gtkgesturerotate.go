@@ -55,7 +55,6 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_rotate_new(_arg1)
-
 	runtime.KeepAlive(widget)
 
 	var _gestureRotate *GestureRotate // out
@@ -75,7 +74,6 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
-
 	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out

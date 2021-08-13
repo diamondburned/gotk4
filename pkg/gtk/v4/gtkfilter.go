@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -167,6 +168,8 @@ func (self *Filter) Changed(change FilterChange) {
 	_arg1 = C.GtkFilterChange(change)
 
 	C.gtk_filter_changed(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(change)
 }
 
 // Strictness gets the known strictness of filters. If the strictness is not
@@ -183,6 +186,8 @@ func (self *Filter) Strictness() FilterMatch {
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _filterMatch FilterMatch // out
 
@@ -201,6 +206,9 @@ func (self *Filter) Match(item *externglib.Object) bool {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(item)
 
 	var _ok bool // out
 

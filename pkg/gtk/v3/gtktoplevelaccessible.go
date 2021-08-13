@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -49,6 +50,8 @@ func (accessible *ToplevelAccessible) Children() []Window {
 	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
+
+	runtime.KeepAlive(accessible)
 
 	var _list []Window // out
 

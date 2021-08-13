@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -56,6 +57,8 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 
 	_cret = C.gtk_gesture_stylus_new(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _gestureStylus *GestureStylus // out
 
 	_gestureStylus = wrapGestureStylus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -76,6 +79,9 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	_arg1 = C.GdkAxisUse(axis)
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(axis)
 
 	var _value float64 // out
 	var _ok bool       // out
@@ -99,6 +105,8 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _deviceTool *gdk.DeviceTool // out
 

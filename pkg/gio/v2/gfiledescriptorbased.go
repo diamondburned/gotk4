@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -79,6 +80,8 @@ func (fdBased *FileDescriptorBased) Fd() int {
 	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(fdBased.Native()))
 
 	_cret = C.g_file_descriptor_based_get_fd(_arg0)
+
+	runtime.KeepAlive(fdBased)
 
 	var _gint int // out
 

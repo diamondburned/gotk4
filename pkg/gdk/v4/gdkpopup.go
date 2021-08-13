@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -76,6 +77,8 @@ func (popup *Popup) Autohide() bool {
 
 	_cret = C.gdk_popup_get_autohide(_arg0)
 
+	runtime.KeepAlive(popup)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -94,6 +97,8 @@ func (popup *Popup) Parent() Surfacer {
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
+	runtime.KeepAlive(popup)
+
 	var _surface Surfacer // out
 
 	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
@@ -110,6 +115,8 @@ func (popup *Popup) PositionX() int {
 
 	_cret = C.gdk_popup_get_position_x(_arg0)
 
+	runtime.KeepAlive(popup)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -125,6 +132,8 @@ func (popup *Popup) PositionY() int {
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_position_y(_arg0)
+
+	runtime.KeepAlive(popup)
 
 	var _gint int // out
 
@@ -145,6 +154,8 @@ func (popup *Popup) RectAnchor() Gravity {
 
 	_cret = C.gdk_popup_get_rect_anchor(_arg0)
 
+	runtime.KeepAlive(popup)
+
 	var _gravity Gravity // out
 
 	_gravity = Gravity(_cret)
@@ -163,6 +174,8 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 
 	_cret = C.gdk_popup_get_surface_anchor(_arg0)
+
+	runtime.KeepAlive(popup)
 
 	var _gravity Gravity // out
 
@@ -199,6 +212,11 @@ func (popup *Popup) Present(width int, height int, layout *PopupLayout) bool {
 	_arg3 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(popup)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 

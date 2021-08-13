@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -94,6 +95,9 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 
 	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)
 
+	runtime.KeepAlive(initialChars)
+	runtime.KeepAlive(nInitialChars)
+
 	var _entryBuffer *EntryBuffer // out
 
 	_entryBuffer = wrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -122,6 +126,10 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 
 	_cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nChars)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -140,6 +148,9 @@ func (buffer *EntryBuffer) EmitDeletedText(position uint, nChars uint) {
 	_arg2 = C.guint(nChars)
 
 	C.gtk_entry_buffer_emit_deleted_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nChars)
 }
 
 // EmitInsertedText: used when subclassing GtkEntryBuffer.
@@ -156,6 +167,10 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 	_arg3 = C.guint(nChars)
 
 	C.gtk_entry_buffer_emit_inserted_text(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(chars)
+	runtime.KeepAlive(nChars)
 }
 
 // Bytes retrieves the length in bytes of the buffer.
@@ -168,6 +183,8 @@ func (buffer *EntryBuffer) Bytes() uint {
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_entry_buffer_get_bytes(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _gsize uint // out
 
@@ -185,6 +202,8 @@ func (buffer *EntryBuffer) Length() uint {
 
 	_cret = C.gtk_entry_buffer_get_length(_arg0)
 
+	runtime.KeepAlive(buffer)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -200,6 +219,8 @@ func (buffer *EntryBuffer) MaxLength() int {
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_entry_buffer_get_max_length(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _gint int // out
 
@@ -219,6 +240,8 @@ func (buffer *EntryBuffer) Text() string {
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_entry_buffer_get_text(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _utf8 string // out
 
@@ -250,6 +273,11 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 
 	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(chars)
+	runtime.KeepAlive(nChars)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -269,6 +297,8 @@ func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 	_arg1 = C.int(maxLength)
 
 	C.gtk_entry_buffer_set_max_length(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(maxLength)
 }
 
 // SetText sets the text in the buffer.
@@ -288,4 +318,7 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	_arg2 = C.int(nChars)
 
 	C.gtk_entry_buffer_set_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(chars)
+	runtime.KeepAlive(nChars)
 }

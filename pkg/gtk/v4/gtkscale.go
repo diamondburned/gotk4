@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -192,6 +193,9 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
 
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
+
 	var _scale *Scale // out
 
 	_scale = wrapScale(externglib.Take(unsafe.Pointer(_cret)))
@@ -222,6 +226,11 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	_arg4 = C.double(step)
 
 	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
 
 	var _scale *Scale // out
 
@@ -254,6 +263,10 @@ func (scale *Scale) AddMark(value float64, position PositionType, markup string)
 	}
 
 	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(markup)
 }
 
 // ClearMarks removes any marks that have been added.
@@ -263,6 +276,7 @@ func (scale *Scale) ClearMarks() {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	C.gtk_scale_clear_marks(_arg0)
+	runtime.KeepAlive(scale)
 }
 
 // Digits gets the number of decimal places that are displayed in the value.
@@ -273,6 +287,8 @@ func (scale *Scale) Digits() int {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_digits(_arg0)
+
+	runtime.KeepAlive(scale)
 
 	var _gint int // out
 
@@ -291,6 +307,8 @@ func (scale *Scale) DrawValue() bool {
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
 
+	runtime.KeepAlive(scale)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -308,6 +326,8 @@ func (scale *Scale) HasOrigin() bool {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
+
+	runtime.KeepAlive(scale)
 
 	var _ok bool // out
 
@@ -329,6 +349,8 @@ func (scale *Scale) Layout() *pango.Layout {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_layout(_arg0)
+
+	runtime.KeepAlive(scale)
 
 	var _layout *pango.Layout // out
 
@@ -360,6 +382,7 @@ func (scale *Scale) LayoutOffsets() (x int, y int) {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(scale)
 
 	var _x int // out
 	var _y int // out
@@ -378,6 +401,8 @@ func (scale *Scale) ValuePos() PositionType {
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
 
 	_cret = C.gtk_scale_get_value_pos(_arg0)
+
+	runtime.KeepAlive(scale)
 
 	var _positionType PositionType // out
 
@@ -405,6 +430,8 @@ func (scale *Scale) SetDigits(digits int) {
 	_arg1 = C.int(digits)
 
 	C.gtk_scale_set_digits(_arg0, _arg1)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(digits)
 }
 
 // SetDrawValue specifies whether the current value is displayed as a string
@@ -419,6 +446,8 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 	}
 
 	C.gtk_scale_set_draw_value(_arg0, _arg1)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(drawValue)
 }
 
 // SetFormatValueFunc: func allows you to change how the scale value is
@@ -443,6 +472,8 @@ func (scale *Scale) SetFormatValueFunc(fn ScaleFormatValueFunc) {
 	}
 
 	C.gtk_scale_set_format_value_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(fn)
 }
 
 // SetHasOrigin sets whether the scale has an origin.
@@ -460,6 +491,8 @@ func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	}
 
 	C.gtk_scale_set_has_origin(_arg0, _arg1)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(hasOrigin)
 }
 
 // SetValuePos sets the position in which the current value is displayed.
@@ -471,4 +504,6 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	_arg1 = C.GtkPositionType(pos)
 
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(pos)
 }

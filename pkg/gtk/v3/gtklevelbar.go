@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -135,6 +136,9 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 
 	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
 
+	runtime.KeepAlive(minValue)
+	runtime.KeepAlive(maxValue)
+
 	var _levelBar *LevelBar // out
 
 	_levelBar = wrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
@@ -159,6 +163,9 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	_arg2 = C.gdouble(value)
 
 	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
 }
 
 // Inverted: return the value of the LevelBar:inverted property.
@@ -169,6 +176,8 @@ func (self *LevelBar) Inverted() bool {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_inverted(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -188,6 +197,8 @@ func (self *LevelBar) MaxValue() float64 {
 
 	_cret = C.gtk_level_bar_get_max_value(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -204,6 +215,8 @@ func (self *LevelBar) MinValue() float64 {
 
 	_cret = C.gtk_level_bar_get_min_value(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -219,6 +232,8 @@ func (self *LevelBar) Mode() LevelBarMode {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_mode(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _levelBarMode LevelBarMode // out
 
@@ -243,6 +258,9 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 
 	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
+
 	var _value float64 // out
 	var _ok bool       // out
 
@@ -262,6 +280,8 @@ func (self *LevelBar) Value() float64 {
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_level_bar_get_value(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
@@ -283,6 +303,8 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 	}
 
 	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // SetInverted sets the value of the LevelBar:inverted property.
@@ -296,6 +318,8 @@ func (self *LevelBar) SetInverted(inverted bool) {
 	}
 
 	C.gtk_level_bar_set_inverted(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(inverted)
 }
 
 // SetMaxValue sets the value of the LevelBar:max-value property.
@@ -310,6 +334,8 @@ func (self *LevelBar) SetMaxValue(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_level_bar_set_max_value(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // SetMinValue sets the value of the LevelBar:min-value property.
@@ -324,6 +350,8 @@ func (self *LevelBar) SetMinValue(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // SetMode sets the value of the LevelBar:mode property.
@@ -335,6 +363,8 @@ func (self *LevelBar) SetMode(mode LevelBarMode) {
 	_arg1 = C.GtkLevelBarMode(mode)
 
 	C.gtk_level_bar_set_mode(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(mode)
 }
 
 // SetValue sets the value of the LevelBar:value property.
@@ -346,4 +376,6 @@ func (self *LevelBar) SetValue(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_level_bar_set_value(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }

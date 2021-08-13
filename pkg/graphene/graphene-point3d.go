@@ -80,6 +80,8 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_point3d_cross(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Point3D // out
 
@@ -99,6 +101,9 @@ func (a *Point3D) Distance(b *Point3D) (Vec3, float32) {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_point3d_distance(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _delta Vec3     // out
 	var _gfloat float32 // out
@@ -120,6 +125,9 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 
 	_cret = C.graphene_point3d_dot(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -137,6 +145,9 @@ func (a *Point3D) Equal(b *Point3D) bool {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_point3d_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _ok bool // out
 
@@ -162,6 +173,11 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 
 	_cret = C.graphene_point3d_init(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(z)
+
 	var _point3D *Point3D // out
 
 	_point3D = (*Point3D)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -181,6 +197,9 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 
 	_cret = C.graphene_point3d_init_from_point(_arg0, _arg1)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(src)
+
 	var _point3D *Point3D // out
 
 	_point3D = (*Point3D)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -199,6 +218,9 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_point3d_init_from_vec3(_arg0, _arg1)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(v)
 
 	var _point3D *Point3D // out
 
@@ -220,6 +242,9 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	_arg2 = C.double(factor)
 
 	C.graphene_point3d_interpolate(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(factor)
 
 	var _res Point3D // out
 
@@ -237,6 +262,8 @@ func (p *Point3D) Length() float32 {
 	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_point3d_length(_arg0)
+
+	runtime.KeepAlive(p)
 
 	var _gfloat float32 // out
 
@@ -259,6 +286,10 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 	_cret = C.graphene_point3d_near(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(epsilon)
+
 	var _ok bool // out
 
 	if _cret {
@@ -277,6 +308,7 @@ func (p *Point3D) Normalize() Point3D {
 	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_point3d_normalize(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _res Point3D // out
 
@@ -303,6 +335,10 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 	_arg3 = C.float(zFar)
 
 	C.graphene_point3d_normalize_viewport(_arg0, _arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(viewport)
+	runtime.KeepAlive(zNear)
+	runtime.KeepAlive(zFar)
 
 	var _res Point3D // out
 
@@ -322,6 +358,8 @@ func (p *Point3D) Scale(factor float32) Point3D {
 	_arg1 = C.float(factor)
 
 	C.graphene_point3d_scale(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(factor)
 
 	var _res Point3D // out
 
@@ -339,6 +377,7 @@ func (p *Point3D) ToVec3() Vec3 {
 	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_point3d_to_vec3(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _v Vec3 // out
 

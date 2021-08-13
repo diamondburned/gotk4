@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,8 @@ func RelationTypeForName(name string) RelationType {
 
 	_cret = C.atk_relation_type_for_name(_arg1)
 
+	runtime.KeepAlive(name)
+
 	var _relationType RelationType // out
 
 	_relationType = RelationType(_cret)
@@ -48,6 +51,8 @@ func RelationTypeGetName(typ RelationType) string {
 
 	_cret = C.atk_relation_type_get_name(_arg1)
 
+	runtime.KeepAlive(typ)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -64,6 +69,8 @@ func RelationTypeRegister(name string) RelationType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_register(_arg1)
+
+	runtime.KeepAlive(name)
 
 	var _relationType RelationType // out
 
@@ -112,6 +119,9 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 	_cret = C.atk_relation_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(relationship)
+
 	var _relation *Relation // out
 
 	_relation = wrapRelation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -129,6 +139,8 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(target)
 }
 
 // RelationType gets the type of relation
@@ -139,6 +151,8 @@ func (relation *Relation) RelationType() RelationType {
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	_cret = C.atk_relation_get_relation_type(_arg0)
+
+	runtime.KeepAlive(relation)
 
 	var _relationType RelationType // out
 
@@ -158,6 +172,9 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
+
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(target)
 
 	var _ok bool // out
 

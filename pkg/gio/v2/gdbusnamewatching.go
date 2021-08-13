@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -88,4 +89,5 @@ func BusUnwatchName(watcherId uint) {
 	_arg1 = C.guint(watcherId)
 
 	C.g_bus_unwatch_name(_arg1)
+	runtime.KeepAlive(watcherId)
 }

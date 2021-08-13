@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -33,6 +34,12 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x float64, y float
 	_arg6 = C.double(height)
 
 	C.gtk_render_activity(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderArrow renders an arrow pointing to angle.
@@ -56,6 +63,12 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x floa
 	_arg6 = C.double(size)
 
 	C.gtk_render_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(size)
 }
 
 // RenderBackground renders the background of an element.
@@ -80,6 +93,12 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y flo
 	_arg6 = C.double(height)
 
 	C.gtk_render_background(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).
@@ -107,6 +126,12 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64,
 	_arg6 = C.double(height)
 
 	C.gtk_render_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderExpander renders an expander (as used in TreeView and Expander) in the
@@ -132,6 +157,12 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float
 	_arg6 = C.double(height)
 
 	C.gtk_render_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderFocus renders a focus indicator on the rectangle determined by x, y,
@@ -156,6 +187,12 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64,
 	_arg6 = C.double(height)
 
 	C.gtk_render_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderFrame renders a frame around the rectangle defined by x, y, width,
@@ -181,6 +218,12 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64,
 	_arg6 = C.double(height)
 
 	C.gtk_render_frame(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderHandle renders a handle (as in Paned and Window’s resize grip), in the
@@ -205,6 +248,12 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64
 	_arg6 = C.double(height)
 
 	C.gtk_render_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderIcon renders the icon in texture at the specified x and y coordinates.
@@ -226,6 +275,11 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 	_arg5 = C.double(y)
 
 	C.gtk_render_icon(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // RenderLayout renders layout on the coordinates x, y
@@ -243,6 +297,11 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64
 	_arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_render_layout(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
@@ -262,6 +321,12 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64
 	_arg6 = C.double(y1)
 
 	C.gtk_render_line(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x0)
+	runtime.KeepAlive(y0)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
 }
 
 // RenderOption renders an option mark (as in a radio button), the
@@ -287,4 +352,10 @@ func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64
 	_arg6 = C.double(height)
 
 	C.gtk_render_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,8 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 
 	_cret = C.gtk_popover_menu_bar_new_from_model(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _popoverMenuBar *PopoverMenuBar // out
 
 	_popoverMenuBar = wrapPopoverMenuBar(externglib.Take(unsafe.Pointer(_cret)))
@@ -113,6 +116,10 @@ func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
 
 	_cret = C.gtk_popover_menu_bar_add_child(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(id)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -130,6 +137,8 @@ func (bar *PopoverMenuBar) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_popover_menu_bar_get_menu_model(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _menuModel gio.MenuModeller // out
 
@@ -149,6 +158,9 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
+
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 
 	var _ok bool // out
 
@@ -170,4 +182,6 @@ func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeller) {
 	}
 
 	C.gtk_popover_menu_bar_set_menu_model(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(model)
 }

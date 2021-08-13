@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -149,6 +150,8 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 
+	runtime.KeepAlive(connectable)
+
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
 	_socketAddressEnumerator = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
@@ -168,6 +171,8 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
+
+	runtime.KeepAlive(connectable)
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
@@ -190,6 +195,8 @@ func (connectable *SocketConnectable) String() string {
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
+
+	runtime.KeepAlive(connectable)
 
 	var _utf8 string // out
 

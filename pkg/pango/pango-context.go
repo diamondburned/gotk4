@@ -54,6 +54,13 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 
 	_cret = C.pango_itemize(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startIndex)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(attrs)
+	runtime.KeepAlive(cachedIter)
+
 	var _list []Item // out
 
 	_list = make([]Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
@@ -98,6 +105,14 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 	}
 
 	_cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(baseDir)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startIndex)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(attrs)
+	runtime.KeepAlive(cachedIter)
 
 	var _list []Item // out
 
@@ -173,6 +188,7 @@ func (context *Context) Changed() {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_context_changed(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // BaseDir retrieves the base direction for the context.
@@ -185,6 +201,8 @@ func (context *Context) BaseDir() Direction {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_base_dir(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _direction Direction // out
 
@@ -204,6 +222,8 @@ func (context *Context) BaseGravity() Gravity {
 
 	_cret = C.pango_context_get_base_gravity(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _gravity Gravity // out
 
 	_gravity = Gravity(_cret)
@@ -220,6 +240,8 @@ func (context *Context) FontDescription() *FontDescription {
 
 	_cret = C.pango_context_get_font_description(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -235,6 +257,8 @@ func (context *Context) FontMap() FontMapper {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_font_map(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _fontMap FontMapper // out
 
@@ -256,6 +280,8 @@ func (context *Context) Gravity() Gravity {
 
 	_cret = C.pango_context_get_gravity(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _gravity Gravity // out
 
 	_gravity = Gravity(_cret)
@@ -274,6 +300,8 @@ func (context *Context) GravityHint() GravityHint {
 
 	_cret = C.pango_context_get_gravity_hint(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _gravityHint GravityHint // out
 
 	_gravityHint = GravityHint(_cret)
@@ -289,6 +317,8 @@ func (context *Context) Language() *Language {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_language(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _language *Language // out
 
@@ -311,6 +341,8 @@ func (context *Context) Matrix() *Matrix {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_matrix(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _matrix *Matrix // out
 
@@ -348,6 +380,10 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 
 	_cret = C.pango_context_get_metrics(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
+	runtime.KeepAlive(language)
+
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -367,6 +403,8 @@ func (context *Context) RoundGlyphPositions() bool {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_context_get_round_glyph_positions(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 
@@ -396,6 +434,8 @@ func (context *Context) Serial() uint {
 
 	_cret = C.pango_context_get_serial(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -412,6 +452,7 @@ func (context *Context) ListFamilies() []FontFamilier {
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(context)
 
 	var _families []FontFamilier // out
 
@@ -439,6 +480,9 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 
 	_cret = C.pango_context_load_font(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
+
 	var _font Fonter // out
 
 	if _cret != nil {
@@ -461,6 +505,10 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 	_arg2 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_context_load_fontset(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
+	runtime.KeepAlive(language)
 
 	var _fontset Fontsetter // out
 
@@ -487,6 +535,8 @@ func (context *Context) SetBaseDir(direction Direction) {
 	_arg1 = C.PangoDirection(direction)
 
 	C.pango_context_set_base_dir(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(direction)
 }
 
 // SetBaseGravity sets the base gravity for the context.
@@ -500,6 +550,8 @@ func (context *Context) SetBaseGravity(gravity Gravity) {
 	_arg1 = C.PangoGravity(gravity)
 
 	C.pango_context_set_base_gravity(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(gravity)
 }
 
 // SetFontDescription: set the default font description for the context
@@ -511,6 +563,8 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 
 	C.pango_context_set_font_description(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
 }
 
 // SetFontMap sets the font map to be searched when fonts are looked-up in this
@@ -526,6 +580,8 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
 	C.pango_context_set_font_map(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(fontMap)
 }
 
 // SetGravityHint sets the gravity hint for the context.
@@ -541,6 +597,8 @@ func (context *Context) SetGravityHint(hint GravityHint) {
 	_arg1 = C.PangoGravityHint(hint)
 
 	C.pango_context_set_gravity_hint(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(hint)
 }
 
 // SetLanguage sets the global language tag for the context.
@@ -555,6 +613,8 @@ func (context *Context) SetLanguage(language *Language) {
 	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	C.pango_context_set_language(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(language)
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering
@@ -575,6 +635,8 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 	}
 
 	C.pango_context_set_matrix(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(matrix)
 }
 
 // SetRoundGlyphPositions sets whether font rendering with this context should
@@ -594,4 +656,6 @@ func (context *Context) SetRoundGlyphPositions(roundPositions bool) {
 	}
 
 	C.pango_context_set_round_glyph_positions(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(roundPositions)
 }

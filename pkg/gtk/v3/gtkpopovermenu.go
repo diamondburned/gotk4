@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -153,4 +154,6 @@ func (popover *PopoverMenu) OpenSubmenu(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(name)
 }

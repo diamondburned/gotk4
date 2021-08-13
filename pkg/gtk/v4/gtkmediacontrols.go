@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,8 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 
 	_cret = C.gtk_media_controls_new(_arg1)
 
+	runtime.KeepAlive(stream)
+
 	var _mediaControls *MediaControls // out
 
 	_mediaControls = wrapMediaControls(externglib.Take(unsafe.Pointer(_cret)))
@@ -82,6 +85,8 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(controls.Native()))
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
+
+	runtime.KeepAlive(controls)
 
 	var _mediaStream MediaStreamer // out
 
@@ -103,4 +108,6 @@ func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	}
 
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
+	runtime.KeepAlive(controls)
+	runtime.KeepAlive(stream)
 }

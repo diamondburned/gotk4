@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -83,6 +84,9 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(file)
+
 	var _directoryList *DirectoryList // out
 
 	_directoryList = wrapDirectoryList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -98,6 +102,8 @@ func (self *DirectoryList) Attributes() string {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -124,6 +130,8 @@ func (self *DirectoryList) Error() error {
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _err error // out
 
 	if _cret != nil {
@@ -141,6 +149,8 @@ func (self *DirectoryList) File() gio.Filer {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_file(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
 
@@ -160,6 +170,8 @@ func (self *DirectoryList) IOPriority() int {
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -176,6 +188,8 @@ func (self *DirectoryList) Monitored() bool {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -197,6 +211,8 @@ func (self *DirectoryList) IsLoading() bool {
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -223,6 +239,8 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 	}
 
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(attributes)
 }
 
 // SetFile sets the file to be enumerated and starts the enumeration.
@@ -238,6 +256,8 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 	}
 
 	C.gtk_directory_list_set_file(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(file)
 }
 
 // SetIOPriority sets the IO priority to use while loading directories.
@@ -257,6 +277,8 @@ func (self *DirectoryList) SetIOPriority(ioPriority int) {
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ioPriority)
 }
 
 // SetMonitored sets whether the directory list will monitor the directory for
@@ -276,4 +298,6 @@ func (self *DirectoryList) SetMonitored(monitored bool) {
 	}
 
 	C.gtk_directory_list_set_monitored(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(monitored)
 }

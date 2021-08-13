@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -86,6 +87,12 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(value)
+
 	var _radioAction *RadioAction // out
 
 	_radioAction = wrapRadioAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -104,6 +111,8 @@ func (action *RadioAction) CurrentValue() int {
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _gint int // out
 
@@ -142,6 +151,8 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	}
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(groupSource)
 }
 
 // SetCurrentValue sets the currently active group member to the member with
@@ -156,4 +167,6 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(currentValue)
 }

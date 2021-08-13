@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -39,6 +40,12 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 
 	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(srcX)
+	runtime.KeepAlive(srcY)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	if _cret != nil {
@@ -69,6 +76,8 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
+
+	runtime.KeepAlive(texture)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 

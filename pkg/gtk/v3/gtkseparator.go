@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -75,6 +76,8 @@ func NewSeparator(orientation Orientation) *Separator {
 	_arg1 = C.GtkOrientation(orientation)
 
 	_cret = C.gtk_separator_new(_arg1)
+
+	runtime.KeepAlive(orientation)
 
 	var _separator *Separator // out
 

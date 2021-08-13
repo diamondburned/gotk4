@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,6 +90,8 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
+	runtime.KeepAlive(child)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -106,6 +109,8 @@ func (child *OverlayLayoutChild) Measure() bool {
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
+
+	runtime.KeepAlive(child)
 
 	var _ok bool // out
 
@@ -127,6 +132,8 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	}
 
 	C.gtk_overlay_layout_child_set_clip_overlay(_arg0, _arg1)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(clipOverlay)
 }
 
 // SetMeasure sets whether to measure this child.
@@ -140,4 +147,6 @@ func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	}
 
 	C.gtk_overlay_layout_child_set_measure(_arg0, _arg1)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(measure)
 }

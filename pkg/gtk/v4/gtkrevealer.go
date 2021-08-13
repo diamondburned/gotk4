@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -156,6 +157,8 @@ func (revealer *Revealer) Child() Widgetter {
 
 	_cret = C.gtk_revealer_get_child(_arg0)
 
+	runtime.KeepAlive(revealer)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -176,6 +179,8 @@ func (revealer *Revealer) ChildRevealed() bool {
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
 
 	_cret = C.gtk_revealer_get_child_revealed(_arg0)
+
+	runtime.KeepAlive(revealer)
 
 	var _ok bool // out
 
@@ -199,6 +204,8 @@ func (revealer *Revealer) RevealChild() bool {
 
 	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 
+	runtime.KeepAlive(revealer)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -218,6 +225,8 @@ func (revealer *Revealer) TransitionDuration() uint {
 
 	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 
+	runtime.KeepAlive(revealer)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -234,6 +243,8 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
 
 	_cret = C.gtk_revealer_get_transition_type(_arg0)
+
+	runtime.KeepAlive(revealer)
 
 	var _revealerTransitionType RevealerTransitionType // out
 
@@ -253,6 +264,8 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	}
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
+	runtime.KeepAlive(revealer)
+	runtime.KeepAlive(child)
 }
 
 // SetRevealChild tells the GtkRevealer to reveal or conceal its child.
@@ -268,6 +281,8 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	}
 
 	C.gtk_revealer_set_reveal_child(_arg0, _arg1)
+	runtime.KeepAlive(revealer)
+	runtime.KeepAlive(revealChild)
 }
 
 // SetTransitionDuration sets the duration that transitions will take.
@@ -279,6 +294,8 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(revealer)
+	runtime.KeepAlive(duration)
 }
 
 // SetTransitionType sets the type of animation that will be used for
@@ -293,4 +310,6 @@ func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	_arg1 = C.GtkRevealerTransitionType(transition)
 
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(revealer)
+	runtime.KeepAlive(transition)
 }

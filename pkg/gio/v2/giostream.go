@@ -161,6 +161,7 @@ func (stream *IOStream) ClearPending() {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_io_stream_clear_pending(_arg0)
+	runtime.KeepAlive(stream)
 }
 
 // Close closes the stream, releasing resources related to it. This will also
@@ -208,6 +209,8 @@ func (stream *IOStream) Close(ctx context.Context) error {
 	}
 
 	C.g_io_stream_close(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -247,6 +250,10 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 	}
 
 	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CloseFinish closes a stream.
@@ -259,6 +266,8 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -278,6 +287,8 @@ func (stream *IOStream) InputStream() InputStreamer {
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _inputStream InputStreamer // out
 
 	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
@@ -295,6 +306,8 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _outputStream OutputStreamer // out
 
 	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
@@ -310,6 +323,8 @@ func (stream *IOStream) HasPending() bool {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_io_stream_has_pending(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -329,6 +344,8 @@ func (stream *IOStream) IsClosed() bool {
 
 	_cret = C.g_io_stream_is_closed(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -347,6 +364,7 @@ func (stream *IOStream) SetPending() error {
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_io_stream_set_pending(_arg0, &_cerr)
+	runtime.KeepAlive(stream)
 
 	var _goerr error // out
 
@@ -387,6 +405,12 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 	}
 
 	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream1)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream2)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.
@@ -397,6 +421,7 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_io_stream_splice_finish(_arg1, &_cerr)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

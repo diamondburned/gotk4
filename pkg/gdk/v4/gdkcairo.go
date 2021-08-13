@@ -55,6 +55,15 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType
 	_arg9 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(sourceType)
+	runtime.KeepAlive(bufferScale)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // CairoRectangle adds the given rectangle to the current path of cr.
@@ -66,6 +75,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_cairo_rectangle(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(rectangle)
 }
 
 // CairoRegion adds the given region to the current path of cr.
@@ -77,6 +88,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_cairo_region(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(region)
 }
 
 // CairoRegionCreateFromSurface creates region that covers the area where the
@@ -91,6 +104,8 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
+
+	runtime.KeepAlive(surface)
 
 	var _region *cairo.Region // out
 
@@ -121,6 +136,10 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX f
 	_arg4 = C.double(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(pixbufX)
+	runtime.KeepAlive(pixbufY)
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
@@ -132,4 +151,6 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(rgba)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -128,6 +129,8 @@ func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 
 	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
 
+	runtime.KeepAlive(pbar)
+
 	var _ellipsizeMode pango.EllipsizeMode // out
 
 	_ellipsizeMode = pango.EllipsizeMode(_cret)
@@ -144,6 +147,8 @@ func (pbar *ProgressBar) Fraction() float64 {
 
 	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 
+	runtime.KeepAlive(pbar)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -159,6 +164,8 @@ func (pbar *ProgressBar) Inverted() bool {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 
 	_cret = C.gtk_progress_bar_get_inverted(_arg0)
+
+	runtime.KeepAlive(pbar)
 
 	var _ok bool // out
 
@@ -180,6 +187,8 @@ func (pbar *ProgressBar) PulseStep() float64 {
 
 	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 
+	runtime.KeepAlive(pbar)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -197,6 +206,8 @@ func (pbar *ProgressBar) ShowText() bool {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 
 	_cret = C.gtk_progress_bar_get_show_text(_arg0)
+
+	runtime.KeepAlive(pbar)
 
 	var _ok bool // out
 
@@ -218,6 +229,8 @@ func (pbar *ProgressBar) Text() string {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 
 	_cret = C.gtk_progress_bar_get_text(_arg0)
+
+	runtime.KeepAlive(pbar)
 
 	var _utf8 string // out
 
@@ -241,6 +254,7 @@ func (pbar *ProgressBar) Pulse() {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
+	runtime.KeepAlive(pbar)
 }
 
 // SetEllipsize sets the mode used to ellipsize the text.
@@ -255,6 +269,8 @@ func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(mode)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of the
@@ -269,6 +285,8 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 	_arg1 = C.double(fraction)
 
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(fraction)
 }
 
 // SetInverted sets whether the progress bar is inverted.
@@ -285,6 +303,8 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 	}
 
 	C.gtk_progress_bar_set_inverted(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(inverted)
 }
 
 // SetPulseStep sets the fraction of total progress bar length to move the
@@ -299,6 +319,8 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	_arg1 = C.double(fraction)
 
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(fraction)
 }
 
 // SetShowText sets whether the progress bar will show text next to the bar.
@@ -319,6 +341,8 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 	}
 
 	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(showText)
 }
 
 // SetText causes the given text to appear next to the progress bar.
@@ -341,4 +365,6 @@ func (pbar *ProgressBar) SetText(text string) {
 	}
 
 	C.gtk_progress_bar_set_text(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(text)
 }

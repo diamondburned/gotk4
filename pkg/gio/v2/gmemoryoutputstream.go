@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -93,6 +94,8 @@ func (ostream *MemoryOutputStream) Data() cgo.Handle {
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
 
+	runtime.KeepAlive(ostream)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -109,6 +112,8 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
+
+	runtime.KeepAlive(ostream)
 
 	var _gsize uint // out
 
@@ -139,6 +144,8 @@ func (ostream *MemoryOutputStream) Size() uint {
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 
+	runtime.KeepAlive(ostream)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -158,6 +165,8 @@ func (ostream *MemoryOutputStream) StealData() cgo.Handle {
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
+
+	runtime.KeepAlive(ostream)
 
 	var _gpointer cgo.Handle // out
 

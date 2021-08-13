@@ -130,6 +130,8 @@ func (seekable *Seekable) CanSeek() bool {
 
 	_cret = C.g_seekable_can_seek(_arg0)
 
+	runtime.KeepAlive(seekable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -148,6 +150,8 @@ func (seekable *Seekable) CanTruncate() bool {
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_can_truncate(_arg0)
+
+	runtime.KeepAlive(seekable)
 
 	var _ok bool // out
 
@@ -189,6 +193,10 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 	_arg2 = C.GSeekType(typ)
 
 	C.g_seekable_seek(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(seekable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(typ)
 
 	var _goerr error // out
 
@@ -207,6 +215,8 @@ func (seekable *Seekable) Tell() int64 {
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 
 	_cret = C.g_seekable_tell(_arg0)
+
+	runtime.KeepAlive(seekable)
 
 	var _gint64 int64 // out
 
@@ -239,6 +249,9 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 	_arg1 = C.goffset(offset)
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(seekable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(offset)
 
 	var _goerr error // out
 

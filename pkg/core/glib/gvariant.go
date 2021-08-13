@@ -57,7 +57,9 @@ func takeVariant(p *C.GVariant) *Variant {
 // Reference counting is usually handled in the gotk layer,
 // most applications should not call this.
 func (v *Variant) IsFloating() bool {
-	return gobool(C.g_variant_is_floating(v.native()))
+	b := gobool(C.g_variant_is_floating(v.native()))
+	runtime.KeepAlive(v)
+	return b
 }
 
 // Ref is a wrapper around g_variant_ref.
@@ -65,6 +67,7 @@ func (v *Variant) IsFloating() bool {
 // most applications should not need to call this.
 func (v *Variant) Ref() {
 	C.g_variant_ref(v.native())
+	runtime.KeepAlive(v)
 }
 
 // RefSink is a wrapper around g_variant_ref_sink.
@@ -72,6 +75,7 @@ func (v *Variant) Ref() {
 // most applications should not need to call this.
 func (v *Variant) RefSink() {
 	C.g_variant_ref_sink(v.native())
+	runtime.KeepAlive(v)
 }
 
 // TakeRef is a wrapper around g_variant_take_ref.
@@ -79,6 +83,7 @@ func (v *Variant) RefSink() {
 // most applications should not need to call this.
 func (v *Variant) TakeRef() {
 	C.g_variant_take_ref(v.native())
+	runtime.KeepAlive(v)
 }
 
 // Unref is a wrapper around g_variant_unref.
@@ -86,23 +91,30 @@ func (v *Variant) TakeRef() {
 // most applications should not need to call this.
 func (v *Variant) Unref() {
 	C.g_variant_unref(v.native())
+	runtime.KeepAlive(v)
 }
 
 // TypeString returns the g variant type string for this variant.
 func (v *Variant) TypeString() string {
 	// the string returned from this belongs to GVariant and must not be freed.
-	return C.GoString((*C.char)(C.g_variant_get_type_string(v.native())))
+	s := C.GoString((*C.char)(C.g_variant_get_type_string(v.native())))
+	runtime.KeepAlive(v)
+	return s
 }
 
 // IsContainer returns true if the variant is a container and false otherwise.
 func (v *Variant) IsContainer() bool {
-	return gobool(C.g_variant_is_container(v.native()))
+	b := gobool(C.g_variant_is_container(v.native()))
+	runtime.KeepAlive(v)
+	return b
 }
 
 // String is a wrapper around g_variant_get_string. If the Variant type is not a
 // string, then Print is called instead. This is done to satisfy fmt.Stringer;
 // it behaves similarly to reflect.Value.String().
 func (v *Variant) String() string {
+	defer runtime.KeepAlive(v)
+
 	if C.g_variant_get_type(v.native()) != C.G_VARIANT_TYPE_STRING {
 		return v.Print(false)
 	}
@@ -121,18 +133,25 @@ func (v *Variant) String() string {
 // Type returns the VariantType for this variant.
 func (v *Variant) Type() *VariantType {
 	// The return value is valid for the lifetime of value and must not be freed.
-	return newVariantType(C.g_variant_get_type(v.native()))
+	t := newVariantType(C.g_variant_get_type(v.native()))
+	runtime.KeepAlive(v)
+	return t
 }
 
 // IsType returns true if the variant's type matches t.
 func (v *Variant) IsType(t *VariantType) bool {
-	return gobool(C.g_variant_is_of_type(v.native(), t.native()))
+	b := gobool(C.g_variant_is_of_type(v.native(), t.native()))
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(t)
+	return b
 }
 
 // Print wraps g_variant_print(). It returns a string understood by
 // g_variant_parse().
 func (v *Variant) Print(typeAnnotate bool) string {
 	gc := C.g_variant_print(v.native(), gbool(typeAnnotate))
+	runtime.KeepAlive(v)
+
 	defer C.g_free(C.gpointer(gc))
 
 	return C.GoString((*C.char)(gc))
@@ -177,6 +196,8 @@ func (v *Variant) GoValue() interface{} {
 	case C.G_VARIANT_TYPE_UINT64:
 		val = uint64(C.g_variant_get_uint64(v.native()))
 	}
+
+	runtime.KeepAlive(v)
 	return val
 }
 
@@ -191,7 +212,7 @@ func (v *VariantType) native() *C.GVariantType {
 }
 
 func (v *VariantType) Native() uintptr {
-	if v == nil || v.native == nil {
+	if v == nil || v.GVariantType == nil {
 		return uintptr(unsafe.Pointer(nil))
 	}
 	return uintptr(unsafe.Pointer(v.native()))
@@ -200,6 +221,8 @@ func (v *VariantType) Native() uintptr {
 // String returns a copy of this VariantType's type string.
 func (v *VariantType) String() string {
 	ch := C.g_variant_type_dup_string(v.native())
+	runtime.KeepAlive(v)
+
 	defer C.g_free(C.gpointer(ch))
 	return C.GoString((*C.char)(ch))
 }
@@ -283,10 +306,14 @@ func VariantTypeStringIsValid(typeString string) bool {
 
 // Equal is a wrapper around g_variant_type_equal.
 func (v *VariantType) Equal(to *VariantType) bool {
-	return gobool(C.g_variant_type_equal(C.gconstpointer(v.native()), C.gconstpointer(to.native())))
+	b := gobool(C.g_variant_type_equal(C.gconstpointer(v.native()), C.gconstpointer(to.native())))
+	runtime.KeepAlive(v)
+	return b
 }
 
 // IsSubtypeOf is a wrapper around g_variant_type_is_subtype_of.
 func (v *VariantType) IsSubtypeOf(supertype *VariantType) bool {
-	return gobool(C.g_variant_type_is_subtype_of(v.native(), supertype.native()))
+	b := gobool(C.g_variant_type_is_subtype_of(v.native(), supertype.native()))
+	runtime.KeepAlive(v)
+	return b
 }

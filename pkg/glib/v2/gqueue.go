@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -28,6 +29,7 @@ func (queue *Queue) Clear() {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_clear(_arg0)
+	runtime.KeepAlive(queue)
 }
 
 // Length returns the number of items in queue.
@@ -38,6 +40,8 @@ func (queue *Queue) Length() uint {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_get_length(_arg0)
+
+	runtime.KeepAlive(queue)
 
 	var _guint uint // out
 
@@ -57,6 +61,9 @@ func (queue *Queue) Index(data cgo.Handle) int {
 
 	_cret = C.g_queue_index(_arg0, _arg1)
 
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -73,6 +80,7 @@ func (queue *Queue) Init() {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_init(_arg0)
+	runtime.KeepAlive(queue)
 }
 
 // IsEmpty returns TRUE if the queue is empty.
@@ -83,6 +91,8 @@ func (queue *Queue) IsEmpty() bool {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_is_empty(_arg0)
+
+	runtime.KeepAlive(queue)
 
 	var _ok bool // out
 
@@ -102,6 +112,8 @@ func (queue *Queue) PeekHead() cgo.Handle {
 
 	_cret = C.g_queue_peek_head(_arg0)
 
+	runtime.KeepAlive(queue)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -120,6 +132,9 @@ func (queue *Queue) PeekNth(n uint) cgo.Handle {
 
 	_cret = C.g_queue_peek_nth(_arg0, _arg1)
 
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(n)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -136,6 +151,8 @@ func (queue *Queue) PeekTail() cgo.Handle {
 
 	_cret = C.g_queue_peek_tail(_arg0)
 
+	runtime.KeepAlive(queue)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -151,6 +168,8 @@ func (queue *Queue) PopHead() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_head(_arg0)
+
+	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
 
@@ -170,6 +189,9 @@ func (queue *Queue) PopNth(n uint) cgo.Handle {
 
 	_cret = C.g_queue_pop_nth(_arg0, _arg1)
 
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(n)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -185,6 +207,8 @@ func (queue *Queue) PopTail() cgo.Handle {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_tail(_arg0)
+
+	runtime.KeepAlive(queue)
 
 	var _gpointer cgo.Handle // out
 
@@ -202,6 +226,8 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_head(_arg0, _arg1)
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
 }
 
 // PushNth inserts a new element into queue at the given position.
@@ -215,6 +241,9 @@ func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	_arg2 = C.gint(n)
 
 	C.g_queue_push_nth(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
+	runtime.KeepAlive(n)
 }
 
 // PushTail adds a new element at the tail of the queue.
@@ -226,6 +255,8 @@ func (queue *Queue) PushTail(data cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_tail(_arg0, _arg1)
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
 }
 
 // Remove removes the first element in queue that contains data.
@@ -238,6 +269,9 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove(_arg0, _arg1)
+
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
 
 	var _ok bool // out
 
@@ -259,6 +293,9 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 
 	_cret = C.g_queue_remove_all(_arg0, _arg1)
 
+	runtime.KeepAlive(queue)
+	runtime.KeepAlive(data)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -273,4 +310,5 @@ func (queue *Queue) Reverse() {
 	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_reverse(_arg0)
+	runtime.KeepAlive(queue)
 }

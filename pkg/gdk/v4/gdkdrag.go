@@ -66,6 +66,8 @@ func DragActionIsUnique(action DragAction) bool {
 
 	_cret = C.gdk_drag_action_is_unique(_arg1)
 
+	runtime.KeepAlive(action)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -152,6 +154,8 @@ func (drag *Drag) DropDone(success bool) {
 	}
 
 	C.gdk_drag_drop_done(_arg0, _arg1)
+	runtime.KeepAlive(drag)
+	runtime.KeepAlive(success)
 }
 
 // Actions determines the bitmask of possible actions proposed by the source.
@@ -162,6 +166,8 @@ func (drag *Drag) Actions() DragAction {
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gdk_drag_get_actions(_arg0)
+
+	runtime.KeepAlive(drag)
 
 	var _dragAction DragAction // out
 
@@ -179,6 +185,8 @@ func (drag *Drag) Content() *ContentProvider {
 
 	_cret = C.gdk_drag_get_content(_arg0)
 
+	runtime.KeepAlive(drag)
+
 	var _contentProvider *ContentProvider // out
 
 	_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
@@ -195,6 +203,8 @@ func (drag *Drag) Device() Devicer {
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
+	runtime.KeepAlive(drag)
+
 	var _device Devicer // out
 
 	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
@@ -210,6 +220,8 @@ func (drag *Drag) Display() *Display {
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gdk_drag_get_display(_arg0)
+
+	runtime.KeepAlive(drag)
 
 	var _display *Display // out
 
@@ -233,6 +245,8 @@ func (drag *Drag) DragSurface() Surfacer {
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
+	runtime.KeepAlive(drag)
+
 	var _surface Surfacer // out
 
 	if _cret != nil {
@@ -250,6 +264,8 @@ func (drag *Drag) Formats() *ContentFormats {
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gdk_drag_get_formats(_arg0)
+
+	runtime.KeepAlive(drag)
 
 	var _contentFormats *ContentFormats // out
 
@@ -271,6 +287,8 @@ func (drag *Drag) SelectedAction() DragAction {
 
 	_cret = C.gdk_drag_get_selected_action(_arg0)
 
+	runtime.KeepAlive(drag)
+
 	var _dragAction DragAction // out
 
 	_dragAction = DragAction(_cret)
@@ -286,6 +304,8 @@ func (drag *Drag) Surface() Surfacer {
 	_arg0 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gdk_drag_get_surface(_arg0)
+
+	runtime.KeepAlive(drag)
 
 	var _surface Surfacer // out
 
@@ -308,6 +328,9 @@ func (drag *Drag) SetHotspot(hotX int, hotY int) {
 	_arg2 = C.int(hotY)
 
 	C.gdk_drag_set_hotspot(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(drag)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }
 
 // DragBegin starts a drag and creates a new drag context for it.
@@ -339,6 +362,13 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 	_arg6 = C.double(dy)
 
 	_cret = C.gdk_drag_begin(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(content)
+	runtime.KeepAlive(actions)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 
 	var _drag Dragger // out
 

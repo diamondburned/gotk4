@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -70,6 +71,8 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 
 	_cret = C.gtk_shortcut_label_new(_arg1)
 
+	runtime.KeepAlive(accelerator)
+
 	var _shortcutLabel *ShortcutLabel // out
 
 	_shortcutLabel = wrapShortcutLabel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -85,6 +88,8 @@ func (self *ShortcutLabel) Accelerator() string {
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -103,6 +108,8 @@ func (self *ShortcutLabel) DisabledText() string {
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -123,6 +130,8 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_shortcut_label_set_accelerator(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(accelerator)
 }
 
 // SetDisabledText sets the text to be displayed by self when no accelerator is
@@ -136,4 +145,6 @@ func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(disabledText)
 }

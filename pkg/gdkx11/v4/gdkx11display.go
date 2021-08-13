@@ -37,6 +37,7 @@ func X11SetSmClientID(smClientId string) {
 	}
 
 	C.gdk_x11_set_sm_client_id(_arg1)
+	runtime.KeepAlive(smClientId)
 }
 
 type X11Display struct {
@@ -71,6 +72,8 @@ func (display *X11Display) ErrorTrapPop() int {
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -88,6 +91,7 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // ErrorTrapPush begins a range of X requests on display for which X error
@@ -101,6 +105,7 @@ func (display *X11Display) ErrorTrapPush() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_error_trap_push(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // DefaultGroup returns the default group leader surface for all toplevel
@@ -113,6 +118,8 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_default_group(_arg0)
+
+	runtime.KeepAlive(display)
 
 	var _surface gdk.Surfacer // out
 
@@ -131,6 +138,8 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(display)
 
 	var _major int // out
 	var _minor int // out
@@ -162,6 +171,8 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 
 	_cret = C.gdk_x11_display_get_primary_monitor(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _monitor *gdk.Monitor // out
 
 	{
@@ -183,6 +194,8 @@ func (display *X11Display) Screen() *X11Screen {
 
 	_cret = C.gdk_x11_display_get_screen(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _x11Screen *X11Screen // out
 
 	_x11Screen = wrapX11Screen(externglib.Take(unsafe.Pointer(_cret)))
@@ -198,6 +211,8 @@ func (display *X11Display) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
+
+	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
@@ -217,6 +232,8 @@ func (display *X11Display) UserTime() uint32 {
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -234,6 +251,7 @@ func (display *X11Display) Grab() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_grab(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // SetCursorTheme sets the cursor theme from which the images for cursor should
@@ -257,6 +275,9 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	_arg2 = C.int(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(theme)
+	runtime.KeepAlive(size)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -281,6 +302,8 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(startupId)
 }
 
 // SetSurfaceScale forces a specific window scale for all windows on this
@@ -298,6 +321,8 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 	_arg1 = C.int(scale)
 
 	C.gdk_x11_display_set_surface_scale(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(scale)
 }
 
 // StringToCompoundText: convert a string from the encoding of the current
@@ -316,6 +341,9 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(str)
 
 	var _encoding string // out
 	var _format int      // out
@@ -340,6 +368,7 @@ func (display *X11Display) Ungrab() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
@@ -357,6 +386,9 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(str)
 
 	var _encoding string // out
 	var _format int      // out
@@ -389,6 +421,8 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 
 	_cret = C.gdk_x11_display_open(_arg1)
 
+	runtime.KeepAlive(displayName)
+
 	var _display *gdk.Display // out
 
 	if _cret != nil {
@@ -416,4 +450,6 @@ func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_display_set_program_class(_arg1, _arg2)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(programClass)
 }

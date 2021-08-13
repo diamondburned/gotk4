@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -58,6 +59,9 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
 	var _notebookPageAccessible *NotebookPageAccessible // out
 
 	_notebookPageAccessible = wrapNotebookPageAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -71,4 +75,5 @@ func (page *NotebookPageAccessible) Invalidate() {
 	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(page.Native()))
 
 	C.gtk_notebook_page_accessible_invalidate(_arg0)
+	runtime.KeepAlive(page)
 }

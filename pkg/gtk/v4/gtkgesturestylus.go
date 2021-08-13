@@ -76,6 +76,9 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(axis)
+
 	var _value float64 // out
 	var _ok bool       // out
 
@@ -110,6 +113,8 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 
 	_cret = C.gtk_gesture_stylus_get_backlog(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(gesture)
+
 	var _backlog []gdk.TimeCoord // out
 	var _ok bool                 // out
 
@@ -137,6 +142,8 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _deviceTool *gdk.DeviceTool // out
 

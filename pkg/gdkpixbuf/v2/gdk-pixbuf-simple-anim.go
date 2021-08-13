@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,6 +53,10 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim 
 
 	_cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(rate)
+
 	var _pixbufSimpleAnim *PixbufSimpleAnim // out
 
 	_pixbufSimpleAnim = wrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -69,6 +74,8 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
+	runtime.KeepAlive(animation)
+	runtime.KeepAlive(pixbuf)
 }
 
 // Loop gets whether animation should loop indefinitely when it reaches the end.
@@ -79,6 +86,8 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
+
+	runtime.KeepAlive(animation)
 
 	var _ok bool // out
 
@@ -101,4 +110,6 @@ func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	}
 
 	C.gdk_pixbuf_simple_anim_set_loop(_arg0, _arg1)
+	runtime.KeepAlive(animation)
+	runtime.KeepAlive(loop)
 }

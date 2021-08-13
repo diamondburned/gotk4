@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -111,6 +112,8 @@ func (self *TreeExpander) Child() Widgetter {
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -133,6 +136,8 @@ func (self *TreeExpander) Item() *externglib.Object {
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _object *externglib.Object // out
 
 	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
@@ -148,6 +153,8 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _treeListRow *TreeListRow // out
 
@@ -169,6 +176,8 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 	}
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetListRow sets the tree list row that this expander should manage.
@@ -182,4 +191,6 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	}
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(listRow)
 }

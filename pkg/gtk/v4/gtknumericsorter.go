@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -56,6 +57,8 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 
 	_cret = C.gtk_numeric_sorter_new(_arg1)
 
+	runtime.KeepAlive(expression)
+
 	var _numericSorter *NumericSorter // out
 
 	_numericSorter = wrapNumericSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -72,6 +75,8 @@ func (self *NumericSorter) Expression() Expressioner {
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
@@ -90,6 +95,8 @@ func (self *NumericSorter) SortOrder() SortType {
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _sortType SortType // out
 
@@ -116,6 +123,8 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 	}
 
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetSortOrder sets whether to sort smaller numbers before larger ones.
@@ -127,4 +136,6 @@ func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
 	_arg1 = C.GtkSortType(sortOrder)
 
 	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sortOrder)
 }

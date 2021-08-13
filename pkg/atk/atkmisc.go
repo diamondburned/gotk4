@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -74,6 +75,7 @@ func (misc *Misc) ThreadsEnter() {
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.atk_misc_threads_enter(_arg0)
+	runtime.KeepAlive(misc)
 }
 
 // ThreadsLeave: release the thread mutex for the GUI toolkit, if one exists.
@@ -92,6 +94,7 @@ func (misc *Misc) ThreadsLeave() {
 	_arg0 = (*C.AtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.atk_misc_threads_leave(_arg0)
+	runtime.KeepAlive(misc)
 }
 
 // MiscGetInstance: obtain the singleton instance of AtkMisc for this

@@ -124,6 +124,9 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 
 	_cret = C.gtk_drop_target_new(_arg1, _arg2)
 
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(actions)
+
 	var _dropTarget *DropTarget // out
 
 	_dropTarget = wrapDropTarget(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -139,6 +142,8 @@ func (self *DropTarget) Actions() gdk.DragAction {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_actions(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _dragAction gdk.DragAction // out
 
@@ -157,6 +162,8 @@ func (self *DropTarget) Drop() gdk.Dropper {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _drop gdk.Dropper // out
 
@@ -177,6 +184,8 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _contentFormats *gdk.ContentFormats // out
 
@@ -199,6 +208,8 @@ func (self *DropTarget) Preload() bool {
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -216,6 +227,8 @@ func (self *DropTarget) Value() *externglib.Value {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _value *externglib.Value // out
 
@@ -239,6 +252,7 @@ func (self *DropTarget) Reject() {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	C.gtk_drop_target_reject(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // SetActions sets the actions that this drop target supports.
@@ -250,6 +264,8 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drop_target_set_actions(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(actions)
 }
 
 // SetGTypes sets the supported GTypes for this drop target.
@@ -270,6 +286,8 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	}
 
 	C.gtk_drop_target_set_gtypes(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(types)
 }
 
 // SetPreload sets whether data should be preloaded on hover.
@@ -283,4 +301,6 @@ func (self *DropTarget) SetPreload(preload bool) {
 	}
 
 	C.gtk_drop_target_set_preload(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(preload)
 }

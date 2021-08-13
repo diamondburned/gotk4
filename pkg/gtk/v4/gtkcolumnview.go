@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -137,6 +138,8 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 
 	_cret = C.gtk_column_view_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _columnView *ColumnView // out
 
 	_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
@@ -153,6 +156,8 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_append_column(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(column)
 }
 
 // Columns gets the list of columns in this column view.
@@ -166,6 +171,8 @@ func (self *ColumnView) Columns() gio.ListModeller {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_columns(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -183,6 +190,8 @@ func (self *ColumnView) EnableRubberband() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_enable_rubberband(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -202,6 +211,8 @@ func (self *ColumnView) Model() SelectionModeller {
 
 	_cret = C.gtk_column_view_get_model(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
@@ -219,6 +230,8 @@ func (self *ColumnView) Reorderable() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_reorderable(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -239,6 +252,8 @@ func (self *ColumnView) ShowColumnSeparators() bool {
 
 	_cret = C.gtk_column_view_get_show_column_separators(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -258,6 +273,8 @@ func (self *ColumnView) ShowRowSeparators() bool {
 
 	_cret = C.gtk_column_view_get_show_row_separators(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -276,6 +293,8 @@ func (self *ColumnView) SingleClickActivate() bool {
 	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_get_single_click_activate(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -311,6 +330,8 @@ func (self *ColumnView) Sorter() *Sorter {
 
 	_cret = C.gtk_column_view_get_sorter(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _sorter *Sorter // out
 
 	if _cret != nil {
@@ -333,6 +354,9 @@ func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(column)
 }
 
 // RemoveColumn removes the column from the list of columns of self.
@@ -344,6 +368,8 @@ func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(column.Native()))
 
 	C.gtk_column_view_remove_column(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(column)
 }
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
@@ -358,6 +384,8 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 	}
 
 	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableRubberband)
 }
 
 // SetModel sets the model to use.
@@ -373,6 +401,8 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 	}
 
 	C.gtk_column_view_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetReorderable sets whether columns should be reorderable by dragging.
@@ -386,6 +416,8 @@ func (self *ColumnView) SetReorderable(reorderable bool) {
 	}
 
 	C.gtk_column_view_set_reorderable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(reorderable)
 }
 
 // SetShowColumnSeparators sets whether the list should show separators between
@@ -400,6 +432,8 @@ func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 	}
 
 	C.gtk_column_view_set_show_column_separators(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(showColumnSeparators)
 }
 
 // SetShowRowSeparators sets whether the list should show separators between
@@ -414,6 +448,8 @@ func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 	}
 
 	C.gtk_column_view_set_show_row_separators(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(showRowSeparators)
 }
 
 // SetSingleClickActivate sets whether rows should be activated on single click
@@ -428,6 +464,8 @@ func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 	}
 
 	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(singleClickActivate)
 }
 
 // SortByColumn sets the sorting of the view.
@@ -453,4 +491,7 @@ func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortTyp
 	_arg2 = C.GtkSortType(direction)
 
 	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(direction)
 }

@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -23,6 +24,9 @@ func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *
 	_arg2 = C.gint(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
+
+	runtime.KeepAlive(deviceManager)
+	runtime.KeepAlive(deviceId)
 
 	var _x11DeviceCore *X11DeviceCore // out
 

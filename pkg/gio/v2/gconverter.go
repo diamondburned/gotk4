@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -259,6 +260,11 @@ func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags Converter
 
 	_cret = C.g_converter_convert(_arg0, unsafe.Pointer(_arg1), _arg2, unsafe.Pointer(_arg3), _arg4, _arg5, &_arg6, &_arg7, &_cerr)
 
+	runtime.KeepAlive(converter)
+	runtime.KeepAlive(inbuf)
+	runtime.KeepAlive(outbuf)
+	runtime.KeepAlive(flags)
+
 	var _bytesRead uint                  // out
 	var _bytesWritten uint               // out
 	var _converterResult ConverterResult // out
@@ -283,4 +289,5 @@ func (converter *Converter) Reset() {
 	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 
 	C.g_converter_reset(_arg0)
+	runtime.KeepAlive(converter)
 }

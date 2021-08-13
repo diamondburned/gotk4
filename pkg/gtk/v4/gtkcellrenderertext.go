@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -89,4 +90,6 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	_arg1 = C.int(numberOfRows)
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(numberOfRows)
 }

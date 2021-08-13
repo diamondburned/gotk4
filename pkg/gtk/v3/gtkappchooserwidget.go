@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -117,6 +118,8 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
 
+	runtime.KeepAlive(contentType)
+
 	var _appChooserWidget *AppChooserWidget // out
 
 	_appChooserWidget = wrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
@@ -134,6 +137,8 @@ func (self *AppChooserWidget) DefaultText() string {
 
 	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -149,6 +154,8 @@ func (self *AppChooserWidget) ShowAll() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -169,6 +176,8 @@ func (self *AppChooserWidget) ShowDefault() bool {
 
 	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -187,6 +196,8 @@ func (self *AppChooserWidget) ShowFallback() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -207,6 +218,8 @@ func (self *AppChooserWidget) ShowOther() bool {
 
 	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -225,6 +238,8 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -246,6 +261,8 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_widget_set_default_text(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(text)
 }
 
 // SetShowAll sets whether the app chooser should show all applications in a
@@ -260,6 +277,8 @@ func (self *AppChooserWidget) SetShowAll(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_all(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowDefault sets whether the app chooser should show the default handler
@@ -274,6 +293,8 @@ func (self *AppChooserWidget) SetShowDefault(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_default(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowFallback sets whether the app chooser should show related applications
@@ -288,6 +309,8 @@ func (self *AppChooserWidget) SetShowFallback(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_fallback(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowOther sets whether the app chooser should show applications which are
@@ -302,6 +325,8 @@ func (self *AppChooserWidget) SetShowOther(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_other(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowRecommended sets whether the app chooser should show recommended
@@ -316,4 +341,6 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	}
 
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }

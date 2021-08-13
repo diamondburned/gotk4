@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -260,6 +261,10 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 
 	_cret = C.gtk_print_run_page_setup_dialog(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(pageSetup)
+	runtime.KeepAlive(settings)
+
 	var _pageSetup *PageSetup // out
 
 	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -291,6 +296,10 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	_arg5 = C.gpointer(gbox.AssignOnce(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(pageSetup)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(doneCb)
 }
 
 // PrintOperationOverrider contains methods that are overridable.
@@ -414,6 +423,7 @@ func (op *PrintOperation) Cancel() {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	C.gtk_print_operation_cancel(_arg0)
+	runtime.KeepAlive(op)
 }
 
 // DrawPageFinish: signal that drawing of particular page is complete.
@@ -428,6 +438,7 @@ func (op *PrintOperation) DrawPageFinish() {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	C.gtk_print_operation_draw_page_finish(_arg0)
+	runtime.KeepAlive(op)
 }
 
 // DefaultPageSetup returns the default page setup.
@@ -438,6 +449,8 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_default_page_setup(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _pageSetup *PageSetup // out
 
@@ -454,6 +467,8 @@ func (op *PrintOperation) EmbedPageSetup() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_embed_page_setup(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _ok bool // out
 
@@ -478,6 +493,7 @@ func (op *PrintOperation) Error() error {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	C.gtk_print_operation_get_error(_arg0, &_cerr)
+	runtime.KeepAlive(op)
 
 	var _goerr error // out
 
@@ -496,6 +512,8 @@ func (op *PrintOperation) HasSelection() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_has_selection(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _ok bool // out
 
@@ -524,6 +542,8 @@ func (op *PrintOperation) NPagesToPrint() int {
 
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -544,6 +564,8 @@ func (op *PrintOperation) PrintSettings() *PrintSettings {
 
 	_cret = C.gtk_print_operation_get_print_settings(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _printSettings *PrintSettings // out
 
 	_printSettings = wrapPrintSettings(externglib.Take(unsafe.Pointer(_cret)))
@@ -561,6 +583,8 @@ func (op *PrintOperation) Status() PrintStatus {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_status(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _printStatus PrintStatus // out
 
@@ -585,6 +609,8 @@ func (op *PrintOperation) StatusString() string {
 
 	_cret = C.gtk_print_operation_get_status_string(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -600,6 +626,8 @@ func (op *PrintOperation) SupportSelection() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_get_support_selection(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _ok bool // out
 
@@ -626,6 +654,8 @@ func (op *PrintOperation) IsFinished() bool {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_print_operation_is_finished(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _ok bool // out
 
@@ -704,6 +734,10 @@ func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (Prin
 
 	_cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(parent)
+
 	var _printOperationResult PrintOperationResult // out
 	var _goerr error                               // out
 
@@ -729,6 +763,8 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 	}
 
 	C.gtk_print_operation_set_allow_async(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(allowAsync)
 }
 
 // SetCurrentPage sets the current page.
@@ -745,6 +781,8 @@ func (op *PrintOperation) SetCurrentPage(currentPage int) {
 	_arg1 = C.int(currentPage)
 
 	C.gtk_print_operation_set_current_page(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(currentPage)
 }
 
 // SetCustomTabLabel sets the label for the tab holding custom widgets.
@@ -759,6 +797,8 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 	}
 
 	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(label)
 }
 
 // SetDefaultPageSetup makes default_page_setup the default page setup for op.
@@ -776,6 +816,8 @@ func (op *PrintOperation) SetDefaultPageSetup(defaultPageSetup *PageSetup) {
 	}
 
 	C.gtk_print_operation_set_default_page_setup(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(defaultPageSetup)
 }
 
 // SetDeferDrawing sets up the GtkPrintOperation to wait for calling of
@@ -791,6 +833,7 @@ func (op *PrintOperation) SetDeferDrawing() {
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 
 	C.gtk_print_operation_set_defer_drawing(_arg0)
+	runtime.KeepAlive(op)
 }
 
 // SetEmbedPageSetup: embed page size combo box and orientation combo box into
@@ -807,6 +850,8 @@ func (op *PrintOperation) SetEmbedPageSetup(embed bool) {
 	}
 
 	C.gtk_print_operation_set_embed_page_setup(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(embed)
 }
 
 // SetExportFilename sets up the GtkPrintOperation to generate a file instead of
@@ -826,6 +871,8 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_export_filename(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(filename)
 }
 
 // SetHasSelection sets whether there is a selection to print.
@@ -843,6 +890,8 @@ func (op *PrintOperation) SetHasSelection(hasSelection bool) {
 	}
 
 	C.gtk_print_operation_set_has_selection(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(hasSelection)
 }
 
 // SetJobName sets the name of the print job.
@@ -861,6 +910,8 @@ func (op *PrintOperation) SetJobName(jobName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_job_name(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(jobName)
 }
 
 // SetNPages sets the number of pages in the document.
@@ -880,6 +931,8 @@ func (op *PrintOperation) SetNPages(nPages int) {
 	_arg1 = C.int(nPages)
 
 	C.gtk_print_operation_set_n_pages(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(nPages)
 }
 
 // SetPrintSettings sets the print settings for op.
@@ -896,6 +949,8 @@ func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 	}
 
 	C.gtk_print_operation_set_print_settings(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(printSettings)
 }
 
 // SetShowProgress: if show_progress is TRUE, the print operation will show a
@@ -910,6 +965,8 @@ func (op *PrintOperation) SetShowProgress(showProgress bool) {
 	}
 
 	C.gtk_print_operation_set_show_progress(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(showProgress)
 }
 
 // SetSupportSelection sets whether selection is supported by GtkPrintOperation.
@@ -923,6 +980,8 @@ func (op *PrintOperation) SetSupportSelection(supportSelection bool) {
 	}
 
 	C.gtk_print_operation_set_support_selection(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(supportSelection)
 }
 
 // SetTrackPrintStatus: if track_status is TRUE, the print operation will try to
@@ -944,6 +1003,8 @@ func (op *PrintOperation) SetTrackPrintStatus(trackStatus bool) {
 	}
 
 	C.gtk_print_operation_set_track_print_status(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(trackStatus)
 }
 
 // SetUnit sets up the transformation for the cairo context obtained from
@@ -956,6 +1017,8 @@ func (op *PrintOperation) SetUnit(unit Unit) {
 	_arg1 = C.GtkUnit(unit)
 
 	C.gtk_print_operation_set_unit(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(unit)
 }
 
 // SetUseFullPage: if full_page is TRUE, the transformation for the cairo
@@ -975,4 +1038,6 @@ func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	}
 
 	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(fullPage)
 }

@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -50,6 +51,7 @@ func (monitor *X11Monitor) Workarea() gdk.Rectangle {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
+	runtime.KeepAlive(monitor)
 
 	var _workarea gdk.Rectangle // out
 

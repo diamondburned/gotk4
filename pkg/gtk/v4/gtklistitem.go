@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -60,6 +61,8 @@ func (self *ListItem) Activatable() bool {
 
 	_cret = C.gtk_list_item_get_activatable(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -78,6 +81,8 @@ func (self *ListItem) Child() Widgetter {
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_item_get_child(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -99,6 +104,8 @@ func (self *ListItem) Item() *externglib.Object {
 
 	_cret = C.gtk_list_item_get_item(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _object *externglib.Object // out
 
 	_object = externglib.Take(unsafe.Pointer(_cret))
@@ -116,6 +123,8 @@ func (self *ListItem) Position() uint {
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_item_get_position(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -135,6 +144,8 @@ func (self *ListItem) Selectable() bool {
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_item_get_selectable(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -156,6 +167,8 @@ func (self *ListItem) Selected() bool {
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_item_get_selected(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -184,6 +197,8 @@ func (self *ListItem) SetActivatable(activatable bool) {
 	}
 
 	C.gtk_list_item_set_activatable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(activatable)
 }
 
 // SetChild sets the child to be used for this listitem.
@@ -200,6 +215,8 @@ func (self *ListItem) SetChild(child Widgetter) {
 	}
 
 	C.gtk_list_item_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetSelectable sets self to be selectable.
@@ -223,4 +240,6 @@ func (self *ListItem) SetSelectable(selectable bool) {
 	}
 
 	C.gtk_list_item_set_selectable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(selectable)
 }

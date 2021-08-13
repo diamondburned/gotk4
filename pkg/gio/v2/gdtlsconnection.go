@@ -258,6 +258,8 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 	}
 
 	C.g_dtls_connection_close(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -290,6 +292,10 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, call
 	}
 
 	C.g_dtls_connection_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CloseFinish: finish an asynchronous TLS close operation. See
@@ -303,6 +309,8 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_close_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -327,6 +335,10 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 
 	_cret = C.g_dtls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(peerCert)
+	runtime.KeepAlive(errors)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -345,6 +357,8 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_certificate(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
 
@@ -378,6 +392,8 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 	_arg1 = C.GTlsChannelBindingType(typ)
 
 	C.g_dtls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(typ)
 
 	var _data []byte // out
 	var _goerr error // out
@@ -401,6 +417,8 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 
 	_cret = C.g_dtls_connection_get_database(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _tlsDatabase TLSDatabaser // out
 
 	if _cret != nil {
@@ -420,6 +438,8 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_interaction(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _tlsInteraction *TLSInteraction // out
 
@@ -445,6 +465,8 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 	_cret = C.g_dtls_connection_get_negotiated_protocol(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -465,6 +487,8 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 
 	_cret = C.g_dtls_connection_get_peer_certificate(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
@@ -484,6 +508,8 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_peer_certificate_errors(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
@@ -506,6 +532,8 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 
 	_cret = C.g_dtls_connection_get_rehandshake_mode(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _tlsRehandshakeMode TLSRehandshakeMode // out
 
 	_tlsRehandshakeMode = TLSRehandshakeMode(_cret)
@@ -523,6 +551,8 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_connection_get_require_close_notify(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _ok bool // out
 
@@ -570,6 +600,8 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	}
 
 	C.g_dtls_connection_handshake(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -602,6 +634,10 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, 
 	}
 
 	C.g_dtls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
@@ -615,6 +651,8 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_handshake_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -656,6 +694,8 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	}
 
 	C.g_dtls_connection_set_advertised_protocols(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(protocols)
 }
 
 // SetCertificate: this sets the certificate that conn will present to its peer
@@ -681,6 +721,8 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	C.g_dtls_connection_set_certificate(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(certificate)
 }
 
 // SetDatabase sets the certificate database that is used to verify peer
@@ -700,6 +742,8 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	}
 
 	C.g_dtls_connection_set_database(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(database)
 }
 
 // SetInteraction: set the object that will be used to interact with the user.
@@ -718,6 +762,8 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	}
 
 	C.g_dtls_connection_set_interaction(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(interaction)
 }
 
 // SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
@@ -736,6 +782,8 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	_arg1 = C.GTlsRehandshakeMode(mode)
 
 	C.g_dtls_connection_set_rehandshake_mode(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(mode)
 }
 
 // SetRequireCloseNotify sets whether or not conn expects a proper TLS close
@@ -769,6 +817,8 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	}
 
 	C.g_dtls_connection_set_require_close_notify(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(requireCloseNotify)
 }
 
 // Shutdown: shut down part or all of a DTLS connection.
@@ -808,6 +858,10 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead bool, shu
 	}
 
 	C.g_dtls_connection_shutdown(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(shutdownRead)
+	runtime.KeepAlive(shutdownWrite)
 
 	var _goerr error // out
 
@@ -848,6 +902,12 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead bool
 	}
 
 	C.g_dtls_connection_shutdown_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(shutdownRead)
+	runtime.KeepAlive(shutdownWrite)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ShutdownFinish: finish an asynchronous TLS shutdown operation. See
@@ -861,6 +921,8 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_dtls_connection_shutdown_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

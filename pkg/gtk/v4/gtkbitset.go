@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -36,6 +37,8 @@ func (iter *BitsetIter) Value() uint {
 
 	_cret = C.gtk_bitset_iter_get_value(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -51,6 +54,8 @@ func (iter *BitsetIter) IsValid() bool {
 	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_is_valid(_arg0)
+
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -73,6 +78,8 @@ func (iter *BitsetIter) Next() (uint, bool) {
 	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
+
+	runtime.KeepAlive(iter)
 
 	var _value uint // out
 	var _ok bool    // out
@@ -97,6 +104,8 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
+
+	runtime.KeepAlive(iter)
 
 	var _value uint // out
 	var _ok bool    // out
@@ -125,6 +134,9 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 
 	_cret = C.gtk_bitset_iter_init_at(&_arg1, _arg2, _arg3, &_arg4)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(target)
+
 	var _iter BitsetIter // out
 	var _value uint      // out
 	var _ok bool         // out
@@ -152,6 +164,8 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 
 	_cret = C.gtk_bitset_iter_init_first(&_arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(set)
+
 	var _iter BitsetIter // out
 	var _value uint      // out
 	var _ok bool         // out
@@ -178,6 +192,8 @@ func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
 	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 
 	_cret = C.gtk_bitset_iter_init_last(&_arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(set)
 
 	var _iter BitsetIter // out
 	var _value uint      // out

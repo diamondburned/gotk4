@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -65,6 +66,8 @@ func NewEmblem(icon Iconner) *Emblem {
 
 	_cret = C.g_emblem_new(_arg1)
 
+	runtime.KeepAlive(icon)
+
 	var _emblem *Emblem // out
 
 	_emblem = wrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -83,6 +86,9 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 
 	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
 
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(origin)
+
 	var _emblem *Emblem // out
 
 	_emblem = wrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -99,6 +105,8 @@ func (emblem *Emblem) GetIcon() Iconner {
 
 	_cret = C.g_emblem_get_icon(_arg0)
 
+	runtime.KeepAlive(emblem)
+
 	var _icon Iconner // out
 
 	_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
@@ -114,6 +122,8 @@ func (emblem *Emblem) Origin() EmblemOrigin {
 	_arg0 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblem_get_origin(_arg0)
+
+	runtime.KeepAlive(emblem)
 
 	var _emblemOrigin EmblemOrigin // out
 

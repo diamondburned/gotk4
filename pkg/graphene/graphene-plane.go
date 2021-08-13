@@ -63,6 +63,9 @@ func (p *Plane) Distance(point *Point3D) float32 {
 
 	_cret = C.graphene_plane_distance(_arg0, _arg1)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(point)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -80,6 +83,9 @@ func (a *Plane) Equal(b *Plane) bool {
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_plane_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _ok bool // out
 
@@ -100,6 +106,8 @@ func (p *Plane) Constant() float32 {
 
 	_cret = C.graphene_plane_get_constant(_arg0)
 
+	runtime.KeepAlive(p)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -116,6 +124,7 @@ func (p *Plane) Normal() Vec3 {
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_plane_get_normal(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _normal Vec3 // out
 
@@ -140,6 +149,10 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(normal)
+	runtime.KeepAlive(constant)
+
 	var _plane *Plane // out
 
 	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -158,6 +171,9 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_plane_init_from_plane(_arg0, _arg1)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(src)
 
 	var _plane *Plane // out
 
@@ -179,6 +195,10 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_plane_init_from_point(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(normal)
+	runtime.KeepAlive(point)
 
 	var _plane *Plane // out
 
@@ -206,6 +226,11 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 
 	_cret = C.graphene_plane_init_from_points(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(c)
+
 	var _plane *Plane // out
 
 	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -225,6 +250,9 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 
 	_cret = C.graphene_plane_init_from_vec4(_arg0, _arg1)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(src)
+
 	var _plane *Plane // out
 
 	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -241,6 +269,7 @@ func (p *Plane) Negate() Plane {
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_plane_negate(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _res Plane // out
 
@@ -258,6 +287,7 @@ func (p *Plane) Normalize() Plane {
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_plane_normalize(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _res Plane // out
 
@@ -286,6 +316,9 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	}
 
 	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(matrix)
+	runtime.KeepAlive(normalMatrix)
 
 	var _res Plane // out
 

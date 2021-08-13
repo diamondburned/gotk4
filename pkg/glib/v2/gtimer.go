@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,6 +29,7 @@ func Usleep(microseconds uint32) {
 	_arg1 = C.gulong(microseconds)
 
 	C.g_usleep(_arg1)
+	runtime.KeepAlive(microseconds)
 }
 
 // TimeValFromISO8601 converts a string containing an ISO 8601 encoded date and
@@ -58,6 +60,8 @@ func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_time_val_from_iso8601(_arg1, &_arg2)
+
+	runtime.KeepAlive(isoDate)
 
 	var _time_ TimeVal // out
 	var _ok bool       // out

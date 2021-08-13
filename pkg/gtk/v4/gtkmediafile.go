@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -106,6 +107,8 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 
 	_cret = C.gtk_media_file_new_for_file(_arg1)
 
+	runtime.KeepAlive(file)
+
 	var _mediaFile *MediaFile // out
 
 	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -126,6 +129,8 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
 
+	runtime.KeepAlive(filename)
+
 	var _mediaFile *MediaFile // out
 
 	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -144,6 +149,8 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
+
+	runtime.KeepAlive(stream)
 
 	var _mediaFile *MediaFile // out
 
@@ -165,6 +172,8 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 
 	_cret = C.gtk_media_file_new_for_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _mediaFile *MediaFile // out
 
 	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -179,6 +188,7 @@ func (self *MediaFile) Clear() {
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_file_clear(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // File returns the file that self is currently playing from.
@@ -191,6 +201,8 @@ func (self *MediaFile) File() gio.Filer {
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_file_get_file(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
 
@@ -211,6 +223,8 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_file_get_input_stream(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _inputStream gio.InputStreamer // out
 
@@ -234,6 +248,8 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 	}
 
 	C.gtk_media_file_set_file(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(file)
 }
 
 // SetFilename sets the `GtkMediaFile to play the given file.
@@ -251,6 +267,8 @@ func (self *MediaFile) SetFilename(filename string) {
 	}
 
 	C.gtk_media_file_set_filename(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(filename)
 }
 
 // SetInputStream sets the GtkMediaFile to play the given stream.
@@ -269,6 +287,8 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	}
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stream)
 }
 
 // SetResource sets the `GtkMediaFile to play the given resource.
@@ -286,4 +306,6 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	}
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(resourcePath)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -91,6 +92,9 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 
 	_cret = C.gtk_text_mark_new(_arg1, _arg2)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(leftGravity)
+
 	var _textMark *TextMark // out
 
 	_textMark = wrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -108,6 +112,8 @@ func (mark *TextMark) Buffer() *TextBuffer {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
+
+	runtime.KeepAlive(mark)
 
 	var _textBuffer *TextBuffer // out
 
@@ -127,6 +133,8 @@ func (mark *TextMark) Deleted() bool {
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
+	runtime.KeepAlive(mark)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -144,6 +152,8 @@ func (mark *TextMark) LeftGravity() bool {
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
+
+	runtime.KeepAlive(mark)
 
 	var _ok bool // out
 
@@ -165,6 +175,8 @@ func (mark *TextMark) Name() string {
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 
+	runtime.KeepAlive(mark)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -185,6 +197,8 @@ func (mark *TextMark) Visible() bool {
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 
+	runtime.KeepAlive(mark)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -204,4 +218,6 @@ func (mark *TextMark) SetVisible(setting bool) {
 	}
 
 	C.gtk_text_mark_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(mark)
+	runtime.KeepAlive(setting)
 }

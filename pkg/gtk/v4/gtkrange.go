@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -88,6 +89,8 @@ func (_range *Range) Adjustment() *Adjustment {
 
 	_cret = C.gtk_range_get_adjustment(_arg0)
 
+	runtime.KeepAlive(_range)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -103,6 +106,8 @@ func (_range *Range) FillLevel() float64 {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_fill_level(_arg0)
+
+	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
 
@@ -121,6 +126,8 @@ func (_range *Range) Flippable() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_flippable(_arg0)
+
+	runtime.KeepAlive(_range)
 
 	var _ok bool // out
 
@@ -142,6 +149,8 @@ func (_range *Range) Inverted() bool {
 
 	_cret = C.gtk_range_get_inverted(_arg0)
 
+	runtime.KeepAlive(_range)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -162,6 +171,7 @@ func (_range *Range) RangeRect() gdk.Rectangle {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	C.gtk_range_get_range_rect(_arg0, &_arg1)
+	runtime.KeepAlive(_range)
 
 	var _rangeRect gdk.Rectangle // out
 
@@ -178,6 +188,8 @@ func (_range *Range) RestrictToFillLevel() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
+
+	runtime.KeepAlive(_range)
 
 	var _ok bool // out
 
@@ -199,6 +211,8 @@ func (_range *Range) RoundDigits() int {
 
 	_cret = C.gtk_range_get_round_digits(_arg0)
 
+	runtime.KeepAlive(_range)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -214,6 +228,8 @@ func (_range *Range) ShowFillLevel() bool {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_show_fill_level(_arg0)
+
+	runtime.KeepAlive(_range)
 
 	var _ok bool // out
 
@@ -236,6 +252,7 @@ func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(_range)
 
 	var _sliderStart int // out
 	var _sliderEnd int   // out
@@ -257,6 +274,8 @@ func (_range *Range) SliderSizeFixed() bool {
 
 	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
 
+	runtime.KeepAlive(_range)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -274,6 +293,8 @@ func (_range *Range) Value() float64 {
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
 	_cret = C.gtk_range_get_value(_arg0)
+
+	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
 
@@ -300,6 +321,8 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_range_set_adjustment(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetFillLevel: set the new position of the fill level indicator.
@@ -326,6 +349,8 @@ func (_range *Range) SetFillLevel(fillLevel float64) {
 	_arg1 = C.double(fillLevel)
 
 	C.gtk_range_set_fill_level(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(fillLevel)
 }
 
 // SetFlippable sets whether the GtkRange respects text direction.
@@ -344,6 +369,8 @@ func (_range *Range) SetFlippable(flippable bool) {
 	}
 
 	C.gtk_range_set_flippable(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(flippable)
 }
 
 // SetIncrements sets the step and page sizes for the range.
@@ -361,6 +388,9 @@ func (_range *Range) SetIncrements(step float64, page float64) {
 	_arg2 = C.double(page)
 
 	C.gtk_range_set_increments(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(page)
 }
 
 // SetInverted sets whether to invert the range.
@@ -378,6 +408,8 @@ func (_range *Range) SetInverted(setting bool) {
 	}
 
 	C.gtk_range_set_inverted(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(setting)
 }
 
 // SetRange sets the allowable values in the GtkRange.
@@ -394,6 +426,9 @@ func (_range *Range) SetRange(min float64, max float64) {
 	_arg2 = C.double(max)
 
 	C.gtk_range_set_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
 }
 
 // SetRestrictToFillLevel sets whether the slider is restricted to the fill
@@ -411,6 +446,8 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 	}
 
 	C.gtk_range_set_restrict_to_fill_level(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(restrictToFillLevel)
 }
 
 // SetRoundDigits sets the number of digits to round the value to when it
@@ -425,6 +462,8 @@ func (_range *Range) SetRoundDigits(roundDigits int) {
 	_arg1 = C.int(roundDigits)
 
 	C.gtk_range_set_round_digits(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(roundDigits)
 }
 
 // SetShowFillLevel sets whether a graphical fill level is show on the trough.
@@ -441,6 +480,8 @@ func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 	}
 
 	C.gtk_range_set_show_fill_level(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(showFillLevel)
 }
 
 // SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
@@ -457,6 +498,8 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 	}
 
 	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(sizeFixed)
 }
 
 // SetValue sets the current value of the range.
@@ -472,4 +515,6 @@ func (_range *Range) SetValue(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_range_set_value(_arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(value)
 }

@@ -62,6 +62,9 @@ func (a *Box) ContainsBox(b *Box) bool {
 
 	_cret = C.graphene_box_contains_box(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -81,6 +84,9 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_box_contains_point(_arg0, _arg1)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(point)
 
 	var _ok bool // out
 
@@ -102,6 +108,9 @@ func (a *Box) Equal(b *Box) bool {
 
 	_cret = C.graphene_box_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -121,6 +130,8 @@ func (box *Box) Expand(point *Point3D) Box {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.graphene_box_expand(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(point)
 
 	var _res Box // out
 
@@ -142,6 +153,8 @@ func (box *Box) ExpandScalar(scalar float32) Box {
 	_arg1 = C.float(scalar)
 
 	C.graphene_box_expand_scalar(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(scalar)
 
 	var _res Box // out
 
@@ -161,6 +174,8 @@ func (box *Box) ExpandVec3(vec *Vec3) Box {
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(vec)))
 
 	C.graphene_box_expand_vec3(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(vec)
 
 	var _res Box // out
 
@@ -178,6 +193,7 @@ func (box *Box) BoundingSphere() Sphere {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_bounding_sphere(_arg0, &_arg1)
+	runtime.KeepAlive(box)
 
 	var _sphere Sphere // out
 
@@ -194,6 +210,7 @@ func (box *Box) Center() Point3D {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_center(_arg0, &_arg1)
+	runtime.KeepAlive(box)
 
 	var _center Point3D // out
 
@@ -211,6 +228,8 @@ func (box *Box) Depth() float32 {
 
 	_cret = C.graphene_box_get_depth(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -226,6 +245,8 @@ func (box *Box) Height() float32 {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	_cret = C.graphene_box_get_height(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _gfloat float32 // out
 
@@ -243,6 +264,7 @@ func (box *Box) Max() Point3D {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_max(_arg0, &_arg1)
+	runtime.KeepAlive(box)
 
 	var _max Point3D // out
 
@@ -260,6 +282,7 @@ func (box *Box) Min() Point3D {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_min(_arg0, &_arg1)
+	runtime.KeepAlive(box)
 
 	var _min Point3D // out
 
@@ -277,6 +300,7 @@ func (box *Box) Size() Vec3 {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_size(_arg0, &_arg1)
+	runtime.KeepAlive(box)
 
 	var _size Vec3 // out
 
@@ -293,6 +317,7 @@ func (box *Box) Vertices() [8]Vec3 {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	C.graphene_box_get_vertices(_arg0, &_arg1[0])
+	runtime.KeepAlive(box)
 
 	var _vertices [8]Vec3 // out
 
@@ -309,6 +334,8 @@ func (box *Box) Width() float32 {
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	_cret = C.graphene_box_get_width(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _gfloat float32 // out
 
@@ -334,6 +361,10 @@ func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 
 	_cret = C.graphene_box_init(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+
 	var _ret *Box // out
 
 	_ret = (*Box)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -352,6 +383,9 @@ func (box *Box) InitFromBox(src *Box) *Box {
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_box_init_from_box(_arg0, _arg1)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(src)
 
 	var _ret *Box // out
 
@@ -378,6 +412,9 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 
 	_cret = C.graphene_box_init_from_points(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(points)
+
 	var _ret *Box // out
 
 	_ret = (*Box)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -402,6 +439,10 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	}
 
 	_cret = C.graphene_box_init_from_vec3(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
 
 	var _ret *Box // out
 
@@ -428,6 +469,9 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 
 	_cret = C.graphene_box_init_from_vectors(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(vectors)
+
 	var _ret *Box // out
 
 	_ret = (*Box)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -450,6 +494,9 @@ func (a *Box) Intersection(b *Box) (Box, bool) {
 
 	_cret = C.graphene_box_intersection(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _res Box // out
 	var _ok bool // out
 
@@ -471,6 +518,8 @@ func (a *Box) Union(b *Box) Box {
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_box_union(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Box // out
 

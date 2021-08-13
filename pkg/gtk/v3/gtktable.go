@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -148,6 +149,10 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 
 	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(rows)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(homogeneous)
+
 	var _table *Table // out
 
 	_table = wrapTable(externglib.Take(unsafe.Pointer(_cret)))
@@ -198,6 +203,16 @@ func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, t
 	_arg9 = C.guint(ypadding)
 
 	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(leftAttach)
+	runtime.KeepAlive(rightAttach)
+	runtime.KeepAlive(topAttach)
+	runtime.KeepAlive(bottomAttach)
+	runtime.KeepAlive(xoptions)
+	runtime.KeepAlive(yoptions)
+	runtime.KeepAlive(xpadding)
+	runtime.KeepAlive(ypadding)
 }
 
 // AttachDefaults as there are many options associated with gtk_table_attach(),
@@ -224,6 +239,12 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttac
 	_arg5 = C.guint(bottomAttach)
 
 	C.gtk_table_attach_defaults(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(leftAttach)
+	runtime.KeepAlive(rightAttach)
+	runtime.KeepAlive(topAttach)
+	runtime.KeepAlive(bottomAttach)
 }
 
 // ColSpacing gets the amount of space between column col, and column col + 1.
@@ -239,6 +260,9 @@ func (table *Table) ColSpacing(column uint) uint {
 	_arg1 = C.guint(column)
 
 	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
 
 	var _guint uint // out
 
@@ -260,6 +284,8 @@ func (table *Table) DefaultColSpacing() uint {
 
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
+	runtime.KeepAlive(table)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -280,6 +306,8 @@ func (table *Table) DefaultRowSpacing() uint {
 
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
+	runtime.KeepAlive(table)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -299,6 +327,8 @@ func (table *Table) Homogeneous() bool {
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_table_get_homogeneous(_arg0)
+
+	runtime.KeepAlive(table)
 
 	var _ok bool // out
 
@@ -323,6 +353,9 @@ func (table *Table) RowSpacing(row uint) uint {
 
 	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -341,6 +374,7 @@ func (table *Table) Size() (rows uint, columns uint) {
 	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
 
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(table)
 
 	var _rows uint    // out
 	var _columns uint // out
@@ -365,6 +399,9 @@ func (table *Table) Resize(rows uint, columns uint) {
 	_arg2 = C.guint(columns)
 
 	C.gtk_table_resize(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(rows)
+	runtime.KeepAlive(columns)
 }
 
 // SetColSpacing alters the amount of space between a given table column and the
@@ -383,6 +420,9 @@ func (table *Table) SetColSpacing(column uint, spacing uint) {
 	_arg2 = C.guint(spacing)
 
 	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(spacing)
 }
 
 // SetColSpacings sets the space between every column in table equal to spacing.
@@ -396,6 +436,8 @@ func (table *Table) SetColSpacings(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_col_spacings(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(spacing)
 }
 
 // SetHomogeneous changes the homogenous property of table cells, ie. whether
@@ -413,6 +455,8 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_table_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetRowSpacing changes the space between a given table row and the subsequent
@@ -431,6 +475,9 @@ func (table *Table) SetRowSpacing(row uint, spacing uint) {
 	_arg2 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(spacing)
 }
 
 // SetRowSpacings sets the space between every row in table equal to spacing.
@@ -444,6 +491,8 @@ func (table *Table) SetRowSpacings(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(spacing)
 }
 
 type TableChild struct {

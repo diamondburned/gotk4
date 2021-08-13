@@ -276,6 +276,9 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_key_file_get_boolean(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
 
 	var _goerr error // out
 
@@ -312,6 +315,10 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 
 	_cret = C.g_key_file_get_comment(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -346,6 +353,10 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 
 	_cret = C.g_key_file_get_double(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _gdouble float64 // out
 	var _goerr error     // out
 
@@ -367,6 +378,8 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_groups(_arg0, &_arg1)
+
+	runtime.KeepAlive(keyFile)
 
 	var _length uint    // out
 	var _utf8s []string // out
@@ -409,6 +422,10 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 
 	_cret = C.g_key_file_get_int64(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _gint64 int64 // out
 	var _goerr error  // out
 
@@ -441,6 +458,10 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 
 	_cret = C.g_key_file_get_integer(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _gint int    // out
 	var _goerr error // out
 
@@ -468,6 +489,9 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_key_file_get_keys(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
 
 	var _length uint    // out
 	var _utf8s []string // out
@@ -523,6 +547,11 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 
 	_cret = C.g_key_file_get_locale_for_key(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(locale)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -565,6 +594,11 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 
 	_cret = C.g_key_file_get_locale_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(locale)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -585,6 +619,8 @@ func (keyFile *KeyFile) StartGroup() string {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_start_group(_arg0)
+
+	runtime.KeepAlive(keyFile)
 
 	var _utf8 string // out
 
@@ -617,6 +653,10 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 
 	_cret = C.g_key_file_get_string(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -646,6 +686,10 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_key_file_get_uint64(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
 
 	var _guint64 uint64 // out
 	var _goerr error    // out
@@ -679,6 +723,10 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 
 	_cret = C.g_key_file_get_value(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -702,6 +750,9 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_key_file_has_group(_arg0, _arg1)
+
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
 
 	var _ok bool // out
 
@@ -728,6 +779,10 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 	_arg3 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_data(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(data)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -755,6 +810,9 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 	_arg3 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_data_dirs(_arg0, _arg1, &_arg2, _arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(flags)
 
 	var _fullPath string // out
 	var _goerr error     // out
@@ -806,6 +864,10 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 	_arg4 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_dirs(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(searchDirs)
+	runtime.KeepAlive(flags)
 
 	var _fullPath string // out
 	var _goerr error     // out
@@ -841,6 +903,9 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	_arg2 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_file(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -871,6 +936,9 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	}
 
 	C.g_key_file_remove_comment(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
 
 	var _goerr error // out
 
@@ -892,6 +960,8 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_key_file_remove_group(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
 
 	var _goerr error // out
 
@@ -916,6 +986,9 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_key_file_remove_key(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
 
 	var _goerr error // out
 
@@ -943,6 +1016,8 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_key_file_save_to_file(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(filename)
 
 	var _goerr error // out
 
@@ -971,6 +1046,10 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	}
 
 	C.g_key_file_set_boolean(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // SetBooleanList associates a list of boolean values with key under group_name.
@@ -994,6 +1073,10 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 	}
 
 	C.g_key_file_set_boolean_list(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(list)
 }
 
 // SetComment places a comment above key from group_name.
@@ -1024,6 +1107,10 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_key_file_set_comment(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(comment)
 
 	var _goerr error // out
 
@@ -1050,6 +1137,10 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	_arg3 = C.gdouble(value)
 
 	C.g_key_file_set_double(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // SetDoubleList associates a list of double values with key under group_name.
@@ -1072,6 +1163,10 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 	}
 
 	C.g_key_file_set_double_list(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(list)
 }
 
 // SetInt64 associates a new integer value with key under group_name. If key
@@ -1090,6 +1185,10 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	_arg3 = C.gint64(value)
 
 	C.g_key_file_set_int64(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // SetInteger associates a new integer value with key under group_name. If key
@@ -1108,6 +1207,10 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	_arg3 = C.gint(value)
 
 	C.g_key_file_set_integer(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // SetIntegerList associates a list of integer values with key under group_name.
@@ -1130,6 +1233,10 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	}
 
 	C.g_key_file_set_integer_list(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(list)
 }
 
 // SetListSeparator sets the character which is used to separate values in
@@ -1143,6 +1250,8 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 	_arg1 = C.gchar(separator)
 
 	C.g_key_file_set_list_separator(_arg0, _arg1)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(separator)
 }
 
 // SetLocaleString associates a string value for key and locale under
@@ -1165,6 +1274,11 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	defer C.free(unsafe.Pointer(_arg4))
 
 	C.g_key_file_set_locale_string(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(locale)
+	runtime.KeepAlive(_string)
 }
 
 // SetLocaleStringList associates a list of string values for key and locale
@@ -1197,6 +1311,11 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	}
 
 	C.g_key_file_set_locale_string_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(locale)
+	runtime.KeepAlive(list)
 }
 
 // SetString associates a new string value with key under group_name. If key
@@ -1218,6 +1337,10 @@ func (keyFile *KeyFile) SetString(groupName string, key string, _string string) 
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_key_file_set_string(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(_string)
 }
 
 // SetStringList associates a list of string values for key under group_name. If
@@ -1247,6 +1370,10 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	}
 
 	C.g_key_file_set_string_list(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(list)
 }
 
 // SetUint64 associates a new integer value with key under group_name. If key
@@ -1265,6 +1392,10 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	_arg3 = C.guint64(value)
 
 	C.g_key_file_set_uint64(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // SetValue associates a new value with key under group_name.
@@ -1287,6 +1418,10 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_key_file_set_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // ToData: this function outputs key_file as a string.
@@ -1302,6 +1437,8 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_to_data(_arg0, &_arg1, &_cerr)
+
+	runtime.KeepAlive(keyFile)
 
 	var _length uint // out
 	var _utf8 string // out

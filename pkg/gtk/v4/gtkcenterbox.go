@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -114,6 +115,8 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 
 	_cret = C.gtk_center_box_get_baseline_position(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _baselinePosition BaselinePosition // out
 
 	_baselinePosition = BaselinePosition(_cret)
@@ -129,6 +132,8 @@ func (self *CenterBox) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_center_widget(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -148,6 +153,8 @@ func (self *CenterBox) EndWidget() Widgetter {
 
 	_cret = C.gtk_center_box_get_end_widget(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -165,6 +172,8 @@ func (self *CenterBox) StartWidget() Widgetter {
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_box_get_start_widget(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -189,6 +198,8 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }
 
 // SetCenterWidget sets the center widget.
@@ -204,6 +215,8 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	}
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetEndWidget sets the end widget.
@@ -219,6 +232,8 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 	}
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetStartWidget sets the start widget.
@@ -234,4 +249,6 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	}
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }

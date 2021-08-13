@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -120,6 +121,8 @@ func NewActionGroup(name string) *ActionGroup {
 
 	_cret = C.gtk_action_group_new(_arg1)
 
+	runtime.KeepAlive(name)
+
 	var _actionGroup *ActionGroup // out
 
 	_actionGroup = wrapActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -143,6 +146,8 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(action)
 }
 
 // AddActionWithAccel adds an action object to the action group and sets up the
@@ -167,6 +172,9 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 	}
 
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(accelerator)
 }
 
 // AccelGroup gets the accelerator group.
@@ -179,6 +187,8 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
+
+	runtime.KeepAlive(actionGroup)
 
 	var _accelGroup *AccelGroup // out
 
@@ -201,6 +211,9 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 
 	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
 
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
 	var _action *Action // out
 
 	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
@@ -218,6 +231,8 @@ func (actionGroup *ActionGroup) Name() string {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_name(_arg0)
+
+	runtime.KeepAlive(actionGroup)
 
 	var _utf8 string // out
 
@@ -238,6 +253,8 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
+
+	runtime.KeepAlive(actionGroup)
 
 	var _ok bool // out
 
@@ -261,6 +278,8 @@ func (actionGroup *ActionGroup) Visible() bool {
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 
+	runtime.KeepAlive(actionGroup)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -280,6 +299,8 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.gtk_action_group_list_actions(_arg0)
+
+	runtime.KeepAlive(actionGroup)
 
 	var _list []Action // out
 
@@ -305,6 +326,8 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(action)
 }
 
 // SetAccelGroup sets the accelerator group to be used by every action in this
@@ -321,6 +344,8 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	}
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(accelGroup)
 }
 
 // SetSensitive changes the sensitivity of action_group
@@ -336,6 +361,8 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	}
 
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(sensitive)
 }
 
 // SetTranslateFunc sets a function to be used for translating the label and
@@ -357,6 +384,8 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_action_group_set_translate_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(fn)
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext() for
@@ -378,6 +407,8 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	}
 
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(domain)
 }
 
 // SetVisible changes the visible of action_group.
@@ -393,6 +424,8 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 	}
 
 	C.gtk_action_group_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(visible)
 }
 
 // TranslateString translates a string using the function set with
@@ -410,6 +443,9 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
+
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(_string)
 
 	var _utf8 string // out
 

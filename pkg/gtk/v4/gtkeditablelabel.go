@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -106,6 +107,8 @@ func NewEditableLabel(str string) *EditableLabel {
 
 	_cret = C.gtk_editable_label_new(_arg1)
 
+	runtime.KeepAlive(str)
+
 	var _editableLabel *EditableLabel // out
 
 	_editableLabel = wrapEditableLabel(externglib.Take(unsafe.Pointer(_cret)))
@@ -121,6 +124,8 @@ func (self *EditableLabel) Editing() bool {
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -138,6 +143,7 @@ func (self *EditableLabel) StartEditing() {
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
 
 	C.gtk_editable_label_start_editing(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // StopEditing switches the label out of “editing mode”.
@@ -155,4 +161,6 @@ func (self *EditableLabel) StopEditing(commit bool) {
 	}
 
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(commit)
 }

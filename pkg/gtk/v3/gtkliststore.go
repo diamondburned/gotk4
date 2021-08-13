@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -113,6 +114,8 @@ func NewListStore(types []externglib.Type) *ListStore {
 
 	_cret = C.gtk_list_store_newv(_arg1, _arg2)
 
+	runtime.KeepAlive(types)
+
 	var _listStore *ListStore // out
 
 	_listStore = wrapListStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -130,6 +133,7 @@ func (listStore *ListStore) Append() TreeIter {
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_append(_arg0, &_arg1)
+	runtime.KeepAlive(listStore)
 
 	var _iter TreeIter // out
 
@@ -145,6 +149,7 @@ func (listStore *ListStore) Clear() {
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_clear(_arg0)
+	runtime.KeepAlive(listStore)
 }
 
 // Insert creates a new row at position. iter will be changed to point to this
@@ -161,6 +166,8 @@ func (listStore *ListStore) Insert(position int) TreeIter {
 	_arg2 = C.gint(position)
 
 	C.gtk_list_store_insert(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(position)
 
 	var _iter TreeIter // out
 
@@ -185,6 +192,8 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) TreeIter {
 	}
 
 	C.gtk_list_store_insert_after(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(sibling)
 
 	var _iter TreeIter // out
 
@@ -208,6 +217,8 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) TreeIter {
 	}
 
 	C.gtk_list_store_insert_before(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(sibling)
 
 	var _iter TreeIter // out
 
@@ -244,6 +255,10 @@ func (listStore *ListStore) InsertWithValuesv(position int, columns []int, value
 	}
 
 	C.gtk_list_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 
 	var _iter TreeIter // out
 
@@ -265,6 +280,9 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_list_store_iter_is_valid(_arg0, _arg1)
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -290,6 +308,9 @@ func (store *ListStore) MoveAfter(iter *TreeIter, position *TreeIter) {
 	}
 
 	C.gtk_list_store_move_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(position)
 }
 
 // MoveBefore moves iter in store to the position before position. Note that
@@ -307,6 +328,9 @@ func (store *ListStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 	}
 
 	C.gtk_list_store_move_before(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(position)
 }
 
 // Prepend prepends a new row to list_store. iter will be changed to point to
@@ -319,6 +343,7 @@ func (listStore *ListStore) Prepend() TreeIter {
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 
 	C.gtk_list_store_prepend(_arg0, &_arg1)
+	runtime.KeepAlive(listStore)
 
 	var _iter TreeIter // out
 
@@ -339,6 +364,9 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_list_store_remove(_arg0, _arg1)
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -363,6 +391,8 @@ func (store *ListStore) Reorder(newOrder []int) {
 	}
 
 	C.gtk_list_store_reorder(_arg0, _arg1)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(newOrder)
 }
 
 // SetColumnTypes: this function is meant primarily for #GObjects that inherit
@@ -386,6 +416,8 @@ func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 	}
 
 	C.gtk_list_store_set_column_types(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(types)
 }
 
 // SetValue sets the data in the cell specified by iter and column. The type of
@@ -402,6 +434,10 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externgl
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_list_store_set_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(value)
 }
 
 // Set: variant of gtk_list_store_set_valist() which takes the columns and
@@ -432,6 +468,10 @@ func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externgl
 	}
 
 	C.gtk_list_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 }
 
 // Swap swaps a and b in store. Note that this function only works with unsorted
@@ -446,4 +486,7 @@ func (store *ListStore) Swap(a *TreeIter, b *TreeIter) {
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.gtk_list_store_swap(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 }

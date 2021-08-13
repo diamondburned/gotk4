@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -98,6 +99,8 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
@@ -116,6 +119,8 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
+
+	runtime.KeepAlive(controller)
 
 	var _device gdk.Devicer // out
 
@@ -136,6 +141,8 @@ func (controller *EventController) CurrentEventState() gdk.ModifierType {
 
 	_cret = C.gtk_event_controller_get_current_event_state(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _modifierType gdk.ModifierType // out
 
 	_modifierType = gdk.ModifierType(_cret)
@@ -153,6 +160,8 @@ func (controller *EventController) CurrentEventTime() uint32 {
 
 	_cret = C.gtk_event_controller_get_current_event_time(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -169,6 +178,8 @@ func (controller *EventController) Name() string {
 
 	_cret = C.gtk_event_controller_get_name(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -184,6 +195,8 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_limit(_arg0)
+
+	runtime.KeepAlive(controller)
 
 	var _propagationLimit PropagationLimit // out
 
@@ -202,6 +215,8 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _propagationPhase PropagationPhase // out
 
 	_propagationPhase = PropagationPhase(_cret)
@@ -218,6 +233,8 @@ func (controller *EventController) Widget() Widgetter {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -232,6 +249,7 @@ func (controller *EventController) Reset() {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_event_controller_reset(_arg0)
+	runtime.KeepAlive(controller)
 }
 
 // SetName sets a name on the controller that can be used for debugging.
@@ -244,6 +262,8 @@ func (controller *EventController) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_event_controller_set_name(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(name)
 }
 
 // SetPropagationLimit sets the event propagation limit on the event controller.
@@ -258,6 +278,8 @@ func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 	_arg1 = C.GtkPropagationLimit(limit)
 
 	C.gtk_event_controller_set_propagation_limit(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(limit)
 }
 
 // SetPropagationPhase sets the propagation phase at which a controller handles
@@ -273,4 +295,6 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	_arg1 = C.GtkPropagationPhase(phase)
 
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(phase)
 }

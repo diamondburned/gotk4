@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -64,6 +65,9 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(port)
+
 	var _inetSocketAddress *InetSocketAddress // out
 
 	_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -87,6 +91,9 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(port)
+
 	var _inetSocketAddress *InetSocketAddress // out
 
 	if _cret != nil {
@@ -105,6 +112,8 @@ func (address *InetSocketAddress) Address() *InetAddress {
 
 	_cret = C.g_inet_socket_address_get_address(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _inetAddress *InetAddress // out
 
 	_inetAddress = wrapInetAddress(externglib.Take(unsafe.Pointer(_cret)))
@@ -122,6 +131,8 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -137,6 +148,8 @@ func (address *InetSocketAddress) Port() uint16 {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _guint16 uint16 // out
 
@@ -154,6 +167,8 @@ func (address *InetSocketAddress) ScopeID() uint32 {
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _guint32 uint32 // out
 

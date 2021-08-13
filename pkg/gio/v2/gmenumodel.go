@@ -149,6 +149,8 @@ func (iter *MenuAttributeIter) Name() string {
 
 	_cret = C.g_menu_attribute_iter_get_name(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -179,6 +181,8 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(iter.Native()))
 
 	_cret = C.g_menu_attribute_iter_get_next(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(iter)
 
 	var _outName string      // out
 	var _value *glib.Variant // out
@@ -211,6 +215,8 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 
 	_cret = C.g_menu_attribute_iter_get_value(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -234,6 +240,8 @@ func (iter *MenuAttributeIter) Next() bool {
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(iter.Native()))
 
 	_cret = C.g_menu_attribute_iter_next(_arg0)
+
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -312,6 +320,8 @@ func (iter *MenuLinkIter) Name() string {
 
 	_cret = C.g_menu_link_iter_get_name(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -342,6 +352,8 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 
 	_cret = C.g_menu_link_iter_get_next(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(iter)
+
 	var _outLink string     // out
 	var _value MenuModeller // out
 	var _ok bool            // out
@@ -370,6 +382,8 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 
 	_cret = C.g_menu_link_iter_get_value(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _menuModel MenuModeller // out
 
 	_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
@@ -390,6 +404,8 @@ func (iter *MenuLinkIter) Next() bool {
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(iter.Native()))
 
 	_cret = C.g_menu_link_iter_next(_arg0)
+
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -641,6 +657,11 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(itemIndex)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(expectedType)
+
 	var _variant *glib.Variant // out
 
 	if _cret != nil {
@@ -671,6 +692,10 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 
 	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(itemIndex)
+	runtime.KeepAlive(link)
+
 	var _menuModel MenuModeller // out
 
 	if _cret != nil {
@@ -688,6 +713,8 @@ func (model *MenuModel) NItems() int {
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.g_menu_model_get_n_items(_arg0)
+
+	runtime.KeepAlive(model)
 
 	var _gint int // out
 
@@ -707,6 +734,8 @@ func (model *MenuModel) IsMutable() bool {
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.g_menu_model_is_mutable(_arg0)
+
+	runtime.KeepAlive(model)
 
 	var _ok bool // out
 
@@ -744,6 +773,10 @@ func (model *MenuModel) ItemsChanged(position int, removed int, added int) {
 	_arg3 = C.gint(added)
 
 	C.g_menu_model_items_changed(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(removed)
+	runtime.KeepAlive(added)
 }
 
 // IterateItemAttributes creates a AttributeIter to iterate over the attributes
@@ -759,6 +792,9 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	_arg1 = C.gint(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_attributes(_arg0, _arg1)
+
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(itemIndex)
 
 	var _menuAttributeIter MenuAttributeIterer // out
 
@@ -780,6 +816,9 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	_arg1 = C.gint(itemIndex)
 
 	_cret = C.g_menu_model_iterate_item_links(_arg0, _arg1)
+
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(itemIndex)
 
 	var _menuLinkIter MenuLinkIterer // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -100,6 +101,8 @@ func (switcher *StackSwitcher) Stack() *Stack {
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 
+	runtime.KeepAlive(switcher)
+
 	var _stack *Stack // out
 
 	if _cret != nil {
@@ -120,4 +123,6 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	}
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
+	runtime.KeepAlive(switcher)
+	runtime.KeepAlive(stack)
 }

@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -101,6 +102,8 @@ func (image *Image) ImageDescription() string {
 
 	_cret = C.atk_image_get_image_description(_arg0)
 
+	runtime.KeepAlive(image)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -116,6 +119,8 @@ func (image *Image) ImageLocale() string {
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.atk_image_get_image_locale(_arg0)
+
+	runtime.KeepAlive(image)
 
 	var _utf8 string // out
 
@@ -141,6 +146,8 @@ func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 	_arg3 = C.AtkCoordType(coordType)
 
 	C.atk_image_get_image_position(_arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(coordType)
 
 	var _x int // out
 	var _y int // out
@@ -165,6 +172,7 @@ func (image *Image) ImageSize() (width int, height int) {
 	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
 
 	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
 
 	var _width int  // out
 	var _height int // out
@@ -186,6 +194,9 @@ func (image *Image) SetImageDescription(description string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_image_set_image_description(_arg0, _arg1)
+
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(description)
 
 	var _ok bool // out
 

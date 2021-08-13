@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -124,6 +125,9 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 
 	_cret = C.gtk_tool_button_new(_arg1, _arg2)
 
+	runtime.KeepAlive(iconWidget)
+	runtime.KeepAlive(label)
+
 	var _toolButton *ToolButton // out
 
 	_toolButton = wrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -148,6 +152,8 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 
 	_cret = C.gtk_tool_button_new_from_stock(_arg1)
 
+	runtime.KeepAlive(stockId)
+
 	var _toolButton *ToolButton // out
 
 	_toolButton = wrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -164,6 +170,8 @@ func (button *ToolButton) IconName() string {
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_tool_button_get_icon_name(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
@@ -183,6 +191,8 @@ func (button *ToolButton) IconWidget() Widgetter {
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_tool_button_get_icon_widget(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
 
@@ -204,6 +214,8 @@ func (button *ToolButton) Label() string {
 
 	_cret = C.gtk_tool_button_get_label(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -222,6 +234,8 @@ func (button *ToolButton) LabelWidget() Widgetter {
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_tool_button_get_label_widget(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
 
@@ -245,6 +259,8 @@ func (button *ToolButton) StockID() string {
 
 	_cret = C.gtk_tool_button_get_stock_id(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -262,6 +278,8 @@ func (button *ToolButton) UseUnderline() bool {
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_tool_button_get_use_underline(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -287,6 +305,8 @@ func (button *ToolButton) SetIconName(iconName string) {
 	}
 
 	C.gtk_tool_button_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(iconName)
 }
 
 // SetIconWidget sets icon as the widget used as icon on button. If icon_widget
@@ -302,6 +322,8 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	}
 
 	C.gtk_tool_button_set_icon_widget(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(iconWidget)
 }
 
 // SetLabel sets label as the label used for the tool button. The
@@ -321,6 +343,8 @@ func (button *ToolButton) SetLabel(label string) {
 	}
 
 	C.gtk_tool_button_set_label(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(label)
 }
 
 // SetLabelWidget sets label_widget as the widget that will be used as the label
@@ -338,6 +362,8 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	}
 
 	C.gtk_tool_button_set_label_widget(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(labelWidget)
 }
 
 // SetStockID sets the name of the stock item. See
@@ -357,6 +383,8 @@ func (button *ToolButton) SetStockID(stockId string) {
 	}
 
 	C.gtk_tool_button_set_stock_id(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(stockId)
 }
 
 // SetUseUnderline: if set, an underline in the label property indicates that
@@ -377,4 +405,6 @@ func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(useUnderline)
 }

@@ -36,6 +36,9 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 
 	_cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
 
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(path)
+
 	var _contentProvider *gdk.ContentProvider // out
 
 	{
@@ -61,6 +64,8 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
+
+	runtime.KeepAlive(value)
 
 	var _treeModel TreeModeller // out
 	var _path *TreePath         // out
@@ -150,6 +155,10 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *externglib
 
 	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(dragDest)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -175,6 +184,10 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(dragDest)
+	runtime.KeepAlive(destPath)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -253,6 +266,9 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 
 	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
 
+	runtime.KeepAlive(dragSource)
+	runtime.KeepAlive(path)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -273,6 +289,9 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1)
+
+	runtime.KeepAlive(dragSource)
+	runtime.KeepAlive(path)
 
 	var _contentProvider *gdk.ContentProvider // out
 
@@ -300,6 +319,9 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
+
+	runtime.KeepAlive(dragSource)
+	runtime.KeepAlive(path)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -146,6 +147,11 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width int, height int, 
 	_arg4 = C.int(baseline)
 
 	C.gtk_layout_manager_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(baseline)
 }
 
 // LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,
@@ -166,6 +172,9 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(child)
+
 	var _layoutChild LayoutChilder // out
 
 	_layoutChild = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutChilder)
@@ -182,6 +191,8 @@ func (manager *LayoutManager) RequestMode() SizeRequestMode {
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
 
+	runtime.KeepAlive(manager)
+
 	var _sizeRequestMode SizeRequestMode // out
 
 	_sizeRequestMode = SizeRequestMode(_cret)
@@ -197,6 +208,8 @@ func (manager *LayoutManager) Widget() Widgetter {
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _widget Widgetter // out
 
@@ -217,6 +230,7 @@ func (manager *LayoutManager) LayoutChanged() {
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
 
 	C.gtk_layout_manager_layout_changed(_arg0)
+	runtime.KeepAlive(manager)
 }
 
 // Measure measures the size of the widget using manager, for the given
@@ -239,6 +253,10 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	_arg3 = C.int(forSize)
 
 	C.gtk_layout_manager_measure(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(forSize)
 
 	var _minimum int         // out
 	var _natural int         // out

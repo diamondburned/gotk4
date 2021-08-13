@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -116,6 +117,10 @@ func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // Put adds a widget to a Fixed container at the given position.
@@ -131,6 +136,10 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 type FixedChild struct {

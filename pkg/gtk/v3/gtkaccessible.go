@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -74,6 +75,7 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 
 	C.gtk_accessible_connect_widget_destroyed(_arg0)
+	runtime.KeepAlive(accessible)
 }
 
 // Widget gets the Widget corresponding to the Accessible. The returned widget
@@ -85,6 +87,8 @@ func (accessible *Accessible) Widget() Widgetter {
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
+
+	runtime.KeepAlive(accessible)
 
 	var _widget Widgetter // out
 
@@ -110,4 +114,6 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	}
 
 	C.gtk_accessible_set_widget(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(widget)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -107,6 +108,8 @@ func NewWindowControls(side PackType) *WindowControls {
 
 	_cret = C.gtk_window_controls_new(_arg1)
 
+	runtime.KeepAlive(side)
+
 	var _windowControls *WindowControls // out
 
 	_windowControls = wrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
@@ -122,6 +125,8 @@ func (self *WindowControls) DecorationLayout() string {
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -141,6 +146,8 @@ func (self *WindowControls) Empty() bool {
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -158,6 +165,8 @@ func (self *WindowControls) Side() PackType {
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_window_controls_get_side(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _packType PackType // out
 
@@ -191,6 +200,8 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 	}
 
 	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(layout)
 }
 
 // SetSide determines which part of decoration layout the GtkWindowControls
@@ -205,4 +216,6 @@ func (self *WindowControls) SetSide(side PackType) {
 	_arg1 = C.GtkPackType(side)
 
 	C.gtk_window_controls_set_side(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(side)
 }

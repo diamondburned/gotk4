@@ -292,6 +292,8 @@ func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
 }
 
 // CurrentItem gets the RecentInfo currently selected by chooser.
@@ -302,6 +304,8 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _recentInfo *RecentInfo // out
 
@@ -322,6 +326,8 @@ func (chooser *RecentChooser) CurrentURI() string {
 
 	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -339,6 +345,8 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_filter(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _recentFilter *RecentFilter // out
 
@@ -358,6 +366,8 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_items(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _list []*RecentInfo // out
 
@@ -385,6 +395,8 @@ func (chooser *RecentChooser) Limit() int {
 
 	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -401,6 +413,8 @@ func (chooser *RecentChooser) LocalOnly() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
@@ -420,6 +434,8 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 
 	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -437,6 +453,8 @@ func (chooser *RecentChooser) ShowIcons() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
@@ -457,6 +475,8 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 
 	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -475,6 +495,8 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
@@ -495,6 +517,8 @@ func (chooser *RecentChooser) ShowTips() bool {
 
 	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -513,6 +537,8 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 
 	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
 
+	runtime.KeepAlive(chooser)
+
 	var _recentSortType RecentSortType // out
 
 	_recentSortType = RecentSortType(_cret)
@@ -530,6 +556,8 @@ func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
 	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_recent_chooser_remove_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
 }
 
 // SelectAll selects all the items inside chooser, if the chooser supports
@@ -540,6 +568,7 @@ func (chooser *RecentChooser) SelectAll() {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_recent_chooser_select_all(_arg0)
+	runtime.KeepAlive(chooser)
 }
 
 // SelectURI selects uri inside chooser.
@@ -553,6 +582,8 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
@@ -574,6 +605,8 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
@@ -596,6 +629,8 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 	}
 
 	C.gtk_recent_chooser_set_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
 }
 
 // SetLimit sets the number of items that should be returned by
@@ -608,6 +643,8 @@ func (chooser *RecentChooser) SetLimit(limit int) {
 	_arg1 = C.gint(limit)
 
 	C.gtk_recent_chooser_set_limit(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(limit)
 }
 
 // SetLocalOnly sets whether only local resources, that is resources using the
@@ -624,6 +661,8 @@ func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 	}
 
 	C.gtk_recent_chooser_set_local_only(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(localOnly)
 }
 
 // SetSelectMultiple sets whether chooser can select multiple items.
@@ -637,6 +676,8 @@ func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 	}
 
 	C.gtk_recent_chooser_set_select_multiple(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(selectMultiple)
 }
 
 // SetShowIcons sets whether chooser should show an icon near the resource when
@@ -651,6 +692,8 @@ func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_icons(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showIcons)
 }
 
 // SetShowNotFound sets whether chooser should display the recently used
@@ -665,6 +708,8 @@ func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_not_found(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showNotFound)
 }
 
 // SetShowPrivate: whether to show recently used resources marked registered as
@@ -679,6 +724,8 @@ func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_private(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showPrivate)
 }
 
 // SetShowTips sets whether to show a tooltips containing the full path of each
@@ -693,6 +740,8 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showTips)
 }
 
 // SetSortFunc sets the comparison function used when sorting to be sort_func.
@@ -715,6 +764,8 @@ func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_recent_chooser_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortFunc)
 }
 
 // SetSortType changes the sorting order of the recently used resources list
@@ -727,6 +778,8 @@ func (chooser *RecentChooser) SetSortType(sortType RecentSortType) {
 	_arg1 = C.GtkRecentSortType(sortType)
 
 	C.gtk_recent_chooser_set_sort_type(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortType)
 }
 
 // UnselectAll unselects all the items inside chooser.
@@ -736,6 +789,7 @@ func (chooser *RecentChooser) UnselectAll() {
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_recent_chooser_unselect_all(_arg0)
+	runtime.KeepAlive(chooser)
 }
 
 // UnselectURI unselects uri inside chooser.
@@ -748,4 +802,6 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
 }

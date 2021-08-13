@@ -133,6 +133,8 @@ func (stream *PollableInputStream) CanPoll() bool {
 
 	_cret = C.g_pollable_input_stream_can_poll(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -164,6 +166,9 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -188,6 +193,8 @@ func (stream *PollableInputStream) IsReadable() bool {
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_pollable_input_stream_is_readable(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -228,6 +235,10 @@ func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer [
 	}
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
 
 	var _gssize int  // out
 	var _goerr error // out

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -72,6 +73,8 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _widgetPaintable *WidgetPaintable // out
 
 	_widgetPaintable = wrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -87,6 +90,8 @@ func (self *WidgetPaintable) Widget() Widgetter {
 	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -108,4 +113,6 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	}
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }

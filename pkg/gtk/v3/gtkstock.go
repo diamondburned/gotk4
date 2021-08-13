@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -634,6 +635,7 @@ func StockAdd(items []StockItem) {
 	}
 
 	C.gtk_stock_add(_arg1, _arg2)
+	runtime.KeepAlive(items)
 }
 
 // StockAddStatic: same as gtk_stock_add(), but doesn’t copy items, so items
@@ -650,6 +652,7 @@ func StockAddStatic(items []StockItem) {
 	}
 
 	C.gtk_stock_add_static(_arg1, _arg2)
+	runtime.KeepAlive(items)
 }
 
 // StockLookup fills item with the registered values for stock_id, returning
@@ -665,6 +668,8 @@ func StockLookup(stockId string) (StockItem, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
+
+	runtime.KeepAlive(stockId)
 
 	var _item StockItem // out
 	var _ok bool        // out
@@ -722,6 +727,8 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_stock_set_translate_func(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(fn)
 }
 
 // StockItem: deprecated: since version 3.10.

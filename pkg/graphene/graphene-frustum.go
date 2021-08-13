@@ -64,6 +64,9 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 
 	_cret = C.graphene_frustum_contains_point(_arg0, _arg1)
 
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(point)
+
 	var _ok bool // out
 
 	if _cret {
@@ -84,6 +87,9 @@ func (a *Frustum) Equal(b *Frustum) bool {
 
 	_cret = C.graphene_frustum_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -101,6 +107,7 @@ func (f *Frustum) Planes() [6]Plane {
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
 
 	C.graphene_frustum_get_planes(_arg0, &_arg1[0])
+	runtime.KeepAlive(f)
 
 	var _planes [6]Plane // out
 
@@ -131,6 +138,14 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 
 	_cret = C.graphene_frustum_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(p0)
+	runtime.KeepAlive(p1)
+	runtime.KeepAlive(p2)
+	runtime.KeepAlive(p3)
+	runtime.KeepAlive(p4)
+	runtime.KeepAlive(p5)
+
 	var _frustum *Frustum // out
 
 	_frustum = (*Frustum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -150,6 +165,9 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 
 	_cret = C.graphene_frustum_init_from_frustum(_arg0, _arg1)
 
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(src)
+
 	var _frustum *Frustum // out
 
 	_frustum = (*Frustum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -167,6 +185,9 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.graphene_frustum_init_from_matrix(_arg0, _arg1)
+
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(matrix)
 
 	var _frustum *Frustum // out
 
@@ -186,6 +207,9 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 
 	_cret = C.graphene_frustum_intersects_box(_arg0, _arg1)
+
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
@@ -207,6 +231,9 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(sphere)))
 
 	_cret = C.graphene_frustum_intersects_sphere(_arg0, _arg1)
+
+	runtime.KeepAlive(f)
+	runtime.KeepAlive(sphere)
 
 	var _ok bool // out
 

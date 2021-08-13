@@ -532,6 +532,8 @@ func NewSettings(schemaId string) *Settings {
 
 	_cret = C.g_settings_new(_arg1)
 
+	runtime.KeepAlive(schemaId)
+
 	var _settings *Settings // out
 
 	_settings = wrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -563,6 +565,9 @@ func NewSettingsWithPath(schemaId string, path string) *Settings {
 
 	_cret = C.g_settings_new_with_path(_arg1, _arg2)
 
+	runtime.KeepAlive(schemaId)
+	runtime.KeepAlive(path)
+
 	var _settings *Settings // out
 
 	_settings = wrapSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -580,6 +585,7 @@ func (settings *Settings) Apply() {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_apply(_arg0)
+	runtime.KeepAlive(settings)
 }
 
 // Bind: create a binding between the key in the settings object and the
@@ -615,6 +621,11 @@ func (settings *Settings) Bind(key string, object *externglib.Object, property s
 	_arg4 = C.GSettingsBindFlags(flags)
 
 	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(flags)
 }
 
 // BindWritable: create a binding between the writability of key in the settings
@@ -650,6 +661,11 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 	}
 
 	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(inverted)
 }
 
 // CreateAction creates a #GAction corresponding to a given #GSettings key.
@@ -675,6 +691,9 @@ func (settings *Settings) CreateAction(key string) Actioner {
 
 	_cret = C.g_settings_create_action(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _action Actioner // out
 
 	_action = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
@@ -691,6 +710,7 @@ func (settings *Settings) Delay() {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_delay(_arg0)
+	runtime.KeepAlive(settings)
 }
 
 // Boolean gets the value that is stored at key in settings.
@@ -709,6 +729,9 @@ func (settings *Settings) Boolean(key string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_boolean(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _ok bool // out
 
@@ -734,6 +757,9 @@ func (settings *Settings) Child(name string) *Settings {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_child(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
 
 	var _ret *Settings // out
 
@@ -773,6 +799,9 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 
 	_cret = C.g_settings_get_default_value(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _variant *glib.Variant // out
 
 	if _cret != nil {
@@ -801,6 +830,9 @@ func (settings *Settings) Double(key string) float64 {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_double(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _gdouble float64 // out
 
@@ -831,6 +863,9 @@ func (settings *Settings) Enum(key string) int {
 
 	_cret = C.g_settings_get_enum(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -860,6 +895,9 @@ func (settings *Settings) Flags(key string) uint {
 
 	_cret = C.g_settings_get_flags(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -876,6 +914,8 @@ func (settings *Settings) HasUnapplied() bool {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_get_has_unapplied(_arg0)
+
+	runtime.KeepAlive(settings)
 
 	var _ok bool // out
 
@@ -903,6 +943,9 @@ func (settings *Settings) Int(key string) int {
 
 	_cret = C.g_settings_get_int(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -926,6 +969,9 @@ func (settings *Settings) Int64(key string) int64 {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_int64(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _gint64 int64 // out
 
@@ -976,6 +1022,10 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 
 	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(mapping)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -996,6 +1046,9 @@ func (settings *Settings) Range(key string) *glib.Variant {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_range(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
@@ -1024,6 +1077,9 @@ func (settings *Settings) String(key string) string {
 
 	_cret = C.g_settings_get_string(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -1046,6 +1102,9 @@ func (settings *Settings) Strv(key string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_strv(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _utf8s []string // out
 
@@ -1085,6 +1144,9 @@ func (settings *Settings) Uint(key string) uint {
 
 	_cret = C.g_settings_get_uint(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -1108,6 +1170,9 @@ func (settings *Settings) Uint64(key string) uint64 {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_get_uint64(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _guint64 uint64 // out
 
@@ -1144,6 +1209,9 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 
 	_cret = C.g_settings_get_user_value(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _variant *glib.Variant // out
 
 	if _cret != nil {
@@ -1171,6 +1239,9 @@ func (settings *Settings) Value(key string) *glib.Variant {
 
 	_cret = C.g_settings_get_value(_arg0, _arg1)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1192,6 +1263,9 @@ func (settings *Settings) IsWritable(name string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_is_writable(_arg0, _arg1)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
 
 	var _ok bool // out
 
@@ -1219,6 +1293,8 @@ func (settings *Settings) ListChildren() []string {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	_cret = C.g_settings_list_children(_arg0)
+
+	runtime.KeepAlive(settings)
 
 	var _utf8s []string // out
 
@@ -1258,6 +1334,8 @@ func (settings *Settings) ListKeys() []string {
 
 	_cret = C.g_settings_list_keys(_arg0)
 
+	runtime.KeepAlive(settings)
+
 	var _utf8s []string // out
 
 	defer C.free(unsafe.Pointer(_cret))
@@ -1296,6 +1374,10 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1319,6 +1401,8 @@ func (settings *Settings) Reset(key string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_settings_reset(_arg0, _arg1)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 }
 
 // Revert reverts all non-applied changes to the settings. This function does
@@ -1332,6 +1416,7 @@ func (settings *Settings) Revert() {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_revert(_arg0)
+	runtime.KeepAlive(settings)
 }
 
 // SetBoolean sets key in settings to value.
@@ -1354,6 +1439,10 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 	}
 
 	_cret = C.g_settings_set_boolean(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1382,6 +1471,10 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 	_arg2 = C.gdouble(value)
 
 	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1414,6 +1507,10 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 
 	_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1445,6 +1542,10 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 
 	_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1472,6 +1573,10 @@ func (settings *Settings) SetInt(key string, value int) bool {
 	_arg2 = C.gint(value)
 
 	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1501,6 +1606,10 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 
 	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1529,6 +1638,10 @@ func (settings *Settings) SetString(key string, value string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1571,6 +1684,10 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 
 	_cret = C.g_settings_set_strv(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1598,6 +1715,10 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 	_arg2 = C.guint(value)
 
 	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1627,6 +1748,10 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1654,6 +1779,10 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -1747,4 +1876,6 @@ func SettingsUnbind(object *externglib.Object, property string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_settings_unbind(_arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }

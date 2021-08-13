@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -77,6 +78,8 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 
 	_cret = C.g_unix_socket_address_new(_arg1)
 
+	runtime.KeepAlive(path)
+
 	var _unixSocketAddress *UnixSocketAddress // out
 
 	_unixSocketAddress = wrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -99,6 +102,8 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 	}
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
+
+	runtime.KeepAlive(path)
 
 	var _unixSocketAddress *UnixSocketAddress // out
 
@@ -151,6 +156,9 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixS
 
 	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(typ)
+
 	var _unixSocketAddress *UnixSocketAddress // out
 
 	_unixSocketAddress = wrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -166,6 +174,8 @@ func (address *UnixSocketAddress) AddressType() UnixSocketAddressType {
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_address_type(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _unixSocketAddressType UnixSocketAddressType // out
 
@@ -184,6 +194,8 @@ func (address *UnixSocketAddress) IsAbstract() bool {
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
@@ -207,6 +219,8 @@ func (address *UnixSocketAddress) Path() string {
 
 	_cret = C.g_unix_socket_address_get_path(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -224,6 +238,8 @@ func (address *UnixSocketAddress) PathLen() uint {
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_unix_socket_address_get_path_len(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _gsize uint // out
 

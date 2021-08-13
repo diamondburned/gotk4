@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -63,6 +64,8 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 
 	_cret = C.gtk_single_selection_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _singleSelection *SingleSelection // out
 
 	_singleSelection = wrapSingleSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -79,6 +82,8 @@ func (self *SingleSelection) Autoselect() bool {
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_autoselect(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -99,6 +104,8 @@ func (self *SingleSelection) CanUnselect() bool {
 
 	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -116,6 +123,8 @@ func (self *SingleSelection) Model() gio.ListModeller {
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -135,6 +144,8 @@ func (self *SingleSelection) Selected() uint {
 
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -152,6 +163,8 @@ func (self *SingleSelection) SelectedItem() *externglib.Object {
 	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_single_selection_get_selected_item(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out
 
@@ -175,6 +188,8 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 	}
 
 	C.gtk_single_selection_set_autoselect(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(autoselect)
 }
 
 // SetCanUnselect: if TRUE, unselecting the current item via
@@ -193,6 +208,8 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 	}
 
 	C.gtk_single_selection_set_can_unselect(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canUnselect)
 }
 
 // SetModel sets the model that self should wrap.
@@ -208,6 +225,8 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_single_selection_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetSelected selects the item at the given position.
@@ -225,4 +244,6 @@ func (self *SingleSelection) SetSelected(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -110,6 +111,9 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
 
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
+
 	var _scrollbar *Scrollbar // out
 
 	_scrollbar = wrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
@@ -125,6 +129,8 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _adjustment *Adjustment // out
 
@@ -144,4 +150,6 @@ func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	}
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(adjustment)
 }

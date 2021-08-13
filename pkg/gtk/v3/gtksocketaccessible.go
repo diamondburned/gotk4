@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -59,4 +60,6 @@ func (socket *SocketAccessible) Embed(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_socket_accessible_embed(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(path)
 }

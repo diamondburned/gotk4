@@ -156,6 +156,9 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
+	runtime.KeepAlive(cmdline)
+	runtime.KeepAlive(arg)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -178,6 +181,8 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 
 	_cret = C.g_application_command_line_get_cwd(_arg0)
+
+	runtime.KeepAlive(cmdline)
 
 	var _filename string // out
 
@@ -211,6 +216,8 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 
 	_cret = C.g_application_command_line_get_environ(_arg0)
 
+	runtime.KeepAlive(cmdline)
+
 	var _filenames []string // out
 
 	{
@@ -240,6 +247,8 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 
+	runtime.KeepAlive(cmdline)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -255,6 +264,8 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 
 	_cret = C.g_application_command_line_get_is_remote(_arg0)
+
+	runtime.KeepAlive(cmdline)
 
 	var _ok bool // out
 
@@ -283,6 +294,8 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	_cret = C.g_application_command_line_get_options_dict(_arg0)
 
+	runtime.KeepAlive(cmdline)
+
 	var _variantDict *glib.VariantDict // out
 
 	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -309,6 +322,8 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 
 	_cret = C.g_application_command_line_get_platform_data(_arg0)
+
+	runtime.KeepAlive(cmdline)
 
 	var _variant *glib.Variant // out
 
@@ -338,6 +353,8 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 
 	_cret = C.g_application_command_line_get_stdin(_arg0)
+
+	runtime.KeepAlive(cmdline)
 
 	var _inputStream InputStreamer // out
 
@@ -369,6 +386,9 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
+
+	runtime.KeepAlive(cmdline)
+	runtime.KeepAlive(name)
 
 	var _utf8 string // out
 
@@ -406,4 +426,6 @@ func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	_arg1 = C.int(exitStatus)
 
 	C.g_application_command_line_set_exit_status(_arg0, _arg1)
+	runtime.KeepAlive(cmdline)
+	runtime.KeepAlive(exitStatus)
 }

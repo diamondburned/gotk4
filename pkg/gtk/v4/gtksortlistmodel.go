@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -70,6 +71,9 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 
 	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(sorter)
+
 	var _sortListModel *SortListModel // out
 
 	_sortListModel = wrapSortListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -88,6 +92,8 @@ func (self *SortListModel) Incremental() bool {
 
 	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -105,6 +111,8 @@ func (self *SortListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -138,6 +146,8 @@ func (self *SortListModel) Pending() uint {
 
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -153,6 +163,8 @@ func (self *SortListModel) Sorter() *Sorter {
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sort_list_model_get_sorter(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
@@ -189,6 +201,8 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 	}
 
 	C.gtk_sort_list_model_set_incremental(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(incremental)
 }
 
 // SetModel sets the model to be sorted.
@@ -204,6 +218,8 @@ func (self *SortListModel) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_sort_list_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetSorter sets a new sorter on self.
@@ -217,4 +233,6 @@ func (self *SortListModel) SetSorter(sorter *Sorter) {
 	}
 
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sorter)
 }

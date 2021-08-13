@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -93,6 +94,8 @@ func (monitor *FileMonitor) Cancel() bool {
 
 	_cret = C.g_file_monitor_cancel(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -120,6 +123,10 @@ func (monitor *FileMonitor) EmitEvent(child Filer, otherFile Filer, eventType Fi
 	_arg3 = C.GFileMonitorEvent(eventType)
 
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(otherFile)
+	runtime.KeepAlive(eventType)
 }
 
 // IsCancelled returns whether the monitor is canceled.
@@ -130,6 +137,8 @@ func (monitor *FileMonitor) IsCancelled() bool {
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
 
@@ -150,4 +159,6 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	_arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(limitMsecs)
 }

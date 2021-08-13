@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -171,6 +172,9 @@ func (comboBox *ComboBoxText) Append(id string, text string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_combo_box_text_append(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(id)
+	runtime.KeepAlive(text)
 }
 
 // AppendText appends text to the list of strings stored in combo_box.
@@ -186,6 +190,8 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_combo_box_text_append_text(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(text)
 }
 
 // ActiveText returns the currently active string in combo_box.
@@ -200,6 +206,8 @@ func (comboBox *ComboBoxText) ActiveText() string {
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _utf8 string // out
 
@@ -233,6 +241,10 @@ func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_combo_box_text_insert(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(id)
+	runtime.KeepAlive(text)
 }
 
 // InsertText inserts text at position in the list of strings stored in
@@ -252,6 +264,9 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_combo_box_text_insert_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(text)
 }
 
 // Prepend prepends text to the list of strings stored in combo_box.
@@ -273,6 +288,9 @@ func (comboBox *ComboBoxText) Prepend(id string, text string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_combo_box_text_prepend(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(id)
+	runtime.KeepAlive(text)
 }
 
 // PrependText prepends text to the list of strings stored in combo_box.
@@ -288,6 +306,8 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_combo_box_text_prepend_text(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(text)
 }
 
 // Remove removes the string at position from combo_box.
@@ -299,6 +319,8 @@ func (comboBox *ComboBoxText) Remove(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_combo_box_text_remove(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(position)
 }
 
 // RemoveAll removes all the text entries from the combo box.
@@ -308,4 +330,5 @@ func (comboBox *ComboBoxText) RemoveAll() {
 	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(comboBox.Native()))
 
 	C.gtk_combo_box_text_remove_all(_arg0)
+	runtime.KeepAlive(comboBox)
 }

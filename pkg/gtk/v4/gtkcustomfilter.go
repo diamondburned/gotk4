@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -92,6 +93,8 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 
 	_cret = C.gtk_custom_filter_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(matchFunc)
+
 	var _customFilter *CustomFilter // out
 
 	_customFilter = wrapCustomFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -121,4 +124,6 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	}
 
 	C.gtk_custom_filter_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(matchFunc)
 }

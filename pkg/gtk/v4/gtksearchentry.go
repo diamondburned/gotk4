@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -135,6 +136,8 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
+	runtime.KeepAlive(entry)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -166,4 +169,6 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	}
 
 	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(widget)
 }

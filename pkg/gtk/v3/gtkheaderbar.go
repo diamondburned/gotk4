@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -89,6 +90,8 @@ func (bar *HeaderBar) CustomTitle() Widgetter {
 
 	_cret = C.gtk_header_bar_get_custom_title(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -108,6 +111,8 @@ func (bar *HeaderBar) DecorationLayout() string {
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -124,6 +129,8 @@ func (bar *HeaderBar) HasSubtitle() bool {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_has_subtitle(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -144,6 +151,8 @@ func (bar *HeaderBar) ShowCloseButton() bool {
 
 	_cret = C.gtk_header_bar_get_show_close_button(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -163,6 +172,8 @@ func (bar *HeaderBar) Subtitle() string {
 
 	_cret = C.gtk_header_bar_get_subtitle(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -180,6 +191,8 @@ func (bar *HeaderBar) Title() string {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_title(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _utf8 string // out
 
@@ -199,6 +212,8 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
@@ -210,6 +225,8 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // SetCustomTitle sets a custom title for the HeaderBar.
@@ -231,6 +248,8 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 	}
 
 	C.gtk_header_bar_set_custom_title(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(titleWidget)
 }
 
 // SetDecorationLayout sets the decoration layout for this header bar,
@@ -259,6 +278,8 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	}
 
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(layout)
 }
 
 // SetHasSubtitle sets whether the header bar should reserve space for a
@@ -273,6 +294,8 @@ func (bar *HeaderBar) SetHasSubtitle(setting bool) {
 	}
 
 	C.gtk_header_bar_set_has_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowCloseButton sets whether this header bar shows the standard window
@@ -287,6 +310,8 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 	}
 
 	C.gtk_header_bar_set_show_close_button(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(setting)
 }
 
 // SetSubtitle sets the subtitle of the HeaderBar. The title should give a user
@@ -306,6 +331,8 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 	}
 
 	C.gtk_header_bar_set_subtitle(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(subtitle)
 }
 
 // SetTitle sets the title of the HeaderBar. The title should help a user
@@ -322,4 +349,6 @@ func (bar *HeaderBar) SetTitle(title string) {
 	}
 
 	C.gtk_header_bar_set_title(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(title)
 }

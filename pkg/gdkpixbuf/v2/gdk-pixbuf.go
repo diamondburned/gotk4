@@ -206,6 +206,12 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 
 	_cret = C.gdk_pixbuf_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(colorspace)
+	runtime.KeepAlive(hasAlpha)
+	runtime.KeepAlive(bitsPerSample)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
@@ -236,6 +242,8 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_file(_arg1, &_cerr)
+
+	runtime.KeepAlive(filename)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
@@ -290,6 +298,11 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 
 	_cret = C.gdk_pixbuf_new_from_file_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(preserveAspectRatio)
+
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
 
@@ -333,6 +346,10 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (*Pixbuf, e
 	_arg3 = C.int(height)
 
 	_cret = C.gdk_pixbuf_new_from_file_at_size(_arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
@@ -396,6 +413,9 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 
 	_cret = C.gdk_pixbuf_new_from_inline(_arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(data)
+	runtime.KeepAlive(copyPixels)
+
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
 
@@ -421,6 +441,8 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_new_from_resource(_arg1, &_cerr)
+
+	runtime.KeepAlive(resourcePath)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
@@ -467,6 +489,11 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 
 	_cret = C.gdk_pixbuf_new_from_resource_at_scale(_arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(resourcePath)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(preserveAspectRatio)
+
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
 
@@ -506,6 +533,9 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
@@ -564,6 +594,12 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 
 	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(preserveAspectRatio)
+
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
 
@@ -587,6 +623,8 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
+
+	runtime.KeepAlive(asyncResult)
 
 	var _pixbuf *Pixbuf // out
 	var _goerr error    // out
@@ -625,6 +663,8 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 
 	_cret = C.gdk_pixbuf_new_from_xpm_data(_arg1)
 
+	runtime.KeepAlive(data)
+
 	var _pixbuf *Pixbuf // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -661,6 +701,12 @@ func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pi
 
 	_cret = C.gdk_pixbuf_add_alpha(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(substituteColor)
+	runtime.KeepAlive(r)
+	runtime.KeepAlive(g)
+	runtime.KeepAlive(b)
+
 	var _ret *Pixbuf // out
 
 	_ret = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -684,6 +730,8 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
 
 	_cret = C.gdk_pixbuf_apply_embedded_orientation(_arg0)
+
+	runtime.KeepAlive(src)
 
 	var _pixbuf *Pixbuf // out
 
@@ -733,6 +781,18 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX int, destY int, destWidth int, 
 	_arg11 = C.int(overallAlpha)
 
 	C.gdk_pixbuf_composite(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(destX)
+	runtime.KeepAlive(destY)
+	runtime.KeepAlive(destWidth)
+	runtime.KeepAlive(destHeight)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
+	runtime.KeepAlive(scaleX)
+	runtime.KeepAlive(scaleY)
+	runtime.KeepAlive(interpType)
+	runtime.KeepAlive(overallAlpha)
 }
 
 // CompositeColor creates a transformation of the source image src by scaling by
@@ -784,6 +844,23 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX int, destY int, destWidth 
 	_arg16 = C.guint32(color2)
 
 	C.gdk_pixbuf_composite_color(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13, _arg14, _arg15, _arg16)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(destX)
+	runtime.KeepAlive(destY)
+	runtime.KeepAlive(destWidth)
+	runtime.KeepAlive(destHeight)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
+	runtime.KeepAlive(scaleX)
+	runtime.KeepAlive(scaleY)
+	runtime.KeepAlive(interpType)
+	runtime.KeepAlive(overallAlpha)
+	runtime.KeepAlive(checkX)
+	runtime.KeepAlive(checkY)
+	runtime.KeepAlive(checkSize)
+	runtime.KeepAlive(color1)
+	runtime.KeepAlive(color2)
 }
 
 // CompositeColorSimple creates a new pixbuf by scaling src to dest_width x
@@ -811,6 +888,15 @@ func (src *Pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpTyp
 
 	_cret = C.gdk_pixbuf_composite_color_simple(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(destWidth)
+	runtime.KeepAlive(destHeight)
+	runtime.KeepAlive(interpType)
+	runtime.KeepAlive(overallAlpha)
+	runtime.KeepAlive(checkSize)
+	runtime.KeepAlive(color1)
+	runtime.KeepAlive(color2)
+
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
@@ -832,6 +918,8 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _ret *Pixbuf // out
 
@@ -869,6 +957,14 @@ func (srcPixbuf *Pixbuf) CopyArea(srcX int, srcY int, width int, height int, des
 	_arg7 = C.int(destY)
 
 	C.gdk_pixbuf_copy_area(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(srcPixbuf)
+	runtime.KeepAlive(srcX)
+	runtime.KeepAlive(srcY)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(destPixbuf)
+	runtime.KeepAlive(destX)
+	runtime.KeepAlive(destY)
 }
 
 // CopyOptions copies the key/value pair options attached to a GdkPixbuf to
@@ -886,6 +982,9 @@ func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(destPixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_copy_options(_arg0, _arg1)
+
+	runtime.KeepAlive(srcPixbuf)
+	runtime.KeepAlive(destPixbuf)
 
 	var _ok bool // out
 
@@ -909,6 +1008,8 @@ func (pixbuf *Pixbuf) Fill(pixel uint32) {
 	_arg1 = C.guint32(pixel)
 
 	C.gdk_pixbuf_fill(_arg0, _arg1)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(pixel)
 }
 
 // Flip flips a pixbuf horizontally or vertically and returns the result in a
@@ -924,6 +1025,9 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	}
 
 	_cret = C.gdk_pixbuf_flip(_arg0, _arg1)
+
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(horizontal)
 
 	var _pixbuf *Pixbuf // out
 
@@ -943,6 +1047,8 @@ func (pixbuf *Pixbuf) BitsPerSample() int {
 
 	_cret = C.gdk_pixbuf_get_bits_per_sample(_arg0)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -958,6 +1064,8 @@ func (pixbuf *Pixbuf) ByteLength() uint {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_byte_length(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _gsize uint // out
 
@@ -975,6 +1083,8 @@ func (pixbuf *Pixbuf) Colorspace() Colorspace {
 
 	_cret = C.gdk_pixbuf_get_colorspace(_arg0)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _colorspace Colorspace // out
 
 	_colorspace = Colorspace(_cret)
@@ -990,6 +1100,8 @@ func (pixbuf *Pixbuf) HasAlpha() bool {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_has_alpha(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _ok bool // out
 
@@ -1009,6 +1121,8 @@ func (pixbuf *Pixbuf) Height() int {
 
 	_cret = C.gdk_pixbuf_get_height(_arg0)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1024,6 +1138,8 @@ func (pixbuf *Pixbuf) NChannels() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_n_channels(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
 
@@ -1057,6 +1173,9 @@ func (pixbuf *Pixbuf) Option(key string) string {
 
 	_cret = C.gdk_pixbuf_get_option(_arg0, _arg1)
 
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(key)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -1076,6 +1195,8 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_options(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _hashTable map[string]string // out
 
@@ -1103,6 +1224,8 @@ func (pixbuf *Pixbuf) Rowstride() int {
 
 	_cret = C.gdk_pixbuf_get_rowstride(_arg0)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1118,6 +1241,8 @@ func (pixbuf *Pixbuf) Width() int {
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_pixbuf_get_width(_arg0)
+
+	runtime.KeepAlive(pixbuf)
 
 	var _gint int // out
 
@@ -1151,6 +1276,12 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int)
 
 	_cret = C.gdk_pixbuf_new_subpixbuf(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(srcPixbuf)
+	runtime.KeepAlive(srcX)
+	runtime.KeepAlive(srcY)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _pixbuf *Pixbuf // out
 
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1170,6 +1301,8 @@ func (pixbuf *Pixbuf) ReadPixels() *byte {
 
 	_cret = C.gdk_pixbuf_read_pixels(_arg0)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _guint8 *byte // out
 
 	_guint8 = (*byte)(unsafe.Pointer(_cret))
@@ -1188,6 +1321,9 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_remove_option(_arg0, _arg1)
+
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(key)
 
 	var _ok bool // out
 
@@ -1211,6 +1347,9 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	_arg1 = C.GdkPixbufRotation(angle)
 
 	_cret = C.gdk_pixbuf_rotate_simple(_arg0, _arg1)
+
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(angle)
 
 	var _pixbuf *Pixbuf // out
 
@@ -1249,6 +1388,10 @@ func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelat
 	}
 
 	C.gdk_pixbuf_saturate_and_pixelate(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(saturation)
+	runtime.KeepAlive(pixelate)
 }
 
 // SaveToBufferv: vector version of gdk_pixbuf_save_to_buffer().
@@ -1297,6 +1440,10 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 	}
 
 	C.gdk_pixbuf_save_to_bufferv(_arg0, &_arg1, &_arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(optionKeys)
+	runtime.KeepAlive(optionValues)
 
 	var _buffer []byte // out
 	var _goerr error   // out
@@ -1363,6 +1510,11 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	}
 
 	C.gdk_pixbuf_save_to_callbackv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(saveFunc)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(optionKeys)
+	runtime.KeepAlive(optionValues)
 
 	var _goerr error // out
 
@@ -1424,6 +1576,12 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 	}
 
 	C.gdk_pixbuf_save_to_streamv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(optionKeys)
+	runtime.KeepAlive(optionValues)
 
 	var _goerr error // out
 
@@ -1494,6 +1652,13 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 	}
 
 	C.gdk_pixbuf_save_to_streamv_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(optionKeys)
+	runtime.KeepAlive(optionValues)
+	runtime.KeepAlive(callback)
 }
 
 // Savev: vector version of gdk_pixbuf_save().
@@ -1545,6 +1710,11 @@ func (pixbuf *Pixbuf) Savev(filename string, typ string, optionKeys []string, op
 	}
 
 	C.gdk_pixbuf_savev(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(optionKeys)
+	runtime.KeepAlive(optionValues)
 
 	var _goerr error // out
 
@@ -1593,6 +1763,17 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX int, destY int, destWidth int, dest
 	_arg10 = C.GdkInterpType(interpType)
 
 	C.gdk_pixbuf_scale(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(destX)
+	runtime.KeepAlive(destY)
+	runtime.KeepAlive(destWidth)
+	runtime.KeepAlive(destHeight)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
+	runtime.KeepAlive(scaleX)
+	runtime.KeepAlive(scaleY)
+	runtime.KeepAlive(interpType)
 }
 
 // ScaleSimple: create a new pixbuf containing a copy of src scaled to
@@ -1627,6 +1808,11 @@ func (src *Pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpT
 
 	_cret = C.gdk_pixbuf_scale_simple(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(destWidth)
+	runtime.KeepAlive(destHeight)
+	runtime.KeepAlive(interpType)
+
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
@@ -1653,6 +1839,10 @@ func (pixbuf *Pixbuf) SetOption(key string, value string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_pixbuf_set_option(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 

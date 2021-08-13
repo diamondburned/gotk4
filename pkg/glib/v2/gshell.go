@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -58,6 +59,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(commandLine)
 
 	var _argvp []string // out
 	var _goerr error    // out
@@ -94,6 +96,8 @@ func ShellQuote(unquotedString string) string {
 
 	_cret = C.g_shell_quote(_arg1)
 
+	runtime.KeepAlive(unquotedString)
+
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -129,6 +133,8 @@ func ShellUnquote(quotedString string) (string, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_unquote(_arg1, &_cerr)
+
+	runtime.KeepAlive(quotedString)
 
 	var _filename string // out
 	var _goerr error     // out

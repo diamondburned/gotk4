@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -204,6 +205,8 @@ func (time_ *TimeVal) Add(microseconds int32) {
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
+	runtime.KeepAlive(time_)
+	runtime.KeepAlive(microseconds)
 }
 
 // ToISO8601 converts time_ into an RFC 3339 encoded string, relative to the
@@ -247,6 +250,8 @@ func (time_ *TimeVal) ToISO8601() string {
 	_arg0 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(time_)))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
+
+	runtime.KeepAlive(time_)
 
 	var _utf8 string // out
 

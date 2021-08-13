@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -113,6 +114,8 @@ func (message *SocketControlMessage) Level() int {
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
 
+	runtime.KeepAlive(message)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -130,6 +133,8 @@ func (message *SocketControlMessage) MsgType() int {
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 
+	runtime.KeepAlive(message)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -146,6 +151,8 @@ func (message *SocketControlMessage) Size() uint {
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
+
+	runtime.KeepAlive(message)
 
 	var _gsize uint // out
 
@@ -166,6 +173,8 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(data)
 }
 
 // SocketControlMessageDeserialize tries to deserialize a socket control message
@@ -190,6 +199,10 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketCont
 	}
 
 	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(level)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(data)
 
 	var _socketControlMessage SocketControlMessager // out
 

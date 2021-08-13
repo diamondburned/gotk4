@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -162,6 +163,8 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 
 	_cret = C.gtk_application_window_new(_arg1)
 
+	runtime.KeepAlive(application)
+
 	var _applicationWindow *ApplicationWindow // out
 
 	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
@@ -179,6 +182,8 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_application_window_get_help_overlay(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
@@ -200,6 +205,8 @@ func (window *ApplicationWindow) ID() uint {
 
 	_cret = C.gtk_application_window_get_id(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -216,6 +223,8 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_application_window_get_show_menubar(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -242,6 +251,8 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	}
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(helpOverlay)
 }
 
 // SetShowMenubar sets whether the window will display a menubar for the app
@@ -256,4 +267,6 @@ func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	}
 
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(showMenubar)
 }

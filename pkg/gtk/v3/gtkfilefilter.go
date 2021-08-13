@@ -202,6 +202,8 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
+	runtime.KeepAlive(variant)
+
 	var _fileFilter *FileFilter // out
 
 	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -227,6 +229,9 @@ func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_file_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(needed)
+	runtime.KeepAlive(fn)
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.
@@ -239,6 +244,8 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(mimeType)
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
@@ -251,6 +258,8 @@ func (filter *FileFilter) AddPattern(pattern string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(pattern)
 }
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
@@ -261,6 +270,7 @@ func (filter *FileFilter) AddPixbufFormats() {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
+	runtime.KeepAlive(filter)
 }
 
 // Filter tests whether a file should be displayed according to filter. The
@@ -278,6 +288,9 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	_arg1 = (*C.GtkFileFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
+
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(filterInfo)
 
 	var _ok bool // out
 
@@ -297,6 +310,8 @@ func (filter *FileFilter) Name() string {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
+
+	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
 
@@ -320,6 +335,8 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 
 	_cret = C.gtk_file_filter_get_needed(_arg0)
 
+	runtime.KeepAlive(filter)
+
 	var _fileFilterFlags FileFilterFlags // out
 
 	_fileFilterFlags = FileFilterFlags(_cret)
@@ -341,6 +358,8 @@ func (filter *FileFilter) SetName(name string) {
 	}
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(name)
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
@@ -351,6 +370,8 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
+
+	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out
 

@@ -178,6 +178,8 @@ func (initable *Initable) Init(ctx context.Context) error {
 	}
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 

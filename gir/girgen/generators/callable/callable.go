@@ -299,10 +299,19 @@ func (g *Generator) renderBlock() bool {
 		g.pen.Linef(secFnCall, "C.%s(%s)", g.CIdentifier, callParams)
 	} else {
 		g.pen.Linef(secFnCall, "_cret = C.%s(%s)", g.CIdentifier, callParams)
-		g.pen.EmptyLine(secFnCall)
+	}
+
+	// Generate the right statements to ensure that nothing is freed before or
+	// while we're invoking our function.
+	for _, converted := range g.Results {
+		if converted.Direction == typeconv.ConvertGoToC {
+			g.hdr.Import("runtime")
+			g.pen.Linef(secFnCall, "runtime.KeepAlive(%s)", converted.InName)
+		}
 	}
 
 	if goReturns.Len() > 0 {
+		g.pen.EmptyLine(secFnCall)
 		g.pen.Line(secReturn, "return "+goReturns.Join())
 	}
 

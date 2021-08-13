@@ -86,6 +86,8 @@ func (engine *ThemingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_background_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -106,6 +108,8 @@ func (engine *ThemingEngine) Border(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_border(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _border Border // out
 
@@ -126,6 +130,8 @@ func (engine *ThemingEngine) BorderColor(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_border_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -146,6 +152,8 @@ func (engine *ThemingEngine) Color(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -165,6 +173,8 @@ func (engine *ThemingEngine) Direction() TextDirection {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_direction(_arg0)
+
+	runtime.KeepAlive(engine)
 
 	var _textDirection TextDirection // out
 
@@ -186,6 +196,9 @@ func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 
 	_cret = C.gtk_theming_engine_get_font(_arg0, _arg1)
 
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
+
 	var _fontDescription *pango.FontDescription // out
 
 	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -203,6 +216,8 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
+
+	runtime.KeepAlive(engine)
 
 	var _junctionSides JunctionSides // out
 
@@ -223,6 +238,8 @@ func (engine *ThemingEngine) Margin(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_margin(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _margin Border // out
 
@@ -243,6 +260,8 @@ func (engine *ThemingEngine) Padding(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_padding(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
 
 	var _padding Border // out
 
@@ -261,6 +280,8 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_path(_arg0)
+
+	runtime.KeepAlive(engine)
 
 	var _widgetPath *WidgetPath // out
 
@@ -289,6 +310,9 @@ func (engine *ThemingEngine) Property(property string, state StateFlags) externg
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_theming_engine_get_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 
 	var _value externglib.Value // out
 
@@ -310,6 +334,8 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 
 	_cret = C.gtk_theming_engine_get_screen(_arg0)
+
+	runtime.KeepAlive(engine)
 
 	var _screen *gdk.Screen // out
 
@@ -336,6 +362,8 @@ func (engine *ThemingEngine) State() StateFlags {
 
 	_cret = C.gtk_theming_engine_get_state(_arg0)
 
+	runtime.KeepAlive(engine)
+
 	var _stateFlags StateFlags // out
 
 	_stateFlags = StateFlags(_cret)
@@ -356,6 +384,8 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(propertyName)
 
 	var _value externglib.Value // out
 
@@ -378,6 +408,9 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
+
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(styleClass)
 
 	var _ok bool // out
 
@@ -405,6 +438,9 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 
 	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(styleRegion)
+
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
@@ -431,6 +467,9 @@ func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(colorName)
 
 	var _color gdk.RGBA // out
 	var _ok bool        // out
@@ -463,6 +502,9 @@ func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 
 	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(state)
+
 	var _progress float64 // out
 	var _ok bool          // out
 
@@ -486,6 +528,8 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_theming_engine_load(_arg1)
+
+	runtime.KeepAlive(name)
 
 	var _themingEngine *ThemingEngine // out
 

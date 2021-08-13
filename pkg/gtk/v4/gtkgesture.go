@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -203,6 +204,8 @@ func (gesture *Gesture) BoundingBox() (gdk.Rectangle, bool) {
 
 	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 
+	runtime.KeepAlive(gesture)
+
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
@@ -229,6 +232,8 @@ func (gesture *Gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 	_cret = C.gtk_gesture_get_bounding_box_center(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(gesture)
+
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
@@ -253,6 +258,8 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	_cret = C.gtk_gesture_get_device(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
@@ -270,6 +277,8 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_group(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _list []Gesturer // out
 
@@ -300,6 +309,9 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 
 	_cret = C.gtk_gesture_get_last_event(_arg0, _arg1)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
@@ -318,6 +330,8 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_last_updated_sequence(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _eventSequence *gdk.EventSequence // out
 
@@ -347,6 +361,9 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
@@ -371,6 +388,9 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 
 	_cret = C.gtk_gesture_get_sequence_state(_arg0, _arg1)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+
 	var _eventSequenceState EventSequenceState // out
 
 	_eventSequenceState = EventSequenceState(_cret)
@@ -387,6 +407,8 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_get_sequences(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _list []*gdk.EventSequence // out
 
@@ -424,6 +446,8 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 	_arg1 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	C.gtk_gesture_group(_arg0, _arg1)
+	runtime.KeepAlive(groupGesture)
+	runtime.KeepAlive(gesture)
 }
 
 // HandlesSequence returns TRUE if gesture is currently handling events
@@ -439,6 +463,9 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	}
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
+
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
 
 	var _ok bool // out
 
@@ -460,6 +487,8 @@ func (gesture *Gesture) IsActive() bool {
 
 	_cret = C.gtk_gesture_is_active(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -479,6 +508,9 @@ func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 	_arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
 
 	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
+
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(other)
 
 	var _ok bool // out
 
@@ -500,6 +532,8 @@ func (gesture *Gesture) IsRecognized() bool {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_is_recognized(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _ok bool // out
 
@@ -558,6 +592,10 @@ func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state Even
 
 	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+	runtime.KeepAlive(state)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -581,6 +619,9 @@ func (gesture *Gesture) SetState(state EventSequenceState) bool {
 
 	_cret = C.gtk_gesture_set_state(_arg0, _arg1)
 
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(state)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -597,4 +638,5 @@ func (gesture *Gesture) Ungroup() {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	C.gtk_gesture_ungroup(_arg0)
+	runtime.KeepAlive(gesture)
 }

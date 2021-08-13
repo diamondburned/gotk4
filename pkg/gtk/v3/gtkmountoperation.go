@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -55,6 +56,8 @@ func NewMountOperation(parent *Window) *MountOperation {
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
+	runtime.KeepAlive(parent)
+
 	var _mountOperation *MountOperation // out
 
 	_mountOperation = wrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -71,6 +74,8 @@ func (op *MountOperation) Parent() *Window {
 
 	_cret = C.gtk_mount_operation_get_parent(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _window *Window // out
 
 	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
@@ -86,6 +91,8 @@ func (op *MountOperation) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.gtk_mount_operation_get_screen(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _screen *gdk.Screen // out
 
@@ -109,6 +116,8 @@ func (op *MountOperation) IsShowing() bool {
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -129,6 +138,8 @@ func (op *MountOperation) SetParent(parent *Window) {
 	}
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(parent)
 }
 
 // SetScreen sets the screen to show windows of the MountOperation on.
@@ -140,4 +151,6 @@ func (op *MountOperation) SetScreen(screen *gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_mount_operation_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(screen)
 }

@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -101,6 +102,8 @@ func (tool *DeviceTool) HardwareID() uint64 {
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
+	runtime.KeepAlive(tool)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -118,6 +121,8 @@ func (tool *DeviceTool) Serial() uint64 {
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
+	runtime.KeepAlive(tool)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -133,6 +138,8 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
+
+	runtime.KeepAlive(tool)
 
 	var _deviceToolType DeviceToolType // out
 
@@ -167,6 +174,8 @@ func (context *DragContext) Actions() DragAction {
 
 	_cret = C.gdk_drag_context_get_actions(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _dragAction DragAction // out
 
 	_dragAction = DragAction(_cret)
@@ -183,6 +192,8 @@ func (context *DragContext) DestWindow() Windower {
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _window Windower // out
 
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -198,6 +209,8 @@ func (context *DragContext) Device() Devicer {
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _device Devicer // out
 
@@ -219,6 +232,8 @@ func (context *DragContext) DragWindow() Windower {
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _window Windower // out
 
 	if _cret != nil {
@@ -237,6 +252,8 @@ func (context *DragContext) Protocol() DragProtocol {
 
 	_cret = C.gdk_drag_context_get_protocol(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _dragProtocol DragProtocol // out
 
 	_dragProtocol = DragProtocol(_cret)
@@ -252,6 +269,8 @@ func (context *DragContext) SelectedAction() DragAction {
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_selected_action(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _dragAction DragAction // out
 
@@ -269,6 +288,8 @@ func (context *DragContext) SourceWindow() Windower {
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _window Windower // out
 
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -284,6 +305,8 @@ func (context *DragContext) SuggestedAction() DragAction {
 	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _dragAction DragAction // out
 
@@ -324,6 +347,10 @@ func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bo
 
 	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(ipcWindow)
+	runtime.KeepAlive(actions)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -343,6 +370,8 @@ func (context *DragContext) SetDevice(device Devicer) {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gdk_drag_context_set_device(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(device)
 }
 
 // SetHotspot sets the position of the drag window that will be kept under the
@@ -358,4 +387,7 @@ func (context *DragContext) SetHotspot(hotX int, hotY int) {
 	_arg2 = C.gint(hotY)
 
 	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }

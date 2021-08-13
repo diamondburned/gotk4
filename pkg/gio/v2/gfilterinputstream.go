@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -77,6 +78,8 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 
 	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _inputStream InputStreamer // out
 
 	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
@@ -93,6 +96,8 @@ func (stream *FilterInputStream) CloseBaseStream() bool {
 	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_filter_input_stream_get_close_base_stream(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -115,4 +120,6 @@ func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	}
 
 	C.g_filter_input_stream_set_close_base_stream(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(closeBase)
 }

@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -29,6 +30,8 @@ func X11GetServerTime(window *X11Window) uint32 {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
+
+	runtime.KeepAlive(window)
 
 	var _guint32 uint32 // out
 
@@ -64,6 +67,8 @@ func (window *X11Window) Desktop() uint32 {
 
 	_cret = C.gdk_x11_window_get_desktop(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -82,6 +87,7 @@ func (window *X11Window) MoveToCurrentDesktop() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_x11_window_move_to_current_desktop(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // MoveToDesktop moves the window to the given workspace when running unde a
@@ -96,6 +102,8 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_window_move_to_desktop(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(desktop)
 }
 
 // SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
@@ -116,6 +124,11 @@ func (window *X11Window) SetFrameExtents(left int, right int, top int, bottom in
 	_arg4 = C.int(bottom)
 
 	C.gdk_x11_window_set_frame_extents(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
 }
 
 // SetFrameSyncEnabled: this function can be used to disable frame
@@ -134,6 +147,8 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	}
 
 	C.gdk_x11_window_set_frame_sync_enabled(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(frameSyncEnabled)
 }
 
 // SetHideTitlebarWhenMaximized: set a hint for the window manager, requesting
@@ -152,6 +167,8 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 	}
 
 	C.gdk_x11_window_set_hide_titlebar_when_maximized(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(hideTitlebarWhenMaximized)
 }
 
 // SetThemeVariant: GTK+ applications can request a dark theme variant. In order
@@ -171,6 +188,8 @@ func (window *X11Window) SetThemeVariant(variant string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_window_set_theme_variant(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(variant)
 }
 
 // SetUserTime: application can use this call to update the _NET_WM_USER_TIME
@@ -191,6 +210,8 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_window_set_user_time(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(timestamp)
 }
 
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
@@ -210,4 +231,7 @@ func (window *X11Window) SetUTF8Property(name string, value string) {
 	}
 
 	C.gdk_x11_window_set_utf8_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
 }

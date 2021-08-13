@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -82,6 +83,9 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	}
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
+
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(parent)
 
 	var _colorChooserDialog *ColorChooserDialog // out
 

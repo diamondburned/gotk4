@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -82,6 +83,9 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 
 	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
+	runtime.KeepAlive(completer)
+	runtime.KeepAlive(initialText)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -103,6 +107,9 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
+
+	runtime.KeepAlive(completer)
+	runtime.KeepAlive(initialText)
 
 	var _utf8s []string // out
 
@@ -137,4 +144,6 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	}
 
 	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
+	runtime.KeepAlive(completer)
+	runtime.KeepAlive(dirsOnly)
 }

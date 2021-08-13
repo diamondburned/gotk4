@@ -62,6 +62,8 @@ func (a *Quaternion) Add(b *Quaternion) Quaternion {
 	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_quaternion_add(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Quaternion // out
 
@@ -81,6 +83,9 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 
 	_cret = C.graphene_quaternion_dot(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -98,6 +103,9 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_quaternion_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _ok bool // out
 
@@ -125,6 +133,12 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 
 	_cret = C.graphene_quaternion_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(z)
+	runtime.KeepAlive(w)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -145,6 +159,10 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_cret = C.graphene_quaternion_init_from_angle_vec3(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(axis)
 
 	var _quaternion *Quaternion // out
 
@@ -171,6 +189,11 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 
 	_cret = C.graphene_quaternion_init_from_angles(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(degX)
+	runtime.KeepAlive(degY)
+	runtime.KeepAlive(degZ)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -189,6 +212,9 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 	_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	_cret = C.graphene_quaternion_init_from_euler(_arg0, _arg1)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(e)
 
 	var _quaternion *Quaternion // out
 
@@ -209,6 +235,9 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 
 	_cret = C.graphene_quaternion_init_from_matrix(_arg0, _arg1)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(m)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -227,6 +256,9 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_quaternion_init_from_quaternion(_arg0, _arg1)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(src)
 
 	var _quaternion *Quaternion // out
 
@@ -253,6 +285,11 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 
 	_cret = C.graphene_quaternion_init_from_radians(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(radX)
+	runtime.KeepAlive(radY)
+	runtime.KeepAlive(radZ)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -271,6 +308,9 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 
 	_cret = C.graphene_quaternion_init_from_vec4(_arg0, _arg1)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(src)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -288,6 +328,8 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 
 	_cret = C.graphene_quaternion_init_identity(_arg0)
 
+	runtime.KeepAlive(q)
+
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -304,6 +346,7 @@ func (q *Quaternion) Invert() Quaternion {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_invert(_arg0, &_arg1)
+	runtime.KeepAlive(q)
 
 	var _res Quaternion // out
 
@@ -322,6 +365,8 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_quaternion_multiply(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Quaternion // out
 
@@ -338,6 +383,7 @@ func (q *Quaternion) Normalize() Quaternion {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_normalize(_arg0, &_arg1)
+	runtime.KeepAlive(q)
 
 	var _res Quaternion // out
 
@@ -357,6 +403,8 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 	_arg1 = C.float(factor)
 
 	C.graphene_quaternion_scale(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(factor)
 
 	var _res Quaternion // out
 
@@ -379,6 +427,9 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	_arg2 = C.float(factor)
 
 	C.graphene_quaternion_slerp(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(factor)
 
 	var _res Quaternion // out
 
@@ -396,6 +447,7 @@ func (q *Quaternion) ToAngleVec3() (float32, Vec3) {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_to_angle_vec3(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(q)
 
 	var _angle float32 // out
 	var _axis Vec3     // out
@@ -417,6 +469,7 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_to_angles(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(q)
 
 	var _degX float32 // out
 	var _degY float32 // out
@@ -438,6 +491,7 @@ func (q *Quaternion) ToMatrix() Matrix {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_to_matrix(_arg0, &_arg1)
+	runtime.KeepAlive(q)
 
 	var _m Matrix // out
 
@@ -457,6 +511,7 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_to_radians(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(q)
 
 	var _radX float32 // out
 	var _radY float32 // out
@@ -478,6 +533,7 @@ func (q *Quaternion) ToVec4() Vec4 {
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quaternion_to_vec4(_arg0, &_arg1)
+	runtime.KeepAlive(q)
 
 	var _res Vec4 // out
 

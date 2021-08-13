@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -73,6 +74,8 @@ func (toggle *CellRendererToggle) Activatable() bool {
 
 	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
 
+	runtime.KeepAlive(toggle)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -92,6 +95,8 @@ func (toggle *CellRendererToggle) Active() bool {
 
 	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
 
+	runtime.KeepAlive(toggle)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -109,6 +114,8 @@ func (toggle *CellRendererToggle) Radio() bool {
 	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(toggle.Native()))
 
 	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
+
+	runtime.KeepAlive(toggle)
 
 	var _ok bool // out
 
@@ -130,6 +137,8 @@ func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 	}
 
 	C.gtk_cell_renderer_toggle_set_activatable(_arg0, _arg1)
+	runtime.KeepAlive(toggle)
+	runtime.KeepAlive(setting)
 }
 
 // SetActive activates or deactivates a cell renderer.
@@ -143,6 +152,8 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 	}
 
 	C.gtk_cell_renderer_toggle_set_active(_arg0, _arg1)
+	runtime.KeepAlive(toggle)
+	runtime.KeepAlive(setting)
 }
 
 // SetRadio: if radio is TRUE, the cell renderer renders a radio toggle (i.e. a
@@ -161,4 +172,6 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	}
 
 	C.gtk_cell_renderer_toggle_set_radio(_arg0, _arg1)
+	runtime.KeepAlive(toggle)
+	runtime.KeepAlive(radio)
 }

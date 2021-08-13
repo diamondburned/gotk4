@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -92,6 +93,8 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _appInfo gio.AppInfor // out
 
 	if _cret != nil {
@@ -111,6 +114,8 @@ func (self *AppChooser) ContentType() string {
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -126,4 +131,5 @@ func (self *AppChooser) Refresh() {
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
 
 	C.gtk_app_chooser_refresh(_arg0)
+	runtime.KeepAlive(self)
 }

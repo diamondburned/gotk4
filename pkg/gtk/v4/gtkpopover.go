@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -183,6 +184,8 @@ func (popover *Popover) Autohide() bool {
 
 	_cret = C.gtk_popover_get_autohide(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -202,6 +205,8 @@ func (popover *Popover) CascadePopdown() bool {
 
 	_cret = C.gtk_popover_get_cascade_popdown(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -219,6 +224,8 @@ func (popover *Popover) Child() Widgetter {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_child(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
 
@@ -239,6 +246,8 @@ func (popover *Popover) HasArrow() bool {
 
 	_cret = C.gtk_popover_get_has_arrow(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -256,6 +265,8 @@ func (popover *Popover) MnemonicsVisible() bool {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_mnemonics_visible(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _ok bool // out
 
@@ -275,6 +286,7 @@ func (popover *Popover) Offset() (xOffset int, yOffset int) {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(popover)
 
 	var _xOffset int // out
 	var _yOffset int // out
@@ -299,6 +311,8 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 
 	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
 
+	runtime.KeepAlive(popover)
+
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
@@ -319,6 +333,8 @@ func (popover *Popover) Position() PositionType {
 
 	_cret = C.gtk_popover_get_position(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _positionType PositionType // out
 
 	_positionType = PositionType(_cret)
@@ -337,6 +353,7 @@ func (popover *Popover) Popdown() {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_popdown(_arg0)
+	runtime.KeepAlive(popover)
 }
 
 // Popup pops popover up.
@@ -350,6 +367,7 @@ func (popover *Popover) Popup() {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_popup(_arg0)
+	runtime.KeepAlive(popover)
 }
 
 // Present presents the popover to the user.
@@ -359,6 +377,7 @@ func (popover *Popover) Present() {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_present(_arg0)
+	runtime.KeepAlive(popover)
 }
 
 // SetAutohide sets whether popover is modal.
@@ -378,6 +397,8 @@ func (popover *Popover) SetAutohide(autohide bool) {
 	}
 
 	C.gtk_popover_set_autohide(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(autohide)
 }
 
 // SetCascadePopdown: if cascade_popdown is TRUE, the popover will be closed
@@ -394,6 +415,8 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 	}
 
 	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(cascadePopdown)
 }
 
 // SetChild sets the child widget of popover.
@@ -407,6 +430,8 @@ func (popover *Popover) SetChild(child Widgetter) {
 	}
 
 	C.gtk_popover_set_child(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(child)
 }
 
 // SetDefaultWidget sets the default widget of a GtkPopover.
@@ -424,6 +449,8 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	}
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(widget)
 }
 
 // SetHasArrow sets whether this popover should draw an arrow pointing at the
@@ -438,6 +465,8 @@ func (popover *Popover) SetHasArrow(hasArrow bool) {
 	}
 
 	C.gtk_popover_set_has_arrow(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(hasArrow)
 }
 
 // SetMnemonicsVisible sets whether mnemonics should be visible.
@@ -451,6 +480,8 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 	}
 
 	C.gtk_popover_set_mnemonics_visible(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(mnemonicsVisible)
 }
 
 // SetOffset sets the offset to use when calculating the position of the
@@ -468,6 +499,9 @@ func (popover *Popover) SetOffset(xOffset int, yOffset int) {
 	_arg2 = C.int(yOffset)
 
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(xOffset)
+	runtime.KeepAlive(yOffset)
 }
 
 // SetPointingTo sets the rectangle that popover points to.
@@ -481,6 +515,8 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(rect)
 }
 
 // SetPosition sets the preferred position for popover to appear.
@@ -498,4 +534,6 @@ func (popover *Popover) SetPosition(position PositionType) {
 	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_popover_set_position(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(position)
 }

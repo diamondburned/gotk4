@@ -667,6 +667,8 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 
 	_cret = C.gdk_offscreen_window_get_embedder(_arg1)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	if _cret != nil {
@@ -686,6 +688,8 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_offscreen_window_get_surface(_arg1)
+
+	runtime.KeepAlive(window)
 
 	var _surface *cairo.Surface // out
 
@@ -714,6 +718,8 @@ func OffscreenWindowSetEmbedder(window Windower, embedder Windower) {
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(embedder.Native()))
 
 	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(embedder)
 }
 
 // WindowOverrider contains methods that are overridable.
@@ -1184,6 +1190,10 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 
 	_cret = C.gdk_window_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(attributesMask)
+
 	var _window *Window // out
 
 	_window = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1200,6 +1210,7 @@ func (window *Window) Beep() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_beep(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // BeginDrawFrame indicates that you are beginning the process of redrawing
@@ -1237,6 +1248,9 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 
 	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+
 	var _drawingContext *DrawingContext // out
 
 	_drawingContext = wrapDrawingContext(externglib.Take(unsafe.Pointer(_cret)))
@@ -1263,6 +1277,11 @@ func (window *Window) BeginMoveDrag(button int, rootX int, rootY int, timestamp 
 	_arg4 = C.guint32(timestamp)
 
 	C.gdk_window_begin_move_drag(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
 }
 
 // BeginMoveDragForDevice begins a window move operation (for a toplevel
@@ -1286,6 +1305,12 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button int, rootX i
 	_arg5 = C.guint32(timestamp)
 
 	C.gdk_window_begin_move_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
 }
 
 // BeginPaintRect: convenience wrapper around gdk_window_begin_paint_region()
@@ -1301,6 +1326,8 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_window_begin_paint_rect(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rectangle)
 }
 
 // BeginPaintRegion indicates that you are beginning the process of redrawing
@@ -1347,6 +1374,8 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_window_begin_paint_region(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
 }
 
 // BeginResizeDrag begins a window resize operation (for a toplevel window).
@@ -1370,6 +1399,12 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button int, rootX int, ro
 	_arg5 = C.guint32(timestamp)
 
 	C.gdk_window_begin_resize_drag(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
 }
 
 // BeginResizeDragForDevice begins a window resize operation (for a toplevel
@@ -1396,6 +1431,13 @@ func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, 
 	_arg6 = C.guint32(timestamp)
 
 	C.gdk_window_begin_resize_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
 }
 
 // ConfigureFinished does nothing, present only for compatiblity.
@@ -1407,6 +1449,7 @@ func (window *Window) ConfigureFinished() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_configure_finished(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // CoordsFromParent transforms window coordinates from a parent window to a
@@ -1436,6 +1479,9 @@ func (window *Window) CoordsFromParent(parentX float64, parentY float64) (x floa
 	_arg2 = C.gdouble(parentY)
 
 	C.gdk_window_coords_from_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(parentX)
+	runtime.KeepAlive(parentY)
 
 	var _x float64 // out
 	var _y float64 // out
@@ -1472,6 +1518,9 @@ func (window *Window) CoordsToParent(x float64, y float64) (parentX float64, par
 	_arg2 = C.gdouble(y)
 
 	C.gdk_window_coords_to_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 
 	var _parentX float64 // out
 	var _parentY float64 // out
@@ -1498,6 +1547,8 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_create_gl_context(_arg0, &_cerr)
+
+	runtime.KeepAlive(window)
 
 	var _glContext GLContexter // out
 	var _goerr error           // out
@@ -1552,6 +1603,12 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, 
 
 	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(format)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(scale)
+
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
@@ -1585,6 +1642,11 @@ func (window *Window) CreateSimilarSurface(content cairo.Content, width int, hei
 
 	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(content)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
@@ -1606,6 +1668,7 @@ func (window *Window) Deiconify() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_deiconify(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Destroy destroys the window system resources associated with window and
@@ -1621,6 +1684,7 @@ func (window *Window) Destroy() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_destroy(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // EnableSynchronizedConfigure does nothing, present only for compatiblity.
@@ -1632,6 +1696,7 @@ func (window *Window) EnableSynchronizedConfigure() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_enable_synchronized_configure(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // EndDrawFrame indicates that the drawing of the contents of window started
@@ -1649,6 +1714,8 @@ func (window *Window) EndDrawFrame(context *DrawingContext) {
 	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_window_end_draw_frame(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(context)
 }
 
 // EndPaint indicates that the backing store created by the most recent call to
@@ -1664,6 +1731,7 @@ func (window *Window) EndPaint() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_end_paint(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // EnsureNative tries to ensure that there is a window-system native window for
@@ -1679,6 +1747,8 @@ func (window *Window) EnsureNative() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_ensure_native(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -1698,6 +1768,7 @@ func (window *Window) Flush() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_flush(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Focus sets keyboard focus to window. In most cases,
@@ -1711,6 +1782,8 @@ func (window *Window) Focus(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_window_focus(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(timestamp)
 }
 
 // FreezeToplevelUpdatesLibgtkOnly: temporarily freezes a window and all its
@@ -1730,6 +1803,7 @@ func (window *Window) FreezeToplevelUpdatesLibgtkOnly() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_freeze_toplevel_updates_libgtk_only(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // FreezeUpdates: temporarily freezes a window such that it won’t receive expose
@@ -1743,6 +1817,7 @@ func (window *Window) FreezeUpdates() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_freeze_updates(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Fullscreen moves the window into fullscreen mode. This means the window
@@ -1762,6 +1837,7 @@ func (window *Window) Fullscreen() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_fullscreen(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // FullscreenOnMonitor moves the window into fullscreen mode on the given
@@ -1777,6 +1853,8 @@ func (window *Window) FullscreenOnMonitor(monitor int) {
 	_arg1 = C.gint(monitor)
 
 	C.gdk_window_fullscreen_on_monitor(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(monitor)
 }
 
 // GeometryChanged: this function informs GDK that the geometry of an embedded
@@ -1788,6 +1866,7 @@ func (window *Window) GeometryChanged() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_geometry_changed(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // AcceptFocus determines whether or not the desktop environment shuld be hinted
@@ -1799,6 +1878,8 @@ func (window *Window) AcceptFocus() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_accept_focus(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -1819,6 +1900,8 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_background_pattern(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _pattern *cairo.Pattern // out
 
@@ -1848,6 +1931,8 @@ func (window *Window) Children() []Windower {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_children(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
@@ -1879,6 +1964,9 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 
 	_cret = C.gdk_window_get_children_with_user_data(_arg0, _arg1)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(userData)
+
 	var _list []Windower // out
 
 	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
@@ -1903,6 +1991,8 @@ func (window *Window) ClipRegion() *cairo.Region {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_clip_region(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
@@ -1931,6 +2021,8 @@ func (window *Window) Composited() bool {
 
 	_cret = C.gdk_window_get_composited(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1952,6 +2044,8 @@ func (window *Window) Cursor() Cursorrer {
 
 	_cret = C.gdk_window_get_cursor(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
@@ -1971,6 +2065,8 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_decorations(_arg0, &_arg1)
+
+	runtime.KeepAlive(window)
 
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
@@ -1997,6 +2093,9 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 
 	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
@@ -2017,6 +2116,9 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_events(_arg0, _arg1)
+
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
 
 	var _eventMask EventMask // out
 
@@ -2041,6 +2143,9 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_window_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
 
 	var _x int             // out
 	var _y int             // out
@@ -2073,6 +2178,9 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 
 	_cret = C.gdk_window_get_device_position_double(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
 	var _x float64         // out
 	var _y float64         // out
 	var _mask ModifierType // out
@@ -2097,6 +2205,8 @@ func (window *Window) Display() *Display {
 
 	_cret = C.gdk_window_get_display(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -2113,6 +2223,8 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
+
+	runtime.KeepAlive(window)
 
 	var _target Windower           // out
 	var _dragProtocol DragProtocol // out
@@ -2138,6 +2250,8 @@ func (window *Window) EffectiveParent() Windower {
 
 	_cret = C.gdk_window_get_effective_parent(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2159,6 +2273,8 @@ func (window *Window) EffectiveToplevel() Windower {
 
 	_cret = C.gdk_window_get_effective_toplevel(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2174,6 +2290,8 @@ func (window *Window) EventCompression() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_event_compression(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2194,6 +2312,8 @@ func (window *Window) Events() EventMask {
 
 	_cret = C.gdk_window_get_events(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _eventMask EventMask // out
 
 	_eventMask = EventMask(_cret)
@@ -2210,6 +2330,8 @@ func (window *Window) FocusOnMap() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_focus_on_map(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2230,6 +2352,8 @@ func (window *Window) FrameClock() FrameClocker {
 
 	_cret = C.gdk_window_get_frame_clock(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _frameClock FrameClocker // out
 
 	_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
@@ -2248,6 +2372,7 @@ func (window *Window) FrameExtents() Rectangle {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_get_frame_extents(_arg0, &_arg1)
+	runtime.KeepAlive(window)
 
 	var _rect Rectangle // out
 
@@ -2264,6 +2389,8 @@ func (window *Window) FullscreenMode() FullscreenMode {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_fullscreen_mode(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _fullscreenMode FullscreenMode // out
 
@@ -2301,6 +2428,7 @@ func (window *Window) Geometry() (x int, y int, width int, height int) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_get_geometry(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
 
 	var _x int      // out
 	var _y int      // out
@@ -2324,6 +2452,8 @@ func (window *Window) Group() Windower {
 
 	_cret = C.gdk_window_get_group(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2344,6 +2474,8 @@ func (window *Window) Height() int {
 
 	_cret = C.gdk_window_get_height(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -2360,6 +2492,8 @@ func (window *Window) ModalHint() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_modal_hint(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2382,6 +2516,8 @@ func (window *Window) Origin() (x int, y int, gint int) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_origin(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(window)
 
 	var _x int    // out
 	var _y int    // out
@@ -2412,6 +2548,8 @@ func (window *Window) Parent() Windower {
 
 	_cret = C.gdk_window_get_parent(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2430,6 +2568,8 @@ func (window *Window) PassThrough() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_pass_through(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2454,6 +2594,8 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_pointer(_arg0, &_arg1, &_arg2, &_arg3)
+
+	runtime.KeepAlive(window)
 
 	var _x int             // out
 	var _y int             // out
@@ -2484,6 +2626,7 @@ func (window *Window) Position() (x int, y int) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_get_position(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(window)
 
 	var _x int // out
 	var _y int // out
@@ -2509,6 +2652,9 @@ func (window *Window) RootCoords(x int, y int) (rootX int, rootY int) {
 	_arg2 = C.gint(y)
 
 	C.gdk_window_get_root_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 
 	var _rootX int // out
 	var _rootY int // out
@@ -2529,6 +2675,7 @@ func (window *Window) RootOrigin() (x int, y int) {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_get_root_origin(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(window)
 
 	var _x int // out
 	var _y int // out
@@ -2558,6 +2705,8 @@ func (window *Window) ScaleFactor() int {
 
 	_cret = C.gdk_window_get_scale_factor(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -2573,6 +2722,8 @@ func (window *Window) Screen() *Screen {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_screen(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _screen *Screen // out
 
@@ -2593,6 +2744,9 @@ func (window *Window) SourceEvents(source InputSource) EventMask {
 
 	_cret = C.gdk_window_get_source_events(_arg0, _arg1)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+
 	var _eventMask EventMask // out
 
 	_eventMask = EventMask(_cret)
@@ -2610,6 +2764,8 @@ func (window *Window) State() WindowState {
 
 	_cret = C.gdk_window_get_state(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _windowState WindowState // out
 
 	_windowState = WindowState(_cret)
@@ -2626,6 +2782,8 @@ func (window *Window) SupportMultidevice() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_support_multidevice(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2653,6 +2811,8 @@ func (window *Window) Toplevel() Windower {
 
 	_cret = C.gdk_window_get_toplevel(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret Windower // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2668,6 +2828,8 @@ func (window *Window) TypeHint() WindowTypeHint {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_type_hint(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _windowTypeHint WindowTypeHint // out
 
@@ -2689,6 +2851,8 @@ func (window *Window) UpdateArea() *cairo.Region {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_update_area(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
@@ -2712,6 +2876,7 @@ func (window *Window) UserData() cgo.Handle {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_get_user_data(_arg0, &_arg1)
+	runtime.KeepAlive(window)
 
 	var _data cgo.Handle // out
 
@@ -2730,6 +2895,8 @@ func (window *Window) VisibleRegion() *cairo.Region {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_visible_region(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
@@ -2753,6 +2920,8 @@ func (window *Window) Visual() *Visual {
 
 	_cret = C.gdk_window_get_visual(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _visual *Visual // out
 
 	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
@@ -2773,6 +2942,8 @@ func (window *Window) Width() int {
 
 	_cret = C.gdk_window_get_width(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -2788,6 +2959,8 @@ func (window *Window) WindowType() WindowType {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_get_window_type(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _windowType WindowType // out
 
@@ -2805,6 +2978,8 @@ func (window *Window) HasNative() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_has_native(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2824,6 +2999,7 @@ func (window *Window) Hide() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_hide(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Iconify asks to iconify (minimize) window. The window manager may choose to
@@ -2837,6 +3013,7 @@ func (window *Window) Iconify() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_iconify(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // InputShapeCombineRegion: like gdk_window_shape_combine_region(), but the
@@ -2864,6 +3041,10 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 	_arg3 = C.gint(offsetY)
 
 	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(shapeRegion)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
 }
 
 // InvalidateMaybeRecurse adds region to the update area for window. The update
@@ -2895,6 +3076,9 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 	}
 
 	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+	runtime.KeepAlive(childFunc)
 }
 
 // InvalidateRect: convenience wrapper around gdk_window_invalidate_region()
@@ -2914,6 +3098,9 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	}
 
 	C.gdk_window_invalidate_rect(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(invalidateChildren)
 }
 
 // InvalidateRegion adds region to the update area for window. The update area
@@ -2944,6 +3131,9 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 	}
 
 	C.gdk_window_invalidate_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+	runtime.KeepAlive(invalidateChildren)
 }
 
 // IsDestroyed: check to see if a window is destroyed..
@@ -2954,6 +3144,8 @@ func (window *Window) IsDestroyed() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_is_destroyed(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -2973,6 +3165,8 @@ func (window *Window) IsInputOnly() bool {
 
 	_cret = C.gdk_window_is_input_only(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -2990,6 +3184,8 @@ func (window *Window) IsShaped() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_is_shaped(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -3011,6 +3207,8 @@ func (window *Window) IsViewable() bool {
 
 	_cret = C.gdk_window_is_viewable(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -3029,6 +3227,8 @@ func (window *Window) IsVisible() bool {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_is_visible(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -3055,6 +3255,7 @@ func (window *Window) Lower() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_lower(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // MarkPaintFromClip: if you call this during a paint (e.g. between
@@ -3074,6 +3275,8 @@ func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(cr)
 }
 
 // Maximize maximizes the window. If the window was already maximized, then this
@@ -3092,6 +3295,7 @@ func (window *Window) Maximize() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_maximize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // MergeChildInputShapes merges the input shape masks for any child windows into
@@ -3107,6 +3311,7 @@ func (window *Window) MergeChildInputShapes() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_merge_child_input_shapes(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // MergeChildShapes merges the shape masks for any child windows into the shape
@@ -3121,6 +3326,7 @@ func (window *Window) MergeChildShapes() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_merge_child_shapes(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Move repositions a window relative to its parent window. For toplevel
@@ -3140,6 +3346,9 @@ func (window *Window) Move(x int, y int) {
 	_arg2 = C.gint(y)
 
 	C.gdk_window_move(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // MoveRegion: move the part of window indicated by region by dy pixels in the Y
@@ -3159,6 +3368,10 @@ func (window *Window) MoveRegion(region *cairo.Region, dx int, dy int) {
 	_arg3 = C.gint(dy)
 
 	C.gdk_window_move_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 }
 
 // MoveResize: equivalent to calling gdk_window_move() and gdk_window_resize(),
@@ -3179,6 +3392,11 @@ func (window *Window) MoveResize(x int, y int, width int, height int) {
 	_arg4 = C.gint(height)
 
 	C.gdk_window_move_resize(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // MoveToRect moves window to rect, aligning their anchor points.
@@ -3214,6 +3432,13 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnch
 	_arg6 = C.gint(rectAnchorDy)
 
 	C.gdk_window_move_to_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(rectAnchor)
+	runtime.KeepAlive(windowAnchor)
+	runtime.KeepAlive(anchorHints)
+	runtime.KeepAlive(rectAnchorDx)
+	runtime.KeepAlive(rectAnchorDy)
 }
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
@@ -3225,6 +3450,8 @@ func (window *Window) PeekChildren() []Windower {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_window_peek_children(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
@@ -3259,6 +3486,8 @@ func (window *Window) ProcessUpdates(updateChildren bool) {
 	}
 
 	C.gdk_window_process_updates(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(updateChildren)
 }
 
 // Raise raises window to the top of the Z-order (stacking order), so that other
@@ -3274,6 +3503,7 @@ func (window *Window) Raise() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_raise(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // RegisterDnd registers a window as a potential drop destination.
@@ -3283,6 +3513,7 @@ func (window *Window) RegisterDnd() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_register_dnd(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Reparent reparents window into the given new_parent. The window being
@@ -3299,6 +3530,10 @@ func (window *Window) Reparent(newParent Windower, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gdk_window_reparent(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(newParent)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // Resize resizes window; for toplevel windows, asks the window manager to
@@ -3319,6 +3554,9 @@ func (window *Window) Resize(width int, height int) {
 	_arg2 = C.gint(height)
 
 	C.gdk_window_resize(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Restack changes the position of window in the Z-order (stacking order), so
@@ -3345,6 +3583,9 @@ func (window *Window) Restack(sibling Windower, above bool) {
 	}
 
 	C.gdk_window_restack(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(sibling)
+	runtime.KeepAlive(above)
 }
 
 // Scroll the contents of window, both pixels and children, by the given amount.
@@ -3366,6 +3607,9 @@ func (window *Window) Scroll(dx int, dy int) {
 	_arg2 = C.gint(dy)
 
 	C.gdk_window_scroll(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 }
 
 // SetAcceptFocus: setting accept_focus to FALSE hints the desktop environment
@@ -3383,6 +3627,8 @@ func (window *Window) SetAcceptFocus(acceptFocus bool) {
 	}
 
 	C.gdk_window_set_accept_focus(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(acceptFocus)
 }
 
 // SetBackground sets the background color of window.
@@ -3400,6 +3646,8 @@ func (window *Window) SetBackground(color *Color) {
 	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gdk_window_set_background(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(color)
 }
 
 // SetBackgroundPattern sets the background of window.
@@ -3422,6 +3670,8 @@ func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 	}
 
 	C.gdk_window_set_background_pattern(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(pattern)
 }
 
 // SetBackgroundRGBA sets the background color of window.
@@ -3437,6 +3687,8 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_window_set_background_rgba(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rgba)
 }
 
 // SetChildInputShapes sets the input shape mask of window to the union of input
@@ -3449,6 +3701,7 @@ func (window *Window) SetChildInputShapes() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_set_child_input_shapes(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // SetChildShapes sets the shape mask of window to the union of shape masks for
@@ -3461,6 +3714,7 @@ func (window *Window) SetChildShapes() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_set_child_shapes(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // SetComposited sets a Window as composited, or unsets it. Composited windows
@@ -3494,6 +3748,8 @@ func (window *Window) SetComposited(composited bool) {
 	}
 
 	C.gdk_window_set_composited(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(composited)
 }
 
 // SetCursor sets the default mouse pointer for a Window.
@@ -3514,6 +3770,8 @@ func (window *Window) SetCursor(cursor Cursorrer) {
 	}
 
 	C.gdk_window_set_cursor(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(cursor)
 }
 
 // SetDecorations: “Decorations” are the features the window manager adds to a
@@ -3537,6 +3795,8 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 	_arg1 = C.GdkWMDecoration(decorations)
 
 	C.gdk_window_set_decorations(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(decorations)
 }
 
 // SetDeviceCursor sets a specific Cursor for a given device when it gets inside
@@ -3555,6 +3815,9 @@ func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_window_set_device_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(cursor)
 }
 
 // SetDeviceEvents sets the event mask for a given device (Normally a floating
@@ -3574,6 +3837,9 @@ func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
 	_arg2 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_device_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetEventCompression determines whether or not extra unprocessed motion events
@@ -3594,6 +3860,8 @@ func (window *Window) SetEventCompression(eventCompression bool) {
 	}
 
 	C.gdk_window_set_event_compression(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(eventCompression)
 }
 
 // SetEvents: event mask for a window determines which events will be reported
@@ -3611,6 +3879,8 @@ func (window *Window) SetEvents(eventMask EventMask) {
 	_arg1 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_events(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetFocusOnMap: setting focus_on_map to FALSE hints the desktop environment
@@ -3631,6 +3901,8 @@ func (window *Window) SetFocusOnMap(focusOnMap bool) {
 	}
 
 	C.gdk_window_set_focus_on_map(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(focusOnMap)
 }
 
 // SetFullscreenMode specifies whether the window should span over all monitors
@@ -3658,6 +3930,8 @@ func (window *Window) SetFullscreenMode(mode FullscreenMode) {
 	_arg1 = C.GdkFullscreenMode(mode)
 
 	C.gdk_window_set_fullscreen_mode(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(mode)
 }
 
 // SetFunctions sets hints about the window management functions to make
@@ -3679,6 +3953,8 @@ func (window *Window) SetFunctions(functions WMFunction) {
 	_arg1 = C.GdkWMFunction(functions)
 
 	C.gdk_window_set_functions(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(functions)
 }
 
 // SetGeometryHints sets the geometry hints for window. Hints flagged in
@@ -3709,6 +3985,9 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 	_arg2 = C.GdkWindowHints(geomMask)
 
 	C.gdk_window_set_geometry_hints(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(geometry)
+	runtime.KeepAlive(geomMask)
 }
 
 // SetGroup sets the group leader window for window. By default, GDK sets the
@@ -3730,6 +4009,8 @@ func (window *Window) SetGroup(leader Windower) {
 	}
 
 	C.gdk_window_set_group(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(leader)
 }
 
 // SetIconList sets a list of icons for the window. One of these will be used to
@@ -3754,6 +4035,8 @@ func (window *Window) SetIconList(pixbufs []gdkpixbuf.Pixbuf) {
 	defer C.g_list_free(_arg1)
 
 	C.gdk_window_set_icon_list(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(pixbufs)
 }
 
 // SetIconName windows may have a name used while minimized, distinct from the
@@ -3779,6 +4062,8 @@ func (window *Window) SetIconName(name string) {
 	}
 
 	C.gdk_window_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(name)
 }
 
 // SetKeepAbove: set if window must be kept above other windows. If the window
@@ -3799,6 +4084,8 @@ func (window *Window) SetKeepAbove(setting bool) {
 	}
 
 	C.gdk_window_set_keep_above(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetKeepBelow: set if window must be kept below other windows. If the window
@@ -3819,6 +4106,8 @@ func (window *Window) SetKeepBelow(setting bool) {
 	}
 
 	C.gdk_window_set_keep_below(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetModalHint: application can use this hint to tell the window manager that a
@@ -3837,6 +4126,8 @@ func (window *Window) SetModalHint(modal bool) {
 	}
 
 	C.gdk_window_set_modal_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(modal)
 }
 
 // SetOpacity: set window to render as partially transparent, with opacity 0
@@ -3865,6 +4156,8 @@ func (window *Window) SetOpacity(opacity float64) {
 	_arg1 = C.gdouble(opacity)
 
 	C.gdk_window_set_opacity(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(opacity)
 }
 
 // SetOpaqueRegion: for optimisation purposes, compositing window managers may
@@ -3889,6 +4182,8 @@ func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 	}
 
 	C.gdk_window_set_opaque_region(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
 }
 
 // SetOverrideRedirect: override redirect window is not under the control of the
@@ -3909,6 +4204,8 @@ func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 	}
 
 	C.gdk_window_set_override_redirect(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(overrideRedirect)
 }
 
 // SetPassThrough sets whether input to the window is passed through to the
@@ -3938,6 +4235,8 @@ func (window *Window) SetPassThrough(passThrough bool) {
 	}
 
 	C.gdk_window_set_pass_through(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(passThrough)
 }
 
 // SetRole: when using GTK+, typically you should use gtk_window_set_role()
@@ -3960,6 +4259,8 @@ func (window *Window) SetRole(role string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_role(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(role)
 }
 
 // SetShadowWidth: newer GTK+ windows using client-side decorations use extra
@@ -3985,6 +4286,11 @@ func (window *Window) SetShadowWidth(left int, right int, top int, bottom int) {
 	_arg4 = C.gint(bottom)
 
 	C.gdk_window_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
 }
 
 // SetSkipPagerHint toggles whether a window should appear in a pager (workspace
@@ -4003,6 +4309,8 @@ func (window *Window) SetSkipPagerHint(skipsPager bool) {
 	}
 
 	C.gdk_window_set_skip_pager_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(skipsPager)
 }
 
 // SetSkipTaskbarHint toggles whether a window should appear in a task list or
@@ -4020,6 +4328,8 @@ func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
 	}
 
 	C.gdk_window_set_skip_taskbar_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(skipsTaskbar)
 }
 
 // SetSourceEvents sets the event mask for any floating device (i.e. not
@@ -4036,6 +4346,9 @@ func (window *Window) SetSourceEvents(source InputSource, eventMask EventMask) {
 	_arg2 = C.GdkEventMask(eventMask)
 
 	C.gdk_window_set_source_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetStartupID: when using GTK+, typically you should use
@@ -4049,6 +4362,8 @@ func (window *Window) SetStartupID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_startup_id(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(startupId)
 }
 
 // SetStaticGravities: used to set the bit gravity of the given window to
@@ -4069,6 +4384,9 @@ func (window *Window) SetStaticGravities(useStatic bool) bool {
 	}
 
 	_cret = C.gdk_window_set_static_gravities(_arg0, _arg1)
+
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(useStatic)
 
 	var _ok bool // out
 
@@ -4094,6 +4412,8 @@ func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
 	}
 
 	C.gdk_window_set_support_multidevice(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(supportMultidevice)
 }
 
 // SetTitle sets the title of a toplevel window, to be displayed in the
@@ -4110,6 +4430,8 @@ func (window *Window) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_title(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(title)
 }
 
 // SetTransientFor indicates to the window manager that window is a transient
@@ -4126,6 +4448,8 @@ func (window *Window) SetTransientFor(parent Windower) {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gdk_window_set_transient_for(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(parent)
 }
 
 // SetTypeHint: application can use this call to provide a hint to the window
@@ -4141,6 +4465,8 @@ func (window *Window) SetTypeHint(hint WindowTypeHint) {
 	_arg1 = C.GdkWindowTypeHint(hint)
 
 	C.gdk_window_set_type_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(hint)
 }
 
 // SetUrgencyHint toggles whether a window needs the user's urgent attention.
@@ -4154,6 +4480,8 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 	}
 
 	C.gdk_window_set_urgency_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(urgent)
 }
 
 // SetUserData: for most purposes this function is deprecated in favor of
@@ -4170,6 +4498,8 @@ func (window *Window) SetUserData(userData *externglib.Object) {
 	_arg1 = C.gpointer(unsafe.Pointer(userData.Native()))
 
 	C.gdk_window_set_user_data(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(userData)
 }
 
 // ShapeCombineRegion makes pixels in window outside shape_region be
@@ -4198,6 +4528,10 @@ func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int,
 	_arg3 = C.gint(offsetY)
 
 	C.gdk_window_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(shapeRegion)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
 }
 
 // Show: like gdk_window_show_unraised(), but also raises the window to the top
@@ -4214,6 +4548,7 @@ func (window *Window) Show() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_show(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // ShowUnraised shows a Window onscreen, but does not modify its stacking order.
@@ -4229,6 +4564,7 @@ func (window *Window) ShowUnraised() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_show_unraised(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Stick: “Pins” a window such that it’s on all workspaces and does not scroll
@@ -4246,6 +4582,7 @@ func (window *Window) Stick() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_stick(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // ThawToplevelUpdatesLibgtkOnly thaws a window frozen with
@@ -4260,6 +4597,7 @@ func (window *Window) ThawToplevelUpdatesLibgtkOnly() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_thaw_toplevel_updates_libgtk_only(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // ThawUpdates thaws a window frozen with gdk_window_freeze_updates().
@@ -4269,6 +4607,7 @@ func (window *Window) ThawUpdates() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_thaw_updates(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Unfullscreen moves the window out of fullscreen mode. If the window was not
@@ -4286,6 +4625,7 @@ func (window *Window) Unfullscreen() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_unfullscreen(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Unmaximize unmaximizes the window. If the window wasn’t maximized, then this
@@ -4304,6 +4644,7 @@ func (window *Window) Unmaximize() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_unmaximize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Unstick: reverse operation for gdk_window_stick(); see gdk_window_stick(),
@@ -4314,6 +4655,7 @@ func (window *Window) Unstick() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_unstick(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Withdraw withdraws a window (unmaps it and asks the window manager to forget
@@ -4325,6 +4667,7 @@ func (window *Window) Withdraw() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gdk_window_withdraw(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // WindowAtPointer obtains the window underneath the mouse pointer, returning
@@ -4371,6 +4714,10 @@ func WindowConstrainSize(geometry *Geometry, flags WindowHints, width int, heigh
 	_arg4 = C.gint(height)
 
 	C.gdk_window_constrain_size(_arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(geometry)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 
 	var _newWidth int  // out
 	var _newHeight int // out
@@ -4416,6 +4763,7 @@ func WindowSetDebugUpdates(setting bool) {
 	}
 
 	C.gdk_window_set_debug_updates(_arg1)
+	runtime.KeepAlive(setting)
 }
 
 // Geometry struct gives the window manager information about a window’s

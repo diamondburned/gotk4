@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,8 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
+	runtime.KeepAlive(layoutChild)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -83,6 +86,8 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(layoutChild.Native()))
 
 	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
+
+	runtime.KeepAlive(layoutChild)
 
 	var _layoutManager LayoutManagerer // out
 

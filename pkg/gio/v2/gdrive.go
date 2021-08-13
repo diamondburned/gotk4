@@ -257,6 +257,8 @@ func (drive *Drive) CanEject() bool {
 
 	_cret = C.g_drive_can_eject(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -274,6 +276,8 @@ func (drive *Drive) CanPollForMedia() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_poll_for_media(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
@@ -293,6 +297,8 @@ func (drive *Drive) CanStart() bool {
 
 	_cret = C.g_drive_can_start(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -311,6 +317,8 @@ func (drive *Drive) CanStartDegraded() bool {
 
 	_cret = C.g_drive_can_start_degraded(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -328,6 +336,8 @@ func (drive *Drive) CanStop() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_can_stop(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
@@ -364,6 +374,10 @@ func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback
 	}
 
 	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectFinish finishes ejecting a drive.
@@ -378,6 +392,8 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -415,6 +431,11 @@ func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 	}
 
 	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
@@ -429,6 +450,8 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -448,6 +471,8 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_enumerate_identifiers(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _utf8s []string // out
 
@@ -479,6 +504,8 @@ func (drive *Drive) Icon() Iconner {
 
 	_cret = C.g_drive_get_icon(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _icon Iconner // out
 
 	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
@@ -499,6 +526,9 @@ func (drive *Drive) Identifier(kind string) string {
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(kind)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -518,6 +548,8 @@ func (drive *Drive) Name() string {
 
 	_cret = C.g_drive_get_name(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -534,6 +566,8 @@ func (drive *Drive) SortKey() string {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_sort_key(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
 
@@ -553,6 +587,8 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 
 	_cret = C.g_drive_get_start_stop_type(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _driveStartStopType DriveStartStopType // out
 
 	_driveStartStopType = DriveStartStopType(_cret)
@@ -568,6 +604,8 @@ func (drive *Drive) SymbolicIcon() Iconner {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _icon Iconner // out
 
@@ -587,6 +625,8 @@ func (drive *Drive) Volumes() []Volumer {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_get_volumes(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _list []Volumer // out
 
@@ -612,6 +652,8 @@ func (drive *Drive) HasMedia() bool {
 
 	_cret = C.g_drive_has_media(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -629,6 +671,8 @@ func (drive *Drive) HasVolumes() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_has_volumes(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
@@ -649,6 +693,8 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 
 	_cret = C.g_drive_is_media_check_automatic(_arg0)
 
+	runtime.KeepAlive(drive)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -666,6 +712,8 @@ func (drive *Drive) IsMediaRemovable() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_is_media_removable(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
@@ -685,6 +733,8 @@ func (drive *Drive) IsRemovable() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 
 	_cret = C.g_drive_is_removable(_arg0)
+
+	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
@@ -718,6 +768,9 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 	}
 
 	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // PollForMediaFinish finishes an operation started with
@@ -731,6 +784,8 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -769,6 +824,11 @@ func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOpera
 	}
 
 	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StartFinish finishes starting a drive.
@@ -781,6 +841,8 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -819,6 +881,11 @@ func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOper
 	}
 
 	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopFinish finishes stopping a drive.
@@ -831,6 +898,8 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

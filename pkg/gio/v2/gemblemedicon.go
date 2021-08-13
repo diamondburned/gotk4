@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -71,6 +72,9 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(emblem)
+
 	var _emblemedIcon *EmblemedIcon // out
 
 	_emblemedIcon = wrapEmblemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -87,6 +91,8 @@ func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
+	runtime.KeepAlive(emblemed)
+	runtime.KeepAlive(emblem)
 }
 
 // ClearEmblems removes all the emblems from icon.
@@ -96,6 +102,7 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
+	runtime.KeepAlive(emblemed)
 }
 
 // Emblems gets the list of emblems for the icon.
@@ -106,6 +113,8 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	_cret = C.g_emblemed_icon_get_emblems(_arg0)
+
+	runtime.KeepAlive(emblemed)
 
 	var _list []Emblem // out
 
@@ -128,6 +137,8 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
+
+	runtime.KeepAlive(emblemed)
 
 	var _icon Iconner // out
 

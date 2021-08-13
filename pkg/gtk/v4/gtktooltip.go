@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -76,6 +77,8 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	}
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(customWidget)
 }
 
 // SetIcon sets the icon of the tooltip (which is in front of the text) to be
@@ -90,6 +93,8 @@ func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 	}
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(paintable)
 }
 
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
@@ -105,6 +110,8 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner) {
 	}
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(gicon)
 }
 
 // SetIconFromIconName sets the icon of the tooltip (which is in front of the
@@ -121,6 +128,8 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string) {
 	}
 
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(iconName)
 }
 
 // SetMarkup sets the text of the tooltip to be markup.
@@ -138,6 +147,8 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 	}
 
 	C.gtk_tooltip_set_markup(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(markup)
 }
 
 // SetText sets the text of the tooltip to be text.
@@ -154,6 +165,8 @@ func (tooltip *Tooltip) SetText(text string) {
 	}
 
 	C.gtk_tooltip_set_text(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(text)
 }
 
 // SetTipArea sets the area of the widget, where the contents of this tooltip
@@ -171,4 +184,6 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(rect)
 }

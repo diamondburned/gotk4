@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -94,6 +95,8 @@ func (self *DragIcon) Child() Widgetter {
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -114,6 +117,8 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	}
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // DragIconCreateWidgetForValue creates a widget that can be used as a drag icon
@@ -132,6 +137,8 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
+
+	runtime.KeepAlive(value)
 
 	var _widget Widgetter // out
 
@@ -152,6 +159,8 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
 
 	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
+
+	runtime.KeepAlive(drag)
 
 	var _widget Widgetter // out
 
@@ -177,4 +186,8 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX i
 	_arg4 = C.int(hotY)
 
 	C.gtk_drag_icon_set_from_paintable(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(drag)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }

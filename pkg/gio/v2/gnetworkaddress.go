@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -78,6 +79,9 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
 
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(port)
+
 	var _networkAddress *NetworkAddress // out
 
 	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -104,6 +108,8 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 
 	_cret = C.g_network_address_new_loopback(_arg1)
 
+	runtime.KeepAlive(port)
+
 	var _networkAddress *NetworkAddress // out
 
 	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -121,6 +127,8 @@ func (addr *NetworkAddress) Hostname() string {
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
+	runtime.KeepAlive(addr)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -137,6 +145,8 @@ func (addr *NetworkAddress) Port() uint16 {
 
 	_cret = C.g_network_address_get_port(_arg0)
 
+	runtime.KeepAlive(addr)
+
 	var _guint16 uint16 // out
 
 	_guint16 = uint16(_cret)
@@ -152,6 +162,8 @@ func (addr *NetworkAddress) Scheme() string {
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(addr.Native()))
 
 	_cret = C.g_network_address_get_scheme(_arg0)
+
+	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
 
@@ -194,6 +206,9 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 
 	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(hostAndPort)
+	runtime.KeepAlive(defaultPort)
+
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
@@ -221,6 +236,9 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
 
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out

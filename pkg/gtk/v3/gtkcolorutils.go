@@ -2,6 +2,10 @@
 
 package gtk
 
+import (
+	"runtime"
+)
+
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
@@ -26,6 +30,9 @@ func RGBToHSV(r float64, g float64, b float64) (h float64, s float64, v float64)
 	_arg3 = C.gdouble(b)
 
 	C.gtk_rgb_to_hsv(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(r)
+	runtime.KeepAlive(g)
+	runtime.KeepAlive(b)
 
 	var _h float64 // out
 	var _s float64 // out
@@ -55,6 +62,9 @@ func HSVToRGB(h float64, s float64, v float64) (r float64, g float64, b float64)
 	_arg3 = C.gdouble(v)
 
 	C.gtk_hsv_to_rgb(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(h)
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(v)
 
 	var _r float64 // out
 	var _g float64 // out

@@ -206,6 +206,12 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 
 	_cret = C.gdk_pixbuf_calculate_rowstride(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(colorspace)
+	runtime.KeepAlive(hasAlpha)
+	runtime.KeepAlive(bitsPerSample)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -240,6 +246,9 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 	}
 
 	C.gdk_pixbuf_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(callback)
 }
 
 // NewPixbufFromStreamAtScaleAsync creates a new pixbuf by asynchronously
@@ -277,6 +286,12 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 	}
 
 	C.gdk_pixbuf_new_from_stream_at_scale_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(preserveAspectRatio)
+	runtime.KeepAlive(callback)
 }
 
 // PixbufSaveToStreamFinish finishes an asynchronous pixbuf save operation
@@ -288,6 +303,7 @@ func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
 	C.gdk_pixbuf_save_to_stream_finish(_arg1, &_cerr)
+	runtime.KeepAlive(asyncResult)
 
 	var _goerr error // out
 

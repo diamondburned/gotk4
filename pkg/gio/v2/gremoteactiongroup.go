@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -130,6 +131,10 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(remote)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(parameter)
+	runtime.KeepAlive(platformData)
 }
 
 // ChangeActionStateFull changes the state of a remote action.
@@ -154,4 +159,8 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value 
 	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(remote)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(platformData)
 }

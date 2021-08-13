@@ -87,6 +87,10 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(requiredMajor)
+	runtime.KeepAlive(requiredMinor)
+	runtime.KeepAlive(requiredMicro)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -112,6 +116,9 @@ func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	}
 
 	C.gtk_device_grab_add(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(blockOthers)
 }
 
 // DeviceGrabRemove removes a device grab from the given widget.
@@ -125,6 +132,8 @@ func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gtk_device_grab_remove(_arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(device)
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
@@ -382,6 +391,8 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 
 	_cret = C.gtk_get_option_group(_arg1)
 
+	runtime.KeepAlive(openDefaultDisplay)
+
 	var _optionGroup *glib.OptionGroup // out
 
 	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -417,6 +428,7 @@ func KeySnooperRemove(snooperHandlerId uint) {
 	_arg1 = C.guint(snooperHandlerId)
 
 	C.gtk_key_snooper_remove(_arg1)
+	runtime.KeepAlive(snooperHandlerId)
 }
 
 // Main runs the main loop until gtk_main_quit() is called.
@@ -457,6 +469,8 @@ func MainIterationDo(blocking bool) bool {
 	}
 
 	_cret = C.gtk_main_iteration_do(_arg1)
+
+	runtime.KeepAlive(blocking)
 
 	var _ok bool // out
 

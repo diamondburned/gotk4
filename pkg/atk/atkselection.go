@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -126,6 +127,9 @@ func (selection *Selection) AddSelection(i int) bool {
 
 	_cret = C.atk_selection_add_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -144,6 +148,8 @@ func (selection *Selection) ClearSelection() bool {
 	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.atk_selection_clear_selection(_arg0)
+
+	runtime.KeepAlive(selection)
 
 	var _ok bool // out
 
@@ -167,6 +173,8 @@ func (selection *Selection) SelectionCount() int {
 
 	_cret = C.atk_selection_get_selection_count(_arg0)
 
+	runtime.KeepAlive(selection)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -188,6 +196,9 @@ func (selection *Selection) IsChildSelected(i int) bool {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
+
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
 
 	var _ok bool // out
 
@@ -213,6 +224,9 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
 	var _object *ObjectClass // out
 
 	if _cret != nil {
@@ -234,6 +248,9 @@ func (selection *Selection) RemoveSelection(i int) bool {
 
 	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -252,6 +269,8 @@ func (selection *Selection) SelectAllSelection() bool {
 	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
 
 	_cret = C.atk_selection_select_all_selection(_arg0)
+
+	runtime.KeepAlive(selection)
 
 	var _ok bool // out
 

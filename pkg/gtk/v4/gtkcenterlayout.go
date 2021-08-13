@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -68,6 +69,8 @@ func (self *CenterLayout) BaselinePosition() BaselinePosition {
 
 	_cret = C.gtk_center_layout_get_baseline_position(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _baselinePosition BaselinePosition // out
 
 	_baselinePosition = BaselinePosition(_cret)
@@ -83,6 +86,8 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_center_widget(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -102,6 +107,8 @@ func (self *CenterLayout) EndWidget() Widgetter {
 
 	_cret = C.gtk_center_layout_get_end_widget(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -120,6 +127,8 @@ func (self *CenterLayout) Orientation() Orientation {
 
 	_cret = C.gtk_center_layout_get_orientation(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -135,6 +144,8 @@ func (self *CenterLayout) StartWidget() Widgetter {
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_center_layout_get_start_widget(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -154,6 +165,8 @@ func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition)
 	_arg1 = C.GtkBaselinePosition(baselinePosition)
 
 	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(baselinePosition)
 }
 
 // SetCenterWidget sets the new center widget of self.
@@ -169,6 +182,8 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 	}
 
 	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetEndWidget sets the new end widget of self.
@@ -184,6 +199,8 @@ func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 	}
 
 	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }
 
 // SetOrientation sets the orientation of self.
@@ -195,6 +212,8 @@ func (self *CenterLayout) SetOrientation(orientation Orientation) {
 	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_center_layout_set_orientation(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(orientation)
 }
 
 // SetStartWidget sets the new start widget of self.
@@ -210,4 +229,6 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	}
 
 	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(widget)
 }

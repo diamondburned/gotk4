@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -203,6 +204,7 @@ func (calendar *Calendar) ClearMarks() {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	C.gtk_calendar_clear_marks(_arg0)
+	runtime.KeepAlive(calendar)
 }
 
 // Date obtains the selected date from a Calendar.
@@ -215,6 +217,7 @@ func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	C.gtk_calendar_get_date(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(calendar)
 
 	var _year uint  // out
 	var _month uint // out
@@ -238,6 +241,9 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
 
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -257,6 +263,8 @@ func (calendar *Calendar) DetailHeightRows() int {
 
 	_cret = C.gtk_calendar_get_detail_height_rows(_arg0)
 
+	runtime.KeepAlive(calendar)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -274,6 +282,8 @@ func (calendar *Calendar) DetailWidthChars() int {
 
 	_cret = C.gtk_calendar_get_detail_width_chars(_arg0)
 
+	runtime.KeepAlive(calendar)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -289,6 +299,8 @@ func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	_cret = C.gtk_calendar_get_display_options(_arg0)
+
+	runtime.KeepAlive(calendar)
 
 	var _calendarDisplayOptions CalendarDisplayOptions // out
 
@@ -306,6 +318,8 @@ func (calendar *Calendar) MarkDay(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 }
 
 // SelectDay selects a day from the current month.
@@ -317,6 +331,8 @@ func (calendar *Calendar) SelectDay(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_select_day(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 }
 
 // SelectMonth shifts the calendar to a different month.
@@ -330,6 +346,9 @@ func (calendar *Calendar) SelectMonth(month uint, year uint) {
 	_arg2 = C.guint(year)
 
 	C.gtk_calendar_select_month(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(month)
+	runtime.KeepAlive(year)
 }
 
 // SetDetailFunc installs a function which provides Pango markup with detail
@@ -353,6 +372,8 @@ func (calendar *Calendar) SetDetailFunc(fn CalendarDetailFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_calendar_set_detail_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(fn)
 }
 
 // SetDetailHeightRows updates the height of detail cells. See
@@ -365,6 +386,8 @@ func (calendar *Calendar) SetDetailHeightRows(rows int) {
 	_arg1 = C.gint(rows)
 
 	C.gtk_calendar_set_detail_height_rows(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(rows)
 }
 
 // SetDetailWidthChars updates the width of detail cells. See
@@ -377,6 +400,8 @@ func (calendar *Calendar) SetDetailWidthChars(chars int) {
 	_arg1 = C.gint(chars)
 
 	C.gtk_calendar_set_detail_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(chars)
 }
 
 // SetDisplayOptions sets display options (whether to display the heading and
@@ -389,6 +414,8 @@ func (calendar *Calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
 	_arg1 = C.GtkCalendarDisplayOptions(flags)
 
 	C.gtk_calendar_set_display_options(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(flags)
 }
 
 // UnmarkDay removes the visual marker from a particular day.
@@ -400,4 +427,6 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 }

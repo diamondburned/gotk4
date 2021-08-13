@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -149,6 +150,8 @@ func NewComboBoxWithArea(area CellAreaer) *ComboBox {
 
 	_cret = C.gtk_combo_box_new_with_area(_arg1)
 
+	runtime.KeepAlive(area)
+
 	var _comboBox *ComboBox // out
 
 	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -166,6 +169,8 @@ func NewComboBoxWithAreaAndEntry(area CellAreaer) *ComboBox {
 	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_combo_box_new_with_area_and_entry(_arg1)
+
+	runtime.KeepAlive(area)
 
 	var _comboBox *ComboBox // out
 
@@ -197,6 +202,8 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 	_cret = C.gtk_combo_box_new_with_model(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _comboBox *ComboBox // out
 
 	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -213,6 +220,8 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
+
+	runtime.KeepAlive(model)
 
 	var _comboBox *ComboBox // out
 
@@ -233,6 +242,8 @@ func (comboBox *ComboBox) Active() int {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_active(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _gint int // out
 
@@ -258,6 +269,8 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	_cret = C.gtk_combo_box_get_active_id(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -277,6 +290,8 @@ func (comboBox *ComboBox) ActiveIter() (TreeIter, bool) {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_active_iter(_arg0, &_arg1)
+
+	runtime.KeepAlive(comboBox)
 
 	var _iter TreeIter // out
 	var _ok bool       // out
@@ -300,6 +315,8 @@ func (comboBox *ComboBox) AddTearoffs() bool {
 
 	_cret = C.gtk_combo_box_get_add_tearoffs(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -319,6 +336,8 @@ func (comboBox *ComboBox) ButtonSensitivity() SensitivityType {
 
 	_cret = C.gtk_combo_box_get_button_sensitivity(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _sensitivityType SensitivityType // out
 
 	_sensitivityType = SensitivityType(_cret)
@@ -336,6 +355,8 @@ func (comboBox *ComboBox) ColumnSpanColumn() int {
 
 	_cret = C.gtk_combo_box_get_column_span_column(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -352,6 +373,8 @@ func (comboBox *ComboBox) EntryTextColumn() int {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _gint int // out
 
@@ -372,6 +395,8 @@ func (combo *ComboBox) FocusOnClick() bool {
 
 	_cret = C.gtk_combo_box_get_focus_on_click(_arg0)
 
+	runtime.KeepAlive(combo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -389,6 +414,8 @@ func (comboBox *ComboBox) HasEntry() bool {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_has_entry(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _ok bool // out
 
@@ -409,6 +436,8 @@ func (comboBox *ComboBox) IDColumn() int {
 
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -424,6 +453,8 @@ func (comboBox *ComboBox) Model() TreeModeller {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_model(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _treeModel TreeModeller // out
 
@@ -444,6 +475,8 @@ func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_popup_accessible(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _object *atk.ObjectClass // out
 
@@ -467,6 +500,8 @@ func (comboBox *ComboBox) PopupFixedWidth() bool {
 
 	_cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -484,6 +519,8 @@ func (comboBox *ComboBox) RowSpanColumn() int {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	_cret = C.gtk_combo_box_get_row_span_column(_arg0)
+
+	runtime.KeepAlive(comboBox)
 
 	var _gint int // out
 
@@ -504,6 +541,8 @@ func (comboBox *ComboBox) Title() string {
 
 	_cret = C.gtk_combo_box_get_title(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -522,6 +561,8 @@ func (comboBox *ComboBox) WrapWidth() int {
 
 	_cret = C.gtk_combo_box_get_wrap_width(_arg0)
 
+	runtime.KeepAlive(comboBox)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -539,6 +580,7 @@ func (comboBox *ComboBox) Popdown() {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	C.gtk_combo_box_popdown(_arg0)
+	runtime.KeepAlive(comboBox)
 }
 
 // Popup pops up the menu or dropdown list of combo_box.
@@ -553,6 +595,7 @@ func (comboBox *ComboBox) Popup() {
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
 	C.gtk_combo_box_popup(_arg0)
+	runtime.KeepAlive(comboBox)
 }
 
 // PopupForDevice pops up the menu or dropdown list of combo_box, the popup
@@ -566,6 +609,8 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gtk_combo_box_popup_for_device(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(device)
 }
 
 // SetActive sets the active item of combo_box to be the item at index.
@@ -577,6 +622,8 @@ func (comboBox *ComboBox) SetActive(index_ int) {
 	_arg1 = C.gint(index_)
 
 	C.gtk_combo_box_set_active(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(index_)
 }
 
 // SetActiveID changes the active row of combo_box to the one that has an ID
@@ -597,6 +644,9 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 	}
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
+
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(activeId)
 
 	var _ok bool // out
 
@@ -619,6 +669,8 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	}
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(iter)
 }
 
 // SetAddTearoffs sets whether the popup menu should have a tearoff menu item.
@@ -634,6 +686,8 @@ func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
 	}
 
 	C.gtk_combo_box_set_add_tearoffs(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(addTearoffs)
 }
 
 // SetButtonSensitivity sets whether the dropdown button of the combo box should
@@ -648,6 +702,8 @@ func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 	_arg1 = C.GtkSensitivityType(sensitivity)
 
 	C.gtk_combo_box_set_button_sensitivity(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(sensitivity)
 }
 
 // SetColumnSpanColumn sets the column with column span information for
@@ -661,6 +717,8 @@ func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int) {
 	_arg1 = C.gint(columnSpan)
 
 	C.gtk_combo_box_set_column_span_column(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(columnSpan)
 }
 
 // SetEntryTextColumn sets the model column which combo_box should use to get
@@ -677,6 +735,8 @@ func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
 	_arg1 = C.gint(textColumn)
 
 	C.gtk_combo_box_set_entry_text_column(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(textColumn)
 }
 
 // SetFocusOnClick sets whether the combo box will grab focus when it is clicked
@@ -695,6 +755,8 @@ func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
 	}
 
 	C.gtk_combo_box_set_focus_on_click(_arg0, _arg1)
+	runtime.KeepAlive(combo)
+	runtime.KeepAlive(focusOnClick)
 }
 
 // SetIDColumn sets the model column which combo_box should use to get string
@@ -708,6 +770,8 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 	_arg1 = C.gint(idColumn)
 
 	C.gtk_combo_box_set_id_column(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(idColumn)
 }
 
 // SetModel sets the model used by combo_box to be model. Will unset a
@@ -727,6 +791,8 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	}
 
 	C.gtk_combo_box_set_model(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(model)
 }
 
 // SetPopupFixedWidth specifies whether the popup’s width should be a fixed
@@ -741,6 +807,8 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 	}
 
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(fixed)
 }
 
 // SetRowSeparatorFunc sets the row separator function, which is used to
@@ -758,6 +826,8 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_combo_box_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(fn)
 }
 
 // SetRowSpanColumn sets the column with row span information for combo_box to
@@ -771,6 +841,8 @@ func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int) {
 	_arg1 = C.gint(rowSpan)
 
 	C.gtk_combo_box_set_row_span_column(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(rowSpan)
 }
 
 // SetTitle sets the menu’s title in tearoff mode.
@@ -785,6 +857,8 @@ func (comboBox *ComboBox) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_combo_box_set_title(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(title)
 }
 
 // SetWrapWidth sets the wrap width of combo_box to be width. The wrap width is
@@ -798,4 +872,6 @@ func (comboBox *ComboBox) SetWrapWidth(width int) {
 	_arg1 = C.gint(width)
 
 	C.gtk_combo_box_set_wrap_width(_arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(width)
 }

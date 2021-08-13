@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -88,6 +89,7 @@ func (preview *PrintOperationPreview) EndPreview() {
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
 
 	C.gtk_print_operation_preview_end_preview(_arg0)
+	runtime.KeepAlive(preview)
 }
 
 // IsSelected returns whether the given page is included in the set of pages
@@ -101,6 +103,9 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	_arg1 = C.gint(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
+
+	runtime.KeepAlive(preview)
+	runtime.KeepAlive(pageNr)
 
 	var _ok bool // out
 
@@ -127,4 +132,6 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	_arg1 = C.gint(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
+	runtime.KeepAlive(preview)
+	runtime.KeepAlive(pageNr)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -130,6 +131,8 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 	_arg0 = (*C.GtkSocket)(unsafe.Pointer(socket_.Native()))
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
+
+	runtime.KeepAlive(socket_)
 
 	var _window gdk.Windower // out
 

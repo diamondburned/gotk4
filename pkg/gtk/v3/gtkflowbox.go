@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -260,6 +261,9 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_flow_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(createWidgetFunc)
 }
 
 // ActivateOnSingleClick returns whether children activate on single clicks.
@@ -270,6 +274,8 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
@@ -290,6 +296,9 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 	_arg1 = C.gint(idx)
 
 	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(idx)
 
 	var _flowBoxChild *FlowBoxChild // out
 
@@ -313,6 +322,10 @@ func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
 
 	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _flowBoxChild *FlowBoxChild // out
 
 	if _cret != nil {
@@ -331,6 +344,8 @@ func (box *FlowBox) ColumnSpacing() uint {
 
 	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -347,6 +362,8 @@ func (box *FlowBox) Homogeneous() bool {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
@@ -366,6 +383,8 @@ func (box *FlowBox) MaxChildrenPerLine() uint {
 
 	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -381,6 +400,8 @@ func (box *FlowBox) MinChildrenPerLine() uint {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _guint uint // out
 
@@ -398,6 +419,8 @@ func (box *FlowBox) RowSpacing() uint {
 
 	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -413,6 +436,8 @@ func (box *FlowBox) SelectedChildren() []FlowBoxChild {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_selected_children(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _list []FlowBoxChild // out
 
@@ -435,6 +460,8 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _selectionMode SelectionMode // out
 
@@ -461,6 +488,9 @@ func (box *FlowBox) Insert(widget Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(position)
 }
 
 // InvalidateFilter updates the filtering for all children.
@@ -475,6 +505,7 @@ func (box *FlowBox) InvalidateFilter() {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_flow_box_invalidate_filter(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // InvalidateSort updates the sorting for all children.
@@ -487,6 +518,7 @@ func (box *FlowBox) InvalidateSort() {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_flow_box_invalidate_sort(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // SelectAll: select all children of box, if the selection mode allows it.
@@ -496,6 +528,7 @@ func (box *FlowBox) SelectAll() {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_flow_box_select_all(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // SelectChild selects a single child of box, if the selection mode allows it.
@@ -507,6 +540,8 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_select_child(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // SelectedForeach calls a function for each selected child.
@@ -523,6 +558,8 @@ func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(fn)
 }
 
 // SetActivateOnSingleClick: if single is TRUE, children will be activated when
@@ -537,6 +574,8 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 	}
 
 	C.gtk_flow_box_set_activate_on_single_click(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(single)
 }
 
 // SetColumnSpacing sets the horizontal space to add between children. See the
@@ -549,6 +588,8 @@ func (box *FlowBox) SetColumnSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }
 
 // SetFilterFunc: by setting a filter function on the box one can decide
@@ -576,6 +617,8 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 	}
 
 	C.gtk_flow_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(filterFunc)
 }
 
 // SetHAdjustment hooks up an adjustment to focus handling in box. The
@@ -594,6 +637,8 @@ func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_flow_box_set_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetHomogeneous sets the FlowBox:homogeneous property of box, controlling
@@ -608,6 +653,8 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_flow_box_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetMaxChildrenPerLine sets the maximum number of children to request and
@@ -624,6 +671,8 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
 	_arg1 = C.guint(nChildren)
 
 	C.gtk_flow_box_set_max_children_per_line(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(nChildren)
 }
 
 // SetMinChildrenPerLine sets the minimum number of children to line up in box’s
@@ -636,6 +685,8 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
 	_arg1 = C.guint(nChildren)
 
 	C.gtk_flow_box_set_min_children_per_line(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(nChildren)
 }
 
 // SetRowSpacing sets the vertical space to add between children. See the
@@ -648,6 +699,8 @@ func (box *FlowBox) SetRowSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }
 
 // SetSelectionMode sets how selection works in box. See SelectionMode for
@@ -660,6 +713,8 @@ func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
 	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(mode)
 }
 
 // SetSortFunc: by setting a sort function on the box, one can dynamically
@@ -685,6 +740,8 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 	}
 
 	C.gtk_flow_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(sortFunc)
 }
 
 // SetVAdjustment hooks up an adjustment to focus handling in box. The
@@ -703,6 +760,8 @@ func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_flow_box_set_vadjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
 }
 
 // UnselectAll: unselect all children of box, if the selection mode allows it.
@@ -712,6 +771,7 @@ func (box *FlowBox) UnselectAll() {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_flow_box_unselect_all(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // UnselectChild unselects a single child of box, if the selection mode allows
@@ -724,6 +784,8 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_unselect_child(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // FlowBoxChildOverrider contains methods that are overridable.
@@ -800,6 +862,7 @@ func (child *FlowBoxChild) Changed() {
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	C.gtk_flow_box_child_changed(_arg0)
+	runtime.KeepAlive(child)
 }
 
 // Index gets the current index of the child in its FlowBox container.
@@ -810,6 +873,8 @@ func (child *FlowBoxChild) Index() int {
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_flow_box_child_get_index(_arg0)
+
+	runtime.KeepAlive(child)
 
 	var _gint int // out
 
@@ -827,6 +892,8 @@ func (child *FlowBoxChild) IsSelected() bool {
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_flow_box_child_is_selected(_arg0)
+
+	runtime.KeepAlive(child)
 
 	var _ok bool // out
 

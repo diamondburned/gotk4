@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -117,6 +118,8 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 
 	_cret = C.gtk_lock_button_new(_arg1)
 
+	runtime.KeepAlive(permission)
+
 	var _lockButton *LockButton // out
 
 	_lockButton = wrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -132,6 +135,8 @@ func (button *LockButton) Permission() gio.Permissioner {
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _permission gio.Permissioner // out
 
@@ -151,4 +156,6 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	}
 
 	C.gtk_lock_button_set_permission(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(permission)
 }

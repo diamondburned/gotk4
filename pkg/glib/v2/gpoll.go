@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -46,6 +47,10 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	_arg3 = C.gint(timeout)
 
 	_cret = C.g_poll(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(fds)
+	runtime.KeepAlive(nfds)
+	runtime.KeepAlive(timeout)
 
 	var _gint int // out
 

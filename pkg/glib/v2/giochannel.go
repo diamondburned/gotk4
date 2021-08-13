@@ -263,6 +263,9 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 
 	_cret = C.g_io_create_watch(_arg1, _arg2)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(condition)
+
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -299,6 +302,9 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 
 	_cret = C.g_io_channel_new_file(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(mode)
+
 	var _ioChannel *IOChannel // out
 	var _goerr error          // out
 
@@ -322,6 +328,8 @@ func NewIOChannelUnix(fd int) *IOChannel {
 
 	_cret = C.g_io_channel_unix_new(_arg1)
 
+	runtime.KeepAlive(fd)
+
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -343,6 +351,7 @@ func (channel *IOChannel) Close() {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	C.g_io_channel_close(_arg0)
+	runtime.KeepAlive(channel)
 }
 
 // Flush flushes the write buffer for the GIOChannel.
@@ -354,6 +363,8 @@ func (channel *IOChannel) Flush() (IOStatus, error) {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_flush(_arg0, &_cerr)
+
+	runtime.KeepAlive(channel)
 
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -377,6 +388,8 @@ func (channel *IOChannel) BufferCondition() IOCondition {
 
 	_cret = C.g_io_channel_get_buffer_condition(_arg0)
 
+	runtime.KeepAlive(channel)
+
 	var _ioCondition IOCondition // out
 
 	_ioCondition = IOCondition(_cret)
@@ -393,6 +406,8 @@ func (channel *IOChannel) BufferSize() uint {
 
 	_cret = C.g_io_channel_get_buffer_size(_arg0)
 
+	runtime.KeepAlive(channel)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -408,6 +423,8 @@ func (channel *IOChannel) Buffered() bool {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_get_buffered(_arg0)
+
+	runtime.KeepAlive(channel)
 
 	var _ok bool // out
 
@@ -428,6 +445,8 @@ func (channel *IOChannel) Encoding() string {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_get_encoding(_arg0)
+
+	runtime.KeepAlive(channel)
 
 	var _utf8 string // out
 
@@ -452,6 +471,8 @@ func (channel *IOChannel) Flags() IOFlags {
 
 	_cret = C.g_io_channel_get_flags(_arg0)
 
+	runtime.KeepAlive(channel)
+
 	var _ioFlags IOFlags // out
 
 	_ioFlags = IOFlags(_cret)
@@ -471,6 +492,9 @@ func (channel *IOChannel) LineTerm(length *int) string {
 
 	_cret = C.g_io_channel_get_line_term(_arg0, _arg1)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(length)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -489,6 +513,7 @@ func (channel *IOChannel) Init() {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	C.g_io_channel_init(_arg0)
+	runtime.KeepAlive(channel)
 }
 
 // Read reads data from a OChannel.
@@ -508,6 +533,11 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
 
 	_cret = C.g_io_channel_read(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(buf)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(bytesRead)
 
 	var _ioError IOError // out
 
@@ -530,6 +560,8 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_read_line(_arg0, &_arg1, &_arg2, &_arg3, &_cerr)
+
+	runtime.KeepAlive(channel)
 
 	var _strReturn string   // out
 	var _length uint        // out
@@ -561,6 +593,8 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 
 	_cret = C.g_io_channel_read_to_end(_arg0, &_arg1, &_arg2, &_cerr)
 
+	runtime.KeepAlive(channel)
+
 	var _strReturn []byte  // out
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -588,6 +622,8 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_read_unichar(_arg0, &_arg1, &_cerr)
+
+	runtime.KeepAlive(channel)
 
 	var _thechar uint32    // out
 	var _ioStatus IOStatus // out
@@ -618,6 +654,10 @@ func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 
 	_cret = C.g_io_channel_seek(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(typ)
+
 	var _ioError IOError // out
 
 	_ioError = IOError(_cret)
@@ -639,6 +679,10 @@ func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, er
 
 	_cret = C.g_io_channel_seek_position(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(typ)
+
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
@@ -659,6 +703,8 @@ func (channel *IOChannel) SetBufferSize(size uint) {
 	_arg1 = C.gsize(size)
 
 	C.g_io_channel_set_buffer_size(_arg0, _arg1)
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(size)
 }
 
 // SetBuffered: buffering state can only be set if the channel's encoding is
@@ -687,6 +733,8 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 	}
 
 	C.g_io_channel_set_buffered(_arg0, _arg1)
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(buffered)
 }
 
 // SetEncoding sets the encoding for the input/output of the channel. The
@@ -735,6 +783,9 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(encoding)
+
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
@@ -758,6 +809,9 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	_arg1 = C.GIOFlags(flags)
 
 	_cret = C.g_io_channel_set_flags(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(flags)
 
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -785,6 +839,9 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	_arg2 = C.gint(length)
 
 	C.g_io_channel_set_line_term(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(lineTerm)
+	runtime.KeepAlive(length)
 }
 
 // Shutdown: close an IO channel. Any pending data to be written will be flushed
@@ -802,6 +859,9 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	}
 
 	_cret = C.g_io_channel_shutdown(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(flush)
 
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -825,6 +885,8 @@ func (channel *IOChannel) UnixGetFd() int {
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 
 	_cret = C.g_io_channel_unix_get_fd(_arg0)
+
+	runtime.KeepAlive(channel)
 
 	var _gint int // out
 
@@ -850,6 +912,11 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesWritten))
 
 	_cret = C.g_io_channel_write(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(buf)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(bytesWritten)
 
 	var _ioError IOError // out
 
@@ -880,6 +947,10 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 
 	_cret = C.g_io_channel_write_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(buf)
+	runtime.KeepAlive(count)
+
 	var _bytesWritten uint // out
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -906,6 +977,9 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 
 	_cret = C.g_io_channel_write_unichar(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(channel)
+	runtime.KeepAlive(thechar)
+
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
@@ -925,6 +999,8 @@ func IOChannelErrorFromErrno(en int) IOChannelError {
 	_arg1 = C.gint(en)
 
 	_cret = C.g_io_channel_error_from_errno(_arg1)
+
+	runtime.KeepAlive(en)
 
 	var _ioChannelError IOChannelError // out
 

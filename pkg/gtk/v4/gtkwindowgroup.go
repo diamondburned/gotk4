@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -77,6 +78,8 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
+	runtime.KeepAlive(windowGroup)
+	runtime.KeepAlive(window)
 }
 
 // ListWindows returns a list of the GtkWindows that belong to window_group.
@@ -87,6 +90,8 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
 
 	_cret = C.gtk_window_group_list_windows(_arg0)
+
+	runtime.KeepAlive(windowGroup)
 
 	var _list []Window // out
 
@@ -110,4 +115,6 @@ func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
+	runtime.KeepAlive(windowGroup)
+	runtime.KeepAlive(window)
 }

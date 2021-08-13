@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,9 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 
 	_cret = C.gtk_filter_list_model_new(_arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(filter)
+
 	var _filterListModel *FilterListModel // out
 
 	_filterListModel = wrapFilterListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -84,6 +88,8 @@ func (self *FilterListModel) Filter() *Filter {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_filter(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _filter *Filter // out
 
@@ -105,6 +111,8 @@ func (self *FilterListModel) Incremental() bool {
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -122,6 +130,8 @@ func (self *FilterListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_filter_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -154,6 +164,8 @@ func (self *FilterListModel) Pending() uint {
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -172,6 +184,8 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 	}
 
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(filter)
 }
 
 // SetIncremental sets the filter model to do an incremental sort.
@@ -200,6 +214,8 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 	}
 
 	C.gtk_filter_list_model_set_incremental(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(incremental)
 }
 
 // SetModel sets the model to be filtered.
@@ -217,4 +233,6 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

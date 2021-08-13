@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -283,6 +284,9 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 	}
 
 	C.gtk_list_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(createWidgetFunc)
 }
 
 // DragHighlightRow: this is a helper function for implementing DnD onto a
@@ -298,6 +302,8 @@ func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	C.gtk_list_box_drag_highlight_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
 }
 
 // DragUnhighlightRow: if a row has previously been highlighted via
@@ -308,6 +314,7 @@ func (box *ListBox) DragUnhighlightRow() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_drag_unhighlight_row(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // ActivateOnSingleClick returns whether rows activate on single clicks.
@@ -318,6 +325,8 @@ func (box *ListBox) ActivateOnSingleClick() bool {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
@@ -338,6 +347,8 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 	_cret = C.gtk_list_box_get_adjustment(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -356,6 +367,9 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 	_arg1 = C.gint(index_)
 
 	_cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(index_)
 
 	var _listBoxRow *ListBoxRow // out
 
@@ -376,6 +390,9 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 	_arg1 = C.gint(y)
 
 	_cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(y)
 
 	var _listBoxRow *ListBoxRow // out
 
@@ -398,6 +415,8 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 
 	_cret = C.gtk_list_box_get_selected_row(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _listBoxRow *ListBoxRow // out
 
 	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
@@ -413,6 +432,8 @@ func (box *ListBox) SelectedRows() []ListBoxRow {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_selected_rows(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _list []ListBoxRow // out
 
@@ -435,6 +456,8 @@ func (box *ListBox) SelectionMode() SelectionMode {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_list_box_get_selection_mode(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _selectionMode SelectionMode // out
 
@@ -459,6 +482,9 @@ func (box *ListBox) Insert(child Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // InvalidateFilter: update the filtering for all rows. Call this when result of
@@ -471,6 +497,7 @@ func (box *ListBox) InvalidateFilter() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_invalidate_filter(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // InvalidateHeaders: update the separators for all rows. Call this when result
@@ -481,6 +508,7 @@ func (box *ListBox) InvalidateHeaders() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_invalidate_headers(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // InvalidateSort: update the sorting for all rows. Call this when result of the
@@ -491,6 +519,7 @@ func (box *ListBox) InvalidateSort() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_invalidate_sort(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // Prepend a widget to the list. If a sort function is set, the widget will
@@ -504,6 +533,8 @@ func (box *ListBox) Prepend(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_list_box_prepend(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // SelectAll: select all children of box, if the selection mode allows it.
@@ -513,6 +544,7 @@ func (box *ListBox) SelectAll() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_select_all(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // SelectRow: make row the currently selected row.
@@ -526,6 +558,8 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 	}
 
 	C.gtk_list_box_select_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
 }
 
 // SelectedForeach calls a function for each selected child.
@@ -542,6 +576,8 @@ func (box *ListBox) SelectedForeach(fn ListBoxForeachFunc) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(fn)
 }
 
 // SetActivateOnSingleClick: if single is TRUE, rows will be activated when you
@@ -556,6 +592,8 @@ func (box *ListBox) SetActivateOnSingleClick(single bool) {
 	}
 
 	C.gtk_list_box_set_activate_on_single_click(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(single)
 }
 
 // SetAdjustment sets the adjustment (if any) that the widget uses to for
@@ -575,6 +613,8 @@ func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
 	}
 
 	C.gtk_list_box_set_adjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetFilterFunc: by setting a filter function on the box one can decide
@@ -603,6 +643,8 @@ func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
 	}
 
 	C.gtk_list_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(filterFunc)
 }
 
 // SetHeaderFunc: by setting a header function on the box one can dynamically
@@ -640,6 +682,8 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 	}
 
 	C.gtk_list_box_set_header_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(updateHeader)
 }
 
 // SetPlaceholder sets the placeholder widget that is shown in the list when it
@@ -654,6 +698,8 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	}
 
 	C.gtk_list_box_set_placeholder(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(placeholder)
 }
 
 // SetSelectionMode sets how selection works in the listbox. See SelectionMode
@@ -666,6 +712,8 @@ func (box *ListBox) SetSelectionMode(mode SelectionMode) {
 	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(mode)
 }
 
 // SetSortFunc: by setting a sort function on the box one can dynamically
@@ -691,6 +739,8 @@ func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
 	}
 
 	C.gtk_list_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(sortFunc)
 }
 
 // UnselectAll: unselect all children of box, if the selection mode allows it.
@@ -700,6 +750,7 @@ func (box *ListBox) UnselectAll() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
 
 	C.gtk_list_box_unselect_all(_arg0)
+	runtime.KeepAlive(box)
 }
 
 // UnselectRow unselects a single row of box, if the selection mode allows it.
@@ -711,6 +762,8 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	C.gtk_list_box_unselect_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
 }
 
 // ListBoxRowOverrider contains methods that are overridable.
@@ -804,6 +857,7 @@ func (row *ListBoxRow) Changed() {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	C.gtk_list_box_row_changed(_arg0)
+	runtime.KeepAlive(row)
 }
 
 // Activatable gets the value of the ListBoxRow:activatable property for this
@@ -815,6 +869,8 @@ func (row *ListBoxRow) Activatable() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_activatable(_arg0)
+
+	runtime.KeepAlive(row)
 
 	var _ok bool // out
 
@@ -836,6 +892,8 @@ func (row *ListBoxRow) Header() Widgetter {
 
 	_cret = C.gtk_list_box_row_get_header(_arg0)
 
+	runtime.KeepAlive(row)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -854,6 +912,8 @@ func (row *ListBoxRow) Index() int {
 
 	_cret = C.gtk_list_box_row_get_index(_arg0)
 
+	runtime.KeepAlive(row)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -869,6 +929,8 @@ func (row *ListBoxRow) Selectable() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_get_selectable(_arg0)
+
+	runtime.KeepAlive(row)
 
 	var _ok bool // out
 
@@ -888,6 +950,8 @@ func (row *ListBoxRow) IsSelected() bool {
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
 
 	_cret = C.gtk_list_box_row_is_selected(_arg0)
+
+	runtime.KeepAlive(row)
 
 	var _ok bool // out
 
@@ -909,6 +973,8 @@ func (row *ListBoxRow) SetActivatable(activatable bool) {
 	}
 
 	C.gtk_list_box_row_set_activatable(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(activatable)
 }
 
 // SetHeader sets the current header of the row. This is only allowed to be
@@ -924,6 +990,8 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 	}
 
 	C.gtk_list_box_row_set_header(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
 }
 
 // SetSelectable: set the ListBoxRow:selectable property for this row.
@@ -937,4 +1005,6 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 	}
 
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(selectable)
 }

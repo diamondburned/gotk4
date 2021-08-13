@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -23,6 +24,7 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	_arg1 = C.guint(symbol)
 
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(symbol)
 
 	var _lower uint // out
 	var _upper uint // out
@@ -46,6 +48,8 @@ func KeyvalFromName(keyvalName string) uint {
 
 	_cret = C.gdk_keyval_from_name(_arg1)
 
+	runtime.KeepAlive(keyvalName)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -61,6 +65,8 @@ func KeyvalIsLower(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
+
+	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
 
@@ -79,6 +85,8 @@ func KeyvalIsUpper(keyval uint) bool {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
+
+	runtime.KeepAlive(keyval)
 
 	var _ok bool // out
 
@@ -101,6 +109,8 @@ func KeyvalName(keyval uint) string {
 
 	_cret = C.gdk_keyval_name(_arg1)
 
+	runtime.KeepAlive(keyval)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -118,6 +128,8 @@ func KeyvalToLower(keyval uint) uint {
 	_arg1 = C.guint(keyval)
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
+
+	runtime.KeepAlive(keyval)
 
 	var _guint uint // out
 
@@ -139,6 +151,8 @@ func KeyvalToUnicode(keyval uint) uint32 {
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
 
+	runtime.KeepAlive(keyval)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -155,6 +169,8 @@ func KeyvalToUpper(keyval uint) uint {
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
 
+	runtime.KeepAlive(keyval)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -170,6 +186,8 @@ func UnicodeToKeyval(wc uint32) uint {
 	_arg1 = C.guint32(wc)
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
+
+	runtime.KeepAlive(wc)
 
 	var _guint uint // out
 

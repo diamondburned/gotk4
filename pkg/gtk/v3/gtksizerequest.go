@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -33,6 +34,10 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	_arg3 = (*C.GtkRequestedSize)(gextras.StructNative(unsafe.Pointer(sizes)))
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(extraSpace)
+	runtime.KeepAlive(nRequestedSizes)
+	runtime.KeepAlive(sizes)
 
 	var _gint int // out
 

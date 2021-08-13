@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -31,6 +32,8 @@ func X11DisplayGetGLXVersion(display *gdk.Display) (major int, minor int, ok boo
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg1, &_arg2, &_arg3)
+
+	runtime.KeepAlive(display)
 
 	var _major int // out
 	var _minor int // out

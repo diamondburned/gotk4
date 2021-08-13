@@ -4,6 +4,7 @@ package atk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -244,6 +245,11 @@ func (component *Component) Contains(x int, y int, coordType CoordType) bool {
 
 	_cret = C.atk_component_contains(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -262,6 +268,8 @@ func (component *Component) Alpha() float64 {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_alpha(_arg0)
+
+	runtime.KeepAlive(component)
 
 	var _gdouble float64 // out
 
@@ -286,6 +294,8 @@ func (component *Component) Extents(coordType CoordType) (x int, y int, width in
 	_arg5 = C.AtkCoordType(coordType)
 
 	C.atk_component_get_extents(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
 
 	var _x int      // out
 	var _y int      // out
@@ -309,6 +319,8 @@ func (component *Component) Layer() Layer {
 
 	_cret = C.atk_component_get_layer(_arg0)
 
+	runtime.KeepAlive(component)
+
 	var _layer Layer // out
 
 	_layer = Layer(_cret)
@@ -326,6 +338,8 @@ func (component *Component) MDIZOrder() int {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_get_mdi_zorder(_arg0)
+
+	runtime.KeepAlive(component)
 
 	var _gint int // out
 
@@ -351,6 +365,8 @@ func (component *Component) Position(coordType CoordType) (x int, y int) {
 	_arg3 = C.AtkCoordType(coordType)
 
 	C.atk_component_get_position(_arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
 
 	var _x int // out
 	var _y int // out
@@ -375,6 +391,7 @@ func (component *Component) Size() (width int, height int) {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(component)
 
 	var _width int  // out
 	var _height int // out
@@ -393,6 +410,8 @@ func (component *Component) GrabFocus() bool {
 	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
 
 	_cret = C.atk_component_grab_focus(_arg0)
+
+	runtime.KeepAlive(component)
 
 	var _ok bool // out
 
@@ -419,6 +438,11 @@ func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordTy
 
 	_cret = C.atk_component_ref_accessible_at_point(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
 	var _object *ObjectClass // out
 
 	if _cret != nil {
@@ -442,6 +466,8 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 	_arg1 = C.guint(handlerId)
 
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(handlerId)
 }
 
 // ScrollTo makes component visible on the screen by scrolling all necessary
@@ -459,6 +485,9 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 	_arg1 = C.AtkScrollType(typ)
 
 	_cret = C.atk_component_scroll_to(_arg0, _arg1)
+
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
@@ -484,6 +513,11 @@ func (component *Component) ScrollToPoint(coords CoordType, x int, y int) bool {
 	_arg3 = C.gint(y)
 
 	_cret = C.atk_component_scroll_to_point(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 
 	var _ok bool // out
 
@@ -513,6 +547,13 @@ func (component *Component) SetExtents(x int, y int, width int, height int, coor
 
 	_cret = C.atk_component_set_extents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(coordType)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -540,6 +581,11 @@ func (component *Component) SetPosition(x int, y int, coordType CoordType) bool 
 
 	_cret = C.atk_component_set_position(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -561,6 +607,10 @@ func (component *Component) SetSize(width int, height int) bool {
 	_arg2 = C.gint(height)
 
 	_cret = C.atk_component_set_size(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 
 	var _ok bool // out
 

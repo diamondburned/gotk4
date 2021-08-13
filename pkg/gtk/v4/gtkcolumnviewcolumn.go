@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -75,6 +76,9 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(factory)
+
 	var _columnViewColumn *ColumnViewColumn // out
 
 	_columnViewColumn = wrapColumnViewColumn(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -93,6 +97,8 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 
 	_cret = C.gtk_column_view_column_get_column_view(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _columnView *ColumnView // out
 
 	if _cret != nil {
@@ -110,6 +116,8 @@ func (self *ColumnViewColumn) Expand() bool {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_expand(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -130,6 +138,8 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 
 	_cret = C.gtk_column_view_column_get_factory(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
@@ -148,6 +158,8 @@ func (self *ColumnViewColumn) FixedWidth() int {
 
 	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -164,6 +176,8 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
 
@@ -183,6 +197,8 @@ func (self *ColumnViewColumn) Resizable() bool {
 
 	_cret = C.gtk_column_view_column_get_resizable(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -200,6 +216,8 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_sorter(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
@@ -219,6 +237,8 @@ func (self *ColumnViewColumn) Title() string {
 
 	_cret = C.gtk_column_view_column_get_title(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -236,6 +256,8 @@ func (self *ColumnViewColumn) Visible() bool {
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_column_view_column_get_visible(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -260,6 +282,8 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 	}
 
 	C.gtk_column_view_column_set_expand(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expand)
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items for
@@ -274,6 +298,8 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 	}
 
 	C.gtk_column_view_column_set_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetFixedWidth: if fixed_width is not -1, sets the fixed width of column;
@@ -289,6 +315,8 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 	_arg1 = C.int(fixedWidth)
 
 	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(fixedWidth)
 }
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for
@@ -303,6 +331,8 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	}
 
 	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(menu)
 }
 
 // SetResizable sets whether this column should be resizable by dragging.
@@ -316,6 +346,8 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 	}
 
 	C.gtk_column_view_column_set_resizable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(resizable)
 }
 
 // SetSorter associates a sorter with the column.
@@ -338,6 +370,8 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 	}
 
 	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sorter)
 }
 
 // SetTitle sets the title of this column.
@@ -355,6 +389,8 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 	}
 
 	C.gtk_column_view_column_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetVisible sets whether this column should be visible in views.
@@ -368,4 +404,6 @@ func (self *ColumnViewColumn) SetVisible(visible bool) {
 	}
 
 	C.gtk_column_view_column_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(visible)
 }

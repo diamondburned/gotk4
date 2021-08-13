@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -84,6 +85,9 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
 
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(linkIndex)
+
 	var _hyperlink *Hyperlink // out
 
 	_hyperlink = wrapHyperlink(externglib.Take(unsafe.Pointer(_cret)))
@@ -103,6 +107,9 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
 
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(charIndex)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -118,6 +125,8 @@ func (hypertext *Hypertext) NLinks() int {
 	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
+
+	runtime.KeepAlive(hypertext)
 
 	var _gint int // out
 

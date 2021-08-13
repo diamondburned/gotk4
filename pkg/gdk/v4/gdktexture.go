@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -80,6 +81,8 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _texture *Texture // out
 
 	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -101,6 +104,8 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
+
+	runtime.KeepAlive(file)
 
 	var _texture *Texture // out
 	var _goerr error      // out
@@ -131,6 +136,8 @@ func NewTextureFromResource(resourcePath string) *Texture {
 
 	_cret = C.gdk_texture_new_from_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _texture *Texture // out
 
 	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -147,6 +154,8 @@ func (texture *Texture) Height() int {
 
 	_cret = C.gdk_texture_get_height(_arg0)
 
+	runtime.KeepAlive(texture)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -162,6 +171,8 @@ func (texture *Texture) Width() int {
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	_cret = C.gdk_texture_get_width(_arg0)
+
+	runtime.KeepAlive(texture)
 
 	var _gint int // out
 
@@ -185,6 +196,9 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
+
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(filename)
 
 	var _ok bool // out
 

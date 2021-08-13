@@ -1371,6 +1371,10 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 
 	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
@@ -1411,6 +1415,11 @@ func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 	}
 
 	C.g_file_append_to_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // AppendToFinish finishes an asynchronous file append operation started with
@@ -1425,6 +1434,9 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
@@ -1462,6 +1474,10 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 	_arg1 = C.GFileCopyFlags(flags)
 
 	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
 
 	var _utf8 string // out
 	var _goerr error // out
@@ -1539,6 +1555,11 @@ func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyF
 	}
 
 	C.g_file_copy(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(progressCallback)
 
 	var _goerr error // out
 
@@ -1573,6 +1594,10 @@ func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags
 	_arg2 = C.GFileCopyFlags(flags)
 
 	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -1593,6 +1618,8 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _goerr error // out
 
@@ -1636,6 +1663,10 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 
 	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
@@ -1677,6 +1708,11 @@ func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 	}
 
 	C.g_file_create_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CreateFinish finishes an asynchronous file create operation started with
@@ -1691,6 +1727,9 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
@@ -1740,6 +1779,10 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 
 	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
@@ -1781,6 +1824,11 @@ func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlag
 	}
 
 	C.g_file_create_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CreateReadwriteFinish finishes an asynchronous file create operation started
@@ -1795,6 +1843,9 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
@@ -1840,6 +1891,8 @@ func (file *File) Delete(ctx context.Context) error {
 	}
 
 	C.g_file_delete(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -1873,6 +1926,10 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback Asyn
 	}
 
 	C.g_file_delete_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // DeleteFinish finishes deleting a file started with g_file_delete_async().
@@ -1885,6 +1942,8 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -1912,6 +1971,8 @@ func (file *File) Dup() Filer {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_dup(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _ret Filer // out
 
@@ -1949,6 +2010,10 @@ func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, c
 	}
 
 	C.g_file_eject_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectMountableFinish finishes an asynchronous eject operation started by
@@ -1964,6 +2029,8 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -2006,6 +2073,11 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 	}
 
 	C.g_file_eject_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject operation
@@ -2019,6 +2091,8 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -2069,6 +2143,11 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 
 	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+
 	var _fileEnumerator *FileEnumerator // out
 	var _goerr error                    // out
 
@@ -2114,6 +2193,12 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 	}
 
 	C.g_file_enumerate_children_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // EnumerateChildrenFinish finishes an async enumerate children operation. See
@@ -2128,6 +2213,9 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileEnumerator *FileEnumerator // out
 	var _goerr error                    // out
@@ -2155,6 +2243,9 @@ func (file1 *File) Equal(file2 Filer) bool {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
 
 	_cret = C.g_file_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(file1)
+	runtime.KeepAlive(file2)
 
 	var _ok bool // out
 
@@ -2188,6 +2279,9 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	}
 
 	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _mount Mounter // out
 	var _goerr error   // out
@@ -2227,6 +2321,10 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 	}
 
 	C.g_file_find_enclosing_mount_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // FindEnclosingMountFinish finishes an asynchronous find mount request. See
@@ -2241,6 +2339,9 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _mount Mounter // out
 	var _goerr error   // out
@@ -2275,6 +2376,8 @@ func (file *File) Basename() string {
 
 	_cret = C.g_file_get_basename(_arg0)
 
+	runtime.KeepAlive(file)
+
 	var _filename string // out
 
 	if _cret != nil {
@@ -2303,6 +2406,9 @@ func (file *File) Child(name string) Filer {
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(name)
+
 	var _ret Filer // out
 
 	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -2329,6 +2435,9 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(displayName)
+
 	var _ret Filer   // out
 	var _goerr error // out
 
@@ -2351,6 +2460,8 @@ func (file *File) Parent() Filer {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_parent(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _ret Filer // out
 
@@ -2381,6 +2492,8 @@ func (file *File) ParseName() string {
 
 	_cret = C.g_file_get_parse_name(_arg0)
 
+	runtime.KeepAlive(file)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2400,6 +2513,8 @@ func (file *File) Path() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_path(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _filename string // out
 
@@ -2424,6 +2539,9 @@ func (parent *File) RelativePath(descendant Filer) string {
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(descendant)
+
 	var _filename string // out
 
 	if _cret != nil {
@@ -2444,6 +2562,8 @@ func (file *File) URI() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_get_uri(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _utf8 string // out
 
@@ -2472,6 +2592,8 @@ func (file *File) URIScheme() string {
 
 	_cret = C.g_file_get_uri_scheme(_arg0)
 
+	runtime.KeepAlive(file)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -2498,6 +2620,9 @@ func (file *File) HasParent(parent Filer) bool {
 	}
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(parent)
 
 	var _ok bool // out
 
@@ -2530,6 +2655,9 @@ func (file *File) HasPrefix(prefix Filer) bool {
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(prefix)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -2553,6 +2681,9 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(uriScheme)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -2572,6 +2703,8 @@ func (file *File) Hash() uint {
 	_arg0 = C.gconstpointer(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_hash(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _guint uint // out
 
@@ -2598,6 +2731,8 @@ func (file *File) IsNative() bool {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_is_native(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _ok bool // out
 
@@ -2636,6 +2771,9 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 	}
 
 	C.g_file_load_bytes_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // LoadContents loads the content of the file into memory. The data is always
@@ -2661,6 +2799,8 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	}
 
 	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _contents []byte // out
 	var _etagOut string  // out
@@ -2711,6 +2851,9 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 	}
 
 	C.g_file_load_contents_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // LoadContentsFinish finishes an asynchronous load of the file's contents. The
@@ -2730,6 +2873,8 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _contents []byte // out
 	var _etagOut string  // out
@@ -2766,6 +2911,8 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _contents []byte // out
 	var _etagOut string  // out
@@ -2813,6 +2960,8 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 	}
 
 	C.g_file_make_directory(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -2844,6 +2993,10 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callba
 	}
 
 	C.g_file_make_directory_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // MakeDirectoryFinish finishes an asynchronous directory creation, started with
@@ -2857,6 +3010,8 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -2893,6 +3048,8 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 	}
 
 	C.g_file_make_directory_with_parents(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -2925,6 +3082,9 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(symlinkValue)
 
 	var _goerr error // out
 
@@ -2950,6 +3110,8 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _diskUsage uint64 // out
 	var _numDirs uint64   // out
@@ -2988,6 +3150,10 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 	_arg1 = C.GFileMonitorFlags(flags)
 
 	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
 
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
@@ -3029,6 +3195,10 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 
 	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
 
@@ -3069,6 +3239,10 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	_arg1 = C.GFileMonitorFlags(flags)
 
 	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
 
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
@@ -3115,6 +3289,11 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 	}
 
 	C.g_file_mount_enclosing_volume(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountEnclosingVolumeFinish finishes a mount operation started by
@@ -3128,6 +3307,8 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -3172,6 +3353,11 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 	}
 
 	C.g_file_mount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountMountableFinish finishes a mount operation. See g_file_mount_mountable()
@@ -3189,6 +3375,9 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _ret Filer   // out
 	var _goerr error // out
@@ -3258,6 +3447,11 @@ func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyF
 	}
 
 	C.g_file_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(progressCallback)
 
 	var _goerr error // out
 
@@ -3295,6 +3489,9 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	}
 
 	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
@@ -3334,6 +3531,10 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callba
 	}
 
 	C.g_file_open_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // OpenReadwriteFinish finishes an asynchronous file read operation started with
@@ -3348,6 +3549,9 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
@@ -3373,6 +3577,8 @@ func (file *File) PeekPath() string {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_peek_path(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _filename string // out
 
@@ -3409,6 +3615,9 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 	}
 
 	C.g_file_poll_mountable(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // PollMountableFinish finishes a poll operation. See g_file_poll_mountable()
@@ -3425,6 +3634,8 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -3455,6 +3666,9 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	}
 
 	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _appInfo AppInfor // out
 	var _goerr error      // out
@@ -3488,6 +3702,10 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 	}
 
 	C.g_file_query_default_handler_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
@@ -3502,6 +3720,9 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _appInfo AppInfor // out
 	var _goerr error      // out
@@ -3551,6 +3772,9 @@ func (file *File) QueryExists(ctx context.Context) bool {
 
 	_cret = C.g_file_query_exists(_arg0, _arg1)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -3580,6 +3804,10 @@ func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) F
 	_arg1 = C.GFileQueryInfoFlags(flags)
 
 	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
 
 	var _fileType FileType // out
 
@@ -3628,6 +3856,10 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 
 	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
@@ -3671,6 +3903,11 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 	}
 
 	C.g_file_query_filesystem_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryFilesystemInfoFinish finishes an asynchronous filesystem info query. See
@@ -3685,6 +3922,9 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
@@ -3743,6 +3983,11 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 
 	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
@@ -3788,6 +4033,12 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 	}
 
 	C.g_file_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryInfoFinish finishes an asynchronous file info query. See
@@ -3802,6 +4053,9 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
@@ -3839,6 +4093,9 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 
 	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
 
@@ -3874,6 +4131,9 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	}
 
 	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
@@ -3915,6 +4175,9 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 
 	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
 
@@ -3953,6 +4216,10 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncR
 	}
 
 	C.g_file_read_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadFinish finishes an asynchronous file read operation started with
@@ -3967,6 +4234,9 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
@@ -4042,6 +4312,12 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 
 	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
@@ -4092,6 +4368,13 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 	}
 
 	C.g_file_replace_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceContents replaces the contents of file with contents of length bytes.
@@ -4141,6 +4424,12 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 	_arg5 = C.GFileCreateFlags(flags)
 
 	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
 
 	var _newEtag string // out
 	var _goerr error    // out
@@ -4209,6 +4498,13 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 	}
 
 	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceContentsFinish finishes an asynchronous replace of the given file. See
@@ -4224,6 +4520,8 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _newEtag string // out
 	var _goerr error    // out
@@ -4251,6 +4549,9 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
@@ -4298,6 +4599,12 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 	_arg3 = C.GFileCreateFlags(flags)
 
 	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
@@ -4349,6 +4656,13 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 	}
 
 	C.g_file_replace_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
@@ -4363,6 +4677,9 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
@@ -4388,6 +4705,9 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(relativePath)
 
 	var _ret Filer // out
 
@@ -4427,6 +4747,12 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 	_arg4 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(valueP)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4465,6 +4791,11 @@ func (file *File) SetAttributeByteString(ctx context.Context, attribute string, 
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4501,6 +4832,11 @@ func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_int32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4537,6 +4873,11 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_int64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4574,6 +4915,11 @@ func (file *File) SetAttributeString(ctx context.Context, attribute string, valu
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4610,6 +4956,11 @@ func (file *File) SetAttributeUint32(ctx context.Context, attribute string, valu
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_uint32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4646,6 +4997,11 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 	_arg3 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attribute_uint64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4687,6 +5043,12 @@ func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags 
 	}
 
 	C.g_file_set_attributes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // SetAttributesFinish finishes setting an attribute started in
@@ -4701,6 +5063,8 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _info *FileInfo // out
 	var _goerr error    // out
@@ -4741,6 +5105,10 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
 
 	var _goerr error // out
 
@@ -4784,6 +5152,10 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(displayName)
+
 	var _ret Filer   // out
 	var _goerr error // out
 
@@ -4825,6 +5197,11 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 	}
 
 	C.g_file_set_display_name_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(displayName)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // SetDisplayNameFinish finishes setting a display name started with
@@ -4839,6 +5216,9 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(res)
 
 	var _ret Filer   // out
 	var _goerr error // out
@@ -4885,6 +5265,11 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 	}
 
 	C.g_file_start_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(startOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StartMountableFinish finishes a start operation. See g_file_start_mountable()
@@ -4901,6 +5286,8 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -4943,6 +5330,11 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 	}
 
 	C.g_file_stop_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopMountableFinish finishes a stop operation, see g_file_stop_mountable()
@@ -4959,6 +5351,8 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -4980,6 +5374,8 @@ func (file *File) SupportsThreadContexts() bool {
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	_cret = C.g_file_supports_thread_contexts(_arg0)
+
+	runtime.KeepAlive(file)
 
 	var _ok bool // out
 
@@ -5013,6 +5409,8 @@ func (file *File) Trash(ctx context.Context) error {
 	}
 
 	C.g_file_trash(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -5044,6 +5442,10 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback Async
 	}
 
 	C.g_file_trash_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // TrashFinish finishes an asynchronous file trashing operation, started with
@@ -5057,6 +5459,8 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -5097,6 +5501,10 @@ func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags,
 	}
 
 	C.g_file_unmount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableFinish finishes an unmount operation, see
@@ -5115,6 +5523,8 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -5157,6 +5567,11 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 	}
 
 	C.g_file_unmount_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableWithOperationFinish finishes an unmount operation, see
@@ -5173,6 +5588,8 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -5205,6 +5622,8 @@ func NewFileForCommandlineArg(arg string) Filer {
 
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
 
+	runtime.KeepAlive(arg)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -5235,6 +5654,9 @@ func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
 
 	_cret = C.g_file_new_for_commandline_arg_and_cwd(_arg1, _arg2)
 
+	runtime.KeepAlive(arg)
+	runtime.KeepAlive(cwd)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -5254,6 +5676,8 @@ func NewFileForPath(path string) Filer {
 
 	_cret = C.g_file_new_for_path(_arg1)
 
+	runtime.KeepAlive(path)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -5272,6 +5696,8 @@ func NewFileForURI(uri string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_uri(_arg1)
+
+	runtime.KeepAlive(uri)
 
 	var _file Filer // out
 
@@ -5303,6 +5729,8 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 
 	_cret = C.g_file_new_tmp(_arg1, &_arg2, &_cerr)
 
+	runtime.KeepAlive(tmpl)
+
 	var _iostream *FileIOStream // out
 	var _file Filer             // out
 	var _goerr error            // out
@@ -5328,6 +5756,8 @@ func FileParseName(parseName string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_parse_name(_arg1)
+
+	runtime.KeepAlive(parseName)
 
 	var _file Filer // out
 

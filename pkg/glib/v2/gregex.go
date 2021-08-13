@@ -629,6 +629,9 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 
 	_cret = C.g_match_info_expand_references(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(matchInfo)
+	runtime.KeepAlive(stringToExpand)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -667,6 +670,9 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 
 	_cret = C.g_match_info_fetch(_arg0, _arg1)
 
+	runtime.KeepAlive(matchInfo)
+	runtime.KeepAlive(matchNum)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -699,6 +705,8 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_fetch_all(_arg0)
+
+	runtime.KeepAlive(matchInfo)
 
 	var _utf8s []string // out
 
@@ -740,6 +748,9 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 
 	_cret = C.g_match_info_fetch_named(_arg0, _arg1)
 
+	runtime.KeepAlive(matchInfo)
+	runtime.KeepAlive(name)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -768,6 +779,9 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_fetch_named_pos(_arg0, _arg1, &_arg2, &_arg3)
+
+	runtime.KeepAlive(matchInfo)
+	runtime.KeepAlive(name)
 
 	var _startPos int // out
 	var _endPos int   // out
@@ -806,6 +820,9 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 
 	_cret = C.g_match_info_fetch_pos(_arg0, _arg1, &_arg2, &_arg3)
 
+	runtime.KeepAlive(matchInfo)
+	runtime.KeepAlive(matchNum)
+
 	var _startPos int // out
 	var _endPos int   // out
 	var _ok bool      // out
@@ -835,6 +852,8 @@ func (matchInfo *MatchInfo) MatchCount() int {
 
 	_cret = C.g_match_info_get_match_count(_arg0)
 
+	runtime.KeepAlive(matchInfo)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -852,6 +871,8 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_get_regex(_arg0)
+
+	runtime.KeepAlive(matchInfo)
 
 	var _regex *Regex // out
 
@@ -873,6 +894,8 @@ func (matchInfo *MatchInfo) String() string {
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_get_string(_arg0)
+
+	runtime.KeepAlive(matchInfo)
 
 	var _utf8 string // out
 
@@ -920,6 +943,8 @@ func (matchInfo *MatchInfo) IsPartialMatch() bool {
 
 	_cret = C.g_match_info_is_partial_match(_arg0)
 
+	runtime.KeepAlive(matchInfo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -937,6 +962,8 @@ func (matchInfo *MatchInfo) Matches() bool {
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_matches(_arg0)
+
+	runtime.KeepAlive(matchInfo)
 
 	var _ok bool // out
 
@@ -959,6 +986,7 @@ func (matchInfo *MatchInfo) Next() error {
 	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	C.g_match_info_next(_arg0, &_cerr)
+	runtime.KeepAlive(matchInfo)
 
 	var _goerr error // out
 
@@ -1052,6 +1080,10 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	_cret = C.g_regex_new(_arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(pattern)
+	runtime.KeepAlive(compileOptions)
+	runtime.KeepAlive(matchOptions)
+
 	var _regex *Regex // out
 	var _goerr error  // out
 
@@ -1077,6 +1109,8 @@ func (regex *Regex) CaptureCount() int {
 
 	_cret = C.g_regex_get_capture_count(_arg0)
 
+	runtime.KeepAlive(regex)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1097,6 +1131,8 @@ func (regex *Regex) CompileFlags() RegexCompileFlags {
 
 	_cret = C.g_regex_get_compile_flags(_arg0)
 
+	runtime.KeepAlive(regex)
+
 	var _regexCompileFlags RegexCompileFlags // out
 
 	_regexCompileFlags = RegexCompileFlags(_cret)
@@ -1112,6 +1148,8 @@ func (regex *Regex) HasCrOrLf() bool {
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_has_cr_or_lf(_arg0)
+
+	runtime.KeepAlive(regex)
 
 	var _ok bool // out
 
@@ -1131,6 +1169,8 @@ func (regex *Regex) MatchFlags() RegexMatchFlags {
 
 	_cret = C.g_regex_get_match_flags(_arg0)
 
+	runtime.KeepAlive(regex)
+
 	var _regexMatchFlags RegexMatchFlags // out
 
 	_regexMatchFlags = RegexMatchFlags(_cret)
@@ -1147,6 +1187,8 @@ func (regex *Regex) MaxBackref() int {
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_max_backref(_arg0)
+
+	runtime.KeepAlive(regex)
 
 	var _gint int // out
 
@@ -1166,6 +1208,8 @@ func (regex *Regex) MaxLookbehind() int {
 
 	_cret = C.g_regex_get_max_lookbehind(_arg0)
 
+	runtime.KeepAlive(regex)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1182,6 +1226,8 @@ func (regex *Regex) Pattern() string {
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_pattern(_arg0)
+
+	runtime.KeepAlive(regex)
 
 	var _utf8 string // out
 
@@ -1201,6 +1247,9 @@ func (regex *Regex) StringNumber(name string) int {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_regex_get_string_number(_arg0, _arg1)
+
+	runtime.KeepAlive(regex)
+	runtime.KeepAlive(name)
 
 	var _gint int // out
 
@@ -1260,6 +1309,10 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 
 	_cret = C.g_regex_match(_arg0, _arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(regex)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(matchOptions)
+
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
 
@@ -1302,6 +1355,10 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(regex)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(matchOptions)
 
 	var _matchInfo *MatchInfo // out
 	var _ok bool              // out
@@ -1347,6 +1404,10 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 
 	_cret = C.g_regex_split(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(regex)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(matchOptions)
+
 	var _utf8s []string // out
 
 	defer C.free(unsafe.Pointer(_cret))
@@ -1385,6 +1446,7 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_regex_check_replacement(_arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(replacement)
 
 	var _hasReferences bool // out
 	var _goerr error        // out
@@ -1414,6 +1476,9 @@ func RegexEscapeNUL(_string string, length int) string {
 	_arg2 = C.gint(length)
 
 	_cret = C.g_regex_escape_nul(_arg1, _arg2)
+
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(length)
 
 	var _utf8 string // out
 
@@ -1448,6 +1513,11 @@ func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompil
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match_simple(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(pattern)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(compileOptions)
+	runtime.KeepAlive(matchOptions)
 
 	var _ok bool // out
 
@@ -1497,6 +1567,11 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_split_simple(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(pattern)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(compileOptions)
+	runtime.KeepAlive(matchOptions)
 
 	var _utf8s []string // out
 

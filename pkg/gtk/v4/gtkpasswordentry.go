@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -127,6 +128,8 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
+	runtime.KeepAlive(entry)
+
 	var _menuModel gio.MenuModeller // out
 
 	_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
@@ -143,6 +146,8 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
+
+	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
@@ -165,6 +170,8 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	}
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(model)
 }
 
 // SetShowPeekIcon sets whether the entry should have a clickable icon to reveal
@@ -181,4 +188,6 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	}
 
 	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(showPeekIcon)
 }

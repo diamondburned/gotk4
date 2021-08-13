@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -136,6 +137,8 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 
 	_cret = C.gtk_tool_shell_get_ellipsize_mode(_arg0)
 
+	runtime.KeepAlive(shell)
+
 	var _ellipsizeMode pango.EllipsizeMode // out
 
 	_ellipsizeMode = pango.EllipsizeMode(_cret)
@@ -152,6 +155,8 @@ func (shell *ToolShell) IconSize() int {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_icon_size(_arg0)
+
+	runtime.KeepAlive(shell)
 
 	var _gint int // out
 
@@ -171,6 +176,8 @@ func (shell *ToolShell) Orientation() Orientation {
 
 	_cret = C.gtk_tool_shell_get_orientation(_arg0)
 
+	runtime.KeepAlive(shell)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -188,6 +195,8 @@ func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_relief_style(_arg0)
+
+	runtime.KeepAlive(shell)
 
 	var _reliefStyle ReliefStyle // out
 
@@ -207,6 +216,8 @@ func (shell *ToolShell) Style() ToolbarStyle {
 
 	_cret = C.gtk_tool_shell_get_style(_arg0)
 
+	runtime.KeepAlive(shell)
+
 	var _toolbarStyle ToolbarStyle // out
 
 	_toolbarStyle = ToolbarStyle(_cret)
@@ -224,6 +235,8 @@ func (shell *ToolShell) TextAlignment() float32 {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_text_alignment(_arg0)
+
+	runtime.KeepAlive(shell)
 
 	var _gfloat float32 // out
 
@@ -243,6 +256,8 @@ func (shell *ToolShell) TextOrientation() Orientation {
 
 	_cret = C.gtk_tool_shell_get_text_orientation(_arg0)
 
+	runtime.KeepAlive(shell)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -260,6 +275,8 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	_cret = C.gtk_tool_shell_get_text_size_group(_arg0)
+
+	runtime.KeepAlive(shell)
 
 	var _sizeGroup *SizeGroup // out
 
@@ -280,4 +297,5 @@ func (shell *ToolShell) RebuildMenu() {
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(shell.Native()))
 
 	C.gtk_tool_shell_rebuild_menu(_arg0)
+	runtime.KeepAlive(shell)
 }

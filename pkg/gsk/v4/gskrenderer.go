@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -89,6 +90,8 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 
 	_cret = C.gsk_renderer_new_for_surface(_arg1)
 
+	runtime.KeepAlive(surface)
+
 	var _renderer *Renderer // out
 
 	if _cret != nil {
@@ -109,6 +112,8 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 
 	_cret = C.gsk_renderer_get_surface(_arg0)
 
+	runtime.KeepAlive(renderer)
+
 	var _surface gdk.Surfacer // out
 
 	if _cret != nil {
@@ -126,6 +131,8 @@ func (renderer *Renderer) IsRealized() bool {
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.gsk_renderer_is_realized(_arg0)
+
+	runtime.KeepAlive(renderer)
 
 	var _ok bool // out
 
@@ -147,6 +154,8 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(surface)
 
 	var _goerr error // out
 
@@ -179,6 +188,9 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	}
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(root)
+	runtime.KeepAlive(region)
 }
 
 // RenderTexture renders the scene graph, described by a tree of GskRenderNode
@@ -203,6 +215,10 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(root)
+	runtime.KeepAlive(viewport)
+
 	var _texture gdk.Texturer // out
 
 	_texture = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
@@ -217,4 +233,5 @@ func (renderer *Renderer) Unrealize() {
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.gsk_renderer_unrealize(_arg0)
+	runtime.KeepAlive(renderer)
 }

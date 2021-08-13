@@ -73,6 +73,8 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 
 	_cret = C.pango_cairo_context_get_font_options(_arg1)
 
+	runtime.KeepAlive(context)
+
 	var _fontOptions *cairo.FontOptions // out
 
 	if _cret != nil {
@@ -91,6 +93,8 @@ func ContextGetResolution(context *pango.Context) float64 {
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.pango_cairo_context_get_resolution(_arg1)
+
+	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
 
@@ -114,6 +118,8 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 	}
 
 	C.pango_cairo_context_set_font_options(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(options)
 }
 
 // ContextSetResolution sets the resolution for the context.
@@ -129,6 +135,8 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 	_arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(dpi)
 }
 
 // ContextSetShapeRenderer sets callback function for context to use for
@@ -149,6 +157,8 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 	}
 
 	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(fn)
 }
 
 // CreateContext creates a context object set up to match the current
@@ -167,6 +177,8 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.pango_cairo_create_context(_arg1)
+
+	runtime.KeepAlive(cr)
 
 	var _context *pango.Context // out
 
@@ -200,6 +212,8 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 
 	_cret = C.pango_cairo_create_layout(_arg1)
 
+	runtime.KeepAlive(cr)
+
 	var _layout *pango.Layout // out
 
 	{
@@ -232,6 +246,11 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 	_arg5 = C.double(height)
 
 	C.pango_cairo_error_underline_path(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // GlyphStringPath adds the glyphs in glyphs to the current path in the
@@ -249,6 +268,9 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(glyphs)
 }
 
 // LayoutLinePath adds the text in PangoLayoutLine to the current path in the
@@ -264,6 +286,8 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
 	C.pango_cairo_layout_line_path(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(line)
 }
 
 // LayoutPath adds the text in a PangoLayout to the current path in the
@@ -279,6 +303,8 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_layout_path(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(layout)
 }
 
 // ShowErrorUnderline: draw a squiggly line in the specified cairo context that
@@ -301,6 +327,11 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 	_arg5 = C.double(height)
 
 	C.pango_cairo_show_error_underline(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // ShowGlyphItem draws the glyphs in glyph_item in the specified cairo context,
@@ -325,6 +356,9 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	_arg3 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 
 	C.pango_cairo_show_glyph_item(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(glyphItem)
 }
 
 // ShowGlyphString draws the glyphs in glyphs in the specified cairo context.
@@ -341,6 +375,9 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(glyphs)
 }
 
 // ShowLayout draws a PangoLayout in the specified cairo context.
@@ -355,6 +392,8 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(layout)
 }
 
 // ShowLayoutLine draws a PangoLayoutLine in the specified cairo context.
@@ -369,6 +408,8 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
 	C.pango_cairo_show_layout_line(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(line)
 }
 
 // UpdateContext updates a PangoContext previously created for use with Cairo to
@@ -384,6 +425,8 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	_arg2 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_cairo_update_context(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(context)
 }
 
 // UpdateLayout updates the private PangoContext of a PangoLayout created with
@@ -397,6 +440,8 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_update_layout(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(layout)
 }
 
 // Font: PangoCairoFont is an interface exported by fonts for use with Cairo.
@@ -480,6 +525,8 @@ func (fontmap *FontMap) Resolution() float64 {
 
 	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
 
+	runtime.KeepAlive(fontmap)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -509,6 +556,7 @@ func (fontmap *FontMap) SetDefault() {
 	}
 
 	C.pango_cairo_font_map_set_default(_arg0)
+	runtime.KeepAlive(fontmap)
 }
 
 // SetResolution sets the resolution for the fontmap.
@@ -524,6 +572,8 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 	_arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)
+	runtime.KeepAlive(fontmap)
+	runtime.KeepAlive(dpi)
 }
 
 // FontMapGetDefault gets a default PangoCairoFontMap to use with Cairo.

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -161,6 +162,9 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)
 
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+
 	var _button *Button // out
 
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -186,6 +190,8 @@ func NewButtonFromStock(stockId string) *Button {
 
 	_cret = C.gtk_button_new_from_stock(_arg1)
 
+	runtime.KeepAlive(stockId)
+
 	var _button *Button // out
 
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -203,6 +209,8 @@ func NewButtonWithLabel(label string) *Button {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_label(_arg1)
+
+	runtime.KeepAlive(label)
 
 	var _button *Button // out
 
@@ -225,6 +233,8 @@ func NewButtonWithMnemonic(label string) *Button {
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _button *Button // out
 
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -239,6 +249,7 @@ func (button *Button) Clicked() {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_clicked(_arg0)
+	runtime.KeepAlive(button)
 }
 
 // Enter emits a Button::enter signal to the given Button.
@@ -250,6 +261,7 @@ func (button *Button) Enter() {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_enter(_arg0)
+	runtime.KeepAlive(button)
 }
 
 // Alignment gets the alignment of the child in the button.
@@ -264,6 +276,7 @@ func (button *Button) Alignment() (xalign float32, yalign float32) {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_get_alignment(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(button)
 
 	var _xalign float32 // out
 	var _yalign float32 // out
@@ -284,6 +297,8 @@ func (button *Button) AlwaysShowImage() bool {
 
 	_cret = C.gtk_button_get_always_show_image(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -303,6 +318,8 @@ func (button *Button) EventWindow() gdk.Windower {
 
 	_cret = C.gtk_button_get_event_window(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _window gdk.Windower // out
 
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
@@ -321,6 +338,8 @@ func (button *Button) FocusOnClick() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_focus_on_click(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -342,6 +361,8 @@ func (button *Button) Image() Widgetter {
 
 	_cret = C.gtk_button_get_image(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -360,6 +381,8 @@ func (button *Button) ImagePosition() PositionType {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_image_position(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _positionType PositionType // out
 
@@ -380,6 +403,8 @@ func (button *Button) Label() string {
 
 	_cret = C.gtk_button_get_label(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -395,6 +420,8 @@ func (button *Button) Relief() ReliefStyle {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_relief(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _reliefStyle ReliefStyle // out
 
@@ -413,6 +440,8 @@ func (button *Button) UseStock() bool {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_button_get_use_stock(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -433,6 +462,8 @@ func (button *Button) UseUnderline() bool {
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -451,6 +482,7 @@ func (button *Button) Leave() {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_leave(_arg0)
+	runtime.KeepAlive(button)
 }
 
 // Pressed emits a Button::pressed signal to the given Button.
@@ -462,6 +494,7 @@ func (button *Button) Pressed() {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_pressed(_arg0)
+	runtime.KeepAlive(button)
 }
 
 // Released emits a Button::released signal to the given Button.
@@ -473,6 +506,7 @@ func (button *Button) Released() {
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_button_released(_arg0)
+	runtime.KeepAlive(button)
 }
 
 // SetAlignment sets the alignment of the child. This property has no effect
@@ -490,6 +524,9 @@ func (button *Button) SetAlignment(xalign float32, yalign float32) {
 	_arg2 = C.gfloat(yalign)
 
 	C.gtk_button_set_alignment(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
 }
 
 // SetAlwaysShowImage: if TRUE, the button will ignore the
@@ -507,6 +544,8 @@ func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_button_set_always_show_image(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(alwaysShow)
 }
 
 // SetFocusOnClick sets whether the button will grab focus when it is clicked
@@ -525,6 +564,8 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	}
 
 	C.gtk_button_set_focus_on_click(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(focusOnClick)
 }
 
 // SetImage: set the image of button to the given widget. The image will be
@@ -540,6 +581,8 @@ func (button *Button) SetImage(image Widgetter) {
 	}
 
 	C.gtk_button_set_image(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(image)
 }
 
 // SetImagePosition sets the position of the image relative to the text inside
@@ -552,6 +595,8 @@ func (button *Button) SetImagePosition(position PositionType) {
 	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_button_set_image_position(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(position)
 }
 
 // SetLabel sets the text of the label of the button to str. This text is also
@@ -567,6 +612,8 @@ func (button *Button) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_button_set_label(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(label)
 }
 
 // SetRelief sets the relief style of the edges of the given Button widget. Two
@@ -581,6 +628,8 @@ func (button *Button) SetRelief(relief ReliefStyle) {
 	_arg1 = C.GtkReliefStyle(relief)
 
 	C.gtk_button_set_relief(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(relief)
 }
 
 // SetUseStock: if TRUE, the label set on the button is used as a stock id to
@@ -597,6 +646,8 @@ func (button *Button) SetUseStock(useStock bool) {
 	}
 
 	C.gtk_button_set_use_stock(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(useStock)
 }
 
 // SetUseUnderline: if true, an underline in the text of the button label
@@ -611,4 +662,6 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.gtk_button_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(useUnderline)
 }

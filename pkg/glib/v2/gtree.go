@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -46,6 +47,7 @@ func (tree *Tree) Destroy() {
 	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	C.g_tree_destroy(_arg0)
+	runtime.KeepAlive(tree)
 }
 
 // Height gets the height of a #GTree.
@@ -60,6 +62,8 @@ func (tree *Tree) Height() int {
 	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_height(_arg0)
+
+	runtime.KeepAlive(tree)
 
 	var _gint int // out
 
@@ -82,6 +86,9 @@ func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_tree_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // Lookup gets the value corresponding to the given key. Since a #GTree is
@@ -96,6 +103,9 @@ func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
+
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(key)
 
 	var _gpointer cgo.Handle // out
 
@@ -119,6 +129,9 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(lookupKey)
+
 	var _origKey cgo.Handle // out
 	var _value cgo.Handle   // out
 	var _ok bool            // out
@@ -140,6 +153,8 @@ func (tree *Tree) Nnodes() int {
 	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_nnodes(_arg0)
+
+	runtime.KeepAlive(tree)
 
 	var _gint int // out
 
@@ -167,6 +182,9 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
 
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(key)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -188,6 +206,9 @@ func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_tree_replace(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
 }
 
 // Steal removes a key and its associated value from a #GTree without calling
@@ -203,6 +224,9 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
+
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(key)
 
 	var _ok bool // out
 

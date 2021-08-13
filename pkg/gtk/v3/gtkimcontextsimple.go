@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -83,4 +84,6 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_context_simple_add_compose_file(_arg0, _arg1)
+	runtime.KeepAlive(contextSimple)
+	runtime.KeepAlive(composeFile)
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -254,6 +255,9 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 	}
 
 	C.gtk_about_dialog_add_credit_section(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(sectionName)
+	runtime.KeepAlive(people)
 }
 
 // Artists returns the string which are displayed in the "Artists" tab of the
@@ -265,6 +269,8 @@ func (about *AboutDialog) Artists() []string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
 
@@ -295,6 +301,8 @@ func (about *AboutDialog) Authors() []string {
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8s []string // out
 
 	{
@@ -323,6 +331,8 @@ func (about *AboutDialog) Comments() string {
 
 	_cret = C.gtk_about_dialog_get_comments(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -340,6 +350,8 @@ func (about *AboutDialog) Copyright() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_copyright(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8 string // out
 
@@ -359,6 +371,8 @@ func (about *AboutDialog) Documenters() []string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
 
@@ -388,6 +402,8 @@ func (about *AboutDialog) License() string {
 
 	_cret = C.gtk_about_dialog_get_license(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -406,6 +422,8 @@ func (about *AboutDialog) LicenseType() License {
 
 	_cret = C.gtk_about_dialog_get_license_type(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _license License // out
 
 	_license = License(_cret)
@@ -421,6 +439,8 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _paintable gdk.Paintabler // out
 
@@ -440,6 +460,8 @@ func (about *AboutDialog) LogoIconName() string {
 
 	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -457,6 +479,8 @@ func (about *AboutDialog) ProgramName() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_program_name(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8 string // out
 
@@ -477,6 +501,8 @@ func (about *AboutDialog) SystemInformation() string {
 
 	_cret = C.gtk_about_dialog_get_system_information(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -496,6 +522,8 @@ func (about *AboutDialog) TranslatorCredits() string {
 
 	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -513,6 +541,8 @@ func (about *AboutDialog) Version() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_version(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8 string // out
 
@@ -532,6 +562,8 @@ func (about *AboutDialog) Website() string {
 
 	_cret = C.gtk_about_dialog_get_website(_arg0)
 
+	runtime.KeepAlive(about)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -549,6 +581,8 @@ func (about *AboutDialog) WebsiteLabel() string {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_website_label(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _utf8 string // out
 
@@ -568,6 +602,8 @@ func (about *AboutDialog) WrapLicense() bool {
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 
 	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
+
+	runtime.KeepAlive(about)
 
 	var _ok bool // out
 
@@ -600,6 +636,8 @@ func (about *AboutDialog) SetArtists(artists []string) {
 	}
 
 	C.gtk_about_dialog_set_artists(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(artists)
 }
 
 // SetAuthors sets the strings which are displayed in the "Authors" tab of the
@@ -624,6 +662,8 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 	}
 
 	C.gtk_about_dialog_set_authors(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(authors)
 }
 
 // SetComments sets the comments string to display in the about dialog.
@@ -640,6 +680,8 @@ func (about *AboutDialog) SetComments(comments string) {
 	}
 
 	C.gtk_about_dialog_set_comments(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(comments)
 }
 
 // SetCopyright sets the copyright string to display in the about dialog.
@@ -656,6 +698,8 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 	}
 
 	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(copyright)
 }
 
 // SetDocumenters sets the strings which are displayed in the "Documenters" tab
@@ -680,6 +724,8 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 	}
 
 	C.gtk_about_dialog_set_documenters(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(documenters)
 }
 
 // SetLicense sets the license information to be displayed in the secondary
@@ -697,6 +743,8 @@ func (about *AboutDialog) SetLicense(license string) {
 	}
 
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(license)
 }
 
 // SetLicenseType sets the license of the application showing the about dialog
@@ -711,6 +759,8 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 	_arg1 = C.GtkLicense(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(licenseType)
 }
 
 // SetLogo sets the logo in the about dialog.
@@ -724,6 +774,8 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	}
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(logo)
 }
 
 // SetLogoIconName sets the icon name to be displayed as logo in the about
@@ -739,6 +791,8 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 	}
 
 	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(iconName)
 }
 
 // SetProgramName sets the name to display in the about dialog.
@@ -755,6 +809,8 @@ func (about *AboutDialog) SetProgramName(name string) {
 	}
 
 	C.gtk_about_dialog_set_program_name(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(name)
 }
 
 // SetSystemInformation sets the system information to be displayed in the about
@@ -774,6 +830,8 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 	}
 
 	C.gtk_about_dialog_set_system_information(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(systemInformation)
 }
 
 // SetTranslatorCredits sets the translator credits string which is displayed in
@@ -803,6 +861,8 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	}
 
 	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(translatorCredits)
 }
 
 // SetVersion sets the version string to display in the about dialog.
@@ -817,6 +877,8 @@ func (about *AboutDialog) SetVersion(version string) {
 	}
 
 	C.gtk_about_dialog_set_version(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(version)
 }
 
 // SetWebsite sets the URL to use for the website link.
@@ -831,6 +893,8 @@ func (about *AboutDialog) SetWebsite(website string) {
 	}
 
 	C.gtk_about_dialog_set_website(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(website)
 }
 
 // SetWebsiteLabel sets the label to be used for the website link.
@@ -843,6 +907,8 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_website_label(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(websiteLabel)
 }
 
 // SetWrapLicense sets whether the license text in the about dialog should be
@@ -857,4 +923,6 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	}
 
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(wrapLicense)
 }

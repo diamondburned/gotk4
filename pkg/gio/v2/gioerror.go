@@ -2,6 +2,10 @@
 
 package gio
 
+import (
+	"runtime"
+)
+
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -31,6 +35,8 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 	_arg1 = C.gint(errNo)
 
 	_cret = C.g_io_error_from_errno(_arg1)
+
+	runtime.KeepAlive(errNo)
 
 	var _ioErrorEnum IOErrorEnum // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -68,6 +69,8 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 
 	_cret = C.gtk_color_selection_dialog_new(_arg1)
 
+	runtime.KeepAlive(title)
+
 	var _colorSelectionDialog *ColorSelectionDialog // out
 
 	_colorSelectionDialog = wrapColorSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
@@ -83,6 +86,8 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(colorsel.Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
+
+	runtime.KeepAlive(colorsel)
 
 	var _widget Widgetter // out
 

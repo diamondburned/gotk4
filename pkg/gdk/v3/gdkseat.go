@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -155,6 +156,8 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 
+	runtime.KeepAlive(seat)
+
 	var _seatCapabilities SeatCapabilities // out
 
 	_seatCapabilities = SeatCapabilities(_cret)
@@ -171,6 +174,8 @@ func (seat *Seat) Display() *Display {
 
 	_cret = C.gdk_seat_get_display(_arg0)
 
+	runtime.KeepAlive(seat)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -186,6 +191,8 @@ func (seat *Seat) Keyboard() Devicer {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
+
+	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
 
@@ -204,6 +211,8 @@ func (seat *Seat) Pointer() Devicer {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
+
+	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
 
@@ -225,6 +234,9 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 
 	_cret = C.gdk_seat_get_slaves(_arg0, _arg1)
 
+	runtime.KeepAlive(seat)
+	runtime.KeepAlive(capabilities)
+
 	var _list []Devicer // out
 
 	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
@@ -245,4 +257,5 @@ func (seat *Seat) Ungrab() {
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
 
 	C.gdk_seat_ungrab(_arg0)
+	runtime.KeepAlive(seat)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -103,6 +104,11 @@ func NewTreeListModel(root gio.ListModeller, passthrough bool, autoexpand bool, 
 
 	_cret = C.gtk_tree_list_model_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(root)
+	runtime.KeepAlive(passthrough)
+	runtime.KeepAlive(autoexpand)
+	runtime.KeepAlive(createFunc)
+
 	var _treeListModel *TreeListModel // out
 
 	_treeListModel = wrapTreeListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -122,6 +128,8 @@ func (self *TreeListModel) Autoexpand() bool {
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_model_get_autoexpand(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -149,6 +157,9 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 
 	_cret = C.gtk_tree_list_model_get_child_row(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+
 	var _treeListRow *TreeListRow // out
 
 	if _cret != nil {
@@ -166,6 +177,8 @@ func (self *TreeListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -190,6 +203,8 @@ func (self *TreeListModel) Passthrough() bool {
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_model_get_passthrough(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -224,6 +239,9 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 
 	_cret = C.gtk_tree_list_model_get_row(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+
 	var _treeListRow *TreeListRow // out
 
 	if _cret != nil {
@@ -248,6 +266,8 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	}
 
 	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(autoexpand)
 }
 
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.
@@ -289,6 +309,9 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 
 	_cret = C.gtk_tree_list_row_get_child_row(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+
 	var _treeListRow *TreeListRow // out
 
 	if _cret != nil {
@@ -311,6 +334,8 @@ func (self *TreeListRow) Children() gio.ListModeller {
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_get_children(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -336,6 +361,8 @@ func (self *TreeListRow) Depth() uint {
 
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -351,6 +378,8 @@ func (self *TreeListRow) Expanded() bool {
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_get_expanded(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -371,6 +400,8 @@ func (self *TreeListRow) Item() *externglib.Object {
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_get_item(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out
 
@@ -394,6 +425,8 @@ func (self *TreeListRow) Parent() *TreeListRow {
 
 	_cret = C.gtk_tree_list_row_get_parent(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _treeListRow *TreeListRow // out
 
 	if _cret != nil {
@@ -412,6 +445,8 @@ func (self *TreeListRow) Position() uint {
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -433,6 +468,8 @@ func (self *TreeListRow) IsExpandable() bool {
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_is_expandable(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -460,4 +497,6 @@ func (self *TreeListRow) SetExpanded(expanded bool) {
 	}
 
 	C.gtk_tree_list_row_set_expanded(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expanded)
 }

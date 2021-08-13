@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -120,6 +121,8 @@ func (scrollable *Scrollable) Border() (Border, bool) {
 
 	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
 
+	runtime.KeepAlive(scrollable)
+
 	var _border Border // out
 	var _ok bool       // out
 
@@ -140,6 +143,8 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 
 	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
 
+	runtime.KeepAlive(scrollable)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -155,6 +160,8 @@ func (scrollable *Scrollable) HScrollPolicy() ScrollablePolicy {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
+
+	runtime.KeepAlive(scrollable)
 
 	var _scrollablePolicy ScrollablePolicy // out
 
@@ -172,6 +179,8 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 
 	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
 
+	runtime.KeepAlive(scrollable)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -187,6 +196,8 @@ func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
 	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
 
 	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
+
+	runtime.KeepAlive(scrollable)
 
 	var _scrollablePolicy ScrollablePolicy // out
 
@@ -206,6 +217,8 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	}
 
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(hadjustment)
 }
 
 // SetHScrollPolicy sets the GtkScrollablePolicy.
@@ -220,6 +233,8 @@ func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 	_arg1 = C.GtkScrollablePolicy(policy)
 
 	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(policy)
 }
 
 // SetVAdjustment sets the vertical adjustment of the GtkScrollable.
@@ -233,6 +248,8 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	}
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(vadjustment)
 }
 
 // SetVScrollPolicy sets the GtkScrollablePolicy.
@@ -247,4 +264,6 @@ func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	_arg1 = C.GtkScrollablePolicy(policy)
 
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(policy)
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -117,6 +118,8 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 
 	_cret = C.gtk_button_box_new(_arg1)
 
+	runtime.KeepAlive(orientation)
+
 	var _buttonBox *ButtonBox // out
 
 	_buttonBox = wrapButtonBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -135,6 +138,9 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
 
 	var _ok bool // out
 
@@ -157,6 +163,9 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -175,6 +184,8 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
+
+	runtime.KeepAlive(widget)
 
 	var _buttonBoxStyle ButtonBoxStyle // out
 
@@ -197,6 +208,9 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 	}
 
 	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(nonHomogeneous)
 }
 
 // SetChildSecondary sets whether child should appear in a secondary group of
@@ -222,6 +236,9 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	}
 
 	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(isSecondary)
 }
 
 // SetLayout changes the way buttons are arranged in their container.
@@ -233,4 +250,6 @@ func (widget *ButtonBox) SetLayout(layoutStyle ButtonBoxStyle) {
 	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
 
 	C.gtk_button_box_set_layout(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(layoutStyle)
 }

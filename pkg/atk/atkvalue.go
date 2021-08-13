@@ -102,6 +102,8 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 
 	_cret = C.atk_value_type_get_localized_name(_arg1)
 
+	runtime.KeepAlive(valueType)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -118,6 +120,8 @@ func ValueTypeGetName(valueType ValueType) string {
 	_arg1 = C.AtkValueType(valueType)
 
 	_cret = C.atk_value_type_get_name(_arg1)
+
+	runtime.KeepAlive(valueType)
 
 	var _utf8 string // out
 
@@ -327,6 +331,7 @@ func (obj *Value) CurrentValue() externglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	C.atk_value_get_current_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
 
 	var _value externglib.Value // out
 
@@ -346,6 +351,8 @@ func (obj *Value) Increment() float64 {
 
 	_cret = C.atk_value_get_increment(_arg0)
 
+	runtime.KeepAlive(obj)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -363,6 +370,7 @@ func (obj *Value) MaximumValue() externglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	C.atk_value_get_maximum_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
 
 	var _value externglib.Value // out
 
@@ -383,6 +391,7 @@ func (obj *Value) MinimumIncrement() externglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	C.atk_value_get_minimum_increment(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
 
 	var _value externglib.Value // out
 
@@ -401,6 +410,7 @@ func (obj *Value) MinimumValue() externglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	C.atk_value_get_minimum_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
 
 	var _value externglib.Value // out
 
@@ -417,6 +427,8 @@ func (obj *Value) Range() *Range {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_value_get_range(_arg0)
+
+	runtime.KeepAlive(obj)
 
 	var __range *Range // out
 
@@ -441,6 +453,7 @@ func (obj *Value) ValueAndText() (float64, string) {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
 
 	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(obj)
 
 	var _value float64 // out
 	var _text string   // out
@@ -466,6 +479,9 @@ func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
+
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -496,4 +512,6 @@ func (obj *Value) SetValue(newValue float64) {
 	_arg1 = C.gdouble(newValue)
 
 	C.atk_value_set_value(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(newValue)
 }

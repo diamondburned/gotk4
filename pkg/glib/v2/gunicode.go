@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -1070,6 +1071,9 @@ func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 
 	_cret = C.g_ucs4_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
 	var _guint16 *uint16    // out
@@ -1099,6 +1103,9 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, ut
 	_arg2 = C.glong(len)
 
 	_cret = C.g_ucs4_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
@@ -1130,6 +1137,8 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 
 	_cret = C.g_unichar_break_type(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _unicodeBreakType UnicodeBreakType // out
 
 	_unicodeBreakType = UnicodeBreakType(_cret)
@@ -1146,6 +1155,8 @@ func UnicharCombiningClass(uc uint32) int {
 	_arg1 = C.gunichar(uc)
 
 	_cret = C.g_unichar_combining_class(_arg1)
+
+	runtime.KeepAlive(uc)
 
 	var _gint int // out
 
@@ -1177,6 +1188,9 @@ func UnicharCompose(a uint32, b uint32) (uint32, bool) {
 	_arg2 = C.gunichar(b)
 
 	_cret = C.g_unichar_compose(_arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _ch uint32 // out
 	var _ok bool   // out
@@ -1215,6 +1229,8 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 	_cret = C.g_unichar_decompose(_arg1, &_arg2, &_arg3)
 
+	runtime.KeepAlive(ch)
+
 	var _a uint32 // out
 	var _b uint32 // out
 	var _ok bool  // out
@@ -1237,6 +1253,8 @@ func UnicharDigitValue(c uint32) int {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_digit_value(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _gint int // out
 
@@ -1274,6 +1292,10 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 
 	_cret = C.g_unichar_fully_decompose(_arg1, _arg2, &_arg3, _arg4)
 
+	runtime.KeepAlive(ch)
+	runtime.KeepAlive(compat)
+	runtime.KeepAlive(resultLen)
+
 	var _result uint32 // out
 	var _gsize uint    // out
 
@@ -1302,6 +1324,9 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 
 	_cret = C.g_unichar_get_mirror_char(_arg1, _arg2)
 
+	runtime.KeepAlive(ch)
+	runtime.KeepAlive(mirroredCh)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1325,6 +1350,8 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 
 	_cret = C.g_unichar_get_script(_arg1)
 
+	runtime.KeepAlive(ch)
+
 	var _unicodeScript UnicodeScript // out
 
 	_unicodeScript = UnicodeScript(_cret)
@@ -1341,6 +1368,8 @@ func UnicharIsalnum(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isalnum(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1361,6 +1390,8 @@ func UnicharIsalpha(c uint32) bool {
 
 	_cret = C.g_unichar_isalpha(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1379,6 +1410,8 @@ func UnicharIscntrl(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iscntrl(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1399,6 +1432,8 @@ func UnicharIsdefined(c uint32) bool {
 
 	_cret = C.g_unichar_isdefined(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1418,6 +1453,8 @@ func UnicharIsdigit(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isdigit(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1440,6 +1477,8 @@ func UnicharIsgraph(c uint32) bool {
 
 	_cret = C.g_unichar_isgraph(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1458,6 +1497,8 @@ func UnicharIslower(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_islower(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1483,6 +1524,8 @@ func UnicharIsmark(c uint32) bool {
 
 	_cret = C.g_unichar_ismark(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1503,6 +1546,8 @@ func UnicharIsprint(c uint32) bool {
 
 	_cret = C.g_unichar_isprint(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1521,6 +1566,8 @@ func UnicharIspunct(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_ispunct(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1545,6 +1592,8 @@ func UnicharIsspace(c uint32) bool {
 
 	_cret = C.g_unichar_isspace(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1567,6 +1616,8 @@ func UnicharIstitle(c uint32) bool {
 
 	_cret = C.g_unichar_istitle(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1584,6 +1635,8 @@ func UnicharIsupper(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isupper(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1603,6 +1656,8 @@ func UnicharIswide(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_iswide(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1630,6 +1685,8 @@ func UnicharIswideCjk(c uint32) bool {
 
 	_cret = C.g_unichar_iswide_cjk(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1647,6 +1704,8 @@ func UnicharIsxdigit(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isxdigit(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _ok bool // out
 
@@ -1674,6 +1733,8 @@ func UnicharIszerowidth(c uint32) bool {
 
 	_cret = C.g_unichar_iszerowidth(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1692,6 +1753,8 @@ func UnicharToLower(c uint32) uint32 {
 
 	_cret = C.g_unichar_tolower(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _gunichar uint32 // out
 
 	_gunichar = uint32(_cret)
@@ -1707,6 +1770,8 @@ func UnicharToTitle(c uint32) uint32 {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_totitle(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _gunichar uint32 // out
 
@@ -1724,6 +1789,8 @@ func UnicharToUpper(c uint32) uint32 {
 
 	_cret = C.g_unichar_toupper(_arg1)
 
+	runtime.KeepAlive(c)
+
 	var _gunichar uint32 // out
 
 	_gunichar = uint32(_cret)
@@ -1739,6 +1806,8 @@ func UnicharType(c uint32) UnicodeType {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_type(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _unicodeType UnicodeType // out
 
@@ -1758,6 +1827,8 @@ func UnicharValidate(ch uint32) bool {
 
 	_cret = C.g_unichar_validate(_arg1)
 
+	runtime.KeepAlive(ch)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1776,6 +1847,8 @@ func UnicharXDigitValue(c uint32) int {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_xdigit_value(_arg1)
+
+	runtime.KeepAlive(c)
 
 	var _gint int // out
 
@@ -1798,6 +1871,9 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 
 	_cret = C.g_unicode_canonical_decomposition(_arg1, _arg2)
 
+	runtime.KeepAlive(ch)
+	runtime.KeepAlive(resultLen)
+
 	var _gunichar *uint32 // out
 
 	_gunichar = (*uint32)(unsafe.Pointer(_cret))
@@ -1816,6 +1892,8 @@ func UnicodeCanonicalOrdering(_string *uint32, len uint) {
 	_arg2 = C.gsize(len)
 
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(len)
 }
 
 // UnicodeScriptFromISO15924 looks up the Unicode script for iso15924. ISO 15924
@@ -1833,6 +1911,8 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	_arg1 = C.guint32(iso15924)
 
 	_cret = C.g_unicode_script_from_iso15924(_arg1)
+
+	runtime.KeepAlive(iso15924)
 
 	var _unicodeScript UnicodeScript // out
 
@@ -1857,6 +1937,8 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 
 	_cret = C.g_unicode_script_to_iso15924(_arg1)
 
+	runtime.KeepAlive(script)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -1878,6 +1960,9 @@ func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 	_arg2 = C.glong(len)
 
 	_cret = C.g_utf16_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
@@ -1918,6 +2003,9 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, u
 
 	_cret = C.g_utf16_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
 	var _utf8 string        // out
@@ -1955,6 +2043,9 @@ func UTF8Casefold(str string, len int) string {
 
 	_cret = C.g_utf8_casefold(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -1980,6 +2071,9 @@ func UTF8Collate(str1 string, str2 string) int {
 
 	_cret = C.g_utf8_collate(_arg1, _arg2)
 
+	runtime.KeepAlive(str1)
+	runtime.KeepAlive(str2)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -2004,6 +2098,9 @@ func UTF8CollateKey(str string, len int) string {
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_collate_key(_arg1, _arg2)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _utf8 string // out
 
@@ -2035,6 +2132,9 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_collate_key_for_filename(_arg1, _arg2)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _utf8 string // out
 
@@ -2068,6 +2168,9 @@ func UTF8FindNextChar(p string, end string) string {
 
 	_cret = C.g_utf8_find_next_char(_arg1, _arg2)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(end)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -2096,6 +2199,9 @@ func UTF8FindPrevChar(str string, p string) string {
 
 	_cret = C.g_utf8_find_prev_char(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(p)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -2119,6 +2225,8 @@ func UTF8GetChar(p string) uint32 {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_get_char(_arg1)
+
+	runtime.KeepAlive(p)
 
 	var _gunichar uint32 // out
 
@@ -2144,6 +2252,9 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	_arg2 = C.gssize(maxLen)
 
 	_cret = C.g_utf8_get_char_validated(_arg1, _arg2)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(maxLen)
 
 	var _gunichar uint32 // out
 
@@ -2171,6 +2282,9 @@ func UTF8MakeValid(str string, len int) string {
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_make_valid(_arg1, _arg2)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _utf8 string // out
 
@@ -2211,6 +2325,10 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 
 	_cret = C.g_utf8_normalize(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(mode)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -2245,6 +2363,9 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 
 	_cret = C.g_utf8_offset_to_pointer(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(offset)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2269,6 +2390,9 @@ func UTF8PointerToOffset(str string, pos string) int32 {
 
 	_cret = C.g_utf8_pointer_to_offset(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(pos)
+
 	var _glong int32 // out
 
 	_glong = int32(_cret)
@@ -2290,6 +2414,8 @@ func UTF8PrevChar(p string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_prev_char(_arg1)
+
+	runtime.KeepAlive(p)
 
 	var _utf8 string // out
 
@@ -2314,6 +2440,10 @@ func UTF8Strchr(p string, len int, c uint32) string {
 
 	_cret = C.g_utf8_strchr(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(c)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -2337,6 +2467,9 @@ func UTF8Strdown(str string, len int) string {
 
 	_cret = C.g_utf8_strdown(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2358,6 +2491,9 @@ func UTF8Strlen(p string, max int) int32 {
 	_arg2 = C.gssize(max)
 
 	_cret = C.g_utf8_strlen(_arg1, _arg2)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(max)
 
 	var _glong int32 // out
 
@@ -2387,6 +2523,10 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 
 	_cret = C.g_utf8_strncpy(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(src)
+	runtime.KeepAlive(n)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2409,6 +2549,10 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 	_arg3 = C.gunichar(c)
 
 	_cret = C.g_utf8_strrchr(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(c)
 
 	var _utf8 string // out
 
@@ -2441,6 +2585,9 @@ func UTF8Strreverse(str string, len int) string {
 
 	_cret = C.g_utf8_strreverse(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2464,6 +2611,9 @@ func UTF8Strup(str string, len int) string {
 
 	_cret = C.g_utf8_strup(_arg1, _arg2)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -2486,6 +2636,10 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 	_arg3 = C.glong(endPos)
 
 	_cret = C.g_utf8_substring(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 
 	var _utf8 string // out
 
@@ -2511,6 +2665,9 @@ func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 	_arg2 = C.glong(len)
 
 	_cret = C.g_utf8_to_ucs4(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
@@ -2543,6 +2700,9 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 
 	_cret = C.g_utf8_to_ucs4_fast(_arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
+
 	var _itemsWritten int32 // out
 	var _gunichar *uint32   // out
 
@@ -2567,6 +2727,9 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	_arg2 = C.glong(len)
 
 	_cret = C.g_utf8_to_utf16(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _itemsRead int32    // out
 	var _itemsWritten int32 // out
@@ -2609,6 +2772,8 @@ func UTF8Validate(str []byte) (string, bool) {
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(str)
+
 	var _end string // out
 	var _ok bool    // out
 
@@ -2638,6 +2803,8 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 	}
 
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(str)
 
 	var _end string // out
 	var _ok bool    // out

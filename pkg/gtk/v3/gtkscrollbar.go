@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -106,6 +107,9 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	}
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
+
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
 
 	var _scrollbar *Scrollbar // out
 

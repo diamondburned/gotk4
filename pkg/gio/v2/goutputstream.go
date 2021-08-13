@@ -308,6 +308,7 @@ func (stream *OutputStream) ClearPending() {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_output_stream_clear_pending(_arg0)
+	runtime.KeepAlive(stream)
 }
 
 // Close closes the stream, releasing resources related to it.
@@ -351,6 +352,8 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 	}
 
 	C.g_output_stream_close(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -391,6 +394,10 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 	}
 
 	C.g_output_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CloseFinish closes an output stream.
@@ -403,6 +410,8 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_close_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -435,6 +444,8 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 	}
 
 	C.g_output_stream_flush(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -470,6 +481,10 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 	}
 
 	C.g_output_stream_flush_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // FlushFinish finishes flushing an output stream.
@@ -482,6 +497,8 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_flush_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -501,6 +518,8 @@ func (stream *OutputStream) HasPending() bool {
 
 	_cret = C.g_output_stream_has_pending(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -518,6 +537,8 @@ func (stream *OutputStream) IsClosed() bool {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_output_stream_is_closed(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -539,6 +560,8 @@ func (stream *OutputStream) IsClosing() bool {
 
 	_cret = C.g_output_stream_is_closing(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -557,6 +580,7 @@ func (stream *OutputStream) SetPending() error {
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 
 	C.g_output_stream_set_pending(_arg0, &_cerr)
+	runtime.KeepAlive(stream)
 
 	var _goerr error // out
 
@@ -586,6 +610,11 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(flags)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -628,6 +657,12 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 	}
 
 	C.g_output_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // SpliceFinish finishes an asynchronous stream splice operation.
@@ -641,6 +676,9 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -693,6 +731,10 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 
 	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
 	var _gssize int  // out
 	var _goerr error // out
 
@@ -742,6 +784,9 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 	}
 
 	C.g_output_stream_write_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -795,6 +840,11 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 	}
 
 	C.g_output_stream_write_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteAllFinish finishes an asynchronous stream write operation started with
@@ -816,6 +866,8 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_write_all_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -888,6 +940,11 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 	}
 
 	C.g_output_stream_write_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteBytesFinish finishes a stream write-from-#GBytes operation.
@@ -901,6 +958,9 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -924,6 +984,9 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -979,6 +1042,9 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 	}
 
 	C.g_output_stream_writev(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -1032,6 +1098,9 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 	}
 
 	C.g_output_stream_writev_all(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -1086,6 +1155,11 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 	}
 
 	C.g_output_stream_writev_all_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WritevAllFinish finishes an asynchronous stream write operation started with
@@ -1107,6 +1181,8 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_all_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out
@@ -1175,6 +1251,11 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 	}
 
 	C.g_output_stream_writev_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WritevFinish finishes a stream writev operation.
@@ -1188,6 +1269,8 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_output_stream_writev_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out

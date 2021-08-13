@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -76,6 +77,10 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 
 	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(domain)
+
 	var _networkService *NetworkService // out
 
 	_networkService = wrapNetworkService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -93,6 +98,8 @@ func (srv *NetworkService) Domain() string {
 
 	_cret = C.g_network_service_get_domain(_arg0)
 
+	runtime.KeepAlive(srv)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -108,6 +115,8 @@ func (srv *NetworkService) Protocol() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_protocol(_arg0)
+
+	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
@@ -126,6 +135,8 @@ func (srv *NetworkService) Scheme() string {
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 
+	runtime.KeepAlive(srv)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -141,6 +152,8 @@ func (srv *NetworkService) Service() string {
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
 
 	_cret = C.g_network_service_get_service(_arg0)
+
+	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
@@ -160,4 +173,6 @@ func (srv *NetworkService) SetScheme(scheme string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_network_service_set_scheme(_arg0, _arg1)
+	runtime.KeepAlive(srv)
+	runtime.KeepAlive(scheme)
 }

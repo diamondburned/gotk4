@@ -231,6 +231,10 @@ func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(nChars)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -253,6 +257,9 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(event)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -271,6 +278,7 @@ func (context *IMContext) FocusIn() {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_focus_in(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // FocusOut: notify the input method that the widget to which this input context
@@ -282,6 +290,7 @@ func (context *IMContext) FocusOut() {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_focus_out(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // PreeditString: retrieve the current preedit string for the input context, and
@@ -296,6 +305,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
 
 	var _str string            // out
 	var _attrs *pango.AttrList // out
@@ -333,6 +343,8 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(context)
+
 	var _text string     // out
 	var _cursorIndex int // out
 	var _ok bool         // out
@@ -356,6 +368,7 @@ func (context *IMContext) Reset() {
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_im_context_reset(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // SetClientWindow: set the client window for the input context; this is the
@@ -372,6 +385,8 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	}
 
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(window)
 }
 
 // SetCursorLocation: notify the input method that a change in cursor position
@@ -384,6 +399,8 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
 
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(area)
 }
 
 // SetSurrounding sets surrounding context around the insertion point and
@@ -403,6 +420,10 @@ func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) 
 	_arg3 = C.gint(cursorIndex)
 
 	C.gtk_im_context_set_surrounding(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(cursorIndex)
 }
 
 // SetUsePreedit sets whether the IM context should use the preedit string to
@@ -419,4 +440,6 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	}
 
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(usePreedit)
 }

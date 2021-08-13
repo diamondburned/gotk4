@@ -111,6 +111,8 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(protocol)
 }
 
 // ConnectSocketClient tries to resolve the connectable and make a network
@@ -148,6 +150,10 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -192,6 +198,10 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 	}
 
 	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectFinish finishes an async connect operation. See
@@ -206,6 +216,9 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -267,6 +280,11 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostAndPort)
+	runtime.KeepAlive(defaultPort)
+
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
@@ -306,6 +324,11 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 	}
 
 	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostAndPort)
+	runtime.KeepAlive(defaultPort)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectToHostFinish finishes an async connect operation. See
@@ -320,6 +343,9 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -366,6 +392,11 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain string,
 
 	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(service)
+
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
@@ -403,6 +434,11 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain st
 	}
 
 	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectToServiceFinish finishes an async connect operation. See
@@ -417,6 +453,9 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -468,6 +507,11 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
+
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
@@ -507,6 +551,11 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 	}
 
 	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectToURIFinish finishes an async connect operation. See
@@ -521,6 +570,9 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -543,6 +595,8 @@ func (client *SocketClient) EnableProxy() bool {
 
 	_cret = C.g_socket_client_get_enable_proxy(_arg0)
 
+	runtime.KeepAlive(client)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -563,6 +617,8 @@ func (client *SocketClient) Family() SocketFamily {
 
 	_cret = C.g_socket_client_get_family(_arg0)
 
+	runtime.KeepAlive(client)
+
 	var _socketFamily SocketFamily // out
 
 	_socketFamily = SocketFamily(_cret)
@@ -580,6 +636,8 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_local_address(_arg0)
+
+	runtime.KeepAlive(client)
 
 	var _socketAddress SocketAddresser // out
 
@@ -601,6 +659,8 @@ func (client *SocketClient) Protocol() SocketProtocol {
 
 	_cret = C.g_socket_client_get_protocol(_arg0)
 
+	runtime.KeepAlive(client)
+
 	var _socketProtocol SocketProtocol // out
 
 	_socketProtocol = SocketProtocol(_cret)
@@ -618,6 +678,8 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
+
+	runtime.KeepAlive(client)
 
 	var _proxyResolver ProxyResolverer // out
 
@@ -637,6 +699,8 @@ func (client *SocketClient) SocketType() SocketType {
 
 	_cret = C.g_socket_client_get_socket_type(_arg0)
 
+	runtime.KeepAlive(client)
+
 	var _socketType SocketType // out
 
 	_socketType = SocketType(_cret)
@@ -655,6 +719,8 @@ func (client *SocketClient) Timeout() uint {
 
 	_cret = C.g_socket_client_get_timeout(_arg0)
 
+	runtime.KeepAlive(client)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -671,6 +737,8 @@ func (client *SocketClient) TLS() bool {
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_tls(_arg0)
+
+	runtime.KeepAlive(client)
 
 	var _ok bool // out
 
@@ -690,6 +758,8 @@ func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 
 	_cret = C.g_socket_client_get_tls_validation_flags(_arg0)
+
+	runtime.KeepAlive(client)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
@@ -714,6 +784,8 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 	}
 
 	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(enable)
 }
 
 // SetFamily sets the socket family of the socket client. If this is set to
@@ -731,6 +803,8 @@ func (client *SocketClient) SetFamily(family SocketFamily) {
 	_arg1 = C.GSocketFamily(family)
 
 	C.g_socket_client_set_family(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(family)
 }
 
 // SetLocalAddress sets the local address of the socket client. The sockets
@@ -749,6 +823,8 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	}
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(address)
 }
 
 // SetProtocol sets the protocol of the socket client. The sockets created by
@@ -764,6 +840,8 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	_arg1 = C.GSocketProtocol(protocol)
 
 	C.g_socket_client_set_protocol(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(protocol)
 }
 
 // SetProxyResolver overrides the Resolver used by client. You can call this if
@@ -783,6 +861,8 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	}
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(proxyResolver)
 }
 
 // SetSocketType sets the socket type of the socket client. The sockets created
@@ -798,6 +878,8 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 	_arg1 = C.GSocketType(typ)
 
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(typ)
 }
 
 // SetTimeout sets the I/O timeout for sockets created by client. timeout is a
@@ -814,6 +896,8 @@ func (client *SocketClient) SetTimeout(timeout uint) {
 	_arg1 = C.guint(timeout)
 
 	C.g_socket_client_set_timeout(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(timeout)
 }
 
 // SetTLS sets whether client creates TLS (aka SSL) connections. If tls is TRUE,
@@ -842,6 +926,8 @@ func (client *SocketClient) SetTLS(tls bool) {
 	}
 
 	C.g_socket_client_set_tls(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(tls)
 }
 
 // SetTLSValidationFlags sets the TLS validation flags used when creating TLS
@@ -854,4 +940,6 @@ func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(flags)
 }

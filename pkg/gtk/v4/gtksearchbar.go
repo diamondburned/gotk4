@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -124,6 +125,8 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	_arg1 = (*C.GtkEditable)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(entry)
 }
 
 // Child gets the child widget of bar.
@@ -134,6 +137,8 @@ func (bar *SearchBar) Child() Widgetter {
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _widget Widgetter // out
 
@@ -153,6 +158,8 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -168,6 +175,8 @@ func (bar *SearchBar) SearchMode() bool {
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -186,6 +195,8 @@ func (bar *SearchBar) ShowCloseButton() bool {
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -207,6 +218,8 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 	}
 
 	C.gtk_search_bar_set_child(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // SetKeyCaptureWidget sets widget as the widget that bar will capture key
@@ -230,6 +243,8 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	}
 
 	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(widget)
 }
 
 // SetSearchMode switches the search mode on or off.
@@ -243,6 +258,8 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	}
 
 	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(searchMode)
 }
 
 // SetShowCloseButton shows or hides the close button.
@@ -260,4 +277,6 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	}
 
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(visible)
 }

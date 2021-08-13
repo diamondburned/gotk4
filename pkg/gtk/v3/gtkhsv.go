@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -89,6 +90,7 @@ func (hsv *HSV) Color() (h float64, s float64, v float64) {
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
 
 	C.gtk_hsv_get_color(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(hsv)
 
 	var _h float64 // out
 	var _s float64 // out
@@ -110,6 +112,7 @@ func (hsv *HSV) Metrics() (size int, ringWidth int) {
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
 
 	C.gtk_hsv_get_metrics(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(hsv)
 
 	var _size int      // out
 	var _ringWidth int // out
@@ -131,6 +134,8 @@ func (hsv *HSV) IsAdjusting() bool {
 	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
 
 	_cret = C.gtk_hsv_is_adjusting(_arg0)
+
+	runtime.KeepAlive(hsv)
 
 	var _ok bool // out
 
@@ -155,6 +160,10 @@ func (hsv *HSV) SetColor(h float64, s float64, v float64) {
 	_arg3 = C.double(v)
 
 	C.gtk_hsv_set_color(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(hsv)
+	runtime.KeepAlive(h)
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(v)
 }
 
 // SetMetrics sets the size and ring width of an HSV color selector.
@@ -168,4 +177,7 @@ func (hsv *HSV) SetMetrics(size int, ringWidth int) {
 	_arg2 = C.gint(ringWidth)
 
 	C.gtk_hsv_set_metrics(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(hsv)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(ringWidth)
 }

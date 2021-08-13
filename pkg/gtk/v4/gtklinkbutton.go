@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -108,6 +109,8 @@ func NewLinkButton(uri string) *LinkButton {
 
 	_cret = C.gtk_link_button_new(_arg1)
 
+	runtime.KeepAlive(uri)
+
 	var _linkButton *LinkButton // out
 
 	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -130,6 +133,9 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(label)
+
 	var _linkButton *LinkButton // out
 
 	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -145,6 +151,8 @@ func (linkButton *LinkButton) URI() string {
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
+
+	runtime.KeepAlive(linkButton)
 
 	var _utf8 string // out
 
@@ -167,6 +175,8 @@ func (linkButton *LinkButton) Visited() bool {
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 
+	runtime.KeepAlive(linkButton)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -188,6 +198,8 @@ func (linkButton *LinkButton) SetURI(uri string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_link_button_set_uri(_arg0, _arg1)
+	runtime.KeepAlive(linkButton)
+	runtime.KeepAlive(uri)
 }
 
 // SetVisited sets the “visited” state of the GtkLinkButton.
@@ -203,4 +215,6 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 	}
 
 	C.gtk_link_button_set_visited(_arg0, _arg1)
+	runtime.KeepAlive(linkButton)
+	runtime.KeepAlive(visited)
 }

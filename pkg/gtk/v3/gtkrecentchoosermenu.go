@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -122,6 +123,8 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
+	runtime.KeepAlive(manager)
+
 	var _recentChooserMenu *RecentChooserMenu // out
 
 	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
@@ -138,6 +141,8 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
+
+	runtime.KeepAlive(menu)
 
 	var _ok bool // out
 
@@ -162,4 +167,6 @@ func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	}
 
 	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(showNumbers)
 }

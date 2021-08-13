@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -142,6 +143,8 @@ func (list *ListModel) ItemType() externglib.Type {
 
 	_cret = C.g_list_model_get_item_type(_arg0)
 
+	runtime.KeepAlive(list)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -161,6 +164,8 @@ func (list *ListModel) NItems() uint {
 	_arg0 = (*C.GListModel)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_list_model_get_n_items(_arg0)
+
+	runtime.KeepAlive(list)
 
 	var _guint uint // out
 
@@ -183,6 +188,9 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 	_arg1 = C.guint(position)
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
+
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(position)
 
 	var _object *externglib.Object // out
 
@@ -223,4 +231,8 @@ func (list *ListModel) ItemsChanged(position uint, removed uint, added uint) {
 	_arg3 = C.guint(added)
 
 	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(removed)
+	runtime.KeepAlive(added)
 }

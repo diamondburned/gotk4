@@ -543,6 +543,8 @@ func ScriptForUnichar(ch uint32) Script {
 
 	_cret = C.pango_script_for_unichar(_arg1)
 
+	runtime.KeepAlive(ch)
+
 	var _script Script // out
 
 	_script = Script(_cret)
@@ -583,6 +585,8 @@ func ScriptGetSampleLanguage(script Script) *Language {
 
 	_cret = C.pango_script_get_sample_language(_arg1)
 
+	runtime.KeepAlive(script)
+
 	var _language *Language // out
 
 	if _cret != nil {
@@ -619,6 +623,9 @@ func NewScriptIter(text string, length int) *ScriptIter {
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)
 
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+
 	var _scriptIter *ScriptIter // out
 
 	_scriptIter = (*ScriptIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -645,6 +652,7 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	_arg0 = (*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(iter)
 
 	var _start string  // out
 	var _end string    // out
@@ -672,6 +680,8 @@ func (iter *ScriptIter) Next() bool {
 	_arg0 = (*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_script_iter_next(_arg0)
+
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 

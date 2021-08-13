@@ -175,6 +175,9 @@ func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconI
 
 	_cret = C.gtk_icon_info_new_for_pixbuf(_arg1, _arg2)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(pixbuf)
+
 	var _iconInfo *IconInfo // out
 
 	_iconInfo = wrapIconInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -194,6 +197,8 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_get_attach_points(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(iconInfo)
 
 	var _points []gdk.Point // out
 	var _ok bool            // out
@@ -223,6 +228,8 @@ func (iconInfo *IconInfo) BaseScale() int {
 
 	_cret = C.gtk_icon_info_get_base_scale(_arg0)
 
+	runtime.KeepAlive(iconInfo)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -245,6 +252,8 @@ func (iconInfo *IconInfo) BaseSize() int {
 
 	_cret = C.gtk_icon_info_get_base_size(_arg0)
 
+	runtime.KeepAlive(iconInfo)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -265,6 +274,8 @@ func (iconInfo *IconInfo) BuiltinPixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_get_builtin_pixbuf(_arg0)
+
+	runtime.KeepAlive(iconInfo)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -296,6 +307,8 @@ func (iconInfo *IconInfo) DisplayName() string {
 
 	_cret = C.gtk_icon_info_get_display_name(_arg0)
 
+	runtime.KeepAlive(iconInfo)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -314,6 +327,8 @@ func (iconInfo *IconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, &_arg1)
+
+	runtime.KeepAlive(iconInfo)
 
 	var _rectangle gdk.Rectangle // out
 	var _ok bool                 // out
@@ -338,6 +353,8 @@ func (iconInfo *IconInfo) Filename() string {
 
 	_cret = C.gtk_icon_info_get_filename(_arg0)
 
+	runtime.KeepAlive(iconInfo)
+
 	var _filename string // out
 
 	if _cret != nil {
@@ -357,6 +374,8 @@ func (iconInfo *IconInfo) IsSymbolic() bool {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_is_symbolic(_arg0)
+
+	runtime.KeepAlive(iconInfo)
 
 	var _ok bool // out
 
@@ -385,6 +404,8 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
 	_cret = C.gtk_icon_info_load_icon(_arg0, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
@@ -430,6 +451,9 @@ func (iconInfo *IconInfo) LoadIconAsync(ctx context.Context, callback gio.AsyncR
 	}
 
 	C.gtk_icon_info_load_icon_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // LoadIconFinish finishes an async icon load, see
@@ -444,6 +468,9 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_icon_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(res)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
@@ -488,6 +515,9 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	}
 
 	_cret = C.gtk_icon_info_load_surface(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(forWindow)
 
 	var _surface *cairo.Surface // out
 	var _goerr error            // out
@@ -543,6 +573,12 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 	}
 
 	_cret = C.gtk_icon_info_load_symbolic(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(fg)
+	runtime.KeepAlive(successColor)
+	runtime.KeepAlive(warningColor)
+	runtime.KeepAlive(errorColor)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -606,6 +642,13 @@ func (iconInfo *IconInfo) LoadSymbolicAsync(ctx context.Context, fg *gdk.RGBA, s
 	}
 
 	C.gtk_icon_info_load_symbolic_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(fg)
+	runtime.KeepAlive(successColor)
+	runtime.KeepAlive(warningColor)
+	runtime.KeepAlive(errorColor)
+	runtime.KeepAlive(callback)
 }
 
 // LoadSymbolicFinish finishes an async icon load, see
@@ -621,6 +664,9 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(res)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -668,6 +714,9 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(context)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -720,6 +769,10 @@ func (iconInfo *IconInfo) LoadSymbolicForContextAsync(ctx context.Context, conte
 	}
 
 	C.gtk_icon_info_load_symbolic_for_context_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
 }
 
 // LoadSymbolicForContextFinish finishes an async icon load, see
@@ -735,6 +788,9 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(res)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -784,6 +840,10 @@ func (iconInfo *IconInfo) LoadSymbolicForStyle(style *Style, state StateType) (b
 	_arg2 = C.GtkStateType(state)
 
 	_cret = C.gtk_icon_info_load_symbolic_for_style(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(state)
 
 	var _wasSymbolic bool         // out
 	var _pixbuf *gdkpixbuf.Pixbuf // out
@@ -837,6 +897,8 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 	}
 
 	C.gtk_icon_info_set_raw_coordinates(_arg0, _arg1)
+	runtime.KeepAlive(iconInfo)
+	runtime.KeepAlive(rawCoordinates)
 }
 
 // IconThemeOverrider contains methods that are overridable.
@@ -958,6 +1020,8 @@ func (iconTheme *IconTheme) AddResourcePath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(path)
 }
 
 // AppendSearchPath appends a directory to the search path. See
@@ -971,6 +1035,8 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_append_search_path(_arg0, _arg1)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(path)
 }
 
 // ChooseIcon looks up a named icon and returns a IconInfo containing
@@ -1005,6 +1071,11 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 	_arg3 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_choose_icon(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconNames)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(flags)
 
 	var _iconInfo *IconInfo // out
 
@@ -1051,6 +1122,12 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size int, sca
 
 	_cret = C.gtk_icon_theme_choose_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconNames)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(flags)
+
 	var _iconInfo *IconInfo // out
 
 	if _cret != nil {
@@ -1070,6 +1147,8 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 
 	_cret = C.gtk_icon_theme_get_example_icon_name(_arg0)
+
+	runtime.KeepAlive(iconTheme)
 
 	var _utf8 string // out
 
@@ -1094,6 +1173,9 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
+
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
 
 	var _gints []int // out
 
@@ -1125,6 +1207,7 @@ func (iconTheme *IconTheme) SearchPath() []string {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 
 	C.gtk_icon_theme_get_search_path(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iconTheme)
 
 	var _path []string // out
 
@@ -1155,6 +1238,9 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 
 	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1173,6 +1259,8 @@ func (iconTheme *IconTheme) ListContexts() []string {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 
 	_cret = C.gtk_icon_theme_list_contexts(_arg0)
+
+	runtime.KeepAlive(iconTheme)
 
 	var _list []string // out
 
@@ -1209,6 +1297,9 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 	}
 
 	_cret = C.gtk_icon_theme_list_icons(_arg0, _arg1)
+
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(context)
 
 	var _list []string // out
 
@@ -1250,6 +1341,11 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 	_arg3 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_load_icon(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(flags)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
@@ -1303,6 +1399,12 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 
 	_cret = C.gtk_icon_theme_load_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(flags)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
@@ -1355,6 +1457,13 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 
 	_cret = C.gtk_icon_theme_load_surface(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(forWindow)
+	runtime.KeepAlive(flags)
+
 	var _surface *cairo.Surface // out
 	var _goerr error            // out
 
@@ -1394,6 +1503,11 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 
 	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(flags)
+
 	var _iconInfo *IconInfo // out
 
 	if _cret != nil {
@@ -1421,6 +1535,12 @@ func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, sc
 	_arg4 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_lookup_by_gicon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(flags)
 
 	var _iconInfo *IconInfo // out
 
@@ -1456,6 +1576,11 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLook
 
 	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(flags)
+
 	var _iconInfo *IconInfo // out
 
 	if _cret != nil {
@@ -1487,6 +1612,12 @@ func (iconTheme *IconTheme) LookupIconForScale(iconName string, size int, scale 
 
 	_cret = C.gtk_icon_theme_lookup_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(flags)
+
 	var _iconInfo *IconInfo // out
 
 	if _cret != nil {
@@ -1507,6 +1638,8 @@ func (iconTheme *IconTheme) PrependSearchPath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_prepend_search_path(_arg0, _arg1)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(path)
 }
 
 // RescanIfNeeded checks to see if the icon theme has changed; if it has, any
@@ -1519,6 +1652,8 @@ func (iconTheme *IconTheme) RescanIfNeeded() bool {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
 
 	_cret = C.gtk_icon_theme_rescan_if_needed(_arg0)
+
+	runtime.KeepAlive(iconTheme)
 
 	var _ok bool // out
 
@@ -1544,6 +1679,8 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 	}
 
 	C.gtk_icon_theme_set_custom_theme(_arg0, _arg1)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(themeName)
 }
 
 // SetScreen sets the screen for an icon theme; the screen is used to track the
@@ -1557,6 +1694,8 @@ func (iconTheme *IconTheme) SetScreen(screen *gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_icon_theme_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(screen)
 }
 
 // SetSearchPath sets the search path for the icon theme object. When looking
@@ -1589,6 +1728,8 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	}
 
 	C.gtk_icon_theme_set_search_path(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(iconTheme)
+	runtime.KeepAlive(path)
 }
 
 // IconThemeAddBuiltinIcon registers a built-in icon for icon theme lookups. The
@@ -1616,6 +1757,9 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_icon_theme_add_builtin_icon(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(pixbuf)
 }
 
 // IconThemeGetDefault gets the icon theme for the default screen. See
@@ -1646,6 +1790,8 @@ func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_icon_theme_get_for_screen(_arg1)
+
+	runtime.KeepAlive(screen)
 
 	var _iconTheme *IconTheme // out
 

@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -303,6 +304,8 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	}
 
 	C.g_option_group_add_entries(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(entries)
 }
 
 // SetTranslationDomain: convenience function to use gettext() for translating
@@ -316,4 +319,6 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_option_group_set_translation_domain(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(domain)
 }

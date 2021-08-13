@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -114,6 +115,8 @@ func NewFrame(label string) *Frame {
 
 	_cret = C.gtk_frame_new(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _frame *Frame // out
 
 	_frame = wrapFrame(externglib.Take(unsafe.Pointer(_cret)))
@@ -131,6 +134,8 @@ func (frame *Frame) Label() string {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_label(_arg0)
+
+	runtime.KeepAlive(frame)
 
 	var _utf8 string // out
 
@@ -151,6 +156,7 @@ func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	C.gtk_frame_get_label_align(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(frame)
 
 	var _xalign float32 // out
 	var _yalign float32 // out
@@ -171,6 +177,8 @@ func (frame *Frame) LabelWidget() Widgetter {
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
+	runtime.KeepAlive(frame)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -189,6 +197,8 @@ func (frame *Frame) ShadowType() ShadowType {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_shadow_type(_arg0)
+
+	runtime.KeepAlive(frame)
 
 	var _shadowType ShadowType // out
 
@@ -210,6 +220,8 @@ func (frame *Frame) SetLabel(label string) {
 	}
 
 	C.gtk_frame_set_label(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(label)
 }
 
 // SetLabelAlign sets the alignment of the frame widget’s label. The default
@@ -224,6 +236,9 @@ func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
 	_arg2 = C.gfloat(yalign)
 
 	C.gtk_frame_set_label_align(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
 }
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
@@ -238,6 +253,8 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	}
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(labelWidget)
 }
 
 // SetShadowType sets the Frame:shadow-type for frame, i.e. whether it is drawn
@@ -253,4 +270,6 @@ func (frame *Frame) SetShadowType(typ ShadowType) {
 	_arg1 = C.GtkShadowType(typ)
 
 	C.gtk_frame_set_shadow_type(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(typ)
 }

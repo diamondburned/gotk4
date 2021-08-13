@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -107,6 +108,8 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
+	runtime.KeepAlive(actionMap)
+	runtime.KeepAlive(action)
 }
 
 // AddActionEntries: convenience function for creating multiple Action instances
@@ -158,6 +161,9 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(actionMap)
+	runtime.KeepAlive(entries)
+	runtime.KeepAlive(userData)
 }
 
 // LookupAction looks up the action with the name action_name in action_map.
@@ -173,6 +179,9 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
+
+	runtime.KeepAlive(actionMap)
+	runtime.KeepAlive(actionName)
 
 	var _action Actioner // out
 
@@ -195,6 +204,8 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_map_remove_action(_arg0, _arg1)
+	runtime.KeepAlive(actionMap)
+	runtime.KeepAlive(actionName)
 }
 
 // ActionEntry: this struct defines a single action. It is for use with

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -198,6 +199,8 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
+	runtime.KeepAlive(messageDialog)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -215,4 +218,6 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
+	runtime.KeepAlive(messageDialog)
+	runtime.KeepAlive(str)
 }

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -87,6 +88,8 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 
 	_cret = C.g_dbus_object_manager_server_new(_arg1)
 
+	runtime.KeepAlive(objectPath)
+
 	var _dBusObjectManagerServer *DBusObjectManagerServer // out
 
 	_dBusObjectManagerServer = wrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -112,6 +115,8 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_manager_server_export(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(object)
 }
 
 // ExportUniquely: like g_dbus_object_manager_server_export() but appends a
@@ -126,6 +131,8 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(object)
 }
 
 // Connection gets the BusConnection used by manager.
@@ -136,6 +143,8 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _dBusConnection *DBusConnection // out
 
@@ -154,6 +163,9 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(object)
 
 	var _ok bool // out
 
@@ -176,6 +188,8 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 	}
 
 	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(connection)
 }
 
 // Unexport: if manager has an object at path, removes the object. Otherwise
@@ -193,6 +207,9 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(objectPath)
 
 	var _ok bool // out
 

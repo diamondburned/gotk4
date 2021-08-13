@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -104,6 +105,8 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(entry)
 }
 
 // SearchMode returns whether the search mode is on or off.
@@ -114,6 +117,8 @@ func (bar *SearchBar) SearchMode() bool {
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -132,6 +137,8 @@ func (bar *SearchBar) ShowCloseButton() bool {
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -153,6 +160,8 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	}
 
 	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(searchMode)
 }
 
 // SetShowCloseButton shows or hides the close button. Applications that already
@@ -168,4 +177,6 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	}
 
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(visible)
 }

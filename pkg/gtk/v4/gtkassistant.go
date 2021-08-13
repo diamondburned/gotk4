@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -228,6 +229,8 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_add_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(child)
 }
 
 // AppendPage appends a page to the assistant.
@@ -240,6 +243,9 @@ func (assistant *Assistant) AppendPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _gint int // out
 
@@ -263,6 +269,7 @@ func (assistant *Assistant) Commit() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_commit(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // CurrentPage returns the page number of the current page.
@@ -273,6 +280,8 @@ func (assistant *Assistant) CurrentPage() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_current_page(_arg0)
+
+	runtime.KeepAlive(assistant)
 
 	var _gint int // out
 
@@ -289,6 +298,8 @@ func (assistant *Assistant) NPages() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
+
+	runtime.KeepAlive(assistant)
 
 	var _gint int // out
 
@@ -307,6 +318,9 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	_arg1 = C.int(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 
 	var _widget Widgetter // out
 
@@ -328,6 +342,9 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 
 	_cret = C.gtk_assistant_get_page(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(child)
+
 	var _assistantPage *AssistantPage // out
 
 	_assistantPage = wrapAssistantPage(externglib.Take(unsafe.Pointer(_cret)))
@@ -345,6 +362,9 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -366,6 +386,9 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 
 	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -384,6 +407,9 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 
 	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
 	var _assistantPageType AssistantPageType // out
 
 	_assistantPageType = AssistantPageType(_cret)
@@ -399,6 +425,8 @@ func (assistant *Assistant) Pages() gio.ListModeller {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_pages(_arg0)
+
+	runtime.KeepAlive(assistant)
 
 	var _listModel gio.ListModeller // out
 
@@ -420,6 +448,10 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 
 	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(position)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -439,6 +471,7 @@ func (assistant *Assistant) NextPage() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_next_page(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // PrependPage prepends a page to the assistant.
@@ -451,6 +484,9 @@ func (assistant *Assistant) PrependPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _gint int // out
 
@@ -472,6 +508,7 @@ func (assistant *Assistant) PreviousPage() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_previous_page(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // RemoveActionWidget removes a widget from the action area of a GtkAssistant.
@@ -483,6 +520,8 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(child)
 }
 
 // RemovePage removes the page_num’s page from assistant.
@@ -494,6 +533,8 @@ func (assistant *Assistant) RemovePage(pageNum int) {
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_remove_page(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 }
 
 // SetCurrentPage switches the page to page_num.
@@ -508,6 +549,8 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 }
 
 // SetForwardPageFunc sets the page forwarding function to be page_func.
@@ -530,6 +573,8 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 	}
 
 	C.gtk_assistant_set_forward_page_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageFunc)
 }
 
 // SetPageComplete sets whether page contents are complete.
@@ -548,6 +593,9 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 	}
 
 	C.gtk_assistant_set_page_complete(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(complete)
 }
 
 // SetPageTitle sets a title for page.
@@ -565,6 +613,9 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(title)
 }
 
 // SetPageType sets the page type for page.
@@ -580,6 +631,9 @@ func (assistant *Assistant) SetPageType(page Widgetter, typ AssistantPageType) {
 	_arg2 = C.GtkAssistantPageType(typ)
 
 	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(typ)
 }
 
 // UpdateButtonsState forces assistant to recompute the buttons state.
@@ -597,6 +651,7 @@ func (assistant *Assistant) UpdateButtonsState() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_update_buttons_state(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.
@@ -624,6 +679,8 @@ func (page *AssistantPage) Child() Widgetter {
 	_arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_page_get_child(_arg0)
+
+	runtime.KeepAlive(page)
 
 	var _widget Widgetter // out
 

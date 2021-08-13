@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -152,6 +153,9 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	_arg2 = C.int(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
 }
 
 // AddButton adds a button with the given text.
@@ -172,6 +176,10 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
+
 	var _button *Button // out
 
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -188,6 +196,8 @@ func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_add_child(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(widget)
 }
 
 // MessageType returns the message type of the message area.
@@ -198,6 +208,8 @@ func (infoBar *InfoBar) MessageType() MessageType {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_message_type(_arg0)
+
+	runtime.KeepAlive(infoBar)
 
 	var _messageType MessageType // out
 
@@ -214,6 +226,8 @@ func (infoBar *InfoBar) Revealed() bool {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
+
+	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
 
@@ -233,6 +247,8 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
+
+	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
 
@@ -255,6 +271,8 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_remove_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(widget)
 }
 
 // RemoveChild removes a widget from the content area of the info bar.
@@ -266,6 +284,8 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_info_bar_remove_child(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(widget)
 }
 
 // Response emits the “response” signal with the given response_id.
@@ -277,6 +297,8 @@ func (infoBar *InfoBar) Response(responseId int) {
 	_arg1 = C.int(responseId)
 
 	C.gtk_info_bar_response(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
 }
 
 // SetDefaultResponse sets the last widget in the info bar’s action area with
@@ -294,6 +316,8 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	_arg1 = C.int(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
 }
 
 // SetMessageType sets the message type of the message area.
@@ -307,6 +331,8 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 	_arg1 = C.GtkMessageType(messageType)
 
 	C.gtk_info_bar_set_message_type(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(messageType)
 }
 
 // SetResponseSensitive sets the sensitivity of action widgets for response_id.
@@ -326,6 +352,9 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	}
 
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }
 
 // SetRevealed sets whether the GtkInfoBar is revealed.
@@ -345,6 +374,8 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	}
 
 	C.gtk_info_bar_set_revealed(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(revealed)
 }
 
 // SetShowCloseButton: if true, a standard close button is shown.
@@ -360,4 +391,6 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	}
 
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(setting)
 }

@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -220,6 +221,9 @@ func MarkupEscapeText(text string, length int) string {
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
 
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -254,6 +258,7 @@ func (context *MarkupParseContext) EndParse() error {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
+	runtime.KeepAlive(context)
 
 	var _goerr error // out
 
@@ -277,6 +282,8 @@ func (context *MarkupParseContext) Element() string {
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -296,6 +303,7 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(context)
 
 	var _lineNumber int // out
 	var _charNumber int // out
@@ -318,6 +326,8 @@ func (context *MarkupParseContext) UserData() cgo.Handle {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _gpointer cgo.Handle // out
 
@@ -347,6 +357,9 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	_arg2 = C.gssize(textLen)
 
 	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(textLen)
 
 	var _goerr error // out
 
@@ -376,6 +389,8 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _gpointer cgo.Handle // out
 
@@ -437,6 +452,9 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(parser)
+	runtime.KeepAlive(userData)
 }
 
 // MarkupParser: any of the fields in Parser can be NULL, in which case they

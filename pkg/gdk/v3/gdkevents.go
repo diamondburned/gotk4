@@ -815,6 +815,7 @@ func SetShowEvents(showEvents bool) {
 	}
 
 	C.gdk_set_show_events(_arg1)
+	runtime.KeepAlive(showEvents)
 }
 
 // SettingGet obtains a desktop-wide setting, such as the double-click time, for
@@ -829,6 +830,9 @@ func SettingGet(name string, value *externglib.Value) bool {
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.gdk_setting_get(_arg1, _arg2)
+
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 

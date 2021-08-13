@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -129,6 +130,8 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
+	runtime.KeepAlive(color)
+
 	var _colorButton *ColorButton // out
 
 	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -144,6 +147,8 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
+
+	runtime.KeepAlive(rgba)
 
 	var _colorButton *ColorButton // out
 
@@ -163,6 +168,8 @@ func (button *ColorButton) Alpha() uint16 {
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _guint16 uint16 // out
 
 	_guint16 = uint16(_cret)
@@ -180,6 +187,7 @@ func (button *ColorButton) Color() gdk.Color {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	C.gtk_color_button_get_color(_arg0, &_arg1)
+	runtime.KeepAlive(button)
 
 	var _color gdk.Color // out
 
@@ -196,6 +204,8 @@ func (button *ColorButton) Title() string {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
@@ -214,6 +224,8 @@ func (button *ColorButton) UseAlpha() bool {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -235,6 +247,8 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 	_arg1 = C.guint16(alpha)
 
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(alpha)
 }
 
 // SetColor sets the current color to be color.
@@ -248,6 +262,8 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_button_set_color(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(color)
 }
 
 // SetTitle sets the title for the color selection dialog.
@@ -260,6 +276,8 @@ func (button *ColorButton) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(title)
 }
 
 // SetUseAlpha sets whether or not the color button should use the alpha
@@ -276,4 +294,6 @@ func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	}
 
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(useAlpha)
 }

@@ -254,6 +254,10 @@ func NewTask(ctx context.Context, sourceObject *externglib.Object, callback Asyn
 
 	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+
 	var _task *Task // out
 
 	_task = wrapTask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -269,6 +273,8 @@ func (task *Task) Cancellable() *Cancellable {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_cancellable(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _cancellable *Cancellable // out
 
@@ -286,6 +292,8 @@ func (task *Task) CheckCancellable() bool {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_check_cancellable(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _ok bool // out
 
@@ -306,6 +314,8 @@ func (task *Task) Completed() bool {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_completed(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _ok bool // out
 
@@ -331,6 +341,8 @@ func (task *Task) Context() *glib.MainContext {
 
 	_cret = C.g_task_get_context(_arg0)
 
+	runtime.KeepAlive(task)
+
 	var _mainContext *glib.MainContext // out
 
 	_mainContext = (*glib.MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -351,6 +363,8 @@ func (task *Task) Name() string {
 
 	_cret = C.g_task_get_name(_arg0)
 
+	runtime.KeepAlive(task)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -369,6 +383,8 @@ func (task *Task) Priority() int {
 
 	_cret = C.g_task_get_priority(_arg0)
 
+	runtime.KeepAlive(task)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -385,6 +401,8 @@ func (task *Task) ReturnOnCancel() bool {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_return_on_cancel(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _ok bool // out
 
@@ -405,6 +423,8 @@ func (task *Task) SourceObject() *externglib.Object {
 
 	_cret = C.g_task_get_source_object(_arg0)
 
+	runtime.KeepAlive(task)
+
 	var _object *externglib.Object // out
 
 	_object = externglib.Take(unsafe.Pointer(_cret))
@@ -420,6 +440,8 @@ func (task *Task) SourceTag() cgo.Handle {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_get_source_tag(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _gpointer cgo.Handle // out
 
@@ -437,6 +459,8 @@ func (task *Task) TaskData() cgo.Handle {
 
 	_cret = C.g_task_get_task_data(_arg0)
 
+	runtime.KeepAlive(task)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -452,6 +476,8 @@ func (task *Task) HadError() bool {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_had_error(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _ok bool // out
 
@@ -476,6 +502,7 @@ func (task *Task) PropagateBoolean() error {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	C.g_task_propagate_boolean(_arg0, &_cerr)
+	runtime.KeepAlive(task)
 
 	var _goerr error // out
 
@@ -501,6 +528,8 @@ func (task *Task) PropagateInt() (int, error) {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_propagate_int(_arg0, &_cerr)
+
+	runtime.KeepAlive(task)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -529,6 +558,8 @@ func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
+
+	runtime.KeepAlive(task)
 
 	var _gpointer cgo.Handle // out
 	var _goerr error         // out
@@ -559,6 +590,7 @@ func (task *Task) PropagateValue() (externglib.Value, error) {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
+	runtime.KeepAlive(task)
 
 	var _value externglib.Value // out
 	var _goerr error            // out
@@ -583,6 +615,8 @@ func (task *Task) ReturnBoolean(result bool) {
 	}
 
 	C.g_task_return_boolean(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(result)
 }
 
 // ReturnError sets task's result to error (which task assumes ownership of) and
@@ -603,6 +637,8 @@ func (task *Task) ReturnError(err error) {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.g_task_return_error(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(err)
 }
 
 // ReturnErrorIfCancelled checks if task's #GCancellable has been cancelled, and
@@ -615,6 +651,8 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 
 	_cret = C.g_task_return_error_if_cancelled(_arg0)
+
+	runtime.KeepAlive(task)
 
 	var _ok bool // out
 
@@ -635,6 +673,8 @@ func (task *Task) ReturnInt(result int) {
 	_arg1 = C.gssize(result)
 
 	C.g_task_return_int(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(result)
 }
 
 // ReturnValue sets task's result to result (by copying it) and completes the
@@ -656,6 +696,8 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 	}
 
 	C.g_task_return_value(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(result)
 }
 
 // SetCheckCancellable sets or clears task's check-cancellable flag. If this is
@@ -681,6 +723,8 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	}
 
 	C.g_task_set_check_cancellable(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(checkCancellable)
 }
 
 // SetName sets task’s name, used in debugging and profiling. The name defaults
@@ -703,6 +747,8 @@ func (task *Task) SetName(name string) {
 	}
 
 	C.g_task_set_name(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(name)
 }
 
 // SetPriority sets task's priority. If you do not call this, it will default to
@@ -719,6 +765,8 @@ func (task *Task) SetPriority(priority int) {
 	_arg1 = C.gint(priority)
 
 	C.g_task_set_priority(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(priority)
 }
 
 // SetReturnOnCancel sets or clears task's return-on-cancel flag. This is only
@@ -758,6 +806,9 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 
 	_cret = C.g_task_set_return_on_cancel(_arg0, _arg1)
 
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(returnOnCancel)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -780,6 +831,8 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(sourceTag)
 }
 
 // TaskIsValid checks that result is a #GTask, and that source_object is its
@@ -794,6 +847,9 @@ func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 	_arg2 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 
 	_cret = C.g_task_is_valid(_arg1, _arg2)
+
+	runtime.KeepAlive(result)
+	runtime.KeepAlive(sourceObject)
 
 	var _ok bool // out
 
@@ -828,4 +884,8 @@ func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallbac
 	_arg5 = (*C.GError)(gerror.New(err))
 
 	C.g_task_report_error(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(sourceTag)
+	runtime.KeepAlive(err)
 }

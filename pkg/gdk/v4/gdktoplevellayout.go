@@ -64,6 +64,8 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 
 	_cret = C.gdk_toplevel_layout_copy(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -85,6 +87,9 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	_cret = C.gdk_toplevel_layout_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(other)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -105,6 +110,8 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen(_arg0, &_arg1)
+
+	runtime.KeepAlive(layout)
 
 	var _fullscreen bool // out
 	var _ok bool         // out
@@ -129,6 +136,8 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _monitor *Monitor // out
 
 	if _cret != nil {
@@ -149,6 +158,8 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_maximized(_arg0, &_arg1)
+
+	runtime.KeepAlive(layout)
 
 	var _maximized bool // out
 	var _ok bool        // out
@@ -172,6 +183,8 @@ func (layout *ToplevelLayout) Resizable() bool {
 	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_resizable(_arg0)
+
+	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
@@ -198,6 +211,9 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	}
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(fullscreen)
+	runtime.KeepAlive(monitor)
 }
 
 // SetMaximized sets whether the layout should cause the surface to be maximized
@@ -212,6 +228,8 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	}
 
 	C.gdk_toplevel_layout_set_maximized(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(maximized)
 }
 
 // SetResizable sets whether the layout should allow the user to resize the
@@ -226,4 +244,6 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	}
 
 	C.gdk_toplevel_layout_set_resizable(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(resizable)
 }

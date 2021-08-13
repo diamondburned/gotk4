@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -116,6 +117,8 @@ func (sw *Switch) Active() bool {
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
+	runtime.KeepAlive(sw)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -133,6 +136,8 @@ func (sw *Switch) State() bool {
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
+
+	runtime.KeepAlive(sw)
 
 	var _ok bool // out
 
@@ -154,6 +159,8 @@ func (sw *Switch) SetActive(isActive bool) {
 	}
 
 	C.gtk_switch_set_active(_arg0, _arg1)
+	runtime.KeepAlive(sw)
+	runtime.KeepAlive(isActive)
 }
 
 // SetState sets the underlying state of the Switch.
@@ -173,4 +180,6 @@ func (sw *Switch) SetState(state bool) {
 	}
 
 	C.gtk_switch_set_state(_arg0, _arg1)
+	runtime.KeepAlive(sw)
+	runtime.KeepAlive(state)
 }

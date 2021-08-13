@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -69,6 +70,9 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 
 	_cret = C.g_inet_address_mask_new(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(addr)
+	runtime.KeepAlive(length)
+
 	var _inetAddressMask *InetAddressMask // out
 	var _goerr error                      // out
 
@@ -94,6 +98,8 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 
 	_cret = C.g_inet_address_mask_new_from_string(_arg1, &_cerr)
 
+	runtime.KeepAlive(maskString)
+
 	var _inetAddressMask *InetAddressMask // out
 	var _goerr error                      // out
 
@@ -116,6 +122,9 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 
 	_cret = C.g_inet_address_mask_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(mask)
+	runtime.KeepAlive(mask2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -134,6 +143,8 @@ func (mask *InetAddressMask) Address() *InetAddress {
 
 	_cret = C.g_inet_address_mask_get_address(_arg0)
 
+	runtime.KeepAlive(mask)
+
 	var _inetAddress *InetAddress // out
 
 	_inetAddress = wrapInetAddress(externglib.Take(unsafe.Pointer(_cret)))
@@ -150,6 +161,8 @@ func (mask *InetAddressMask) Family() SocketFamily {
 
 	_cret = C.g_inet_address_mask_get_family(_arg0)
 
+	runtime.KeepAlive(mask)
+
 	var _socketFamily SocketFamily // out
 
 	_socketFamily = SocketFamily(_cret)
@@ -165,6 +178,8 @@ func (mask *InetAddressMask) Length() uint {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_get_length(_arg0)
+
+	runtime.KeepAlive(mask)
 
 	var _guint uint // out
 
@@ -184,6 +199,9 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 
 	_cret = C.g_inet_address_mask_matches(_arg0, _arg1)
 
+	runtime.KeepAlive(mask)
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -201,6 +219,8 @@ func (mask *InetAddressMask) String() string {
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(mask.Native()))
 
 	_cret = C.g_inet_address_mask_to_string(_arg0)
+
+	runtime.KeepAlive(mask)
 
 	var _utf8 string // out
 

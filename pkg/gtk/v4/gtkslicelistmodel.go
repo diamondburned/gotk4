@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -66,6 +67,10 @@ func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceLis
 
 	_cret = C.gtk_slice_list_model_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(size)
+
 	var _sliceListModel *SliceListModel // out
 
 	_sliceListModel = wrapSliceListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -81,6 +86,8 @@ func (self *SliceListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -100,6 +107,8 @@ func (self *SliceListModel) Offset() uint {
 
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -115,6 +124,8 @@ func (self *SliceListModel) Size() uint {
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -136,6 +147,8 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_slice_list_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetOffset sets the offset into the original model for this slice.
@@ -149,6 +162,8 @@ func (self *SliceListModel) SetOffset(offset uint) {
 	_arg1 = C.guint(offset)
 
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(offset)
 }
 
 // SetSize sets the maximum size. self will never have more items than size.
@@ -163,4 +178,6 @@ func (self *SliceListModel) SetSize(size uint) {
 	_arg1 = C.guint(size)
 
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(size)
 }

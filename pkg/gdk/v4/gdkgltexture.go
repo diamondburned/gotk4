@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,4 +53,5 @@ func (self *GLTexture) Release() {
 	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(self.Native()))
 
 	C.gdk_gl_texture_release(_arg0)
+	runtime.KeepAlive(self)
 }

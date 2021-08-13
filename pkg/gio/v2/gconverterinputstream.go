@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -75,6 +76,9 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 
 	_cret = C.g_converter_input_stream_new(_arg1, _arg2)
 
+	runtime.KeepAlive(baseStream)
+	runtime.KeepAlive(converter)
+
 	var _converterInputStream *ConverterInputStream // out
 
 	_converterInputStream = wrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -90,6 +94,8 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 	_arg0 = (*C.GConverterInputStream)(unsafe.Pointer(converterStream.Native()))
 
 	_cret = C.g_converter_input_stream_get_converter(_arg0)
+
+	runtime.KeepAlive(converterStream)
 
 	var _converter Converterer // out
 

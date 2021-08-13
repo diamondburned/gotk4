@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -65,6 +66,8 @@ func NewTextTag(name string) *TextTag {
 
 	_cret = C.gtk_text_tag_new(_arg1)
 
+	runtime.KeepAlive(name)
+
 	var _textTag *TextTag // out
 
 	_textTag = wrapTextTag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -87,6 +90,8 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 	}
 
 	C.gtk_text_tag_changed(_arg0, _arg1)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(sizeChanged)
 }
 
 // Priority: get the tag priority.
@@ -97,6 +102,8 @@ func (tag *TextTag) Priority() int {
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
+
+	runtime.KeepAlive(tag)
 
 	var _gint int // out
 
@@ -123,4 +130,6 @@ func (tag *TextTag) SetPriority(priority int) {
 	_arg1 = C.gint(priority)
 
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(priority)
 }

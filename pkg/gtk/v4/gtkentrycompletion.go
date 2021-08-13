@@ -149,6 +149,8 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 
 	_cret = C.gtk_entry_completion_new_with_area(_arg1)
 
+	runtime.KeepAlive(area)
+
 	var _entryCompletion *EntryCompletion // out
 
 	_entryCompletion = wrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -166,6 +168,7 @@ func (completion *EntryCompletion) Complete() {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	C.gtk_entry_completion_complete(_arg0)
+	runtime.KeepAlive(completion)
 }
 
 // ComputePrefix computes the common prefix that is shared by all rows in
@@ -184,6 +187,9 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
+
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(key)
 
 	var _utf8 string // out
 
@@ -205,6 +211,8 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 
 	_cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -223,6 +231,8 @@ func (completion *EntryCompletion) Entry() Widgetter {
 
 	_cret = C.gtk_entry_completion_get_entry(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -239,6 +249,8 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_inline_completion(_arg0)
+
+	runtime.KeepAlive(completion)
 
 	var _ok bool // out
 
@@ -258,6 +270,8 @@ func (completion *EntryCompletion) InlineSelection() bool {
 
 	_cret = C.gtk_entry_completion_get_inline_selection(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -276,6 +290,8 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -293,6 +309,8 @@ func (completion *EntryCompletion) Model() TreeModeller {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_model(_arg0)
+
+	runtime.KeepAlive(completion)
 
 	var _treeModel TreeModeller // out
 
@@ -313,6 +331,8 @@ func (completion *EntryCompletion) PopupCompletion() bool {
 
 	_cret = C.gtk_entry_completion_get_popup_completion(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -331,6 +351,8 @@ func (completion *EntryCompletion) PopupSetWidth() bool {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
+
+	runtime.KeepAlive(completion)
 
 	var _ok bool // out
 
@@ -351,6 +373,8 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 
 	_cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -369,6 +393,8 @@ func (completion *EntryCompletion) TextColumn() int {
 
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 
+	runtime.KeepAlive(completion)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -383,6 +409,7 @@ func (completion *EntryCompletion) InsertPrefix() {
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 
 	C.gtk_entry_completion_insert_prefix(_arg0)
+	runtime.KeepAlive(completion)
 }
 
 // SetInlineCompletion sets whether the common prefix of the possible
@@ -397,6 +424,8 @@ func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 	}
 
 	C.gtk_entry_completion_set_inline_completion(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(inlineCompletion)
 }
 
 // SetInlineSelection sets whether it is possible to cycle through the possible
@@ -411,6 +440,8 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	}
 
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(inlineSelection)
 }
 
 // SetMatchFunc sets the match function for completion to be func.
@@ -429,6 +460,8 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_entry_completion_set_match_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(fn)
 }
 
 // SetMinimumKeyLength requires the length of the search key for completion to
@@ -445,6 +478,8 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	_arg1 = C.int(length)
 
 	C.gtk_entry_completion_set_minimum_key_length(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(length)
 }
 
 // SetModel sets the model for a GtkEntryCompletion.
@@ -461,6 +496,8 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	}
 
 	C.gtk_entry_completion_set_model(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(model)
 }
 
 // SetPopupCompletion sets whether the completions should be presented in a
@@ -475,6 +512,8 @@ func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 	}
 
 	C.gtk_entry_completion_set_popup_completion(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(popupCompletion)
 }
 
 // SetPopupSetWidth sets whether the completion popup window will be resized to
@@ -489,6 +528,8 @@ func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 	}
 
 	C.gtk_entry_completion_set_popup_set_width(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(popupSetWidth)
 }
 
 // SetPopupSingleMatch sets whether the completion popup window will appear even
@@ -506,6 +547,8 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	}
 
 	C.gtk_entry_completion_set_popup_single_match(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(popupSingleMatch)
 }
 
 // SetTextColumn: convenience function for setting up the most used case of this
@@ -527,4 +570,6 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 	_arg1 = C.int(column)
 
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(column)
 }

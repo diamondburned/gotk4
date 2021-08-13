@@ -42,6 +42,8 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 
 	_cret = C.g_pollable_source_new(_arg1)
 
+	runtime.KeepAlive(pollableStream)
+
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -73,6 +75,10 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 	}
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(pollableStream)
+	runtime.KeepAlive(childSource)
 
 	var _source *glib.Source // out
 
@@ -118,6 +124,11 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 
 	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
+
 	var _gssize int  // out
 	var _goerr error // out
 
@@ -162,6 +173,11 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 	}
 
 	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -214,6 +230,10 @@ func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer [
 	}
 
 	C.g_pollable_stream_write_all(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, &_arg5, _arg6, &_cerr)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
 
 	var _bytesWritten uint // out
 	var _goerr error       // out

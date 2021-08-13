@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -182,6 +183,8 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 
 	_cret = C.gtk_menu_button_get_align_widget(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -200,6 +203,8 @@ func (menuButton *MenuButton) Direction() ArrowType {
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _arrowType ArrowType // out
 
 	_arrowType = ArrowType(_cret)
@@ -215,6 +220,8 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
+
+	runtime.KeepAlive(menuButton)
 
 	var _menuModel gio.MenuModeller // out
 
@@ -235,6 +242,8 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _popover *Popover // out
 
 	if _cret != nil {
@@ -254,6 +263,8 @@ func (menuButton *MenuButton) Popup() *Menu {
 
 	_cret = C.gtk_menu_button_get_popup(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _menu *Menu // out
 
 	if _cret != nil {
@@ -272,6 +283,8 @@ func (menuButton *MenuButton) UsePopover() bool {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_use_popover(_arg0)
+
+	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out
 
@@ -300,6 +313,8 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	}
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(alignWidget)
 }
 
 // SetDirection sets the direction in which the popup will be popped up, as well
@@ -319,6 +334,8 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	_arg1 = C.GtkArrowType(direction)
 
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(direction)
 }
 
 // SetMenuModel sets the Model from which the popup will be constructed, or NULL
@@ -341,6 +358,8 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	}
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(menuModel)
 }
 
 // SetPopover sets the Popover that will be popped up when the menu_button is
@@ -358,6 +377,8 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	}
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(popover)
 }
 
 // SetPopup sets the Menu that will be popped up when the menu_button is
@@ -375,6 +396,8 @@ func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	}
 
 	C.gtk_menu_button_set_popup(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(menu)
 }
 
 // SetUsePopover sets whether to construct a Popover instead of Menu when
@@ -390,4 +413,6 @@ func (menuButton *MenuButton) SetUsePopover(usePopover bool) {
 	}
 
 	C.gtk_menu_button_set_use_popover(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(usePopover)
 }

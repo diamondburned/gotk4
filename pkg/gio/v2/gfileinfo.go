@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -592,6 +593,7 @@ func (info *FileInfo) ClearStatus() {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	C.g_file_info_clear_status(_arg0)
+	runtime.KeepAlive(info)
 }
 
 // CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
@@ -605,6 +607,8 @@ func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 	_arg1 = (*C.GFileInfo)(unsafe.Pointer(destInfo.Native()))
 
 	C.g_file_info_copy_into(_arg0, _arg1)
+	runtime.KeepAlive(srcInfo)
+	runtime.KeepAlive(destInfo)
 }
 
 // Dup duplicates a file info structure.
@@ -615,6 +619,8 @@ func (other *FileInfo) Dup() *FileInfo {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(other.Native()))
 
 	_cret = C.g_file_info_dup(_arg0)
+
+	runtime.KeepAlive(other)
 
 	var _fileInfo *FileInfo // out
 
@@ -635,6 +641,9 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_as_string(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _utf8 string // out
 
@@ -659,6 +668,9 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 
 	_cret = C.g_file_info_get_attribute_boolean(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -680,6 +692,9 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_byte_string(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _utf8 string // out
 
@@ -704,6 +719,9 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, cgo.Ha
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _typ FileAttributeType      // out
 	var _valuePp cgo.Handle         // out
@@ -734,6 +752,9 @@ func (info *FileInfo) AttributeInt32(attribute string) int32 {
 
 	_cret = C.g_file_info_get_attribute_int32(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _gint32 int32 // out
 
 	_gint32 = int32(_cret)
@@ -755,6 +776,9 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 
 	_cret = C.g_file_info_get_attribute_int64(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -774,6 +798,9 @@ func (info *FileInfo) AttributeObject(attribute string) *externglib.Object {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_object(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _object *externglib.Object // out
 
@@ -796,6 +823,9 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 
 	_cret = C.g_file_info_get_attribute_status(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _fileAttributeStatus FileAttributeStatus // out
 
 	_fileAttributeStatus = FileAttributeStatus(_cret)
@@ -815,6 +845,9 @@ func (info *FileInfo) AttributeString(attribute string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_string(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _utf8 string // out
 
@@ -837,6 +870,9 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _utf8s []string // out
 
@@ -871,6 +907,9 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 
 	_cret = C.g_file_info_get_attribute_type(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _fileAttributeType FileAttributeType // out
 
 	_fileAttributeType = FileAttributeType(_cret)
@@ -891,6 +930,9 @@ func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_get_attribute_uint32(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 
 	var _guint32 uint32 // out
 
@@ -913,6 +955,9 @@ func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 
 	_cret = C.g_file_info_get_attribute_uint64(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -928,6 +973,8 @@ func (info *FileInfo) ContentType() string {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_content_type(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -948,6 +995,8 @@ func (info *FileInfo) DisplayName() string {
 
 	_cret = C.g_file_info_get_display_name(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -963,6 +1012,8 @@ func (info *FileInfo) EditName() string {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_edit_name(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -980,6 +1031,8 @@ func (info *FileInfo) Etag() string {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_etag(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -1001,6 +1054,8 @@ func (info *FileInfo) FileType() FileType {
 
 	_cret = C.g_file_info_get_file_type(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _fileType FileType // out
 
 	_fileType = FileType(_cret)
@@ -1016,6 +1071,8 @@ func (info *FileInfo) Icon() Iconner {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_icon(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _icon Iconner // out
 
@@ -1035,6 +1092,8 @@ func (info *FileInfo) IsBackup() bool {
 
 	_cret = C.g_file_info_get_is_backup(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1053,6 +1112,8 @@ func (info *FileInfo) IsHidden() bool {
 
 	_cret = C.g_file_info_get_is_hidden(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1070,6 +1131,8 @@ func (info *FileInfo) IsSymlink() bool {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_is_symlink(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
@@ -1092,6 +1155,7 @@ func (info *FileInfo) ModificationTime() glib.TimeVal {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	C.g_file_info_get_modification_time(_arg0, &_arg1)
+	runtime.KeepAlive(info)
 
 	var _result glib.TimeVal // out
 
@@ -1108,6 +1172,8 @@ func (info *FileInfo) Name() string {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_name(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _filename string // out
 
@@ -1127,6 +1193,8 @@ func (info *FileInfo) Size() int64 {
 
 	_cret = C.g_file_info_get_size(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -1144,6 +1212,8 @@ func (info *FileInfo) SortOrder() int32 {
 
 	_cret = C.g_file_info_get_sort_order(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _gint32 int32 // out
 
 	_gint32 = int32(_cret)
@@ -1159,6 +1229,8 @@ func (info *FileInfo) SymbolicIcon() Iconner {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_symbolic_icon(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _icon Iconner // out
 
@@ -1177,6 +1249,8 @@ func (info *FileInfo) SymlinkTarget() string {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_info_get_symlink_target(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -1200,6 +1274,9 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 
 	_cret = C.g_file_info_has_attribute(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1221,6 +1298,9 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_info_has_namespace(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(nameSpace)
 
 	var _ok bool // out
 
@@ -1244,6 +1324,9 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	}
 
 	_cret = C.g_file_info_list_attributes(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(nameSpace)
 
 	var _utf8s []string // out
 
@@ -1278,6 +1361,8 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_remove_attribute(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
 }
 
 // SetAttribute sets the attribute to contain the given value, if possible. To
@@ -1295,6 +1380,10 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
 
 	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(valueP)
 }
 
 // SetAttributeBoolean sets the attribute to contain the given attr_value, if
@@ -1312,6 +1401,9 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	}
 
 	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeByteString sets the attribute to contain the given attr_value, if
@@ -1328,6 +1420,9 @@ func (info *FileInfo) SetAttributeByteString(attribute string, attrValue string)
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeInt32 sets the attribute to contain the given attr_value, if
@@ -1343,6 +1438,9 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	_arg2 = C.gint32(attrValue)
 
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeInt64 sets the attribute to contain the given attr_value, if
@@ -1358,6 +1456,9 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	_arg2 = C.gint64(attrValue)
 
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeMask sets mask on info to match specific attribute types.
@@ -1369,6 +1470,8 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(mask)))
 
 	C.g_file_info_set_attribute_mask(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(mask)
 }
 
 // SetAttributeObject sets the attribute to contain the given attr_value, if
@@ -1384,6 +1487,9 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *externglib
 	_arg2 = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
 
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeStatus sets the attribute status for an attribute key. This is
@@ -1404,6 +1510,10 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 	_arg2 = C.GFileAttributeStatus(status)
 
 	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(status)
 
 	var _ok bool // out
 
@@ -1428,6 +1538,9 @@ func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeStringv sets the attribute to contain the given attr_value, if
@@ -1457,6 +1570,9 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 	}
 
 	C.g_file_info_set_attribute_stringv(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeUint32 sets the attribute to contain the given attr_value, if
@@ -1472,6 +1588,9 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	_arg2 = C.guint32(attrValue)
 
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetAttributeUint64 sets the attribute to contain the given attr_value, if
@@ -1487,6 +1606,9 @@ func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	_arg2 = C.guint64(attrValue)
 
 	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(attrValue)
 }
 
 // SetContentType sets the content type attribute for a given Info. See
@@ -1500,6 +1622,8 @@ func (info *FileInfo) SetContentType(contentType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_content_type(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(contentType)
 }
 
 // SetDisplayName sets the display name for the current Info. See
@@ -1513,6 +1637,8 @@ func (info *FileInfo) SetDisplayName(displayName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_display_name(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(displayName)
 }
 
 // SetEditName sets the edit name for the current file. See
@@ -1526,6 +1652,8 @@ func (info *FileInfo) SetEditName(editName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_edit_name(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(editName)
 }
 
 // SetFileType sets the file type in a Info to type. See
@@ -1538,6 +1666,8 @@ func (info *FileInfo) SetFileType(typ FileType) {
 	_arg1 = C.GFileType(typ)
 
 	C.g_file_info_set_file_type(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(typ)
 }
 
 // SetIcon sets the icon for a given Info. See G_FILE_ATTRIBUTE_STANDARD_ICON.
@@ -1549,6 +1679,8 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_file_info_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(icon)
 }
 
 // SetIsHidden sets the "is_hidden" attribute in a Info according to is_hidden.
@@ -1563,6 +1695,8 @@ func (info *FileInfo) SetIsHidden(isHidden bool) {
 	}
 
 	C.g_file_info_set_is_hidden(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(isHidden)
 }
 
 // SetIsSymlink sets the "is_symlink" attribute in a Info according to
@@ -1577,6 +1711,8 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	}
 
 	C.g_file_info_set_is_symlink(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(isSymlink)
 }
 
 // SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
@@ -1593,6 +1729,8 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(mtime)))
 
 	C.g_file_info_set_modification_time(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(mtime)
 }
 
 // SetName sets the name attribute for the current Info. See
@@ -1606,6 +1744,8 @@ func (info *FileInfo) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_name(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
 }
 
 // SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info to
@@ -1618,6 +1758,8 @@ func (info *FileInfo) SetSize(size int64) {
 	_arg1 = C.goffset(size)
 
 	C.g_file_info_set_size(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(size)
 }
 
 // SetSortOrder sets the sort order attribute in the file info structure. See
@@ -1630,6 +1772,8 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 	_arg1 = C.gint32(sortOrder)
 
 	C.g_file_info_set_sort_order(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(sortOrder)
 }
 
 // SetSymbolicIcon sets the symbolic icon for a given Info. See
@@ -1642,6 +1786,8 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(icon)
 }
 
 // SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute
@@ -1655,6 +1801,8 @@ func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_file_info_set_symlink_target(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(symlinkTarget)
 }
 
 // UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(), if
@@ -1665,4 +1813,5 @@ func (info *FileInfo) UnsetAttributeMask() {
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	C.g_file_info_unset_attribute_mask(_arg0)
+	runtime.KeepAlive(info)
 }

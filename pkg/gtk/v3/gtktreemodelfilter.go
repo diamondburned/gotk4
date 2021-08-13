@@ -197,6 +197,7 @@ func (filter *TreeModelFilter) ClearCache() {
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_tree_model_filter_clear_cache(_arg0)
+	runtime.KeepAlive(filter)
 }
 
 // ConvertChildIterToIter sets filter_iter to point to the row in filter that
@@ -212,6 +213,9 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (Tree
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(childIter)))
 
 	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
+
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(childIter)
 
 	var _filterIter TreeIter // out
 	var _ok bool             // out
@@ -239,6 +243,9 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 
 	_cret = C.gtk_tree_model_filter_convert_child_path_to_path(_arg0, _arg1)
 
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(childPath)
+
 	var _treePath *TreePath // out
 
 	if _cret != nil {
@@ -262,6 +269,8 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) Tree
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(filterIter)))
 
 	C.gtk_tree_model_filter_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(filterIter)
 
 	var _childIter TreeIter // out
 
@@ -285,6 +294,9 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 
 	_cret = C.gtk_tree_model_filter_convert_path_to_child_path(_arg0, _arg1)
 
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(filterPath)
+
 	var _treePath *TreePath // out
 
 	if _cret != nil {
@@ -306,6 +318,8 @@ func (filter *TreeModelFilter) Model() TreeModeller {
 
 	_cret = C.gtk_tree_model_filter_get_model(_arg0)
 
+	runtime.KeepAlive(filter)
+
 	var _treeModel TreeModeller // out
 
 	_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
@@ -321,6 +335,7 @@ func (filter *TreeModelFilter) Refilter() {
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_tree_model_filter_refilter(_arg0)
+	runtime.KeepAlive(filter)
 }
 
 // SetModifyFunc: with the n_columns and types parameters, you give an array of
@@ -355,6 +370,9 @@ func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeMod
 	_arg5 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_tree_model_filter_set_modify_func(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(types)
+	runtime.KeepAlive(fn)
 }
 
 // SetVisibleColumn sets column of the child_model to be the column where filter
@@ -372,6 +390,8 @@ func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 	_arg1 = C.gint(column)
 
 	C.gtk_tree_model_filter_set_visible_column(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(column)
 }
 
 // SetVisibleFunc sets the visible function used when filtering the filter to be
@@ -419,4 +439,6 @@ func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_tree_model_filter_set_visible_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(fn)
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -168,6 +169,10 @@ func (toolbar *Toolbar) DropIndex(x int, y int) int {
 
 	_cret = C.gtk_toolbar_get_drop_index(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -184,6 +189,8 @@ func (toolbar *Toolbar) IconSize() IconSize {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_icon_size(_arg0)
+
+	runtime.KeepAlive(toolbar)
 
 	var _iconSize IconSize // out
 
@@ -204,6 +211,9 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(item)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -219,6 +229,8 @@ func (toolbar *Toolbar) NItems() int {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
+
+	runtime.KeepAlive(toolbar)
 
 	var _gint int // out
 
@@ -239,6 +251,9 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 
 	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
 
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(n)
+
 	var _toolItem *ToolItem // out
 
 	if _cret != nil {
@@ -258,6 +273,8 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 
 	_cret = C.gtk_toolbar_get_relief_style(_arg0)
 
+	runtime.KeepAlive(toolbar)
+
 	var _reliefStyle ReliefStyle // out
 
 	_reliefStyle = ReliefStyle(_cret)
@@ -274,6 +291,8 @@ func (toolbar *Toolbar) ShowArrow() bool {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
+
+	runtime.KeepAlive(toolbar)
 
 	var _ok bool // out
 
@@ -293,6 +312,8 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	_cret = C.gtk_toolbar_get_style(_arg0)
+
+	runtime.KeepAlive(toolbar)
 
 	var _toolbarStyle ToolbarStyle // out
 
@@ -314,6 +335,9 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	_arg2 = C.gint(pos)
 
 	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(pos)
 }
 
 // SetDropHighlightItem highlights toolbar to give an idea of what it would look
@@ -335,6 +359,9 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	_arg2 = C.gint(index_)
 
 	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(index_)
 }
 
 // SetIconSize: this function sets the size of stock icons in the toolbar. You
@@ -351,6 +378,8 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_toolbar_set_icon_size(_arg0, _arg1)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(iconSize)
 }
 
 // SetShowArrow sets whether to show an overflow menu when toolbar isn’t
@@ -370,6 +399,8 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	}
 
 	C.gtk_toolbar_set_show_arrow(_arg0, _arg1)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(showArrow)
 }
 
 // SetStyle alters the view of toolbar to display either icons only, text only,
@@ -382,6 +413,8 @@ func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 	_arg1 = C.GtkToolbarStyle(style)
 
 	C.gtk_toolbar_set_style(_arg0, _arg1)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(style)
 }
 
 // UnsetIconSize unsets toolbar icon size set with gtk_toolbar_set_icon_size(),
@@ -392,6 +425,7 @@ func (toolbar *Toolbar) UnsetIconSize() {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	C.gtk_toolbar_unset_icon_size(_arg0)
+	runtime.KeepAlive(toolbar)
 }
 
 // UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so that
@@ -402,4 +436,5 @@ func (toolbar *Toolbar) UnsetStyle() {
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
 
 	C.gtk_toolbar_unset_style(_arg0)
+	runtime.KeepAlive(toolbar)
 }

@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -118,6 +119,9 @@ func (document *Document) AttributeValue(attributeName string) string {
 
 	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
 
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -135,6 +139,8 @@ func (document *Document) CurrentPageNumber() int {
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_current_page_number(_arg0)
+
+	runtime.KeepAlive(document)
 
 	var _gint int // out
 
@@ -157,6 +163,8 @@ func (document *Document) Document() cgo.Handle {
 
 	_cret = C.atk_document_get_document(_arg0)
 
+	runtime.KeepAlive(document)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -175,6 +183,8 @@ func (document *Document) DocumentType() string {
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_document_type(_arg0)
+
+	runtime.KeepAlive(document)
 
 	var _utf8 string // out
 
@@ -197,6 +207,8 @@ func (document *Document) Locale() string {
 
 	_cret = C.atk_document_get_locale(_arg0)
 
+	runtime.KeepAlive(document)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -212,6 +224,8 @@ func (document *Document) PageCount() int {
 	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
 
 	_cret = C.atk_document_get_page_count(_arg0)
+
+	runtime.KeepAlive(document)
 
 	var _gint int // out
 
@@ -235,6 +249,10 @@ func (document *Document) SetAttributeValue(attributeName string, attributeValue
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+	runtime.KeepAlive(attributeValue)
 
 	var _ok bool // out
 

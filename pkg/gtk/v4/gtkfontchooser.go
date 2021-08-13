@@ -255,6 +255,8 @@ func (fontchooser *FontChooser) Font() string {
 
 	_cret = C.gtk_font_chooser_get_font(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -282,6 +284,8 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	_cret = C.gtk_font_chooser_get_font_desc(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _fontDescription *pango.FontDescription // out
 
 	if _cret != nil {
@@ -306,6 +310,8 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 
 	_cret = C.gtk_font_chooser_get_font_face(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _fontFace pango.FontFacer // out
 
 	if _cret != nil {
@@ -328,6 +334,8 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 
 	_cret = C.gtk_font_chooser_get_font_family(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _fontFamily pango.FontFamilier // out
 
 	if _cret != nil {
@@ -345,6 +353,8 @@ func (fontchooser *FontChooser) FontFeatures() string {
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 
 	_cret = C.gtk_font_chooser_get_font_features(_arg0)
+
+	runtime.KeepAlive(fontchooser)
 
 	var _utf8 string // out
 
@@ -364,6 +374,8 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 
 	_cret = C.gtk_font_chooser_get_font_map(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _fontMap pango.FontMapper // out
 
 	if _cret != nil {
@@ -382,6 +394,8 @@ func (fontchooser *FontChooser) FontSize() int {
 
 	_cret = C.gtk_font_chooser_get_font_size(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -397,6 +411,8 @@ func (fontchooser *FontChooser) Language() string {
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 
 	_cret = C.gtk_font_chooser_get_language(_arg0)
+
+	runtime.KeepAlive(fontchooser)
 
 	var _utf8 string // out
 
@@ -415,6 +431,8 @@ func (fontchooser *FontChooser) Level() FontChooserLevel {
 
 	_cret = C.gtk_font_chooser_get_level(_arg0)
 
+	runtime.KeepAlive(fontchooser)
+
 	var _fontChooserLevel FontChooserLevel // out
 
 	_fontChooserLevel = FontChooserLevel(_cret)
@@ -430,6 +448,8 @@ func (fontchooser *FontChooser) PreviewText() string {
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 
 	_cret = C.gtk_font_chooser_get_preview_text(_arg0)
+
+	runtime.KeepAlive(fontchooser)
 
 	var _utf8 string // out
 
@@ -447,6 +467,8 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
 
 	_cret = C.gtk_font_chooser_get_show_preview_entry(_arg0)
+
+	runtime.KeepAlive(fontchooser)
 
 	var _ok bool // out
 
@@ -473,6 +495,8 @@ func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	}
 
 	C.gtk_font_chooser_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(filter)
 }
 
 // SetFont sets the currently-selected font.
@@ -485,6 +509,8 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(fontname)
 }
 
 // SetFontDesc sets the currently-selected font from font_desc.
@@ -496,6 +522,8 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	C.gtk_font_chooser_set_font_desc(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(fontDesc)
 }
 
 // SetFontMap sets a custom font map to use for this font chooser widget.
@@ -530,6 +558,8 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	}
 
 	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(fontmap)
 }
 
 // SetLanguage sets the language to use for font features.
@@ -542,6 +572,8 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_language(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(language)
 }
 
 // SetLevel sets the desired level of granularity for selecting fonts.
@@ -553,6 +585,8 @@ func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
 	_arg1 = C.GtkFontChooserLevel(level)
 
 	C.gtk_font_chooser_set_level(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(level)
 }
 
 // SetPreviewText sets the text displayed in the preview area.
@@ -567,6 +601,8 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_preview_text(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(text)
 }
 
 // SetShowPreviewEntry shows or hides the editable preview entry.
@@ -580,4 +616,6 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	}
 
 	C.gtk_font_chooser_set_show_preview_entry(_arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(showPreviewEntry)
 }

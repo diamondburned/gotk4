@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -102,6 +103,9 @@ func NewBox(orientation Orientation, spacing int) *Box {
 
 	_cret = C.gtk_box_new(_arg1, _arg2)
 
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(spacing)
+
 	var _box *Box // out
 
 	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -118,6 +122,8 @@ func (box *Box) Append(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_append(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
@@ -128,6 +134,8 @@ func (box *Box) BaselinePosition() BaselinePosition {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _baselinePosition BaselinePosition // out
 
@@ -146,6 +154,8 @@ func (box *Box) Homogeneous() bool {
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -163,6 +173,8 @@ func (box *Box) Spacing() int {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_spacing(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _gint int // out
 
@@ -187,6 +199,9 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 	}
 
 	C.gtk_box_insert_child_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(sibling)
 }
 
 // Prepend adds child as the first child to box.
@@ -198,6 +213,8 @@ func (box *Box) Prepend(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_prepend(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // Remove removes a child widget from box.
@@ -212,6 +229,8 @@ func (box *Box) Remove(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_remove(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 }
 
 // ReorderChildAfter moves child to the position after sibling in the list of
@@ -230,6 +249,9 @@ func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	}
 
 	C.gtk_box_reorder_child_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(sibling)
 }
 
 // SetBaselinePosition sets the baseline position of a box.
@@ -246,6 +268,8 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(position)
 }
 
 // SetHomogeneous sets whether or not all children of box are given equal space
@@ -260,6 +284,8 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_box_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetSpacing sets the number of pixels to place between children of box.
@@ -271,4 +297,6 @@ func (box *Box) SetSpacing(spacing int) {
 	_arg1 = C.int(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }

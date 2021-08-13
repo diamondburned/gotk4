@@ -164,6 +164,10 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 
 	_cret = C.gdk_popup_layout_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(anchorRect)
+	runtime.KeepAlive(rectAnchor)
+	runtime.KeepAlive(surfaceAnchor)
+
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -182,6 +186,8 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_copy(_arg0)
+
+	runtime.KeepAlive(layout)
 
 	var _popupLayout *PopupLayout // out
 
@@ -204,6 +210,9 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 
 	_cret = C.gdk_popup_layout_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(other)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -222,6 +231,8 @@ func (layout *PopupLayout) AnchorHints() AnchorHints {
 
 	_cret = C.gdk_popup_layout_get_anchor_hints(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _anchorHints AnchorHints // out
 
 	_anchorHints = AnchorHints(_cret)
@@ -237,6 +248,8 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_anchor_rect(_arg0)
+
+	runtime.KeepAlive(layout)
 
 	var _rectangle *Rectangle // out
 
@@ -254,6 +267,7 @@ func (layout *PopupLayout) Offset() (dx int, dy int) {
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_popup_layout_get_offset(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(layout)
 
 	var _dx int // out
 	var _dy int // out
@@ -273,6 +287,8 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 
 	_cret = C.gdk_popup_layout_get_rect_anchor(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _gravity Gravity // out
 
 	_gravity = Gravity(_cret)
@@ -291,6 +307,7 @@ func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom i
 	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_popup_layout_get_shadow_width(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(layout)
 
 	var _left int   // out
 	var _right int  // out
@@ -314,6 +331,8 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 
 	_cret = C.gdk_popup_layout_get_surface_anchor(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _gravity Gravity // out
 
 	_gravity = Gravity(_cret)
@@ -335,6 +354,8 @@ func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 	_arg1 = C.GdkAnchorHints(anchorHints)
 
 	C.gdk_popup_layout_set_anchor_hints(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(anchorHints)
 }
 
 // SetAnchorRect: set the anchor rectangle.
@@ -346,6 +367,8 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(anchorRect)))
 
 	C.gdk_popup_layout_set_anchor_rect(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(anchorRect)
 }
 
 // SetOffset: offset the position of the anchor rectangle with the given delta.
@@ -359,6 +382,9 @@ func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	_arg2 = C.int(dy)
 
 	C.gdk_popup_layout_set_offset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 }
 
 // SetRectAnchor: set the anchor on the anchor rectangle.
@@ -370,6 +396,8 @@ func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 	_arg1 = C.GdkGravity(anchor)
 
 	C.gdk_popup_layout_set_rect_anchor(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(anchor)
 }
 
 // SetShadowWidth sets the shadow width of the popup.
@@ -391,6 +419,11 @@ func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom i
 	_arg4 = C.int(bottom)
 
 	C.gdk_popup_layout_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
 }
 
 // SetSurfaceAnchor: set the anchor on the popup surface.
@@ -402,4 +435,6 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	_arg1 = C.GdkGravity(anchor)
 
 	C.gdk_popup_layout_set_surface_anchor(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(anchor)
 }

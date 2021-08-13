@@ -78,6 +78,8 @@ func NewTimeZone(identifier string) *TimeZone {
 
 	_cret = C.g_time_zone_new(_arg1)
 
+	runtime.KeepAlive(identifier)
+
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -99,6 +101,8 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 	}
 
 	_cret = C.g_time_zone_new_identifier(_arg1)
+
+	runtime.KeepAlive(identifier)
 
 	var _timeZone *TimeZone // out
 
@@ -136,6 +140,8 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	_arg1 = C.gint32(seconds)
 
 	_cret = C.g_time_zone_new_offset(_arg1)
+
+	runtime.KeepAlive(seconds)
 
 	var _timeZone *TimeZone // out
 
@@ -189,6 +195,10 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(tz)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(time_)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -224,6 +234,10 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 
 	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(tz)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(time_)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -245,6 +259,9 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
+
+	runtime.KeepAlive(tz)
+	runtime.KeepAlive(interval)
 
 	var _utf8 string // out
 
@@ -269,6 +286,8 @@ func (tz *TimeZone) Identifier() string {
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
 
+	runtime.KeepAlive(tz)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -292,6 +311,9 @@ func (tz *TimeZone) Offset(interval int) int32 {
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
 
+	runtime.KeepAlive(tz)
+	runtime.KeepAlive(interval)
+
 	var _gint32 int32 // out
 
 	_gint32 = int32(_cret)
@@ -310,6 +332,9 @@ func (tz *TimeZone) IsDst(interval int) bool {
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
+
+	runtime.KeepAlive(tz)
+	runtime.KeepAlive(interval)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -173,6 +174,10 @@ func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int {
 
 	_cret = C.gtk_notebook_append_page(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -200,6 +205,11 @@ func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, me
 
 	_cret = C.gtk_notebook_append_page_menu(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
+	runtime.KeepAlive(menuLabel)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -220,6 +230,8 @@ func (notebook *Notebook) DetachTab(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_notebook_detach_tab(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
 }
 
 // ActionWidget gets one of the action widgets. See
@@ -233,6 +245,9 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 	_arg1 = C.GtkPackType(packType)
 
 	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(packType)
 
 	var _widget Widgetter // out
 
@@ -252,6 +267,8 @@ func (notebook *Notebook) CurrentPage() int {
 
 	_cret = C.gtk_notebook_get_current_page(_arg0)
 
+	runtime.KeepAlive(notebook)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -267,6 +284,8 @@ func (notebook *Notebook) GroupName() string {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	_cret = C.gtk_notebook_get_group_name(_arg0)
+
+	runtime.KeepAlive(notebook)
 
 	var _utf8 string // out
 
@@ -287,6 +306,9 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_notebook_get_menu_label(_arg0, _arg1)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
 
 	var _widget Widgetter // out
 
@@ -309,6 +331,9 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 
 	_cret = C.gtk_notebook_get_menu_label_text(_arg0, _arg1)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -327,6 +352,8 @@ func (notebook *Notebook) NPages() int {
 
 	_cret = C.gtk_notebook_get_n_pages(_arg0)
 
+	runtime.KeepAlive(notebook)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -344,6 +371,9 @@ func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 	_arg1 = C.gint(pageNum)
 
 	_cret = C.gtk_notebook_get_nth_page(_arg0, _arg1)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(pageNum)
 
 	var _widget Widgetter // out
 
@@ -364,6 +394,8 @@ func (notebook *Notebook) Scrollable() bool {
 
 	_cret = C.gtk_notebook_get_scrollable(_arg0)
 
+	runtime.KeepAlive(notebook)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -383,6 +415,8 @@ func (notebook *Notebook) ShowBorder() bool {
 
 	_cret = C.gtk_notebook_get_show_border(_arg0)
 
+	runtime.KeepAlive(notebook)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -401,6 +435,8 @@ func (notebook *Notebook) ShowTabs() bool {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	_cret = C.gtk_notebook_get_show_tabs(_arg0)
+
+	runtime.KeepAlive(notebook)
 
 	var _ok bool // out
 
@@ -422,6 +458,9 @@ func (notebook *Notebook) TabDetachable(child Widgetter) bool {
 
 	_cret = C.gtk_notebook_get_tab_detachable(_arg0, _arg1)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -442,6 +481,8 @@ func (notebook *Notebook) TabHborder() uint16 {
 
 	_cret = C.gtk_notebook_get_tab_hborder(_arg0)
 
+	runtime.KeepAlive(notebook)
+
 	var _guint16 uint16 // out
 
 	_guint16 = uint16(_cret)
@@ -461,6 +502,9 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_notebook_get_tab_label(_arg0, _arg1)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
 
 	var _widget Widgetter // out
 
@@ -483,6 +527,9 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 
 	_cret = C.gtk_notebook_get_tab_label_text(_arg0, _arg1)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -501,6 +548,8 @@ func (notebook *Notebook) TabPos() PositionType {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	_cret = C.gtk_notebook_get_tab_pos(_arg0)
+
+	runtime.KeepAlive(notebook)
 
 	var _positionType PositionType // out
 
@@ -521,6 +570,9 @@ func (notebook *Notebook) TabReorderable(child Widgetter) bool {
 
 	_cret = C.gtk_notebook_get_tab_reorderable(_arg0, _arg1)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -540,6 +592,8 @@ func (notebook *Notebook) TabVborder() uint16 {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	_cret = C.gtk_notebook_get_tab_vborder(_arg0)
+
+	runtime.KeepAlive(notebook)
 
 	var _guint16 uint16 // out
 
@@ -564,6 +618,11 @@ func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, positi
 	_arg3 = C.gint(position)
 
 	_cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
+	runtime.KeepAlive(position)
 
 	var _gint int // out
 
@@ -594,6 +653,12 @@ func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, me
 
 	_cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
+	runtime.KeepAlive(menuLabel)
+	runtime.KeepAlive(position)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -609,6 +674,7 @@ func (notebook *Notebook) NextPage() {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	C.gtk_notebook_next_page(_arg0)
+	runtime.KeepAlive(notebook)
 }
 
 // PageNum finds the index of the page which contains the given child widget.
@@ -621,6 +687,9 @@ func (notebook *Notebook) PageNum(child Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_notebook_page_num(_arg0, _arg1)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
 
 	var _gint int // out
 
@@ -636,6 +705,7 @@ func (notebook *Notebook) PopupDisable() {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	C.gtk_notebook_popup_disable(_arg0)
+	runtime.KeepAlive(notebook)
 }
 
 // PopupEnable enables the popup menu: if the user clicks with the right mouse
@@ -646,6 +716,7 @@ func (notebook *Notebook) PopupEnable() {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	C.gtk_notebook_popup_enable(_arg0)
+	runtime.KeepAlive(notebook)
 }
 
 // PrependPage prepends a page to notebook.
@@ -662,6 +733,10 @@ func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int {
 	}
 
 	_cret = C.gtk_notebook_prepend_page(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
 
 	var _gint int // out
 
@@ -690,6 +765,11 @@ func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, m
 
 	_cret = C.gtk_notebook_prepend_page_menu(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
+	runtime.KeepAlive(menuLabel)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -705,6 +785,7 @@ func (notebook *Notebook) PrevPage() {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 
 	C.gtk_notebook_prev_page(_arg0)
+	runtime.KeepAlive(notebook)
 }
 
 // RemovePage removes a page from the notebook given its index in the notebook.
@@ -716,6 +797,8 @@ func (notebook *Notebook) RemovePage(pageNum int) {
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_notebook_remove_page(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(pageNum)
 }
 
 // ReorderChild reorders the page containing child, so that it appears in
@@ -731,6 +814,9 @@ func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_notebook_reorder_child(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // SetActionWidget sets widget as one of the action widgets. Depending on the
@@ -749,6 +835,9 @@ func (notebook *Notebook) SetActionWidget(widget Widgetter, packType PackType) {
 	_arg2 = C.GtkPackType(packType)
 
 	C.gtk_notebook_set_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(packType)
 }
 
 // SetCurrentPage switches to the page number page_num.
@@ -764,6 +853,8 @@ func (notebook *Notebook) SetCurrentPage(pageNum int) {
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_notebook_set_current_page(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(pageNum)
 }
 
 // SetGroupName sets a group name for notebook.
@@ -782,6 +873,8 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 	}
 
 	C.gtk_notebook_set_group_name(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(groupName)
 }
 
 // SetMenuLabel changes the menu label for the page containing child.
@@ -797,6 +890,9 @@ func (notebook *Notebook) SetMenuLabel(child Widgetter, menuLabel Widgetter) {
 	}
 
 	C.gtk_notebook_set_menu_label(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(menuLabel)
 }
 
 // SetMenuLabelText creates a new label and sets it as the menu label of child.
@@ -811,6 +907,9 @@ func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_menu_label_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(menuText)
 }
 
 // SetScrollable sets whether the tab label area will have arrows for scrolling
@@ -825,6 +924,8 @@ func (notebook *Notebook) SetScrollable(scrollable bool) {
 	}
 
 	C.gtk_notebook_set_scrollable(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(scrollable)
 }
 
 // SetShowBorder sets whether a bevel will be drawn around the notebook pages.
@@ -840,6 +941,8 @@ func (notebook *Notebook) SetShowBorder(showBorder bool) {
 	}
 
 	C.gtk_notebook_set_show_border(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(showBorder)
 }
 
 // SetShowTabs sets whether to show the tabs for the notebook or not.
@@ -853,6 +956,8 @@ func (notebook *Notebook) SetShowTabs(showTabs bool) {
 	}
 
 	C.gtk_notebook_set_show_tabs(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(showTabs)
 }
 
 // SetTabDetachable sets whether the tab can be detached from notebook to
@@ -908,6 +1013,9 @@ func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
 	}
 
 	C.gtk_notebook_set_tab_detachable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(detachable)
 }
 
 // SetTabLabel changes the tab label for child. If NULL is specified for
@@ -924,6 +1032,9 @@ func (notebook *Notebook) SetTabLabel(child Widgetter, tabLabel Widgetter) {
 	}
 
 	C.gtk_notebook_set_tab_label(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabLabel)
 }
 
 // SetTabLabelText creates a new label and sets it as the tab label for the page
@@ -939,6 +1050,9 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_tab_label_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tabText)
 }
 
 // SetTabPos sets the edge at which the tabs for switching pages in the notebook
@@ -951,6 +1065,8 @@ func (notebook *Notebook) SetTabPos(pos PositionType) {
 	_arg1 = C.GtkPositionType(pos)
 
 	C.gtk_notebook_set_tab_pos(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(pos)
 }
 
 // SetTabReorderable sets whether the notebook tab can be reordered via drag and
@@ -967,4 +1083,7 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 	}
 
 	C.gtk_notebook_set_tab_reorderable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(reorderable)
 }

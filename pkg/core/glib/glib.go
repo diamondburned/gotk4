@@ -474,7 +474,9 @@ func finalizeObjectNative(native *objectNative) {
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
 func (v *Object) Cast() Objector {
 	var gvalue C.GValue
+
 	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))
+	runtime.KeepAlive(v)
 
 	value := ValueFromNative(unsafe.Pointer(&gvalue))
 	defer value.Unset()
@@ -514,6 +516,7 @@ func (v *Object) IsA(typ Type) bool {
 // TypeFromInstance is a wrapper around g_type_from_instance().
 func (v *Object) TypeFromInstance() Type {
 	c := C._g_type_from_instance(C.gpointer(unsafe.Pointer(v.native())))
+	runtime.KeepAlive(v)
 	return Type(c)
 }
 
@@ -527,27 +530,32 @@ func (v *Object) TypeFromInstance() Type {
 // Ref is a wrapper around g_object_ref().
 func (v *Object) Ref() {
 	C.g_object_ref(C.gpointer(v.GObject))
+	runtime.KeepAlive(v)
 }
 
 // Unref is a wrapper around g_object_unref().
 func (v *Object) Unref() {
 	C.g_object_unref(C.gpointer(v.GObject))
+	runtime.KeepAlive(v)
 }
 
 // RefSink is a wrapper around g_object_ref_sink().
 func (v *Object) RefSink() {
 	C.g_object_ref_sink(C.gpointer(v.GObject))
+	runtime.KeepAlive(v)
 }
 
 // IsFloating is a wrapper around g_object_is_floating().
 func (v *Object) IsFloating() bool {
 	c := C.g_object_is_floating(C.gpointer(v.GObject))
+	runtime.KeepAlive(v)
 	return gobool(c)
 }
 
 // ForceFloating is a wrapper around g_object_force_floating().
 func (v *Object) ForceFloating() {
 	C.g_object_force_floating(v.GObject)
+	runtime.KeepAlive(v)
 }
 
 // StopEmission is a wrapper around g_signal_stop_emission_by_name().
@@ -556,6 +564,7 @@ func (v *Object) StopEmission(s string) {
 	defer C.free(unsafe.Pointer(cstr))
 	C.g_signal_stop_emission_by_name((C.gpointer)(v.GObject),
 		(*C.gchar)(cstr))
+	runtime.KeepAlive(v)
 }
 
 // PropertyType returns the Type of a property of the underlying GObject. If the
@@ -569,6 +578,8 @@ func (v *Object) PropertyType(name string) Type {
 
 func (v *Object) propertyType(cstr *C.gchar) Type {
 	paramSpec := C.g_object_class_find_property(C._g_object_get_class(v.native()), (*C.gchar)(cstr))
+	runtime.KeepAlive(v)
+
 	if paramSpec == nil {
 		return TypeInvalid
 	}
@@ -588,7 +599,10 @@ func (v *Object) ObjectProperty(name string) interface{} {
 	}
 
 	p := InitValue(t)
+
 	C.g_object_get_property(v.GObject, (*C.gchar)(cstr), p.native())
+	runtime.KeepAlive(v)
+
 	return p.GoValue()
 }
 
@@ -598,7 +612,9 @@ func (v *Object) SetObjectProperty(name string, value interface{}) {
 	defer C.free(unsafe.Pointer(cstr))
 
 	p := NewValue(value)
+
 	C.g_object_set_property(v.GObject, (*C.gchar)(cstr), p.native())
+	runtime.KeepAlive(v)
 }
 
 // Emit emits the signal specified by the string s to an Object. Arguments to
@@ -630,7 +646,9 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	id := C.g_signal_lookup((*C.gchar)(cstr), C.GType(t))
 
 	ret := AllocateValue()
+
 	C.g_signal_emitv(valv, id, C.GQuark(0), ret.native())
+	runtime.KeepAlive(v)
 
 	return ret.GoValue()
 }
@@ -638,17 +656,20 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 // HandlerBlock is a wrapper around g_signal_handler_block().
 func (v *Object) HandlerBlock(handle SignalHandle) {
 	C.g_signal_handler_block(C.gpointer(v.GObject), C.gulong(handle))
+	runtime.KeepAlive(v)
 }
 
 // HandlerUnblock is a wrapper around g_signal_handler_unblock().
 func (v *Object) HandlerUnblock(handle SignalHandle) {
 	C.g_signal_handler_unblock(C.gpointer(v.GObject), C.gulong(handle))
+	runtime.KeepAlive(v)
 }
 
 // HandlerDisconnect is a wrapper around g_signal_handler_disconnect().
 func (v *Object) HandlerDisconnect(handle SignalHandle) {
 	// Ensure that Gtk will not use the closure beforehand.
 	C.g_signal_handler_disconnect(C.gpointer(v.GObject), C.gulong(handle))
+	runtime.KeepAlive(v)
 }
 
 // InitiallyUnowned is a representation of GLib's GInitiallyUnowned.
@@ -806,6 +827,10 @@ func newValuePrimitive(v interface{}) *Value {
 	case Objector:
 		val = InitValue(TypeObject)
 		val.SetInstance(uintptr(unsafe.Pointer(e.Native())))
+		// TODO: this likely won't work as intended: e might still be freed
+		// before the value is. The caller will have to somehow keep this one
+		// alive.
+		runtime.KeepAlive(e)
 	}
 	return val
 }
@@ -824,17 +849,22 @@ func (v *Value) Native() uintptr {
 
 // IsValue checks if value is a valid and initialized GValue structure.
 func (v *Value) IsValue() bool {
-	return gobool(C._g_is_value(v.native()))
+	b := gobool(C._g_is_value(v.native()))
+	runtime.KeepAlive(v)
+	return b
 }
 
 // TypeName gets the type name of value.
 func (v *Value) TypeName() string {
-	return C.GoString((*C.char)(C._g_value_type_name(v.native())))
+	s := C.GoString((*C.char)(C._g_value_type_name(v.native())))
+	runtime.KeepAlive(v)
+	return s
 }
 
 // Unset is wrapper for g_value_unset
 func (v *Value) Unset() {
 	C.g_value_unset(v.native())
+	runtime.KeepAlive(v)
 }
 
 // Type returns the Value's actual type. is a wrapper around the G_VALUE_TYPE()
@@ -846,7 +876,9 @@ func (v *Value) Type() (actual Type) {
 	if v == nil || !v.IsValue() {
 		return TypeInvalid
 	}
-	return Type(C._g_value_type(v.native()))
+	actual = Type(C._g_value_type(v.native()))
+	runtime.KeepAlive(v)
+	return
 }
 
 // CastObject casts the given object pointer to the Go concrete type. The caller
@@ -1046,6 +1078,7 @@ func marshalVariant(p uintptr) (interface{}, error) {
 // any concrete object type out, as long as there exists a marshaler for it.
 func (v *Value) GoValue() interface{} {
 	f := gValueMarshalers.lookup(v)
+	runtime.KeepAlive(v)
 	if f == nil {
 		return InvalidValue
 	}
@@ -1053,6 +1086,7 @@ func (v *Value) GoValue() interface{} {
 	// No need to add finalizer because it is already done by AllocateValue and
 	// InitValue. (?)
 	g, err := f(uintptr(unsafe.Pointer(v.native())))
+	runtime.KeepAlive(v)
 	if err != nil {
 		return InvalidValue
 	}
@@ -1063,78 +1097,95 @@ func (v *Value) GoValue() interface{} {
 // SetBool is a wrapper around g_value_set_boolean().
 func (v *Value) SetBool(val bool) {
 	C.g_value_set_boolean(v.native(), gbool(val))
+	runtime.KeepAlive(v)
 }
 
 // SetSChar is a wrapper around g_value_set_schar().
 func (v *Value) SetSchar(val int8) {
 	C.g_value_set_schar(v.native(), C.gint8(val))
+	runtime.KeepAlive(v)
 }
 
 // SetInt64 is a wrapper around g_value_set_int64().
 func (v *Value) SetInt64(val int64) {
 	C.g_value_set_int64(v.native(), C.gint64(val))
+	runtime.KeepAlive(v)
 }
 
 // SetLong is a wrapper around g_value_set_long().
 func (v *Value) SetLong(long int32) {
 	C.g_value_set_long(v.native(), C.glong(long))
+	runtime.KeepAlive(v)
 }
 
 // SetInt is a wrapper around g_value_set_int().
 func (v *Value) SetInt(val int) {
 	C.g_value_set_int(v.native(), C.gint(val))
+	runtime.KeepAlive(v)
 }
 
 // SetUchar is a wrapper around g_value_set_uchar().
 func (v *Value) SetUchar(val uint8) {
 	C.g_value_set_uchar(v.native(), C.guchar(val))
+	runtime.KeepAlive(v)
 }
 
 // SetUint64 is a wrapper around g_value_set_uint64().
 func (v *Value) SetUint64(val uint64) {
 	C.g_value_set_uint64(v.native(), C.guint64(val))
+	runtime.KeepAlive(v)
 }
 
 // SetUlong is a wrapper around g_value_set_ulong().
 func (v *Value) SetUlong(ulong uint32) {
 	C.g_value_set_ulong(v.native(), C.gulong(ulong))
+	runtime.KeepAlive(v)
 }
 
 // SetUint is a wrapper around g_value_set_uint().
 func (v *Value) SetUint(val uint) {
 	C.g_value_set_uint(v.native(), C.guint(val))
+	runtime.KeepAlive(v)
 }
 
 // SetFloat is a wrapper around g_value_set_float().
 func (v *Value) SetFloat(val float32) {
 	C.g_value_set_float(v.native(), C.gfloat(val))
+	runtime.KeepAlive(v)
 }
 
 // SetDouble is a wrapper around g_value_set_double().
 func (v *Value) SetDouble(val float64) {
 	C.g_value_set_double(v.native(), C.gdouble(val))
+	runtime.KeepAlive(v)
 }
 
 // SetString is a wrapper around g_value_set_string().
 func (v *Value) SetString(val string) {
 	cstr := C.CString(val)
 	defer C.free(unsafe.Pointer(cstr))
+
 	C.g_value_set_string(v.native(), (*C.gchar)(cstr))
+	runtime.KeepAlive(v)
 }
 
 // SetInstance is a wrapper around g_value_set_instance().
 func (v *Value) SetInstance(instance uintptr) {
 	C.g_value_set_instance(v.native(), C.gpointer(instance))
+	runtime.KeepAlive(v)
 }
 
 // SetPointer is a wrapper around g_value_set_pointer().
 func (v *Value) SetPointer(p uintptr) {
 	C.g_value_set_pointer(v.native(), C.gpointer(p))
+	runtime.KeepAlive(v)
 }
 
 // Pointer is a wrapper around g_value_get_pointer().
 func (v *Value) Pointer() unsafe.Pointer {
-	return unsafe.Pointer(C.g_value_get_pointer(v.native()))
+	p := unsafe.Pointer(C.g_value_get_pointer(v.native()))
+	runtime.KeepAlive(v)
+	return p
 }
 
 // String is a wrapper around g_value_get_string().  String() returns a non-nil
@@ -1142,8 +1193,11 @@ func (v *Value) Pointer() unsafe.Pointer {
 // returning a NULL pointer and returning an empty string.
 func (v *Value) String() string {
 	c := C.g_value_get_string(v.native())
+	runtime.KeepAlive(v)
+
 	if c == nil {
 		return ""
 	}
+
 	return C.GoString((*C.char)(c))
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -70,6 +71,8 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out
 

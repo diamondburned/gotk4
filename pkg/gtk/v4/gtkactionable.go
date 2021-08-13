@@ -138,6 +138,8 @@ func (actionable *Actionable) ActionName() string {
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 
+	runtime.KeepAlive(actionable)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -155,6 +157,8 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
+
+	runtime.KeepAlive(actionable)
 
 	var _variant *glib.Variant // out
 
@@ -192,6 +196,8 @@ func (actionable *Actionable) SetActionName(actionName string) {
 	}
 
 	C.gtk_actionable_set_action_name(_arg0, _arg1)
+	runtime.KeepAlive(actionable)
+	runtime.KeepAlive(actionName)
 }
 
 // SetActionTargetValue sets the target value of an actionable widget.
@@ -221,6 +227,8 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	}
 
 	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
+	runtime.KeepAlive(actionable)
+	runtime.KeepAlive(targetValue)
 }
 
 // SetDetailedActionName sets the action-name and associated string target value
@@ -237,4 +245,6 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_actionable_set_detailed_action_name(_arg0, _arg1)
+	runtime.KeepAlive(actionable)
+	runtime.KeepAlive(detailedActionName)
 }

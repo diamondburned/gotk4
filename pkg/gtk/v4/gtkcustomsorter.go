@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -62,6 +63,8 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 
 	_cret = C.gtk_custom_sorter_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(sortFunc)
+
 	var _customSorter *CustomSorter // out
 
 	_customSorter = wrapCustomSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -91,4 +94,6 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	}
 
 	C.gtk_custom_sorter_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sortFunc)
 }

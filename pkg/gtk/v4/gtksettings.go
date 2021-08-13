@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -82,6 +83,8 @@ func (settings *Settings) ResetProperty(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
 }
 
 // SettingsGetDefault gets the GtkSettings object for the default display,
@@ -111,6 +114,8 @@ func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_settings_get_for_display(_arg1)
+
+	runtime.KeepAlive(display)
 
 	var _settings *Settings // out
 

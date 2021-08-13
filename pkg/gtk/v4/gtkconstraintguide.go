@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -80,6 +81,9 @@ func (guide *ConstraintGuide) MaxSize(width *int, height *int) {
 	}
 
 	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // MinSize gets the minimum size of guide.
@@ -97,6 +101,9 @@ func (guide *ConstraintGuide) MinSize(width *int, height *int) {
 	}
 
 	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Name retrieves the name set using gtk_constraint_guide_set_name().
@@ -107,6 +114,8 @@ func (guide *ConstraintGuide) Name() string {
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	_cret = C.gtk_constraint_guide_get_name(_arg0)
+
+	runtime.KeepAlive(guide)
 
 	var _utf8 string // out
 
@@ -132,6 +141,9 @@ func (guide *ConstraintGuide) NatSize(width *int, height *int) {
 	}
 
 	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Strength retrieves the strength set using
@@ -143,6 +155,8 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	_cret = C.gtk_constraint_guide_get_strength(_arg0)
+
+	runtime.KeepAlive(guide)
 
 	var _constraintStrength ConstraintStrength // out
 
@@ -165,6 +179,9 @@ func (guide *ConstraintGuide) SetMaxSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetMinSize sets the minimum size of guide.
@@ -181,6 +198,9 @@ func (guide *ConstraintGuide) SetMinSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetName sets a name for the given GtkConstraintGuide.
@@ -197,6 +217,8 @@ func (guide *ConstraintGuide) SetName(name string) {
 	}
 
 	C.gtk_constraint_guide_set_name(_arg0, _arg1)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(name)
 }
 
 // SetNatSize sets the natural size of guide.
@@ -213,6 +235,9 @@ func (guide *ConstraintGuide) SetNatSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetStrength sets the strength of the constraint on the natural size of the
@@ -225,4 +250,6 @@ func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
 	_arg1 = C.GtkConstraintStrength(strength)
 
 	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(strength)
 }

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -51,6 +52,10 @@ func DBusActionGroupGet(connection *DBusConnection, busName string, objectPath s
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_action_group_get(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(busName)
+	runtime.KeepAlive(objectPath)
 
 	var _dBusActionGroup *DBusActionGroup // out
 

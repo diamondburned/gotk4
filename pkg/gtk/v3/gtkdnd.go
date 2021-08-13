@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -36,6 +37,7 @@ func DragCancel(context *gdk.DragContext) {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_drag_cancel(_arg1)
+	runtime.KeepAlive(context)
 }
 
 // DragFinish informs the drag source that the drop is finished, and that the
@@ -56,6 +58,10 @@ func DragFinish(context *gdk.DragContext, success bool, del bool, time_ uint32) 
 	_arg4 = C.guint32(time_)
 
 	C.gtk_drag_finish(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(success)
+	runtime.KeepAlive(del)
+	runtime.KeepAlive(time_)
 }
 
 // DragGetSourceWidget determines the source widget for a drag.
@@ -66,6 +72,8 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
+
+	runtime.KeepAlive(context)
 
 	var _widget Widgetter // out
 
@@ -83,6 +91,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_drag_set_icon_default(_arg1)
+	runtime.KeepAlive(context)
 }
 
 // DragSetIconGIcon sets the icon for a given drag from the given icon. See the
@@ -100,6 +109,10 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY
 	_arg4 = C.gint(hotY)
 
 	C.gtk_drag_set_icon_gicon(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }
 
 // DragSetIconName sets the icon for a given drag from a named themed icon. See
@@ -119,6 +132,10 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX int, hotY i
 	_arg4 = C.gint(hotY)
 
 	C.gtk_drag_set_icon_name(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }
 
 // DragSetIconPixbuf sets pixbuf as the icon for a given drag.
@@ -134,6 +151,10 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX 
 	_arg4 = C.gint(hotY)
 
 	C.gtk_drag_set_icon_pixbuf(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }
 
 // DragSetIconStock sets the icon for a given drag from a stock ID.
@@ -152,6 +173,10 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX int, hotY i
 	_arg4 = C.gint(hotY)
 
 	C.gtk_drag_set_icon_stock(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }
 
 // DragSetIconSurface sets surface as the icon for a given drag. GTK+ retains
@@ -169,6 +194,8 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_drag_set_icon_surface(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(surface)
 }
 
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
@@ -186,4 +213,8 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX int, hot
 	_arg4 = C.gint(hotY)
 
 	C.gtk_drag_set_icon_widget(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }

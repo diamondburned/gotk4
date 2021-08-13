@@ -62,6 +62,8 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ret *cairo.Context // out
 
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
@@ -81,6 +83,8 @@ func (context *DrawingContext) Clip() *cairo.Region {
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _region *cairo.Region // out
 
@@ -106,6 +110,8 @@ func (context *DrawingContext) Window() Windower {
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _window Windower // out
 
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -121,6 +127,8 @@ func (context *DrawingContext) IsValid() bool {
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 

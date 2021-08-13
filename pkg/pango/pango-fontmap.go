@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -116,6 +117,7 @@ func (fontmap *FontMap) Changed() {
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	C.pango_font_map_changed(_arg0)
+	runtime.KeepAlive(fontmap)
 }
 
 // CreateContext creates a PangoContext connected to fontmap.
@@ -133,6 +135,8 @@ func (fontmap *FontMap) CreateContext() *Context {
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	_cret = C.pango_font_map_create_context(_arg0)
+
+	runtime.KeepAlive(fontmap)
 
 	var _context *Context // out
 
@@ -152,6 +156,9 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_map_get_family(_arg0, _arg1)
+
+	runtime.KeepAlive(fontmap)
+	runtime.KeepAlive(name)
 
 	var _fontFamily FontFamilier // out
 
@@ -180,6 +187,8 @@ func (fontmap *FontMap) Serial() uint {
 
 	_cret = C.pango_font_map_get_serial(_arg0)
 
+	runtime.KeepAlive(fontmap)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -196,6 +205,7 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(fontmap)
 
 	var _families []FontFamilier // out
 
@@ -224,6 +234,10 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(fontmap)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
+
 	var _font Fonter // out
 
 	if _cret != nil {
@@ -248,6 +262,11 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	_arg3 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(fontmap)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desc)
+	runtime.KeepAlive(language)
 
 	var _fontset Fontsetter // out
 

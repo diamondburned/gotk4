@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -105,6 +106,8 @@ func NewNoOpObject(obj *externglib.Object) *NoOpObject {
 	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_no_op_object_new(_arg1)
+
+	runtime.KeepAlive(obj)
 
 	var _noOpObject *NoOpObject // out
 

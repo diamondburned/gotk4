@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -76,6 +77,9 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 
 	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
 
+	runtime.KeepAlive(scope)
+	runtime.KeepAlive(resourcePath)
+
 	var _builderListItemFactory *BuilderListItemFactory // out
 
 	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -91,6 +95,8 @@ func (self *BuilderListItemFactory) Resource() string {
 	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -109,6 +115,8 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _builderScope BuilderScoper // out
 

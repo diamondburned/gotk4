@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -82,6 +83,9 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	}
 
 	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(baseIoStream)
+	runtime.KeepAlive(certificate)
 
 	var _tlsServerConnection TLSServerConnectioner // out
 	var _goerr error                               // out

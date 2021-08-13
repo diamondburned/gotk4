@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -64,6 +65,8 @@ func (plug *PlugAccessible) ID() string {
 	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.gtk_plug_accessible_get_id(_arg0)
+
+	runtime.KeepAlive(plug)
 
 	var _utf8 string // out
 

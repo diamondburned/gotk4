@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -71,6 +72,8 @@ func (anchor *TextChildAnchor) Deleted() bool {
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
+	runtime.KeepAlive(anchor)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -89,6 +92,8 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	_cret = C.gtk_text_child_anchor_get_widgets(_arg0)
+
+	runtime.KeepAlive(anchor)
 
 	var _list []Widgetter // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -63,6 +64,8 @@ func NewFileIcon(file Filer) *FileIcon {
 
 	_cret = C.g_file_icon_new(_arg1)
 
+	runtime.KeepAlive(file)
+
 	var _fileIcon *FileIcon // out
 
 	_fileIcon = wrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -78,6 +81,8 @@ func (icon *FileIcon) File() Filer {
 	_arg0 = (*C.GFileIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_file_icon_get_file(_arg0)
+
+	runtime.KeepAlive(icon)
 
 	var _file Filer // out
 

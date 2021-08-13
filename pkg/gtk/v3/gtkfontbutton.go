@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -120,6 +121,8 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 
 	_cret = C.gtk_font_button_new_with_font(_arg1)
 
+	runtime.KeepAlive(fontname)
+
 	var _fontButton *FontButton // out
 
 	_fontButton = wrapFontButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -142,6 +145,8 @@ func (fontButton *FontButton) FontName() string {
 
 	_cret = C.gtk_font_button_get_font_name(_arg0)
 
+	runtime.KeepAlive(fontButton)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -157,6 +162,8 @@ func (fontButton *FontButton) ShowSize() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_show_size(_arg0)
+
+	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
@@ -177,6 +184,8 @@ func (fontButton *FontButton) ShowStyle() bool {
 
 	_cret = C.gtk_font_button_get_show_style(_arg0)
 
+	runtime.KeepAlive(fontButton)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -195,6 +204,8 @@ func (fontButton *FontButton) Title() string {
 
 	_cret = C.gtk_font_button_get_title(_arg0)
 
+	runtime.KeepAlive(fontButton)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -210,6 +221,8 @@ func (fontButton *FontButton) UseFont() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_font(_arg0)
+
+	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
@@ -228,6 +241,8 @@ func (fontButton *FontButton) UseSize() bool {
 	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(fontButton.Native()))
 
 	_cret = C.gtk_font_button_get_use_size(_arg0)
+
+	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
@@ -253,6 +268,9 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 
 	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
 
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(fontname)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -274,6 +292,8 @@ func (fontButton *FontButton) SetShowSize(showSize bool) {
 	}
 
 	C.gtk_font_button_set_show_size(_arg0, _arg1)
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(showSize)
 }
 
 // SetShowStyle: if show_style is TRUE, the font style will be displayed along
@@ -288,6 +308,8 @@ func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 	}
 
 	C.gtk_font_button_set_show_style(_arg0, _arg1)
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(showStyle)
 }
 
 // SetTitle sets the title for the font chooser dialog.
@@ -300,6 +322,8 @@ func (fontButton *FontButton) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_button_set_title(_arg0, _arg1)
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(title)
 }
 
 // SetUseFont: if use_font is TRUE, the font name will be written using the
@@ -314,6 +338,8 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 	}
 
 	C.gtk_font_button_set_use_font(_arg0, _arg1)
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(useFont)
 }
 
 // SetUseSize: if use_size is TRUE, the font name will be written using the
@@ -328,4 +354,6 @@ func (fontButton *FontButton) SetUseSize(useSize bool) {
 	}
 
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
+	runtime.KeepAlive(fontButton)
+	runtime.KeepAlive(useSize)
 }

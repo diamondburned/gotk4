@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -87,6 +88,8 @@ func (self *StackSidebar) Stack() *Stack {
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _stack *Stack // out
 
 	if _cret != nil {
@@ -108,4 +111,6 @@ func (self *StackSidebar) SetStack(stack *Stack) {
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stack)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -121,6 +122,9 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 
+	runtime.KeepAlive(iconWidget)
+	runtime.KeepAlive(label)
+
 	var _menuToolButton *MenuToolButton // out
 
 	_menuToolButton = wrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -142,6 +146,8 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 
 	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
 
+	runtime.KeepAlive(stockId)
+
 	var _menuToolButton *MenuToolButton // out
 
 	_menuToolButton = wrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -157,6 +163,8 @@ func (button *MenuToolButton) Menu() Widgetter {
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
 
@@ -177,6 +185,8 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_markup(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(markup)
 }
 
 // SetArrowTooltipText sets the tooltip text to be used as tooltip for the arrow
@@ -191,6 +201,8 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_text(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(text)
 }
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
@@ -203,4 +215,6 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(menu)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -100,6 +101,9 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(expression)
+
 	var _dropDown *DropDown // out
 
 	_dropDown = wrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
@@ -129,6 +133,8 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 
 	_cret = C.gtk_drop_down_new_from_strings(_arg1)
 
+	runtime.KeepAlive(strings)
+
 	var _dropDown *DropDown // out
 
 	_dropDown = wrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
@@ -144,6 +150,8 @@ func (self *DropDown) EnableSearch() bool {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -164,6 +172,8 @@ func (self *DropDown) Expression() Expressioner {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
@@ -187,6 +197,8 @@ func (self *DropDown) Factory() *ListItemFactory {
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
@@ -206,6 +218,8 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
@@ -223,6 +237,8 @@ func (self *DropDown) Model() gio.ListModeller {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -242,6 +258,8 @@ func (self *DropDown) Selected() uint {
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -258,6 +276,8 @@ func (self *DropDown) SelectedItem() *externglib.Object {
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _object *externglib.Object // out
 
@@ -280,6 +300,8 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	}
 
 	C.gtk_drop_down_set_enable_search(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableSearch)
 }
 
 // SetExpression sets the expression that gets evaluated to obtain strings from
@@ -297,6 +319,8 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 	}
 
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
@@ -310,6 +334,8 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	}
 
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetListFactory sets the GtkListItemFactory to use for populating list items
@@ -324,6 +350,8 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	}
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetModel sets the GListModel to use.
@@ -337,6 +365,8 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_drop_down_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetSelected selects the item at the given position.
@@ -348,4 +378,6 @@ func (self *DropDown) SetSelected(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }

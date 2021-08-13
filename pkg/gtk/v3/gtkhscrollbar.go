@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -77,6 +78,8 @@ func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 	}
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
+
+	runtime.KeepAlive(adjustment)
 
 	var _hScrollbar *HScrollbar // out
 

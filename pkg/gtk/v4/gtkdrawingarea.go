@@ -193,6 +193,8 @@ func (self *DrawingArea) ContentHeight() int {
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -208,6 +210,8 @@ func (self *DrawingArea) ContentWidth() int {
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _gint int // out
 
@@ -231,6 +235,8 @@ func (self *DrawingArea) SetContentHeight(height int) {
 	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(height)
 }
 
 // SetContentWidth sets the desired width of the contents of the drawing area.
@@ -248,6 +254,8 @@ func (self *DrawingArea) SetContentWidth(width int) {
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(width)
 }
 
 // SetDrawFunc: setting a draw function is the main thing you want to do when
@@ -277,4 +285,6 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	}
 
 	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(drawFunc)
 }

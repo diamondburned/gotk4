@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -70,6 +71,8 @@ func (anchor *TextChildAnchor) Deleted() bool {
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
+
+	runtime.KeepAlive(anchor)
 
 	var _ok bool // out
 

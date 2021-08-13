@@ -4,6 +4,7 @@ package atk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -132,6 +133,8 @@ func (link_ *Hyperlink) EndIndex() int {
 
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 
+	runtime.KeepAlive(link_)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -147,6 +150,8 @@ func (link_ *Hyperlink) NAnchors() int {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
+
+	runtime.KeepAlive(link_)
 
 	var _gint int // out
 
@@ -170,6 +175,9 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
 
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
 	var _object *ObjectClass // out
 
 	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
@@ -186,6 +194,8 @@ func (link_ *Hyperlink) StartIndex() int {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
+
+	runtime.KeepAlive(link_)
 
 	var _gint int // out
 
@@ -207,6 +217,9 @@ func (link_ *Hyperlink) URI(i int) string {
 
 	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
 
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -225,6 +238,8 @@ func (link_ *Hyperlink) IsInline() bool {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_inline(_arg0)
+
+	runtime.KeepAlive(link_)
 
 	var _ok bool // out
 
@@ -247,6 +262,8 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 
 	_cret = C.atk_hyperlink_is_selected_link(_arg0)
 
+	runtime.KeepAlive(link_)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -266,6 +283,8 @@ func (link_ *Hyperlink) IsValid() bool {
 	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
 
 	_cret = C.atk_hyperlink_is_valid(_arg0)
+
+	runtime.KeepAlive(link_)
 
 	var _ok bool // out
 

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -143,6 +144,10 @@ func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable
 
 	_cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+
 	var _iconPaintable *IconPaintable // out
 
 	_iconPaintable = wrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -160,6 +165,8 @@ func (self *IconPaintable) File() gio.Filer {
 	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_icon_paintable_get_file(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _file gio.Filer // out
 
@@ -186,6 +193,8 @@ func (self *IconPaintable) IconName() string {
 
 	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _filename string // out
 
 	if _cret != nil {
@@ -209,6 +218,8 @@ func (self *IconPaintable) IsSymbolic() bool {
 	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -299,6 +310,8 @@ func (self *IconTheme) AddResourcePath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
 }
 
 // AddSearchPath appends a directory to the search path.
@@ -313,6 +326,8 @@ func (self *IconTheme) AddSearchPath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
 }
 
 // Display returns the display that the GtkIconTheme object was created for.
@@ -323,6 +338,8 @@ func (self *IconTheme) Display() *gdk.Display {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_icon_theme_get_display(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _display *gdk.Display // out
 
@@ -346,6 +363,8 @@ func (self *IconTheme) IconNames() []string {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8s []string // out
 
@@ -384,6 +403,9 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
+
 	var _gints []int // out
 
 	defer C.free(unsafe.Pointer(_cret))
@@ -414,6 +436,8 @@ func (self *IconTheme) ResourcePath() []string {
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8s []string // out
 
@@ -449,6 +473,8 @@ func (self *IconTheme) SearchPath() []string {
 
 	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _filenames []string // out
 
 	if _cret != nil {
@@ -483,6 +509,8 @@ func (self *IconTheme) ThemeName() string {
 
 	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -502,6 +530,9 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
 
 	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(gicon)
 
 	var _ok bool // out
 
@@ -523,6 +554,9 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 
 	var _ok bool // out
 
@@ -554,6 +588,13 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, dire
 	_arg5 = C.GtkIconLookupFlags(flags)
 
 	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(flags)
 
 	var _iconPaintable *IconPaintable // out
 
@@ -611,6 +652,14 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int,
 
 	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(fallbacks)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(flags)
+
 	var _iconPaintable *IconPaintable // out
 
 	_iconPaintable = wrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -652,6 +701,8 @@ func (self *IconTheme) SetSearchPath(path []string) {
 	}
 
 	C.gtk_icon_theme_set_search_path(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
 }
 
 // SetThemeName sets the name of the icon theme that the GtkIconTheme object
@@ -670,6 +721,8 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	}
 
 	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(themeName)
 }
 
 // IconThemeGetForDisplay gets the icon theme object associated with display.
@@ -687,6 +740,8 @@ func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_icon_theme_get_for_display(_arg1)
+
+	runtime.KeepAlive(display)
 
 	var _iconTheme *IconTheme // out
 

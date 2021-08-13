@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -150,6 +151,8 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 
 	_cret = C.g_get_language_names_with_category(_arg1)
 
+	runtime.KeepAlive(categoryName)
+
 	var _utf8s []string // out
 
 	{
@@ -191,6 +194,8 @@ func GetLocaleVariants(locale string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_locale_variants(_arg1)
+
+	runtime.KeepAlive(locale)
 
 	var _utf8s []string // out
 

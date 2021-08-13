@@ -128,6 +128,9 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 
 	_cret = C.gdk_surface_new_popup(_arg1, _arg2)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(autohide)
+
 	var _surface *Surface // out
 
 	_surface = wrapSurface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -143,6 +146,8 @@ func NewSurfaceToplevel(display *Display) *Surface {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_surface_new_toplevel(_arg1)
+
+	runtime.KeepAlive(display)
 
 	var _surface *Surface // out
 
@@ -161,6 +166,7 @@ func (surface *Surface) Beep() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_surface_beep(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // CreateCairoContext creates a new GdkCairoContext for rendering on surface.
@@ -171,6 +177,8 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_create_cairo_context(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _cairoContext CairoContexter // out
 
@@ -193,6 +201,8 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_create_gl_context(_arg0, &_cerr)
+
+	runtime.KeepAlive(surface)
 
 	var _glContext GLContexter // out
 	var _goerr error           // out
@@ -233,6 +243,11 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, h
 
 	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(content)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _ret *cairo.Surface // out
 
 	_ret = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
@@ -254,6 +269,8 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_create_vulkan_context(_arg0, &_cerr)
+
+	runtime.KeepAlive(surface)
 
 	var _vulkanContext VulkanContexter // out
 	var _goerr error                   // out
@@ -280,6 +297,7 @@ func (surface *Surface) Destroy() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_surface_destroy(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // Cursor retrieves a GdkCursor pointer for the cursor currently set on the
@@ -294,6 +312,8 @@ func (surface *Surface) Cursor() *Cursor {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_get_cursor(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _cursor *Cursor // out
 
@@ -318,6 +338,9 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_surface_get_device_cursor(_arg0, _arg1)
+
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(device)
 
 	var _cursor *Cursor // out
 
@@ -345,6 +368,9 @@ func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, ma
 
 	_cret = C.gdk_surface_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(device)
+
 	var _x float64         // out
 	var _y float64         // out
 	var _mask ModifierType // out
@@ -369,6 +395,8 @@ func (surface *Surface) Display() *Display {
 
 	_cret = C.gdk_surface_get_display(_arg0)
 
+	runtime.KeepAlive(surface)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -387,6 +415,8 @@ func (surface *Surface) FrameClock() FrameClocker {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_get_frame_clock(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _frameClock FrameClocker // out
 
@@ -407,6 +437,8 @@ func (surface *Surface) Height() int {
 
 	_cret = C.gdk_surface_get_height(_arg0)
 
+	runtime.KeepAlive(surface)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -424,6 +456,8 @@ func (surface *Surface) Mapped() bool {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_get_mapped(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _ok bool // out
 
@@ -453,6 +487,8 @@ func (surface *Surface) ScaleFactor() int {
 
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 
+	runtime.KeepAlive(surface)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -472,6 +508,8 @@ func (surface *Surface) Width() int {
 
 	_cret = C.gdk_surface_get_width(_arg0)
 
+	runtime.KeepAlive(surface)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -490,6 +528,7 @@ func (surface *Surface) Hide() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_surface_hide(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // IsDestroyed: check to see if a surface is destroyed.
@@ -500,6 +539,8 @@ func (surface *Surface) IsDestroyed() bool {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_surface_is_destroyed(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _ok bool // out
 
@@ -521,6 +562,7 @@ func (surface *Surface) QueueRender() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_surface_queue_render(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // RequestLayout: request a layout phase from the surface's frame clock.
@@ -532,6 +574,7 @@ func (surface *Surface) RequestLayout() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_surface_request_layout(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // SetCursor sets the default mouse pointer for a GdkSurface.
@@ -552,6 +595,8 @@ func (surface *Surface) SetCursor(cursor *Cursor) {
 	}
 
 	C.gdk_surface_set_cursor(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(cursor)
 }
 
 // SetDeviceCursor sets a specific GdkCursor for a given device when it gets
@@ -572,6 +617,9 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
 
 	C.gdk_surface_set_device_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(cursor)
 }
 
 // SetInputRegion: apply the region to the surface for the purpose of event
@@ -595,6 +643,8 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_surface_set_input_region(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(region)
 }
 
 // SetOpaqueRegion marks a region of the GdkSurface as opaque.
@@ -621,4 +671,6 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	}
 
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(region)
 }

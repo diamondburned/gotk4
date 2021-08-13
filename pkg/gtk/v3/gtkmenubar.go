@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -89,6 +90,8 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _menuBar *MenuBar // out
 
 	_menuBar = wrapMenuBar(externglib.Take(unsafe.Pointer(_cret)))
@@ -105,6 +108,8 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
+
+	runtime.KeepAlive(menubar)
 
 	var _packDirection PackDirection // out
 
@@ -123,6 +128,8 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 
+	runtime.KeepAlive(menubar)
+
 	var _packDirection PackDirection // out
 
 	_packDirection = PackDirection(_cret)
@@ -140,6 +147,8 @@ func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 	_arg1 = C.GtkPackDirection(childPackDir)
 
 	C.gtk_menu_bar_set_child_pack_direction(_arg0, _arg1)
+	runtime.KeepAlive(menubar)
+	runtime.KeepAlive(childPackDir)
 }
 
 // SetPackDirection sets how items should be packed inside a menubar.
@@ -151,4 +160,6 @@ func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
 	_arg1 = C.GtkPackDirection(packDir)
 
 	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)
+	runtime.KeepAlive(menubar)
+	runtime.KeepAlive(packDir)
 }

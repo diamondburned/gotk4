@@ -154,6 +154,9 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 
 	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
 
 	var _goerr error // out
 
@@ -192,6 +195,10 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 	}
 
 	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(callback)
 }
 
 // CanReachFinish finishes an async network connectivity test. See
@@ -205,6 +212,8 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -242,6 +251,8 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 
 	_cret = C.g_network_monitor_get_connectivity(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _networkConnectivity NetworkConnectivity // out
 
 	_networkConnectivity = NetworkConnectivity(_cret)
@@ -261,6 +272,8 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 
 	_cret = C.g_network_monitor_get_network_available(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -279,6 +292,8 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.g_network_monitor_get_network_metered(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -89,6 +90,9 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(entries)
+	runtime.KeepAlive(userData)
 }
 
 // Insert adds an action to the action group.
@@ -107,6 +111,8 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(action)
 }
 
 // Lookup looks up the action with the name action_name in the group.
@@ -124,6 +130,9 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
+
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(actionName)
 
 	var _action Actioner // out
 
@@ -146,4 +155,6 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_action_group_remove(_arg0, _arg1)
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(actionName)
 }

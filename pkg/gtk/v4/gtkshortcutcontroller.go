@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -119,6 +120,8 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _shortcutController *ShortcutController // out
 
 	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -139,6 +142,8 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	shortcut.Ref()
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(shortcut)
 }
 
 // MnemonicsModifiers gets the mnemonics modifiers for when this controller
@@ -150,6 +155,8 @@ func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _modifierType gdk.ModifierType // out
 
@@ -167,6 +174,8 @@ func (self *ShortcutController) Scope() ShortcutScope {
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _shortcutScope ShortcutScope // out
 
@@ -187,6 +196,8 @@ func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(shortcut)
 }
 
 // SetMnemonicsModifiers sets the controller to have the given
@@ -211,6 +222,8 @@ func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType
 	_arg1 = C.GdkModifierType(modifiers)
 
 	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(modifiers)
 }
 
 // SetScope sets the controller to have the given scope.
@@ -229,4 +242,6 @@ func (self *ShortcutController) SetScope(scope ShortcutScope) {
 	_arg1 = C.GtkShortcutScope(scope)
 
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(scope)
 }

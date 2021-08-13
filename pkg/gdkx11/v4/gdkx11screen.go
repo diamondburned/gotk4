@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -48,6 +49,8 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 
 	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -67,6 +70,8 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 
 	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -83,6 +88,8 @@ func (screen *X11Screen) ScreenNumber() int {
 
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -98,6 +105,8 @@ func (screen *X11Screen) WindowManagerName() string {
 	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
@@ -128,6 +137,9 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
+
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(propertyName)
 
 	var _ok bool // out
 

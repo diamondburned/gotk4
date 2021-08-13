@@ -315,6 +315,8 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_group_action_added(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
 }
 
 // ActionEnabledChanged emits the Group::action-enabled-changed signal on
@@ -334,6 +336,9 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 	}
 
 	C.g_action_group_action_enabled_changed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(enabled)
 }
 
 // ActionRemoved emits the Group::action-removed signal on action_group.
@@ -348,6 +353,8 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_group_action_removed(_arg0, _arg1)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
 }
 
 // ActionStateChanged emits the Group::action-state-changed signal on
@@ -365,6 +372,9 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
 	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(state)
 }
 
 // ActivateAction: activate the named action within action_group.
@@ -409,6 +419,9 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 	}
 
 	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(parameter)
 }
 
 // ChangeActionState: request for the state of the named action within
@@ -433,6 +446,9 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(value)
 }
 
 // ActionEnabled checks if the named action within action_group is currently
@@ -450,6 +466,9 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
+
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
 
 	var _ok bool // out
 
@@ -484,6 +503,9 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 
 	_cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
 
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
 	var _variantType *glib.VariantType // out
 
 	if _cret != nil {
@@ -512,6 +534,9 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state(_arg0, _arg1)
+
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
 
 	var _variant *glib.Variant // out
 
@@ -553,6 +578,9 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	_cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
 
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
 	var _variant *glib.Variant // out
 
 	if _cret != nil {
@@ -591,6 +619,9 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 
 	_cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
 
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
 	var _variantType *glib.VariantType // out
 
 	if _cret != nil {
@@ -612,6 +643,9 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 
 	_cret = C.g_action_group_has_action(_arg0, _arg1)
 
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -632,6 +666,8 @@ func (actionGroup *ActionGroup) ListActions() []string {
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	_cret = C.g_action_group_list_actions(_arg0)
+
+	runtime.KeepAlive(actionGroup)
 
 	var _utf8s []string // out
 
@@ -695,6 +731,9 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
+
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
 
 	var _enabled bool                    // out
 	var _parameterType *glib.VariantType // out

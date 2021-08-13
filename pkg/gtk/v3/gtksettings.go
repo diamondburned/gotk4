@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -87,6 +88,8 @@ func (settings *Settings) ResetProperty(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
 }
 
 // SetDoubleProperty: deprecated: Use g_object_set() instead.
@@ -104,6 +107,10 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(vDouble)
+	runtime.KeepAlive(origin)
 }
 
 // SetLongProperty: deprecated: Use g_object_set() instead.
@@ -121,6 +128,10 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(vLong)
+	runtime.KeepAlive(origin)
 }
 
 // SetPropertyValue: deprecated: Use g_object_set() instead.
@@ -135,6 +146,9 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	_arg2 = (*C.GtkSettingsValue)(gextras.StructNative(unsafe.Pointer(svalue)))
 
 	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(svalue)
 }
 
 // SetStringProperty: deprecated: Use g_object_set() instead.
@@ -153,6 +167,10 @@ func (settings *Settings) SetStringProperty(name string, vString string, origin 
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(vString)
+	runtime.KeepAlive(origin)
 }
 
 // SettingsGetDefault gets the Settings object for the default GDK screen,
@@ -180,6 +198,8 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_settings_get_for_screen(_arg1)
+
+	runtime.KeepAlive(screen)
 
 	var _settings *Settings // out
 

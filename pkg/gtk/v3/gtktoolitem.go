@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -107,6 +108,8 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 
 	_cret = C.gtk_tool_item_get_ellipsize_mode(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _ellipsizeMode pango.EllipsizeMode // out
 
 	_ellipsizeMode = pango.EllipsizeMode(_cret)
@@ -123,6 +126,8 @@ func (toolItem *ToolItem) Expand() bool {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_expand(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
 
@@ -142,6 +147,8 @@ func (toolItem *ToolItem) Homogeneous() bool {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_homogeneous(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
 
@@ -163,6 +170,8 @@ func (toolItem *ToolItem) IconSize() int {
 
 	_cret = C.gtk_tool_item_get_icon_size(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -179,6 +188,8 @@ func (toolItem *ToolItem) IsImportant() bool {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_is_important(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
 
@@ -199,6 +210,8 @@ func (toolItem *ToolItem) Orientation() Orientation {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_orientation(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _orientation Orientation // out
 
@@ -225,6 +238,9 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 
 	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
 
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(menuItemId)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -246,6 +262,8 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 
 	_cret = C.gtk_tool_item_get_relief_style(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _reliefStyle ReliefStyle // out
 
 	_reliefStyle = ReliefStyle(_cret)
@@ -263,6 +281,8 @@ func (toolItem *ToolItem) TextAlignment() float32 {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_text_alignment(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _gfloat float32 // out
 
@@ -282,6 +302,8 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 
 	_cret = C.gtk_tool_item_get_text_orientation(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -299,6 +321,8 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_text_size_group(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _sizeGroup *SizeGroup // out
 
@@ -331,6 +355,8 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 
 	_cret = C.gtk_tool_item_get_toolbar_style(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _toolbarStyle ToolbarStyle // out
 
 	_toolbarStyle = ToolbarStyle(_cret)
@@ -347,6 +373,8 @@ func (toolItem *ToolItem) UseDragWindow() bool {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_use_drag_window(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
 
@@ -367,6 +395,8 @@ func (toolItem *ToolItem) VisibleHorizontal() bool {
 
 	_cret = C.gtk_tool_item_get_visible_horizontal(_arg0)
 
+	runtime.KeepAlive(toolItem)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -385,6 +415,8 @@ func (toolItem *ToolItem) VisibleVertical() bool {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_get_visible_vertical(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
 
@@ -407,6 +439,7 @@ func (toolItem *ToolItem) RebuildMenu() {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	C.gtk_tool_item_rebuild_menu(_arg0)
+	runtime.KeepAlive(toolItem)
 }
 
 // RetrieveProxyMenuItem returns the MenuItem that was last set by
@@ -419,6 +452,8 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	_cret = C.gtk_tool_item_retrieve_proxy_menu_item(_arg0)
+
+	runtime.KeepAlive(toolItem)
 
 	var _widget Widgetter // out
 
@@ -441,6 +476,8 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 	}
 
 	C.gtk_tool_item_set_expand(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(expand)
 }
 
 // SetHomogeneous sets whether tool_item is to be allocated the same size as
@@ -456,6 +493,8 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_tool_item_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetIsImportant sets whether tool_item should be considered important. The
@@ -473,6 +512,8 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	}
 
 	C.gtk_tool_item_set_is_important(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(isImportant)
 }
 
 // SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
@@ -493,6 +534,9 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	}
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(menuItemId)
+	runtime.KeepAlive(menuItem)
 }
 
 // SetTooltipMarkup sets the markup text to be displayed as tooltip on the item.
@@ -506,6 +550,8 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_markup(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(markup)
 }
 
 // SetTooltipText sets the text to be displayed as tooltip on the item. See
@@ -519,6 +565,8 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_text(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(text)
 }
 
 // SetUseDragWindow sets whether tool_item has a drag window. When TRUE the
@@ -535,6 +583,8 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 	}
 
 	C.gtk_tool_item_set_use_drag_window(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(useDragWindow)
 }
 
 // SetVisibleHorizontal sets whether tool_item is visible when the toolbar is
@@ -549,6 +599,8 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	}
 
 	C.gtk_tool_item_set_visible_horizontal(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(visibleHorizontal)
 }
 
 // SetVisibleVertical sets whether tool_item is visible when the toolbar is
@@ -565,6 +617,8 @@ func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 	}
 
 	C.gtk_tool_item_set_visible_vertical(_arg0, _arg1)
+	runtime.KeepAlive(toolItem)
+	runtime.KeepAlive(visibleVertical)
 }
 
 // ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
@@ -576,4 +630,5 @@ func (toolItem *ToolItem) ToolbarReconfigured() {
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
+	runtime.KeepAlive(toolItem)
 }

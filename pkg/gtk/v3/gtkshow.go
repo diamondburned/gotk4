@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -39,6 +40,9 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(timestamp)
 
 	var _goerr error // out
 
@@ -80,6 +84,9 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(timestamp)
 
 	var _goerr error // out
 

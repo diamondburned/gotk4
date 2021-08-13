@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -58,6 +59,8 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 
 	_cret = C.gtk_multi_selection_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _multiSelection *MultiSelection // out
 
 	_multiSelection = wrapMultiSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -73,6 +76,8 @@ func (self *MultiSelection) Model() gio.ListModeller {
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_multi_selection_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -94,4 +99,6 @@ func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_multi_selection_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -67,6 +68,10 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	_arg3 = C.guint(requiredMicro)
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(requiredMajor)
+	runtime.KeepAlive(requiredMinor)
+	runtime.KeepAlive(requiredMicro)
 
 	var _utf8 string // out
 

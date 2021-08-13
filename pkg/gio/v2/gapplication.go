@@ -230,6 +230,9 @@ func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 
 	_cret = C.g_application_new(_arg1, _arg2)
 
+	runtime.KeepAlive(applicationId)
+	runtime.KeepAlive(flags)
+
 	var _application *Application // out
 
 	_application = wrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -249,6 +252,7 @@ func (application *Application) Activate() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_activate(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // AddMainOption: add an option to be handled by application.
@@ -286,6 +290,13 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 	}
 
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(longName)
+	runtime.KeepAlive(shortName)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(arg)
+	runtime.KeepAlive(description)
+	runtime.KeepAlive(argDescription)
 }
 
 // AddMainOptionEntries adds main option entries to be handled by application.
@@ -360,6 +371,8 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 	}
 
 	C.g_application_add_main_option_entries(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(entries)
 }
 
 // AddOptionGroup adds a Group to the commandline handling of application.
@@ -393,6 +406,8 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.g_application_add_option_group(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(group)
 }
 
 // BindBusyProperty marks application as busy (see g_application_mark_busy())
@@ -411,6 +426,9 @@ func (application *Application) BindBusyProperty(object *externglib.Object, prop
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }
 
 // ApplicationID gets the unique identifier for application.
@@ -421,6 +439,8 @@ func (application *Application) ApplicationID() string {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_application_id(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _utf8 string // out
 
@@ -450,6 +470,8 @@ func (application *Application) DBusConnection() *DBusConnection {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_dbus_connection(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _dBusConnection *DBusConnection // out
 
@@ -483,6 +505,8 @@ func (application *Application) DBusObjectPath() string {
 
 	_cret = C.g_application_get_dbus_object_path(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -503,6 +527,8 @@ func (application *Application) Flags() ApplicationFlags {
 
 	_cret = C.g_application_get_flags(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _applicationFlags ApplicationFlags // out
 
 	_applicationFlags = ApplicationFlags(_cret)
@@ -522,6 +548,8 @@ func (application *Application) InactivityTimeout() uint {
 
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -538,6 +566,8 @@ func (application *Application) IsBusy() bool {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_is_busy(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _ok bool // out
 
@@ -559,6 +589,8 @@ func (application *Application) IsRegistered() bool {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_is_registered(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _ok bool // out
 
@@ -586,6 +618,8 @@ func (application *Application) IsRemote() bool {
 
 	_cret = C.g_application_get_is_remote(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -605,6 +639,8 @@ func (application *Application) ResourceBasePath() string {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.g_application_get_resource_base_path(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _utf8 string // out
 
@@ -628,6 +664,7 @@ func (application *Application) Hold() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_hold(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // MarkBusy increases the busy count of application.
@@ -645,6 +682,7 @@ func (application *Application) MarkBusy() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_mark_busy(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // Open opens the given files.
@@ -681,6 +719,9 @@ func (application *Application) Open(files []Filer, hint string) {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(files)
+	runtime.KeepAlive(hint)
 }
 
 // Quit: immediately quits the application.
@@ -701,6 +742,7 @@ func (application *Application) Quit() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_quit(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // Register attempts registration of the application.
@@ -744,6 +786,8 @@ func (application *Application) Register(ctx context.Context) error {
 	}
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -766,6 +810,7 @@ func (application *Application) Release() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_release(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // Run runs the application.
@@ -858,6 +903,9 @@ func (application *Application) Run(argv []string) int {
 
 	_cret = C.g_application_run(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(argv)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -902,6 +950,9 @@ func (application *Application) SendNotification(id string, notification *Notifi
 	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(id)
+	runtime.KeepAlive(notification)
 }
 
 // SetActionGroup: this used to be how actions were associated with a
@@ -921,6 +972,8 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	}
 
 	C.g_application_set_action_group(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(actionGroup)
 }
 
 // SetApplicationID sets the unique identifier for application.
@@ -941,6 +994,8 @@ func (application *Application) SetApplicationID(applicationId string) {
 	}
 
 	C.g_application_set_application_id(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(applicationId)
 }
 
 // SetDefault sets or unsets the default application for the process, as
@@ -956,6 +1011,7 @@ func (application *Application) SetDefault() {
 	}
 
 	C.g_application_set_default(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // SetFlags sets the flags for application.
@@ -971,6 +1027,8 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 	_arg1 = C.GApplicationFlags(flags)
 
 	C.g_application_set_flags(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(flags)
 }
 
 // SetInactivityTimeout sets the current inactivity timeout for the application.
@@ -989,6 +1047,8 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	_arg1 = C.guint(inactivityTimeout)
 
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(inactivityTimeout)
 }
 
 // SetOptionContextDescription adds a description to the application option
@@ -1006,6 +1066,8 @@ func (application *Application) SetOptionContextDescription(description string) 
 	}
 
 	C.g_application_set_option_context_description(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(description)
 }
 
 // SetOptionContextParameterString sets the parameter string to be used by the
@@ -1026,6 +1088,8 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 	}
 
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(parameterString)
 }
 
 // SetOptionContextSummary adds a summary to the application option context.
@@ -1042,6 +1106,8 @@ func (application *Application) SetOptionContextSummary(summary string) {
 	}
 
 	C.g_application_set_option_context_summary(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(summary)
 }
 
 // SetResourceBasePath sets (or unsets) the base resource path of application.
@@ -1086,6 +1152,8 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 	}
 
 	C.g_application_set_resource_base_path(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(resourcePath)
 }
 
 // UnbindBusyProperty destroys a binding between property and the busy state of
@@ -1102,6 +1170,9 @@ func (application *Application) UnbindBusyProperty(object *externglib.Object, pr
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }
 
 // UnmarkBusy decreases the busy count of application.
@@ -1117,6 +1188,7 @@ func (application *Application) UnmarkBusy() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_unmark_busy(_arg0)
+	runtime.KeepAlive(application)
 }
 
 // WithdrawNotification withdraws a notification that was sent with
@@ -1140,6 +1212,8 @@ func (application *Application) WithdrawNotification(id string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_withdraw_notification(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(id)
 }
 
 // ApplicationGetDefault returns the default #GApplication instance for this
@@ -1218,6 +1292,8 @@ func ApplicationIDIsValid(applicationId string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_id_is_valid(_arg1)
+
+	runtime.KeepAlive(applicationId)
 
 	var _ok bool // out
 

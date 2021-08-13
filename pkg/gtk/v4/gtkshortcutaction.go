@@ -180,6 +180,8 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 
 	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(callback)
+
 	var _callbackAction *CallbackAction // out
 
 	_callbackAction = wrapCallbackAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -260,6 +262,8 @@ func NewNamedAction(name string) *NamedAction {
 
 	_cret = C.gtk_named_action_new(_arg1)
 
+	runtime.KeepAlive(name)
+
 	var _namedAction *NamedAction // out
 
 	_namedAction = wrapNamedAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -275,6 +279,8 @@ func (self *NamedAction) ActionName() string {
 	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -399,6 +405,8 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _shortcutAction *ShortcutAction // out
 
 	if _cret != nil {
@@ -431,6 +439,11 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(args)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -451,6 +464,8 @@ func (self *ShortcutAction) String() string {
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -495,6 +510,8 @@ func NewSignalAction(signalName string) *SignalAction {
 
 	_cret = C.gtk_signal_action_new(_arg1)
 
+	runtime.KeepAlive(signalName)
+
 	var _signalAction *SignalAction // out
 
 	_signalAction = wrapSignalAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -510,6 +527,8 @@ func (self *SignalAction) SignalName() string {
 	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 

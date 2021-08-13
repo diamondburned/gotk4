@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -100,6 +101,8 @@ func NewTreeStore(types []externglib.Type) *TreeStore {
 
 	_cret = C.gtk_tree_store_newv(_arg1, _arg2)
 
+	runtime.KeepAlive(types)
+
 	var _treeStore *TreeStore // out
 
 	_treeStore = wrapTreeStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -123,6 +126,8 @@ func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
 	}
 
 	C.gtk_tree_store_append(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
 
 	var _iter TreeIter // out
 
@@ -138,6 +143,7 @@ func (treeStore *TreeStore) Clear() {
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 
 	C.gtk_tree_store_clear(_arg0)
+	runtime.KeepAlive(treeStore)
 }
 
 // Insert creates a new row at position. If parent is non-NULL, then the row
@@ -160,6 +166,9 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 	_arg3 = C.int(position)
 
 	C.gtk_tree_store_insert(_arg0, &_arg1, _arg2, _arg3)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(position)
 
 	var _iter TreeIter // out
 
@@ -192,6 +201,9 @@ func (treeStore *TreeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) Tre
 	}
 
 	C.gtk_tree_store_insert_after(_arg0, &_arg1, _arg2, _arg3)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(sibling)
 
 	var _iter TreeIter // out
 
@@ -224,6 +236,9 @@ func (treeStore *TreeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tr
 	}
 
 	C.gtk_tree_store_insert_before(_arg0, &_arg1, _arg2, _arg3)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(sibling)
 
 	var _iter TreeIter // out
 
@@ -264,6 +279,11 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 	}
 
 	C.gtk_tree_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 
 	var _iter TreeIter // out
 
@@ -286,6 +306,10 @@ func (treeStore *TreeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) boo
 
 	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(descendant)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -307,6 +331,9 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 
 	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
 
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -327,6 +354,9 @@ func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -353,6 +383,9 @@ func (treeStore *TreeStore) MoveAfter(iter *TreeIter, position *TreeIter) {
 	}
 
 	C.gtk_tree_store_move_after(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(position)
 }
 
 // MoveBefore moves iter in tree_store to the position before position. iter and
@@ -371,6 +404,9 @@ func (treeStore *TreeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 	}
 
 	C.gtk_tree_store_move_before(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(position)
 }
 
 // Prepend prepends a new row to tree_store. If parent is non-NULL, then it will
@@ -389,6 +425,8 @@ func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
 	}
 
 	C.gtk_tree_store_prepend(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
 
 	var _iter TreeIter // out
 
@@ -409,6 +447,9 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
@@ -440,6 +481,8 @@ func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 	}
 
 	C.gtk_tree_store_set_column_types(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(types)
 }
 
 // SetValue sets the data in the cell specified by iter and column. The type of
@@ -456,6 +499,10 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(value)
 }
 
 // Set: variant of gtk_tree_store_set_valist() which takes the columns and
@@ -486,6 +533,10 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externgl
 	}
 
 	C.gtk_tree_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 }
 
 // Swap swaps a and b in the same level of tree_store. Note that this function
@@ -500,4 +551,7 @@ func (treeStore *TreeStore) Swap(a *TreeIter, b *TreeIter) {
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.gtk_tree_store_swap(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -167,6 +168,8 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _toggleButton *ToggleButton // out
 
 	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -186,6 +189,8 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _toggleButton *ToggleButton // out
 
 	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -202,6 +207,8 @@ func (toggleButton *ToggleButton) Active() bool {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
+
+	runtime.KeepAlive(toggleButton)
 
 	var _ok bool // out
 
@@ -221,6 +228,8 @@ func (toggleButton *ToggleButton) Inconsistent() bool {
 
 	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
+	runtime.KeepAlive(toggleButton)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -239,6 +248,8 @@ func (toggleButton *ToggleButton) Mode() bool {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_mode(_arg0)
+
+	runtime.KeepAlive(toggleButton)
 
 	var _ok bool // out
 
@@ -263,6 +274,8 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	}
 
 	C.gtk_toggle_button_set_active(_arg0, _arg1)
+	runtime.KeepAlive(toggleButton)
+	runtime.KeepAlive(isActive)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as some
@@ -283,6 +296,8 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 	}
 
 	C.gtk_toggle_button_set_inconsistent(_arg0, _arg1)
+	runtime.KeepAlive(toggleButton)
+	runtime.KeepAlive(setting)
 }
 
 // SetMode sets whether the button is displayed as a separate indicator and
@@ -305,6 +320,8 @@ func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 	}
 
 	C.gtk_toggle_button_set_mode(_arg0, _arg1)
+	runtime.KeepAlive(toggleButton)
+	runtime.KeepAlive(drawIndicator)
 }
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There is
@@ -315,4 +332,5 @@ func (toggleButton *ToggleButton) Toggled() {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
+	runtime.KeepAlive(toggleButton)
 }

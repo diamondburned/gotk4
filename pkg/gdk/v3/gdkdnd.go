@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -183,6 +184,8 @@ func DragAbort(context *DragContext, time_ uint32) {
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(time_)
 }
 
 // DragDrop drops on the current destination.
@@ -199,6 +202,8 @@ func DragDrop(context *DragContext, time_ uint32) {
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(time_)
 }
 
 // DragDropDone: inform GDK if the drop ended successfully. Passing FALSE for
@@ -220,6 +225,8 @@ func DragDropDone(context *DragContext, success bool) {
 	}
 
 	C.gdk_drag_drop_done(_arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(success)
 }
 
 // DragDropSucceeded returns whether the dropped data has been successfully
@@ -232,6 +239,8 @@ func DragDropSucceeded(context *DragContext) bool {
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 
@@ -263,6 +272,11 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	_arg5 = C.gint(yRoot)
 
 	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(dragWindow)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(xRoot)
+	runtime.KeepAlive(yRoot)
 
 	var _destWindow Windower   // out
 	var _protocol DragProtocol // out
@@ -302,6 +316,15 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 
 	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(destWindow)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(xRoot)
+	runtime.KeepAlive(yRoot)
+	runtime.KeepAlive(suggestedAction)
+	runtime.KeepAlive(possibleActions)
+	runtime.KeepAlive(time_)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -325,6 +348,9 @@ func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 	_arg3 = C.guint32(time_)
 
 	C.gdk_drag_status(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(time_)
 }
 
 // DropFinish ends the drag operation after a drop.
@@ -342,6 +368,9 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 	_arg3 = C.guint32(time_)
 
 	C.gdk_drop_finish(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(success)
+	runtime.KeepAlive(time_)
 }
 
 // DropReply accepts or rejects a drop.
@@ -360,4 +389,7 @@ func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	_arg3 = C.guint32(time_)
 
 	C.gdk_drop_reply(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(accepted)
+	runtime.KeepAlive(time_)
 }

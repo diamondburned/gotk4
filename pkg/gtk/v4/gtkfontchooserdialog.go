@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -114,6 +115,9 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	}
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
+
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(parent)
 
 	var _fontChooserDialog *FontChooserDialog // out
 

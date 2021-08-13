@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -207,6 +208,8 @@ func (scanner *Scanner) CurLine() uint {
 
 	_cret = C.g_scanner_cur_line(_arg0)
 
+	runtime.KeepAlive(scanner)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -225,6 +228,8 @@ func (scanner *Scanner) CurPosition() uint {
 
 	_cret = C.g_scanner_cur_position(_arg0)
 
+	runtime.KeepAlive(scanner)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -242,6 +247,8 @@ func (scanner *Scanner) CurToken() TokenType {
 
 	_cret = C.g_scanner_cur_token(_arg0)
 
+	runtime.KeepAlive(scanner)
+
 	var _tokenType TokenType // out
 
 	_tokenType = TokenType(_cret)
@@ -256,6 +263,7 @@ func (scanner *Scanner) Destroy() {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.g_scanner_destroy(_arg0)
+	runtime.KeepAlive(scanner)
 }
 
 // EOF returns TRUE if the scanner has reached the end of the file or text
@@ -267,6 +275,8 @@ func (scanner *Scanner) EOF() bool {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_eof(_arg0)
+
+	runtime.KeepAlive(scanner)
 
 	var _ok bool // out
 
@@ -288,6 +298,8 @@ func (scanner *Scanner) NextToken() TokenType {
 
 	_cret = C.g_scanner_get_next_token(_arg0)
 
+	runtime.KeepAlive(scanner)
+
 	var _tokenType TokenType // out
 
 	_tokenType = TokenType(_cret)
@@ -304,6 +316,8 @@ func (scanner *Scanner) InputFile(inputFd int) {
 	_arg1 = C.gint(inputFd)
 
 	C.g_scanner_input_file(_arg0, _arg1)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(inputFd)
 }
 
 // InputText prepares to scan a text buffer.
@@ -318,6 +332,9 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 	_arg2 = C.guint(textLen)
 
 	C.g_scanner_input_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(textLen)
 }
 
 // LookupSymbol looks up a symbol in the current scope and return its value. If
@@ -332,6 +349,9 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
+
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(symbol)
 
 	var _gpointer cgo.Handle // out
 
@@ -359,6 +379,8 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 
 	_cret = C.g_scanner_peek_next_token(_arg0)
 
+	runtime.KeepAlive(scanner)
+
 	var _tokenType TokenType // out
 
 	_tokenType = TokenType(_cret)
@@ -380,6 +402,10 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 	_arg3 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_scanner_scope_add_symbol(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
+	runtime.KeepAlive(symbol)
+	runtime.KeepAlive(value)
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
@@ -396,6 +422,10 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
+	runtime.KeepAlive(symbol)
 
 	var _gpointer cgo.Handle // out
 
@@ -416,6 +446,9 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_scanner_scope_remove_symbol(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
+	runtime.KeepAlive(symbol)
 }
 
 // SetScope sets the current scope.
@@ -428,6 +461,9 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 	_arg1 = C.guint(scopeId)
 
 	_cret = C.g_scanner_set_scope(_arg0, _arg1)
+
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
 
 	var _guint uint // out
 
@@ -445,6 +481,7 @@ func (scanner *Scanner) SyncFileOffset() {
 	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.g_scanner_sync_file_offset(_arg0)
+	runtime.KeepAlive(scanner)
 }
 
 // UnexpToken outputs a message through the scanner's msg_handler, resulting
@@ -475,6 +512,13 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 	_arg6 = C.gint(isError)
 
 	C.g_scanner_unexp_token(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(expectedToken)
+	runtime.KeepAlive(identifierSpec)
+	runtime.KeepAlive(symbolSpec)
+	runtime.KeepAlive(symbolName)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(isError)
 }
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can

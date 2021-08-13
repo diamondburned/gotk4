@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -175,6 +176,7 @@ func (window *Window) Close() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_close(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Destroy: drop the internal reference GTK holds on toplevel windows.
@@ -184,6 +186,7 @@ func (window *Window) Destroy() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_destroy(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Fullscreen asks to place window in the fullscreen state.
@@ -201,6 +204,7 @@ func (window *Window) Fullscreen() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_fullscreen(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // FullscreenOnMonitor asks to place window in the fullscreen state on the given
@@ -220,6 +224,8 @@ func (window *Window) FullscreenOnMonitor(monitor *gdk.Monitor) {
 	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(monitor)
 }
 
 // Application gets the GtkApplication associated with the window.
@@ -230,6 +236,8 @@ func (window *Window) Application() *Application {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_application(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _application *Application // out
 
@@ -249,6 +257,8 @@ func (window *Window) Child() Widgetter {
 
 	_cret = C.gtk_window_get_child(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -266,6 +276,8 @@ func (window *Window) Decorated() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_decorated(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -289,6 +301,7 @@ func (window *Window) DefaultSize() (width int, height int) {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(window)
 
 	var _width int  // out
 	var _height int // out
@@ -308,6 +321,8 @@ func (window *Window) DefaultWidget() Widgetter {
 
 	_cret = C.gtk_window_get_default_widget(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -325,6 +340,8 @@ func (window *Window) Deletable() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_deletable(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -344,6 +361,8 @@ func (window *Window) DestroyWithParent() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_destroy_with_parent(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -367,6 +386,8 @@ func (window *Window) Focus() Widgetter {
 
 	_cret = C.gtk_window_get_focus(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -384,6 +405,8 @@ func (window *Window) FocusVisible() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_focus_visible(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -407,6 +430,8 @@ func (window *Window) Group() *WindowGroup {
 
 	_cret = C.gtk_window_get_group(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _windowGroup *WindowGroup // out
 
 	_windowGroup = wrapWindowGroup(externglib.Take(unsafe.Pointer(_cret)))
@@ -423,6 +448,8 @@ func (window *Window) HandleMenubarAccel() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_handle_menubar_accel(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -443,6 +470,8 @@ func (window *Window) HideOnClose() bool {
 
 	_cret = C.gtk_window_get_hide_on_close(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -460,6 +489,8 @@ func (window *Window) IconName() string {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_icon_name(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _utf8 string // out
 
@@ -479,6 +510,8 @@ func (window *Window) MnemonicsVisible() bool {
 
 	_cret = C.gtk_window_get_mnemonics_visible(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -496,6 +529,8 @@ func (window *Window) Modal() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_modal(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -515,6 +550,8 @@ func (window *Window) Resizable() bool {
 
 	_cret = C.gtk_window_get_resizable(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -532,6 +569,8 @@ func (window *Window) Title() string {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_get_title(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _utf8 string // out
 
@@ -552,6 +591,8 @@ func (window *Window) Titlebar() Widgetter {
 
 	_cret = C.gtk_window_get_titlebar(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -570,6 +611,8 @@ func (window *Window) TransientFor() *Window {
 
 	_cret = C.gtk_window_get_transient_for(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ret *Window // out
 
 	if _cret != nil {
@@ -587,6 +630,8 @@ func (window *Window) HasGroup() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_has_group(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -611,6 +656,8 @@ func (window *Window) IsActive() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_is_active(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -638,6 +685,8 @@ func (window *Window) IsFullscreen() bool {
 
 	_cret = C.gtk_window_is_fullscreen(_arg0)
 
+	runtime.KeepAlive(window)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -663,6 +712,8 @@ func (window *Window) IsMaximized() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gtk_window_is_maximized(_arg0)
+
+	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
@@ -691,6 +742,7 @@ func (window *Window) Maximize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_maximize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Minimize asks to minimize the specified window.
@@ -711,6 +763,7 @@ func (window *Window) Minimize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_minimize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Present presents a window to the user.
@@ -724,6 +777,7 @@ func (window *Window) Present() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_present(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // PresentWithTime presents a window to the user.
@@ -752,6 +806,8 @@ func (window *Window) PresentWithTime(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gtk_window_present_with_time(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(timestamp)
 }
 
 // SetApplication sets or unsets the GtkApplication associated with the window.
@@ -776,6 +832,8 @@ func (window *Window) SetApplication(application *Application) {
 	}
 
 	C.gtk_window_set_application(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(application)
 }
 
 // SetChild sets the child widget of window.
@@ -789,6 +847,8 @@ func (window *Window) SetChild(child Widgetter) {
 	}
 
 	C.gtk_window_set_child(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(child)
 }
 
 // SetDecorated sets whether the window should be decorated.
@@ -813,6 +873,8 @@ func (window *Window) SetDecorated(setting bool) {
 	}
 
 	C.gtk_window_set_decorated(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetDefaultSize sets the default size of a window.
@@ -848,6 +910,9 @@ func (window *Window) SetDefaultSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gtk_window_set_default_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetDefaultWidget sets the default widget.
@@ -864,6 +929,8 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	}
 
 	C.gtk_window_set_default_widget(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(defaultWidget)
 }
 
 // SetDeletable sets whether the window should be deletable.
@@ -887,6 +954,8 @@ func (window *Window) SetDeletable(setting bool) {
 	}
 
 	C.gtk_window_set_deletable(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetDestroyWithParent: if setting is TRUE, then destroying the transient
@@ -904,6 +973,8 @@ func (window *Window) SetDestroyWithParent(setting bool) {
 	}
 
 	C.gtk_window_set_destroy_with_parent(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetDisplay sets the GdkDisplay where the window is displayed.
@@ -918,6 +989,8 @@ func (window *Window) SetDisplay(display *gdk.Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_window_set_display(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(display)
 }
 
 // SetFocus sets the focus widget.
@@ -937,6 +1010,8 @@ func (window *Window) SetFocus(focus Widgetter) {
 	}
 
 	C.gtk_window_set_focus(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(focus)
 }
 
 // SetFocusVisible sets whether “focus rectangles” are supposed to be visible.
@@ -950,6 +1025,8 @@ func (window *Window) SetFocusVisible(setting bool) {
 	}
 
 	C.gtk_window_set_focus_visible(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetHandleMenubarAccel sets whether this window should react to F10 key
@@ -964,6 +1041,8 @@ func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
 	}
 
 	C.gtk_window_set_handle_menubar_accel(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(handleMenubarAccel)
 }
 
 // SetHideOnClose: if setting is TRUE, then clicking the close button on the
@@ -978,6 +1057,8 @@ func (window *Window) SetHideOnClose(setting bool) {
 	}
 
 	C.gtk_window_set_hide_on_close(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetIconName sets the icon for the window from a named themed icon.
@@ -998,6 +1079,8 @@ func (window *Window) SetIconName(name string) {
 	}
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(name)
 }
 
 // SetMnemonicsVisible sets whether mnemonics are supposed to be visible.
@@ -1011,6 +1094,8 @@ func (window *Window) SetMnemonicsVisible(setting bool) {
 	}
 
 	C.gtk_window_set_mnemonics_visible(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
 }
 
 // SetModal sets a window modal or non-modal.
@@ -1029,6 +1114,8 @@ func (window *Window) SetModal(modal bool) {
 	}
 
 	C.gtk_window_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(modal)
 }
 
 // SetResizable sets whether the user can resize a window.
@@ -1044,6 +1131,8 @@ func (window *Window) SetResizable(resizable bool) {
 	}
 
 	C.gtk_window_set_resizable(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(resizable)
 }
 
 // SetStartupID sets the startup notification ID.
@@ -1067,6 +1156,8 @@ func (window *Window) SetStartupID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(startupId)
 }
 
 // SetTitle sets the title of the GtkWindow.
@@ -1090,6 +1181,8 @@ func (window *Window) SetTitle(title string) {
 	}
 
 	C.gtk_window_set_title(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(title)
 }
 
 // SetTitlebar sets a custom titlebar for window.
@@ -1111,6 +1204,8 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 	}
 
 	C.gtk_window_set_titlebar(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(titlebar)
 }
 
 // SetTransientFor: dialog windows should be set transient for the main
@@ -1133,6 +1228,8 @@ func (window *Window) SetTransientFor(parent *Window) {
 	}
 
 	C.gtk_window_set_transient_for(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(parent)
 }
 
 // Unfullscreen asks to remove the fullscreen state for window, and return to
@@ -1153,6 +1250,7 @@ func (window *Window) Unfullscreen() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_unfullscreen(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Unmaximize asks to unmaximize window.
@@ -1170,6 +1268,7 @@ func (window *Window) Unmaximize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_unmaximize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // Unminimize asks to unminimize the specified window.
@@ -1187,6 +1286,7 @@ func (window *Window) Unminimize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_unminimize(_arg0)
+	runtime.KeepAlive(window)
 }
 
 // WindowGetDefaultIconName returns the fallback icon name for windows.
@@ -1268,6 +1368,7 @@ func WindowSetAutoStartupNotification(setting bool) {
 	}
 
 	C.gtk_window_set_auto_startup_notification(_arg1)
+	runtime.KeepAlive(setting)
 }
 
 // WindowSetDefaultIconName sets an icon to be used as fallback.
@@ -1281,6 +1382,7 @@ func WindowSetDefaultIconName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_name(_arg1)
+	runtime.KeepAlive(name)
 }
 
 // WindowSetInteractiveDebugging opens or closes the interactive debugger
@@ -1296,4 +1398,5 @@ func WindowSetInteractiveDebugging(enable bool) {
 	}
 
 	C.gtk_window_set_interactive_debugging(_arg1)
+	runtime.KeepAlive(enable)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -110,6 +111,8 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
 }
 
 // Child gets the child widget of overlay.
@@ -120,6 +123,8 @@ func (overlay *Overlay) Child() Widgetter {
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
 
 	_cret = C.gtk_overlay_get_child(_arg0)
+
+	runtime.KeepAlive(overlay)
 
 	var _widget Widgetter // out
 
@@ -140,6 +145,9 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
+
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
 
 	var _ok bool // out
 
@@ -162,6 +170,9 @@ func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 
 	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
 
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -181,6 +192,8 @@ func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_remove_overlay(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
 }
 
 // SetChild sets the child widget of overlay.
@@ -194,6 +207,8 @@ func (overlay *Overlay) SetChild(child Widgetter) {
 	}
 
 	C.gtk_overlay_set_child(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(child)
 }
 
 // SetClipOverlay sets whether widget should be clipped within the parent.
@@ -209,6 +224,9 @@ func (overlay *Overlay) SetClipOverlay(widget Widgetter, clipOverlay bool) {
 	}
 
 	C.gtk_overlay_set_clip_overlay(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(clipOverlay)
 }
 
 // SetMeasureOverlay sets whether widget is included in the measured size of
@@ -229,4 +247,7 @@ func (overlay *Overlay) SetMeasureOverlay(widget Widgetter, measure bool) {
 	}
 
 	C.gtk_overlay_set_measure_overlay(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(measure)
 }

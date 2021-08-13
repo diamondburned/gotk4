@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -72,6 +73,8 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 
 	_cret = C.g_inet_address_new_any(_arg1)
 
+	runtime.KeepAlive(family)
+
 	var _inetAddress *InetAddress // out
 
 	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -89,6 +92,8 @@ func NewInetAddressFromString(_string string) *InetAddress {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
+
+	runtime.KeepAlive(_string)
 
 	var _inetAddress *InetAddress // out
 
@@ -108,6 +113,8 @@ func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 
 	_cret = C.g_inet_address_new_loopback(_arg1)
 
+	runtime.KeepAlive(family)
+
 	var _inetAddress *InetAddress // out
 
 	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -125,6 +132,9 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
 
 	_cret = C.g_inet_address_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(otherAddress)
 
 	var _ok bool // out
 
@@ -144,6 +154,8 @@ func (address *InetAddress) Family() SocketFamily {
 
 	_cret = C.g_inet_address_get_family(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _socketFamily SocketFamily // out
 
 	_socketFamily = SocketFamily(_cret)
@@ -159,6 +171,8 @@ func (address *InetAddress) IsAny() bool {
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_get_is_any(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
@@ -179,6 +193,8 @@ func (address *InetAddress) IsLinkLocal() bool {
 
 	_cret = C.g_inet_address_get_is_link_local(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -196,6 +212,8 @@ func (address *InetAddress) IsLoopback() bool {
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_get_is_loopback(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
@@ -215,6 +233,8 @@ func (address *InetAddress) IsMcGlobal() bool {
 
 	_cret = C.g_inet_address_get_is_mc_global(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -233,6 +253,8 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 
 	_cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -250,6 +272,8 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_get_is_mc_node_local(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
@@ -270,6 +294,8 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 
 	_cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -288,6 +314,8 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 
 	_cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -305,6 +333,8 @@ func (address *InetAddress) IsMulticast() bool {
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_get_is_multicast(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
@@ -327,6 +357,8 @@ func (address *InetAddress) IsSiteLocal() bool {
 
 	_cret = C.g_inet_address_get_is_site_local(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -346,6 +378,8 @@ func (address *InetAddress) NativeSize() uint {
 
 	_cret = C.g_inet_address_get_native_size(_arg0)
 
+	runtime.KeepAlive(address)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -361,6 +395,8 @@ func (address *InetAddress) String() string {
 	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_inet_address_to_string(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _utf8 string // out
 

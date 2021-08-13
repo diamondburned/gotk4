@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -148,6 +149,8 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -169,6 +172,8 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(file)
 
 	var _goerr error // out
 
@@ -191,6 +196,8 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(path)
 
 	var _goerr error // out
 
@@ -215,6 +222,8 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(resourcePath)
 }
 
 // String converts the provider into a string representation in CSS format.
@@ -229,6 +238,8 @@ func (provider *CSSProvider) String() string {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
+
+	runtime.KeepAlive(provider)
 
 	var _utf8 string // out
 
@@ -268,6 +279,9 @@ func CSSProviderGetNamed(name string, variant string) *CSSProvider {
 	}
 
 	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
+
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(variant)
 
 	var _cssProvider *CSSProvider // out
 

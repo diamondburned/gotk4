@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -58,6 +59,8 @@ func NewGestureDrag(widget Widgetter) *GestureDrag {
 
 	_cret = C.gtk_gesture_drag_new(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _gestureDrag *GestureDrag // out
 
 	_gestureDrag = wrapGestureDrag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -77,6 +80,8 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(gesture)
 
 	var _x float64 // out
 	var _y float64 // out
@@ -102,6 +107,8 @@ func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(gesture)
 
 	var _x float64 // out
 	var _y float64 // out

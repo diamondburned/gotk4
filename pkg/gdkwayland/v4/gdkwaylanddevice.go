@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -60,6 +61,8 @@ func (device *WaylandDevice) NodePath() string {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_wayland_device_get_node_path(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 

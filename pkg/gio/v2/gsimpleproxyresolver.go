@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -73,6 +74,8 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(defaultProxy)
 }
 
 // SetURIProxy adds a URI-scheme-specific proxy to resolver; URIs whose scheme
@@ -94,4 +97,7 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme string, proxy string)
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(uriScheme)
+	runtime.KeepAlive(proxy)
 }

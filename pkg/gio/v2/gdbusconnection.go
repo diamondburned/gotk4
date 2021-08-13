@@ -445,6 +445,9 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 	}
 
 	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
+	runtime.KeepAlive(callback)
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -464,6 +467,8 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_bus_get_finish(_arg1, &_cerr)
+
+	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
 	var _goerr error                    // out
@@ -505,6 +510,9 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	_arg1 = C.GBusType(busType)
 
 	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
 
 	var _dBusConnection *DBusConnection // out
 	var _goerr error                    // out
@@ -563,6 +571,12 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 	}
 
 	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(guid)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(observer)
+	runtime.KeepAlive(callback)
 }
 
 // NewDBusConnectionForAddress: asynchronously connects and sets up a D-Bus
@@ -609,6 +623,11 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 	}
 
 	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(observer)
+	runtime.KeepAlive(callback)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

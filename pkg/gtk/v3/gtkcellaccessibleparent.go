@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -84,6 +85,8 @@ func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_accessible_parent_activate(_arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 }
 
 func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
@@ -94,6 +97,8 @@ func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_accessible_parent_edit(_arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 }
 
 func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
@@ -104,6 +109,8 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_accessible_parent_expand_collapse(_arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 }
 
 func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle {
@@ -115,6 +122,8 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 
 	var _cellRect gdk.Rectangle // out
 
@@ -137,6 +146,9 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 	_arg6 = C.AtkCoordType(coordType)
 
 	C.gtk_cell_accessible_parent_get_cell_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(coordType)
 
 	var _x int      // out
 	var _y int      // out
@@ -161,6 +173,8 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int,
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_accessible_parent_get_cell_position(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 
 	var _row int    // out
 	var _column int // out
@@ -181,6 +195,9 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -198,6 +215,9 @@ func (parent *CellAccessibleParent) RendererState(cell *CellAccessible) CellRend
 
 	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
 	var _cellRendererState CellRendererState // out
 
 	_cellRendererState = CellRendererState(_cret)
@@ -214,6 +234,9 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
+
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
 
 	var _ok bool // out
 
@@ -234,4 +257,7 @@ func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, rela
 	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(relationset.Native()))
 
 	C.gtk_cell_accessible_parent_update_relationset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(relationset)
 }

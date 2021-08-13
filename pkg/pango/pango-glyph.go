@@ -98,6 +98,8 @@ func ReorderItems(logicalItems []Item) []Item {
 
 	_cret = C.pango_reorder_items(_arg1)
 
+	runtime.KeepAlive(logicalItems)
+
 	var _list []Item // out
 
 	_list = make([]Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
@@ -139,6 +141,10 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	_arg4 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_shape(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(glyphs)
 }
 
 // ShapeFull: convert the characters in text into glyphs.
@@ -177,6 +183,12 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(itemText)
+	runtime.KeepAlive(itemLength)
+	runtime.KeepAlive(paragraphText)
+	runtime.KeepAlive(paragraphLength)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(glyphs)
 }
 
 // ShapeWithFlags: convert the characters in text into glyphs.
@@ -214,6 +226,13 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 	_arg7 = C.PangoShapeFlags(flags)
 
 	C.pango_shape_with_flags(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(itemText)
+	runtime.KeepAlive(itemLength)
+	runtime.KeepAlive(paragraphText)
+	runtime.KeepAlive(paragraphLength)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(flags)
 }
 
 // GlyphGeometry: PangoGlyphGeometry structure contains width and positioning
@@ -314,6 +333,8 @@ func (_string *GlyphString) Copy() *GlyphString {
 
 	_cret = C.pango_glyph_string_copy(_arg0)
 
+	runtime.KeepAlive(_string)
+
 	var _glyphString *GlyphString // out
 
 	if _cret != nil {
@@ -344,6 +365,8 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect 
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(font)
 
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
@@ -373,6 +396,10 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	_arg3 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(font)
 
 	var _inkRect Rectangle     // out
 	var _logicalRect Rectangle // out
@@ -396,6 +423,8 @@ func (glyphs *GlyphString) Width() int {
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
+
+	runtime.KeepAlive(glyphs)
 
 	var _gint int // out
 
@@ -428,6 +457,12 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 	}
 
 	C.pango_glyph_string_index_to_x(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(index_)
+	runtime.KeepAlive(trailing)
 
 	var _xPos int // out
 
@@ -445,6 +480,8 @@ func (_string *GlyphString) SetSize(newLen int) {
 	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(newLen)
 }
 
 // XToIndex: convert from x offset to character position.
@@ -471,6 +508,11 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 	_arg4 = C.int(xPos)
 
 	C.pango_glyph_string_x_to_index(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(xPos)
 
 	var _index_ int   // out
 	var _trailing int // out

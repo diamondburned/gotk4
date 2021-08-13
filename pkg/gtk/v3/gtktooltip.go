@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -91,6 +92,8 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	}
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(customWidget)
 }
 
 // SetIcon sets the icon of the tooltip (which is in front of the text) to be
@@ -105,6 +108,8 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	}
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
@@ -122,6 +127,9 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(gicon)
+	runtime.KeepAlive(size)
 }
 
 // SetIconFromIconName sets the icon of the tooltip (which is in front of the
@@ -140,6 +148,9 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
 }
 
 // SetIconFromStock sets the icon of the tooltip (which is in front of the text)
@@ -160,6 +171,9 @@ func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_tooltip_set_icon_from_stock(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
 }
 
 // SetMarkup sets the text of the tooltip to be markup, which is marked up with
@@ -176,6 +190,8 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 	}
 
 	C.gtk_tooltip_set_markup(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(markup)
 }
 
 // SetText sets the text of the tooltip to be text. If text is NULL, the label
@@ -191,6 +207,8 @@ func (tooltip *Tooltip) SetText(text string) {
 	}
 
 	C.gtk_tooltip_set_text(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(text)
 }
 
 // SetTipArea sets the area of the widget, where the contents of this tooltip
@@ -208,6 +226,8 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(rect)
 }
 
 // TooltipTriggerTooltipQuery triggers a new tooltip query on display, in order
@@ -220,4 +240,5 @@ func TooltipTriggerTooltipQuery(display *gdk.Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_tooltip_trigger_tooltip_query(_arg1)
+	runtime.KeepAlive(display)
 }

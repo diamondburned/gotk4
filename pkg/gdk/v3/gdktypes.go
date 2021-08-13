@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -886,6 +887,9 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(rect1)
+	runtime.KeepAlive(rect2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -910,6 +914,9 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
 
 	var _dest Rectangle // out
 	var _ok bool        // out
@@ -937,6 +944,8 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
 
 	var _dest Rectangle // out
 

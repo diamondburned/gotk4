@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -125,6 +126,8 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _checkButton *CheckButton // out
 
 	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -143,6 +146,8 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
+
+	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
 

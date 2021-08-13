@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -87,6 +88,8 @@ func (spinner *Spinner) Spinning() bool {
 
 	_cret = C.gtk_spinner_get_spinning(_arg0)
 
+	runtime.KeepAlive(spinner)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -107,6 +110,8 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 	}
 
 	C.gtk_spinner_set_spinning(_arg0, _arg1)
+	runtime.KeepAlive(spinner)
+	runtime.KeepAlive(spinning)
 }
 
 // Start starts the animation of the spinner.
@@ -116,6 +121,7 @@ func (spinner *Spinner) Start() {
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_start(_arg0)
+	runtime.KeepAlive(spinner)
 }
 
 // Stop stops the animation of the spinner.
@@ -125,4 +131,5 @@ func (spinner *Spinner) Stop() {
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_stop(_arg0)
+	runtime.KeepAlive(spinner)
 }

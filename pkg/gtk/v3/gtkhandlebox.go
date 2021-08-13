@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -111,6 +112,8 @@ func (handleBox *HandleBox) ChildDetached() bool {
 
 	_cret = C.gtk_handle_box_get_child_detached(_arg0)
 
+	runtime.KeepAlive(handleBox)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -132,6 +135,8 @@ func (handleBox *HandleBox) HandlePosition() PositionType {
 
 	_cret = C.gtk_handle_box_get_handle_position(_arg0)
 
+	runtime.KeepAlive(handleBox)
+
 	var _positionType PositionType // out
 
 	_positionType = PositionType(_cret)
@@ -150,6 +155,8 @@ func (handleBox *HandleBox) ShadowType() ShadowType {
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(handleBox.Native()))
 
 	_cret = C.gtk_handle_box_get_shadow_type(_arg0)
+
+	runtime.KeepAlive(handleBox)
 
 	var _shadowType ShadowType // out
 
@@ -170,6 +177,8 @@ func (handleBox *HandleBox) SnapEdge() PositionType {
 
 	_cret = C.gtk_handle_box_get_snap_edge(_arg0)
 
+	runtime.KeepAlive(handleBox)
+
 	var _positionType PositionType // out
 
 	_positionType = PositionType(_cret)
@@ -188,6 +197,8 @@ func (handleBox *HandleBox) SetHandlePosition(position PositionType) {
 	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_handle_box_set_handle_position(_arg0, _arg1)
+	runtime.KeepAlive(handleBox)
+	runtime.KeepAlive(position)
 }
 
 // SetShadowType sets the type of shadow to be drawn around the border of the
@@ -202,6 +213,8 @@ func (handleBox *HandleBox) SetShadowType(typ ShadowType) {
 	_arg1 = C.GtkShadowType(typ)
 
 	C.gtk_handle_box_set_shadow_type(_arg0, _arg1)
+	runtime.KeepAlive(handleBox)
+	runtime.KeepAlive(typ)
 }
 
 // SetSnapEdge sets the snap edge of a handlebox. The snap edge is the edge of
@@ -223,4 +236,6 @@ func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	_arg1 = C.GtkPositionType(edge)
 
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
+	runtime.KeepAlive(handleBox)
+	runtime.KeepAlive(edge)
 }

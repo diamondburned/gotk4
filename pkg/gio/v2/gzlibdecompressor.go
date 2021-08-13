@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -61,6 +62,8 @@ func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 
 	_cret = C.g_zlib_decompressor_new(_arg1)
 
+	runtime.KeepAlive(format)
+
 	var _zlibDecompressor *ZlibDecompressor // out
 
 	_zlibDecompressor = wrapZlibDecompressor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -80,6 +83,8 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(decompressor.Native()))
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
+
+	runtime.KeepAlive(decompressor)
 
 	var _fileInfo *FileInfo // out
 

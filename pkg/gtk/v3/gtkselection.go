@@ -91,6 +91,7 @@ func SelectionRemoveAll(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_selection_remove_all(_arg1)
+	runtime.KeepAlive(widget)
 }
 
 // TargetEntry represents a single type of data than can be supplied for by a
@@ -118,6 +119,10 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	_arg3 = C.guint(info)
 
 	_cret = C.gtk_target_entry_new(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(target)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(info)
 
 	var _targetEntry *TargetEntry // out
 
@@ -161,6 +166,8 @@ func (data *TargetEntry) Copy() *TargetEntry {
 
 	_cret = C.gtk_target_entry_copy(_arg0)
 
+	runtime.KeepAlive(data)
+
 	var _targetEntry *TargetEntry // out
 
 	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -196,6 +203,8 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 
 	_cret = C.gtk_target_list_new(_arg1, _arg2)
 
+	runtime.KeepAlive(targets)
+
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -220,6 +229,9 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	}
 
 	C.gtk_target_list_add_image_targets(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(writable)
 }
 
 // AddRichTextTargets appends the rich text targets registered with
@@ -240,6 +252,10 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(deserializable)
+	runtime.KeepAlive(buffer)
 }
 
 // AddTable prepends a table of TargetEntry to a target list.
@@ -255,6 +271,8 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 	}
 
 	C.gtk_target_list_add_table(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(targets)
 }
 
 // AddTextTargets appends the text targets supported by SelectionData to the
@@ -267,6 +285,8 @@ func (list *TargetList) AddTextTargets(info uint) {
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_text_targets(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(info)
 }
 
 // AddURITargets appends the URI targets supported by SelectionData to the
@@ -279,6 +299,8 @@ func (list *TargetList) AddURITargets(info uint) {
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(info)
 }
 
 // TargetPair is used to represent the same information as a table of

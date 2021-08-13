@@ -186,6 +186,7 @@ func (frameClock *FrameClock) BeginUpdating() {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gdk_frame_clock_begin_updating(_arg0)
+	runtime.KeepAlive(frameClock)
 }
 
 // EndUpdating stops updates for an animation. See the documentation for
@@ -196,6 +197,7 @@ func (frameClock *FrameClock) EndUpdating() {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gdk_frame_clock_end_updating(_arg0)
+	runtime.KeepAlive(frameClock)
 }
 
 // CurrentTimings gets the frame timings for the current frame.
@@ -206,6 +208,8 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
+
+	runtime.KeepAlive(frameClock)
 
 	var _frameTimings *FrameTimings // out
 
@@ -229,6 +233,8 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 
 	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
 
+	runtime.KeepAlive(frameClock)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -249,6 +255,8 @@ func (frameClock *FrameClock) FrameTime() int64 {
 
 	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
 
+	runtime.KeepAlive(frameClock)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -268,6 +276,8 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	_cret = C.gdk_frame_clock_get_history_start(_arg0)
+
+	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
 
@@ -291,6 +301,8 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 	_arg1 = C.gint64(baseTime)
 
 	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(frameClock)
+	runtime.KeepAlive(baseTime)
 
 	var _refreshIntervalReturn int64  // out
 	var _presentationTimeReturn int64 // out
@@ -313,6 +325,9 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	_arg1 = C.gint64(frameCounter)
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
+
+	runtime.KeepAlive(frameClock)
+	runtime.KeepAlive(frameCounter)
 
 	var _frameTimings *FrameTimings // out
 
@@ -343,4 +358,6 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	_arg1 = C.GdkFrameClockPhase(phase)
 
 	C.gdk_frame_clock_request_phase(_arg0, _arg1)
+	runtime.KeepAlive(frameClock)
+	runtime.KeepAlive(phase)
 }

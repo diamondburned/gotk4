@@ -35,6 +35,8 @@ func InternMIMEType(_string string) string {
 
 	_cret = C.gdk_intern_mime_type(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -80,6 +82,8 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(formats)
 }
 
 // AddGType appends type to builder if it has not already been added.
@@ -91,6 +95,8 @@ func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	_arg1 = C.GType(typ)
 
 	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typ)
 }
 
 // AddMIMEType appends mime_type to builder if it has not already been added.
@@ -103,6 +109,8 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(mimeType)
 }
 
 // ToFormats creates a new GdkContentFormats from the given builder.
@@ -119,6 +127,8 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
+
+	runtime.KeepAlive(builder)
 
 	var _contentFormats *ContentFormats // out
 

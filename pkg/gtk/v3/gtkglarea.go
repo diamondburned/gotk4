@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -141,6 +142,7 @@ func (area *GLArea) AttachBuffers() {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_attach_buffers(_arg0)
+	runtime.KeepAlive(area)
 }
 
 // AutoRender returns whether the area is in auto render mode or not.
@@ -151,6 +153,8 @@ func (area *GLArea) AutoRender() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
+
+	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
@@ -170,6 +174,8 @@ func (area *GLArea) Context() gdk.GLContexter {
 
 	_cret = C.gtk_gl_area_get_context(_arg0)
 
+	runtime.KeepAlive(area)
+
 	var _glContext gdk.GLContexter // out
 
 	_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
@@ -185,6 +191,8 @@ func (area *GLArea) Error() error {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
+
+	runtime.KeepAlive(area)
 
 	var _err error // out
 
@@ -204,6 +212,8 @@ func (area *GLArea) HasAlpha() bool {
 
 	_cret = C.gtk_gl_area_get_has_alpha(_arg0)
 
+	runtime.KeepAlive(area)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -222,6 +232,8 @@ func (area *GLArea) HasDepthBuffer() bool {
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 
+	runtime.KeepAlive(area)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -239,6 +251,8 @@ func (area *GLArea) HasStencilBuffer() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
+
+	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
@@ -259,6 +273,7 @@ func (area *GLArea) RequiredVersion() (major int, minor int) {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(area)
 
 	var _major int // out
 	var _minor int // out
@@ -277,6 +292,8 @@ func (area *GLArea) UseES() bool {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
+
+	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
@@ -298,6 +315,7 @@ func (area *GLArea) MakeCurrent() {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_make_current(_arg0)
+	runtime.KeepAlive(area)
 }
 
 // QueueRender marks the currently rendered data (if any) as invalid, and queues
@@ -313,6 +331,7 @@ func (area *GLArea) QueueRender() {
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
 
 	C.gtk_gl_area_queue_render(_arg0)
+	runtime.KeepAlive(area)
 }
 
 // SetAutoRender: if auto_render is TRUE the GLArea::render signal will be
@@ -334,6 +353,8 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 	}
 
 	C.gtk_gl_area_set_auto_render(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(autoRender)
 }
 
 // SetError sets an error on the area which will be shown instead of the GL
@@ -347,6 +368,8 @@ func (area *GLArea) SetError(err error) {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gtk_gl_area_set_error(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(err)
 }
 
 // SetHasAlpha: if has_alpha is TRUE the buffer allocated by the widget will
@@ -365,6 +388,8 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	}
 
 	C.gtk_gl_area_set_has_alpha(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(hasAlpha)
 }
 
 // SetHasDepthBuffer: if has_depth_buffer is TRUE the widget will allocate and
@@ -380,6 +405,8 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	}
 
 	C.gtk_gl_area_set_has_depth_buffer(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(hasDepthBuffer)
 }
 
 // SetHasStencilBuffer: if has_stencil_buffer is TRUE the widget will allocate
@@ -395,6 +422,8 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 	}
 
 	C.gtk_gl_area_set_has_stencil_buffer(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(hasStencilBuffer)
 }
 
 // SetRequiredVersion sets the required version of OpenGL to be used when
@@ -411,6 +440,9 @@ func (area *GLArea) SetRequiredVersion(major int, minor int) {
 	_arg2 = C.gint(minor)
 
 	C.gtk_gl_area_set_required_version(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(major)
+	runtime.KeepAlive(minor)
 }
 
 // SetUseES sets whether the area should create an OpenGL or an OpenGL ES
@@ -428,4 +460,6 @@ func (area *GLArea) SetUseES(useEs bool) {
 	}
 
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(useEs)
 }

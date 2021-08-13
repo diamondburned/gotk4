@@ -119,6 +119,8 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
+	runtime.KeepAlive(variant)
+
 	var _fileFilter *FileFilter // out
 
 	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -136,6 +138,8 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(mimeType)
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
@@ -148,6 +152,8 @@ func (filter *FileFilter) AddPattern(pattern string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(pattern)
 }
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
@@ -161,6 +167,7 @@ func (filter *FileFilter) AddPixbufFormats() {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
+	runtime.KeepAlive(filter)
 }
 
 // Attributes gets the attributes that need to be filled in for the GFileInfo
@@ -175,6 +182,8 @@ func (filter *FileFilter) Attributes() []string {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_get_attributes(_arg0)
+
+	runtime.KeepAlive(filter)
 
 	var _utf8s []string // out
 
@@ -206,6 +215,8 @@ func (filter *FileFilter) Name() string {
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
+	runtime.KeepAlive(filter)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -230,6 +241,8 @@ func (filter *FileFilter) SetName(name string) {
 	}
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(name)
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
@@ -240,6 +253,8 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
+
+	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out
 

@@ -123,6 +123,8 @@ func (resolver *ProxyResolver) IsSupported() bool {
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
+	runtime.KeepAlive(resolver)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -161,6 +163,10 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
 
 	var _utf8s []string // out
 	var _goerr error    // out
@@ -210,6 +216,10 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 	}
 
 	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(callback)
 }
 
 // LookupFinish: call this function to obtain the array of proxy URIs when
@@ -225,6 +235,9 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _utf8s []string // out
 	var _goerr error    // out

@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -70,6 +71,9 @@ func DirectEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 
 	_cret = C.g_direct_equal(_arg1, _arg2)
 
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -93,6 +97,8 @@ func DirectHash(v cgo.Handle) uint {
 
 	_cret = C.g_direct_hash(_arg1)
 
+	runtime.KeepAlive(v)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -113,6 +119,9 @@ func DoubleEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_double_equal(_arg1, _arg2)
+
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
 
 	var _ok bool // out
 
@@ -135,6 +144,8 @@ func DoubleHash(v cgo.Handle) uint {
 
 	_cret = C.g_double_hash(_arg1)
 
+	runtime.KeepAlive(v)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -156,6 +167,9 @@ func Int64Equal(v1 cgo.Handle, v2 cgo.Handle) bool {
 
 	_cret = C.g_int64_equal(_arg1, _arg2)
 
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -176,6 +190,8 @@ func Int64Hash(v cgo.Handle) uint {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_int64_hash(_arg1)
+
+	runtime.KeepAlive(v)
 
 	var _guint uint // out
 
@@ -201,6 +217,9 @@ func IntEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 
 	_cret = C.g_int_equal(_arg1, _arg2)
 
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -225,6 +244,8 @@ func IntHash(v cgo.Handle) uint {
 
 	_cret = C.g_int_hash(_arg1)
 
+	runtime.KeepAlive(v)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -248,6 +269,9 @@ func StrEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
 
 	_cret = C.g_str_equal(_arg1, _arg2)
+
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
 
 	var _ok bool // out
 
@@ -277,6 +301,8 @@ func StrHash(v cgo.Handle) uint {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_str_hash(_arg1)
+
+	runtime.KeepAlive(v)
 
 	var _guint uint // out
 
@@ -330,6 +356,9 @@ func HashTableAdd(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 
 	_cret = C.g_hash_table_add(_arg1, _arg2)
 
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -357,6 +386,9 @@ func HashTableContains(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_contains(_arg1, _arg2)
+
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
 
 	var _ok bool // out
 
@@ -386,6 +418,7 @@ func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
 	defer C.g_hash_table_unref(_arg1)
 
 	C.g_hash_table_destroy(_arg1)
+	runtime.KeepAlive(hashTable)
 }
 
 // HashTableInsert inserts a new key and value into a Table.
@@ -417,6 +450,10 @@ func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle, value 
 
 	_cret = C.g_hash_table_insert(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -447,6 +484,9 @@ func HashTableLookup(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) cgo.Ha
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_lookup(_arg1, _arg2)
+
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
 
 	var _gpointer cgo.Handle // out
 
@@ -481,6 +521,9 @@ func HashTableLookupExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_hash_table_lookup_extended(_arg1, _arg2, &_arg3, &_arg4)
+
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(lookupKey)
 
 	var _origKey cgo.Handle // out
 	var _value cgo.Handle   // out
@@ -518,6 +561,9 @@ func HashTableRemove(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 
 	_cret = C.g_hash_table_remove(_arg1, _arg2)
 
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -546,6 +592,7 @@ func HashTableRemoveAll(hashTable map[cgo.Handle]cgo.Handle) {
 	defer C.g_hash_table_unref(_arg1)
 
 	C.g_hash_table_remove_all(_arg1)
+	runtime.KeepAlive(hashTable)
 }
 
 // HashTableReplace inserts a new key and value into a Table similar to
@@ -577,6 +624,10 @@ func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle, value
 
 	_cret = C.g_hash_table_replace(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -602,6 +653,8 @@ func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 	defer C.g_hash_table_unref(_arg1)
 
 	_cret = C.g_hash_table_size(_arg1)
+
+	runtime.KeepAlive(hashTable)
 
 	var _guint uint // out
 
@@ -630,6 +683,9 @@ func HashTableSteal(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle) bool {
 
 	_cret = C.g_hash_table_steal(_arg1, _arg2)
 
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(key)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -655,6 +711,7 @@ func HashTableStealAll(hashTable map[cgo.Handle]cgo.Handle) {
 	defer C.g_hash_table_unref(_arg1)
 
 	C.g_hash_table_steal_all(_arg1)
+	runtime.KeepAlive(hashTable)
 }
 
 // HashTableStealExtended looks up a key in the Table, stealing the original key
@@ -686,6 +743,9 @@ func HashTableStealExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.H
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_hash_table_steal_extended(_arg1, _arg2, &_arg3, &_arg4)
+
+	runtime.KeepAlive(hashTable)
+	runtime.KeepAlive(lookupKey)
 
 	var _stolenKey cgo.Handle   // out
 	var _stolenValue cgo.Handle // out
@@ -742,6 +802,8 @@ func (iter *HashTableIter) Init(hashTable map[cgo.Handle]cgo.Handle) {
 	defer C.g_hash_table_unref(_arg1)
 
 	C.g_hash_table_iter_init(_arg0, _arg1)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(hashTable)
 }
 
 // Next advances iter and retrieves the key and/or value that are now pointed to
@@ -756,6 +818,8 @@ func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(iter)
 
 	var _key cgo.Handle   // out
 	var _value cgo.Handle // out
@@ -792,6 +856,7 @@ func (iter *HashTableIter) Remove() {
 	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.g_hash_table_iter_remove(_arg0)
+	runtime.KeepAlive(iter)
 }
 
 // Replace replaces the value currently pointed to by the iterator from its
@@ -808,6 +873,8 @@ func (iter *HashTableIter) Replace(value cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(value)
 }
 
 // Steal removes the key/value pair currently pointed to by the iterator from
@@ -820,4 +887,5 @@ func (iter *HashTableIter) Steal() {
 	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.g_hash_table_iter_steal(_arg0)
+	runtime.KeepAlive(iter)
 }

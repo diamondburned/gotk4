@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -56,6 +57,8 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _selectionFilterModel *SelectionFilterModel // out
 
 	_selectionFilterModel = wrapSelectionFilterModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -71,6 +74,8 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_selection_filter_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _selectionModel SelectionModeller // out
 
@@ -96,4 +101,6 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	}
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

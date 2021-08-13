@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -117,6 +118,10 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int
 
 	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(feature)
+	runtime.KeepAlive(featureIdx)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -134,6 +139,9 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	_arg1 = C.gint(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
+
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(groupIdx)
 
 	var _gint int // out
 
@@ -153,6 +161,9 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 
 	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(feature)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -170,6 +181,8 @@ func (pad *DevicePad) NGroups() int {
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
+
+	runtime.KeepAlive(pad)
 
 	var _gint int // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -149,6 +150,8 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(source)
 }
 
 // ServerIdentity gets conn's expected server identity
@@ -159,6 +162,8 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _socketConnectable SocketConnectabler // out
 
@@ -181,6 +186,8 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 
 	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -198,6 +205,8 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tls_client_connection_get_validation_flags(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
@@ -218,6 +227,8 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_tls_client_connection_set_server_identity(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(identity)
 }
 
 // SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
@@ -241,6 +252,8 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	}
 
 	C.g_tls_client_connection_set_use_ssl3(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(useSsl3)
 }
 
 // SetValidationFlags sets conn's validation flags, to override the default set
@@ -254,6 +267,8 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_tls_client_connection_set_validation_flags(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(flags)
 }
 
 // NewTLSClientConnection creates a new ClientConnection wrapping base_io_stream
@@ -275,6 +290,9 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	}
 
 	_cret = C.g_tls_client_connection_new(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(baseIoStream)
+	runtime.KeepAlive(serverIdentity)
 
 	var _tlsClientConnection TLSClientConnectioner // out
 	var _goerr error                               // out

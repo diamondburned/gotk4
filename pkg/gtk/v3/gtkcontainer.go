@@ -381,6 +381,8 @@ func (container *Container) Add(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_add(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(widget)
 }
 
 func (container *Container) CheckResize() {
@@ -389,6 +391,7 @@ func (container *Container) CheckResize() {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	C.gtk_container_check_resize(_arg0)
+	runtime.KeepAlive(container)
 }
 
 // ChildGetProperty gets the value of a child property for child and container.
@@ -405,6 +408,10 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(propertyName)
+	runtime.KeepAlive(value)
 }
 
 // ChildNotify emits a Widget::child-notify signal for the [child
@@ -424,6 +431,9 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(childProperty)
 }
 
 // ChildSetProperty sets a child property for child and container.
@@ -440,6 +450,10 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(propertyName)
+	runtime.KeepAlive(value)
 }
 
 // ChildType returns the type of the children supported by the container.
@@ -453,6 +467,8 @@ func (container *Container) ChildType() externglib.Type {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_child_type(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _gType externglib.Type // out
 
@@ -479,6 +495,8 @@ func (container *Container) Forall(callback Callback) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_container_forall(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(callback)
 }
 
 // Foreach invokes callback on each non-internal child of container. See
@@ -502,6 +520,8 @@ func (container *Container) Foreach(callback Callback) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_container_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(callback)
 }
 
 // BorderWidth retrieves the border width of the container. See
@@ -513,6 +533,8 @@ func (container *Container) BorderWidth() uint {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_border_width(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _guint uint // out
 
@@ -530,6 +552,8 @@ func (container *Container) Children() []Widgetter {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_children(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _list []Widgetter // out
 
@@ -560,6 +584,8 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 
 	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
 
+	runtime.KeepAlive(container)
+
 	var _focusableWidgets []Widgetter // out
 	var _ok bool                      // out
 
@@ -588,6 +614,8 @@ func (container *Container) FocusChild() Widgetter {
 
 	_cret = C.gtk_container_get_focus_child(_arg0)
 
+	runtime.KeepAlive(container)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -607,6 +635,8 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 
 	_cret = C.gtk_container_get_focus_hadjustment(_arg0)
 
+	runtime.KeepAlive(container)
+
 	var _adjustment *Adjustment // out
 
 	if _cret != nil {
@@ -625,6 +655,8 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_focus_vadjustment(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _adjustment *Adjustment // out
 
@@ -646,6 +678,9 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	_cret = C.gtk_container_get_path_for_child(_arg0, _arg1)
+
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
 
 	var _widgetPath *WidgetPath // out
 
@@ -669,6 +704,8 @@ func (container *Container) ResizeMode() ResizeMode {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_get_resize_mode(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _resizeMode ResizeMode // out
 
@@ -702,6 +739,9 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(cr)
 }
 
 // Remove removes widget from container. widget must be inside container. Note
@@ -720,6 +760,8 @@ func (container *Container) Remove(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_container_remove(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(widget)
 }
 
 // ResizeChildren: deprecated: since version 3.10.
@@ -729,6 +771,7 @@ func (container *Container) ResizeChildren() {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	C.gtk_container_resize_children(_arg0)
+	runtime.KeepAlive(container)
 }
 
 // SetBorderWidth sets the border width of the container.
@@ -747,6 +790,8 @@ func (container *Container) SetBorderWidth(borderWidth uint) {
 	_arg1 = C.guint(borderWidth)
 
 	C.gtk_container_set_border_width(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(borderWidth)
 }
 
 // SetFocusChain sets a focus chain, overriding the one computed automatically
@@ -774,6 +819,8 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 	defer C.g_list_free(_arg1)
 
 	C.gtk_container_set_focus_chain(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(focusableWidgets)
 }
 
 // SetFocusChild: sets, or unsets if child is NULL, the focused child of
@@ -795,6 +842,8 @@ func (container *Container) SetFocusChild(child Widgetter) {
 	}
 
 	C.gtk_container_set_focus_child(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
 }
 
 // SetFocusHAdjustment hooks up an adjustment to focus handling in a container,
@@ -814,6 +863,8 @@ func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetFocusVAdjustment hooks up an adjustment to focus handling in a container,
@@ -833,6 +884,8 @@ func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_vadjustment(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetReallocateRedraws sets the reallocate_redraws flag of the container to the
@@ -852,6 +905,8 @@ func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 	}
 
 	C.gtk_container_set_reallocate_redraws(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(needsRedraws)
 }
 
 // SetResizeMode sets the resize mode for the container.
@@ -870,6 +925,8 @@ func (container *Container) SetResizeMode(resizeMode ResizeMode) {
 	_arg1 = C.GtkResizeMode(resizeMode)
 
 	C.gtk_container_set_resize_mode(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(resizeMode)
 }
 
 // UnsetFocusChain removes a focus chain explicitly set with
@@ -883,4 +940,5 @@ func (container *Container) UnsetFocusChain() {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 
 	C.gtk_container_unset_focus_chain(_arg0)
+	runtime.KeepAlive(container)
 }

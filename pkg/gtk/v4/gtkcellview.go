@@ -112,6 +112,9 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
 
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+
 	var _cellView *CellView // out
 
 	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
@@ -131,6 +134,8 @@ func NewCellViewWithMarkup(markup string) *CellView {
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
 
+	runtime.KeepAlive(markup)
+
 	var _cellView *CellView // out
 
 	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
@@ -149,6 +154,8 @@ func NewCellViewWithText(text string) *CellView {
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
 
+	runtime.KeepAlive(text)
+
 	var _cellView *CellView // out
 
 	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
@@ -166,6 +173,8 @@ func NewCellViewWithTexture(texture gdk.Texturer) *CellView {
 
 	_cret = C.gtk_cell_view_new_with_texture(_arg1)
 
+	runtime.KeepAlive(texture)
+
 	var _cellView *CellView // out
 
 	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
@@ -182,6 +191,8 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
+
+	runtime.KeepAlive(cellView)
 
 	var _treePath *TreePath // out
 
@@ -205,6 +216,8 @@ func (cellView *CellView) DrawSensitive() bool {
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
+	runtime.KeepAlive(cellView)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -224,6 +237,8 @@ func (cellView *CellView) FitModel() bool {
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
+	runtime.KeepAlive(cellView)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -241,6 +256,8 @@ func (cellView *CellView) Model() TreeModeller {
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
+
+	runtime.KeepAlive(cellView)
 
 	var _treeModel TreeModeller // out
 
@@ -266,6 +283,8 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	}
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
+	runtime.KeepAlive(cellView)
+	runtime.KeepAlive(path)
 }
 
 // SetDrawSensitive sets whether cell_view should draw all of its cells in a
@@ -282,6 +301,8 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	}
 
 	C.gtk_cell_view_set_draw_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(cellView)
+	runtime.KeepAlive(drawSensitive)
 }
 
 // SetFitModel sets whether cell_view should request space to fit the entire
@@ -300,6 +321,8 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 	}
 
 	C.gtk_cell_view_set_fit_model(_arg0, _arg1)
+	runtime.KeepAlive(cellView)
+	runtime.KeepAlive(fitModel)
 }
 
 // SetModel sets the model for cell_view. If cell_view already has a model set,
@@ -315,4 +338,6 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	}
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)
+	runtime.KeepAlive(cellView)
+	runtime.KeepAlive(model)
 }

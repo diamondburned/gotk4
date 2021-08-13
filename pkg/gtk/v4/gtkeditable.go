@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -291,6 +292,7 @@ func (editable *Editable) DeleteSelection() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_delete_selection(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // DeleteText deletes a sequence of characters.
@@ -310,6 +312,9 @@ func (editable *Editable) DeleteText(startPos int, endPos int) {
 	_arg2 = C.int(endPos)
 
 	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // FinishDelegate undoes the setup done by gtk.Editable.InitDelegate().
@@ -322,6 +327,7 @@ func (editable *Editable) FinishDelegate() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_finish_delegate(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // Alignment gets the alignment of the editable.
@@ -332,6 +338,8 @@ func (editable *Editable) Alignment() float32 {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_alignment(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _gfloat float32 // out
 
@@ -360,6 +368,10 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 
 	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -380,6 +392,8 @@ func (editable *Editable) Delegate() Editabler {
 
 	_cret = C.gtk_editable_get_delegate(_arg0)
 
+	runtime.KeepAlive(editable)
+
 	var _ret Editabler // out
 
 	if _cret != nil {
@@ -397,6 +411,8 @@ func (editable *Editable) Editable() bool {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_editable(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _ok bool // out
 
@@ -416,6 +432,8 @@ func (editable *Editable) EnableUndo() bool {
 
 	_cret = C.gtk_editable_get_enable_undo(_arg0)
 
+	runtime.KeepAlive(editable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -433,6 +451,8 @@ func (editable *Editable) MaxWidthChars() int {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_max_width_chars(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _gint int // out
 
@@ -452,6 +472,8 @@ func (editable *Editable) Position() int {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_position(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _gint int // out
 
@@ -477,6 +499,8 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(editable)
+
 	var _startPos int // out
 	var _endPos int   // out
 	var _ok bool      // out
@@ -501,6 +525,8 @@ func (editable *Editable) Text() string {
 
 	_cret = C.gtk_editable_get_text(_arg0)
 
+	runtime.KeepAlive(editable)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -517,6 +543,8 @@ func (editable *Editable) WidthChars() int {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_width_chars(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _gint int // out
 
@@ -538,6 +566,7 @@ func (editable *Editable) InitDelegate() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_init_delegate(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // SelectRegion selects a region of text.
@@ -558,6 +587,9 @@ func (editable *Editable) SelectRegion(startPos int, endPos int) {
 	_arg2 = C.int(endPos)
 
 	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // SetAlignment sets the alignment for the contents of the editable.
@@ -572,6 +604,8 @@ func (editable *Editable) SetAlignment(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.gtk_editable_set_alignment(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(xalign)
 }
 
 // SetEditable determines if the user can edit the text in the editable widget.
@@ -585,6 +619,8 @@ func (editable *Editable) SetEditable(isEditable bool) {
 	}
 
 	C.gtk_editable_set_editable(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(isEditable)
 }
 
 // SetEnableUndo: if enabled, changes to editable will be saved for undo/redo
@@ -603,6 +639,8 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 	}
 
 	C.gtk_editable_set_enable_undo(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(enableUndo)
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of editable.
@@ -614,6 +652,8 @@ func (editable *Editable) SetMaxWidthChars(nChars int) {
 	_arg1 = C.int(nChars)
 
 	C.gtk_editable_set_max_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(nChars)
 }
 
 // SetPosition sets the cursor position in the editable to the given value.
@@ -631,6 +671,8 @@ func (editable *Editable) SetPosition(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_editable_set_position(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(position)
 }
 
 // SetText sets the text in the editable to the given value.
@@ -645,6 +687,8 @@ func (editable *Editable) SetText(text string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_editable_set_text(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(text)
 }
 
 // SetWidthChars changes the size request of the editable to be about the right
@@ -661,4 +705,6 @@ func (editable *Editable) SetWidthChars(nChars int) {
 	_arg1 = C.int(nChars)
 
 	C.gtk_editable_set_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(nChars)
 }

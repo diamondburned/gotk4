@@ -192,6 +192,10 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
+
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
@@ -238,6 +242,10 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 	}
 
 	C.g_tls_interaction_ask_password_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(callback)
 }
 
 // AskPasswordFinish: complete an ask password user interaction request. This
@@ -260,6 +268,9 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(result)
 
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
@@ -306,6 +317,10 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
 
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
@@ -357,6 +372,11 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
@@ -405,6 +425,11 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out
 
@@ -447,6 +472,11 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 	}
 
 	C.g_tls_interaction_request_certificate_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // RequestCertificateFinish: complete a request certificate user interaction
@@ -470,6 +500,9 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(result)
 
 	var _tlsInteractionResult TLSInteractionResult // out
 	var _goerr error                               // out

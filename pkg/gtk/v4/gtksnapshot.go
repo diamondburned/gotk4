@@ -85,6 +85,10 @@ func (snapshot *Snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]
 	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
 
 	C.gtk_snapshot_append_border(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(borderWidth)
+	runtime.KeepAlive(borderColor)
 }
 
 // AppendCairo creates a new GskCairoNode and appends it to the current render
@@ -98,6 +102,9 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gtk_snapshot_append_cairo(_arg0, _arg1)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
 
 	var _context *cairo.Context // out
 
@@ -123,6 +130,9 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_append_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(bounds)
 }
 
 // AppendConicGradient appends a conic gradient node with the given stops to
@@ -145,6 +155,11 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	}
 
 	C.gtk_snapshot_append_conic_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(rotation)
+	runtime.KeepAlive(stops)
 }
 
 // AppendInsetShadow appends an inset shadow into the box given by outline.
@@ -166,6 +181,13 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	_arg6 = C.float(blurRadius)
 
 	C.gtk_snapshot_append_inset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
 }
 
 func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
@@ -178,6 +200,9 @@ func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_snapshot_append_layout(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(color)
 }
 
 // AppendLinearGradient appends a linear gradient node with the given stops to
@@ -200,6 +225,11 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	}
 
 	C.gtk_snapshot_append_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(startPoint)
+	runtime.KeepAlive(endPoint)
+	runtime.KeepAlive(stops)
 }
 
 // AppendNode appends node to the current render node of snapshot, without
@@ -215,6 +245,8 @@ func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	C.gtk_snapshot_append_node(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(node)
 }
 
 // AppendOutsetShadow appends an outset shadow node around the box given by
@@ -237,6 +269,13 @@ func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gd
 	_arg6 = C.float(blurRadius)
 
 	C.gtk_snapshot_append_outset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
 }
 
 // AppendRadialGradient appends a radial gradient node with the given stops to
@@ -265,6 +304,14 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	}
 
 	C.gtk_snapshot_append_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(hradius)
+	runtime.KeepAlive(vradius)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(stops)
 }
 
 // AppendRepeatingLinearGradient appends a repeating linear gradient node with
@@ -287,6 +334,11 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	}
 
 	C.gtk_snapshot_append_repeating_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(startPoint)
+	runtime.KeepAlive(endPoint)
+	runtime.KeepAlive(stops)
 }
 
 // AppendRepeatingRadialGradient appends a repeating radial gradient node with
@@ -315,6 +367,14 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	}
 
 	C.gtk_snapshot_append_repeating_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(hradius)
+	runtime.KeepAlive(vradius)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(stops)
 }
 
 // AppendTexture creates a new render node drawing the texture into the given
@@ -329,6 +389,9 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_append_texture(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(bounds)
 }
 
 // GLShaderPopTexture removes the top element from the stack of render nodes and
@@ -342,6 +405,7 @@ func (snapshot *Snapshot) GLShaderPopTexture() {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	C.gtk_snapshot_gl_shader_pop_texture(_arg0)
+	runtime.KeepAlive(snapshot)
 }
 
 // Perspective applies a perspective projection transform.
@@ -355,6 +419,8 @@ func (snapshot *Snapshot) Perspective(depth float32) {
 	_arg1 = C.float(depth)
 
 	C.gtk_snapshot_perspective(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(depth)
 }
 
 // Pop removes the top element from the stack of render nodes, and appends it to
@@ -365,6 +431,7 @@ func (snapshot *Snapshot) Pop() {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	C.gtk_snapshot_pop(_arg0)
+	runtime.KeepAlive(snapshot)
 }
 
 // PushBlend blends together two images with the given blend mode.
@@ -382,6 +449,8 @@ func (snapshot *Snapshot) PushBlend(blendMode gsk.BlendMode) {
 	_arg1 = C.GskBlendMode(blendMode)
 
 	C.gtk_snapshot_push_blend(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(blendMode)
 }
 
 // PushBlur blurs an image.
@@ -395,6 +464,8 @@ func (snapshot *Snapshot) PushBlur(radius float64) {
 	_arg1 = C.double(radius)
 
 	C.gtk_snapshot_push_blur(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(radius)
 }
 
 // PushClip clips an image to a rectangle.
@@ -408,6 +479,8 @@ func (snapshot *Snapshot) PushClip(bounds *graphene.Rect) {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_push_clip(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
 }
 
 // PushColorMatrix modifies the colors of an image by applying an affine
@@ -424,6 +497,9 @@ func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOff
 	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	C.gtk_snapshot_push_color_matrix(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(colorMatrix)
+	runtime.KeepAlive(colorOffset)
 }
 
 // PushCrossFade snapshots a cross-fade operation between two images with the
@@ -442,6 +518,8 @@ func (snapshot *Snapshot) PushCrossFade(progress float64) {
 	_arg1 = C.double(progress)
 
 	C.gtk_snapshot_push_cross_fade(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(progress)
 }
 
 // PushOpacity modifies the opacity of an image.
@@ -455,6 +533,8 @@ func (snapshot *Snapshot) PushOpacity(opacity float64) {
 	_arg1 = C.double(opacity)
 
 	C.gtk_snapshot_push_opacity(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(opacity)
 }
 
 // PushRepeat creates a node that repeats the child node.
@@ -472,6 +552,9 @@ func (snapshot *Snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphen
 	}
 
 	C.gtk_snapshot_push_repeat(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(childBounds)
 }
 
 // PushRoundedClip clips an image to a rounded rectangle.
@@ -485,6 +568,8 @@ func (snapshot *Snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_push_rounded_clip(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(bounds)
 }
 
 // PushShadow applies a shadow to an image.
@@ -500,6 +585,9 @@ func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 	_arg2 = C.gsize(nShadows)
 
 	C.gtk_snapshot_push_shadow(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(shadow)
+	runtime.KeepAlive(nShadows)
 }
 
 // RenderBackground creates a render node for the CSS background according to
@@ -521,6 +609,12 @@ func (snapshot *Snapshot) RenderBackground(context *StyleContext, x float64, y f
 	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderFocus creates a render node for the focus outline according to context,
@@ -542,6 +636,12 @@ func (snapshot *Snapshot) RenderFocus(context *StyleContext, x float64, y float6
 	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_focus(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderFrame creates a render node for the CSS border according to context,
@@ -563,6 +663,12 @@ func (snapshot *Snapshot) RenderFrame(context *StyleContext, x float64, y float6
 	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_frame(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // RenderInsertionCursor draws a text caret using snapshot at the specified
@@ -585,6 +691,13 @@ func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x float64
 	_arg6 = C.PangoDirection(direction)
 
 	C.gtk_snapshot_render_insertion_cursor(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(index)
+	runtime.KeepAlive(direction)
 }
 
 // RenderLayout creates a render node for rendering layout according to the
@@ -604,6 +717,11 @@ func (snapshot *Snapshot) RenderLayout(context *StyleContext, x float64, y float
 	_arg4 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_snapshot_render_layout(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
 }
 
 // Restore restores snapshot to the state saved by a preceding call to
@@ -614,6 +732,7 @@ func (snapshot *Snapshot) Restore() {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	C.gtk_snapshot_restore(_arg0)
+	runtime.KeepAlive(snapshot)
 }
 
 // Rotate rotates @snapshot's coordinate system by angle degrees in 2D space -
@@ -628,6 +747,8 @@ func (snapshot *Snapshot) Rotate(angle float32) {
 	_arg1 = C.float(angle)
 
 	C.gtk_snapshot_rotate(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(angle)
 }
 
 // Rotate3D rotates snapshot's coordinate system by angle degrees around axis.
@@ -643,6 +764,9 @@ func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	C.gtk_snapshot_rotate_3d(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(axis)
 }
 
 // Save makes a copy of the current state of snapshot and saves it on an
@@ -661,6 +785,7 @@ func (snapshot *Snapshot) Save() {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	C.gtk_snapshot_save(_arg0)
+	runtime.KeepAlive(snapshot)
 }
 
 // Scale scales snapshot's coordinate system in 2-dimensional space by the given
@@ -677,6 +802,9 @@ func (snapshot *Snapshot) Scale(factorX float32, factorY float32) {
 	_arg2 = C.float(factorY)
 
 	C.gtk_snapshot_scale(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
 }
 
 // Scale3D scales snapshot's coordinate system by the given factors.
@@ -692,6 +820,10 @@ func (snapshot *Snapshot) Scale3D(factorX float32, factorY float32, factorZ floa
 	_arg3 = C.float(factorZ)
 
 	C.gtk_snapshot_scale_3d(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+	runtime.KeepAlive(factorZ)
 }
 
 // ToNode returns the render node that was constructed by snapshot.
@@ -706,6 +838,8 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 
 	_cret = C.gtk_snapshot_to_node(_arg0)
+
+	runtime.KeepAlive(snapshot)
 
 	var _renderNode gsk.RenderNoder // out
 
@@ -732,6 +866,9 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 
 	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
 
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(size)
+
 	var _paintable gdk.Paintabler // out
 
 	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
@@ -750,6 +887,8 @@ func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 	}
 
 	C.gtk_snapshot_transform(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(transform)
 }
 
 // TransformMatrix transforms snapshot's coordinate system with the given
@@ -762,6 +901,8 @@ func (snapshot *Snapshot) TransformMatrix(matrix *graphene.Matrix) {
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.gtk_snapshot_transform_matrix(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(matrix)
 }
 
 // Translate translates snapshot's coordinate system by point in 2-dimensional
@@ -774,6 +915,8 @@ func (snapshot *Snapshot) Translate(point *graphene.Point) {
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.gtk_snapshot_translate(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(point)
 }
 
 // Translate3D translates snapshot's coordinate system by point.
@@ -785,4 +928,6 @@ func (snapshot *Snapshot) Translate3D(point *graphene.Point3D) {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.gtk_snapshot_translate_3d(_arg0, _arg1)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(point)
 }

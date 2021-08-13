@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -116,6 +117,7 @@ func (calendar *Calendar) ClearMarks() {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
 
 	C.gtk_calendar_clear_marks(_arg0)
+	runtime.KeepAlive(calendar)
 }
 
 // DayIsMarked returns if the day of the calendar is already marked.
@@ -128,6 +130,9 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
+
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 
 	var _ok bool // out
 
@@ -150,6 +155,8 @@ func (self *Calendar) ShowDayNames() bool {
 
 	_cret = C.gtk_calendar_get_show_day_names(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -169,6 +176,8 @@ func (self *Calendar) ShowHeading() bool {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_calendar_get_show_heading(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -190,6 +199,8 @@ func (self *Calendar) ShowWeekNumbers() bool {
 
 	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -208,6 +219,8 @@ func (calendar *Calendar) MarkDay(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 }
 
 // SetShowDayNames sets whether the calendar shows day names.
@@ -221,6 +234,8 @@ func (self *Calendar) SetShowDayNames(value bool) {
 	}
 
 	C.gtk_calendar_set_show_day_names(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // SetShowHeading sets whether the calendar should show a heading.
@@ -237,6 +252,8 @@ func (self *Calendar) SetShowHeading(value bool) {
 	}
 
 	C.gtk_calendar_set_show_heading(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // SetShowWeekNumbers sets whether week numbers are shown in the calendar.
@@ -250,6 +267,8 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 	}
 
 	C.gtk_calendar_set_show_week_numbers(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // UnmarkDay removes the visual marker from a particular day.
@@ -261,4 +280,6 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
+	runtime.KeepAlive(calendar)
+	runtime.KeepAlive(day)
 }

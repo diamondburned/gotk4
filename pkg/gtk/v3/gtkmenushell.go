@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -156,6 +157,9 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 	}
 
 	C.gtk_menu_shell_activate_item(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(forceDeactivate)
 }
 
 // Append adds a new MenuItem to the end of the menu shell's item list.
@@ -167,6 +171,8 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_append(_arg0, _arg1)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(child)
 }
 
 // BindModel establishes a binding between a MenuShell and a Model.
@@ -216,6 +222,10 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 	}
 
 	C.gtk_menu_shell_bind_model(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(actionNamespace)
+	runtime.KeepAlive(withSeparators)
 }
 
 // Cancel cancels the selection within the menu shell.
@@ -225,6 +235,7 @@ func (menuShell *MenuShell) Cancel() {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	C.gtk_menu_shell_cancel(_arg0)
+	runtime.KeepAlive(menuShell)
 }
 
 // Deactivate deactivates the menu shell.
@@ -236,6 +247,7 @@ func (menuShell *MenuShell) Deactivate() {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	C.gtk_menu_shell_deactivate(_arg0)
+	runtime.KeepAlive(menuShell)
 }
 
 // Deselect deselects the currently selected item from the menu shell, if any.
@@ -245,6 +257,7 @@ func (menuShell *MenuShell) Deselect() {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	C.gtk_menu_shell_deselect(_arg0)
+	runtime.KeepAlive(menuShell)
 }
 
 // ParentShell gets the parent menu shell.
@@ -258,6 +271,8 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
+
+	runtime.KeepAlive(menuShell)
 
 	var _widget Widgetter // out
 
@@ -275,6 +290,8 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 
 	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
 
+	runtime.KeepAlive(menuShell)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -291,6 +308,8 @@ func (menuShell *MenuShell) TakeFocus() bool {
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 
 	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
+
+	runtime.KeepAlive(menuShell)
 
 	var _ok bool // out
 
@@ -313,6 +332,9 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // Prepend adds a new MenuItem to the beginning of the menu shell's item list.
@@ -324,6 +346,8 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_prepend(_arg0, _arg1)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(child)
 }
 
 // SelectFirst: select the first visible or selectable child of the menu shell;
@@ -338,6 +362,8 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 	}
 
 	C.gtk_menu_shell_select_first(_arg0, _arg1)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(searchSensitive)
 }
 
 // SelectItem selects the menu item from the menu shell.
@@ -349,6 +375,8 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_shell_select_item(_arg0, _arg1)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(menuItem)
 }
 
 // SetTakeFocus: if take_focus is TRUE (the default) the menu shell will take
@@ -385,4 +413,6 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	}
 
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
+	runtime.KeepAlive(menuShell)
+	runtime.KeepAlive(takeFocus)
 }

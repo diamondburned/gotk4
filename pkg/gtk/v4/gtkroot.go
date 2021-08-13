@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -90,6 +91,8 @@ func (self *Root) Display() *gdk.Display {
 
 	_cret = C.gtk_root_get_display(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _display *gdk.Display // out
 
 	{
@@ -114,6 +117,8 @@ func (self *Root) Focus() Widgetter {
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_root_get_focus(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -141,4 +146,6 @@ func (self *Root) SetFocus(focus Widgetter) {
 	}
 
 	C.gtk_root_set_focus(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(focus)
 }

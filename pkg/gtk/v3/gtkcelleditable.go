@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -83,6 +84,7 @@ func (cellEditable *CellEditable) EditingDone() {
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_editing_done(_arg0)
+	runtime.KeepAlive(cellEditable)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
@@ -92,4 +94,5 @@ func (cellEditable *CellEditable) RemoveWidget() {
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
+	runtime.KeepAlive(cellEditable)
 }

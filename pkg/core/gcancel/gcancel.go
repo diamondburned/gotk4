@@ -8,6 +8,7 @@ import "C"
 
 import (
 	"context"
+	"runtime"
 	"time"
 	"unsafe"
 
@@ -31,12 +32,16 @@ func (c *Cancellable) Object() *glib.Object {
 // Cancel will set cancellable to cancelled. It is the same as calling the
 // cancel callback given after context creation.
 func (c *Cancellable) Cancel() {
+	defer runtime.KeepAlive(c.obj)
+
 	native := (*C.GCancellable)(unsafe.Pointer(c.obj.Native()))
 	C.g_cancellable_cancel(native)
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
 func (c *Cancellable) IsCancelled() bool {
+	defer runtime.KeepAlive(c.obj)
+
 	native := (*C.GCancellable)(unsafe.Pointer(c.obj.Native()))
 	return C.g_cancellable_is_cancelled(native) != 0
 }

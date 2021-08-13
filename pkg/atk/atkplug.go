@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -82,6 +83,8 @@ func (plug *Plug) ID() string {
 
 	_cret = C.atk_plug_get_id(_arg0)
 
+	runtime.KeepAlive(plug)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -107,4 +110,6 @@ func (plug *Plug) SetChild(child *ObjectClass) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
+	runtime.KeepAlive(plug)
+	runtime.KeepAlive(child)
 }

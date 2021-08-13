@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -202,6 +203,8 @@ func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
 
 	C.gtk_places_sidebar_add_shortcut(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(location)
 }
 
 // LocalOnly returns the value previously set with
@@ -213,6 +216,8 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
+
+	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
 
@@ -240,6 +245,8 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
 
+	runtime.KeepAlive(sidebar)
+
 	var _file gio.Filer // out
 
 	if _cret != nil {
@@ -263,6 +270,9 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 
 	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
 
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(n)
+
 	var _file gio.Filer // out
 
 	if _cret != nil {
@@ -280,6 +290,8 @@ func (sidebar *PlacesSidebar) OpenFlags() PlacesOpenFlags {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_open_flags(_arg0)
+
+	runtime.KeepAlive(sidebar)
 
 	var _placesOpenFlags PlacesOpenFlags // out
 
@@ -301,6 +313,8 @@ func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
 
 	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
+	runtime.KeepAlive(sidebar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -319,6 +333,8 @@ func (sidebar *PlacesSidebar) ShowDesktop() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
+
+	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
 
@@ -339,6 +355,8 @@ func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 
 	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
+	runtime.KeepAlive(sidebar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -357,6 +375,8 @@ func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
+
+	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
 
@@ -377,6 +397,8 @@ func (sidebar *PlacesSidebar) ShowRecent() bool {
 
 	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
+	runtime.KeepAlive(sidebar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -396,6 +418,8 @@ func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 
 	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
+	runtime.KeepAlive(sidebar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -414,6 +438,8 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
 
 	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
+
+	runtime.KeepAlive(sidebar)
 
 	var _ok bool // out
 
@@ -435,6 +461,8 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	_arg1 = (*C.GFile)(unsafe.Pointer(location.Native()))
 
 	C.gtk_places_sidebar_remove_shortcut(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(location)
 }
 
 // SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it can
@@ -458,6 +486,9 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.D
 	_arg2 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(visible)
+	runtime.KeepAlive(context)
 }
 
 // SetLocalOnly sets whether the sidebar should only show local files.
@@ -471,6 +502,8 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	}
 
 	C.gtk_places_sidebar_set_local_only(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(localOnly)
 }
 
 // SetLocation sets the location that is being shown in the widgets surrounding
@@ -488,6 +521,8 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	}
 
 	C.gtk_places_sidebar_set_location(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(location)
 }
 
 // SetOpenFlags sets the way in which the calling application can open new
@@ -513,6 +548,8 @@ func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
 	_arg1 = C.GtkPlacesOpenFlags(flags)
 
 	C.gtk_places_sidebar_set_open_flags(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(flags)
 }
 
 // SetShowConnectToServer sets whether the sidebar should show an item for
@@ -535,6 +572,8 @@ func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_connect_to_server(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showConnectToServer)
 }
 
 // SetShowDesktop sets whether the sidebar should show an item for the Desktop
@@ -551,6 +590,8 @@ func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_desktop(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showDesktop)
 }
 
 // SetShowEnterLocation sets whether the sidebar should show an item for
@@ -569,6 +610,8 @@ func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_enter_location(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showEnterLocation)
 }
 
 // SetShowOtherLocations sets whether the sidebar should show an item for the
@@ -590,6 +633,8 @@ func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_other_locations(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showOtherLocations)
 }
 
 // SetShowRecent sets whether the sidebar should show an item for recent files.
@@ -605,6 +650,8 @@ func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_recent(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showRecent)
 }
 
 // SetShowStarredLocation: if you enable this, you should connect to the
@@ -619,6 +666,8 @@ func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_starred_location(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showStarredLocation)
 }
 
 // SetShowTrash sets whether the sidebar should show an item for the Trash
@@ -633,4 +682,6 @@ func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	}
 
 	C.gtk_places_sidebar_set_show_trash(_arg0, _arg1)
+	runtime.KeepAlive(sidebar)
+	runtime.KeepAlive(showTrash)
 }

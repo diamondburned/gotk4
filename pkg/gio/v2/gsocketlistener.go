@@ -112,6 +112,9 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 
 	_cret = C.g_socket_listener_accept(_arg0, &_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+
 	var _sourceObject *externglib.Object    // out
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
@@ -149,6 +152,9 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 	}
 
 	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // AcceptFinish finishes an async accept operation. See
@@ -164,6 +170,9 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(result)
 
 	var _sourceObject *externglib.Object    // out
 	var _socketConnection *SocketConnection // out
@@ -208,6 +217,9 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 
 	_cret = C.g_socket_listener_accept_socket(_arg0, &_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+
 	var _sourceObject *externglib.Object // out
 	var _socket *Socket                  // out
 	var _goerr error                     // out
@@ -246,6 +258,9 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 	}
 
 	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // AcceptSocketFinish finishes an async accept operation. See
@@ -261,6 +276,9 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(result)
 
 	var _sourceObject *externglib.Object // out
 	var _socket *Socket                  // out
@@ -315,6 +333,11 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	}
 
 	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(sourceObject)
 
 	var _effectiveAddress SocketAddresser // out
 	var _goerr error                      // out
@@ -351,6 +374,9 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 
 	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(sourceObject)
+
 	var _guint16 uint16 // out
 	var _goerr error    // out
 
@@ -386,6 +412,9 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 	}
 
 	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(port)
+	runtime.KeepAlive(sourceObject)
 
 	var _goerr error // out
 
@@ -420,6 +449,9 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 	}
 
 	C.g_socket_listener_add_socket(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(sourceObject)
 
 	var _goerr error // out
 
@@ -437,6 +469,7 @@ func (listener *SocketListener) Close() {
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 
 	C.g_socket_listener_close(_arg0)
+	runtime.KeepAlive(listener)
 }
 
 // SetBacklog sets the listen backlog on the sockets in the listener. This must
@@ -452,4 +485,6 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	_arg1 = C.int(listenBacklog)
 
 	C.g_socket_listener_set_backlog(_arg0, _arg1)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(listenBacklog)
 }

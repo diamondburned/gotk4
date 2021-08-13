@@ -212,6 +212,8 @@ func AttrTypeGetName(typ AttrType) string {
 
 	_cret = C.pango_attr_type_get_name(_arg1)
 
+	runtime.KeepAlive(typ)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -233,6 +235,8 @@ func AttrTypeRegister(name string) AttrType {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_type_register(_arg1)
+
+	runtime.KeepAlive(name)
 
 	var _attrType AttrType // out
 
@@ -443,6 +447,8 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 
 	_cret = C.pango_attr_allow_breaks_new(_arg1)
 
+	runtime.KeepAlive(allowBreaks)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -461,6 +467,8 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	_arg1 = C.guint16(alpha)
 
 	_cret = C.pango_attr_background_alpha_new(_arg1)
+
+	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
 
@@ -484,6 +492,10 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 	_arg3 = C.guint16(blue)
 
 	_cret = C.pango_attr_background_new(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(red)
+	runtime.KeepAlive(green)
+	runtime.KeepAlive(blue)
 
 	var _attribute *Attribute // out
 
@@ -510,6 +522,8 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 
 	_cret = C.pango_attr_fallback_new(_arg1)
 
+	runtime.KeepAlive(enableFallback)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -530,6 +544,8 @@ func NewAttrFamily(family string) *Attribute {
 
 	_cret = C.pango_attr_family_new(_arg1)
 
+	runtime.KeepAlive(family)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -548,6 +564,8 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	_arg1 = C.guint16(alpha)
 
 	_cret = C.pango_attr_foreground_alpha_new(_arg1)
+
+	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
 
@@ -572,6 +590,10 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 
 	_cret = C.pango_attr_foreground_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(red)
+	runtime.KeepAlive(green)
+	runtime.KeepAlive(blue)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -591,6 +613,8 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 
 	_cret = C.pango_attr_gravity_hint_new(_arg1)
 
+	runtime.KeepAlive(hint)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -609,6 +633,8 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 	_arg1 = C.PangoGravity(gravity)
 
 	_cret = C.pango_attr_gravity_new(_arg1)
+
+	runtime.KeepAlive(gravity)
 
 	var _attribute *Attribute // out
 
@@ -634,6 +660,8 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 
 	_cret = C.pango_attr_insert_hyphens_new(_arg1)
 
+	runtime.KeepAlive(insertHyphens)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -652,6 +680,8 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	_arg1 = C.int(letterSpacing)
 
 	_cret = C.pango_attr_letter_spacing_new(_arg1)
+
+	runtime.KeepAlive(letterSpacing)
 
 	var _attribute *Attribute // out
 
@@ -679,6 +709,10 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 
 	_cret = C.pango_attr_overline_color_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(red)
+	runtime.KeepAlive(green)
+	runtime.KeepAlive(blue)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -698,6 +732,8 @@ func NewAttrOverline(overline Overline) *Attribute {
 
 	_cret = C.pango_attr_overline_new(_arg1)
 
+	runtime.KeepAlive(overline)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -716,6 +752,8 @@ func NewAttrRise(rise int) *Attribute {
 	_arg1 = C.int(rise)
 
 	_cret = C.pango_attr_rise_new(_arg1)
+
+	runtime.KeepAlive(rise)
 
 	var _attribute *Attribute // out
 
@@ -739,6 +777,8 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 
 	_cret = C.pango_attr_scale_new(_arg1)
 
+	runtime.KeepAlive(scaleFactor)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -759,6 +799,8 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 
 	_cret = C.pango_attr_show_new(_arg1)
 
+	runtime.KeepAlive(flags)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -777,6 +819,8 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 	_arg1 = C.PangoStretch(stretch)
 
 	_cret = C.pango_attr_stretch_new(_arg1)
+
+	runtime.KeepAlive(stretch)
 
 	var _attribute *Attribute // out
 
@@ -804,6 +848,10 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 
 	_cret = C.pango_attr_strikethrough_color_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(red)
+	runtime.KeepAlive(green)
+	runtime.KeepAlive(blue)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -825,6 +873,8 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 
 	_cret = C.pango_attr_strikethrough_new(_arg1)
 
+	runtime.KeepAlive(strikethrough)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -843,6 +893,8 @@ func NewAttrStyle(style Style) *Attribute {
 	_arg1 = C.PangoStyle(style)
 
 	_cret = C.pango_attr_style_new(_arg1)
+
+	runtime.KeepAlive(style)
 
 	var _attribute *Attribute // out
 
@@ -870,6 +922,10 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 
 	_cret = C.pango_attr_underline_color_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(red)
+	runtime.KeepAlive(green)
+	runtime.KeepAlive(blue)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -888,6 +944,8 @@ func NewAttrUnderline(underline Underline) *Attribute {
 	_arg1 = C.PangoUnderline(underline)
 
 	_cret = C.pango_attr_underline_new(_arg1)
+
+	runtime.KeepAlive(underline)
 
 	var _attribute *Attribute // out
 
@@ -908,6 +966,8 @@ func NewAttrVariant(variant Variant) *Attribute {
 
 	_cret = C.pango_attr_variant_new(_arg1)
 
+	runtime.KeepAlive(variant)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -926,6 +986,8 @@ func NewAttrWeight(weight Weight) *Attribute {
 	_arg1 = C.PangoWeight(weight)
 
 	_cret = C.pango_attr_weight_new(_arg1)
+
+	runtime.KeepAlive(weight)
 
 	var _attribute *Attribute // out
 
@@ -953,6 +1015,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	_arg1 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(context)
 
 	var _attrList *AttrList // out
 	var _text string        // out
@@ -1007,6 +1070,8 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 
 	_cret = C.pango_markup_parser_new(_arg1)
 
+	runtime.KeepAlive(accelMarker)
+
 	var _markupParseContext *glib.MarkupParseContext // out
 
 	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1050,6 +1115,9 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	_arg3 = C.gunichar(accelMarker)
 
 	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
+	runtime.KeepAlive(markupText)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(accelMarker)
 
 	var _attrList *AttrList // out
 	var _text string        // out
@@ -1149,6 +1217,8 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 
 	_cret = C.pango_attr_font_desc_new(_arg1)
 
+	runtime.KeepAlive(desc)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1189,6 +1259,8 @@ func NewAttrFontFeatures(features string) *Attribute {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_font_features_new(_arg1)
+
+	runtime.KeepAlive(features)
 
 	var _attribute *Attribute // out
 
@@ -1246,6 +1318,8 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 
 	_cret = C.pango_attr_iterator_copy(_arg0)
 
+	runtime.KeepAlive(iterator)
+
 	var _attrIterator *AttrIterator // out
 
 	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1263,6 +1337,7 @@ func (iterator *AttrIterator) Destroy() {
 	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
 
 	C.pango_attr_iterator_destroy(_arg0)
+	runtime.KeepAlive(iterator)
 }
 
 // Get: find the current attribute of a particular type at the iterator
@@ -1277,6 +1352,9 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	_arg1 = C.PangoAttrType(typ)
 
 	_cret = C.pango_attr_iterator_get(_arg0, _arg1)
+
+	runtime.KeepAlive(iterator)
+	runtime.KeepAlive(typ)
 
 	var _attribute *Attribute // out
 
@@ -1295,6 +1373,8 @@ func (iterator *AttrIterator) Next() bool {
 	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
 
 	_cret = C.pango_attr_iterator_next(_arg0)
+
+	runtime.KeepAlive(iterator)
 
 	var _ok bool // out
 
@@ -1317,6 +1397,7 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
 
 	C.pango_attr_iterator_range(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iterator)
 
 	var _start int // out
 	var _end int   // out
@@ -1356,6 +1437,8 @@ func NewAttrLanguage(language *Language) *Attribute {
 	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_attr_language_new(_arg1)
+
+	runtime.KeepAlive(language)
 
 	var _attribute *Attribute // out
 
@@ -1422,6 +1505,8 @@ func (list *AttrList) Change(attr *Attribute) {
 	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_change(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(attr)
 }
 
 // Copy list and return an identical new list.
@@ -1434,6 +1519,8 @@ func (list *AttrList) Copy() *AttrList {
 	}
 
 	_cret = C.pango_attr_list_copy(_arg0)
+
+	runtime.KeepAlive(list)
 
 	var _attrList *AttrList // out
 
@@ -1460,6 +1547,9 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 
 	_cret = C.pango_attr_list_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(otherList)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1484,6 +1574,9 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 
 	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(fn)
+
 	var _attrList *AttrList // out
 
 	if _cret != nil {
@@ -1505,6 +1598,8 @@ func (list *AttrList) Iterator() *AttrIterator {
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = C.pango_attr_list_get_iterator(_arg0)
+
+	runtime.KeepAlive(list)
 
 	var _attrIterator *AttrIterator // out
 
@@ -1528,6 +1623,8 @@ func (list *AttrList) Insert(attr *Attribute) {
 	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(attr)
 }
 
 // InsertBefore: insert the given attribute into the PangoAttrList.
@@ -1542,6 +1639,8 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert_before(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(attr)
 }
 
 // Splice: this function opens up a hole in list, fills it in with attributes
@@ -1566,6 +1665,10 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 	_arg3 = C.gint(len)
 
 	C.pango_attr_list_splice(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(other)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(len)
 }
 
 // Update indices of attributes in list for a change in the text they refer to.
@@ -1592,6 +1695,10 @@ func (list *AttrList) Update(pos int, remove int, add int) {
 	_arg3 = C.int(add)
 
 	C.pango_attr_list_update(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(remove)
+	runtime.KeepAlive(add)
 }
 
 // AttrShape: PangoAttrShape structure is used to represent attributes which
@@ -1615,6 +1722,9 @@ func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(logicalRect)))
 
 	_cret = C.pango_attr_shape_new(_arg1, _arg2)
+
+	runtime.KeepAlive(inkRect)
+	runtime.KeepAlive(logicalRect)
 
 	var _attribute *Attribute // out
 
@@ -1657,6 +1767,8 @@ func NewAttrSize(size int) *Attribute {
 
 	_cret = C.pango_attr_size_new(_arg1)
 
+	runtime.KeepAlive(size)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1675,6 +1787,8 @@ func NewAttrSizeAbsolute(size int) *Attribute {
 	_arg1 = C.int(size)
 
 	_cret = C.pango_attr_size_new_absolute(_arg1)
+
+	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out
 
@@ -1734,6 +1848,8 @@ func (attr *Attribute) Copy() *Attribute {
 
 	_cret = C.pango_attribute_copy(_arg0)
 
+	runtime.KeepAlive(attr)
+
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1751,6 +1867,7 @@ func (attr *Attribute) Destroy() {
 	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
 
 	C.pango_attribute_destroy(_arg0)
+	runtime.KeepAlive(attr)
 }
 
 // Equal: compare two attributes for equality. This compares only the actual
@@ -1764,6 +1881,9 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr2)))
 
 	_cret = C.pango_attribute_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(attr1)
+	runtime.KeepAlive(attr2)
 
 	var _ok bool // out
 
@@ -1822,6 +1942,8 @@ func (src *Color) Copy() *Color {
 
 	_cret = C.pango_color_copy(_arg0)
 
+	runtime.KeepAlive(src)
+
 	var _color *Color // out
 
 	if _cret != nil {
@@ -1854,6 +1976,9 @@ func (color *Color) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_color_parse(_arg0, _arg1)
+
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(spec)
 
 	var _ok bool // out
 
@@ -1891,6 +2016,9 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 
 	_cret = C.pango_color_parse_with_alpha(_arg0, &_arg1, _arg2)
 
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(spec)
+
 	var _alpha uint16 // out
 	var _ok bool      // out
 
@@ -1913,6 +2041,8 @@ func (color *Color) String() string {
 	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.pango_color_to_string(_arg0)
+
+	runtime.KeepAlive(color)
 
 	var _utf8 string // out
 

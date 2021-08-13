@@ -115,6 +115,10 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 	_arg3 = C.GFileAttributeInfoFlags(flags)
 
 	C.g_file_attribute_info_list_add(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(flags)
 }
 
 // Dup makes a duplicate of a file attribute info list.
@@ -125,6 +129,8 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = C.g_file_attribute_info_list_dup(_arg0)
+
+	runtime.KeepAlive(list)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
@@ -147,6 +153,9 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
+
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(name)
 
 	var _fileAttributeInfo *FileAttributeInfo // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -110,6 +111,8 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 
 	_cret = C.gtk_app_chooser_button_new(_arg1)
 
+	runtime.KeepAlive(contentType)
+
 	var _appChooserButton *AppChooserButton // out
 
 	_appChooserButton = wrapAppChooserButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -139,6 +142,10 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(icon)
 }
 
 // AppendSeparator appends a separator to the list of applications that is shown
@@ -149,6 +156,7 @@ func (self *AppChooserButton) AppendSeparator() {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	C.gtk_app_chooser_button_append_separator(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Heading returns the text to display at the top of the dialog.
@@ -159,6 +167,8 @@ func (self *AppChooserButton) Heading() string {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -177,6 +187,8 @@ func (self *AppChooserButton) Modal() bool {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_modal(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -197,6 +209,8 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -215,6 +229,8 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -239,6 +255,8 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
 }
 
 // SetHeading sets the text to display at the top of the dialog.
@@ -253,6 +271,8 @@ func (self *AppChooserButton) SetHeading(heading string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(heading)
 }
 
 // SetModal sets whether the dialog should be modal.
@@ -266,6 +286,8 @@ func (self *AppChooserButton) SetModal(modal bool) {
 	}
 
 	C.gtk_app_chooser_button_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(modal)
 }
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should show
@@ -280,6 +302,8 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 	}
 
 	C.gtk_app_chooser_button_set_show_default_item(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetShowDialogItem sets whether the dropdown menu of this button should show
@@ -294,4 +318,6 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	}
 
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }

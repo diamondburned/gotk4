@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -78,6 +79,8 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
 }
 
 // Children: get a list of children.
@@ -88,6 +91,8 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
 
 	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
+
+	runtime.KeepAlive(container)
 
 	var _list []CellAccessible // out
 
@@ -110,4 +115,6 @@ func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
 }

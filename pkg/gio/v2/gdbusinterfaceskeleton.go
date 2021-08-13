@@ -134,6 +134,9 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(objectPath)
 
 	var _goerr error // out
 
@@ -157,6 +160,7 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_interface_skeleton_flush(_arg0)
+	runtime.KeepAlive(interface_)
 }
 
 // Connection gets the first connection that interface_ is exported on, if any.
@@ -167,6 +171,8 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_connection(_arg0)
+
+	runtime.KeepAlive(interface_)
 
 	var _dBusConnection *DBusConnection // out
 
@@ -185,6 +191,8 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
+
+	runtime.KeepAlive(interface_)
 
 	var _list []DBusConnection // out
 
@@ -209,6 +217,8 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 
 	_cret = C.g_dbus_interface_skeleton_get_flags(_arg0)
 
+	runtime.KeepAlive(interface_)
+
 	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
 
 	_dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(_cret)
@@ -225,6 +235,8 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
+
+	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
@@ -246,6 +258,8 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	_cret = C.g_dbus_interface_skeleton_get_object_path(_arg0)
 
+	runtime.KeepAlive(interface_)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -263,6 +277,8 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
+
+	runtime.KeepAlive(interface_)
 
 	var _variant *glib.Variant // out
 
@@ -285,6 +301,9 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 
 	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
 
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(connection)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -303,6 +322,8 @@ func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFla
 	_arg1 = C.GDBusInterfaceSkeletonFlags(flags)
 
 	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(flags)
 }
 
 // Unexport stops exporting interface_ on all connections it is exported on.
@@ -315,6 +336,7 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_interface_skeleton_unexport(_arg0)
+	runtime.KeepAlive(interface_)
 }
 
 // UnexportFromConnection stops exporting interface_ on connection.
@@ -329,4 +351,6 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(connection)
 }

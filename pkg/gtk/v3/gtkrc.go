@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -353,6 +354,7 @@ func RCAddDefaultFile(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_add_default_file(_arg1)
+	runtime.KeepAlive(filename)
 }
 
 // RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
@@ -367,6 +369,8 @@ func RCFindModuleInPath(moduleFile string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
+
+	runtime.KeepAlive(moduleFile)
 
 	var _filename string // out
 
@@ -393,6 +397,10 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(pixmapFile)
 
 	var _filename string // out
 
@@ -499,6 +507,8 @@ func RCGetStyle(widget Widgetter) *Style {
 
 	_cret = C.gtk_rc_get_style(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _style *Style // out
 
 	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
@@ -541,6 +551,11 @@ func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, 
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(widgetPath)
+	runtime.KeepAlive(classPath)
+	runtime.KeepAlive(typ)
+
 	var _style *Style // out
 
 	if _cret != nil {
@@ -577,6 +592,7 @@ func RCParse(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
+	runtime.KeepAlive(filename)
 }
 
 // RCParseColor parses a color in the format expected in a RC file.
@@ -593,6 +609,8 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
+
+	runtime.KeepAlive(scanner)
 
 	var _color gdk.Color // out
 	var _guint uint      // out
@@ -620,6 +638,9 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(style)
+
 	var _color gdk.Color // out
 	var _guint uint      // out
 
@@ -642,6 +663,8 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
 
+	runtime.KeepAlive(scanner)
+
 	var _state StateType // out
 	var _guint uint      // out
 
@@ -661,6 +684,7 @@ func RCParseString(rcString string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse_string(_arg1)
+	runtime.KeepAlive(rcString)
 }
 
 // RCReparseAll: if the modification time on any previously read file for the
@@ -699,6 +723,9 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 
 	_cret = C.gtk_rc_reparse_all_for_settings(_arg1, _arg2)
 
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(forceLoad)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -724,6 +751,7 @@ func RCResetStyles(settings *Settings) {
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 
 	C.gtk_rc_reset_styles(_arg1)
+	runtime.KeepAlive(settings)
 }
 
 // RCSetDefaultFiles sets the list of files that GTK+ will read at the end of
@@ -748,6 +776,7 @@ func RCSetDefaultFiles(filenames []string) {
 	}
 
 	C.gtk_rc_set_default_files(_arg1)
+	runtime.KeepAlive(filenames)
 }
 
 // RCStyleOverrider contains methods that are overridable.
@@ -805,6 +834,8 @@ func (orig *RCStyle) Copy() *RCStyle {
 	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(orig.Native()))
 
 	_cret = C.gtk_rc_style_copy(_arg0)
+
+	runtime.KeepAlive(orig)
 
 	var _rcStyle *RCStyle // out
 

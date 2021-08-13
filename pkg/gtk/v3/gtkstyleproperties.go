@@ -87,6 +87,7 @@ func (props *StyleProperties) Clear() {
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	C.gtk_style_properties_clear(_arg0)
+	runtime.KeepAlive(props)
 }
 
 // Property gets a style property from props for the given state. When done with
@@ -106,6 +107,10 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 	_arg2 = C.GtkStateFlags(state)
 
 	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 
 	var _value externglib.Value // out
 	var _ok bool                // out
@@ -135,6 +140,9 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 
 	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
 
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(name)
+
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -161,6 +169,9 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(color)
 }
 
 // Merge merges into props all the style information contained in
@@ -180,6 +191,9 @@ func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool)
 	}
 
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(propsToMerge)
+	runtime.KeepAlive(replace)
 }
 
 // SetProperty sets a styling property in props.
@@ -198,6 +212,10 @@ func (props *StyleProperties) SetProperty(property string, state StateFlags, val
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
 }
 
 // UnsetProperty unsets a style property in props.
@@ -214,6 +232,9 @@ func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 }
 
 // Gradient is a boxed type that represents a gradient. It is the result of
@@ -255,6 +276,11 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 
 	_cret = C.gtk_gradient_new_linear(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(x0)
+	runtime.KeepAlive(y0)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -284,6 +310,13 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 
 	_cret = C.gtk_gradient_new_radial(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(x0)
+	runtime.KeepAlive(y0)
+	runtime.KeepAlive(radius0)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(radius1)
+
 	var _gradient *Gradient // out
 
 	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -307,6 +340,9 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_gradient_add_color_stop(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(gradient)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(color)
 }
 
 // Resolve: if gradient is resolvable, resolved_gradient will be filled in with
@@ -325,6 +361,9 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(gradient)
+	runtime.KeepAlive(props)
 
 	var _resolvedGradient *cairo.Pattern // out
 	var _ok bool                         // out
@@ -353,6 +392,9 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 
 	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
 
+	runtime.KeepAlive(gradient)
+	runtime.KeepAlive(context)
+
 	var _pattern *cairo.Pattern // out
 
 	{
@@ -377,6 +419,8 @@ func (gradient *Gradient) String() string {
 	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
 
 	_cret = C.gtk_gradient_to_string(_arg0)
+
+	runtime.KeepAlive(gradient)
 
 	var _utf8 string // out
 
@@ -419,6 +463,9 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 
 	_cret = C.gtk_symbolic_color_new_alpha(_arg1, _arg2)
 
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(factor)
+
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -437,6 +484,8 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gtk_symbolic_color_new_literal(_arg1)
+
+	runtime.KeepAlive(color)
 
 	var _symbolicColor *SymbolicColor // out
 
@@ -461,6 +510,10 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 
 	_cret = C.gtk_symbolic_color_new_mix(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(color1)
+	runtime.KeepAlive(color2)
+	runtime.KeepAlive(factor)
+
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -480,6 +533,8 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_symbolic_color_new_name(_arg1)
+
+	runtime.KeepAlive(name)
 
 	var _symbolicColor *SymbolicColor // out
 
@@ -502,6 +557,9 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 
 	_cret = C.gtk_symbolic_color_new_shade(_arg1, _arg2)
 
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(factor)
+
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -523,6 +581,9 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	_arg2 = C.gint(id)
 
 	_cret = C.gtk_symbolic_color_new_win32(_arg1, _arg2)
+
+	runtime.KeepAlive(themeClass)
+	runtime.KeepAlive(id)
 
 	var _symbolicColor *SymbolicColor // out
 
@@ -556,6 +617,9 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (gdk.RGBA, bool) {
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(props)
+
 	var _resolvedColor gdk.RGBA // out
 	var _ok bool                // out
 
@@ -581,6 +645,8 @@ func (color *SymbolicColor) String() string {
 	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gtk_symbolic_color_to_string(_arg0)
+
+	runtime.KeepAlive(color)
 
 	var _utf8 string // out
 

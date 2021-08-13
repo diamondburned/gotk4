@@ -109,6 +109,8 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 
 	_cret = C.gdk_content_provider_new_for_value(_arg1)
 
+	runtime.KeepAlive(value)
+
 	var _contentProvider *ContentProvider // out
 
 	_contentProvider = wrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -150,6 +152,8 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
 
+	runtime.KeepAlive(providers)
+
 	var _contentProvider *ContentProvider // out
 
 	_contentProvider = wrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -164,6 +168,7 @@ func (provider *ContentProvider) ContentChanged() {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
+	runtime.KeepAlive(provider)
 }
 
 // Value gets the contents of provider stored in value.
@@ -182,6 +187,8 @@ func (provider *ContentProvider) Value(value *externglib.Value) error {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(value)
 
 	var _goerr error // out
 
@@ -201,6 +208,8 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
+
+	runtime.KeepAlive(provider)
 
 	var _contentFormats *ContentFormats // out
 
@@ -225,6 +234,8 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
+
+	runtime.KeepAlive(provider)
 
 	var _contentFormats *ContentFormats // out
 
@@ -272,6 +283,12 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	}
 
 	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation.
@@ -286,6 +303,8 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

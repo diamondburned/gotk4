@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -35,6 +36,9 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widgetter {
 
 	_cret = C.gtk_test_create_simple_window(_arg1, _arg2)
 
+	runtime.KeepAlive(windowTitle)
+	runtime.KeepAlive(dialogText)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -60,6 +64,9 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 
 	_cret = C.gtk_test_find_label(_arg1, _arg2)
 
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(labelPattern)
+
 	var _ret Widgetter // out
 
 	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -82,6 +89,9 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) Widgetter
 	_arg2 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_sibling(_arg1, _arg2)
+
+	runtime.KeepAlive(baseWidget)
+	runtime.KeepAlive(widgetType)
 
 	var _widget Widgetter // out
 
@@ -109,6 +119,10 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 	_arg3 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(labelPattern)
+	runtime.KeepAlive(widgetType)
 
 	var _ret Widgetter // out
 
@@ -140,6 +154,8 @@ func TestSliderGetValue(widget Widgetter) float64 {
 
 	_cret = C.gtk_test_slider_get_value(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -161,6 +177,8 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 	_arg2 = C.double(percentage)
 
 	C.gtk_test_slider_set_perc(_arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(percentage)
 }
 
 // TestSpinButtonClick: this function will generate a button click in the
@@ -181,6 +199,10 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	}
 
 	_cret = C.gtk_test_spin_button_click(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(spinner)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(upwards)
 
 	var _ok bool // out
 
@@ -203,6 +225,8 @@ func TestTextGet(widget Widgetter) string {
 
 	_cret = C.gtk_test_text_get(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -224,6 +248,8 @@ func TestTextSet(widget Widgetter, _string string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_test_text_set(_arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(_string)
 }
 
 // TestWidgetClick: this function will generate a button click (button press and
@@ -247,6 +273,10 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 	_arg3 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(modifiers)
 
 	var _ok bool // out
 
@@ -276,6 +306,10 @@ func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType
 
 	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -297,4 +331,5 @@ func TestWidgetWaitForDraw(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_test_widget_wait_for_draw(_arg1)
+	runtime.KeepAlive(widget)
 }

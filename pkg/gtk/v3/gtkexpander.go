@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -101,6 +102,8 @@ func NewExpander(label string) *Expander {
 
 	_cret = C.gtk_expander_new(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _expander *Expander // out
 
 	_expander = wrapExpander(externglib.Take(unsafe.Pointer(_cret)))
@@ -125,6 +128,8 @@ func NewExpanderWithMnemonic(label string) *Expander {
 
 	_cret = C.gtk_expander_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _expander *Expander // out
 
 	_expander = wrapExpander(externglib.Take(unsafe.Pointer(_cret)))
@@ -143,6 +148,8 @@ func (expander *Expander) Expanded() bool {
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_expanded(_arg0)
+
+	runtime.KeepAlive(expander)
 
 	var _ok bool // out
 
@@ -171,6 +178,8 @@ func (expander *Expander) Label() string {
 
 	_cret = C.gtk_expander_get_label(_arg0)
 
+	runtime.KeepAlive(expander)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -189,6 +198,8 @@ func (expander *Expander) LabelFill() bool {
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_label_fill(_arg0)
+
+	runtime.KeepAlive(expander)
 
 	var _ok bool // out
 
@@ -209,6 +220,8 @@ func (expander *Expander) LabelWidget() Widgetter {
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 
+	runtime.KeepAlive(expander)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -227,6 +240,8 @@ func (expander *Expander) ResizeToplevel() bool {
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
+
+	runtime.KeepAlive(expander)
 
 	var _ok bool // out
 
@@ -248,6 +263,8 @@ func (expander *Expander) Spacing() int {
 
 	_cret = C.gtk_expander_get_spacing(_arg0)
 
+	runtime.KeepAlive(expander)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -265,6 +282,8 @@ func (expander *Expander) UseMarkup() bool {
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_use_markup(_arg0)
+
+	runtime.KeepAlive(expander)
 
 	var _ok bool // out
 
@@ -284,6 +303,8 @@ func (expander *Expander) UseUnderline() bool {
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 
 	_cret = C.gtk_expander_get_use_underline(_arg0)
+
+	runtime.KeepAlive(expander)
 
 	var _ok bool // out
 
@@ -307,6 +328,8 @@ func (expander *Expander) SetExpanded(expanded bool) {
 	}
 
 	C.gtk_expander_set_expanded(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(expanded)
 }
 
 // SetLabel sets the text of the label of the expander to label.
@@ -323,6 +346,8 @@ func (expander *Expander) SetLabel(label string) {
 	}
 
 	C.gtk_expander_set_label(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(label)
 }
 
 // SetLabelFill sets whether the label widget should fill all available
@@ -339,6 +364,8 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 	}
 
 	C.gtk_expander_set_label_fill(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(labelFill)
 }
 
 // SetLabelWidget: set the label widget for the expander. This is the widget
@@ -353,6 +380,8 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	}
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(labelWidget)
 }
 
 // SetResizeToplevel sets whether the expander will resize the toplevel widget
@@ -367,6 +396,8 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 	}
 
 	C.gtk_expander_set_resize_toplevel(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(resizeToplevel)
 }
 
 // SetSpacing sets the spacing field of expander, which is the number of pixels
@@ -381,6 +412,8 @@ func (expander *Expander) SetSpacing(spacing int) {
 	_arg1 = C.gint(spacing)
 
 	C.gtk_expander_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(spacing)
 }
 
 // SetUseMarkup sets whether the text of the label contains markup in [Pango’s
@@ -395,6 +428,8 @@ func (expander *Expander) SetUseMarkup(useMarkup bool) {
 	}
 
 	C.gtk_expander_set_use_markup(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(useMarkup)
 }
 
 // SetUseUnderline: if true, an underline in the text of the expander label
@@ -409,4 +444,6 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(expander)
+	runtime.KeepAlive(useUnderline)
 }

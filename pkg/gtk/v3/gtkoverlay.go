@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -118,6 +119,8 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
 }
 
 // OverlayPassThrough: convenience function to get the value of the
@@ -131,6 +134,9 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
+
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
 
 	var _ok bool // out
 
@@ -158,6 +164,9 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	_arg2 = C.int(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(index_)
 }
 
 // SetOverlayPassThrough: convenience function to set the value of the
@@ -174,4 +183,7 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	}
 
 	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(passThrough)
 }

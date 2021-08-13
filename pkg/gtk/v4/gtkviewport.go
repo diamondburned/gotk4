@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -92,6 +93,9 @@ func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
+	runtime.KeepAlive(hadjustment)
+	runtime.KeepAlive(vadjustment)
+
 	var _viewport *Viewport // out
 
 	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
@@ -107,6 +111,8 @@ func (viewport *Viewport) Child() Widgetter {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
+
+	runtime.KeepAlive(viewport)
 
 	var _widget Widgetter // out
 
@@ -126,6 +132,8 @@ func (viewport *Viewport) ScrollToFocus() bool {
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
+
+	runtime.KeepAlive(viewport)
 
 	var _ok bool // out
 
@@ -147,6 +155,8 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	}
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
+	runtime.KeepAlive(viewport)
+	runtime.KeepAlive(child)
 }
 
 // SetScrollToFocus sets whether the viewport should automatically scroll to
@@ -161,4 +171,6 @@ func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	}
 
 	C.gtk_viewport_set_scroll_to_focus(_arg0, _arg1)
+	runtime.KeepAlive(viewport)
+	runtime.KeepAlive(scrollToFocus)
 }

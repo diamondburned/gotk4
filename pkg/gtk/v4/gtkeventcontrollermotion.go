@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,8 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 
 	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -86,6 +89,8 @@ func (self *EventControllerMotion) IsPointer() bool {
 	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 

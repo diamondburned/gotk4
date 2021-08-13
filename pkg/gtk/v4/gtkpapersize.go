@@ -77,6 +77,8 @@ func NewPaperSize(name string) *PaperSize {
 
 	_cret = C.gtk_paper_size_new(_arg1)
 
+	runtime.KeepAlive(name)
+
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -106,6 +108,12 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 
 	_cret = C.gtk_paper_size_new_custom(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(displayName)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(unit)
+
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -124,6 +132,8 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_paper_size_new_from_gvariant(_arg1)
+
+	runtime.KeepAlive(variant)
 
 	var _paperSize *PaperSize // out
 
@@ -149,6 +159,10 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 
 	_cret = C.gtk_paper_size_new_from_ipp(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(ippName)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -173,6 +187,9 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	}
 
 	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
 
 	var _paperSize *PaperSize // out
 	var _goerr error          // out
@@ -205,6 +222,11 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 
 	_cret = C.gtk_paper_size_new_from_ppd(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(ppdName)
+	runtime.KeepAlive(ppdDisplayName)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -223,6 +245,8 @@ func (other *PaperSize) Copy() *PaperSize {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gtk_paper_size_copy(_arg0)
+
+	runtime.KeepAlive(other)
 
 	var _paperSize *PaperSize // out
 
@@ -245,6 +269,9 @@ func (size *PaperSize) DefaultBottomMargin(unit Unit) float64 {
 
 	_cret = C.gtk_paper_size_get_default_bottom_margin(_arg0, _arg1)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -262,6 +289,9 @@ func (size *PaperSize) DefaultLeftMargin(unit Unit) float64 {
 	_arg1 = C.GtkUnit(unit)
 
 	_cret = C.gtk_paper_size_get_default_left_margin(_arg0, _arg1)
+
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
 
 	var _gdouble float64 // out
 
@@ -281,6 +311,9 @@ func (size *PaperSize) DefaultRightMargin(unit Unit) float64 {
 
 	_cret = C.gtk_paper_size_get_default_right_margin(_arg0, _arg1)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -299,6 +332,9 @@ func (size *PaperSize) DefaultTopMargin(unit Unit) float64 {
 
 	_cret = C.gtk_paper_size_get_default_top_margin(_arg0, _arg1)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -314,6 +350,8 @@ func (size *PaperSize) DisplayName() string {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = C.gtk_paper_size_get_display_name(_arg0)
+
+	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
@@ -333,6 +371,9 @@ func (size *PaperSize) Height(unit Unit) float64 {
 
 	_cret = C.gtk_paper_size_get_height(_arg0, _arg1)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -349,6 +390,8 @@ func (size *PaperSize) Name() string {
 
 	_cret = C.gtk_paper_size_get_name(_arg0)
 
+	runtime.KeepAlive(size)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -364,6 +407,8 @@ func (size *PaperSize) PPDName() string {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = C.gtk_paper_size_get_ppd_name(_arg0)
+
+	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
@@ -383,6 +428,9 @@ func (size *PaperSize) Width(unit Unit) float64 {
 
 	_cret = C.gtk_paper_size_get_width(_arg0, _arg1)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -398,6 +446,8 @@ func (size *PaperSize) IsCustom() bool {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = C.gtk_paper_size_is_custom(_arg0)
+
+	runtime.KeepAlive(size)
 
 	var _ok bool // out
 
@@ -419,6 +469,9 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 
 	_cret = C.gtk_paper_size_is_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(size1)
+	runtime.KeepAlive(size2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -436,6 +489,8 @@ func (size *PaperSize) IsIPP() bool {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = C.gtk_paper_size_is_ipp(_arg0)
+
+	runtime.KeepAlive(size)
 
 	var _ok bool // out
 
@@ -459,6 +514,10 @@ func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	_arg3 = C.GtkUnit(unit)
 
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(unit)
 }
 
 // ToGVariant: serialize a paper size to an a{sv} variant.
@@ -469,6 +528,8 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(paperSize)))
 
 	_cret = C.gtk_paper_size_to_gvariant(_arg0)
+
+	runtime.KeepAlive(paperSize)
 
 	var _variant *glib.Variant // out
 
@@ -493,6 +554,9 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
 }
 
 // PaperSizeGetDefault returns the name of the default paper size, which depends
@@ -519,6 +583,8 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 	}
 
 	_cret = C.gtk_paper_size_get_paper_sizes(_arg1)
+
+	runtime.KeepAlive(includeCustom)
 
 	var _list []*PaperSize // out
 

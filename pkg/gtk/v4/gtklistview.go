@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -177,6 +178,9 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(factory)
+
 	var _listView *ListView // out
 
 	_listView = wrapListView(externglib.Take(unsafe.Pointer(_cret)))
@@ -193,6 +197,8 @@ func (self *ListView) EnableRubberband() bool {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -212,6 +218,8 @@ func (self *ListView) Factory() *ListItemFactory {
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
@@ -229,6 +237,8 @@ func (self *ListView) Model() SelectionModeller {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _selectionModel SelectionModeller // out
 
@@ -249,6 +259,8 @@ func (self *ListView) ShowSeparators() bool {
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -267,6 +279,8 @@ func (self *ListView) SingleClickActivate() bool {
 	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -289,6 +303,8 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 	}
 
 	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableRubberband)
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
@@ -302,6 +318,8 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 	}
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetModel sets the model to use.
@@ -317,6 +335,8 @@ func (self *ListView) SetModel(model SelectionModeller) {
 	}
 
 	C.gtk_list_view_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetShowSeparators sets whether the list box should show separators between
@@ -331,6 +351,8 @@ func (self *ListView) SetShowSeparators(showSeparators bool) {
 	}
 
 	C.gtk_list_view_set_show_separators(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(showSeparators)
 }
 
 // SetSingleClickActivate sets whether rows should be activated on single click
@@ -345,4 +367,6 @@ func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	}
 
 	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(singleClickActivate)
 }

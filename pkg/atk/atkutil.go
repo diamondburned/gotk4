@@ -131,6 +131,7 @@ func FocusTrackerNotify(object *ObjectClass) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
+	runtime.KeepAlive(object)
 }
 
 // GetFocusObject gets the currently focused object.
@@ -212,6 +213,7 @@ func RemoveFocusTracker(trackerId uint) {
 	_arg1 = C.guint(trackerId)
 
 	C.atk_remove_focus_tracker(_arg1)
+	runtime.KeepAlive(trackerId)
 }
 
 // RemoveGlobalEventListener: listener_id is the value returned by
@@ -231,6 +233,7 @@ func RemoveGlobalEventListener(listenerId uint) {
 	_arg1 = C.guint(listenerId)
 
 	C.atk_remove_global_event_listener(_arg1)
+	runtime.KeepAlive(listenerId)
 }
 
 // RemoveKeyEventListener: listener_id is the value returned by
@@ -243,6 +246,7 @@ func RemoveKeyEventListener(listenerId uint) {
 	_arg1 = C.guint(listenerId)
 
 	C.atk_remove_key_event_listener(_arg1)
+	runtime.KeepAlive(listenerId)
 }
 
 // Util: set of ATK utility functions which are used to support event

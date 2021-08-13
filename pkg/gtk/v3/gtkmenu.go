@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -147,6 +148,8 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 
 	_cret = C.gtk_menu_new_from_model(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _menu *Menu // out
 
 	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
@@ -177,6 +180,12 @@ func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, top
 	_arg5 = C.guint(bottomAttach)
 
 	C.gtk_menu_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(leftAttach)
+	runtime.KeepAlive(rightAttach)
+	runtime.KeepAlive(topAttach)
+	runtime.KeepAlive(bottomAttach)
 }
 
 // Detach detaches the menu from the widget to which it had been attached. This
@@ -188,6 +197,7 @@ func (menu *Menu) Detach() {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_detach(_arg0)
+	runtime.KeepAlive(menu)
 }
 
 // AccelGroup gets the AccelGroup which holds global accelerators for the menu.
@@ -199,6 +209,8 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_accel_group(_arg0)
+
+	runtime.KeepAlive(menu)
 
 	var _accelGroup *AccelGroup // out
 
@@ -215,6 +227,8 @@ func (menu *Menu) AccelPath() string {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_accel_path(_arg0)
+
+	runtime.KeepAlive(menu)
 
 	var _utf8 string // out
 
@@ -233,6 +247,8 @@ func (menu *Menu) Active() Widgetter {
 
 	_cret = C.gtk_menu_get_active(_arg0)
 
+	runtime.KeepAlive(menu)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -248,6 +264,8 @@ func (menu *Menu) AttachWidget() Widgetter {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_attach_widget(_arg0)
+
+	runtime.KeepAlive(menu)
 
 	var _widget Widgetter // out
 
@@ -265,6 +283,8 @@ func (menu *Menu) Monitor() int {
 
 	_cret = C.gtk_menu_get_monitor(_arg0)
 
+	runtime.KeepAlive(menu)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -281,6 +301,8 @@ func (menu *Menu) ReserveToggleSize() bool {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
+
+	runtime.KeepAlive(menu)
 
 	var _ok bool // out
 
@@ -303,6 +325,8 @@ func (menu *Menu) TearoffState() bool {
 
 	_cret = C.gtk_menu_get_tearoff_state(_arg0)
 
+	runtime.KeepAlive(menu)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -323,6 +347,8 @@ func (menu *Menu) Title() string {
 
 	_cret = C.gtk_menu_get_title(_arg0)
 
+	runtime.KeepAlive(menu)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -339,6 +365,8 @@ func (menu *Menu) PlaceOnMonitor(monitor *gdk.Monitor) {
 	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gtk_menu_place_on_monitor(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(monitor)
 }
 
 // Popdown removes the menu from the screen.
@@ -348,6 +376,7 @@ func (menu *Menu) Popdown() {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_popdown(_arg0)
+	runtime.KeepAlive(menu)
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
@@ -361,6 +390,9 @@ func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_menu_reorder_child(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // Reposition repositions the menu according to its position function.
@@ -370,6 +402,7 @@ func (menu *Menu) Reposition() {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_reposition(_arg0)
+	runtime.KeepAlive(menu)
 }
 
 // SetAccelGroup: set the AccelGroup which holds global accelerators for the
@@ -386,6 +419,8 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 	}
 
 	C.gtk_menu_set_accel_group(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(accelGroup)
 }
 
 // SetAccelPath sets an accelerator path for this menu from which accelerator
@@ -420,6 +455,8 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 	}
 
 	C.gtk_menu_set_accel_path(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(accelPath)
 }
 
 // SetActive selects the specified menu item within the menu. This is used by
@@ -432,6 +469,8 @@ func (menu *Menu) SetActive(index uint) {
 	_arg1 = C.guint(index)
 
 	C.gtk_menu_set_active(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(index)
 }
 
 // SetMonitor informs GTK+ on which monitor a menu should be popped up. See
@@ -450,6 +489,8 @@ func (menu *Menu) SetMonitor(monitorNum int) {
 	_arg1 = C.gint(monitorNum)
 
 	C.gtk_menu_set_monitor(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(monitorNum)
 }
 
 // SetReserveToggleSize sets whether the menu should reserve space for drawing
@@ -464,6 +505,8 @@ func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 	}
 
 	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(reserveToggleSize)
 }
 
 // SetScreen sets the Screen on which the menu will be displayed.
@@ -477,6 +520,8 @@ func (menu *Menu) SetScreen(screen *gdk.Screen) {
 	}
 
 	C.gtk_menu_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(screen)
 }
 
 // SetTearoffState changes the tearoff state of the menu. A menu is normally
@@ -495,6 +540,8 @@ func (menu *Menu) SetTearoffState(tornOff bool) {
 	}
 
 	C.gtk_menu_set_tearoff_state(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(tornOff)
 }
 
 // SetTitle sets the title string for the menu.
@@ -515,6 +562,8 @@ func (menu *Menu) SetTitle(title string) {
 	}
 
 	C.gtk_menu_set_title(_arg0, _arg1)
+	runtime.KeepAlive(menu)
+	runtime.KeepAlive(title)
 }
 
 // MenuGetForAttachWidget returns a list of the menus which are attached to this
@@ -526,6 +575,8 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
+
+	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out
 

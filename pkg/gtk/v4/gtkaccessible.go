@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -28,6 +29,8 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_property_init_value(_arg1, _arg2)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(value)
 }
 
 func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value) {
@@ -38,6 +41,8 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_relation_init_value(_arg1, _arg2)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(value)
 }
 
 func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
@@ -48,6 +53,8 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_accessible_state_init_value(_arg1, _arg2)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
 }
 
 // Accessible: GtkAccessible is an interface for describing UI elements for
@@ -115,6 +122,8 @@ func (self *Accessible) AccessibleRole() AccessibleRole {
 
 	_cret = C.gtk_accessible_get_accessible_role(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _accessibleRole AccessibleRole // out
 
 	_accessibleRole = AccessibleRole(_cret)
@@ -131,6 +140,8 @@ func (self *Accessible) ResetProperty(property AccessibleProperty) {
 	_arg1 = C.GtkAccessibleProperty(property)
 
 	C.gtk_accessible_reset_property(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(property)
 }
 
 // ResetRelation resets the accessible relation to its default value.
@@ -142,6 +153,8 @@ func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 	_arg1 = C.GtkAccessibleRelation(relation)
 
 	C.gtk_accessible_reset_relation(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(relation)
 }
 
 // ResetState resets the accessible state to its default value.
@@ -153,6 +166,8 @@ func (self *Accessible) ResetState(state AccessibleState) {
 	_arg1 = C.GtkAccessibleState(state)
 
 	C.gtk_accessible_reset_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(state)
 }
 
 // UpdateProperty updates an array of accessible properties.
@@ -188,6 +203,9 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 	}
 
 	C.gtk_accessible_update_property_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(properties)
+	runtime.KeepAlive(values)
 }
 
 // UpdateRelation updates an array of accessible relations.
@@ -223,6 +241,9 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 	}
 
 	C.gtk_accessible_update_relation_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(relations)
+	runtime.KeepAlive(values)
 }
 
 // UpdateState updates an array of accessible states.
@@ -258,4 +279,7 @@ func (self *Accessible) UpdateState(states []AccessibleState, values []externgli
 	}
 
 	C.gtk_accessible_update_state_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(states)
+	runtime.KeepAlive(values)
 }

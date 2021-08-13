@@ -120,6 +120,8 @@ func (section *CSSSection) EndLine() uint {
 
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -141,6 +143,8 @@ func (section *CSSSection) EndPosition() uint {
 
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -158,6 +162,8 @@ func (section *CSSSection) File() gio.Filer {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_file(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _file gio.Filer // out
 
@@ -179,6 +185,8 @@ func (section *CSSSection) Parent() *CSSSection {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _cssSection *CSSSection // out
 
@@ -202,6 +210,8 @@ func (section *CSSSection) SectionType() CSSSectionType {
 
 	_cret = C.gtk_css_section_get_section_type(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _cssSectionType CSSSectionType // out
 
 	_cssSectionType = CSSSectionType(_cret)
@@ -219,6 +229,8 @@ func (section *CSSSection) StartLine() uint {
 
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -235,6 +247,8 @@ func (section *CSSSection) StartPosition() uint {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_start_position(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _guint uint // out
 

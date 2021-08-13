@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -165,6 +166,9 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	_arg2 = C.gint(responseId)
 
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
 }
 
 // AddButton adds a button with the given text and sets things up so that
@@ -184,6 +188,10 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
+
 	var _button *Button // out
 
 	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -199,6 +207,8 @@ func (infoBar *InfoBar) ActionArea() *Box {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_action_area(_arg0)
+
+	runtime.KeepAlive(infoBar)
 
 	var _box *Box // out
 
@@ -216,6 +226,8 @@ func (infoBar *InfoBar) ContentArea() *Box {
 
 	_cret = C.gtk_info_bar_get_content_area(_arg0)
 
+	runtime.KeepAlive(infoBar)
+
 	var _box *Box // out
 
 	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -232,6 +244,8 @@ func (infoBar *InfoBar) MessageType() MessageType {
 
 	_cret = C.gtk_info_bar_get_message_type(_arg0)
 
+	runtime.KeepAlive(infoBar)
+
 	var _messageType MessageType // out
 
 	_messageType = MessageType(_cret)
@@ -246,6 +260,8 @@ func (infoBar *InfoBar) Revealed() bool {
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
+
+	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
 
@@ -266,6 +282,8 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
+	runtime.KeepAlive(infoBar)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -284,6 +302,8 @@ func (infoBar *InfoBar) Response(responseId int) {
 	_arg1 = C.gint(responseId)
 
 	C.gtk_info_bar_response(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
 }
 
 // SetDefaultResponse sets the last widget in the info bar’s action area with
@@ -300,6 +320,8 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	_arg1 = C.gint(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
 }
 
 // SetMessageType sets the message type of the message area.
@@ -313,6 +335,8 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 	_arg1 = C.GtkMessageType(messageType)
 
 	C.gtk_info_bar_set_message_type(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(messageType)
 }
 
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
@@ -330,6 +354,9 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	}
 
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }
 
 // SetRevealed sets the GtkInfoBar:revealed property to revealed. This will
@@ -347,6 +374,8 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	}
 
 	C.gtk_info_bar_set_revealed(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(revealed)
 }
 
 // SetShowCloseButton: if true, a standard close button is shown. When clicked
@@ -361,4 +390,6 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	}
 
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(setting)
 }

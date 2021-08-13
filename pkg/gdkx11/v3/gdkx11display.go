@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -43,6 +44,9 @@ func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents in
 	_arg3 = C.gint(nEvents)
 
 	C.gdk_x11_register_standard_event_type(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(eventBase)
+	runtime.KeepAlive(nEvents)
 }
 
 // X11SetSmClientID sets the SM_CLIENT_ID property on the application’s leader
@@ -60,6 +64,7 @@ func X11SetSmClientID(smClientId string) {
 	}
 
 	C.gdk_x11_set_sm_client_id(_arg1)
+	runtime.KeepAlive(smClientId)
 }
 
 type X11Display struct {
@@ -96,6 +101,8 @@ func (display *X11Display) ErrorTrapPop() int {
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -115,6 +122,7 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // ErrorTrapPush begins a range of X requests on display for which X error
@@ -130,6 +138,7 @@ func (display *X11Display) ErrorTrapPush() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_error_trap_push(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // StartupNotificationID gets the startup notification ID for a display.
@@ -140,6 +149,8 @@ func (display *X11Display) StartupNotificationID() string {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
+
+	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
@@ -159,6 +170,8 @@ func (display *X11Display) UserTime() uint32 {
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -176,6 +189,7 @@ func (display *X11Display) Grab() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_grab(_arg0)
+	runtime.KeepAlive(display)
 }
 
 // SetCursorTheme sets the cursor theme from which the images for cursor should
@@ -200,6 +214,9 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	_arg2 = C.gint(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(theme)
+	runtime.KeepAlive(size)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -224,6 +241,8 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(startupId)
 }
 
 // SetWindowScale forces a specific window scale for all windows on this
@@ -241,6 +260,8 @@ func (display *X11Display) SetWindowScale(scale int) {
 	_arg1 = C.gint(scale)
 
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(scale)
 }
 
 // Ungrab display after it has been grabbed with gdk_x11_display_grab().
@@ -250,4 +271,5 @@ func (display *X11Display) Ungrab() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
+	runtime.KeepAlive(display)
 }

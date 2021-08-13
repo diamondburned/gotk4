@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -74,6 +75,8 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 
 	_cret = C.g_dbus_object_skeleton_new(_arg1)
 
+	runtime.KeepAlive(objectPath)
+
 	var _dBusObjectSkeleton *DBusObjectSkeleton // out
 
 	_dBusObjectSkeleton = wrapDBusObjectSkeleton(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -96,6 +99,8 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(interface_)
 }
 
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
@@ -106,6 +111,7 @@ func (object *DBusObjectSkeleton) Flush() {
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	C.g_dbus_object_skeleton_flush(_arg0)
+	runtime.KeepAlive(object)
 }
 
 // RemoveInterface removes interface_ from object.
@@ -117,6 +123,8 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(interface_)
 }
 
 // RemoveInterfaceByName removes the BusInterface with interface_name from
@@ -133,6 +141,8 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(interfaceName)
 }
 
 // SetObjectPath sets the object path for object.
@@ -145,4 +155,6 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(objectPath)
 }

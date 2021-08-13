@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -103,6 +104,8 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
+	runtime.KeepAlive(rgba)
+
 	var _colorButton *ColorButton // out
 
 	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -118,6 +121,8 @@ func (button *ColorButton) Modal() bool {
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -137,6 +142,8 @@ func (button *ColorButton) Title() string {
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -155,6 +162,8 @@ func (button *ColorButton) SetModal(modal bool) {
 	}
 
 	C.gtk_color_button_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(modal)
 }
 
 // SetTitle sets the title for the color chooser dialog.
@@ -167,4 +176,6 @@ func (button *ColorButton) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(title)
 }

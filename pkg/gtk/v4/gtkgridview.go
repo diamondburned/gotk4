@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -116,6 +117,9 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 
 	_cret = C.gtk_grid_view_new(_arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(factory)
+
 	var _gridView *GridView // out
 
 	_gridView = wrapGridView(externglib.Take(unsafe.Pointer(_cret)))
@@ -132,6 +136,8 @@ func (self *GridView) EnableRubberband() bool {
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_grid_view_get_enable_rubberband(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -151,6 +157,8 @@ func (self *GridView) Factory() *ListItemFactory {
 
 	_cret = C.gtk_grid_view_get_factory(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
@@ -169,6 +177,8 @@ func (self *GridView) MaxColumns() uint {
 
 	_cret = C.gtk_grid_view_get_max_columns(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -185,6 +195,8 @@ func (self *GridView) MinColumns() uint {
 
 	_cret = C.gtk_grid_view_get_min_columns(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -200,6 +212,8 @@ func (self *GridView) Model() SelectionModeller {
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_grid_view_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _selectionModel SelectionModeller // out
 
@@ -219,6 +233,8 @@ func (self *GridView) SingleClickActivate() bool {
 	_arg0 = (*C.GtkGridView)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_grid_view_get_single_click_activate(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -241,6 +257,8 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 	}
 
 	C.gtk_grid_view_set_enable_rubberband(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableRubberband)
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
@@ -254,6 +272,8 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 	}
 
 	C.gtk_grid_view_set_factory(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(factory)
 }
 
 // SetMaxColumns sets the maximum number of columns to use.
@@ -270,6 +290,8 @@ func (self *GridView) SetMaxColumns(maxColumns uint) {
 	_arg1 = C.guint(maxColumns)
 
 	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(maxColumns)
 }
 
 // SetMinColumns sets the minimum number of columns to use.
@@ -286,6 +308,8 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 	_arg1 = C.guint(minColumns)
 
 	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(minColumns)
 }
 
 // SetModel sets the imodel to use.
@@ -301,6 +325,8 @@ func (self *GridView) SetModel(model SelectionModeller) {
 	}
 
 	C.gtk_grid_view_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetSingleClickActivate sets whether items should be activated on single click
@@ -315,4 +341,6 @@ func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 	}
 
 	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(singleClickActivate)
 }

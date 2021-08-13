@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -26,6 +27,8 @@ func IsZeroWidth(ch uint32) bool {
 	_arg1 = C.gunichar(ch)
 
 	_cret = C.pango_is_zero_width(_arg1)
+
+	runtime.KeepAlive(ch)
 
 	var _ok bool // out
 
@@ -65,6 +68,10 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 
 	_cret = C.pango_parse_enum(_arg1, _arg2, &_arg3, _arg4, &_arg5)
 
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
+
 	var _value int             // out
 	var _possibleValues string // out
 	var _ok bool               // out
@@ -101,6 +108,9 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 
 	_cret = C.pango_parse_stretch(_arg1, &_arg2, _arg3)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
+
 	var _stretch Stretch // out
 	var _ok bool         // out
 
@@ -129,6 +139,9 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	}
 
 	_cret = C.pango_parse_style(_arg1, &_arg2, _arg3)
+
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
 
 	var _style Style // out
 	var _ok bool     // out
@@ -159,6 +172,9 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 
 	_cret = C.pango_parse_variant(_arg1, &_arg2, _arg3)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
+
 	var _variant Variant // out
 	var _ok bool         // out
 
@@ -188,6 +204,9 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 
 	_cret = C.pango_parse_weight(_arg1, &_arg2, _arg3)
 
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
+
 	var _weight Weight // out
 	var _ok bool       // out
 
@@ -211,6 +230,8 @@ func SplitFileList(str string) []string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_split_file_list(_arg1)
+
+	runtime.KeepAlive(str)
 
 	var _utf8s []string // out
 
@@ -244,6 +265,8 @@ func TrimString(str string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_trim_string(_arg1)
+
+	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 
@@ -297,6 +320,10 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 	_arg3 = C.int(requiredMicro)
 
 	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(requiredMajor)
+	runtime.KeepAlive(requiredMinor)
+	runtime.KeepAlive(requiredMicro)
 
 	var _utf8 string // out
 

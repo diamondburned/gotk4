@@ -110,6 +110,8 @@ func (coverage *Coverage) Copy() *Coverage {
 
 	_cret = C.pango_coverage_copy(_arg0)
 
+	runtime.KeepAlive(coverage)
+
 	var _ret *Coverage // out
 
 	_ret = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -127,6 +129,9 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
+
+	runtime.KeepAlive(coverage)
+	runtime.KeepAlive(index_)
 
 	var _coverageLevel CoverageLevel // out
 
@@ -148,6 +153,8 @@ func (coverage *Coverage) Max(other *Coverage) {
 	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
+	runtime.KeepAlive(coverage)
+	runtime.KeepAlive(other)
 }
 
 // Set: modify a particular index within coverage
@@ -161,6 +168,9 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	_arg2 = C.PangoCoverageLevel(level)
 
 	C.pango_coverage_set(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(coverage)
+	runtime.KeepAlive(index_)
+	runtime.KeepAlive(level)
 }
 
 // ToBytes: convert a PangoCoverage structure into a flat binary format.
@@ -174,6 +184,7 @@ func (coverage *Coverage) ToBytes() []byte {
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(coverage)
 
 	var _bytes []byte // out
 
@@ -200,6 +211,8 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 	}
 
 	_cret = C.pango_coverage_from_bytes(_arg1, _arg2)
+
+	runtime.KeepAlive(bytes)
 
 	var _coverage *Coverage // out
 

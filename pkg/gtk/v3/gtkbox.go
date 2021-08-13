@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -115,6 +116,9 @@ func NewBox(orientation Orientation, spacing int) *Box {
 
 	_cret = C.gtk_box_new(_arg1, _arg2)
 
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(spacing)
+
 	var _box *Box // out
 
 	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -131,6 +135,8 @@ func (box *Box) BaselinePosition() BaselinePosition {
 
 	_cret = C.gtk_box_get_baseline_position(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _baselinePosition BaselinePosition // out
 
 	_baselinePosition = BaselinePosition(_cret)
@@ -146,6 +152,8 @@ func (box *Box) CenterWidget() Widgetter {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _widget Widgetter // out
 
@@ -166,6 +174,8 @@ func (box *Box) Homogeneous() bool {
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -183,6 +193,8 @@ func (box *Box) Spacing() int {
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
 
 	_cret = C.gtk_box_get_spacing(_arg0)
+
+	runtime.KeepAlive(box)
 
 	var _gint int // out
 
@@ -212,6 +224,11 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 	_arg4 = C.guint(padding)
 
 	C.gtk_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(expand)
+	runtime.KeepAlive(fill)
+	runtime.KeepAlive(padding)
 }
 
 // PackStart adds child to box, packed with reference to the start of box. The
@@ -235,6 +252,11 @@ func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint)
 	_arg4 = C.guint(padding)
 
 	C.gtk_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(expand)
+	runtime.KeepAlive(fill)
+	runtime.KeepAlive(padding)
 }
 
 // QueryChildPacking obtains information about how child is packed into box.
@@ -250,6 +272,8 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
 
 	var _expand bool       // out
 	var _fill bool         // out
@@ -286,6 +310,9 @@ func (box *Box) ReorderChild(child Widgetter, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // SetBaselinePosition sets the baseline position of a box. This affects only
@@ -301,6 +328,8 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(position)
 }
 
 // SetCenterWidget sets a center widget; that is a child widget that will be
@@ -316,6 +345,8 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 	}
 
 	C.gtk_box_set_center_widget(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(widget)
 }
 
 // SetChildPacking sets the way child is packed into box.
@@ -339,6 +370,12 @@ func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding
 	_arg5 = C.GtkPackType(packType)
 
 	C.gtk_box_set_child_packing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(expand)
+	runtime.KeepAlive(fill)
+	runtime.KeepAlive(padding)
+	runtime.KeepAlive(packType)
 }
 
 // SetHomogeneous sets the Box:homogeneous property of box, controlling whether
@@ -353,6 +390,8 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_box_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetSpacing sets the Box:spacing property of box, which is the number of
@@ -365,4 +404,6 @@ func (box *Box) SetSpacing(spacing int) {
 	_arg1 = C.gint(spacing)
 
 	C.gtk_box_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }

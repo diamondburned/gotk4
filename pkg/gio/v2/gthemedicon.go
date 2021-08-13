@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,8 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 
 	_cret = C.g_themed_icon_new(_arg1)
 
+	runtime.KeepAlive(iconname)
+
 	var _themedIcon *ThemedIcon // out
 
 	_themedIcon = wrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -92,6 +95,8 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	}
 
 	_cret = C.g_themed_icon_new_from_names(_arg1, _arg2)
+
+	runtime.KeepAlive(iconnames)
 
 	var _themedIcon *ThemedIcon // out
 
@@ -123,6 +128,8 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 
 	_cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
 
+	runtime.KeepAlive(iconname)
+
 	var _themedIcon *ThemedIcon // out
 
 	_themedIcon = wrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -143,6 +150,8 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_append_name(_arg0, _arg1)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(iconname)
 }
 
 // Names gets the names of icons from within icon.
@@ -153,6 +162,8 @@ func (icon *ThemedIcon) Names() []string {
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
+
+	runtime.KeepAlive(icon)
 
 	var _utf8s []string // out
 
@@ -186,4 +197,6 @@ func (icon *ThemedIcon) PrependName(iconname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_themed_icon_prepend_name(_arg0, _arg1)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(iconname)
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -99,6 +100,8 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 
 	_cret = C.gtk_string_filter_new(_arg1)
 
+	runtime.KeepAlive(expression)
+
 	var _stringFilter *StringFilter // out
 
 	_stringFilter = wrapStringFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -115,6 +118,8 @@ func (self *StringFilter) Expression() Expressioner {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
@@ -134,6 +139,8 @@ func (self *StringFilter) IgnoreCase() bool {
 
 	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -152,6 +159,8 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 
 	_cret = C.gtk_string_filter_get_match_mode(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _stringFilterMatchMode StringFilterMatchMode // out
 
 	_stringFilterMatchMode = StringFilterMatchMode(_cret)
@@ -167,6 +176,8 @@ func (self *StringFilter) Search() string {
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_filter_get_search(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -191,6 +202,8 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 	}
 
 	C.gtk_string_filter_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetIgnoreCase sets whether the filter ignores case differences.
@@ -204,6 +217,8 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	}
 
 	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ignoreCase)
 }
 
 // SetMatchMode sets the match mode for the filter.
@@ -215,6 +230,8 @@ func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 	_arg1 = C.GtkStringFilterMatchMode(mode)
 
 	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(mode)
 }
 
 // SetSearch sets the string to search for.
@@ -229,4 +246,6 @@ func (self *StringFilter) SetSearch(search string) {
 	}
 
 	C.gtk_string_filter_set_search(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(search)
 }

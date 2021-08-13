@@ -310,6 +310,8 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_add_supports_type(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
 
 	var _goerr error // out
 
@@ -330,6 +332,8 @@ func (appinfo *AppInfo) CanDelete() bool {
 
 	_cret = C.g_app_info_can_delete(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -348,6 +352,8 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
 
@@ -371,6 +377,8 @@ func (appinfo *AppInfo) Delete() bool {
 
 	_cret = C.g_app_info_delete(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -388,6 +396,8 @@ func (appinfo *AppInfo) Dup() AppInfor {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_dup(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _appInfo AppInfor // out
 
@@ -411,6 +421,9 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(appinfo1)
+	runtime.KeepAlive(appinfo2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -429,6 +442,8 @@ func (appinfo *AppInfo) Commandline() string {
 
 	_cret = C.g_app_info_get_commandline(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _filename string // out
 
 	if _cret != nil {
@@ -446,6 +461,8 @@ func (appinfo *AppInfo) Description() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_description(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
 
@@ -466,6 +483,8 @@ func (appinfo *AppInfo) DisplayName() string {
 
 	_cret = C.g_app_info_get_display_name(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -482,6 +501,8 @@ func (appinfo *AppInfo) Executable() string {
 
 	_cret = C.g_app_info_get_executable(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -497,6 +518,8 @@ func (appinfo *AppInfo) Icon() Iconner {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_icon(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _icon Iconner // out
 
@@ -521,6 +544,8 @@ func (appinfo *AppInfo) ID() string {
 
 	_cret = C.g_app_info_get_id(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -538,6 +563,8 @@ func (appinfo *AppInfo) Name() string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_name(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _utf8 string // out
 
@@ -558,6 +585,8 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _utf8s []string // out
 
@@ -625,6 +654,9 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	}
 
 	C.g_app_info_launch(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(files)
+	runtime.KeepAlive(context)
 
 	var _goerr error // out
 
@@ -667,6 +699,9 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	}
 
 	C.g_app_info_launch_uris(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
 
 	var _goerr error // out
 
@@ -716,6 +751,11 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 	}
 
 	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
 }
 
 // LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
@@ -728,6 +768,8 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -749,6 +791,8 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_remove_supports_type(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
 
 	var _goerr error // out
 
@@ -771,6 +815,8 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_extension(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(extension)
 
 	var _goerr error // out
 
@@ -793,6 +839,8 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_type(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
 
 	var _goerr error // out
 
@@ -817,6 +865,8 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_last_used_for_type(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
 
 	var _goerr error // out
 
@@ -837,6 +887,8 @@ func (appinfo *AppInfo) ShouldShow() bool {
 
 	_cret = C.g_app_info_should_show(_arg0)
 
+	runtime.KeepAlive(appinfo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -854,6 +906,8 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_supports_files(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
 
@@ -873,6 +927,8 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 
 	_cret = C.g_app_info_supports_uris(_arg0)
+
+	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
 
@@ -907,6 +963,10 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	_arg3 = C.GAppInfoCreateFlags(flags)
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(commandline)
+	runtime.KeepAlive(applicationName)
+	runtime.KeepAlive(flags)
 
 	var _appInfo AppInfor // out
 	var _goerr error      // out
@@ -956,6 +1016,8 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 
 	_cret = C.g_app_info_get_all_for_type(_arg1)
 
+	runtime.KeepAlive(contentType)
+
 	var _list []AppInfor // out
 
 	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
@@ -983,6 +1045,9 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 
 	_cret = C.g_app_info_get_default_for_type(_arg1, _arg2)
 
+	runtime.KeepAlive(contentType)
+	runtime.KeepAlive(mustSupportUris)
+
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
@@ -1004,6 +1069,8 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 
+	runtime.KeepAlive(uriScheme)
+
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
@@ -1024,6 +1091,8 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
+
+	runtime.KeepAlive(contentType)
 
 	var _list []AppInfor // out
 
@@ -1051,6 +1120,8 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
+
+	runtime.KeepAlive(contentType)
 
 	var _list []AppInfor // out
 
@@ -1084,6 +1155,8 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	}
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(context)
 
 	var _goerr error // out
 
@@ -1127,6 +1200,10 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 	}
 
 	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
 }
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
@@ -1138,6 +1215,7 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_app_info_launch_default_for_uri_finish(_arg1, &_cerr)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -1159,6 +1237,7 @@ func AppInfoResetTypeAssociations(contentType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_reset_type_associations(_arg1)
+	runtime.KeepAlive(contentType)
 }
 
 // AppInfoMonitorGet gets the InfoMonitor for the current thread-default main
@@ -1260,6 +1339,10 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 
 	_cret = C.g_app_launch_context_get_display(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(files)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -1280,6 +1363,8 @@ func (context *AppLaunchContext) Environment() []string {
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _filenames []string // out
 
@@ -1326,6 +1411,10 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 
 	_cret = C.g_app_launch_context_get_startup_notify_id(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(files)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -1348,6 +1437,8 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(startupNotifyId)
 }
 
 // Setenv arranges for variable to be set to value in the child's environment
@@ -1364,6 +1455,9 @@ func (context *AppLaunchContext) Setenv(variable string, value string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(variable)
+	runtime.KeepAlive(value)
 }
 
 // Unsetenv arranges for variable to be unset in the child's environment when
@@ -1377,4 +1471,6 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_unsetenv(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(variable)
 }

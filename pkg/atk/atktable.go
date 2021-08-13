@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -247,6 +248,9 @@ func (table *Table) AddColumnSelection(column int) bool {
 
 	_cret = C.atk_table_add_column_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -267,6 +271,9 @@ func (table *Table) AddRowSelection(row int) bool {
 
 	_cret = C.atk_table_add_row_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -284,6 +291,8 @@ func (table *Table) Caption() *ObjectClass {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_caption(_arg0)
+
+	runtime.KeepAlive(table)
 
 	var _object *ObjectClass // out
 
@@ -307,6 +316,9 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 
 	_cret = C.atk_table_get_column_at_index(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -325,6 +337,9 @@ func (table *Table) ColumnDescription(column int) string {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_description(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
 
 	var _utf8 string // out
 
@@ -347,6 +362,10 @@ func (table *Table) ColumnExtentAt(row int, column int) int {
 
 	_cret = C.atk_table_get_column_extent_at(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -365,6 +384,9 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_header(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
 
 	var _object *ObjectClass // out
 
@@ -391,6 +413,10 @@ func (table *Table) IndexAt(row int, column int) int {
 
 	_cret = C.atk_table_get_index_at(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -407,6 +433,8 @@ func (table *Table) NColumns() int {
 
 	_cret = C.atk_table_get_n_columns(_arg0)
 
+	runtime.KeepAlive(table)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -422,6 +450,8 @@ func (table *Table) NRows() int {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_n_rows(_arg0)
+
+	runtime.KeepAlive(table)
 
 	var _gint int // out
 
@@ -443,6 +473,9 @@ func (table *Table) RowAtIndex(index_ int) int {
 
 	_cret = C.atk_table_get_row_at_index(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -460,6 +493,9 @@ func (table *Table) RowDescription(row int) string {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_description(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
 
 	var _utf8 string // out
 
@@ -484,6 +520,10 @@ func (table *Table) RowExtentAt(row int, column int) int {
 
 	_cret = C.atk_table_get_row_extent_at(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -501,6 +541,9 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_header(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
 
 	var _object *ObjectClass // out
 
@@ -524,6 +567,9 @@ func (table *Table) SelectedColumns(selected **int) int {
 
 	_cret = C.atk_table_get_selected_columns(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -543,6 +589,9 @@ func (table *Table) SelectedRows(selected **int) int {
 
 	_cret = C.atk_table_get_selected_rows(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -558,6 +607,8 @@ func (table *Table) Summary() *ObjectClass {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.atk_table_get_summary(_arg0)
+
+	runtime.KeepAlive(table)
 
 	var _object *ObjectClass // out
 
@@ -577,6 +628,9 @@ func (table *Table) IsColumnSelected(column int) bool {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_is_column_selected(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
 
 	var _ok bool // out
 
@@ -598,6 +652,9 @@ func (table *Table) IsRowSelected(row int) bool {
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_is_row_selected(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
 
 	var _ok bool // out
 
@@ -622,6 +679,10 @@ func (table *Table) IsSelected(row int, column int) bool {
 
 	_cret = C.atk_table_is_selected(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -645,6 +706,10 @@ func (table *Table) RefAt(row int, column int) *ObjectClass {
 
 	_cret = C.atk_table_ref_at(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
 	var _object *ObjectClass // out
 
 	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -662,6 +727,9 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_remove_column_selection(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
 
 	var _ok bool // out
 
@@ -683,6 +751,9 @@ func (table *Table) RemoveRowSelection(row int) bool {
 
 	_cret = C.atk_table_remove_row_selection(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -701,6 +772,8 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(caption.Native()))
 
 	C.atk_table_set_caption(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(caption)
 }
 
 // SetColumnDescription sets the description text for the specified column of
@@ -716,6 +789,9 @@ func (table *Table) SetColumnDescription(column int, description string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_column_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(description)
 }
 
 // SetColumnHeader sets the specified column header to header.
@@ -729,6 +805,9 @@ func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
 
 	C.atk_table_set_column_header(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(header)
 }
 
 // SetRowDescription sets the description text for the specified row of table.
@@ -743,6 +822,9 @@ func (table *Table) SetRowDescription(row int, description string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_row_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(description)
 }
 
 // SetRowHeader sets the specified row header to header.
@@ -756,6 +838,9 @@ func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
 
 	C.atk_table_set_row_header(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
 }
 
 // SetSummary sets the summary description of the table.
@@ -767,4 +852,6 @@ func (table *Table) SetSummary(accessible *ObjectClass) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 
 	C.atk_table_set_summary(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(accessible)
 }

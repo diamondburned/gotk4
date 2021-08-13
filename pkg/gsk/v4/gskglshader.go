@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -153,6 +154,8 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 
 	_cret = C.gsk_gl_shader_new_from_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _glShader *GLShader // out
 
 	_glShader = wrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -179,6 +182,8 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.gsk_gl_shader_compile(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(renderer)
 
 	var _goerr error // out
 
@@ -202,6 +207,9 @@ func (shader *GLShader) FindUniformByName(name string) int {
 
 	_cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
 
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(name)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -218,6 +226,8 @@ func (shader *GLShader) ArgsSize() uint {
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_args_size(_arg0)
+
+	runtime.KeepAlive(shader)
 
 	var _gsize uint // out
 
@@ -239,6 +249,8 @@ func (shader *GLShader) NTextures() int {
 
 	_cret = C.gsk_gl_shader_get_n_textures(_arg0)
 
+	runtime.KeepAlive(shader)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -254,6 +266,8 @@ func (shader *GLShader) NUniforms() int {
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
+
+	runtime.KeepAlive(shader)
 
 	var _gint int // out
 
@@ -271,6 +285,8 @@ func (shader *GLShader) Resource() string {
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 
 	_cret = C.gsk_gl_shader_get_resource(_arg0)
+
+	runtime.KeepAlive(shader)
 
 	var _utf8 string // out
 
@@ -291,6 +307,9 @@ func (shader *GLShader) UniformName(idx int) string {
 
 	_cret = C.gsk_gl_shader_get_uniform_name(_arg0, _arg1)
 
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(idx)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -310,6 +329,9 @@ func (shader *GLShader) UniformOffset(idx int) int {
 
 	_cret = C.gsk_gl_shader_get_uniform_offset(_arg0, _arg1)
 
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(idx)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -328,6 +350,9 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_type(_arg0, _arg1)
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(idx)
 
 	var _glUniformType GLUniformType // out
 
@@ -362,6 +387,9 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 	}
 
 	C.gsk_shader_args_builder_set_bool(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetFloat sets the value of the uniform idx.
@@ -377,6 +405,9 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 	_arg2 = C.float(value)
 
 	C.gsk_shader_args_builder_set_float(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetInt sets the value of the uniform idx.
@@ -392,6 +423,9 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 	_arg2 = C.gint32(value)
 
 	C.gsk_shader_args_builder_set_int(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetUint sets the value of the uniform idx.
@@ -407,6 +441,9 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	_arg2 = C.guint32(value)
 
 	C.gsk_shader_args_builder_set_uint(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetVec2 sets the value of the uniform idx.
@@ -422,6 +459,9 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	_arg2 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec2(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetVec3 sets the value of the uniform idx.
@@ -437,6 +477,9 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec3(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // SetVec4 sets the value of the uniform idx.
@@ -452,4 +495,7 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec4(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }

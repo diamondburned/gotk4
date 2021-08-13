@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,9 @@ func (set *StateSet) AddState(typ StateType) bool {
 
 	_cret = C.atk_state_set_add_state(_arg0, _arg1)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -101,6 +105,8 @@ func (set *StateSet) AddStates(types []StateType) {
 	}
 
 	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(types)
 }
 
 // AndSets constructs the intersection of the two sets, returning NULL if the
@@ -114,6 +120,9 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
 
 	var _stateSet *StateSet // out
 
@@ -129,6 +138,7 @@ func (set *StateSet) ClearStates() {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 
 	C.atk_state_set_clear_states(_arg0)
+	runtime.KeepAlive(set)
 }
 
 // ContainsState checks whether the state for the specified type is in the
@@ -142,6 +152,9 @@ func (set *StateSet) ContainsState(typ StateType) bool {
 	_arg1 = C.AtkStateType(typ)
 
 	_cret = C.atk_state_set_contains_state(_arg0, _arg1)
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
@@ -173,6 +186,9 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 
 	_cret = C.atk_state_set_contains_states(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(types)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -190,6 +206,8 @@ func (set *StateSet) IsEmpty() bool {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 
 	_cret = C.atk_state_set_is_empty(_arg0)
+
+	runtime.KeepAlive(set)
 
 	var _ok bool // out
 
@@ -210,6 +228,9 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
 
 	var _stateSet *StateSet // out
 
@@ -236,6 +257,9 @@ func (set *StateSet) RemoveState(typ StateType) bool {
 
 	_cret = C.atk_state_set_remove_state(_arg0, _arg1)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -257,6 +281,9 @@ func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
 
 	var _stateSet *StateSet // out
 

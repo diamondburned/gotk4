@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -97,6 +98,8 @@ func NewAccelLabel(_string string) *AccelLabel {
 
 	_cret = C.gtk_accel_label_new(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _accelLabel *AccelLabel // out
 
 	_accelLabel = wrapAccelLabel(externglib.Take(unsafe.Pointer(_cret)))
@@ -113,6 +116,7 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(accelLabel)
 
 	var _acceleratorKey uint              // out
 	var _acceleratorMods gdk.ModifierType // out
@@ -132,6 +136,8 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
+
+	runtime.KeepAlive(accelLabel)
 
 	var _widget Widgetter // out
 
@@ -153,6 +159,8 @@ func (accelLabel *AccelLabel) AccelWidth() uint {
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 
+	runtime.KeepAlive(accelLabel)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -170,6 +178,8 @@ func (accelLabel *AccelLabel) Refetch() bool {
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
+
+	runtime.KeepAlive(accelLabel)
 
 	var _ok bool // out
 
@@ -197,6 +207,9 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	C.gtk_accel_label_set_accel(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(accelLabel)
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(acceleratorMods)
 }
 
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
@@ -212,4 +225,6 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	}
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
+	runtime.KeepAlive(accelLabel)
+	runtime.KeepAlive(accelWidget)
 }

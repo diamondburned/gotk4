@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -130,6 +131,8 @@ func NewPictureForFile(file gio.Filer) *Picture {
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
 
+	runtime.KeepAlive(file)
+
 	var _picture *Picture // out
 
 	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
@@ -152,6 +155,8 @@ func NewPictureForFilename(filename string) *Picture {
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
 
+	runtime.KeepAlive(filename)
+
 	var _picture *Picture // out
 
 	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
@@ -172,6 +177,8 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	}
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
+
+	runtime.KeepAlive(paintable)
 
 	var _picture *Picture // out
 
@@ -196,6 +203,8 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _picture *Picture // out
 
 	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
@@ -219,6 +228,8 @@ func NewPictureForResource(resourcePath string) *Picture {
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _picture *Picture // out
 
 	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
@@ -238,6 +249,8 @@ func (self *Picture) AlternativeText() string {
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -255,6 +268,8 @@ func (self *Picture) CanShrink() bool {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -277,6 +292,8 @@ func (self *Picture) File() gio.Filer {
 
 	_cret = C.gtk_picture_get_file(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _file gio.Filer // out
 
 	if _cret != nil {
@@ -296,6 +313,8 @@ func (self *Picture) KeepAspectRatio() bool {
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -313,6 +332,8 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_picture_get_paintable(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _paintable gdk.Paintabler // out
 
@@ -342,6 +363,8 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 	}
 
 	C.gtk_picture_set_alternative_text(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(alternativeText)
 }
 
 // SetCanShrink: if set to TRUE, the self can be made smaller than its contents.
@@ -364,6 +387,8 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 	}
 
 	C.gtk_picture_set_can_shrink(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(canShrink)
 }
 
 // SetFile makes self load and display file.
@@ -379,6 +404,8 @@ func (self *Picture) SetFile(file gio.Filer) {
 	}
 
 	C.gtk_picture_set_file(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(file)
 }
 
 // SetFilename makes self load and display the given filename.
@@ -395,6 +422,8 @@ func (self *Picture) SetFilename(filename string) {
 	}
 
 	C.gtk_picture_set_filename(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(filename)
 }
 
 // SetKeepAspectRatio: if set to TRUE, the self will render its contents
@@ -415,6 +444,8 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	}
 
 	C.gtk_picture_set_keep_aspect_ratio(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(keepAspectRatio)
 }
 
 // SetPaintable makes self display the given paintable.
@@ -432,6 +463,8 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	}
 
 	C.gtk_picture_set_paintable(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(paintable)
 }
 
 // SetPixbuf sets a GtkPicture to show a GdkPixbuf.
@@ -449,6 +482,8 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	}
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetResource makes self load and display the resource at the given
@@ -466,4 +501,6 @@ func (self *Picture) SetResource(resourcePath string) {
 	}
 
 	C.gtk_picture_set_resource(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(resourcePath)
 }

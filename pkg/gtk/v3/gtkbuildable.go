@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -144,6 +145,10 @@ func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object,
 	}
 
 	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(typ)
 }
 
 // ConstructChild constructs a child of buildable with the name name.
@@ -162,6 +167,10 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *exter
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(name)
 
 	var _object *externglib.Object // out
 
@@ -189,6 +198,11 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.O
 	_arg4 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tagname)
+	runtime.KeepAlive(data)
 }
 
 // CustomTagEnd: this is called at the end of each custom element handled by the
@@ -212,6 +226,11 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 	}
 
 	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tagname)
+	runtime.KeepAlive(data)
 }
 
 // CustomTagStart: this is called for each unknown element under <child>.
@@ -233,6 +252,11 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(tagname)
 
 	var _parser glib.MarkupParser // out
 	var _data cgo.Handle          // out
@@ -262,6 +286,10 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *e
 
 	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(childname)
+
 	var _object *externglib.Object // out
 
 	_object = externglib.Take(unsafe.Pointer(_cret))
@@ -280,6 +308,8 @@ func (buildable *Buildable) Name() string {
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 
 	_cret = C.gtk_buildable_get_name(_arg0)
+
+	runtime.KeepAlive(buildable)
 
 	var _utf8 string // out
 
@@ -300,6 +330,8 @@ func (buildable *Buildable) ParserFinished(builder *Builder) {
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	C.gtk_buildable_parser_finished(_arg0, _arg1)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
 }
 
 // SetBuildableProperty sets the property name name to value on the buildable
@@ -317,6 +349,10 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
 }
 
 // SetName sets the name of the buildable object.
@@ -329,4 +365,6 @@ func (buildable *Buildable) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_buildable_set_name(_arg0, _arg1)
+	runtime.KeepAlive(buildable)
+	runtime.KeepAlive(name)
 }

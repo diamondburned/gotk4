@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -97,6 +98,8 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(data)
 }
 
 // LoadFromFile loads the data contained in file into css_provider.
@@ -110,6 +113,8 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(file)
 }
 
 // LoadFromPath loads the data contained in path into css_provider.
@@ -124,6 +129,8 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(path)
 }
 
 // LoadFromResource loads the data contained in the resource at resource_path
@@ -139,6 +146,8 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(resourcePath)
 }
 
 // LoadNamed loads a theme from the usual theme paths.
@@ -160,6 +169,9 @@ func (provider *CSSProvider) LoadNamed(name string, variant string) {
 	}
 
 	C.gtk_css_provider_load_named(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(variant)
 }
 
 // String converts the provider into a string representation in CSS format.
@@ -174,6 +186,8 @@ func (provider *CSSProvider) String() string {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
+
+	runtime.KeepAlive(provider)
 
 	var _utf8 string // out
 

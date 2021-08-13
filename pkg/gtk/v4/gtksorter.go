@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -177,6 +178,8 @@ func (self *Sorter) Changed(change SorterChange) {
 	_arg1 = C.GtkSorterChange(change)
 
 	C.gtk_sorter_changed(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(change)
 }
 
 // Compare compares two given items according to the sort order implemented by
@@ -202,6 +205,10 @@ func (self *Sorter) Compare(item1 *externglib.Object, item2 *externglib.Object) 
 
 	_cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(item1)
+	runtime.KeepAlive(item2)
+
 	var _ordering Ordering // out
 
 	_ordering = Ordering(_cret)
@@ -221,6 +228,8 @@ func (self *Sorter) Order() SorterOrder {
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _sorterOrder SorterOrder // out
 

@@ -202,6 +202,10 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(recentData)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -231,6 +235,9 @@ func (manager *RecentManager) AddItem(uri string) bool {
 
 	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -248,6 +255,8 @@ func (manager *RecentManager) Items() []*RecentInfo {
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_manager_get_items(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _list []*RecentInfo // out
 
@@ -278,6 +287,9 @@ func (manager *RecentManager) HasItem(uri string) bool {
 
 	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -301,6 +313,9 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
 
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
@@ -338,6 +353,9 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 	}
 
 	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(newUri)
 
 	var _goerr error // out
 
@@ -357,6 +375,8 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
+
+	runtime.KeepAlive(manager)
 
 	var _gint int    // out
 	var _goerr error // out
@@ -381,6 +401,8 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
@@ -508,6 +530,9 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(appName)
+
 	var _appInfo gio.AppInfor // out
 	var _goerr error          // out
 
@@ -531,6 +556,8 @@ func (info *RecentInfo) Exists() bool {
 
 	_cret = C.gtk_recent_info_exists(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -550,6 +577,8 @@ func (info *RecentInfo) Age() int {
 
 	_cret = C.gtk_recent_info_get_age(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -565,6 +594,8 @@ func (info *RecentInfo) Description() string {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_description(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -584,6 +615,8 @@ func (info *RecentInfo) DisplayName() string {
 
 	_cret = C.gtk_recent_info_get_display_name(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -599,6 +632,8 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_gicon(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _icon gio.Iconner // out
 
@@ -618,6 +653,8 @@ func (info *RecentInfo) MIMEType() string {
 
 	_cret = C.gtk_recent_info_get_mime_type(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -636,6 +673,8 @@ func (info *RecentInfo) PrivateHint() bool {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_private_hint(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
@@ -659,6 +698,8 @@ func (info *RecentInfo) ShortName() string {
 
 	_cret = C.gtk_recent_info_get_short_name(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -675,6 +716,8 @@ func (info *RecentInfo) URI() string {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_uri(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -694,6 +737,8 @@ func (info *RecentInfo) URIDisplay() string {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_uri_display(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
@@ -718,6 +763,9 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 
 	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(appName)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -740,6 +788,9 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 
 	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(groupName)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -758,6 +809,8 @@ func (info *RecentInfo) IsLocal() bool {
 	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_is_local(_arg0)
+
+	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
@@ -778,6 +831,8 @@ func (info *RecentInfo) LastApplication() string {
 
 	_cret = C.gtk_recent_info_last_application(_arg0)
 
+	runtime.KeepAlive(info)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -796,6 +851,9 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	_arg1 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(infoB)))
 
 	_cret = C.gtk_recent_info_match(_arg0, _arg1)
+
+	runtime.KeepAlive(infoA)
+	runtime.KeepAlive(infoB)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -82,6 +83,8 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
+	runtime.KeepAlive(conn)
+
 	var _socketConnectable SocketConnectabler // out
 
 	_socketConnectable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
@@ -97,6 +100,8 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 
@@ -117,6 +122,8 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(identity)
 }
 
 // SetValidationFlags sets conn's validation flags, to override the default set
@@ -130,6 +137,8 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(flags)
 }
 
 // NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
@@ -147,6 +156,9 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	}
 
 	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(baseSocket)
+	runtime.KeepAlive(serverIdentity)
 
 	var _dtlsClientConnection DTLSClientConnectioner // out
 	var _goerr error                                 // out

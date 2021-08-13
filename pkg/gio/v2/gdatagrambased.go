@@ -329,6 +329,9 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 
 	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
 
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(condition)
+
 	var _ioCondition glib.IOCondition // out
 
 	_ioCondition = glib.IOCondition(_cret)
@@ -359,6 +362,10 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 	_arg2 = C.gint64(timeout)
 
 	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(condition)
+	runtime.KeepAlive(timeout)
 
 	var _goerr error // out
 
@@ -397,6 +404,10 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(condition)
 
 	var _source *glib.Source // out
 
@@ -480,6 +491,12 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeout)
+
 	var _gint int    // out
 	var _goerr error // out
 
@@ -554,6 +571,12 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 	_arg4 = C.gint64(timeout)
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeout)
 
 	var _gint int    // out
 	var _goerr error // out

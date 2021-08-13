@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -220,6 +221,12 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 
 	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(acceptLabel)
+	runtime.KeepAlive(cancelLabel)
+
 	var _fileChooserNative *FileChooserNative // out
 
 	_fileChooserNative = wrapFileChooserNative(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -235,6 +242,8 @@ func (self *FileChooserNative) AcceptLabel() string {
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -253,6 +262,8 @@ func (self *FileChooserNative) CancelLabel() string {
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -282,6 +293,8 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	}
 
 	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(acceptLabel)
 }
 
 // SetCancelLabel sets the custom label text for the cancel button.
@@ -303,4 +316,6 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	}
 
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(cancelLabel)
 }

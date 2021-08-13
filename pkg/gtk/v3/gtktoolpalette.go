@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -188,6 +189,11 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 	_arg4 = C.GdkDragAction(actions)
 
 	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(actions)
 }
 
 // DragItem: get the dragged item from the selection. This could be a ToolItem
@@ -201,6 +207,9 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 	_arg1 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selection)))
 
 	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
+
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(selection)
 
 	var _widget Widgetter // out
 
@@ -221,6 +230,10 @@ func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
 	_arg2 = C.gint(y)
 
 	_cret = C.gtk_tool_palette_get_drop_group(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 
 	var _toolItemGroup *ToolItemGroup // out
 
@@ -245,6 +258,10 @@ func (palette *ToolPalette) DropItem(x int, y int) *ToolItem {
 
 	_cret = C.gtk_tool_palette_get_drop_item(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _toolItem *ToolItem // out
 
 	if _cret != nil {
@@ -265,6 +282,9 @@ func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_palette_get_exclusive(_arg0, _arg1)
+
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
 
 	var _ok bool // out
 
@@ -287,6 +307,9 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 
 	_cret = C.gtk_tool_palette_get_expand(_arg0, _arg1)
 
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -308,6 +331,9 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 
 	_cret = C.gtk_tool_palette_get_group_position(_arg0, _arg1)
 
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -326,6 +352,8 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 	_cret = C.gtk_tool_palette_get_hadjustment(_arg0)
 
+	runtime.KeepAlive(palette)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -343,6 +371,8 @@ func (palette *ToolPalette) IconSize() int {
 
 	_cret = C.gtk_tool_palette_get_icon_size(_arg0)
 
+	runtime.KeepAlive(palette)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -358,6 +388,8 @@ func (palette *ToolPalette) Style() ToolbarStyle {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
 
 	_cret = C.gtk_tool_palette_get_style(_arg0)
+
+	runtime.KeepAlive(palette)
 
 	var _toolbarStyle ToolbarStyle // out
 
@@ -377,6 +409,8 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 
 	_cret = C.gtk_tool_palette_get_vadjustment(_arg0)
 
+	runtime.KeepAlive(palette)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -395,6 +429,8 @@ func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
 	_arg1 = C.GtkToolPaletteDragTargets(targets)
 
 	C.gtk_tool_palette_set_drag_source(_arg0, _arg1)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(targets)
 }
 
 // SetExclusive sets whether the group should be exclusive or not. If an
@@ -411,6 +447,9 @@ func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
 	}
 
 	C.gtk_tool_palette_set_exclusive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(exclusive)
 }
 
 // SetExpand sets whether the group should be given extra space.
@@ -426,6 +465,9 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 	}
 
 	C.gtk_tool_palette_set_expand(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(expand)
 }
 
 // SetGroupPosition sets the position of the group as an index of the tool
@@ -441,6 +483,9 @@ func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int)
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_palette_set_group_position(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(position)
 }
 
 // SetIconSize sets the size of icons in the tool palette.
@@ -452,6 +497,8 @@ func (palette *ToolPalette) SetIconSize(iconSize int) {
 	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_tool_palette_set_icon_size(_arg0, _arg1)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(iconSize)
 }
 
 // SetStyle sets the style (text, icons or both) of items in the tool palette.
@@ -463,6 +510,8 @@ func (palette *ToolPalette) SetStyle(style ToolbarStyle) {
 	_arg1 = C.GtkToolbarStyle(style)
 
 	C.gtk_tool_palette_set_style(_arg0, _arg1)
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(style)
 }
 
 // UnsetIconSize unsets the tool palette icon size set with
@@ -474,6 +523,7 @@ func (palette *ToolPalette) UnsetIconSize() {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
 
 	C.gtk_tool_palette_unset_icon_size(_arg0)
+	runtime.KeepAlive(palette)
 }
 
 // UnsetStyle unsets a toolbar style set with gtk_tool_palette_set_style(), so
@@ -484,6 +534,7 @@ func (palette *ToolPalette) UnsetStyle() {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
 
 	C.gtk_tool_palette_unset_style(_arg0)
+	runtime.KeepAlive(palette)
 }
 
 // ToolPaletteGetDragTargetGroup: get the target entry for a dragged

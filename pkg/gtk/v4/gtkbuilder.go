@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -333,6 +334,8 @@ func NewBuilderFromFile(filename string) *Builder {
 
 	_cret = C.gtk_builder_new_from_file(_arg1)
 
+	runtime.KeepAlive(filename)
+
 	var _builder *Builder // out
 
 	_builder = wrapBuilder(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -352,6 +355,8 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_new_from_resource(_arg1)
+
+	runtime.KeepAlive(resourcePath)
 
 	var _builder *Builder // out
 
@@ -378,6 +383,9 @@ func NewBuilderFromString(_string string, length int) *Builder {
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_builder_new_from_string(_arg1, _arg2)
+
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(length)
 
 	var _builder *Builder // out
 
@@ -412,6 +420,8 @@ func (builder *Builder) AddFromFile(filename string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_add_from_file(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(filename)
 
 	var _goerr error // out
 
@@ -444,6 +454,8 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_builder_add_from_resource(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(resourcePath)
 
 	var _goerr error // out
 
@@ -478,6 +490,9 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 	_arg2 = C.gssize(length)
 
 	C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(length)
 
 	var _goerr error // out
 
@@ -521,6 +536,9 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	}
 
 	C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(objectIds)
 
 	var _goerr error // out
 
@@ -565,6 +583,9 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	}
 
 	C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(resourcePath)
+	runtime.KeepAlive(objectIds)
 
 	var _goerr error // out
 
@@ -611,6 +632,10 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 	}
 
 	C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(objectIds)
 
 	var _goerr error // out
 
@@ -634,6 +659,9 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(object)
 }
 
 // ExtendWithTemplate: main private entry point for building composite
@@ -657,6 +685,11 @@ func (builder *Builder) ExtendWithTemplate(object *externglib.Object, templateTy
 	_arg4 = C.gssize(length)
 
 	C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(templateType)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(length)
 
 	var _goerr error // out
 
@@ -676,6 +709,8 @@ func (builder *Builder) CurrentObject() *externglib.Object {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_current_object(_arg0)
+
+	runtime.KeepAlive(builder)
 
 	var _object *externglib.Object // out
 
@@ -701,6 +736,9 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 
 	_cret = C.gtk_builder_get_object(_arg0, _arg1)
 
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(name)
+
 	var _object *externglib.Object // out
 
 	if _cret != nil {
@@ -719,6 +757,8 @@ func (builder *Builder) Scope() BuilderScoper {
 
 	_cret = C.gtk_builder_get_scope(_arg0)
 
+	runtime.KeepAlive(builder)
+
 	var _builderScope BuilderScoper // out
 
 	_builderScope = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
@@ -734,6 +774,8 @@ func (builder *Builder) TranslationDomain() string {
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
 	_cret = C.gtk_builder_get_translation_domain(_arg0)
+
+	runtime.KeepAlive(builder)
 
 	var _utf8 string // out
 
@@ -758,6 +800,9 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typeName)
 
 	var _gType externglib.Type // out
 
@@ -785,6 +830,8 @@ func (builder *Builder) SetCurrentObject(currentObject *externglib.Object) {
 	}
 
 	C.gtk_builder_set_current_object(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(currentObject)
 }
 
 // SetScope sets the scope the builder should operate in.
@@ -800,6 +847,8 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 	}
 
 	C.gtk_builder_set_scope(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(scope)
 }
 
 // SetTranslationDomain sets the translation domain of builder.
@@ -814,6 +863,8 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 	}
 
 	C.gtk_builder_set_translation_domain(_arg0, _arg1)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(domain)
 }
 
 // ValueFromStringType demarshals a value from a string.
@@ -839,6 +890,9 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(_string)
 
 	var _value externglib.Value // out
 	var _goerr error            // out

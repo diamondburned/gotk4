@@ -107,6 +107,9 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 
 	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
 
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(i)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -122,6 +125,8 @@ func (streamable *StreamableContent) NMIMETypes() int {
 	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
 
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
+
+	runtime.KeepAlive(streamable)
 
 	var _gint int // out
 
@@ -141,6 +146,9 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
+
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
 
 	var _ioChannel *glib.IOChannel // out
 
@@ -169,6 +177,9 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_streamable_content_get_uri(_arg0, _arg1)
+
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
 
 	var _utf8 string // out
 

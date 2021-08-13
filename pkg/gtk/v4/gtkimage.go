@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -168,6 +169,8 @@ func NewImageFromFile(filename string) *Image {
 
 	_cret = C.gtk_image_new_from_file(_arg1)
 
+	runtime.KeepAlive(filename)
+
 	var _image *Image // out
 
 	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
@@ -188,6 +191,8 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	_cret = C.gtk_image_new_from_gicon(_arg1)
+
+	runtime.KeepAlive(icon)
 
 	var _image *Image // out
 
@@ -213,6 +218,8 @@ func NewImageFromIconName(iconName string) *Image {
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
 
+	runtime.KeepAlive(iconName)
+
 	var _image *Image // out
 
 	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
@@ -237,6 +244,8 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	}
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
+
+	runtime.KeepAlive(paintable)
 
 	var _image *Image // out
 
@@ -267,6 +276,8 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _image *Image // out
 
 	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
@@ -296,6 +307,8 @@ func NewImageFromResource(resourcePath string) *Image {
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _image *Image // out
 
 	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
@@ -310,6 +323,7 @@ func (image *Image) Clear() {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	C.gtk_image_clear(_arg0)
+	runtime.KeepAlive(image)
 }
 
 // GIcon gets the GIcon being displayed by the GtkImage.
@@ -324,6 +338,8 @@ func (image *Image) GIcon() gio.Iconner {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_gicon(_arg0)
+
+	runtime.KeepAlive(image)
 
 	var _icon gio.Iconner // out
 
@@ -347,6 +363,8 @@ func (image *Image) IconName() string {
 
 	_cret = C.gtk_image_get_icon_name(_arg0)
 
+	runtime.KeepAlive(image)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -364,6 +382,8 @@ func (image *Image) IconSize() IconSize {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_icon_size(_arg0)
+
+	runtime.KeepAlive(image)
 
 	var _iconSize IconSize // out
 
@@ -385,6 +405,8 @@ func (image *Image) Paintable() gdk.Paintabler {
 
 	_cret = C.gtk_image_get_paintable(_arg0)
 
+	runtime.KeepAlive(image)
+
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
@@ -402,6 +424,8 @@ func (image *Image) PixelSize() int {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
+
+	runtime.KeepAlive(image)
 
 	var _gint int // out
 
@@ -421,6 +445,8 @@ func (image *Image) StorageType() ImageType {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
+
+	runtime.KeepAlive(image)
 
 	var _imageType ImageType // out
 
@@ -443,6 +469,8 @@ func (image *Image) SetFromFile(filename string) {
 	}
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(filename)
 }
 
 // SetFromGIcon sets a GtkImage to show a GIcon.
@@ -456,6 +484,8 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(icon)
 }
 
 // SetFromIconName sets a GtkImage to show a named icon.
@@ -472,6 +502,8 @@ func (image *Image) SetFromIconName(iconName string) {
 	}
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(iconName)
 }
 
 // SetFromPaintable sets a GtkImage to show a GdkPaintable.
@@ -487,6 +519,8 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	}
 
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(paintable)
 }
 
 // SetFromPixbuf sets a GtkImage to show a GdkPixbuf.
@@ -505,6 +539,8 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	}
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetFromResource sets a GtkImage to show a resource.
@@ -521,6 +557,8 @@ func (image *Image) SetFromResource(resourcePath string) {
 	}
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(resourcePath)
 }
 
 // SetIconSize suggests an icon size to the theme for named icons.
@@ -532,6 +570,8 @@ func (image *Image) SetIconSize(iconSize IconSize) {
 	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_image_set_icon_size(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(iconSize)
 }
 
 // SetPixelSize sets the pixel size to use for named icons.
@@ -546,4 +586,6 @@ func (image *Image) SetPixelSize(pixelSize int) {
 	_arg1 = C.int(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(pixelSize)
 }

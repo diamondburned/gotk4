@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,9 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(objectPath)
+
 	var _dBusObjectProxy *DBusObjectProxy // out
 
 	_dBusObjectProxy = wrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -82,6 +86,8 @@ func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
+
+	runtime.KeepAlive(proxy)
 
 	var _dBusConnection *DBusConnection // out
 

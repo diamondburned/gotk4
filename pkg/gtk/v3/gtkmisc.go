@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -93,6 +94,7 @@ func (misc *Misc) Alignment() (xalign float32, yalign float32) {
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(misc)
 
 	var _xalign float32 // out
 	var _yalign float32 // out
@@ -115,6 +117,7 @@ func (misc *Misc) Padding() (xpad int, ypad int) {
 	_arg0 = (*C.GtkMisc)(unsafe.Pointer(misc.Native()))
 
 	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(misc)
 
 	var _xpad int // out
 	var _ypad int // out
@@ -139,6 +142,9 @@ func (misc *Misc) SetAlignment(xalign float32, yalign float32) {
 	_arg2 = C.gfloat(yalign)
 
 	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(misc)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
 }
 
 // SetPadding sets the amount of space to add around the widget.
@@ -154,4 +160,7 @@ func (misc *Misc) SetPadding(xpad int, ypad int) {
 	_arg2 = C.gint(ypad)
 
 	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(misc)
+	runtime.KeepAlive(xpad)
+	runtime.KeepAlive(ypad)
 }

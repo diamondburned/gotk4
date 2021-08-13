@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -137,6 +138,9 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(accelGroup)
+
 	var _imageMenuItem *ImageMenuItem // out
 
 	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -155,6 +159,8 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
+
+	runtime.KeepAlive(label)
 
 	var _imageMenuItem *ImageMenuItem // out
 
@@ -177,6 +183,8 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 
 	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _imageMenuItem *ImageMenuItem // out
 
 	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -195,6 +203,8 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
+
+	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out
 
@@ -217,6 +227,8 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
 
+	runtime.KeepAlive(imageMenuItem)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -235,6 +247,8 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
+
+	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out
 
@@ -262,6 +276,8 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
+	runtime.KeepAlive(imageMenuItem)
+	runtime.KeepAlive(accelGroup)
 }
 
 // SetAlwaysShowImage: if TRUE, the menu item will ignore the
@@ -281,6 +297,8 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
+	runtime.KeepAlive(imageMenuItem)
+	runtime.KeepAlive(alwaysShow)
 }
 
 // SetImage sets the image of image_menu_item to the given widget. Note that it
@@ -298,6 +316,8 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	}
 
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
+	runtime.KeepAlive(imageMenuItem)
+	runtime.KeepAlive(image)
 }
 
 // SetUseStock: if TRUE, the label set in the menuitem is used as a stock id to
@@ -314,4 +334,6 @@ func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
 	}
 
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
+	runtime.KeepAlive(imageMenuItem)
+	runtime.KeepAlive(useStock)
 }

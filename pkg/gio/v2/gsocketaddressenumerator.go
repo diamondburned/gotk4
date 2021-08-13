@@ -138,6 +138,9 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 
 	_cret = C.g_socket_address_enumerator_next(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
@@ -173,6 +176,9 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 	}
 
 	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // NextFinish retrieves the result of a completed call to
@@ -188,6 +194,9 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(result)
 
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out

@@ -67,6 +67,8 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 
 	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 
+	runtime.KeepAlive(pixbuf)
+
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -110,6 +112,8 @@ func (iconSet *IconSet) AddSource(source *IconSource) {
 	_arg1 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	C.gtk_icon_set_add_source(_arg0, _arg1)
+	runtime.KeepAlive(iconSet)
+	runtime.KeepAlive(source)
 }
 
 // Copy copies icon_set by value.
@@ -122,6 +126,8 @@ func (iconSet *IconSet) Copy() *IconSet {
 	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
 	_cret = C.gtk_icon_set_copy(_arg0)
+
+	runtime.KeepAlive(iconSet)
 
 	var _iconSet *IconSet // out
 
@@ -145,6 +151,7 @@ func (iconSet *IconSet) Sizes() []int {
 	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
 	C.gtk_icon_set_get_sizes(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(iconSet)
 
 	var _sizes []int // out
 
@@ -190,6 +197,14 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 
 	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(iconSet)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
@@ -226,6 +241,10 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpi
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(iconSet)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(size)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -269,6 +288,12 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	}
 
 	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(iconSet)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(forWindow)
 
 	var _surface *cairo.Surface // out
 
@@ -317,6 +342,8 @@ func (source *IconSource) Copy() *IconSource {
 
 	_cret = C.gtk_icon_source_copy(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _iconSource *IconSource // out
 
 	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -339,6 +366,8 @@ func (source *IconSource) Direction() TextDirection {
 
 	_cret = C.gtk_icon_source_get_direction(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _textDirection TextDirection // out
 
 	_textDirection = TextDirection(_cret)
@@ -357,6 +386,8 @@ func (source *IconSource) DirectionWildcarded() bool {
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.gtk_icon_source_get_direction_wildcarded(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
@@ -380,6 +411,8 @@ func (source *IconSource) Filename() string {
 
 	_cret = C.gtk_icon_source_get_filename(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -399,6 +432,8 @@ func (source *IconSource) IconName() string {
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.gtk_icon_source_get_icon_name(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _utf8 string // out
 
@@ -421,6 +456,8 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.gtk_icon_source_get_pixbuf(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -451,6 +488,8 @@ func (source *IconSource) Size() int {
 
 	_cret = C.gtk_icon_source_get_size(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -468,6 +507,8 @@ func (source *IconSource) SizeWildcarded() bool {
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.gtk_icon_source_get_size_wildcarded(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
@@ -490,6 +531,8 @@ func (source *IconSource) State() StateType {
 
 	_cret = C.gtk_icon_source_get_state(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _stateType StateType // out
 
 	_stateType = StateType(_cret)
@@ -507,6 +550,8 @@ func (source *IconSource) StateWildcarded() bool {
 	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.gtk_icon_source_get_state_wildcarded(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
@@ -534,6 +579,8 @@ func (source *IconSource) SetDirection(direction TextDirection) {
 	_arg1 = C.GtkTextDirection(direction)
 
 	C.gtk_icon_source_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(direction)
 }
 
 // SetDirectionWildcarded: if the text direction is wildcarded, this source can
@@ -556,6 +603,8 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 	}
 
 	C.gtk_icon_source_set_direction_wildcarded(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(setting)
 }
 
 // SetFilename sets the name of an image file to use as a base image when
@@ -571,6 +620,8 @@ func (source *IconSource) SetFilename(filename string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_filename(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(filename)
 }
 
 // SetIconName sets the name of an icon to look up in the current icon theme to
@@ -588,6 +639,8 @@ func (source *IconSource) SetIconName(iconName string) {
 	}
 
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(iconName)
 }
 
 // SetPixbuf sets a pixbuf to use as a base image when creating icon variants
@@ -602,6 +655,8 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetSize sets the icon size this icon source is intended to be used with.
@@ -620,6 +675,8 @@ func (source *IconSource) SetSize(size int) {
 	_arg1 = C.GtkIconSize(size)
 
 	C.gtk_icon_source_set_size(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(size)
 }
 
 // SetSizeWildcarded: if the icon size is wildcarded, this source can be used as
@@ -645,6 +702,8 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 	}
 
 	C.gtk_icon_source_set_size_wildcarded(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(setting)
 }
 
 // SetState sets the widget state this icon source is intended to be used with.
@@ -663,6 +722,8 @@ func (source *IconSource) SetState(state StateType) {
 	_arg1 = C.GtkStateType(state)
 
 	C.gtk_icon_source_set_state(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(state)
 }
 
 // SetStateWildcarded: if the widget state is wildcarded, this source can be
@@ -689,6 +750,8 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 	}
 
 	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(setting)
 }
 
 type SelectionData struct {
@@ -710,6 +773,8 @@ func (data *SelectionData) Copy() *SelectionData {
 
 	_cret = C.gtk_selection_data_copy(_arg0)
 
+	runtime.KeepAlive(data)
+
 	var _selectionData *SelectionData // out
 
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -728,6 +793,8 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_get_display(_arg0)
+
+	runtime.KeepAlive(selectionData)
 
 	var _display *gdk.Display // out
 
@@ -750,6 +817,8 @@ func (selectionData *SelectionData) Format() int {
 
 	_cret = C.gtk_selection_data_get_format(_arg0)
 
+	runtime.KeepAlive(selectionData)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -766,6 +835,8 @@ func (selectionData *SelectionData) Length() int {
 
 	_cret = C.gtk_selection_data_get_length(_arg0)
 
+	runtime.KeepAlive(selectionData)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -781,6 +852,8 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_get_pixbuf(_arg0)
+
+	runtime.KeepAlive(selectionData)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -810,6 +883,8 @@ func (selectionData *SelectionData) Text() string {
 
 	_cret = C.gtk_selection_data_get_text(_arg0)
 
+	runtime.KeepAlive(selectionData)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -828,6 +903,8 @@ func (selectionData *SelectionData) URIs() []string {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_get_uris(_arg0)
+
+	runtime.KeepAlive(selectionData)
 
 	var _utf8s []string // out
 
@@ -862,6 +939,9 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 
 	_cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
 
+	runtime.KeepAlive(selectionData)
+	runtime.KeepAlive(pixbuf)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -885,6 +965,10 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 	_arg2 = C.gint(len)
 
 	_cret = C.gtk_selection_data_set_text(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(selectionData)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(len)
 
 	var _ok bool // out
 
@@ -919,6 +1003,9 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 
 	_cret = C.gtk_selection_data_set_uris(_arg0, _arg1)
 
+	runtime.KeepAlive(selectionData)
+	runtime.KeepAlive(uris)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -942,6 +1029,9 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 
 	_cret = C.gtk_selection_data_targets_include_image(_arg0, _arg1)
 
+	runtime.KeepAlive(selectionData)
+	runtime.KeepAlive(writable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -964,6 +1054,9 @@ func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) b
 
 	_cret = C.gtk_selection_data_targets_include_rich_text(_arg0, _arg1)
 
+	runtime.KeepAlive(selectionData)
+	runtime.KeepAlive(buffer)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -982,6 +1075,8 @@ func (selectionData *SelectionData) TargetsIncludeText() bool {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_targets_include_text(_arg0)
+
+	runtime.KeepAlive(selectionData)
 
 	var _ok bool // out
 
@@ -1002,6 +1097,8 @@ func (selectionData *SelectionData) TargetsIncludeURI() bool {
 	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
 	_cret = C.gtk_selection_data_targets_include_uri(_arg0)
+
+	runtime.KeepAlive(selectionData)
 
 	var _ok bool // out
 
@@ -1081,6 +1178,9 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 
 	_cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(widget)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1098,6 +1198,9 @@ func (path *WidgetPath) AppendType(typ externglib.Type) int {
 	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_append_type(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(typ)
 
 	var _gint int // out
 
@@ -1125,6 +1228,10 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 
 	_cret = C.gtk_widget_path_append_with_siblings(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(siblings)
+	runtime.KeepAlive(siblingIndex)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1140,6 +1247,8 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_widget_path_copy(_arg0)
+
+	runtime.KeepAlive(path)
 
 	var _widgetPath *WidgetPath // out
 
@@ -1161,6 +1270,8 @@ func (path *WidgetPath) ObjectType() externglib.Type {
 
 	_cret = C.gtk_widget_path_get_object_type(_arg0)
 
+	runtime.KeepAlive(path)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -1179,6 +1290,9 @@ func (path *WidgetPath) HasParent(typ externglib.Type) bool {
 	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_has_parent(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
@@ -1200,6 +1314,9 @@ func (path *WidgetPath) IsType(typ externglib.Type) bool {
 	_arg1 = C.GType(typ)
 
 	_cret = C.gtk_widget_path_is_type(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
@@ -1223,6 +1340,9 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 }
 
 // IterAddRegion adds the region name to the widget at position pos in the
@@ -1245,6 +1365,10 @@ func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 	_arg3 = C.GtkRegionFlags(flags)
 
 	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(flags)
 }
 
 // IterClearClasses removes all classes from the widget at position pos in the
@@ -1257,6 +1381,8 @@ func (path *WidgetPath) IterClearClasses(pos int) {
 	_arg1 = C.gint(pos)
 
 	C.gtk_widget_path_iter_clear_classes(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
 }
 
 // IterClearRegions removes all regions from the widget at position pos in the
@@ -1271,6 +1397,8 @@ func (path *WidgetPath) IterClearRegions(pos int) {
 	_arg1 = C.gint(pos)
 
 	C.gtk_widget_path_iter_clear_regions(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
 }
 
 // IterGetName returns the name corresponding to the widget found at the
@@ -1284,6 +1412,9 @@ func (path *WidgetPath) IterGetName(pos int) string {
 	_arg1 = C.gint(pos)
 
 	_cret = C.gtk_widget_path_iter_get_name(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
 
 	var _utf8 string // out
 
@@ -1306,6 +1437,9 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 	_cret = C.gtk_widget_path_iter_get_object_name(_arg0, _arg1)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -1326,6 +1460,9 @@ func (path *WidgetPath) IterGetObjectType(pos int) externglib.Type {
 	_arg1 = C.gint(pos)
 
 	_cret = C.gtk_widget_path_iter_get_object_type(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
 
 	var _gType externglib.Type // out
 
@@ -1348,6 +1485,9 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 
 	_cret = C.gtk_widget_path_iter_get_sibling_index(_arg0, _arg1)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -1366,6 +1506,9 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	_arg1 = C.gint(pos)
 
 	_cret = C.gtk_widget_path_iter_get_siblings(_arg0, _arg1)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
 
 	var _widgetPath *WidgetPath // out
 
@@ -1390,6 +1533,9 @@ func (path *WidgetPath) IterGetState(pos int) StateFlags {
 
 	_cret = C.gtk_widget_path_iter_get_state(_arg0, _arg1)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
 	var _stateFlags StateFlags // out
 
 	_stateFlags = StateFlags(_cret)
@@ -1411,6 +1557,10 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 
 	var _ok bool // out
 
@@ -1436,6 +1586,10 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 
 	_cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1459,6 +1613,10 @@ func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
 
 	_cret = C.gtk_widget_path_iter_has_qclass(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1481,6 +1639,10 @@ func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
 	_arg2 = C.guint32(qname)
 
 	_cret = C.gtk_widget_path_iter_has_qname(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
 
 	var _ok bool // out
 
@@ -1507,6 +1669,10 @@ func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, 
 	_arg2 = C.guint32(qname)
 
 	_cret = C.gtk_widget_path_iter_has_qregion(_arg0, _arg1, _arg2, &_arg3)
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
 
 	var _flags RegionFlags // out
 	var _ok bool           // out
@@ -1537,6 +1703,10 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 
 	_cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
+
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
@@ -1561,6 +1731,9 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 }
 
 // IterRemoveRegion removes the region name from the widget at position pos in
@@ -1578,6 +1751,9 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 }
 
 // IterSetName sets the widget name for the widget found at position pos in the
@@ -1593,6 +1769,9 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 }
 
 // IterSetObjectName sets the object name for a given position in the widget
@@ -1612,6 +1791,9 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 	}
 
 	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
 }
 
 // IterSetObjectType sets the object type for a given position in the widget
@@ -1626,6 +1808,9 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 	_arg2 = C.GType(typ)
 
 	C.gtk_widget_path_iter_set_object_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(typ)
 }
 
 // IterSetState sets the widget name for the widget found at position pos in the
@@ -1647,6 +1832,9 @@ func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_widget_path_iter_set_state(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(state)
 }
 
 // Length returns the number of Widget #GTypes between the represented widget
@@ -1658,6 +1846,8 @@ func (path *WidgetPath) Length() int {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_widget_path_length(_arg0)
+
+	runtime.KeepAlive(path)
 
 	var _gint int // out
 
@@ -1676,6 +1866,8 @@ func (path *WidgetPath) PrependType(typ externglib.Type) {
 	_arg1 = C.GType(typ)
 
 	C.gtk_widget_path_prepend_type(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(typ)
 }
 
 // String dumps the widget path into a string representation. It tries to match
@@ -1691,6 +1883,8 @@ func (path *WidgetPath) String() string {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_widget_path_to_string(_arg0)
+
+	runtime.KeepAlive(path)
 
 	var _utf8 string // out
 

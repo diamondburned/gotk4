@@ -84,6 +84,10 @@ func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *Ble
 
 	_cret = C.gsk_blend_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(bottom)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(blendMode)
+
 	var _blendNode *BlendNode // out
 
 	_blendNode = wrapBlendNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -99,6 +103,8 @@ func (node *BlendNode) BlendMode() BlendMode {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_blend_node_get_blend_mode(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _blendMode BlendMode // out
 
@@ -116,6 +122,8 @@ func (node *BlendNode) BottomChild() RenderNoder {
 
 	_cret = C.gsk_blend_node_get_bottom_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -131,6 +139,8 @@ func (node *BlendNode) TopChild() RenderNoder {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_blend_node_get_top_child(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _renderNode RenderNoder // out
 
@@ -169,6 +179,9 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 
 	_cret = C.gsk_blur_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(radius)
+
 	var _blurNode *BlurNode // out
 
 	_blurNode = wrapBlurNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -185,6 +198,8 @@ func (node *BlurNode) Child() RenderNoder {
 
 	_cret = C.gsk_blur_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -200,6 +215,8 @@ func (node *BlurNode) Radius() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_blur_node_get_radius(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -243,6 +260,10 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 
 	_cret = C.gsk_border_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(borderWidth)
+	runtime.KeepAlive(borderColor)
+
 	var _borderNode *BorderNode // out
 
 	_borderNode = wrapBorderNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -258,6 +279,8 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_border_node_get_colors(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _rgbA *gdk.RGBA // out
 
@@ -275,6 +298,8 @@ func (node *BorderNode) Outline() *RoundedRect {
 
 	_cret = C.gsk_border_node_get_outline(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _roundedRect *RoundedRect // out
 
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -290,6 +315,8 @@ func (node *BorderNode) Widths() [4]float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_border_node_get_widths(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloats [4]float32 // out
 
@@ -329,6 +356,8 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 
 	_cret = C.gsk_cairo_node_new(_arg1)
 
+	runtime.KeepAlive(bounds)
+
 	var _cairoNode *CairoNode // out
 
 	_cairoNode = wrapCairoNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -349,6 +378,8 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 
 	_cret = C.gsk_cairo_node_get_draw_context(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
@@ -367,6 +398,8 @@ func (node *CairoNode) Surface() *cairo.Surface {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_cairo_node_get_surface(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _surface *cairo.Surface // out
 
@@ -410,6 +443,9 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 
 	_cret = C.gsk_clip_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(clip)
+
 	var _clipNode *ClipNode // out
 
 	_clipNode = wrapClipNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -426,6 +462,8 @@ func (node *ClipNode) Child() RenderNoder {
 
 	_cret = C.gsk_clip_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -441,6 +479,8 @@ func (node *ClipNode) Clip() *graphene.Rect {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_clip_node_get_clip(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _rect *graphene.Rect // out
 
@@ -489,6 +529,10 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 
 	_cret = C.gsk_color_matrix_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(colorMatrix)
+	runtime.KeepAlive(colorOffset)
+
 	var _colorMatrixNode *ColorMatrixNode // out
 
 	_colorMatrixNode = wrapColorMatrixNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -506,6 +550,8 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 
 	_cret = C.gsk_color_matrix_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -522,6 +568,8 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 
 	_cret = C.gsk_color_matrix_node_get_color_matrix(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _matrix *graphene.Matrix // out
 
 	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -537,6 +585,8 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_color_matrix_node_get_color_offset(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _vec4 *graphene.Vec4 // out
 
@@ -576,6 +626,9 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 
 	_cret = C.gsk_color_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(rgba)
+	runtime.KeepAlive(bounds)
+
 	var _colorNode *ColorNode // out
 
 	_colorNode = wrapColorNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -591,6 +644,8 @@ func (node *ColorNode) Color() *gdk.RGBA {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_color_node_get_color(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _rgbA *gdk.RGBA // out
 
@@ -641,6 +696,11 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 
 	_cret = C.gsk_conic_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(rotation)
+	runtime.KeepAlive(colorStops)
+
 	var _conicGradientNode *ConicGradientNode // out
 
 	_conicGradientNode = wrapConicGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -663,6 +723,8 @@ func (node *ConicGradientNode) Angle() float32 {
 
 	_cret = C.gsk_conic_gradient_node_get_angle(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -678,6 +740,8 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_conic_gradient_node_get_center(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
@@ -695,6 +759,8 @@ func (node *ConicGradientNode) NColorStops() uint {
 
 	_cret = C.gsk_conic_gradient_node_get_n_color_stops(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -710,6 +776,8 @@ func (node *ConicGradientNode) Rotation() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_conic_gradient_node_get_rotation(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -758,6 +826,8 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 
 	_cret = C.gsk_container_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(children)
+
 	var _containerNode *ContainerNode // out
 
 	_containerNode = wrapContainerNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -776,6 +846,9 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 
 	_cret = C.gsk_container_node_get_child(_arg0, _arg1)
 
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(idx)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -791,6 +864,8 @@ func (node *ContainerNode) NChildren() uint {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_container_node_get_n_children(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _guint uint // out
 
@@ -832,6 +907,10 @@ func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *Cro
 
 	_cret = C.gsk_cross_fade_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(progress)
+
 	var _crossFadeNode *CrossFadeNode // out
 
 	_crossFadeNode = wrapCrossFadeNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -847,6 +926,8 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_cross_fade_node_get_end_child(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _renderNode RenderNoder // out
 
@@ -864,6 +945,8 @@ func (node *CrossFadeNode) Progress() float32 {
 
 	_cret = C.gsk_cross_fade_node_get_progress(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -880,6 +963,8 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_cross_fade_node_get_start_child(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _renderNode RenderNoder // out
 
@@ -922,6 +1007,9 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 
 	_cret = C.gsk_debug_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(message)
+
 	var _debugNode *DebugNode // out
 
 	_debugNode = wrapDebugNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -938,6 +1026,8 @@ func (node *DebugNode) Child() RenderNoder {
 
 	_cret = C.gsk_debug_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -953,6 +1043,8 @@ func (node *DebugNode) Message() string {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_debug_node_get_message(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _utf8 string // out
 
@@ -991,6 +1083,9 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 
 	_cret = C.gsk_gl_shader_node_get_child(_arg0, _arg1)
 
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(idx)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -1007,6 +1102,8 @@ func (node *GLShaderNode) NChildren() uint {
 
 	_cret = C.gsk_gl_shader_node_get_n_children(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -1022,6 +1119,8 @@ func (node *GLShaderNode) Shader() *GLShader {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_gl_shader_node_get_shader(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _glShader *GLShader // out
 
@@ -1069,6 +1168,13 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy fl
 
 	_cret = C.gsk_inset_shadow_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+
 	var _insetShadowNode *InsetShadowNode // out
 
 	_insetShadowNode = wrapInsetShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1084,6 +1190,8 @@ func (node *InsetShadowNode) BlurRadius() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_inset_shadow_node_get_blur_radius(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1101,6 +1209,8 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 
 	_cret = C.gsk_inset_shadow_node_get_color(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _rgbA *gdk.RGBA // out
 
 	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1116,6 +1226,8 @@ func (node *InsetShadowNode) Dx() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_inset_shadow_node_get_dx(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1133,6 +1245,8 @@ func (node *InsetShadowNode) Dy() float32 {
 
 	_cret = C.gsk_inset_shadow_node_get_dy(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -1149,6 +1263,8 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 
 	_cret = C.gsk_inset_shadow_node_get_outline(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _roundedRect *RoundedRect // out
 
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1164,6 +1280,8 @@ func (node *InsetShadowNode) Spread() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_inset_shadow_node_get_spread(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1212,6 +1330,11 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 
 	_cret = C.gsk_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(colorStops)
+
 	var _linearGradientNode *LinearGradientNode // out
 
 	_linearGradientNode = wrapLinearGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1227,6 +1350,8 @@ func (node *LinearGradientNode) End() *graphene.Point {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_linear_gradient_node_get_end(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
@@ -1244,6 +1369,8 @@ func (node *LinearGradientNode) NColorStops() uint {
 
 	_cret = C.gsk_linear_gradient_node_get_n_color_stops(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -1259,6 +1386,8 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_linear_gradient_node_get_start(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
@@ -1298,6 +1427,9 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 
 	_cret = C.gsk_opacity_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(opacity)
+
 	var _opacityNode *OpacityNode // out
 
 	_opacityNode = wrapOpacityNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1314,6 +1446,8 @@ func (node *OpacityNode) Child() RenderNoder {
 
 	_cret = C.gsk_opacity_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -1329,6 +1463,8 @@ func (node *OpacityNode) Opacity() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_opacity_node_get_opacity(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1376,6 +1512,13 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy f
 
 	_cret = C.gsk_outset_shadow_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+
 	var _outsetShadowNode *OutsetShadowNode // out
 
 	_outsetShadowNode = wrapOutsetShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1391,6 +1534,8 @@ func (node *OutsetShadowNode) BlurRadius() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_outset_shadow_node_get_blur_radius(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1408,6 +1553,8 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 
 	_cret = C.gsk_outset_shadow_node_get_color(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _rgbA *gdk.RGBA // out
 
 	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1423,6 +1570,8 @@ func (node *OutsetShadowNode) Dx() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_outset_shadow_node_get_dx(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1440,6 +1589,8 @@ func (node *OutsetShadowNode) Dy() float32 {
 
 	_cret = C.gsk_outset_shadow_node_get_dy(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -1456,6 +1607,8 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 
 	_cret = C.gsk_outset_shadow_node_get_outline(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _roundedRect *RoundedRect // out
 
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -1471,6 +1624,8 @@ func (node *OutsetShadowNode) Spread() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_outset_shadow_node_get_spread(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1527,6 +1682,14 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 
 	_cret = C.gsk_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(hradius)
+	runtime.KeepAlive(vradius)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(colorStops)
+
 	var _radialGradientNode *RadialGradientNode // out
 
 	_radialGradientNode = wrapRadialGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1542,6 +1705,8 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_radial_gradient_node_get_center(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
@@ -1559,6 +1724,8 @@ func (node *RadialGradientNode) End() float32 {
 
 	_cret = C.gsk_radial_gradient_node_get_end(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -1574,6 +1741,8 @@ func (node *RadialGradientNode) Hradius() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_radial_gradient_node_get_hradius(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1591,6 +1760,8 @@ func (node *RadialGradientNode) NColorStops() uint {
 
 	_cret = C.gsk_radial_gradient_node_get_n_color_stops(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -1607,6 +1778,8 @@ func (node *RadialGradientNode) Start() float32 {
 
 	_cret = C.gsk_radial_gradient_node_get_start(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -1622,6 +1795,8 @@ func (node *RadialGradientNode) Vradius() float32 {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_radial_gradient_node_get_vradius(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gfloat float32 // out
 
@@ -1665,6 +1840,10 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 
 	_cret = C.gsk_repeat_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(childBounds)
+
 	var _repeatNode *RepeatNode // out
 
 	_repeatNode = wrapRepeatNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1681,6 +1860,8 @@ func (node *RepeatNode) Child() RenderNoder {
 
 	_cret = C.gsk_repeat_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -1696,6 +1877,8 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_repeat_node_get_child_bounds(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _rect *graphene.Rect // out
 
@@ -1743,6 +1926,11 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 	}
 
 	_cret = C.gsk_repeating_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(colorStops)
 
 	var _repeatingLinearGradientNode *RepeatingLinearGradientNode // out
 
@@ -1802,6 +1990,14 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 
 	_cret = C.gsk_repeating_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(hradius)
+	runtime.KeepAlive(vradius)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(colorStops)
+
 	var _repeatingRadialGradientNode *RepeatingRadialGradientNode // out
 
 	_repeatingRadialGradientNode = wrapRepeatingRadialGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1843,6 +2039,9 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 
 	_cret = C.gsk_rounded_clip_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(clip)
+
 	var _roundedClipNode *RoundedClipNode // out
 
 	_roundedClipNode = wrapRoundedClipNode(externglib.Take(unsafe.Pointer(_cret)))
@@ -1859,6 +2058,8 @@ func (node *RoundedClipNode) Child() RenderNoder {
 
 	_cret = C.gsk_rounded_clip_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -1874,6 +2075,8 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_rounded_clip_node_get_clip(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _roundedRect *RoundedRect // out
 
@@ -1918,6 +2121,9 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 
 	_cret = C.gsk_shadow_node_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(shadows)
+
 	var _shadowNode *ShadowNode // out
 
 	_shadowNode = wrapShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1934,6 +2140,8 @@ func (node *ShadowNode) Child() RenderNoder {
 
 	_cret = C.gsk_shadow_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -1949,6 +2157,8 @@ func (node *ShadowNode) NShadows() uint {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_shadow_node_get_n_shadows(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _gsize uint // out
 
@@ -1967,6 +2177,9 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 	_arg1 = C.gsize(i)
 
 	_cret = C.gsk_shadow_node_get_shadow(_arg0, _arg1)
+
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(i)
 
 	var _shadow *Shadow // out
 
@@ -2011,6 +2224,11 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 
 	_cret = C.gsk_text_node_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(offset)
+
 	var _textNode *TextNode // out
 
 	if _cret != nil {
@@ -2029,6 +2247,8 @@ func (node *TextNode) Color() *gdk.RGBA {
 
 	_cret = C.gsk_text_node_get_color(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _rgbA *gdk.RGBA // out
 
 	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -2044,6 +2264,8 @@ func (node *TextNode) Font() pango.Fonter {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_text_node_get_font(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _font pango.Fonter // out
 
@@ -2061,6 +2283,8 @@ func (node *TextNode) NumGlyphs() uint {
 
 	_cret = C.gsk_text_node_get_num_glyphs(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -2077,6 +2301,8 @@ func (node *TextNode) Offset() *graphene.Point {
 
 	_cret = C.gsk_text_node_get_offset(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _point *graphene.Point // out
 
 	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -2092,6 +2318,8 @@ func (node *TextNode) HasColorGlyphs() bool {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_text_node_has_color_glyphs(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _ok bool // out
 
@@ -2133,6 +2361,9 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 
 	_cret = C.gsk_texture_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(bounds)
+
 	var _textureNode *TextureNode // out
 
 	_textureNode = wrapTextureNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -2148,6 +2379,8 @@ func (node *TextureNode) Texture() gdk.Texturer {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_texture_node_get_texture(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _texture gdk.Texturer // out
 
@@ -2187,6 +2420,9 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 
 	_cret = C.gsk_transform_node_new(_arg1, _arg2)
 
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(transform)
+
 	var _transformNode *TransformNode // out
 
 	_transformNode = wrapTransformNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -2203,6 +2439,8 @@ func (node *TransformNode) Child() RenderNoder {
 
 	_cret = C.gsk_transform_node_get_child(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _renderNode RenderNoder // out
 
 	_renderNode = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
@@ -2218,6 +2456,8 @@ func (node *TransformNode) Transform() *Transform {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_transform_node_get_transform(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _transform *Transform // out
 

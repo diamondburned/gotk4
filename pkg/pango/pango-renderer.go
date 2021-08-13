@@ -216,6 +216,7 @@ func (renderer *Renderer) Activate() {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.pango_renderer_activate(_arg0)
+	runtime.KeepAlive(renderer)
 }
 
 // Deactivate cleans up after rendering operations on renderer.
@@ -227,6 +228,7 @@ func (renderer *Renderer) Deactivate() {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	C.pango_renderer_deactivate(_arg0)
+	runtime.KeepAlive(renderer)
 }
 
 // DrawErrorUnderline: draw a squiggly line that approximately covers the given
@@ -251,6 +253,11 @@ func (renderer *Renderer) DrawErrorUnderline(x int, y int, width int, height int
 	_arg4 = C.int(height)
 
 	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // DrawGlyph draws a single glyph with coordinates in device space.
@@ -268,6 +275,11 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float
 	_arg4 = C.double(y)
 
 	C.pango_renderer_draw_glyph(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(glyph)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DrawGlyphItem draws the glyphs in glyph_item with the specified
@@ -300,6 +312,11 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int
 	_arg4 = C.int(y)
 
 	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(glyphItem)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
@@ -317,6 +334,11 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y 
 	_arg4 = C.int(y)
 
 	C.pango_renderer_draw_glyphs(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DrawLayout draws layout with the specified PangoRenderer.
@@ -332,6 +354,10 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x int, y int) {
 	_arg3 = C.int(y)
 
 	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DrawLayoutLine draws line with the specified PangoRenderer.
@@ -347,6 +373,10 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
 	_arg3 = C.int(y)
 
 	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(line)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DrawRectangle draws an axis-aligned rectangle in user space coordinates with
@@ -370,6 +400,12 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x int, y int, width int
 	_arg5 = C.int(height)
 
 	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
@@ -394,6 +430,14 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64
 	_arg7 = C.double(x22)
 
 	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x11)
+	runtime.KeepAlive(x21)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(x12)
+	runtime.KeepAlive(x22)
 }
 
 // Alpha gets the current alpha for the specified part.
@@ -406,6 +450,9 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
+
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
 
 	var _guint16 uint16 // out
 
@@ -424,6 +471,9 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
+
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
 
 	var _color *Color // out
 
@@ -448,6 +498,8 @@ func (renderer *Renderer) Layout() *Layout {
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 
+	runtime.KeepAlive(renderer)
+
 	var _layout *Layout // out
 
 	if _cret != nil {
@@ -470,6 +522,8 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_layout_line(_arg0)
+
+	runtime.KeepAlive(renderer)
 
 	var _layoutLine *LayoutLine // out
 
@@ -494,6 +548,8 @@ func (renderer *Renderer) Matrix() *Matrix {
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
+
+	runtime.KeepAlive(renderer)
 
 	var _matrix *Matrix // out
 
@@ -526,6 +582,8 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 	_arg1 = C.PangoRenderPart(part)
 
 	C.pango_renderer_part_changed(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
 }
 
 // SetAlpha sets the alpha for part of the rendering.
@@ -542,6 +600,9 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	_arg2 = C.guint16(alpha)
 
 	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(alpha)
 }
 
 // SetColor sets the color for part of the rendering.
@@ -559,6 +620,9 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	}
 
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(color)
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.
@@ -572,4 +636,6 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	}
 
 	C.pango_renderer_set_matrix(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(matrix)
 }

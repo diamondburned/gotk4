@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -162,6 +163,8 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	}
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
+
+	runtime.KeepAlive(screen)
 
 	var _ok bool // out
 
@@ -360,6 +363,9 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	_arg2 = C.gint(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
 }
 
 // AddButton adds a button with the given text and sets things up so that
@@ -378,6 +384,10 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	_arg2 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
 
 	var _widget Widgetter // out
 
@@ -398,6 +408,8 @@ func (dialog *Dialog) ActionArea() *Box {
 
 	_cret = C.gtk_dialog_get_action_area(_arg0)
 
+	runtime.KeepAlive(dialog)
+
 	var _box *Box // out
 
 	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
@@ -413,6 +425,8 @@ func (dialog *Dialog) ContentArea() *Box {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
+
+	runtime.KeepAlive(dialog)
 
 	var _box *Box // out
 
@@ -430,6 +444,8 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
+
+	runtime.KeepAlive(dialog)
 
 	var _headerBar *HeaderBar // out
 
@@ -450,6 +466,9 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(widget)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -468,6 +487,9 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	_arg1 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 
 	var _widget Widgetter // out
 
@@ -490,6 +512,8 @@ func (dialog *Dialog) Response(responseId int) {
 	_arg1 = C.gint(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // Run blocks in a recursive main loop until the dialog either emits the
@@ -542,6 +566,8 @@ func (dialog *Dialog) Run() int {
 
 	_cret = C.gtk_dialog_run(_arg0)
 
+	runtime.KeepAlive(dialog)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -571,6 +597,8 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	}
 
 	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(newOrder)
 }
 
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
@@ -584,6 +612,8 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	_arg1 = C.gint(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
@@ -601,4 +631,7 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	}
 
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }

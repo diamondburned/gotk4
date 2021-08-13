@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -146,6 +147,8 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) *EventController
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1)
 
+	runtime.KeepAlive(flags)
+
 	var _eventControllerScroll *EventControllerScroll // out
 
 	_eventControllerScroll = wrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -161,6 +164,8 @@ func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(scroll.Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
+
+	runtime.KeepAlive(scroll)
 
 	var _eventControllerScrollFlags EventControllerScrollFlags // out
 
@@ -178,4 +183,6 @@ func (scroll *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) 
 	_arg1 = C.GtkEventControllerScrollFlags(flags)
 
 	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)
+	runtime.KeepAlive(scroll)
+	runtime.KeepAlive(flags)
 }

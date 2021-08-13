@@ -102,6 +102,7 @@ func (cancellable *Cancellable) Cancel() {
 	}
 
 	C.g_cancellable_cancel(_arg0)
+	runtime.KeepAlive(cancellable)
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -125,6 +126,8 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	_arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(_arg0, _arg1)
+	runtime.KeepAlive(cancellable)
+	runtime.KeepAlive(handlerId)
 }
 
 // Fd gets the file descriptor for a cancellable job. This can be used to
@@ -150,6 +153,8 @@ func (cancellable *Cancellable) Fd() int {
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
+	runtime.KeepAlive(cancellable)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -167,6 +172,8 @@ func (cancellable *Cancellable) IsCancelled() bool {
 	}
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
+
+	runtime.KeepAlive(cancellable)
 
 	var _ok bool // out
 
@@ -206,6 +213,9 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
+	runtime.KeepAlive(cancellable)
+	runtime.KeepAlive(pollfd)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -225,6 +235,7 @@ func (cancellable *Cancellable) PopCurrent() {
 	}
 
 	C.g_cancellable_pop_current(_arg0)
+	runtime.KeepAlive(cancellable)
 }
 
 // PushCurrent pushes cancellable onto the cancellable stack. The current
@@ -243,6 +254,7 @@ func (cancellable *Cancellable) PushCurrent() {
 	}
 
 	C.g_cancellable_push_current(_arg0)
+	runtime.KeepAlive(cancellable)
 }
 
 // ReleaseFd releases a resources previously allocated by g_cancellable_get_fd()
@@ -262,6 +274,7 @@ func (cancellable *Cancellable) ReleaseFd() {
 	}
 
 	C.g_cancellable_release_fd(_arg0)
+	runtime.KeepAlive(cancellable)
 }
 
 // Reset resets cancellable to its uncancelled state.
@@ -283,6 +296,7 @@ func (cancellable *Cancellable) Reset() {
 	}
 
 	C.g_cancellable_reset(_arg0)
+	runtime.KeepAlive(cancellable)
 }
 
 // SetErrorIfCancelled: if the cancellable is cancelled, sets the error to
@@ -296,6 +310,7 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	}
 
 	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
+	runtime.KeepAlive(cancellable)
 
 	var _goerr error // out
 
@@ -324,6 +339,8 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	}
 
 	_cret = C.g_cancellable_source_new(_arg0)
+
+	runtime.KeepAlive(cancellable)
 
 	var _source *glib.Source // out
 

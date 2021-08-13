@@ -2,6 +2,10 @@
 
 package gtk
 
+import (
+	"runtime"
+)
+
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -30,4 +34,5 @@ func SetDebugFlags(flags DebugFlags) {
 	_arg1 = C.GtkDebugFlags(flags)
 
 	C.gtk_set_debug_flags(_arg1)
+	runtime.KeepAlive(flags)
 }

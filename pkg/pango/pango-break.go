@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -36,6 +37,10 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	}
 
 	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(attrs)
 }
 
 // DefaultBreak: this is the default break algorithm.
@@ -61,6 +66,11 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 	_arg5 = C.int(attrsLen)
 
 	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(attrs)
+	runtime.KeepAlive(attrsLen)
 }
 
 // FindParagraphBoundary locates a paragraph boundary in text.
@@ -85,6 +95,8 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	_arg2 = C.gint(length)
 
 	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
 
 	var _paragraphDelimiterIndex int // out
 	var _nextParagraphStart int      // out
@@ -121,6 +133,11 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	}
 
 	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(level)
+	runtime.KeepAlive(language)
+	runtime.KeepAlive(logAttrs)
 }
 
 // TailorBreak: apply language-specific tailoring to the breaks in log_attrs.
@@ -148,6 +165,11 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	}
 
 	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(logAttrs)
 }
 
 // LogAttr: PangoLogAttr structure stores information about the attributes of a

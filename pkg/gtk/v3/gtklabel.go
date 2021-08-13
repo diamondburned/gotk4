@@ -94,6 +94,8 @@ func NewLabel(str string) *Label {
 
 	_cret = C.gtk_label_new(_arg1)
 
+	runtime.KeepAlive(str)
+
 	var _label *Label // out
 
 	_label = wrapLabel(externglib.Take(unsafe.Pointer(_cret)))
@@ -125,6 +127,8 @@ func NewLabelWithMnemonic(str string) *Label {
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(str)
+
 	var _label *Label // out
 
 	_label = wrapLabel(externglib.Take(unsafe.Pointer(_cret)))
@@ -140,6 +144,8 @@ func (label *Label) Angle() float64 {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_angle(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _gdouble float64 // out
 
@@ -160,6 +166,8 @@ func (label *Label) Attributes() *pango.AttrList {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_attributes(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _attrList *pango.AttrList // out
 
@@ -188,6 +196,8 @@ func (label *Label) CurrentURI() string {
 
 	_cret = C.gtk_label_get_current_uri(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -205,6 +215,8 @@ func (label *Label) Ellipsize() pango.EllipsizeMode {
 
 	_cret = C.gtk_label_get_ellipsize(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _ellipsizeMode pango.EllipsizeMode // out
 
 	_ellipsizeMode = pango.EllipsizeMode(_cret)
@@ -220,6 +232,8 @@ func (label *Label) Justify() Justification {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_justify(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _justification Justification // out
 
@@ -237,6 +251,8 @@ func (label *Label) Label() string {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_label(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _utf8 string // out
 
@@ -257,6 +273,8 @@ func (label *Label) Layout() *pango.Layout {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_layout(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _layout *pango.Layout // out
 
@@ -286,6 +304,7 @@ func (label *Label) LayoutOffsets() (x int, y int) {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	C.gtk_label_get_layout_offsets(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(label)
 
 	var _x int // out
 	var _y int // out
@@ -306,6 +325,8 @@ func (label *Label) LineWrap() bool {
 
 	_cret = C.gtk_label_get_line_wrap(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -325,6 +346,8 @@ func (label *Label) LineWrapMode() pango.WrapMode {
 
 	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _wrapMode pango.WrapMode // out
 
 	_wrapMode = pango.WrapMode(_cret)
@@ -342,6 +365,8 @@ func (label *Label) Lines() int {
 
 	_cret = C.gtk_label_get_lines(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -358,6 +383,8 @@ func (label *Label) MaxWidthChars() int {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _gint int // out
 
@@ -377,6 +404,8 @@ func (label *Label) MnemonicKeyval() uint {
 
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -393,6 +422,8 @@ func (label *Label) MnemonicWidget() Widgetter {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _widget Widgetter // out
 
@@ -411,6 +442,8 @@ func (label *Label) Selectable() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_selectable(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _ok bool // out
 
@@ -432,6 +465,8 @@ func (label *Label) SelectionBounds() (start int, end int, ok bool) {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(label)
 
 	var _start int // out
 	var _end int   // out
@@ -455,6 +490,8 @@ func (label *Label) SingleLineMode() bool {
 
 	_cret = C.gtk_label_get_single_line_mode(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -475,6 +512,8 @@ func (label *Label) Text() string {
 
 	_cret = C.gtk_label_get_text(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -491,6 +530,8 @@ func (label *Label) TrackVisitedLinks() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_track_visited_links(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _ok bool // out
 
@@ -512,6 +553,8 @@ func (label *Label) UseMarkup() bool {
 
 	_cret = C.gtk_label_get_use_markup(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -530,6 +573,8 @@ func (label *Label) UseUnderline() bool {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_use_underline(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _ok bool // out
 
@@ -550,6 +595,8 @@ func (label *Label) WidthChars() int {
 
 	_cret = C.gtk_label_get_width_chars(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -566,6 +613,8 @@ func (label *Label) XAlign() float32 {
 
 	_cret = C.gtk_label_get_xalign(_arg0)
 
+	runtime.KeepAlive(label)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -581,6 +630,8 @@ func (label *Label) YAlign() float32 {
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 
 	_cret = C.gtk_label_get_yalign(_arg0)
+
+	runtime.KeepAlive(label)
 
 	var _gfloat float32 // out
 
@@ -603,6 +654,9 @@ func (label *Label) SelectRegion(startOffset int, endOffset int) {
 	_arg2 = C.gint(endOffset)
 
 	C.gtk_label_select_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
 }
 
 // SetAngle sets the angle of rotation for the label. An angle of 90 reads from
@@ -616,6 +670,8 @@ func (label *Label) SetAngle(angle float64) {
 	_arg1 = C.gdouble(angle)
 
 	C.gtk_label_set_angle(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(angle)
 }
 
 // SetAttributes sets a AttrList; the attributes in the list are applied to the
@@ -636,6 +692,8 @@ func (label *Label) SetAttributes(attrs *pango.AttrList) {
 	}
 
 	C.gtk_label_set_attributes(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(attrs)
 }
 
 // SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to the
@@ -648,6 +706,8 @@ func (label *Label) SetEllipsize(mode pango.EllipsizeMode) {
 	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.gtk_label_set_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(mode)
 }
 
 // SetJustify sets the alignment of the lines in the text of the label relative
@@ -664,6 +724,8 @@ func (label *Label) SetJustify(jtype Justification) {
 	_arg1 = C.GtkJustification(jtype)
 
 	C.gtk_label_set_justify(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(jtype)
 }
 
 // SetLabel sets the text of the label. The label is interpreted as including
@@ -678,6 +740,8 @@ func (label *Label) SetLabel(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_label(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(str)
 }
 
 // SetLineWrap toggles line wrapping within the Label widget. TRUE makes it
@@ -699,6 +763,8 @@ func (label *Label) SetLineWrap(wrap bool) {
 	}
 
 	C.gtk_label_set_line_wrap(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(wrap)
 }
 
 // SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap()) this
@@ -712,6 +778,8 @@ func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
 	_arg1 = C.PangoWrapMode(wrapMode)
 
 	C.gtk_label_set_line_wrap_mode(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(wrapMode)
 }
 
 // SetLines sets the number of lines to which an ellipsized, wrapping label
@@ -725,6 +793,8 @@ func (label *Label) SetLines(lines int) {
 	_arg1 = C.gint(lines)
 
 	C.gtk_label_set_lines(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(lines)
 }
 
 // SetMarkup parses str which is marked up with the [Pango text markup
@@ -759,6 +829,8 @@ func (label *Label) SetMarkup(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(str)
 }
 
 // SetMarkupWithMnemonic parses str which is marked up with the [Pango text
@@ -778,6 +850,8 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup_with_mnemonic(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(str)
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of label to
@@ -790,6 +864,8 @@ func (label *Label) SetMaxWidthChars(nChars int) {
 	_arg1 = C.gint(nChars)
 
 	C.gtk_label_set_max_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(nChars)
 }
 
 // SetMnemonicWidget: if the label has been set so that it has an mnemonic key
@@ -815,6 +891,8 @@ func (label *Label) SetMnemonicWidget(widget Widgetter) {
 	}
 
 	C.gtk_label_set_mnemonic_widget(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(widget)
 }
 
 // SetPattern: pattern of underlines you want under the existing text within the
@@ -829,6 +907,8 @@ func (label *Label) SetPattern(pattern string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_pattern(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(pattern)
 }
 
 // SetSelectable: selectable labels allow the user to select text from the
@@ -843,6 +923,8 @@ func (label *Label) SetSelectable(setting bool) {
 	}
 
 	C.gtk_label_set_selectable(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(setting)
 }
 
 // SetSingleLineMode sets whether the label is in single line mode.
@@ -856,6 +938,8 @@ func (label *Label) SetSingleLineMode(singleLineMode bool) {
 	}
 
 	C.gtk_label_set_single_line_mode(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(singleLineMode)
 }
 
 // SetText sets the text within the Label widget. It overwrites any text that
@@ -877,6 +961,8 @@ func (label *Label) SetText(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(str)
 }
 
 // SetTextWithMnemonic sets the label’s text from the string str. If characters
@@ -893,6 +979,8 @@ func (label *Label) SetTextWithMnemonic(str string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text_with_mnemonic(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(str)
 }
 
 // SetTrackVisitedLinks sets whether the label should keep track of clicked
@@ -907,6 +995,8 @@ func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
 	}
 
 	C.gtk_label_set_track_visited_links(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(trackLinks)
 }
 
 // SetUseMarkup sets whether the text of the label contains markup in [Pango’s
@@ -921,6 +1011,8 @@ func (label *Label) SetUseMarkup(setting bool) {
 	}
 
 	C.gtk_label_set_use_markup(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(setting)
 }
 
 // SetUseUnderline: if true, an underline in the text indicates the next
@@ -935,6 +1027,8 @@ func (label *Label) SetUseUnderline(setting bool) {
 	}
 
 	C.gtk_label_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(setting)
 }
 
 // SetWidthChars sets the desired width in characters of label to n_chars.
@@ -946,6 +1040,8 @@ func (label *Label) SetWidthChars(nChars int) {
 	_arg1 = C.gint(nChars)
 
 	C.gtk_label_set_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(nChars)
 }
 
 // SetXAlign sets the Label:xalign property for label.
@@ -957,6 +1053,8 @@ func (label *Label) SetXAlign(xalign float32) {
 	_arg1 = C.gfloat(xalign)
 
 	C.gtk_label_set_xalign(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(xalign)
 }
 
 // SetYAlign sets the Label:yalign property for label.
@@ -968,4 +1066,6 @@ func (label *Label) SetYAlign(yalign float32) {
 	_arg1 = C.gfloat(yalign)
 
 	C.gtk_label_set_yalign(_arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(yalign)
 }

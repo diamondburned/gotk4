@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -157,6 +158,8 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _checkButton *CheckButton // out
 
 	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -177,6 +180,8 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _checkButton *CheckButton // out
 
 	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -192,6 +197,8 @@ func (self *CheckButton) Active() bool {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -211,6 +218,8 @@ func (checkButton *CheckButton) Inconsistent() bool {
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
+	runtime.KeepAlive(checkButton)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -229,6 +238,8 @@ func (self *CheckButton) Label() string {
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -246,6 +257,8 @@ func (self *CheckButton) UseUnderline() bool {
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -267,6 +280,8 @@ func (self *CheckButton) SetActive(setting bool) {
 	}
 
 	C.gtk_check_button_set_active(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetGroup adds self to the group of group.
@@ -293,6 +308,8 @@ func (self *CheckButton) SetGroup(group *CheckButton) {
 	}
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(group)
 }
 
 // SetInconsistent sets the GtkCheckButton to inconsistent state.
@@ -309,6 +326,8 @@ func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 	}
 
 	C.gtk_check_button_set_inconsistent(_arg0, _arg1)
+	runtime.KeepAlive(checkButton)
+	runtime.KeepAlive(inconsistent)
 }
 
 // SetLabel sets the text of self.
@@ -327,6 +346,8 @@ func (self *CheckButton) SetLabel(label string) {
 	}
 
 	C.gtk_check_button_set_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(label)
 }
 
 // SetUseUnderline sets whether underlines in the label indicate mnemonics.
@@ -344,4 +365,6 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	}
 
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }

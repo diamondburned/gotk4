@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -90,6 +91,8 @@ func (plug *Plug) Embedded() bool {
 
 	_cret = C.gtk_plug_get_embedded(_arg0)
 
+	runtime.KeepAlive(plug)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -107,6 +110,8 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 	_arg0 = (*C.GtkPlug)(unsafe.Pointer(plug.Native()))
 
 	_cret = C.gtk_plug_get_socket_window(_arg0)
+
+	runtime.KeepAlive(plug)
 
 	var _window gdk.Windower // out
 

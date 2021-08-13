@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -435,6 +436,13 @@ func (manager *UIManager) AddUi(mergeId uint, path string, name string, action s
 	}
 
 	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(mergeId)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(top)
 }
 
 // AddUiFromFile parses a file containing a [UI definition][XML-UI] and merges
@@ -452,6 +460,9 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(filename)
 
 	var _guint uint  // out
 	var _goerr error // out
@@ -479,6 +490,9 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(resourcePath)
 
 	var _guint uint  // out
 	var _goerr error // out
@@ -509,6 +523,10 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(length)
 
 	var _guint uint  // out
 	var _goerr error // out
@@ -543,6 +561,7 @@ func (manager *UIManager) EnsureUpdate() {
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 
 	C.gtk_ui_manager_ensure_update(_arg0)
+	runtime.KeepAlive(manager)
 }
 
 // AccelGroup returns the AccelGroup associated with manager.
@@ -555,6 +574,8 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_ui_manager_get_accel_group(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _accelGroup *AccelGroup // out
 
@@ -578,6 +599,9 @@ func (manager *UIManager) Action(path string) *Action {
 
 	_cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(path)
+
 	var _action *Action // out
 
 	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
@@ -595,6 +619,8 @@ func (manager *UIManager) ActionGroups() []ActionGroup {
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _list []ActionGroup // out
 
@@ -622,6 +648,8 @@ func (manager *UIManager) AddTearoffs() bool {
 
 	_cret = C.gtk_ui_manager_get_add_tearoffs(_arg0)
 
+	runtime.KeepAlive(manager)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -641,6 +669,8 @@ func (manager *UIManager) Ui() string {
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_ui_manager_get_ui(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
@@ -676,6 +706,9 @@ func (manager *UIManager) Widget(path string) Widgetter {
 
 	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(path)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -701,6 +734,9 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 	_arg2 = C.gint(pos)
 
 	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(pos)
 }
 
 // NewMergeID returns an unused merge id, suitable for use with
@@ -714,6 +750,8 @@ func (manager *UIManager) NewMergeID() uint {
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_ui_manager_new_merge_id(_arg0)
+
+	runtime.KeepAlive(manager)
 
 	var _guint uint // out
 
@@ -734,6 +772,8 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
 	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(actionGroup)
 }
 
 // RemoveUi unmerges the part of manager's content identified by merge_id.
@@ -747,6 +787,8 @@ func (manager *UIManager) RemoveUi(mergeId uint) {
 	_arg1 = C.guint(mergeId)
 
 	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(mergeId)
 }
 
 // SetAddTearoffs sets the “add_tearoffs” property, which controls whether menus
@@ -767,4 +809,6 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	}
 
 	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(addTearoffs)
 }

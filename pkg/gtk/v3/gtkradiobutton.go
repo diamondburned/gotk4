@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -159,6 +160,8 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
 
+	runtime.KeepAlive(radioGroupMember)
+
 	var _radioButton *RadioButton // out
 
 	_radioButton = wrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -180,6 +183,9 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
+
+	runtime.KeepAlive(radioGroupMember)
+	runtime.KeepAlive(label)
 
 	var _radioButton *RadioButton // out
 
@@ -203,6 +209,9 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
+
+	runtime.KeepAlive(radioGroupMember)
+	runtime.KeepAlive(label)
 
 	var _radioButton *RadioButton // out
 
@@ -239,4 +248,6 @@ func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	}
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
+	runtime.KeepAlive(radioButton)
+	runtime.KeepAlive(groupSource)
 }

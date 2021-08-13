@@ -5,7 +5,10 @@ package glib
 // #include "glib.go.h"
 import "C"
 
-import "unsafe"
+import (
+	"runtime"
+	"unsafe"
+)
 
 // TODO(go1.18): Make SList a generic type.
 
@@ -66,21 +69,27 @@ func (v *SList) DataWrapper(fn func(unsafe.Pointer) interface{}) {
 }
 
 func (v *SList) Append(data uintptr) *SList {
+	defer runtime.KeepAlive(v)
+
 	ret := C.g_slist_append(v.native(), C.gpointer(data))
 	if ret == v.native() {
 		return v
 	}
 
-	return wrapSList(ret)
+	return v.wrapNewHead(ret)
 }
 
 // Length is a wrapper around g_slist_length().
 func (v *SList) Length() uint {
+	defer runtime.KeepAlive(v)
+
 	return uint(C.g_slist_length(v.native()))
 }
 
 // Next is a wrapper around the next struct field
 func (v *SList) Next() *SList {
+	defer runtime.KeepAlive(v)
+
 	n := v.native()
 	if n == nil {
 		return nil
@@ -100,6 +109,8 @@ func (v *SList) dataRaw() unsafe.Pointer {
 
 // DataRaw is a wrapper around the data struct field
 func (v *SList) DataRaw() unsafe.Pointer {
+	defer runtime.KeepAlive(v)
+
 	n := v.native()
 	if n == nil {
 		return nil
@@ -110,6 +121,8 @@ func (v *SList) DataRaw() unsafe.Pointer {
 // Data acts the same as data struct field, but it returns raw unsafe.Pointer as interface.
 // TODO: Align with List struct and add member + logic for `dataWrap func(unsafe.Pointer) interface{}`?
 func (v *SList) Data() interface{} {
+	defer runtime.KeepAlive(v)
+
 	ptr := v.dataRaw()
 	if v.dataWrap != nil {
 		return v.dataWrap(ptr)
@@ -128,12 +141,14 @@ func (v *SList) Foreach(fn func(item interface{})) {
 // Free is a wrapper around g_slist_free().
 func (v *SList) Free() {
 	C.g_slist_free(v.native())
+	runtime.KeepAlive(v)
 }
 
 // FreeFull is a wrapper around g_slist_free_full().
 func (v *SList) FreeFull() {
 	//TODO implement GDestroyNotify callback
 	C.g_slist_free_full(v.native(), nil)
+	runtime.KeepAlive(v)
 }
 
 // GSList * 	g_slist_alloc ()

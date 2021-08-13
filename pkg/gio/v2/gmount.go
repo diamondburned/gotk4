@@ -260,6 +260,8 @@ func (mount *Mount) CanEject() bool {
 
 	_cret = C.g_mount_can_eject(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -277,6 +279,8 @@ func (mount *Mount) CanUnmount() bool {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
+
+	runtime.KeepAlive(mount)
 
 	var _ok bool // out
 
@@ -312,6 +316,10 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 	}
 
 	C.g_mount_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectFinish finishes ejecting a mount. If any errors occurred during the
@@ -328,6 +336,8 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -365,6 +375,11 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 	}
 
 	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
@@ -379,6 +394,8 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -400,6 +417,8 @@ func (mount *Mount) DefaultLocation() Filer {
 
 	_cret = C.g_mount_get_default_location(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -419,6 +438,8 @@ func (mount *Mount) Drive() Driver {
 
 	_cret = C.g_mount_get_drive(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _drive Driver // out
 
 	if _cret != nil {
@@ -437,6 +458,8 @@ func (mount *Mount) Icon() Iconner {
 
 	_cret = C.g_mount_get_icon(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _icon Iconner // out
 
 	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
@@ -452,6 +475,8 @@ func (mount *Mount) Name() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
+
+	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
@@ -470,6 +495,8 @@ func (mount *Mount) Root() Filer {
 
 	_cret = C.g_mount_get_root(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -485,6 +512,8 @@ func (mount *Mount) SortKey() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
+
+	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
@@ -504,6 +533,8 @@ func (mount *Mount) SymbolicIcon() Iconner {
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _icon Iconner // out
 
 	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
@@ -521,6 +552,8 @@ func (mount *Mount) UUID() string {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
+
+	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
@@ -540,6 +573,8 @@ func (mount *Mount) Volume() Volumer {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
+
+	runtime.KeepAlive(mount)
 
 	var _volume Volumer // out
 
@@ -583,6 +618,10 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 	}
 
 	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(forceRescan)
+	runtime.KeepAlive(callback)
 }
 
 // GuessContentTypeFinish finishes guessing content types of mount. If any
@@ -599,6 +638,9 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _utf8s []string // out
 	var _goerr error    // out
@@ -653,6 +695,10 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(forceRescan)
+
 	var _utf8s []string // out
 	var _goerr error    // out
 
@@ -706,6 +752,8 @@ func (mount *Mount) IsShadowed() bool {
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 
+	runtime.KeepAlive(mount)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -747,6 +795,11 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 	}
 
 	C.g_mount_remount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // RemountFinish finishes remounting a mount. If any errors occurred during the
@@ -761,6 +814,8 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -781,6 +836,7 @@ func (mount *Mount) Shadow() {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	C.g_mount_shadow(_arg0)
+	runtime.KeepAlive(mount)
 }
 
 // Unmount unmounts a mount. This is an asynchronous operation, and is finished
@@ -808,6 +864,10 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 	}
 
 	C.g_mount_unmount(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountFinish finishes unmounting a mount. If any errors occurred during the
@@ -824,6 +884,8 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -861,6 +923,11 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 	}
 
 	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
@@ -875,6 +942,8 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -895,4 +964,5 @@ func (mount *Mount) Unshadow() {
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 
 	C.g_mount_unshadow(_arg0)
+	runtime.KeepAlive(mount)
 }

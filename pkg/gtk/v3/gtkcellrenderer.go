@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -296,6 +297,10 @@ func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState,
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
 	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(cellArea)
 
 	var _alignedArea gdk.Rectangle // out
 
@@ -313,6 +318,7 @@ func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_renderer_get_alignment(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(cell)
 
 	var _xalign float32 // out
 	var _yalign float32 // out
@@ -332,6 +338,7 @@ func (cell *CellRenderer) FixedSize() (width int, height int) {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_renderer_get_fixed_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(cell)
 
 	var _width int  // out
 	var _height int // out
@@ -351,6 +358,7 @@ func (cell *CellRenderer) Padding() (xpad int, ypad int) {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_renderer_get_padding(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(cell)
 
 	var _xpad int // out
 	var _ypad int // out
@@ -372,6 +380,8 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, na
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_height(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
 
 	var _minimumSize int // out
 	var _naturalSize int // out
@@ -396,6 +406,9 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 	_arg2 = C.gint(width)
 
 	C.gtk_cell_renderer_get_preferred_height_for_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
 
 	var _minimumHeight int // out
 	var _naturalHeight int // out
@@ -418,6 +431,8 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisiti
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
 
 	var _minimumSize Requisition // out
 	var _naturalSize Requisition // out
@@ -439,6 +454,8 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, nat
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_cell_renderer_get_preferred_width(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
 
 	var _minimumSize int // out
 	var _naturalSize int // out
@@ -463,6 +480,9 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) 
 	_arg2 = C.gint(height)
 
 	C.gtk_cell_renderer_get_preferred_width_for_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(height)
 
 	var _minimumWidth int // out
 	var _naturalWidth int // out
@@ -483,6 +503,8 @@ func (cell *CellRenderer) RequestMode() SizeRequestMode {
 
 	_cret = C.gtk_cell_renderer_get_request_mode(_arg0)
 
+	runtime.KeepAlive(cell)
+
 	var _sizeRequestMode SizeRequestMode // out
 
 	_sizeRequestMode = SizeRequestMode(_cret)
@@ -498,6 +520,8 @@ func (cell *CellRenderer) Sensitive() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_sensitive(_arg0)
+
+	runtime.KeepAlive(cell)
 
 	var _ok bool // out
 
@@ -533,6 +557,9 @@ func (cell *CellRenderer) Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffs
 	}
 
 	C.gtk_cell_renderer_get_size(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cellArea)
 
 	var _xOffset int // out
 	var _yOffset int // out
@@ -565,6 +592,10 @@ func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) S
 
 	_cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cellState)
+
 	var _stateFlags StateFlags // out
 
 	_stateFlags = StateFlags(_cret)
@@ -580,6 +611,8 @@ func (cell *CellRenderer) Visible() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_get_visible(_arg0)
+
+	runtime.KeepAlive(cell)
 
 	var _ok bool // out
 
@@ -599,6 +632,8 @@ func (cell *CellRenderer) IsActivatable() bool {
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	_cret = C.gtk_cell_renderer_is_activatable(_arg0)
+
+	runtime.KeepAlive(cell)
 
 	var _ok bool // out
 
@@ -632,6 +667,12 @@ func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgetter, background
 	_arg5 = C.GtkCellRendererState(flags)
 
 	C.gtk_cell_renderer_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(backgroundArea)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
 }
 
 // SetAlignment sets the renderer’s alignment within its available space.
@@ -645,6 +686,9 @@ func (cell *CellRenderer) SetAlignment(xalign float32, yalign float32) {
 	_arg2 = C.gfloat(yalign)
 
 	C.gtk_cell_renderer_set_alignment(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
 }
 
 // SetFixedSize sets the renderer size to be explicit, independent of the
@@ -659,6 +703,9 @@ func (cell *CellRenderer) SetFixedSize(width int, height int) {
 	_arg2 = C.gint(height)
 
 	C.gtk_cell_renderer_set_fixed_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetPadding sets the renderer’s padding.
@@ -672,6 +719,9 @@ func (cell *CellRenderer) SetPadding(xpad int, ypad int) {
 	_arg2 = C.gint(ypad)
 
 	C.gtk_cell_renderer_set_padding(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(xpad)
+	runtime.KeepAlive(ypad)
 }
 
 // SetSensitive sets the cell renderer’s sensitivity.
@@ -685,6 +735,8 @@ func (cell *CellRenderer) SetSensitive(sensitive bool) {
 	}
 
 	C.gtk_cell_renderer_set_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(sensitive)
 }
 
 // SetVisible sets the cell renderer’s visibility.
@@ -698,6 +750,8 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 	}
 
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(visible)
 }
 
 // StopEditing informs the cell renderer that the editing is stopped. If
@@ -716,4 +770,6 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	}
 
 	C.gtk_cell_renderer_stop_editing(_arg0, _arg1)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(canceled)
 }

@@ -263,6 +263,8 @@ func (volume *Volume) CanEject() bool {
 
 	_cret = C.g_volume_can_eject(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -280,6 +282,8 @@ func (volume *Volume) CanMount() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_can_mount(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _ok bool // out
 
@@ -315,6 +319,10 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 	}
 
 	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectFinish finishes ejecting a volume. If any errors occurred during the
@@ -331,6 +339,8 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -368,6 +378,11 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 	}
 
 	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
@@ -382,6 +397,8 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -402,6 +419,8 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_enumerate_identifiers(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _utf8s []string // out
 
@@ -445,6 +464,8 @@ func (volume *Volume) ActivationRoot() Filer {
 
 	_cret = C.g_volume_get_activation_root(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _file Filer // out
 
 	if _cret != nil {
@@ -463,6 +484,8 @@ func (volume *Volume) Drive() Driver {
 
 	_cret = C.g_volume_get_drive(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _drive Driver // out
 
 	if _cret != nil {
@@ -480,6 +503,8 @@ func (volume *Volume) Icon() Iconner {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_icon(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _icon Iconner // out
 
@@ -502,6 +527,9 @@ func (volume *Volume) Identifier(kind string) string {
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
 
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(kind)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -521,6 +549,8 @@ func (volume *Volume) GetMount() Mounter {
 
 	_cret = C.g_volume_get_mount(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _mount Mounter // out
 
 	if _cret != nil {
@@ -539,6 +569,8 @@ func (volume *Volume) Name() string {
 
 	_cret = C.g_volume_get_name(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -555,6 +587,8 @@ func (volume *Volume) SortKey() string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_sort_key(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
 
@@ -574,6 +608,8 @@ func (volume *Volume) SymbolicIcon() Iconner {
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 
+	runtime.KeepAlive(volume)
+
 	var _icon Iconner // out
 
 	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
@@ -591,6 +627,8 @@ func (volume *Volume) UUID() string {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_get_uuid(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
 
@@ -629,6 +667,11 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 	}
 
 	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountFinish finishes mounting a volume. If any errors occurred during the
@@ -647,6 +690,8 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -665,6 +710,8 @@ func (volume *Volume) ShouldAutomount() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 
 	_cret = C.g_volume_should_automount(_arg0)
+
+	runtime.KeepAlive(volume)
 
 	var _ok bool // out
 

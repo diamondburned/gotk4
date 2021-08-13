@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -208,6 +209,9 @@ func (stack *Stack) AddNamed(child Widgetter, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_stack_add_named(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
 }
 
 // AddTitled adds a child to stack. The child is identified by the name. The
@@ -227,6 +231,10 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) {
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(title)
 }
 
 // ChildByName finds the child of the Stack with the name given as the argument.
@@ -241,6 +249,9 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
+
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
 
 	var _widget Widgetter // out
 
@@ -261,6 +272,8 @@ func (stack *Stack) Hhomogeneous() bool {
 
 	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -279,6 +292,8 @@ func (stack *Stack) Homogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_homogeneous(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -299,6 +314,8 @@ func (stack *Stack) InterpolateSize() bool {
 
 	_cret = C.gtk_stack_get_interpolate_size(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -318,6 +335,8 @@ func (stack *Stack) TransitionDuration() uint {
 
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -334,6 +353,8 @@ func (stack *Stack) TransitionRunning() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_transition_running(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -354,6 +375,8 @@ func (stack *Stack) TransitionType() StackTransitionType {
 
 	_cret = C.gtk_stack_get_transition_type(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _stackTransitionType StackTransitionType // out
 
 	_stackTransitionType = StackTransitionType(_cret)
@@ -370,6 +393,8 @@ func (stack *Stack) Vhomogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -390,6 +415,8 @@ func (stack *Stack) VisibleChild() Widgetter {
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -408,6 +435,8 @@ func (stack *Stack) VisibleChildName() string {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_visible_child_name(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _utf8 string // out
 
@@ -432,6 +461,8 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 	}
 
 	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(hhomogeneous)
 }
 
 // SetHomogeneous sets the Stack to be homogeneous or not. If it is homogeneous,
@@ -450,6 +481,8 @@ func (stack *Stack) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_stack_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetInterpolateSize sets whether or not stack will interpolate its size when
@@ -467,6 +500,8 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 	}
 
 	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(interpolateSize)
 }
 
 // SetTransitionDuration sets the duration that transitions between pages in
@@ -479,6 +514,8 @@ func (stack *Stack) SetTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(duration)
 }
 
 // SetTransitionType sets the type of animation that will be used for
@@ -496,6 +533,8 @@ func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 	_arg1 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(transition)
 }
 
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it is
@@ -511,6 +550,8 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 	}
 
 	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(vhomogeneous)
 }
 
 // SetVisibleChild makes child the visible child of stack.
@@ -528,6 +569,8 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
 }
 
 // SetVisibleChildFull makes the child with the given name visible.
@@ -545,6 +588,9 @@ func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionT
 	_arg2 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(transition)
 }
 
 // SetVisibleChildName makes the child with the given name visible.
@@ -563,4 +609,6 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -63,6 +64,8 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 
 	_cret = C.gtk_gesture_swipe_new(_arg1)
 
+	runtime.KeepAlive(widget)
+
 	var _gestureSwipe *GestureSwipe // out
 
 	_gestureSwipe = wrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -82,6 +85,8 @@ func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, o
 	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(gesture)
 
 	var _velocityX float64 // out
 	var _velocityY float64 // out

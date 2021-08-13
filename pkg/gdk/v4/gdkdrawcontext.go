@@ -100,6 +100,8 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(region)
 }
 
 // EndFrame ends a drawing operation started with
@@ -117,6 +119,7 @@ func (context *DrawContext) EndFrame() {
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_draw_context_end_frame(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Display retrieves the GdkDisplay the context is created for
@@ -127,6 +130,8 @@ func (context *DrawContext) Display() *Display {
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _display *Display // out
 
@@ -153,6 +158,8 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _region *cairo.Region // out
 
 	if _cret != nil {
@@ -178,6 +185,8 @@ func (context *DrawContext) Surface() Surfacer {
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _surface Surfacer // out
 
 	if _cret != nil {
@@ -200,6 +209,8 @@ func (context *DrawContext) IsInFrame() bool {
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_draw_context_is_in_frame(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 

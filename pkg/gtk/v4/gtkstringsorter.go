@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -61,6 +62,8 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 
 	_cret = C.gtk_string_sorter_new(_arg1)
 
+	runtime.KeepAlive(expression)
+
 	var _stringSorter *StringSorter // out
 
 	_stringSorter = wrapStringSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -77,6 +80,8 @@ func (self *StringSorter) Expression() Expressioner {
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
@@ -95,6 +100,8 @@ func (self *StringSorter) IgnoreCase() bool {
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -119,6 +126,8 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 	}
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetIgnoreCase sets whether the sorter will ignore case differences.
@@ -132,4 +141,6 @@ func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	}
 
 	C.gtk_string_sorter_set_ignore_case(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ignoreCase)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -114,6 +115,9 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 
 	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextDescription)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -134,6 +138,8 @@ func (statusbar *Statusbar) Pop(contextId uint) {
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_pop(_arg0, _arg1)
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
 }
 
 // Push pushes a new message onto a statusbar’s stack.
@@ -149,6 +155,10 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
+	runtime.KeepAlive(text)
 
 	var _guint uint // out
 
@@ -169,6 +179,9 @@ func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 	_arg2 = C.guint(messageId)
 
 	C.gtk_statusbar_remove(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
+	runtime.KeepAlive(messageId)
 }
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
@@ -181,4 +194,6 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
 }

@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -148,6 +149,9 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 
 	_cret = C.gdk_wayland_toplevel_export_handle(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(callback)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -167,6 +171,8 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(applicationId)
 }
 
 // SetTransientForExported marks toplevel as transient for the surface to which
@@ -187,6 +193,9 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
+
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(parentHandleStr)
 
 	var _ok bool // out
 
@@ -211,4 +220,5 @@ func (toplevel *WaylandToplevel) UnexportHandle() {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	C.gdk_wayland_toplevel_unexport_handle(_arg0)
+	runtime.KeepAlive(toplevel)
 }

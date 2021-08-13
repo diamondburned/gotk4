@@ -38,6 +38,8 @@ func DBusEscapeObjectPath(s string) string {
 
 	_cret = C.g_dbus_escape_object_path(_arg1)
 
+	runtime.KeepAlive(s)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -71,6 +73,8 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	}
 
 	_cret = C.g_dbus_escape_object_path_bytestring(_arg1)
+
+	runtime.KeepAlive(bytes)
 
 	var _utf8 string // out
 
@@ -144,6 +148,9 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
 
+	runtime.KeepAlive(gvalue)
+	runtime.KeepAlive(typ)
+
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -172,6 +179,7 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
+	runtime.KeepAlive(value)
 
 	var _outGvalue externglib.Value // out
 
@@ -193,6 +201,8 @@ func DBusIsGUID(_string string) bool {
 
 	_cret = C.g_dbus_is_guid(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -211,6 +221,8 @@ func DBusIsInterfaceName(_string string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_interface_name(_arg1)
+
+	runtime.KeepAlive(_string)
 
 	var _ok bool // out
 
@@ -232,6 +244,8 @@ func DBusIsMemberName(_string string) bool {
 
 	_cret = C.g_dbus_is_member_name(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -252,6 +266,8 @@ func DBusIsName(_string string) bool {
 
 	_cret = C.g_dbus_is_name(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -270,6 +286,8 @@ func DBusIsUniqueName(_string string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_unique_name(_arg1)
+
+	runtime.KeepAlive(_string)
 
 	var _ok bool // out
 
@@ -294,6 +312,8 @@ func DBusUnescapeObjectPath(s string) []byte {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_unescape_object_path(_arg1)
+
+	runtime.KeepAlive(s)
 
 	var _guint8s []byte // out
 

@@ -124,6 +124,10 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
@@ -168,6 +172,11 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 	}
 
 	C.g_file_input_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryInfoFinish finishes an asynchronous info query operation.
@@ -181,6 +190,9 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_input_stream_query_info_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out

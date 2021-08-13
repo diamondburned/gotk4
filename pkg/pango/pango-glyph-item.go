@@ -64,6 +64,8 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 
 	_cret = C.pango_glyph_item_copy(_arg0)
 
+	runtime.KeepAlive(orig)
+
 	var _glyphItem *GlyphItem // out
 
 	if _cret != nil {
@@ -98,6 +100,10 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	_arg2 = C.int(splitIndex)
 
 	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(orig)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(splitIndex)
 
 	var _glyphItem *GlyphItem // out
 
@@ -215,6 +221,8 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 
 	_cret = C.pango_glyph_item_iter_copy(_arg0)
 
+	runtime.KeepAlive(orig)
+
 	var _glyphItemIter *GlyphItemIter // out
 
 	if _cret != nil {
@@ -244,6 +252,10 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	_cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(glyphItem)
+	runtime.KeepAlive(text)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -270,6 +282,10 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	_cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(glyphItem)
+	runtime.KeepAlive(text)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -290,6 +306,8 @@ func (iter *GlyphItemIter) NextCluster() bool {
 
 	_cret = C.pango_glyph_item_iter_next_cluster(_arg0)
 
+	runtime.KeepAlive(iter)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -308,6 +326,8 @@ func (iter *GlyphItemIter) PrevCluster() bool {
 	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
+
+	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 

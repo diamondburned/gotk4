@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -180,6 +181,8 @@ func (self *MultiFilter) Append(filter *Filter) {
 	filter.Ref()
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(filter)
 }
 
 // Remove removes the filter at the given position from the list of filters used
@@ -195,4 +198,6 @@ func (self *MultiFilter) Remove(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }

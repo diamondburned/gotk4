@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -62,6 +63,8 @@ func (orientable *Orientable) Orientation() Orientation {
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 
+	runtime.KeepAlive(orientable)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -78,4 +81,6 @@ func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_orientable_set_orientation(_arg0, _arg1)
+	runtime.KeepAlive(orientable)
+	runtime.KeepAlive(orientation)
 }

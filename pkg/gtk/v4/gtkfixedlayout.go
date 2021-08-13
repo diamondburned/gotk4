@@ -114,6 +114,8 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 
+	runtime.KeepAlive(child)
+
 	var _transform *gsk.Transform // out
 
 	if _cret != nil {
@@ -136,4 +138,6 @@ func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(transform)
 }

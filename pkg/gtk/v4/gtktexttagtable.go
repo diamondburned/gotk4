@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -112,6 +113,9 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(tag)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -136,6 +140,8 @@ func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(fn)
 }
 
 // Size returns the size of the table (number of tags)
@@ -146,6 +152,8 @@ func (table *TextTagTable) Size() int {
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
+
+	runtime.KeepAlive(table)
 
 	var _gint int // out
 
@@ -165,6 +173,9 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
+
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(name)
 
 	var _textTag *TextTag // out
 
@@ -188,4 +199,6 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(tag)
 }

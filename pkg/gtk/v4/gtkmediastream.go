@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -184,6 +185,7 @@ func (self *MediaStream) Ended() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_ended(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // GError sets self into an error state.
@@ -205,6 +207,8 @@ func (self *MediaStream) GError(err error) {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gtk_media_stream_gerror(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(err)
 }
 
 // Duration gets the duration of the stream.
@@ -217,6 +221,8 @@ func (self *MediaStream) Duration() int64 {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_get_duration(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _gint64 int64 // out
 
@@ -233,6 +239,8 @@ func (self *MediaStream) GetEnded() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_get_ended(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -263,6 +271,8 @@ func (self *MediaStream) Error() error {
 
 	_cret = C.gtk_media_stream_get_error(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _err error // out
 
 	if _cret != nil {
@@ -282,6 +292,8 @@ func (self *MediaStream) Loop() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_get_loop(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -303,6 +315,8 @@ func (self *MediaStream) Muted() bool {
 
 	_cret = C.gtk_media_stream_get_muted(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -320,6 +334,8 @@ func (self *MediaStream) Playing() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_get_playing(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -339,6 +355,8 @@ func (self *MediaStream) Timestamp() int64 {
 
 	_cret = C.gtk_media_stream_get_timestamp(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -357,6 +375,8 @@ func (self *MediaStream) Volume() float64 {
 
 	_cret = C.gtk_media_stream_get_volume(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -372,6 +392,8 @@ func (self *MediaStream) HasAudio() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_has_audio(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -390,6 +412,8 @@ func (self *MediaStream) HasVideo() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_has_video(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -410,6 +434,8 @@ func (self *MediaStream) IsPrepared() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_is_prepared(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -437,6 +463,8 @@ func (self *MediaStream) IsSeekable() bool {
 
 	_cret = C.gtk_media_stream_is_seekable(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -454,6 +482,8 @@ func (self *MediaStream) IsSeeking() bool {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_media_stream_is_seeking(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -473,6 +503,7 @@ func (self *MediaStream) Pause() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_pause(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Play starts playing the stream.
@@ -484,6 +515,7 @@ func (self *MediaStream) Play() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_play(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Prepared: called by GtkMediaStream implementations to advertise the stream
@@ -516,6 +548,11 @@ func (self *MediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, d
 	_arg4 = C.gint64(duration)
 
 	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hasAudio)
+	runtime.KeepAlive(hasVideo)
+	runtime.KeepAlive(seekable)
+	runtime.KeepAlive(duration)
 }
 
 // Realize: called by users to attach the media stream to a GdkSurface they
@@ -542,6 +579,8 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_media_stream_realize(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(surface)
 }
 
 // Seek: start a seek operation on self to timestamp.
@@ -561,6 +600,8 @@ func (self *MediaStream) Seek(timestamp int64) {
 	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_seek(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(timestamp)
 }
 
 // SeekFailed ends a seek operation started via GtkMediaStream.seek() as a
@@ -576,6 +617,7 @@ func (self *MediaStream) SeekFailed() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_seek_failed(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // SeekSuccess ends a seek operation started via GtkMediaStream.seek()
@@ -590,6 +632,7 @@ func (self *MediaStream) SeekSuccess() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_seek_success(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // SetLoop sets whether the stream should loop.
@@ -609,6 +652,8 @@ func (self *MediaStream) SetLoop(loop bool) {
 	}
 
 	C.gtk_media_stream_set_loop(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(loop)
 }
 
 // SetMuted sets whether the audio stream should be muted.
@@ -629,6 +674,8 @@ func (self *MediaStream) SetMuted(muted bool) {
 	}
 
 	C.gtk_media_stream_set_muted(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(muted)
 }
 
 // SetPlaying starts or pauses playback of the stream.
@@ -642,6 +689,8 @@ func (self *MediaStream) SetPlaying(playing bool) {
 	}
 
 	C.gtk_media_stream_set_playing(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(playing)
 }
 
 // SetVolume sets the volume of the audio stream.
@@ -662,6 +711,8 @@ func (self *MediaStream) SetVolume(volume float64) {
 	_arg1 = C.double(volume)
 
 	C.gtk_media_stream_set_volume(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(volume)
 }
 
 // Unprepared resets a given media stream implementation.
@@ -675,6 +726,7 @@ func (self *MediaStream) Unprepared() {
 	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
 
 	C.gtk_media_stream_unprepared(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Unrealize undoes a previous call to gtk_media_stream_realize().
@@ -689,6 +741,8 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_media_stream_unrealize(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(surface)
 }
 
 // Update: media stream implementations should regularly call this function to
@@ -706,4 +760,6 @@ func (self *MediaStream) Update(timestamp int64) {
 	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_update(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(timestamp)
 }

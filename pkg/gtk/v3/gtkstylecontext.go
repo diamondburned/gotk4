@@ -638,6 +638,12 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 	}
 
 	C.gtk_draw_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(isPrimary)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(drawArrow)
 }
 
 // RenderInsertionCursor draws a text caret on cr at the specified index of
@@ -660,6 +666,13 @@ func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, 
 	_arg7 = C.PangoDirection(direction)
 
 	C.gtk_render_insertion_cursor(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(index)
+	runtime.KeepAlive(direction)
 }
 
 // StyleContextOverrider contains methods that are overridable.
@@ -780,6 +793,8 @@ func (context *StyleContext) AddClass(className string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_add_class(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 }
 
 // AddProvider adds a style provider to context, to be used in style
@@ -800,6 +815,9 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(priority)
 }
 
 // AddRegion adds a region to context, so posterior calls to
@@ -832,6 +850,9 @@ func (context *StyleContext) AddRegion(regionName string, flags RegionFlags) {
 	_arg2 = C.GtkRegionFlags(flags)
 
 	C.gtk_style_context_add_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(regionName)
+	runtime.KeepAlive(flags)
 }
 
 // CancelAnimations stops all running animations for region_id and all
@@ -852,6 +873,8 @@ func (context *StyleContext) CancelAnimations(regionId cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(regionId))
 
 	C.gtk_style_context_cancel_animations(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(regionId)
 }
 
 // BackgroundColor gets the background color for a given state.
@@ -875,6 +898,8 @@ func (context *StyleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_background_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -896,6 +921,8 @@ func (context *StyleContext) Border(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_border(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _border Border // out
 
@@ -916,6 +943,8 @@ func (context *StyleContext) BorderColor(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_border_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -936,6 +965,8 @@ func (context *StyleContext) Color(state StateFlags) gdk.RGBA {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _color gdk.RGBA // out
 
@@ -955,6 +986,8 @@ func (context *StyleContext) Direction() TextDirection {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_direction(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _textDirection TextDirection // out
 
@@ -977,6 +1010,9 @@ func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 
 	_cret = C.gtk_style_context_get_font(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
+
 	var _fontDescription *pango.FontDescription // out
 
 	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -992,6 +1028,8 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_frame_clock(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _frameClock gdk.FrameClocker // out
 
@@ -1012,6 +1050,8 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 
 	_cret = C.gtk_style_context_get_junction_sides(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _junctionSides JunctionSides // out
 
 	_junctionSides = JunctionSides(_cret)
@@ -1030,6 +1070,8 @@ func (context *StyleContext) Margin(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_margin(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _margin Border // out
 
@@ -1049,6 +1091,8 @@ func (context *StyleContext) Padding(state StateFlags) Border {
 	_arg1 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_padding(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _padding Border // out
 
@@ -1067,6 +1111,8 @@ func (context *StyleContext) Parent() *StyleContext {
 
 	_cret = C.gtk_style_context_get_parent(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _styleContext *StyleContext // out
 
 	if _cret != nil {
@@ -1084,6 +1130,8 @@ func (context *StyleContext) Path() *WidgetPath {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_path(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _widgetPath *WidgetPath // out
 
@@ -1120,6 +1168,9 @@ func (context *StyleContext) Property(property string, state StateFlags) externg
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_context_get_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 
 	var _value externglib.Value // out
 
@@ -1140,6 +1191,8 @@ func (context *StyleContext) Scale() int {
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -1155,6 +1208,8 @@ func (context *StyleContext) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_screen(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _screen *gdk.Screen // out
 
@@ -1190,6 +1245,9 @@ func (context *StyleContext) Section(property string) *CSSSection {
 
 	_cret = C.gtk_style_context_get_section(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(property)
+
 	var _cssSection *CSSSection // out
 
 	if _cret != nil {
@@ -1216,6 +1274,8 @@ func (context *StyleContext) State() StateFlags {
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _stateFlags StateFlags // out
 
 	_stateFlags = StateFlags(_cret)
@@ -1237,6 +1297,8 @@ func (context *StyleContext) StyleProperty(propertyName string) externglib.Value
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_get_style_property(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(propertyName)
 
 	var _value externglib.Value // out
 
@@ -1256,6 +1318,9 @@ func (context *StyleContext) HasClass(className string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 
 	var _ok bool // out
 
@@ -1282,6 +1347,9 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 
 	_cret = C.gtk_style_context_has_region(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(regionName)
+
 	var _flagsReturn RegionFlags // out
 	var _ok bool                 // out
 
@@ -1304,6 +1372,7 @@ func (context *StyleContext) Invalidate() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_invalidate(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // ListClasses returns the list of classes currently defined in context.
@@ -1314,6 +1383,8 @@ func (context *StyleContext) ListClasses() []string {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_list_classes(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _list []string // out
 
@@ -1338,6 +1409,8 @@ func (context *StyleContext) ListRegions() []string {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_list_regions(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _list []string // out
 
@@ -1365,6 +1438,9 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(colorName)
+
 	var _color gdk.RGBA // out
 	var _ok bool        // out
 
@@ -1390,6 +1466,9 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_lookup_icon_set(_arg0, _arg1)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out
 
@@ -1449,6 +1528,11 @@ func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId cgo
 	}
 
 	C.gtk_style_context_notify_state_change(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(regionId)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(stateValue)
 }
 
 // PopAnimatableRegion pops an animatable region from context. See
@@ -1461,6 +1545,7 @@ func (context *StyleContext) PopAnimatableRegion() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_pop_animatable_region(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // PushAnimatableRegion pushes an animatable region, so all further
@@ -1482,6 +1567,8 @@ func (context *StyleContext) PushAnimatableRegion(regionId cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(regionId))
 
 	C.gtk_style_context_push_animatable_region(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(regionId)
 }
 
 // RemoveClass removes class_name from context.
@@ -1494,6 +1581,8 @@ func (context *StyleContext) RemoveClass(className string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_class(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 }
 
 // RemoveProvider removes provider from the style providers list in context.
@@ -1505,6 +1594,8 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(provider)
 }
 
 // RemoveRegion removes a region from context.
@@ -1519,6 +1610,8 @@ func (context *StyleContext) RemoveRegion(regionName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_region(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(regionName)
 }
 
 // Restore restores context state to a previous stage. See
@@ -1529,6 +1622,7 @@ func (context *StyleContext) Restore() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_restore(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Save saves the context state, so temporary modifications done through
@@ -1544,6 +1638,7 @@ func (context *StyleContext) Save() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_save(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // ScrollAnimations: this function is analogous to gdk_window_scroll(), and
@@ -1563,6 +1658,10 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy in
 	_arg3 = C.gint(dy)
 
 	C.gtk_style_context_scroll_animations(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 }
 
 // SetBackground sets the background of window to the background pattern or
@@ -1579,6 +1678,8 @@ func (context *StyleContext) SetBackground(window gdk.Windower) {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_style_context_set_background(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(window)
 }
 
 // SetDirection sets the reading direction for rendering purposes.
@@ -1596,6 +1697,8 @@ func (context *StyleContext) SetDirection(direction TextDirection) {
 	_arg1 = C.GtkTextDirection(direction)
 
 	C.gtk_style_context_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(direction)
 }
 
 // SetFrameClock attaches context to the given frame clock.
@@ -1612,6 +1715,8 @@ func (context *StyleContext) SetFrameClock(frameClock gdk.FrameClocker) {
 	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
 
 	C.gtk_style_context_set_frame_clock(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(frameClock)
 }
 
 // SetJunctionSides sets the sides where rendered elements (mostly through
@@ -1630,6 +1735,8 @@ func (context *StyleContext) SetJunctionSides(sides JunctionSides) {
 	_arg1 = C.GtkJunctionSides(sides)
 
 	C.gtk_style_context_set_junction_sides(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(sides)
 }
 
 // SetParent sets the parent style context for context. The parent style context
@@ -1648,6 +1755,8 @@ func (context *StyleContext) SetParent(parent *StyleContext) {
 	}
 
 	C.gtk_style_context_set_parent(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(parent)
 }
 
 // SetPath sets the WidgetPath used for style matching. As a consequence, the
@@ -1663,6 +1772,8 @@ func (context *StyleContext) SetPath(path *WidgetPath) {
 	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_style_context_set_path(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(path)
 }
 
 // SetScale sets the scale to use when getting image assets for the style.
@@ -1674,6 +1785,8 @@ func (context *StyleContext) SetScale(scale int) {
 	_arg1 = C.gint(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(scale)
 }
 
 // SetScreen attaches context to the given screen.
@@ -1691,6 +1804,8 @@ func (context *StyleContext) SetScreen(screen *gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_style_context_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(screen)
 }
 
 // SetState sets the state to be used for style matching.
@@ -1702,6 +1817,8 @@ func (context *StyleContext) SetState(flags StateFlags) {
 	_arg1 = C.GtkStateFlags(flags)
 
 	C.gtk_style_context_set_state(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(flags)
 }
 
 // StateIsRunning returns TRUE if there is a transition animation running for
@@ -1723,6 +1840,9 @@ func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 	_arg1 = C.GtkStateType(state)
 
 	_cret = C.gtk_style_context_state_is_running(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(state)
 
 	var _progress float64 // out
 	var _ok bool          // out
@@ -1754,6 +1874,9 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(flags)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -1780,6 +1903,9 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 	_arg3 = C.guint(priority)
 
 	C.gtk_style_context_add_provider_for_screen(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(priority)
 }
 
 // StyleContextRemoveProviderForScreen removes provider from the global style
@@ -1792,6 +1918,8 @@ func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProvi
 	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider_for_screen(_arg1, _arg2)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(provider)
 }
 
 // StyleContextResetWidgets: this function recomputes the styles for all widgets
@@ -1806,4 +1934,5 @@ func StyleContextResetWidgets(screen *gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_style_context_reset_widgets(_arg1)
+	runtime.KeepAlive(screen)
 }

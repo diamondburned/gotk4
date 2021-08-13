@@ -124,6 +124,8 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(fn)
 }
 
 // Font returns the font in the fontset that contains the best glyph for a
@@ -137,6 +139,9 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 	_arg1 = C.guint(wc)
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
+
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(wc)
 
 	var _font Fonter // out
 
@@ -153,6 +158,8 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_get_metrics(_arg0)
+
+	runtime.KeepAlive(fontset)
 
 	var _fontMetrics *FontMetrics // out
 
@@ -196,6 +203,8 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 
 	_cret = C.pango_fontset_simple_new(_arg1)
 
+	runtime.KeepAlive(language)
+
 	var _fontsetSimple *FontsetSimple // out
 
 	_fontsetSimple = wrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -212,6 +221,8 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 
 	C.pango_fontset_simple_append(_arg0, _arg1)
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(font)
 }
 
 // Size returns the number of fonts in the fontset.
@@ -222,6 +233,8 @@ func (fontset *FontsetSimple) Size() int {
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(fontset.Native()))
 
 	_cret = C.pango_fontset_simple_size(_arg0)
+
+	runtime.KeepAlive(fontset)
 
 	var _gint int // out
 

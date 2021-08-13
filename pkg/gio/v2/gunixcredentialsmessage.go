@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -81,6 +82,8 @@ func NewUnixCredentialsMessageWithCredentials(credentials *Credentials) *UnixCre
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
+	runtime.KeepAlive(credentials)
+
 	var _unixCredentialsMessage *UnixCredentialsMessage // out
 
 	_unixCredentialsMessage = wrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -96,6 +99,8 @@ func (message *UnixCredentialsMessage) Credentials() *Credentials {
 	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_unix_credentials_message_get_credentials(_arg0)
+
+	runtime.KeepAlive(message)
 
 	var _credentials *Credentials // out
 

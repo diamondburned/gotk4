@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -114,6 +115,8 @@ func NewFrame(label string) *Frame {
 
 	_cret = C.gtk_frame_new(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _frame *Frame // out
 
 	_frame = wrapFrame(externglib.Take(unsafe.Pointer(_cret)))
@@ -129,6 +132,8 @@ func (frame *Frame) Child() Widgetter {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_child(_arg0)
+
+	runtime.KeepAlive(frame)
 
 	var _widget Widgetter // out
 
@@ -150,6 +155,8 @@ func (frame *Frame) Label() string {
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
+	runtime.KeepAlive(frame)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -168,6 +175,8 @@ func (frame *Frame) LabelAlign() float32 {
 
 	_cret = C.gtk_frame_get_label_align(_arg0)
 
+	runtime.KeepAlive(frame)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -183,6 +192,8 @@ func (frame *Frame) LabelWidget() Widgetter {
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
+
+	runtime.KeepAlive(frame)
 
 	var _widget Widgetter // out
 
@@ -204,6 +215,8 @@ func (frame *Frame) SetChild(child Widgetter) {
 	}
 
 	C.gtk_frame_set_child(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(child)
 }
 
 // SetLabel creates a new GtkLabel with the label and sets it as the frame's
@@ -219,6 +232,8 @@ func (frame *Frame) SetLabel(label string) {
 	}
 
 	C.gtk_frame_set_label(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(label)
 }
 
 // SetLabelAlign sets the X alignment of the frame widget’s label.
@@ -232,6 +247,8 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.gtk_frame_set_label_align(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(xalign)
 }
 
 // SetLabelWidget sets the label widget for the frame.
@@ -248,4 +265,6 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	}
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(labelWidget)
 }

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -38,4 +39,5 @@ func IOModulesScanAllInDirectory(dirname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_io_modules_scan_all_in_directory(_arg1)
+	runtime.KeepAlive(dirname)
 }

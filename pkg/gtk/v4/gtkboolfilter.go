@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,6 +53,8 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 
 	_cret = C.gtk_bool_filter_new(_arg1)
 
+	runtime.KeepAlive(expression)
+
 	var _boolFilter *BoolFilter // out
 
 	_boolFilter = wrapBoolFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -68,6 +71,8 @@ func (self *BoolFilter) Expression() Expressioner {
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
@@ -86,6 +91,8 @@ func (self *BoolFilter) Invert() bool {
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -110,6 +117,8 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 	}
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(expression)
 }
 
 // SetInvert sets whether the filter should invert the expression.
@@ -123,4 +132,6 @@ func (self *BoolFilter) SetInvert(invert bool) {
 	}
 
 	C.gtk_bool_filter_set_invert(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(invert)
 }

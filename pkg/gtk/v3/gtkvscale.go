@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -76,6 +77,8 @@ func NewVScale(adjustment *Adjustment) *VScale {
 
 	_cret = C.gtk_vscale_new(_arg1)
 
+	runtime.KeepAlive(adjustment)
+
 	var _vScale *VScale // out
 
 	_vScale = wrapVScale(externglib.Take(unsafe.Pointer(_cret)))
@@ -105,6 +108,10 @@ func NewVScaleWithRange(min float64, max float64, step float64) *VScale {
 	_arg3 = C.gdouble(step)
 
 	_cret = C.gtk_vscale_new_with_range(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
 
 	var _vScale *VScale // out
 

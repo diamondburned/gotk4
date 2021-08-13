@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -171,6 +172,7 @@ func (editable *Editable) CopyClipboard() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_copy_clipboard(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // CutClipboard removes the contents of the currently selected content in the
@@ -181,6 +183,7 @@ func (editable *Editable) CutClipboard() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_cut_clipboard(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // DeleteSelection deletes the currently selected text of the editable. This
@@ -191,6 +194,7 @@ func (editable *Editable) DeleteSelection() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_delete_selection(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // DeleteText deletes a sequence of characters. The characters that are deleted
@@ -209,6 +213,9 @@ func (editable *Editable) DeleteText(startPos int, endPos int) {
 	_arg2 = C.gint(endPos)
 
 	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // Chars retrieves a sequence of characters. The characters that are retrieved
@@ -229,6 +236,10 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 
 	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -246,6 +257,8 @@ func (editable *Editable) Editable() bool {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_editable(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _ok bool // out
 
@@ -267,6 +280,8 @@ func (editable *Editable) Position() int {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	_cret = C.gtk_editable_get_position(_arg0)
+
+	runtime.KeepAlive(editable)
 
 	var _gint int // out
 
@@ -290,6 +305,8 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(editable)
+
 	var _startPos int // out
 	var _endPos int   // out
 	var _ok bool      // out
@@ -311,6 +328,7 @@ func (editable *Editable) PasteClipboard() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 
 	C.gtk_editable_paste_clipboard(_arg0)
+	runtime.KeepAlive(editable)
 }
 
 // SelectRegion selects a region of text. The characters that are selected are
@@ -329,6 +347,9 @@ func (editable *Editable) SelectRegion(startPos int, endPos int) {
 	_arg2 = C.gint(endPos)
 
 	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // SetEditable determines if the user can edit the text in the editable widget
@@ -343,6 +364,8 @@ func (editable *Editable) SetEditable(isEditable bool) {
 	}
 
 	C.gtk_editable_set_editable(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(isEditable)
 }
 
 // SetPosition sets the cursor position in the editable to the given value.
@@ -360,4 +383,6 @@ func (editable *Editable) SetPosition(position int) {
 	_arg1 = C.gint(position)
 
 	C.gtk_editable_set_position(_arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(position)
 }

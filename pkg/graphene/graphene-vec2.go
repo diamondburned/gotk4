@@ -63,6 +63,8 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_add(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -83,6 +85,8 @@ func (a *Vec2) Divide(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_divide(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -102,6 +106,9 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 
 	_cret = C.graphene_vec2_dot(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -119,6 +126,9 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v2)))
 
 	_cret = C.graphene_vec2_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
 
 	var _ok bool // out
 
@@ -138,6 +148,8 @@ func (v *Vec2) X() float32 {
 
 	_cret = C.graphene_vec2_get_x(_arg0)
 
+	runtime.KeepAlive(v)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -153,6 +165,8 @@ func (v *Vec2) Y() float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec2_get_y(_arg0)
+
+	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
 
@@ -176,6 +190,10 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 
 	_cret = C.graphene_vec2_init(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _vec2 *Vec2 // out
 
 	_vec2 = (*Vec2)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -194,6 +212,9 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 
 	_cret = C.graphene_vec2_init_from_float(_arg0, _arg1)
 
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(src)
+
 	var _vec2 *Vec2 // out
 
 	_vec2 = (*Vec2)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -211,6 +232,9 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_vec2_init_from_vec2(_arg0, _arg1)
+
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(src)
 
 	var _vec2 *Vec2 // out
 
@@ -231,6 +255,9 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	_arg2 = C.double(factor)
 
 	C.graphene_vec2_interpolate(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
+	runtime.KeepAlive(factor)
 
 	var _res Vec2 // out
 
@@ -247,6 +274,8 @@ func (v *Vec2) Length() float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	_cret = C.graphene_vec2_length(_arg0)
+
+	runtime.KeepAlive(v)
 
 	var _gfloat float32 // out
 
@@ -266,6 +295,8 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_max(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -285,6 +316,8 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_min(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -304,6 +337,8 @@ func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_multiply(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -326,6 +361,10 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	_cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(v1)
+	runtime.KeepAlive(v2)
+	runtime.KeepAlive(epsilon)
+
 	var _ok bool // out
 
 	if _cret {
@@ -343,6 +382,7 @@ func (v *Vec2) Negate() Vec2 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec2_negate(_arg0, &_arg1)
+	runtime.KeepAlive(v)
 
 	var _res Vec2 // out
 
@@ -359,6 +399,7 @@ func (v *Vec2) Normalize() Vec2 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec2_normalize(_arg0, &_arg1)
+	runtime.KeepAlive(v)
 
 	var _res Vec2 // out
 
@@ -378,6 +419,8 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 	_arg1 = C.float(factor)
 
 	C.graphene_vec2_scale(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(v)
+	runtime.KeepAlive(factor)
 
 	var _res Vec2 // out
 
@@ -398,6 +441,8 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.graphene_vec2_subtract(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
 
 	var _res Vec2 // out
 
@@ -414,6 +459,7 @@ func (v *Vec2) ToFloat() [2]float32 {
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v)))
 
 	C.graphene_vec2_to_float(_arg0, &_arg1[0])
+	runtime.KeepAlive(v)
 
 	var _dest [2]float32 // out
 

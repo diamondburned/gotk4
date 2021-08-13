@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -64,6 +65,9 @@ func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectCl
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 
+	runtime.KeepAlive(factory)
+	runtime.KeepAlive(obj)
+
 	var _object *ObjectClass // out
 
 	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -80,6 +84,8 @@ func (factory *ObjectFactory) AccessibleType() externglib.Type {
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.atk_object_factory_get_accessible_type(_arg0)
+
+	runtime.KeepAlive(factory)
 
 	var _gType externglib.Type // out
 
@@ -98,4 +104,5 @@ func (factory *ObjectFactory) Invalidate() {
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
 
 	C.atk_object_factory_invalidate(_arg0)
+	runtime.KeepAlive(factory)
 }

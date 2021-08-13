@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -122,6 +123,8 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _checkMenuItem *CheckMenuItem // out
 
 	_checkMenuItem = wrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -141,6 +144,8 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _checkMenuItem *CheckMenuItem // out
 
 	_checkMenuItem = wrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -157,6 +162,8 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	_cret = C.gtk_check_menu_item_get_active(_arg0)
+
+	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
 
@@ -176,6 +183,8 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 
 	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
+	runtime.KeepAlive(checkMenuItem)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -194,6 +203,8 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
+
+	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
 
@@ -215,6 +226,8 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	}
 
 	C.gtk_check_menu_item_set_active(_arg0, _arg1)
+	runtime.KeepAlive(checkMenuItem)
+	runtime.KeepAlive(isActive)
 }
 
 // SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem
@@ -228,6 +241,8 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	}
 
 	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
+	runtime.KeepAlive(checkMenuItem)
+	runtime.KeepAlive(drawAsRadio)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as some
@@ -248,6 +263,8 @@ func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 	}
 
 	C.gtk_check_menu_item_set_inconsistent(_arg0, _arg1)
+	runtime.KeepAlive(checkMenuItem)
+	runtime.KeepAlive(setting)
 }
 
 // Toggled emits the CheckMenuItem::toggled signal.
@@ -257,4 +274,5 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(checkMenuItem.Native()))
 
 	C.gtk_check_menu_item_toggled(_arg0)
+	runtime.KeepAlive(checkMenuItem)
 }

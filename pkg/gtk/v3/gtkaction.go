@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -154,6 +155,11 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+
 	var _action *Action // out
 
 	_action = wrapAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -173,6 +179,7 @@ func (action *Action) Activate() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_activate(_arg0)
+	runtime.KeepAlive(action)
 }
 
 // BlockActivate: disable activation signals from the action
@@ -188,6 +195,7 @@ func (action *Action) BlockActivate() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_block_activate(_arg0)
+	runtime.KeepAlive(action)
 }
 
 // ConnectAccelerator installs the accelerator for action if action has an accel
@@ -207,6 +215,7 @@ func (action *Action) ConnectAccelerator() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_connect_accelerator(_arg0)
+	runtime.KeepAlive(action)
 }
 
 // CreateIcon: this function is intended for use by action implementations to
@@ -223,6 +232,9 @@ func (action *Action) CreateIcon(iconSize int) Widgetter {
 	_arg1 = C.GtkIconSize(iconSize)
 
 	_cret = C.gtk_action_create_icon(_arg0, _arg1)
+
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(iconSize)
 
 	var _widget Widgetter // out
 
@@ -245,6 +257,8 @@ func (action *Action) CreateMenu() Widgetter {
 
 	_cret = C.gtk_action_create_menu(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -262,6 +276,8 @@ func (action *Action) CreateMenuItem() Widgetter {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_create_menu_item(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _widget Widgetter // out
 
@@ -283,6 +299,8 @@ func (action *Action) CreateToolItem() Widgetter {
 
 	_cret = C.gtk_action_create_tool_item(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -301,6 +319,7 @@ func (action *Action) DisconnectAccelerator() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_disconnect_accelerator(_arg0)
+	runtime.KeepAlive(action)
 }
 
 // AccelPath returns the accel path for this action.
@@ -314,6 +333,8 @@ func (action *Action) AccelPath() string {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_accel_path(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _utf8 string // out
 
@@ -333,6 +354,8 @@ func (action *Action) AlwaysShowImage() bool {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_always_show_image(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -355,6 +378,8 @@ func (action *Action) GIcon() gio.Iconner {
 
 	_cret = C.gtk_action_get_gicon(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _icon gio.Iconner // out
 
 	_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
@@ -374,6 +399,8 @@ func (action *Action) IconName() string {
 
 	_cret = C.gtk_action_get_icon_name(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -392,6 +419,8 @@ func (action *Action) IsImportant() bool {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_is_important(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -415,6 +444,8 @@ func (action *Action) Label() string {
 
 	_cret = C.gtk_action_get_label(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -432,6 +463,8 @@ func (action *Action) Name() string {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_name(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _utf8 string // out
 
@@ -453,6 +486,8 @@ func (action *Action) Sensitive() bool {
 
 	_cret = C.gtk_action_get_sensitive(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -473,6 +508,8 @@ func (action *Action) ShortLabel() string {
 
 	_cret = C.gtk_action_get_short_label(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -490,6 +527,8 @@ func (action *Action) StockID() string {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_stock_id(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _utf8 string // out
 
@@ -509,6 +548,8 @@ func (action *Action) Tooltip() string {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_tooltip(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _utf8 string // out
 
@@ -531,6 +572,8 @@ func (action *Action) Visible() bool {
 
 	_cret = C.gtk_action_get_visible(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -551,6 +594,8 @@ func (action *Action) VisibleHorizontal() bool {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_get_visible_horizontal(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -573,6 +618,8 @@ func (action *Action) VisibleVertical() bool {
 
 	_cret = C.gtk_action_get_visible_vertical(_arg0)
 
+	runtime.KeepAlive(action)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -592,6 +639,8 @@ func (action *Action) IsSensitive() bool {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_is_sensitive(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -613,6 +662,8 @@ func (action *Action) IsVisible() bool {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_action_is_visible(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -638,6 +689,8 @@ func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 	}
 
 	C.gtk_action_set_accel_group(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(accelGroup)
 }
 
 // SetAccelPath sets the accel path for this action. All proxy widgets
@@ -659,6 +712,8 @@ func (action *Action) SetAccelPath(accelPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_accel_path(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(accelPath)
 }
 
 // SetAlwaysShowImage sets whether action's menu item proxies will ignore the
@@ -679,6 +734,8 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	}
 
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(alwaysShow)
 }
 
 // SetGIcon sets the icon of action.
@@ -694,6 +751,8 @@ func (action *Action) SetGIcon(icon gio.Iconner) {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	C.gtk_action_set_gicon(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(icon)
 }
 
 // SetIconName sets the icon name on action
@@ -710,6 +769,8 @@ func (action *Action) SetIconName(iconName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(iconName)
 }
 
 // SetIsImportant sets whether the action is important, this attribute is used
@@ -727,6 +788,8 @@ func (action *Action) SetIsImportant(isImportant bool) {
 	}
 
 	C.gtk_action_set_is_important(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(isImportant)
 }
 
 // SetLabel sets the label of action.
@@ -743,6 +806,8 @@ func (action *Action) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_label(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(label)
 }
 
 // SetSensitive sets the :sensitive property of the action to sensitive. Note
@@ -760,6 +825,8 @@ func (action *Action) SetSensitive(sensitive bool) {
 	}
 
 	C.gtk_action_set_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(sensitive)
 }
 
 // SetShortLabel sets a shorter label text on action.
@@ -774,6 +841,8 @@ func (action *Action) SetShortLabel(shortLabel string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_short_label(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(shortLabel)
 }
 
 // SetStockID sets the stock id on action
@@ -788,6 +857,8 @@ func (action *Action) SetStockID(stockId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_stock_id(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(stockId)
 }
 
 // SetTooltip sets the tooltip text on action
@@ -803,6 +874,8 @@ func (action *Action) SetTooltip(tooltip string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_tooltip(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(tooltip)
 }
 
 // SetVisible sets the :visible property of the action to visible. Note that
@@ -821,6 +894,8 @@ func (action *Action) SetVisible(visible bool) {
 	}
 
 	C.gtk_action_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(visible)
 }
 
 // SetVisibleHorizontal sets whether action is visible when horizontal
@@ -837,6 +912,8 @@ func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 	}
 
 	C.gtk_action_set_visible_horizontal(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(visibleHorizontal)
 }
 
 // SetVisibleVertical sets whether action is visible when vertical
@@ -853,6 +930,8 @@ func (action *Action) SetVisibleVertical(visibleVertical bool) {
 	}
 
 	C.gtk_action_set_visible_vertical(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(visibleVertical)
 }
 
 // UnblockActivate: reenable activation signals from the action
@@ -864,4 +943,5 @@ func (action *Action) UnblockActivate() {
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_unblock_activate(_arg0)
+	runtime.KeepAlive(action)
 }

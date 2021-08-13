@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -58,6 +59,8 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 
 	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
+	runtime.KeepAlive(display)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -80,6 +83,9 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(global)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -101,6 +107,9 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	_arg2 = C.int(size)
 
 	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(size)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -121,4 +130,6 @@ func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_wayland_display_set_startup_notification_id(_arg0, _arg1)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(startupId)
 }

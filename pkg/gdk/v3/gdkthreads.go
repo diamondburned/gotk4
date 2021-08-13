@@ -3,6 +3,8 @@
 package gdk
 
 import (
+	"runtime"
+
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -65,6 +67,9 @@ func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_threads_add_idle_full(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(priority)
+	runtime.KeepAlive(function)
 
 	var _guint uint // out
 
@@ -130,6 +135,10 @@ func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) ui
 
 	_cret = C.gdk_threads_add_timeout_full(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(priority)
+	runtime.KeepAlive(interval)
+	runtime.KeepAlive(function)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -155,6 +164,10 @@ func ThreadsAddTimeoutSeconds(priority int, interval uint, function glib.SourceF
 	_arg5 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gdk_threads_add_timeout_seconds_full(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	runtime.KeepAlive(priority)
+	runtime.KeepAlive(interval)
+	runtime.KeepAlive(function)
 
 	var _guint uint // out
 

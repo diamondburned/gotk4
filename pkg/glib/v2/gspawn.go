@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -299,6 +300,11 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	}
 
 	C.g_spawn_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_cerr)
+	runtime.KeepAlive(workingDirectory)
+	runtime.KeepAlive(argv)
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(childSetup)
 
 	var _childPid Pid // out
 	var _goerr error  // out
@@ -366,6 +372,14 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	_arg10 = C.gint(stderrFd)
 
 	C.g_spawn_async_with_fds(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, _arg8, _arg9, _arg10, &_cerr)
+	runtime.KeepAlive(workingDirectory)
+	runtime.KeepAlive(argv)
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(childSetup)
+	runtime.KeepAlive(stdinFd)
+	runtime.KeepAlive(stdoutFd)
+	runtime.KeepAlive(stderrFd)
 
 	var _childPid Pid // out
 	var _goerr error  // out
@@ -430,6 +444,11 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	}
 
 	C.g_spawn_async_with_pipes(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_arg10, &_cerr)
+	runtime.KeepAlive(workingDirectory)
+	runtime.KeepAlive(argv)
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(childSetup)
 
 	var _childPid Pid       // out
 	var _standardInput int  // out
@@ -689,6 +708,16 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 	}
 
 	C.g_spawn_async_with_pipes_and_fds(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, &_arg13, &_arg14, &_arg15, &_arg16, &_cerr)
+	runtime.KeepAlive(workingDirectory)
+	runtime.KeepAlive(argv)
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(childSetup)
+	runtime.KeepAlive(stdinFd)
+	runtime.KeepAlive(stdoutFd)
+	runtime.KeepAlive(stderrFd)
+	runtime.KeepAlive(sourceFds)
+	runtime.KeepAlive(targetFds)
 
 	var _childPidOut Pid   // out
 	var _stdinPipeOut int  // out
@@ -749,6 +778,7 @@ func SpawnCheckExitStatus(exitStatus int) error {
 	_arg1 = C.gint(exitStatus)
 
 	C.g_spawn_check_exit_status(_arg1, &_cerr)
+	runtime.KeepAlive(exitStatus)
 
 	var _goerr error // out
 
@@ -769,6 +799,7 @@ func SpawnClosePid(pid Pid) {
 	_arg1 = C.int(pid)
 
 	C.g_spawn_close_pid(_arg1)
+	runtime.KeepAlive(pid)
 }
 
 // SpawnCommandLineAsync: simple version of g_spawn_async() that parses a
@@ -788,6 +819,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_spawn_command_line_async(_arg1, &_cerr)
+	runtime.KeepAlive(commandLine)
 
 	var _goerr error // out
 
@@ -829,6 +861,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(commandLine)
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
@@ -942,6 +975,11 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	}
 
 	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
+	runtime.KeepAlive(workingDirectory)
+	runtime.KeepAlive(argv)
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(childSetup)
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out

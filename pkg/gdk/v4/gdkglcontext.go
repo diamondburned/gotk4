@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -144,6 +145,8 @@ func (context *GLContext) DebugEnabled() bool {
 
 	_cret = C.gdk_gl_context_get_debug_enabled(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -161,6 +164,8 @@ func (context *GLContext) Display() *Display {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_display(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _display *Display // out
 
@@ -182,6 +187,8 @@ func (context *GLContext) ForwardCompatible() bool {
 
 	_cret = C.gdk_gl_context_get_forward_compatible(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -202,6 +209,7 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(context)
 
 	var _major int // out
 	var _minor int // out
@@ -221,6 +229,8 @@ func (context *GLContext) SharedContext() GLContexter {
 
 	_cret = C.gdk_gl_context_get_shared_context(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _glContext GLContexter // out
 
 	if _cret != nil {
@@ -239,6 +249,8 @@ func (context *GLContext) Surface() Surfacer {
 
 	_cret = C.gdk_gl_context_get_surface(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _surface Surfacer // out
 
 	if _cret != nil {
@@ -256,6 +268,8 @@ func (context *GLContext) UseES() bool {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gdk_gl_context_get_use_es(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 
@@ -277,6 +291,7 @@ func (context *GLContext) Version() (major int, minor int) {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(context)
 
 	var _major int // out
 	var _minor int // out
@@ -311,6 +326,8 @@ func (context *GLContext) IsLegacy() bool {
 
 	_cret = C.gdk_gl_context_is_legacy(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -327,6 +344,7 @@ func (context *GLContext) MakeCurrent() {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_gl_context_make_current(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Realize realizes the given GdkGLContext.
@@ -339,6 +357,7 @@ func (context *GLContext) Realize() error {
 	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
 
 	C.gdk_gl_context_realize(_arg0, &_cerr)
+	runtime.KeepAlive(context)
 
 	var _goerr error // out
 
@@ -366,6 +385,8 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 	}
 
 	C.gdk_gl_context_set_debug_enabled(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(enabled)
 }
 
 // SetForwardCompatible sets whether the GdkGLContext should be
@@ -388,6 +409,8 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 	}
 
 	C.gdk_gl_context_set_forward_compatible(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(compatible)
 }
 
 // SetRequiredVersion sets the major and minor version of OpenGL to request.
@@ -406,6 +429,9 @@ func (context *GLContext) SetRequiredVersion(major int, minor int) {
 	_arg2 = C.int(minor)
 
 	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(major)
+	runtime.KeepAlive(minor)
 }
 
 // SetUseES requests that GDK create an OpenGL ES context instead of an OpenGL
@@ -429,6 +455,8 @@ func (context *GLContext) SetUseES(useEs int) {
 	_arg1 = C.int(useEs)
 
 	C.gdk_gl_context_set_use_es(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(useEs)
 }
 
 // GLContextClearCurrent clears the current GdkGLContext.

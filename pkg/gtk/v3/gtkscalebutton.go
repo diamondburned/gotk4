@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -130,6 +131,12 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 
 	_cret = C.gtk_scale_button_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(icons)
+
 	var _scaleButton *ScaleButton // out
 
 	_scaleButton = wrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -147,6 +154,8 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 
 	_cret = C.gtk_scale_button_get_adjustment(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -162,6 +171,8 @@ func (button *ScaleButton) MinusButton() *Button {
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_scale_button_get_minus_button(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ret *Button // out
 
@@ -179,6 +190,8 @@ func (button *ScaleButton) PlusButton() *Button {
 
 	_cret = C.gtk_scale_button_get_plus_button(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _ret *Button // out
 
 	_ret = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -195,6 +208,8 @@ func (button *ScaleButton) Popup() Widgetter {
 
 	_cret = C.gtk_scale_button_get_popup(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -210,6 +225,8 @@ func (button *ScaleButton) Value() float64 {
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_scale_button_get_value(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _gdouble float64 // out
 
@@ -228,6 +245,8 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetIcons sets the icons to be used by the scale button. For details, see the
@@ -252,6 +271,8 @@ func (button *ScaleButton) SetIcons(icons []string) {
 	}
 
 	C.gtk_scale_button_set_icons(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(icons)
 }
 
 // SetValue sets the current value of the scale; if the value is outside the
@@ -266,4 +287,6 @@ func (button *ScaleButton) SetValue(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(value)
 }

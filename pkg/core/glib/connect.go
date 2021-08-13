@@ -5,6 +5,7 @@ package glib
 // #include "glib.go.h"
 import "C"
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/closure"
@@ -42,6 +43,8 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 
 	gclosure := closureNew(v, fs)
 	c := C.g_signal_connect_closure(C.gpointer(v.GObject), (*C.gchar)(cstr), gclosure, gbool(after))
+
+	runtime.KeepAlive(v)
 
 	return SignalHandle(c)
 }

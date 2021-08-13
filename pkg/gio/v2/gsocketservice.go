@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -108,6 +109,8 @@ func (service *SocketService) IsActive() bool {
 
 	_cret = C.g_socket_service_is_active(_arg0)
 
+	runtime.KeepAlive(service)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -129,6 +132,7 @@ func (service *SocketService) Start() {
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	C.g_socket_service_start(_arg0)
+	runtime.KeepAlive(service)
 }
 
 // Stop stops the service, i.e. stops accepting connections from the added
@@ -152,4 +156,5 @@ func (service *SocketService) Stop() {
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(service.Native()))
 
 	C.g_socket_service_stop(_arg0)
+	runtime.KeepAlive(service)
 }

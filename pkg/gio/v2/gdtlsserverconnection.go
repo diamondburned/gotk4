@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -77,6 +78,9 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	}
 
 	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(baseSocket)
+	runtime.KeepAlive(certificate)
 
 	var _dtlsServerConnection DTLSServerConnectioner // out
 	var _goerr error                                 // out

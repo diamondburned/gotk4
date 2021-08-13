@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -106,6 +107,8 @@ func (op *MountOperation) Anonymous() bool {
 
 	_cret = C.g_mount_operation_get_anonymous(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -124,6 +127,8 @@ func (op *MountOperation) Choice() int {
 
 	_cret = C.g_mount_operation_get_choice(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -139,6 +144,8 @@ func (op *MountOperation) Domain() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_domain(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _utf8 string // out
 
@@ -159,6 +166,8 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 
 	_cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -178,6 +187,8 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 
 	_cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -195,6 +206,8 @@ func (op *MountOperation) Password() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_password(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _utf8 string // out
 
@@ -214,6 +227,8 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 
 	_cret = C.g_mount_operation_get_password_save(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _passwordSave PasswordSave // out
 
 	_passwordSave = PasswordSave(_cret)
@@ -230,6 +245,8 @@ func (op *MountOperation) Pim() uint {
 
 	_cret = C.g_mount_operation_get_pim(_arg0)
 
+	runtime.KeepAlive(op)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -245,6 +262,8 @@ func (op *MountOperation) Username() string {
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 
 	_cret = C.g_mount_operation_get_username(_arg0)
+
+	runtime.KeepAlive(op)
 
 	var _utf8 string // out
 
@@ -264,6 +283,8 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 	_arg1 = C.GMountOperationResult(result)
 
 	C.g_mount_operation_reply(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(result)
 }
 
 // SetAnonymous sets the mount operation to use an anonymous user if anonymous
@@ -278,6 +299,8 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 	}
 
 	C.g_mount_operation_set_anonymous(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(anonymous)
 }
 
 // SetChoice sets a default choice for the mount operation.
@@ -289,6 +312,8 @@ func (op *MountOperation) SetChoice(choice int) {
 	_arg1 = C.int(choice)
 
 	C.g_mount_operation_set_choice(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(choice)
 }
 
 // SetDomain sets the mount operation's domain.
@@ -303,6 +328,8 @@ func (op *MountOperation) SetDomain(domain string) {
 	}
 
 	C.g_mount_operation_set_domain(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(domain)
 }
 
 // SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume if
@@ -317,6 +344,8 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	}
 
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(hiddenVolume)
 }
 
 // SetIsTcryptSystemVolume sets the mount operation to use a system volume if
@@ -331,6 +360,8 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	}
 
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(systemVolume)
 }
 
 // SetPassword sets the mount operation's password to password.
@@ -345,6 +376,8 @@ func (op *MountOperation) SetPassword(password string) {
 	}
 
 	C.g_mount_operation_set_password(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(password)
 }
 
 // SetPasswordSave sets the state of saving passwords for the mount operation.
@@ -356,6 +389,8 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 	_arg1 = C.GPasswordSave(save)
 
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(save)
 }
 
 // SetPim sets the mount operation's PIM to pim.
@@ -367,6 +402,8 @@ func (op *MountOperation) SetPim(pim uint) {
 	_arg1 = C.guint(pim)
 
 	C.g_mount_operation_set_pim(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(pim)
 }
 
 // SetUsername sets the user name within op to username.
@@ -381,4 +418,6 @@ func (op *MountOperation) SetUsername(username string) {
 	}
 
 	C.g_mount_operation_set_username(_arg0, _arg1)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(username)
 }

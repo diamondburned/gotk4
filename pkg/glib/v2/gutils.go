@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -138,6 +139,9 @@ func BitNthLSF(mask uint32, nthBit int) int {
 
 	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
+	runtime.KeepAlive(mask)
+	runtime.KeepAlive(nthBit)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -159,6 +163,9 @@ func BitNthMSF(mask uint32, nthBit int) int {
 
 	_cret = C.g_bit_nth_msf(_arg1, _arg2)
 
+	runtime.KeepAlive(mask)
+	runtime.KeepAlive(nthBit)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -175,6 +182,8 @@ func BitStorage(number uint32) uint {
 	_arg1 = C.gulong(number)
 
 	_cret = C.g_bit_storage(_arg1)
+
+	runtime.KeepAlive(number)
 
 	var _guint uint // out
 
@@ -205,6 +214,8 @@ func FindProgramInPath(program string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_find_program_in_path(_arg1)
+
+	runtime.KeepAlive(program)
 
 	var _filename string // out
 
@@ -237,6 +248,8 @@ func FormatSize(size uint64) string {
 
 	_cret = C.g_format_size(_arg1)
 
+	runtime.KeepAlive(size)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -264,6 +277,8 @@ func FormatSizeForDisplay(size int64) string {
 
 	_cret = C.g_format_size_for_display(_arg1)
 
+	runtime.KeepAlive(size)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -285,6 +300,9 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	_arg2 = C.GFormatSizeFlags(flags)
 
 	_cret = C.g_format_size_full(_arg1, _arg2)
+
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(flags)
 
 	var _utf8 string // out
 
@@ -386,6 +404,8 @@ func GetOsInfo(keyName string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_os_info(_arg1)
+
+	runtime.KeepAlive(keyName)
 
 	var _utf8 string // out
 
@@ -701,6 +721,8 @@ func GetUserSpecialDir(directory UserDirectory) string {
 
 	_cret = C.g_get_user_special_dir(_arg1)
 
+	runtime.KeepAlive(directory)
+
 	var _filename string // out
 
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -734,6 +756,9 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	}
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(keys)
 
 	var _guint uint // out
 
@@ -771,6 +796,7 @@ func SetApplicationName(applicationName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_application_name(_arg1)
+	runtime.KeepAlive(applicationName)
 }
 
 // SetPrgname sets the name of the program. This name should not be localized,
@@ -789,6 +815,7 @@ func SetPrgname(prgname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_prgname(_arg1)
+	runtime.KeepAlive(prgname)
 }
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().

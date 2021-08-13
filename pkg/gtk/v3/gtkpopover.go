@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -134,6 +135,8 @@ func NewPopover(relativeTo Widgetter) *Popover {
 
 	_cret = C.gtk_popover_new(_arg1)
 
+	runtime.KeepAlive(relativeTo)
+
 	var _popover *Popover // out
 
 	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
@@ -161,6 +164,9 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 	_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_popover_new_from_model(_arg1, _arg2)
+
+	runtime.KeepAlive(relativeTo)
+	runtime.KeepAlive(model)
 
 	var _popover *Popover // out
 
@@ -204,6 +210,9 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 	}
 
 	C.gtk_popover_bind_model(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(actionNamespace)
 }
 
 // ConstrainTo returns the constraint for placing this popover. See
@@ -215,6 +224,8 @@ func (popover *Popover) ConstrainTo() PopoverConstraint {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_constrain_to(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _popoverConstraint PopoverConstraint // out
 
@@ -232,6 +243,8 @@ func (popover *Popover) DefaultWidget() Widgetter {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_default_widget(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
 
@@ -251,6 +264,8 @@ func (popover *Popover) Modal() bool {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_modal(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _ok bool // out
 
@@ -273,6 +288,8 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 
 	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
 
+	runtime.KeepAlive(popover)
+
 	var _rect gdk.Rectangle // out
 	var _ok bool            // out
 
@@ -293,6 +310,8 @@ func (popover *Popover) Position() PositionType {
 
 	_cret = C.gtk_popover_get_position(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _positionType PositionType // out
 
 	_positionType = PositionType(_cret)
@@ -308,6 +327,8 @@ func (popover *Popover) RelativeTo() Widgetter {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	_cret = C.gtk_popover_get_relative_to(_arg0)
+
+	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
 
@@ -330,6 +351,8 @@ func (popover *Popover) TransitionsEnabled() bool {
 
 	_cret = C.gtk_popover_get_transitions_enabled(_arg0)
 
+	runtime.KeepAlive(popover)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -348,6 +371,7 @@ func (popover *Popover) Popdown() {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_popdown(_arg0)
+	runtime.KeepAlive(popover)
 }
 
 // Popup pops popover up. This is different than a gtk_widget_show() call in
@@ -359,6 +383,7 @@ func (popover *Popover) Popup() {
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
 	C.gtk_popover_popup(_arg0)
+	runtime.KeepAlive(popover)
 }
 
 // SetConstrainTo sets a constraint for positioning this popover.
@@ -373,6 +398,8 @@ func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 	_arg1 = C.GtkPopoverConstraint(constraint)
 
 	C.gtk_popover_set_constrain_to(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(constraint)
 }
 
 // SetDefaultWidget sets the widget that should be set as default widget while
@@ -388,6 +415,8 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	}
 
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(widget)
 }
 
 // SetModal sets whether popover is modal, a modal popover will grab all input
@@ -404,6 +433,8 @@ func (popover *Popover) SetModal(modal bool) {
 	}
 
 	C.gtk_popover_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(modal)
 }
 
 // SetPointingTo sets the rectangle that popover will point to, in the
@@ -417,6 +448,8 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(rect)
 }
 
 // SetPosition sets the preferred position for popover to appear. If the popover
@@ -433,6 +466,8 @@ func (popover *Popover) SetPosition(position PositionType) {
 	_arg1 = C.GtkPositionType(position)
 
 	C.gtk_popover_set_position(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(position)
 }
 
 // SetRelativeTo sets a new widget to be attached to popover. If popover is
@@ -452,6 +487,8 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	}
 
 	C.gtk_popover_set_relative_to(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(relativeTo)
 }
 
 // SetTransitionsEnabled sets whether show/hide transitions are enabled on this
@@ -470,4 +507,6 @@ func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	}
 
 	C.gtk_popover_set_transitions_enabled(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(transitionsEnabled)
 }

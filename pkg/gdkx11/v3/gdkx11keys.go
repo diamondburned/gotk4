@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -52,6 +53,9 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 
 	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
 
+	runtime.KeepAlive(keymap)
+	runtime.KeepAlive(state)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -73,6 +77,9 @@ func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	_arg1 = C.guint(keycode)
 
 	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
+
+	runtime.KeepAlive(keymap)
+	runtime.KeepAlive(keycode)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -35,6 +36,14 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	_arg8 = C.GtkAccessibleRole(actualRole)
 
 	C.gtk_test_accessible_assertion_message_role(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(line)
+	runtime.KeepAlive(fn)
+	runtime.KeepAlive(expr)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(expectedRole)
+	runtime.KeepAlive(actualRole)
 }
 
 // TestAccessibleHasProperty checks whether the Accessible has property set.
@@ -47,6 +56,9 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 	_arg2 = C.GtkAccessibleProperty(property)
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
+
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(property)
 
 	var _ok bool // out
 
@@ -67,6 +79,9 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 	_arg2 = C.GtkAccessibleRelation(relation)
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
+
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(relation)
 
 	var _ok bool // out
 
@@ -89,6 +104,9 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
 
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(role)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -108,6 +126,9 @@ func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool 
 	_arg2 = C.GtkAccessibleState(state)
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
+
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(state)
 
 	var _ok bool // out
 

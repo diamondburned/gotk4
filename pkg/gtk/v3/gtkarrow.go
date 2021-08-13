@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -83,6 +84,9 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 
 	_cret = C.gtk_arrow_new(_arg1, _arg2)
 
+	runtime.KeepAlive(arrowType)
+	runtime.KeepAlive(shadowType)
+
 	var _arrow *Arrow // out
 
 	_arrow = wrapArrow(externglib.Take(unsafe.Pointer(_cret)))
@@ -103,4 +107,7 @@ func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	_arg2 = C.GtkShadowType(shadowType)
 
 	C.gtk_arrow_set(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(arrow)
+	runtime.KeepAlive(arrowType)
+	runtime.KeepAlive(shadowType)
 }

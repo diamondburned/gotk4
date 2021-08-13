@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -62,6 +63,8 @@ func (language *Language) SampleString() string {
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
+	runtime.KeepAlive(language)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -91,6 +94,9 @@ func (language *Language) IncludesScript(script Script) bool {
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
 
+	runtime.KeepAlive(language)
+	runtime.KeepAlive(script)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -119,6 +125,9 @@ func (language *Language) Matches(rangeList string) bool {
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
 
+	runtime.KeepAlive(language)
+	runtime.KeepAlive(rangeList)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -136,6 +145,8 @@ func (language *Language) String() string {
 	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_language_to_string(_arg0)
+
+	runtime.KeepAlive(language)
 
 	var _utf8 string // out
 
@@ -165,6 +176,8 @@ func LanguageFromString(language string) *Language {
 	}
 
 	_cret = C.pango_language_from_string(_arg1)
+
+	runtime.KeepAlive(language)
 
 	var _ret *Language // out
 

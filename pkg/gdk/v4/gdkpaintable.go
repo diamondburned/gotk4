@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -256,6 +257,11 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth float64, specifie
 	_arg4 = C.double(defaultHeight)
 
 	C.gdk_paintable_compute_concrete_size(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(specifiedWidth)
+	runtime.KeepAlive(specifiedHeight)
+	runtime.KeepAlive(defaultWidth)
+	runtime.KeepAlive(defaultHeight)
 
 	var _concreteWidth float64  // out
 	var _concreteHeight float64 // out
@@ -281,6 +287,8 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 
 	_cret = C.gdk_paintable_get_current_image(_arg0)
 
+	runtime.KeepAlive(paintable)
+
 	var _ret Paintabler // out
 
 	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
@@ -300,6 +308,8 @@ func (paintable *Paintable) Flags() PaintableFlags {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_flags(_arg0)
+
+	runtime.KeepAlive(paintable)
 
 	var _paintableFlags PaintableFlags // out
 
@@ -333,6 +343,8 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 
 	_cret = C.gdk_paintable_get_intrinsic_aspect_ratio(_arg0)
 
+	runtime.KeepAlive(paintable)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -358,6 +370,8 @@ func (paintable *Paintable) IntrinsicHeight() int {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_height(_arg0)
+
+	runtime.KeepAlive(paintable)
 
 	var _gint int // out
 
@@ -385,6 +399,8 @@ func (paintable *Paintable) IntrinsicWidth() int {
 
 	_cret = C.gdk_paintable_get_intrinsic_width(_arg0)
 
+	runtime.KeepAlive(paintable)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -408,6 +424,7 @@ func (paintable *Paintable) InvalidateContents() {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gdk_paintable_invalidate_contents(_arg0)
+	runtime.KeepAlive(paintable)
 }
 
 // InvalidateSize: called by implementations of GdkPaintable to invalidate their
@@ -426,6 +443,7 @@ func (paintable *Paintable) InvalidateSize() {
 	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	C.gdk_paintable_invalidate_size(_arg0)
+	runtime.KeepAlive(paintable)
 }
 
 // Snapshot snapshots the given paintable with the given width and height.
@@ -444,6 +462,10 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	_arg3 = C.double(height)
 
 	C.gdk_paintable_snapshot(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // NewPaintableEmpty returns a paintable that has the given intrinsic size and
@@ -462,6 +484,9 @@ func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 	_arg2 = C.int(intrinsicHeight)
 
 	_cret = C.gdk_paintable_new_empty(_arg1, _arg2)
+
+	runtime.KeepAlive(intrinsicWidth)
+	runtime.KeepAlive(intrinsicHeight)
 
 	var _paintable Paintabler // out
 

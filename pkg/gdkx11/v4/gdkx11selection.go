@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -19,4 +20,5 @@ func X11FreeCompoundText(ctext *byte) {
 	_arg1 = (*C.guchar)(unsafe.Pointer(ctext))
 
 	C.gdk_x11_free_compound_text(_arg1)
+	runtime.KeepAlive(ctext)
 }

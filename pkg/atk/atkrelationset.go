@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,8 @@ func (set *RelationSet) Add(relation *Relation) {
 	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relation)
 }
 
 // AddRelationByType: add a new relation of the specified type with the
@@ -83,6 +86,9 @@ func (set *RelationSet) AddRelationByType(relationship RelationType, target *Obj
 	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
 }
 
 // Contains determines whether the relation set contains a relation that matches
@@ -96,6 +102,9 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 	_arg1 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_set_contains(_arg0, _arg1)
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
 
 	var _ok bool // out
 
@@ -120,6 +129,10 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *Object
 
 	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -137,6 +150,8 @@ func (set *RelationSet) NRelations() int {
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
+
+	runtime.KeepAlive(set)
 
 	var _gint int // out
 
@@ -157,6 +172,9 @@ func (set *RelationSet) Relation(i int) *Relation {
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(i)
+
 	var _relation *Relation // out
 
 	_relation = wrapRelation(externglib.Take(unsafe.Pointer(_cret)))
@@ -175,6 +193,9 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 
 	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
 
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+
 	var _relation *Relation // out
 
 	_relation = wrapRelation(externglib.Take(unsafe.Pointer(_cret)))
@@ -192,4 +213,6 @@ func (set *RelationSet) Remove(relation *Relation) {
 	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relation)
 }

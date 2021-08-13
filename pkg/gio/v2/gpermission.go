@@ -189,6 +189,8 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 	}
 
 	C.g_permission_acquire(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -220,6 +222,9 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 	}
 
 	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // AcquireFinish collects the result of attempting to acquire the permission
@@ -236,6 +241,8 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -257,6 +264,8 @@ func (permission *Permission) Allowed() bool {
 
 	_cret = C.g_permission_get_allowed(_arg0)
 
+	runtime.KeepAlive(permission)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -277,6 +286,8 @@ func (permission *Permission) CanAcquire() bool {
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
 
+	runtime.KeepAlive(permission)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -296,6 +307,8 @@ func (permission *Permission) CanRelease() bool {
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	_cret = C.g_permission_get_can_release(_arg0)
+
+	runtime.KeepAlive(permission)
 
 	var _ok bool // out
 
@@ -329,6 +342,10 @@ func (permission *Permission) ImplUpdate(allowed bool, canAcquire bool, canRelea
 	}
 
 	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(allowed)
+	runtime.KeepAlive(canAcquire)
+	runtime.KeepAlive(canRelease)
 }
 
 // Release attempts to release the permission represented by permission.
@@ -359,6 +376,8 @@ func (permission *Permission) Release(ctx context.Context) error {
 	}
 
 	C.g_permission_release(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -390,6 +409,9 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 	}
 
 	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ReleaseFinish collects the result of attempting to release the permission
@@ -406,6 +428,8 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

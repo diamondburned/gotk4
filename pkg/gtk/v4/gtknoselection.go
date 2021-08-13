@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -61,6 +62,8 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 
 	_cret = C.gtk_no_selection_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _noSelection *NoSelection // out
 
 	_noSelection = wrapNoSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -76,6 +79,8 @@ func (self *NoSelection) Model() gio.ListModeller {
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_no_selection_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -97,4 +102,6 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_no_selection_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

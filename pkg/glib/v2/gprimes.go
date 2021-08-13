@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"runtime"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -20,6 +24,8 @@ func SpacedPrimesClosest(num uint) uint {
 	_arg1 = C.guint(num)
 
 	_cret = C.g_spaced_primes_closest(_arg1)
+
+	runtime.KeepAlive(num)
 
 	var _guint uint // out
 

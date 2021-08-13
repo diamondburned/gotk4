@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -130,6 +131,8 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 
 	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
 
+	runtime.KeepAlive(mimeType)
+
 	var _pixbufLoader *PixbufLoader // out
 	var _goerr error                // out
 
@@ -164,6 +167,8 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 
 	_cret = C.gdk_pixbuf_loader_new_with_type(_arg1, &_cerr)
 
+	runtime.KeepAlive(imageType)
+
 	var _pixbufLoader *PixbufLoader // out
 	var _goerr error                // out
 
@@ -197,6 +202,7 @@ func (loader *PixbufLoader) Close() error {
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
+	runtime.KeepAlive(loader)
 
 	var _goerr error // out
 
@@ -223,6 +229,8 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
+	runtime.KeepAlive(loader)
+
 	var _pixbufAnimation *PixbufAnimation // out
 
 	if _cret != nil {
@@ -241,6 +249,8 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
+
+	runtime.KeepAlive(loader)
 
 	var _pixbufFormat *PixbufFormat // out
 
@@ -274,6 +284,8 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
+	runtime.KeepAlive(loader)
+
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
@@ -301,6 +313,9 @@ func (loader *PixbufLoader) SetSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(loader)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Write parses the next count bytes in the given image buffer.
@@ -317,6 +332,8 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 	}
 
 	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(loader)
+	runtime.KeepAlive(buf)
 
 	var _goerr error // out
 

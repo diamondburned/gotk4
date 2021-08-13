@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -356,6 +357,9 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	_arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
 }
 
 // AddButton adds a button with the given text.
@@ -377,6 +381,10 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -392,6 +400,8 @@ func (dialog *Dialog) ContentArea() *Box {
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_dialog_get_content_area(_arg0)
+
+	runtime.KeepAlive(dialog)
 
 	var _box *Box // out
 
@@ -412,6 +422,8 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 	_cret = C.gtk_dialog_get_header_bar(_arg0)
 
+	runtime.KeepAlive(dialog)
+
 	var _headerBar *HeaderBar // out
 
 	_headerBar = wrapHeaderBar(externglib.Take(unsafe.Pointer(_cret)))
@@ -431,6 +443,9 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(widget)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -449,6 +464,9 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	_arg1 = C.int(responseId)
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 
 	var _widget Widgetter // out
 
@@ -470,6 +488,8 @@ func (dialog *Dialog) Response(responseId int) {
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_response(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // SetDefaultResponse sets the default widget for the dialog based on the
@@ -484,6 +504,8 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	_arg1 = C.int(responseId)
 
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // SetResponseSensitive: convenient way to sensitize/desensitize dialog buttons.
@@ -502,4 +524,7 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	}
 
 	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }

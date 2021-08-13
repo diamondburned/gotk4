@@ -118,6 +118,8 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(cr)
 }
 
 // Bounds retrieves the boundaries of the node.
@@ -130,6 +132,7 @@ func (node *RenderNode) Bounds() graphene.Rect {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	C.gsk_render_node_get_bounds(_arg0, &_arg1)
+	runtime.KeepAlive(node)
 
 	var _bounds graphene.Rect // out
 
@@ -146,6 +149,8 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
 	_cret = C.gsk_render_node_get_node_type(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _renderNodeType RenderNodeType // out
 
@@ -171,6 +176,8 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gsk_render_node_write_to_file(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(filename)
 
 	var _goerr error // out
 

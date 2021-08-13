@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -87,6 +88,13 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 
 	_cret = C.gtk_adjustment_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(lower)
+	runtime.KeepAlive(upper)
+	runtime.KeepAlive(stepIncrement)
+	runtime.KeepAlive(pageIncrement)
+	runtime.KeepAlive(pageSize)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -106,6 +114,7 @@ func (adjustment *Adjustment) Changed() {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_adjustment_changed(_arg0)
+	runtime.KeepAlive(adjustment)
 }
 
 // ClampPage updates the Adjustment:value property to ensure that the range
@@ -124,6 +133,9 @@ func (adjustment *Adjustment) ClampPage(lower float64, upper float64) {
 	_arg2 = C.gdouble(upper)
 
 	C.gtk_adjustment_clamp_page(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(lower)
+	runtime.KeepAlive(upper)
 }
 
 // Configure sets all properties of the adjustment at once.
@@ -149,6 +161,13 @@ func (adjustment *Adjustment) Configure(value float64, lower float64, upper floa
 	_arg6 = C.gdouble(pageSize)
 
 	C.gtk_adjustment_configure(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(lower)
+	runtime.KeepAlive(upper)
+	runtime.KeepAlive(stepIncrement)
+	runtime.KeepAlive(pageIncrement)
+	runtime.KeepAlive(pageSize)
 }
 
 // Lower retrieves the minimum value of the adjustment.
@@ -159,6 +178,8 @@ func (adjustment *Adjustment) Lower() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_lower(_arg0)
+
+	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
 
@@ -176,6 +197,8 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 
 	_cret = C.gtk_adjustment_get_minimum_increment(_arg0)
 
+	runtime.KeepAlive(adjustment)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -191,6 +214,8 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_page_increment(_arg0)
+
+	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
 
@@ -208,6 +233,8 @@ func (adjustment *Adjustment) PageSize() float64 {
 
 	_cret = C.gtk_adjustment_get_page_size(_arg0)
 
+	runtime.KeepAlive(adjustment)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -223,6 +250,8 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_step_increment(_arg0)
+
+	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
 
@@ -240,6 +269,8 @@ func (adjustment *Adjustment) Upper() float64 {
 
 	_cret = C.gtk_adjustment_get_upper(_arg0)
 
+	runtime.KeepAlive(adjustment)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -256,6 +287,8 @@ func (adjustment *Adjustment) Value() float64 {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_adjustment_get_value(_arg0)
+
+	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
 
@@ -284,6 +317,8 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 	_arg1 = C.gdouble(lower)
 
 	C.gtk_adjustment_set_lower(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(lower)
 }
 
 // SetPageIncrement sets the page increment of the adjustment.
@@ -298,6 +333,8 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 	_arg1 = C.gdouble(pageIncrement)
 
 	C.gtk_adjustment_set_page_increment(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(pageIncrement)
 }
 
 // SetPageSize sets the page size of the adjustment.
@@ -313,6 +350,8 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 	_arg1 = C.gdouble(pageSize)
 
 	C.gtk_adjustment_set_page_size(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(pageSize)
 }
 
 // SetStepIncrement sets the step increment of the adjustment.
@@ -327,6 +366,8 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 	_arg1 = C.gdouble(stepIncrement)
 
 	C.gtk_adjustment_set_step_increment(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(stepIncrement)
 }
 
 // SetUpper sets the maximum value of the adjustment.
@@ -344,6 +385,8 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 	_arg1 = C.gdouble(upper)
 
 	C.gtk_adjustment_set_upper(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(upper)
 }
 
 // SetValue sets the Adjustment value. The value is clamped to lie between
@@ -360,6 +403,8 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	_arg1 = C.gdouble(value)
 
 	C.gtk_adjustment_set_value(_arg0, _arg1)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(value)
 }
 
 // ValueChanged emits a Adjustment::value-changed signal from the Adjustment.
@@ -374,4 +419,5 @@ func (adjustment *Adjustment) ValueChanged() {
 	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_adjustment_value_changed(_arg0)
+	runtime.KeepAlive(adjustment)
 }

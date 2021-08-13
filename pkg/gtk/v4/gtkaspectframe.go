@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -76,6 +77,11 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 
 	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(ratio)
+	runtime.KeepAlive(obeyChild)
+
 	var _aspectFrame *AspectFrame // out
 
 	_aspectFrame = wrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
@@ -91,6 +97,8 @@ func (self *AspectFrame) Child() Widgetter {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_child(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
@@ -111,6 +119,8 @@ func (self *AspectFrame) ObeyChild() bool {
 
 	_cret = C.gtk_aspect_frame_get_obey_child(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -129,6 +139,8 @@ func (self *AspectFrame) Ratio() float32 {
 
 	_cret = C.gtk_aspect_frame_get_ratio(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -146,6 +158,8 @@ func (self *AspectFrame) XAlign() float32 {
 
 	_cret = C.gtk_aspect_frame_get_xalign(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gfloat float32 // out
 
 	_gfloat = float32(_cret)
@@ -162,6 +176,8 @@ func (self *AspectFrame) YAlign() float32 {
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_aspect_frame_get_yalign(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _gfloat float32 // out
 
@@ -181,6 +197,8 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 	}
 
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }
 
 // SetObeyChild sets whether the aspect ratio of the child's size request should
@@ -195,6 +213,8 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 	}
 
 	C.gtk_aspect_frame_set_obey_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(obeyChild)
 }
 
 // SetRatio sets the desired aspect ratio of the child.
@@ -206,6 +226,8 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 	_arg1 = C.float(ratio)
 
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ratio)
 }
 
 // SetXAlign sets the horizontal alignment of the child within the allocation of
@@ -218,6 +240,8 @@ func (self *AspectFrame) SetXAlign(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(xalign)
 }
 
 // SetYAlign sets the vertical alignment of the child within the allocation of
@@ -230,4 +254,6 @@ func (self *AspectFrame) SetYAlign(yalign float32) {
 	_arg1 = C.float(yalign)
 
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(yalign)
 }

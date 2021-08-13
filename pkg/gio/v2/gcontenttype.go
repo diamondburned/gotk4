@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -36,6 +37,8 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 	_cret = C.g_content_type_can_be_executable(_arg1)
 
+	runtime.KeepAlive(typ)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -58,6 +61,9 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 
 	_cret = C.g_content_type_equals(_arg1, _arg2)
 
+	runtime.KeepAlive(type1)
+	runtime.KeepAlive(type2)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -77,6 +83,8 @@ func ContentTypeFromMIMEType(mimeType string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_from_mime_type(_arg1)
+
+	runtime.KeepAlive(mimeType)
 
 	var _utf8 string // out
 
@@ -98,6 +106,8 @@ func ContentTypeGetDescription(typ string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_description(_arg1)
+
+	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
 
@@ -121,6 +131,8 @@ func ContentTypeGetGenericIconName(typ string) string {
 
 	_cret = C.g_content_type_get_generic_icon_name(_arg1)
 
+	runtime.KeepAlive(typ)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -140,6 +152,8 @@ func ContentTypeGetIcon(typ string) Iconner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_icon(_arg1)
+
+	runtime.KeepAlive(typ)
 
 	var _icon Iconner // out
 
@@ -185,6 +199,8 @@ func ContentTypeGetMIMEType(typ string) string {
 
 	_cret = C.g_content_type_get_mime_type(_arg1)
 
+	runtime.KeepAlive(typ)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -204,6 +220,8 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
+
+	runtime.KeepAlive(typ)
 
 	var _icon Iconner // out
 
@@ -233,6 +251,9 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	}
 
 	_cret = C.g_content_type_guess(_arg1, _arg2, _arg3, &_arg4)
+
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(data)
 
 	var _resultUncertain bool // out
 	var _utf8 string          // out
@@ -265,6 +286,8 @@ func ContentTypeGuessForTree(root Filer) []string {
 	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
 	_cret = C.g_content_type_guess_for_tree(_arg1)
+
+	runtime.KeepAlive(root)
 
 	var _utf8s []string // out
 
@@ -300,6 +323,9 @@ func ContentTypeIsA(typ string, supertype string) bool {
 
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(supertype)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -323,6 +349,9 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 
 	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
 
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(mimeType)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -343,6 +372,8 @@ func ContentTypeIsUnknown(typ string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_is_unknown(_arg1)
+
+	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
@@ -392,6 +423,7 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 	}
 
 	C.g_content_type_set_mime_dirs(_arg1)
+	runtime.KeepAlive(dirs)
 }
 
 // ContentTypesGetRegistered gets a list of strings containing all the

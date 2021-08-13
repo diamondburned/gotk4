@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -88,6 +89,10 @@ func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk
 
 	_cret = C.gtk_accel_groups_activate(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -125,6 +130,9 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 
 	_cret = C.gtk_accelerator_get_label(_arg1, _arg2)
 
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(acceleratorMods)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -155,6 +163,11 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, k
 
 	_cret = C.gtk_accelerator_get_label_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(keycode)
+	runtime.KeepAlive(acceleratorMods)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -178,6 +191,9 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
 	_cret = C.gtk_accelerator_name(_arg1, _arg2)
+
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(acceleratorMods)
 
 	var _utf8 string // out
 
@@ -208,6 +224,11 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keyco
 
 	_cret = C.gtk_accelerator_name_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(keycode)
+	runtime.KeepAlive(acceleratorMods)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -236,6 +257,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accelerator_parse(_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(accelerator)
 
 	var _acceleratorKey uint              // out
 	var _acceleratorMods gdk.ModifierType // out
@@ -269,6 +291,7 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accelerator_parse_with_keycode(_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(accelerator)
 
 	var _acceleratorKey uint              // out
 	var _acceleratorCodes []uint          // out
@@ -314,6 +337,7 @@ func AcceleratorSetDefaultModMask(defaultModMask gdk.ModifierType) {
 	_arg1 = C.GdkModifierType(defaultModMask)
 
 	C.gtk_accelerator_set_default_mod_mask(_arg1)
+	runtime.KeepAlive(defaultModMask)
 }
 
 // AcceleratorValid determines whether a given keyval and modifier mask
@@ -329,6 +353,9 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	_arg2 = C.GdkModifierType(modifiers)
 
 	_cret = C.gtk_accelerator_valid(_arg1, _arg2)
+
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
 
 	var _ok bool // out
 
@@ -399,6 +426,12 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 
 	_cret = C.gtk_accel_group_activate(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelQuark)
+	runtime.KeepAlive(acceleratable)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -422,6 +455,10 @@ func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.Modifie
 
 	_cret = C.gtk_accel_group_disconnect_key(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -441,6 +478,8 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
 
+	runtime.KeepAlive(accelGroup)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -459,6 +498,8 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
+
+	runtime.KeepAlive(accelGroup)
 
 	var _modifierType gdk.ModifierType // out
 
@@ -481,6 +522,7 @@ func (accelGroup *AccelGroup) Lock() {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_accel_group_lock(_arg0)
+	runtime.KeepAlive(accelGroup)
 }
 
 // Unlock undoes the last call to gtk_accel_group_lock() on this accel_group.
@@ -490,6 +532,7 @@ func (accelGroup *AccelGroup) Unlock() {
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
+	runtime.KeepAlive(accelGroup)
 }
 
 type AccelGroupEntry struct {

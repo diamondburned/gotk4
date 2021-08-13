@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -24,6 +25,7 @@ func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.gdk_add_option_entries_libgtk_only(_arg1)
+	runtime.KeepAlive(group)
 }
 
 // Beep emits a short beep on the default display.
@@ -178,6 +180,10 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 
 	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(ownerEvents)
+	runtime.KeepAlive(time_)
+
 	var _grabStatus GrabStatus // out
 
 	_grabStatus = GrabStatus(_cret)
@@ -195,6 +201,7 @@ func KeyboardUngrab(time_ uint32) {
 	_arg1 = C.guint32(time_)
 
 	C.gdk_keyboard_ungrab(_arg1)
+	runtime.KeepAlive(time_)
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the application
@@ -221,6 +228,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_notify_startup_complete_with_id(_arg1)
+	runtime.KeepAlive(startupId)
 }
 
 // PointerGrab grabs the pointer (usually a mouse) so that all events are passed
@@ -269,6 +277,13 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 
 	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(ownerEvents)
+	runtime.KeepAlive(eventMask)
+	runtime.KeepAlive(confineTo)
+	runtime.KeepAlive(cursor)
+	runtime.KeepAlive(time_)
+
 	var _grabStatus GrabStatus // out
 
 	_grabStatus = GrabStatus(_cret)
@@ -307,6 +322,7 @@ func PointerUngrab(time_ uint32) {
 	_arg1 = C.guint32(time_)
 
 	C.gdk_pointer_ungrab(_arg1)
+	runtime.KeepAlive(time_)
 }
 
 // PreParseLibgtkOnly: prepare for parsing command line arguments for GDK. This
@@ -347,6 +363,7 @@ func SetAllowedBackends(backends string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
+	runtime.KeepAlive(backends)
 }
 
 // SetDoubleClickTime: set the double click time for the default display. See
@@ -359,6 +376,7 @@ func SetDoubleClickTime(msec uint) {
 	_arg1 = C.guint(msec)
 
 	C.gdk_set_double_click_time(_arg1)
+	runtime.KeepAlive(msec)
 }
 
 // SetProgramClass sets the program class. The X11 backend uses the program
@@ -374,6 +392,7 @@ func SetProgramClass(programClass string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_program_class(_arg1)
+	runtime.KeepAlive(programClass)
 }
 
 // ScreenHeight gets the height of the default screen in pixels. The returned

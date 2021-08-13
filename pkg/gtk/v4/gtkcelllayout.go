@@ -255,6 +255,10 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	_arg3 = C.int(column)
 
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(column)
 }
 
 // Clear unsets all the mappings on all renderers on cell_layout and removes all
@@ -265,6 +269,7 @@ func (cellLayout *CellLayout) Clear() {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 
 	C.gtk_cell_layout_clear(_arg0)
+	runtime.KeepAlive(cellLayout)
 }
 
 // ClearAttributes clears all existing attributes previously set with
@@ -277,6 +282,8 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
 	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
 }
 
 // Area returns the underlying CellArea which might be cell_layout if called on
@@ -288,6 +295,8 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 
 	_cret = C.gtk_cell_layout_get_area(_arg0)
+
+	runtime.KeepAlive(cellLayout)
 
 	var _cellArea CellAreaer // out
 
@@ -306,6 +315,8 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 
 	_cret = C.gtk_cell_layout_get_cells(_arg0)
+
+	runtime.KeepAlive(cellLayout)
 
 	var _list []CellRendererer // out
 
@@ -337,6 +348,9 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	}
 
 	C.gtk_cell_layout_pack_end(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
 }
 
 // PackStart packs the cell into the beginning of cell_layout. If expand is
@@ -356,6 +370,9 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	}
 
 	C.gtk_cell_layout_pack_start(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
 }
 
 // Reorder re-inserts cell at position.
@@ -372,6 +389,9 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	_arg2 = C.int(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(position)
 }
 
 // SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
@@ -397,4 +417,7 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 	}
 
 	C.gtk_cell_layout_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(fn)
 }

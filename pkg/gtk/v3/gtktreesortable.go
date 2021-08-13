@@ -182,6 +182,8 @@ func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 
 	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 
+	runtime.KeepAlive(sortable)
+
 	var _sortColumnId int // out
 	var _order SortType   // out
 	var _ok bool          // out
@@ -205,6 +207,8 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
+
+	runtime.KeepAlive(sortable)
 
 	var _ok bool // out
 
@@ -236,6 +240,8 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_tree_sortable_set_default_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(sortable)
+	runtime.KeepAlive(sortFunc)
 }
 
 // SetSortColumnID sets the current sort column to be sort_column_id. The
@@ -257,6 +263,9 @@ func (sortable *TreeSortable) SetSortColumnID(sortColumnId int, order SortType) 
 	_arg2 = C.GtkSortType(order)
 
 	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(sortable)
+	runtime.KeepAlive(sortColumnId)
+	runtime.KeepAlive(order)
 }
 
 // SetSortFunc sets the comparison function used when sorting to be sort_func.
@@ -276,6 +285,9 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int, sortFunc TreeIterCom
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_tree_sortable_set_sort_func(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(sortable)
+	runtime.KeepAlive(sortColumnId)
+	runtime.KeepAlive(sortFunc)
 }
 
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
@@ -286,4 +298,5 @@ func (sortable *TreeSortable) SortColumnChanged() {
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
 
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
+	runtime.KeepAlive(sortable)
 }

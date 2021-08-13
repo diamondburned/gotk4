@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -64,6 +65,8 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
@@ -85,6 +88,8 @@ func (self *NumerableIcon) BackgroundIconName() string {
 
 	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -105,6 +110,8 @@ func (self *NumerableIcon) Count() int {
 
 	_cret = C.gtk_numerable_icon_get_count(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -122,6 +129,8 @@ func (self *NumerableIcon) Label() string {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_label(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -143,6 +152,8 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_numerable_icon_get_style_context(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _styleContext *StyleContext // out
 
@@ -173,6 +184,8 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	}
 
 	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(icon)
 }
 
 // SetBackgroundIconName updates the icon to use the icon named icon_name from
@@ -197,6 +210,8 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	}
 
 	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
 }
 
 // SetCount sets the currently displayed value of self to count.
@@ -217,6 +232,8 @@ func (self *NumerableIcon) SetCount(count int) {
 	_arg1 = C.gint(count)
 
 	C.gtk_numerable_icon_set_count(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(count)
 }
 
 // SetLabel sets the currently displayed value of self to the string in label.
@@ -244,6 +261,8 @@ func (self *NumerableIcon) SetLabel(label string) {
 	}
 
 	C.gtk_numerable_icon_set_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(label)
 }
 
 // SetStyleContext updates the icon to fetch theme information from the given
@@ -258,6 +277,8 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))
 
 	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(style)
 }
 
 // NewNumerableIcon creates a new unthemed NumerableIcon.
@@ -270,6 +291,8 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	_arg1 = (*C.GIcon)(unsafe.Pointer(baseIcon.Native()))
 
 	_cret = C.gtk_numerable_icon_new(_arg1)
+
+	runtime.KeepAlive(baseIcon)
 
 	var _icon gio.Iconner // out
 
@@ -292,6 +315,9 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)
+
+	runtime.KeepAlive(baseIcon)
+	runtime.KeepAlive(context)
 
 	var _icon gio.Iconner // out
 

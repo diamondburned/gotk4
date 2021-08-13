@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -271,6 +272,8 @@ func (device *Device) AssociatedDevice() Devicer {
 
 	_cret = C.gdk_device_get_associated_device(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _ret Devicer // out
 
 	if _cret != nil {
@@ -288,6 +291,8 @@ func (device *Device) Axes() AxisFlags {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_axes(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _axisFlags AxisFlags // out
 
@@ -307,6 +312,9 @@ func (device *Device) AxisUse(index_ uint) AxisUse {
 
 	_cret = C.gdk_device_get_axis_use(_arg0, _arg1)
 
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(index_)
+
 	var _axisUse AxisUse // out
 
 	_axisUse = AxisUse(_cret)
@@ -322,6 +330,8 @@ func (device *Device) DeviceType() DeviceType {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_device_type(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _deviceType DeviceType // out
 
@@ -339,6 +349,8 @@ func (device *Device) Display() *Display {
 
 	_cret = C.gdk_device_get_display(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -355,6 +367,8 @@ func (device *Device) HasCursor() bool {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_has_cursor(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _ok bool // out
 
@@ -378,6 +392,9 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	_arg1 = C.guint(index_)
 
 	_cret = C.gdk_device_get_key(_arg0, _arg1, &_arg2, &_arg3)
+
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(index_)
 
 	var _keyval uint            // out
 	var _modifiers ModifierType // out
@@ -405,6 +422,8 @@ func (device *Device) LastEventWindow() Windower {
 
 	_cret = C.gdk_device_get_last_event_window(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _window Windower // out
 
 	if _cret != nil {
@@ -423,6 +442,8 @@ func (device *Device) Mode() InputMode {
 
 	_cret = C.gdk_device_get_mode(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _inputMode InputMode // out
 
 	_inputMode = InputMode(_cret)
@@ -438,6 +459,8 @@ func (device *Device) NAxes() int {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_n_axes(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _gint int // out
 
@@ -455,6 +478,8 @@ func (device *Device) NKeys() int {
 
 	_cret = C.gdk_device_get_n_keys(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -470,6 +495,8 @@ func (device *Device) Name() string {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_name(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
@@ -491,6 +518,7 @@ func (device *Device) Position() (screen *Screen, x int, y int) {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gdk_device_get_position(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(device)
 
 	var _screen *Screen // out
 	var _x int          // out
@@ -518,6 +546,7 @@ func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	C.gdk_device_get_position_double(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(device)
 
 	var _screen *Screen // out
 	var _x float64      // out
@@ -543,6 +572,8 @@ func (device *Device) ProductID() string {
 
 	_cret = C.gdk_device_get_product_id(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -561,6 +592,8 @@ func (device *Device) Seat() Seater {
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _seat Seater // out
 
 	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
@@ -576,6 +609,8 @@ func (device *Device) Source() InputSource {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_source(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _inputSource InputSource // out
 
@@ -616,6 +651,8 @@ func (device *Device) VendorID() string {
 
 	_cret = C.gdk_device_get_vendor_id(_arg0)
 
+	runtime.KeepAlive(device)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -641,6 +678,8 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(device)
 
 	var _winX int        // out
 	var _winY int        // out
@@ -672,6 +711,8 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_get_window_at_position_double(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(device)
 
 	var _winX float64    // out
 	var _winY float64    // out
@@ -733,6 +774,14 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 
 	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(grabOwnership)
+	runtime.KeepAlive(ownerEvents)
+	runtime.KeepAlive(eventMask)
+	runtime.KeepAlive(cursor)
+	runtime.KeepAlive(time_)
+
 	var _grabStatus GrabStatus // out
 
 	_grabStatus = GrabStatus(_cret)
@@ -750,6 +799,8 @@ func (device *Device) ListSlaveDevices() []Devicer {
 	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_list_slave_devices(_arg0)
+
+	runtime.KeepAlive(device)
 
 	var _list []Devicer // out
 
@@ -777,6 +828,9 @@ func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 	_arg2 = C.GdkAxisUse(use)
 
 	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(index_)
+	runtime.KeepAlive(use)
 }
 
 // SetKey specifies the X key event to generate when a macro button of a device
@@ -793,6 +847,10 @@ func (device *Device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
 	_arg3 = C.GdkModifierType(modifiers)
 
 	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(index_)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
 }
 
 // SetMode sets a the mode of an input device. The mode controls if the device
@@ -811,6 +869,9 @@ func (device *Device) SetMode(mode InputMode) bool {
 	_arg1 = C.GdkInputMode(mode)
 
 	_cret = C.gdk_device_set_mode(_arg0, _arg1)
+
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(mode)
 
 	var _ok bool // out
 
@@ -832,6 +893,8 @@ func (device *Device) Ungrab(time_ uint32) {
 	_arg1 = C.guint32(time_)
 
 	C.gdk_device_ungrab(_arg0, _arg1)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(time_)
 }
 
 // Warp warps device in display to the point x,y on the screen screen, unless
@@ -854,6 +917,10 @@ func (device *Device) Warp(screen *Screen, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // DeviceGrabInfoLibgtkOnly determines information about the current keyboard
@@ -871,6 +938,9 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	_cret = C.gdk_device_grab_info_libgtk_only(_arg1, _arg2, &_arg3, &_arg4)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(device)
 
 	var _grabWindow Windower // out
 	var _ownerEvents bool    // out

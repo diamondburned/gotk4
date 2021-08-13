@@ -75,6 +75,9 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 
 	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
 
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(nItems)
+
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -95,6 +98,9 @@ func (self *Bitset) Add(value uint) bool {
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_add(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -117,6 +123,9 @@ func (self *Bitset) AddRange(start uint, nItems uint) {
 	_arg2 = C.guint(nItems)
 
 	C.gtk_bitset_add_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(nItems)
 }
 
 // AddRangeClosed adds the closed range [first, last], so first, last and all
@@ -131,6 +140,9 @@ func (self *Bitset) AddRangeClosed(first uint, last uint) {
 	_arg2 = C.guint(last)
 
 	C.gtk_bitset_add_range_closed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(last)
 }
 
 // AddRectangle interprets the values as a 2-dimensional boolean grid with the
@@ -150,6 +162,11 @@ func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uin
 	_arg4 = C.guint(stride)
 
 	C.gtk_bitset_add_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(stride)
 }
 
 // Contains checks if the given value has been added to self
@@ -162,6 +179,9 @@ func (self *Bitset) Contains(value uint) bool {
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_contains(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
@@ -180,6 +200,8 @@ func (self *Bitset) Copy() *Bitset {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_copy(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _bitset *Bitset // out
 
@@ -207,6 +229,8 @@ func (self *Bitset) Difference(other *Bitset) {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_difference(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
 }
 
 // Equals returns TRUE if self and other contain the same values.
@@ -219,6 +243,9 @@ func (self *Bitset) Equals(other *Bitset) bool {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gtk_bitset_equals(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
 
 	var _ok bool // out
 
@@ -240,6 +267,8 @@ func (self *Bitset) Maximum() uint {
 
 	_cret = C.gtk_bitset_get_maximum(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -257,6 +286,8 @@ func (self *Bitset) Minimum() uint {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_minimum(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -277,6 +308,9 @@ func (self *Bitset) Nth(nth uint) uint {
 	_arg1 = C.guint(nth)
 
 	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(nth)
 
 	var _guint uint // out
 
@@ -299,6 +333,8 @@ func (self *Bitset) Size() uint64 {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_size(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint64 uint64 // out
 
@@ -325,6 +361,10 @@ func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 
 	_cret = C.gtk_bitset_get_size_in_range(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(last)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -346,6 +386,8 @@ func (self *Bitset) Intersect(other *Bitset) {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_intersect(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
 }
 
 // IsEmpty: check if no value is contained in bitset.
@@ -356,6 +398,8 @@ func (self *Bitset) IsEmpty() bool {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_is_empty(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -377,6 +421,9 @@ func (self *Bitset) Remove(value uint) bool {
 
 	_cret = C.gtk_bitset_remove(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -393,6 +440,7 @@ func (self *Bitset) RemoveAll() {
 	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gtk_bitset_remove_all(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // RemoveRange removes all values from start (inclusive) to start + n_items
@@ -407,6 +455,9 @@ func (self *Bitset) RemoveRange(start uint, nItems uint) {
 	_arg2 = C.guint(nItems)
 
 	C.gtk_bitset_remove_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(nItems)
 }
 
 // RemoveRangeClosed removes the closed range [first, last], so first, last and
@@ -421,6 +472,9 @@ func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 	_arg2 = C.guint(last)
 
 	C.gtk_bitset_remove_range_closed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(last)
 }
 
 // RemoveRectangle interprets the values as a 2-dimensional boolean grid with
@@ -440,6 +494,11 @@ func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride 
 	_arg4 = C.guint(stride)
 
 	C.gtk_bitset_remove_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(stride)
 }
 
 // ShiftLeft shifts all values in self to the left by amount.
@@ -453,6 +512,8 @@ func (self *Bitset) ShiftLeft(amount uint) {
 	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_left(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(amount)
 }
 
 // ShiftRight shifts all values in self to the right by amount.
@@ -466,6 +527,8 @@ func (self *Bitset) ShiftRight(amount uint) {
 	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_right(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(amount)
 }
 
 // Splice: this is a support function for GListModel handling, by mirroring the
@@ -490,6 +553,10 @@ func (self *Bitset) Splice(position uint, removed uint, added uint) {
 	_arg3 = C.guint(added)
 
 	C.gtk_bitset_splice(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(removed)
+	runtime.KeepAlive(added)
 }
 
 // Subtract sets self to be the subtraction of other from self.
@@ -506,6 +573,8 @@ func (self *Bitset) Subtract(other *Bitset) {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_subtract(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
 }
 
 // Union sets self to be the union of self and other.
@@ -522,4 +591,6 @@ func (self *Bitset) Union(other *Bitset) {
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_union(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
 }

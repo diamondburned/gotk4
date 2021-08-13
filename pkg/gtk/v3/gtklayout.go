@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -89,6 +90,9 @@ func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
+	runtime.KeepAlive(hadjustment)
+	runtime.KeepAlive(vadjustment)
+
 	var _layout *Layout // out
 
 	_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
@@ -104,6 +108,8 @@ func (layout *Layout) BinWindow() gdk.Windower {
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
+
+	runtime.KeepAlive(layout)
 
 	var _window gdk.Windower // out
 
@@ -128,6 +134,8 @@ func (layout *Layout) HAdjustment() *Adjustment {
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -145,6 +153,7 @@ func (layout *Layout) Size() (width uint, height uint) {
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(layout)
 
 	var _width uint  // out
 	var _height uint // out
@@ -171,6 +180,8 @@ func (layout *Layout) VAdjustment() *Adjustment {
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 
+	runtime.KeepAlive(layout)
+
 	var _adjustment *Adjustment // out
 
 	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
@@ -191,6 +202,10 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gtk_layout_move(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(childWidget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
@@ -207,6 +222,10 @@ func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gtk_layout_put(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(childWidget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // SetHAdjustment sets the horizontal scroll adjustment for the layout.
@@ -224,6 +243,8 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	}
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(adjustment)
 }
 
 // SetSize sets the size of the scrollable area of the layout.
@@ -237,6 +258,9 @@ func (layout *Layout) SetSize(width uint, height uint) {
 	_arg2 = C.guint(height)
 
 	C.gtk_layout_set_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetVAdjustment sets the vertical scroll adjustment for the layout.
@@ -254,4 +278,6 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	}
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(adjustment)
 }

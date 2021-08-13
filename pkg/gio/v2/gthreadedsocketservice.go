@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -80,6 +81,8 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	_arg1 = C.int(maxThreads)
 
 	_cret = C.g_threaded_socket_service_new(_arg1)
+
+	runtime.KeepAlive(maxThreads)
 
 	var _threadedSocketService *ThreadedSocketService // out
 

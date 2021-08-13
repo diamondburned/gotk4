@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -57,6 +58,9 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 
 	_cret = C.gsk_rounded_rect_contains_point(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -77,6 +81,9 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	_cret = C.gsk_rounded_rect_contains_rect(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
 
 	var _ok bool // out
 
@@ -108,6 +115,13 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 
 	_cret = C.gsk_rounded_rect_init(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(topLeft)
+	runtime.KeepAlive(topRight)
+	runtime.KeepAlive(bottomRight)
+	runtime.KeepAlive(bottomLeft)
+
 	var _roundedRect *RoundedRect // out
 
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -128,6 +142,9 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.gsk_rounded_rect_init_copy(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(src)
 
 	var _roundedRect *RoundedRect // out
 
@@ -150,6 +167,10 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 
 	_cret = C.gsk_rounded_rect_init_from_rect(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(radius)
+
 	var _roundedRect *RoundedRect // out
 
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -168,6 +189,9 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	_cret = C.gsk_rounded_rect_intersects_rect(_arg0, _arg1)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
 
 	var _ok bool // out
 
@@ -191,6 +215,8 @@ func (self *RoundedRect) IsRectilinear() bool {
 
 	_cret = C.gsk_rounded_rect_is_rectilinear(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -211,6 +237,8 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 	_arg0 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gsk_rounded_rect_normalize(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _roundedRect *RoundedRect // out
 
@@ -233,6 +261,10 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	_arg2 = C.float(dy)
 
 	_cret = C.gsk_rounded_rect_offset(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
 
 	var _roundedRect *RoundedRect // out
 
@@ -264,6 +296,12 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 	_arg4 = C.float(left)
 
 	_cret = C.gsk_rounded_rect_shrink(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(bottom)
+	runtime.KeepAlive(left)
 
 	var _roundedRect *RoundedRect // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -72,6 +73,9 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 
 	_cret = C.g_tls_password_new(_arg1, _arg2)
 
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(description)
+
 	var _tlsPassword *TLSPassword // out
 
 	_tlsPassword = wrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -89,6 +93,8 @@ func (password *TLSPassword) Description() string {
 
 	_cret = C.g_tls_password_get_description(_arg0)
 
+	runtime.KeepAlive(password)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -104,6 +110,8 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_password_get_flags(_arg0)
+
+	runtime.KeepAlive(password)
 
 	var _tlsPasswordFlags TLSPasswordFlags // out
 
@@ -128,6 +136,9 @@ func (password *TLSPassword) Value(length *uint) *byte {
 
 	_cret = C.g_tls_password_get_value(_arg0, _arg1)
 
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(length)
+
 	var _guint8 *byte // out
 
 	_guint8 = (*byte)(unsafe.Pointer(_cret))
@@ -145,6 +156,8 @@ func (password *TLSPassword) Warning() string {
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 
 	_cret = C.g_tls_password_get_warning(_arg0)
+
+	runtime.KeepAlive(password)
 
 	var _utf8 string // out
 
@@ -164,6 +177,8 @@ func (password *TLSPassword) SetDescription(description string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(description)
 }
 
 // SetFlags: set flags about the password.
@@ -175,6 +190,8 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 	_arg1 = C.GTlsPasswordFlags(flags)
 
 	C.g_tls_password_set_flags(_arg0, _arg1)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(flags)
 }
 
 // SetValue: set the value for this password. The value will be copied by the
@@ -196,6 +213,8 @@ func (password *TLSPassword) SetValue(value []byte) {
 	}
 
 	C.g_tls_password_set_value(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(value)
 }
 
 // SetWarning: set a user readable translated warning. Usually this warning is a
@@ -210,4 +229,6 @@ func (password *TLSPassword) SetWarning(warning string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_warning(_arg0, _arg1)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(warning)
 }

@@ -61,6 +61,12 @@ func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeT
 	}
 
 	C.gdk_content_serialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -71,6 +77,7 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gdk_content_serialize_finish(_arg1, &_cerr)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -125,6 +132,8 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 
 	_cret = C.gdk_content_serializer_get_cancellable(_arg0)
 
+	runtime.KeepAlive(serializer)
+
 	var _cancellable *gio.Cancellable // out
 
 	{
@@ -146,6 +155,8 @@ func (serializer *ContentSerializer) GType() externglib.Type {
 
 	_cret = C.gdk_content_serializer_get_gtype(_arg0)
 
+	runtime.KeepAlive(serializer)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -161,6 +172,8 @@ func (serializer *ContentSerializer) MIMEType() string {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_mime_type(_arg0)
+
+	runtime.KeepAlive(serializer)
 
 	var _utf8 string // out
 
@@ -180,6 +193,8 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
 
+	runtime.KeepAlive(serializer)
+
 	var _outputStream gio.OutputStreamer // out
 
 	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
@@ -197,6 +212,8 @@ func (serializer *ContentSerializer) Priority() int {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
+
+	runtime.KeepAlive(serializer)
 
 	var _gint int // out
 
@@ -216,6 +233,8 @@ func (serializer *ContentSerializer) TaskData() cgo.Handle {
 
 	_cret = C.gdk_content_serializer_get_task_data(_arg0)
 
+	runtime.KeepAlive(serializer)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -233,6 +252,8 @@ func (serializer *ContentSerializer) UserData() cgo.Handle {
 
 	_cret = C.gdk_content_serializer_get_user_data(_arg0)
 
+	runtime.KeepAlive(serializer)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -248,6 +269,8 @@ func (serializer *ContentSerializer) Value() *externglib.Value {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	_cret = C.gdk_content_serializer_get_value(_arg0)
+
+	runtime.KeepAlive(serializer)
 
 	var _value *externglib.Value // out
 
@@ -267,6 +290,8 @@ func (serializer *ContentSerializer) ReturnError(err error) {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	C.gdk_content_serializer_return_error(_arg0, _arg1)
+	runtime.KeepAlive(serializer)
+	runtime.KeepAlive(err)
 }
 
 // ReturnSuccess: indicate that the serialization has been successfully
@@ -277,4 +302,5 @@ func (serializer *ContentSerializer) ReturnSuccess() {
 	_arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(serializer.Native()))
 
 	C.gdk_content_serializer_return_success(_arg0)
+	runtime.KeepAlive(serializer)
 }

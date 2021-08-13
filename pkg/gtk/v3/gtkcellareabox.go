@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -93,6 +94,8 @@ func (box *CellAreaBox) Spacing() int {
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
+	runtime.KeepAlive(box)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -124,6 +127,11 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool
 	}
 
 	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(expand)
+	runtime.KeepAlive(align)
+	runtime.KeepAlive(fixed)
 }
 
 // PackStart adds renderer to box, packed with reference to the start of box.
@@ -150,6 +158,11 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bo
 	}
 
 	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(expand)
+	runtime.KeepAlive(align)
+	runtime.KeepAlive(fixed)
 }
 
 // SetSpacing sets the spacing to add between cell renderers in box.
@@ -161,4 +174,6 @@ func (box *CellAreaBox) SetSpacing(spacing int) {
 	_arg1 = C.gint(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }

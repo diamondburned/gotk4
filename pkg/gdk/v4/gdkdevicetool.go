@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -99,6 +100,8 @@ func (tool *DeviceTool) Axes() AxisFlags {
 
 	_cret = C.gdk_device_tool_get_axes(_arg0)
 
+	runtime.KeepAlive(tool)
+
 	var _axisFlags AxisFlags // out
 
 	_axisFlags = AxisFlags(_cret)
@@ -124,6 +127,8 @@ func (tool *DeviceTool) HardwareID() uint64 {
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
+	runtime.KeepAlive(tool)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -143,6 +148,8 @@ func (tool *DeviceTool) Serial() uint64 {
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 
+	runtime.KeepAlive(tool)
+
 	var _guint64 uint64 // out
 
 	_guint64 = uint64(_cret)
@@ -158,6 +165,8 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
+
+	runtime.KeepAlive(tool)
 
 	var _deviceToolType DeviceToolType // out
 

@@ -108,6 +108,10 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 
 	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+
 	var _typ string                // out
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
@@ -147,6 +151,10 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 	}
 
 	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(callback)
 }
 
 // LoadFinish finishes an asynchronous icon load started in
@@ -162,6 +170,9 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(res)
 
 	var _typ string                // out
 	var _inputStream InputStreamer // out

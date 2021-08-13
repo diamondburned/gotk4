@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -71,6 +72,9 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 
 	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(toCharset)
+	runtime.KeepAlive(fromCharset)
+
 	var _charsetConverter *CharsetConverter // out
 	var _goerr error                        // out
 
@@ -91,6 +95,8 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 
+	runtime.KeepAlive(converter)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -106,6 +112,8 @@ func (converter *CharsetConverter) UseFallback() bool {
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
+
+	runtime.KeepAlive(converter)
 
 	var _ok bool // out
 
@@ -127,4 +135,6 @@ func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	}
 
 	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
+	runtime.KeepAlive(converter)
+	runtime.KeepAlive(useFallback)
 }

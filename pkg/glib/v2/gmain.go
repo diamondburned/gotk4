@@ -146,6 +146,8 @@ func NewChildWatchSource(pid Pid) *Source {
 
 	_cret = C.g_child_watch_source_new(_arg1)
 
+	runtime.KeepAlive(pid)
+
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -167,6 +169,7 @@ func GetCurrentTime(result *TimeVal) {
 	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(result)))
 
 	C.g_get_current_time(_arg1)
+	runtime.KeepAlive(result)
 }
 
 // GetMonotonicTime queries the system monotonic time.
@@ -218,6 +221,8 @@ func IdleRemoveByData(data cgo.Handle) bool {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_idle_remove_by_data(_arg1)
+
+	runtime.KeepAlive(data)
 
 	var _ok bool // out
 
@@ -352,6 +357,8 @@ func NewTimeoutSource(interval uint) *Source {
 
 	_cret = C.g_timeout_source_new(_arg1)
 
+	runtime.KeepAlive(interval)
+
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -379,6 +386,8 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	_arg1 = C.guint(interval)
 
 	_cret = C.g_timeout_source_new_seconds(_arg1)
+
+	runtime.KeepAlive(interval)
 
 	var _source *Source // out
 
@@ -435,6 +444,8 @@ func (context *MainContext) Acquire() bool {
 
 	_cret = C.g_main_context_acquire(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -459,6 +470,9 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 	_arg2 = C.gint(priority)
 
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(fd)
+	runtime.KeepAlive(priority)
 }
 
 // Check passes the results of polling back to the main loop. You should be
@@ -484,6 +498,10 @@ func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 
 	_cret = C.g_main_context_check(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(maxPriority)
+	runtime.KeepAlive(fds)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -503,6 +521,7 @@ func (context *MainContext) Dispatch() {
 	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_dispatch(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // FindSourceByFuncsUserData finds a source with the given source functions and
@@ -521,6 +540,10 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(funcs)
+	runtime.KeepAlive(userData)
 
 	var _source *Source // out
 
@@ -556,6 +579,9 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 
 	_cret = C.g_main_context_find_source_by_id(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(sourceId)
+
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -580,6 +606,9 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(userData)
+
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -601,6 +630,8 @@ func (context *MainContext) IsOwner() bool {
 	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_is_owner(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _ok bool // out
 
@@ -636,6 +667,9 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 
 	_cret = C.g_main_context_iteration(_arg0, _arg1)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(mayBlock)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -656,6 +690,8 @@ func (context *MainContext) Pending() bool {
 
 	_cret = C.g_main_context_pending(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -675,6 +711,7 @@ func (context *MainContext) PopThreadDefault() {
 	}
 
 	C.g_main_context_pop_thread_default(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Prepare prepares to poll sources within a main loop. The resulting
@@ -690,6 +727,8 @@ func (context *MainContext) Prepare() (int, bool) {
 	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_prepare(_arg0, &_arg1)
+
+	runtime.KeepAlive(context)
 
 	var _priority int // out
 	var _ok bool      // out
@@ -742,6 +781,7 @@ func (context *MainContext) PushThreadDefault() {
 	}
 
 	C.g_main_context_push_thread_default(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Release releases ownership of a context previously acquired by this thread
@@ -754,6 +794,7 @@ func (context *MainContext) Release() {
 	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_release(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // RemovePoll removes file descriptor from the set of file descriptors to be
@@ -766,6 +807,8 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_main_context_remove_poll(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(fd)
 }
 
 // Wakeup: if context is currently blocking in g_main_context_iteration()
@@ -789,6 +832,7 @@ func (context *MainContext) Wakeup() {
 	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_wakeup(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // MainContextDefault returns the global default main context. This is the main
@@ -887,6 +931,9 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 
 	_cret = C.g_main_loop_new(_arg1, _arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(isRunning)
+
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -905,6 +952,8 @@ func (loop *MainLoop) Context() *MainContext {
 	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	_cret = C.g_main_loop_get_context(_arg0)
+
+	runtime.KeepAlive(loop)
 
 	var _mainContext *MainContext // out
 
@@ -927,6 +976,8 @@ func (loop *MainLoop) IsRunning() bool {
 
 	_cret = C.g_main_loop_is_running(_arg0)
 
+	runtime.KeepAlive(loop)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -947,6 +998,7 @@ func (loop *MainLoop) Quit() {
 	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_quit(_arg0)
+	runtime.KeepAlive(loop)
 }
 
 // Run runs a main loop until g_main_loop_quit() is called on the loop. If this
@@ -958,6 +1010,7 @@ func (loop *MainLoop) Run() {
 	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_run(_arg0)
+	runtime.KeepAlive(loop)
 }
 
 // Source: GSource struct is an opaque data type representing an event source.
@@ -981,6 +1034,9 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	_arg2 = C.guint(structSize)
 
 	_cret = C.g_source_new(_arg1, _arg2)
+
+	runtime.KeepAlive(sourceFuncs)
+	runtime.KeepAlive(structSize)
 
 	var _source *Source // out
 
@@ -1016,6 +1072,8 @@ func (source *Source) AddChildSource(childSource *Source) {
 	_arg1 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 
 	C.g_source_add_child_source(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(childSource)
 }
 
 // AddPoll adds a file descriptor to the set of file descriptors polled for this
@@ -1037,6 +1095,8 @@ func (source *Source) AddPoll(fd *PollFD) {
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_source_add_poll(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(fd)
 }
 
 // AddUnixFd monitors fd for the IO events in events.
@@ -1064,6 +1124,10 @@ func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
 
 	_cret = C.g_source_add_unix_fd(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(fd)
+	runtime.KeepAlive(events)
+
 	var _gpointer cgo.Handle // out
 
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
@@ -1088,6 +1152,9 @@ func (source *Source) Attach(context *MainContext) uint {
 
 	_cret = C.g_source_attach(_arg0, _arg1)
 
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(context)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -1110,6 +1177,7 @@ func (source *Source) Destroy() {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	C.g_source_destroy(_arg0)
+	runtime.KeepAlive(source)
 }
 
 // CanRecurse checks whether a source is allowed to be called recursively. see
@@ -1121,6 +1189,8 @@ func (source *Source) CanRecurse() bool {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_can_recurse(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
@@ -1145,6 +1215,8 @@ func (source *Source) Context() *MainContext {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_context(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _mainContext *MainContext // out
 
@@ -1171,6 +1243,8 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(timeval)))
 
 	C.g_source_get_current_time(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(timeval)
 }
 
 // ID returns the numeric ID for a particular source. The ID of a source is a
@@ -1190,6 +1264,8 @@ func (source *Source) ID() uint {
 
 	_cret = C.g_source_get_id(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -1206,6 +1282,8 @@ func (source *Source) Name() string {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_name(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _utf8 string // out
 
@@ -1224,6 +1302,8 @@ func (source *Source) Priority() int {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_priority(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _gint int // out
 
@@ -1244,6 +1324,8 @@ func (source *Source) ReadyTime() int64 {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_ready_time(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _gint64 int64 // out
 
@@ -1266,6 +1348,8 @@ func (source *Source) Time() int64 {
 	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_time(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _gint64 int64 // out
 
@@ -1308,6 +1392,8 @@ func (source *Source) IsDestroyed() bool {
 
 	_cret = C.g_source_is_destroyed(_arg0)
 
+	runtime.KeepAlive(source)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1338,6 +1424,9 @@ func (source *Source) ModifyUnixFd(tag cgo.Handle, newEvents IOCondition) {
 	_arg2 = C.GIOCondition(newEvents)
 
 	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(newEvents)
 }
 
 // QueryUnixFd queries the events reported for the fd corresponding to tag on
@@ -1360,6 +1449,9 @@ func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
 
 	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
 
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(tag)
+
 	var _ioCondition IOCondition // out
 
 	_ioCondition = IOCondition(_cret)
@@ -1379,6 +1471,8 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 	_arg1 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 
 	C.g_source_remove_child_source(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(childSource)
 }
 
 // RemovePoll removes a file descriptor from the set of file descriptors polled
@@ -1394,6 +1488,8 @@ func (source *Source) RemovePoll(fd *PollFD) {
 	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_source_remove_poll(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(fd)
 }
 
 // RemoveUnixFd reverses the effect of a previous call to
@@ -1415,6 +1511,8 @@ func (source *Source) RemoveUnixFd(tag cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 
 	C.g_source_remove_unix_fd(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(tag)
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a
@@ -1436,6 +1534,9 @@ func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs
 	_arg2 = (*C.GSourceCallbackFuncs)(gextras.StructNative(unsafe.Pointer(callbackFuncs)))
 
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(callbackData)
+	runtime.KeepAlive(callbackFuncs)
 }
 
 // SetCanRecurse sets whether a source can be called recursively. If can_recurse
@@ -1452,6 +1553,8 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 	}
 
 	C.g_source_set_can_recurse(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(canRecurse)
 }
 
 // SetFuncs sets the source functions (can be used to override default
@@ -1464,6 +1567,8 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
 
 	C.g_source_set_funcs(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(funcs)
 }
 
 // SetName sets a name for the source, used in debugging and profiling. The name
@@ -1490,6 +1595,8 @@ func (source *Source) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_source_set_name(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(name)
 }
 
 // SetPriority sets the priority of a source. While the main loop is being run,
@@ -1507,6 +1614,8 @@ func (source *Source) SetPriority(priority int) {
 	_arg1 = C.gint(priority)
 
 	C.g_source_set_priority(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(priority)
 }
 
 // SetReadyTime sets a #GSource to be dispatched when the given monotonic time
@@ -1538,6 +1647,8 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	_arg1 = C.gint64(readyTime)
 
 	C.g_source_set_ready_time(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(readyTime)
 }
 
 // SourceRemove removes the source with the given ID from the default main
@@ -1566,6 +1677,8 @@ func SourceRemove(tag uint) bool {
 
 	_cret = C.g_source_remove(_arg1)
 
+	runtime.KeepAlive(tag)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1588,6 +1701,9 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 
 	_cret = C.g_source_remove_by_funcs_user_data(_arg1, _arg2)
 
+	runtime.KeepAlive(funcs)
+	runtime.KeepAlive(userData)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1607,6 +1723,8 @@ func SourceRemoveByUserData(userData cgo.Handle) bool {
 	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_source_remove_by_user_data(_arg1)
+
+	runtime.KeepAlive(userData)
 
 	var _ok bool // out
 
@@ -1640,6 +1758,8 @@ func SourceSetNameByID(tag uint, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_source_set_name_by_id(_arg1, _arg2)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(name)
 }
 
 // SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for

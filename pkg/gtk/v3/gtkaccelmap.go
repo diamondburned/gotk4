@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -119,6 +120,9 @@ func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierTyp
 	_arg3 = C.GdkModifierType(accelMods)
 
 	C.gtk_accel_map_add_entry(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
 }
 
 // AccelMapAddFilter adds a filter to the global list of accel path filters.
@@ -135,6 +139,7 @@ func AccelMapAddFilter(filterPattern string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_add_filter(_arg1)
+	runtime.KeepAlive(filterPattern)
 }
 
 // AccelMapChangeEntry changes the accel_key and accel_mods currently associated
@@ -163,6 +168,11 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 	}
 
 	_cret = C.gtk_accel_map_change_entry(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+	runtime.KeepAlive(replace)
 
 	var _ok bool // out
 
@@ -197,6 +207,7 @@ func AccelMapLoad(fileName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_load(_arg1)
+	runtime.KeepAlive(fileName)
 }
 
 // AccelMapLoadFd: filedescriptor variant of gtk_accel_map_load().
@@ -208,6 +219,7 @@ func AccelMapLoadFd(fd int) {
 	_arg1 = C.gint(fd)
 
 	C.gtk_accel_map_load_fd(_arg1)
+	runtime.KeepAlive(fd)
 }
 
 // AccelMapLoadScanner variant of gtk_accel_map_load().
@@ -217,6 +229,7 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.gtk_accel_map_load_scanner(_arg1)
+	runtime.KeepAlive(scanner)
 }
 
 // AccelMapLockPath locks the given accelerator path. If the accelerator map
@@ -240,6 +253,7 @@ func AccelMapLockPath(accelPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_lock_path(_arg1)
+	runtime.KeepAlive(accelPath)
 }
 
 // AccelMapLookupEntry looks up the accelerator entry for accel_path and fills
@@ -253,6 +267,8 @@ func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_map_lookup_entry(_arg1, &_arg2)
+
+	runtime.KeepAlive(accelPath)
 
 	var _key AccelKey // out
 	var _ok bool      // out
@@ -275,6 +291,7 @@ func AccelMapSave(fileName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_save(_arg1)
+	runtime.KeepAlive(fileName)
 }
 
 // AccelMapSaveFd: filedescriptor variant of gtk_accel_map_save().
@@ -286,6 +303,7 @@ func AccelMapSaveFd(fd int) {
 	_arg1 = C.gint(fd)
 
 	C.gtk_accel_map_save_fd(_arg1)
+	runtime.KeepAlive(fd)
 }
 
 // AccelMapUnlockPath undoes the last call to gtk_accel_map_lock_path() on this
@@ -298,4 +316,5 @@ func AccelMapUnlockPath(accelPath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_unlock_path(_arg1)
+	runtime.KeepAlive(accelPath)
 }

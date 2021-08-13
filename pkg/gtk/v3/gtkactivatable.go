@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -338,6 +339,8 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
+	runtime.KeepAlive(activatable)
+	runtime.KeepAlive(action)
 }
 
 // RelatedAction gets the related Action for activatable.
@@ -350,6 +353,8 @@ func (activatable *Activatable) RelatedAction() *Action {
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_related_action(_arg0)
+
+	runtime.KeepAlive(activatable)
 
 	var _action *Action // out
 
@@ -370,6 +375,8 @@ func (activatable *Activatable) UseActionAppearance() bool {
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(activatable.Native()))
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
+
+	runtime.KeepAlive(activatable)
 
 	var _ok bool // out
 
@@ -394,6 +401,8 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_activatable_set_related_action(_arg0, _arg1)
+	runtime.KeepAlive(activatable)
+	runtime.KeepAlive(action)
 }
 
 // SetUseActionAppearance sets whether this activatable should reset its layout
@@ -415,6 +424,8 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	}
 
 	C.gtk_activatable_set_use_action_appearance(_arg0, _arg1)
+	runtime.KeepAlive(activatable)
+	runtime.KeepAlive(useAppearance)
 }
 
 // SyncActionProperties: this is called to update the activatable completely,
@@ -433,4 +444,6 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 	}
 
 	C.gtk_activatable_sync_action_properties(_arg0, _arg1)
+	runtime.KeepAlive(activatable)
+	runtime.KeepAlive(action)
 }

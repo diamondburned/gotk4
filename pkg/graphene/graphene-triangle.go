@@ -60,6 +60,9 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 
 	_cret = C.graphene_triangle_contains_point(_arg0, _arg1)
 
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(p)
+
 	var _ok bool // out
 
 	if _cret {
@@ -80,6 +83,9 @@ func (a *Triangle) Equal(b *Triangle) bool {
 
 	_cret = C.graphene_triangle_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -97,6 +103,8 @@ func (t *Triangle) Area() float32 {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	_cret = C.graphene_triangle_get_area(_arg0)
+
+	runtime.KeepAlive(t)
 
 	var _gfloat float32 // out
 
@@ -135,6 +143,9 @@ func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 
 	_cret = C.graphene_triangle_get_barycoords(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(p)
+
 	var _res Vec2 // out
 	var _ok bool  // out
 
@@ -154,6 +165,7 @@ func (t *Triangle) BoundingBox() Box {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_bounding_box(_arg0, &_arg1)
+	runtime.KeepAlive(t)
 
 	var _res Box // out
 
@@ -175,6 +187,7 @@ func (t *Triangle) Midpoint() Point3D {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_midpoint(_arg0, &_arg1)
+	runtime.KeepAlive(t)
 
 	var _res Point3D // out
 
@@ -191,6 +204,7 @@ func (t *Triangle) Normal() Vec3 {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_normal(_arg0, &_arg1)
+	runtime.KeepAlive(t)
 
 	var _res Vec3 // out
 
@@ -208,6 +222,7 @@ func (t *Triangle) Plane() Plane {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_plane(_arg0, &_arg1)
+	runtime.KeepAlive(t)
 
 	var _res Plane // out
 
@@ -227,6 +242,7 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_points(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(t)
 
 	var _a Point3D // out
 	var _b Point3D // out
@@ -270,6 +286,12 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) 
 
 	_cret = C.graphene_triangle_get_uv(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
 
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(uvA)
+	runtime.KeepAlive(uvB)
+	runtime.KeepAlive(uvC)
+
 	var _res Vec2 // out
 	var _ok bool  // out
 
@@ -291,6 +313,7 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 
 	C.graphene_triangle_get_vertices(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(t)
 
 	var _a Vec3 // out
 	var _b Vec3 // out
@@ -319,6 +342,11 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 	_arg3 = (*C.float)(unsafe.Pointer(&c))
 
 	_cret = C.graphene_triangle_init_from_float(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(c)
 
 	var _triangle *Triangle // out
 
@@ -349,6 +377,11 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 
 	_cret = C.graphene_triangle_init_from_point3d(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(c)
+
 	var _triangle *Triangle // out
 
 	_triangle = (*Triangle)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -377,6 +410,11 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	}
 
 	_cret = C.graphene_triangle_init_from_vec3(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(t)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(c)
 
 	var _triangle *Triangle // out
 

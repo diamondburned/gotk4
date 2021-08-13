@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -173,6 +174,12 @@ func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height
 	_arg5 = C.int(height)
 
 	C.gtk_grid_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // AttachNextTo adds a widget to the grid.
@@ -201,6 +208,12 @@ func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side Position
 	_arg5 = C.int(height)
 
 	C.gtk_grid_attach_next_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(sibling)
+	runtime.KeepAlive(side)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // BaselineRow returns which row defines the global baseline of grid.
@@ -211,6 +224,8 @@ func (grid *Grid) BaselineRow() int {
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_baseline_row(_arg0)
+
+	runtime.KeepAlive(grid)
 
 	var _gint int // out
 
@@ -233,6 +248,10 @@ func (grid *Grid) ChildAt(column int, row int) Widgetter {
 
 	_cret = C.gtk_grid_get_child_at(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(row)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -251,6 +270,8 @@ func (grid *Grid) ColumnHomogeneous() bool {
 
 	_cret = C.gtk_grid_get_column_homogeneous(_arg0)
 
+	runtime.KeepAlive(grid)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -268,6 +289,8 @@ func (grid *Grid) ColumnSpacing() uint {
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_column_spacing(_arg0)
+
+	runtime.KeepAlive(grid)
 
 	var _guint uint // out
 
@@ -289,6 +312,9 @@ func (grid *Grid) RowBaselinePosition(row int) BaselinePosition {
 
 	_cret = C.gtk_grid_get_row_baseline_position(_arg0, _arg1)
 
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
+
 	var _baselinePosition BaselinePosition // out
 
 	_baselinePosition = BaselinePosition(_cret)
@@ -304,6 +330,8 @@ func (grid *Grid) RowHomogeneous() bool {
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_row_homogeneous(_arg0)
+
+	runtime.KeepAlive(grid)
 
 	var _ok bool // out
 
@@ -322,6 +350,8 @@ func (grid *Grid) RowSpacing() uint {
 	_arg0 = (*C.GtkGrid)(unsafe.Pointer(grid.Native()))
 
 	_cret = C.gtk_grid_get_row_spacing(_arg0)
+
+	runtime.KeepAlive(grid)
 
 	var _guint uint // out
 
@@ -343,6 +373,8 @@ func (grid *Grid) InsertColumn(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_column(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
 }
 
 // InsertNextTo inserts a row or column at the specified position.
@@ -360,6 +392,9 @@ func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
 	_arg2 = C.GtkPositionType(side)
 
 	C.gtk_grid_insert_next_to(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(sibling)
+	runtime.KeepAlive(side)
 }
 
 // InsertRow inserts a row at the specified position.
@@ -374,6 +409,8 @@ func (grid *Grid) InsertRow(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_grid_insert_row(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
 }
 
 // QueryChild queries the attach points and spans of child inside the given
@@ -390,6 +427,8 @@ func (grid *Grid) QueryChild(child Widgetter) (column int, row int, width int, h
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_query_child(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(child)
 
 	var _column int // out
 	var _row int    // out
@@ -416,6 +455,8 @@ func (grid *Grid) Remove(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_grid_remove(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(child)
 }
 
 // RemoveColumn removes a column from the grid.
@@ -431,6 +472,8 @@ func (grid *Grid) RemoveColumn(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_column(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
 }
 
 // RemoveRow removes a row from the grid.
@@ -446,6 +489,8 @@ func (grid *Grid) RemoveRow(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_grid_remove_row(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
 }
 
 // SetBaselineRow sets which row defines the global baseline for the entire
@@ -461,6 +506,8 @@ func (grid *Grid) SetBaselineRow(row int) {
 	_arg1 = C.int(row)
 
 	C.gtk_grid_set_baseline_row(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
 }
 
 // SetColumnHomogeneous sets whether all columns of grid will have the same
@@ -475,6 +522,8 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_grid_set_column_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetColumnSpacing sets the amount of space between columns of grid.
@@ -486,6 +535,8 @@ func (grid *Grid) SetColumnSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_column_spacing(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(spacing)
 }
 
 // SetRowBaselinePosition sets how the baseline should be positioned on row of
@@ -502,6 +553,9 @@ func (grid *Grid) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	_arg2 = C.GtkBaselinePosition(pos)
 
 	C.gtk_grid_set_row_baseline_position(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(pos)
 }
 
 // SetRowHomogeneous sets whether all rows of grid will have the same height.
@@ -515,6 +569,8 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_grid_set_row_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetRowSpacing sets the amount of space between rows of grid.
@@ -526,4 +582,6 @@ func (grid *Grid) SetRowSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(spacing)
 }

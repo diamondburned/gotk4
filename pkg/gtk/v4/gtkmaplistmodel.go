@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -120,6 +121,9 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 
 	_cret = C.gtk_map_list_model_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(mapFunc)
+
 	var _mapListModel *MapListModel // out
 
 	_mapListModel = wrapMapListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -135,6 +139,8 @@ func (self *MapListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_map_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -153,6 +159,8 @@ func (self *MapListModel) HasMap() bool {
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -188,6 +196,8 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 	}
 
 	C.gtk_map_list_model_set_map_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(mapFunc)
 }
 
 // SetModel sets the model to be mapped.
@@ -205,4 +215,6 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

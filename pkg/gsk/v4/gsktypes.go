@@ -73,6 +73,9 @@ func (first *Transform) Equal(second *Transform) bool {
 
 	_cret = C.gsk_transform_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -92,6 +95,8 @@ func (self *Transform) Category() TransformCategory {
 	}
 
 	_cret = C.gsk_transform_get_category(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _transformCategory TransformCategory // out
 
@@ -115,6 +120,8 @@ func (self *Transform) Invert() *Transform {
 	}
 
 	_cret = C.gsk_transform_invert(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _transform *Transform // out
 
@@ -140,6 +147,9 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.gsk_transform_matrix(_arg0, _arg1)
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(matrix)
 
 	var _transform *Transform // out
 
@@ -168,6 +178,9 @@ func (next *Transform) Perspective(depth float32) *Transform {
 
 	_cret = C.gsk_transform_perspective(_arg0, _arg1)
 
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(depth)
+
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -190,6 +203,9 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	_arg1 = C.float(angle)
 
 	_cret = C.gsk_transform_rotate(_arg0, _arg1)
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(angle)
 
 	var _transform *Transform // out
 
@@ -218,6 +234,10 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 
 	_cret = C.gsk_transform_rotate_3d(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(axis)
+
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -245,6 +265,10 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	_cret = C.gsk_transform_scale(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -271,6 +295,11 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	_arg3 = C.float(factorZ)
 
 	_cret = C.gsk_transform_scale_3d(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+	runtime.KeepAlive(factorZ)
 
 	var _transform *Transform // out
 
@@ -308,6 +337,7 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(self)
 
 	var _outXx float32 // out
 	var _outYx float32 // out
@@ -340,6 +370,7 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(self)
 
 	var _outScaleX float32 // out
 	var _outScaleY float32 // out
@@ -366,6 +397,7 @@ func (self *Transform) ToMatrix() graphene.Matrix {
 	}
 
 	C.gsk_transform_to_matrix(_arg0, &_arg1)
+	runtime.KeepAlive(self)
 
 	var _outMatrix graphene.Matrix // out
 
@@ -389,6 +421,8 @@ func (self *Transform) String() string {
 
 	_cret = C.gsk_transform_to_string(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -409,6 +443,7 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(self)
 
 	var _outDx float32 // out
 	var _outDy float32 // out
@@ -434,6 +469,9 @@ func (next *Transform) Transform(other *Transform) *Transform {
 
 	_cret = C.gsk_transform_transform(_arg0, _arg1)
 
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(other)
+
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -456,6 +494,8 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
 
 	var _outRect graphene.Rect // out
 
@@ -474,6 +514,8 @@ func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
 
 	var _outPoint graphene.Point // out
 
@@ -494,6 +536,9 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.gsk_transform_translate(_arg0, _arg1)
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(point)
 
 	var _transform *Transform // out
 
@@ -517,6 +562,9 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.gsk_transform_translate_3d(_arg0, _arg1)
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(point)
 
 	var _transform *Transform // out
 

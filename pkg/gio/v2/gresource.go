@@ -43,6 +43,9 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(lookupFlags)
+
 	var _utf8s []string // out
 	var _goerr error    // out
 
@@ -84,6 +87,8 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(lookupFlags)
 
 	var _size uint    // out
 	var _flags uint32 // out
@@ -115,6 +120,9 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(lookupFlags)
+
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
@@ -135,6 +143,7 @@ func ResourcesRegister(resource *Resource) {
 	_arg1 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	C.g_resources_register(_arg1)
+	runtime.KeepAlive(resource)
 }
 
 // ResourcesUnregister unregisters the resource from the process-global set of
@@ -145,6 +154,7 @@ func ResourcesUnregister(resource *Resource) {
 	_arg1 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	C.g_resources_unregister(_arg1)
+	runtime.KeepAlive(resource)
 }
 
 // ResourceLoad loads a binary resource bundle and creates a #GResource
@@ -165,6 +175,8 @@ func ResourceLoad(filename string) (*Resource, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_resource_load(_arg1, &_cerr)
+
+	runtime.KeepAlive(filename)
 
 	var _resource *Resource // out
 	var _goerr error        // out
@@ -198,6 +210,7 @@ func (staticResource *StaticResource) Fini() {
 	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	C.g_static_resource_fini(_arg0)
+	runtime.KeepAlive(staticResource)
 }
 
 // Resource gets the GResource that was registered by a call to
@@ -213,6 +226,8 @@ func (staticResource *StaticResource) Resource() *Resource {
 	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	_cret = C.g_static_resource_get_resource(_arg0)
+
+	runtime.KeepAlive(staticResource)
 
 	var _resource *Resource // out
 
@@ -236,4 +251,5 @@ func (staticResource *StaticResource) Init() {
 	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	C.g_static_resource_init(_arg0)
+	runtime.KeepAlive(staticResource)
 }

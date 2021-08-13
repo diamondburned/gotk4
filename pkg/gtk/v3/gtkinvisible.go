@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -78,6 +79,8 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 
+	runtime.KeepAlive(screen)
+
 	var _invisible *Invisible // out
 
 	_invisible = wrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
@@ -93,6 +96,8 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(invisible.Native()))
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
+
+	runtime.KeepAlive(invisible)
 
 	var _screen *gdk.Screen // out
 
@@ -115,4 +120,6 @@ func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_invisible_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(invisible)
+	runtime.KeepAlive(screen)
 }

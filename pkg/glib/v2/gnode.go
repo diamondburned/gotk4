@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"runtime"
 	"runtime/cgo"
 	"strings"
 	"unsafe"
@@ -170,6 +171,9 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
 
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(data)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -190,6 +194,9 @@ func (node *Node) ChildPosition(child *Node) int {
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
 
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(child)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -209,6 +216,8 @@ func (node *Node) Depth() uint {
 
 	_cret = C.g_node_depth(_arg0)
 
+	runtime.KeepAlive(node)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -224,6 +233,7 @@ func (root *Node) Destroy() {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
 
 	C.g_node_destroy(_arg0)
+	runtime.KeepAlive(root)
 }
 
 // IsAncestor returns TRUE if node is an ancestor of descendant. This is true if
@@ -238,6 +248,9 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 	_arg1 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
+
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(descendant)
 
 	var _ok bool // out
 
@@ -261,6 +274,8 @@ func (root *Node) MaxHeight() uint {
 
 	_cret = C.g_node_max_height(_arg0)
 
+	runtime.KeepAlive(root)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -276,6 +291,8 @@ func (node *Node) NChildren() uint {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	_cret = C.g_node_n_children(_arg0)
+
+	runtime.KeepAlive(node)
 
 	var _guint uint // out
 
@@ -295,6 +312,9 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
 
+	runtime.KeepAlive(root)
+	runtime.KeepAlive(flags)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -310,6 +330,7 @@ func (node *Node) ReverseChildren() {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	C.g_node_reverse_children(_arg0)
+	runtime.KeepAlive(node)
 }
 
 // Unlink unlinks a #GNode from a tree, resulting in two separate trees.
@@ -319,4 +340,5 @@ func (node *Node) Unlink() {
 	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	C.g_node_unlink(_arg0)
+	runtime.KeepAlive(node)
 }

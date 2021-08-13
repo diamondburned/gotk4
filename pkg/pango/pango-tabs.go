@@ -74,6 +74,9 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	_cret = C.pango_tab_array_new(_arg1, _arg2)
 
+	runtime.KeepAlive(initialSize)
+	runtime.KeepAlive(positionsInPixels)
+
 	var _tabArray *TabArray // out
 
 	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -92,6 +95,8 @@ func (src *TabArray) Copy() *TabArray {
 	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.pango_tab_array_copy(_arg0)
+
+	runtime.KeepAlive(src)
 
 	var _tabArray *TabArray // out
 
@@ -113,6 +118,8 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
+	runtime.KeepAlive(tabArray)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -130,6 +137,8 @@ func (tabArray *TabArray) Size() int {
 	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
+
+	runtime.KeepAlive(tabArray)
 
 	var _gint int // out
 
@@ -149,6 +158,8 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(tabArray)
+	runtime.KeepAlive(tabIndex)
 
 	var _alignment TabAlign // out
 	var _location int       // out
@@ -171,6 +182,8 @@ func (tabArray *TabArray) Resize(newSize int) {
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)
+	runtime.KeepAlive(tabArray)
+	runtime.KeepAlive(newSize)
 }
 
 // SetTab sets the alignment and location of a tab stop.
@@ -188,4 +201,8 @@ func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int)
 	_arg3 = C.gint(location)
 
 	C.pango_tab_array_set_tab(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(tabArray)
+	runtime.KeepAlive(tabIndex)
+	runtime.KeepAlive(alignment)
+	runtime.KeepAlive(location)
 }

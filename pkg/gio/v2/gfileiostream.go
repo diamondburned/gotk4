@@ -133,6 +133,8 @@ func (stream *FileIOStream) Etag() string {
 
 	_cret = C.g_file_io_stream_get_etag(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -176,6 +178,10 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 
 	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
@@ -216,6 +222,11 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 	}
 
 	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryInfoFinish finalizes the asynchronous query started by
@@ -230,6 +241,9 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out

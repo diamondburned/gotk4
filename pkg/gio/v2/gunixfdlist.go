@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -88,6 +89,8 @@ func NewUnixFDListFromArray(fds []int) *UnixFDList {
 
 	_cret = C.g_unix_fd_list_new_from_array(_arg1, _arg2)
 
+	runtime.KeepAlive(fds)
+
 	var _unixFDList *UnixFDList // out
 
 	_unixFDList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -117,6 +120,9 @@ func (list *UnixFDList) Append(fd int) (int, error) {
 	_arg1 = C.gint(fd)
 
 	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(fd)
 
 	var _gint int    // out
 	var _goerr error // out
@@ -150,6 +156,9 @@ func (list *UnixFDList) Get(index_ int) (int, error) {
 
 	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(index_)
+
 	var _gint int    // out
 	var _goerr error // out
 
@@ -170,6 +179,8 @@ func (list *UnixFDList) Length() int {
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
+
+	runtime.KeepAlive(list)
 
 	var _gint int // out
 

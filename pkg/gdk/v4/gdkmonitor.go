@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -97,6 +98,8 @@ func (monitor *Monitor) Connector() string {
 
 	_cret = C.gdk_monitor_get_connector(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -114,6 +117,8 @@ func (monitor *Monitor) Display() *Display {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_display(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _display *Display // out
 
@@ -134,6 +139,7 @@ func (monitor *Monitor) Geometry() Rectangle {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_monitor_get_geometry(_arg0, &_arg1)
+	runtime.KeepAlive(monitor)
 
 	var _geometry Rectangle // out
 
@@ -150,6 +156,8 @@ func (monitor *Monitor) HeightMm() int {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _gint int // out
 
@@ -172,6 +180,8 @@ func (monitor *Monitor) Manufacturer() string {
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -189,6 +199,8 @@ func (monitor *Monitor) Model() string {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_model(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _utf8 string // out
 
@@ -209,6 +221,8 @@ func (monitor *Monitor) RefreshRate() int {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _gint int // out
 
@@ -234,6 +248,8 @@ func (monitor *Monitor) ScaleFactor() int {
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -251,6 +267,8 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 
 	_cret = C.gdk_monitor_get_subpixel_layout(_arg0)
 
+	runtime.KeepAlive(monitor)
+
 	var _subpixelLayout SubpixelLayout // out
 
 	_subpixelLayout = SubpixelLayout(_cret)
@@ -266,6 +284,8 @@ func (monitor *Monitor) WidthMm() int {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _gint int // out
 
@@ -285,6 +305,8 @@ func (monitor *Monitor) IsValid() bool {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	_cret = C.gdk_monitor_is_valid(_arg0)
+
+	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
 

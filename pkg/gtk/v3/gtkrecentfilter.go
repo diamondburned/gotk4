@@ -222,6 +222,8 @@ func (filter *RecentFilter) AddAge(days int) {
 	_arg1 = C.gint(days)
 
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(days)
 }
 
 // AddApplication adds a rule that allows resources based on the name of the
@@ -235,6 +237,8 @@ func (filter *RecentFilter) AddApplication(application string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_application(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(application)
 }
 
 // AddCustom adds a rule to a filter that allows resources based on a custom
@@ -256,6 +260,9 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	C.gtk_recent_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(needed)
+	runtime.KeepAlive(fn)
 }
 
 // AddGroup adds a rule that allows resources based on the name of the group to
@@ -269,6 +276,8 @@ func (filter *RecentFilter) AddGroup(group string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_group(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(group)
 }
 
 // AddMIMEType adds a rule that allows resources based on their registered MIME
@@ -282,6 +291,8 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_mime_type(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(mimeType)
 }
 
 // AddPattern adds a rule that allows resources based on a pattern matching
@@ -295,6 +306,8 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_pattern(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(pattern)
 }
 
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
@@ -305,6 +318,7 @@ func (filter *RecentFilter) AddPixbufFormats() {
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
+	runtime.KeepAlive(filter)
 }
 
 // Filter tests whether a file should be displayed according to filter. The
@@ -324,6 +338,9 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
 
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(filterInfo)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -342,6 +359,8 @@ func (filter *RecentFilter) Name() string {
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
+
+	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
 
@@ -365,6 +384,8 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 
 	_cret = C.gtk_recent_filter_get_needed(_arg0)
 
+	runtime.KeepAlive(filter)
+
 	var _recentFilterFlags RecentFilterFlags // out
 
 	_recentFilterFlags = RecentFilterFlags(_cret)
@@ -384,6 +405,8 @@ func (filter *RecentFilter) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_set_name(_arg0, _arg1)
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(name)
 }
 
 // RecentFilterInfo struct is used to pass information about the tested file to

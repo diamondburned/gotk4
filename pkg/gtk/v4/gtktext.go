@@ -158,6 +158,8 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 
 	_cret = C.gtk_text_new_with_buffer(_arg1)
 
+	runtime.KeepAlive(buffer)
+
 	var _text *Text // out
 
 	_text = wrapText(externglib.Take(unsafe.Pointer(_cret)))
@@ -173,6 +175,8 @@ func (self *Text) ActivatesDefault() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_activates_default(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -192,6 +196,8 @@ func (self *Text) Attributes() *pango.AttrList {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_attributes(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _attrList *pango.AttrList // out
 
@@ -215,6 +221,8 @@ func (self *Text) Buffer() *EntryBuffer {
 
 	_cret = C.gtk_text_get_buffer(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _entryBuffer *EntryBuffer // out
 
 	_entryBuffer = wrapEntryBuffer(externglib.Take(unsafe.Pointer(_cret)))
@@ -231,6 +239,8 @@ func (self *Text) EnableEmojiCompletion() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_enable_emoji_completion(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -250,6 +260,8 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 
 	_cret = C.gtk_text_get_extra_menu(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
@@ -268,6 +280,8 @@ func (self *Text) InputHints() InputHints {
 
 	_cret = C.gtk_text_get_input_hints(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _inputHints InputHints // out
 
 	_inputHints = InputHints(_cret)
@@ -283,6 +297,8 @@ func (self *Text) InputPurpose() InputPurpose {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_input_purpose(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _inputPurpose InputPurpose // out
 
@@ -305,6 +321,8 @@ func (self *Text) InvisibleChar() uint32 {
 
 	_cret = C.gtk_text_get_invisible_char(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gunichar uint32 // out
 
 	_gunichar = uint32(_cret)
@@ -326,6 +344,8 @@ func (self *Text) MaxLength() int {
 
 	_cret = C.gtk_text_get_max_length(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -341,6 +361,8 @@ func (self *Text) OverwriteMode() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_overwrite_mode(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -361,6 +383,8 @@ func (self *Text) PlaceholderText() string {
 
 	_cret = C.gtk_text_get_placeholder_text(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -380,6 +404,8 @@ func (self *Text) PropagateTextWidth() bool {
 
 	_cret = C.gtk_text_get_propagate_text_width(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -398,6 +424,8 @@ func (self *Text) Tabs() *pango.TabArray {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_tabs(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _tabArray *pango.TabArray // out
 
@@ -420,6 +448,8 @@ func (self *Text) TextLength() uint16 {
 
 	_cret = C.gtk_text_get_text_length(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint16 uint16 // out
 
 	_guint16 = uint16(_cret)
@@ -436,6 +466,8 @@ func (self *Text) TruncateMultiline() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_truncate_multiline(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -454,6 +486,8 @@ func (self *Text) Visibility() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_get_visibility(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -477,6 +511,8 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_text_grab_focus_without_selecting(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -502,6 +538,8 @@ func (self *Text) SetActivatesDefault(activates bool) {
 	}
 
 	C.gtk_text_set_activates_default(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(activates)
 }
 
 // SetAttributes sets attributes that are applied to the text.
@@ -515,6 +553,8 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 	}
 
 	C.gtk_text_set_attributes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(attrs)
 }
 
 // SetBuffer: set the GtkEntryBuffer object which holds the text for this
@@ -527,6 +567,8 @@ func (self *Text) SetBuffer(buffer *EntryBuffer) {
 	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_set_buffer(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(buffer)
 }
 
 // SetEnableEmojiCompletion sets whether Emoji completion is enabled.
@@ -543,6 +585,8 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	}
 
 	C.gtk_text_set_enable_emoji_completion(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(enableEmojiCompletion)
 }
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
@@ -557,6 +601,8 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	}
 
 	C.gtk_text_set_extra_menu(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }
 
 // SetInputHints sets input hints that allow input methods to fine-tune their
@@ -569,6 +615,8 @@ func (self *Text) SetInputHints(hints InputHints) {
 	_arg1 = C.GtkInputHints(hints)
 
 	C.gtk_text_set_input_hints(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hints)
 }
 
 // SetInputPurpose sets the input purpose of the GtkText.
@@ -583,6 +631,8 @@ func (self *Text) SetInputPurpose(purpose InputPurpose) {
 	_arg1 = C.GtkInputPurpose(purpose)
 
 	C.gtk_text_set_input_purpose(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(purpose)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text when
@@ -599,6 +649,8 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 	_arg1 = C.gunichar(ch)
 
 	C.gtk_text_set_invisible_char(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ch)
 }
 
 // SetMaxLength sets the maximum allowed length of the contents of the widget.
@@ -616,6 +668,8 @@ func (self *Text) SetMaxLength(length int) {
 	_arg1 = C.int(length)
 
 	C.gtk_text_set_max_length(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(length)
 }
 
 // SetOverwriteMode sets whether the text is overwritten when typing in the
@@ -630,6 +684,8 @@ func (self *Text) SetOverwriteMode(overwrite bool) {
 	}
 
 	C.gtk_text_set_overwrite_mode(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(overwrite)
 }
 
 // SetPlaceholderText sets text to be displayed in self when it is empty.
@@ -647,6 +703,8 @@ func (self *Text) SetPlaceholderText(text string) {
 	}
 
 	C.gtk_text_set_placeholder_text(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(text)
 }
 
 // SetPropagateTextWidth sets whether the GtkText should grow and shrink with
@@ -661,6 +719,8 @@ func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 	}
 
 	C.gtk_text_set_propagate_text_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(propagateTextWidth)
 }
 
 // SetTabs sets tabstops that are applied to the text.
@@ -674,6 +734,8 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 	}
 
 	C.gtk_text_set_tabs(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(tabs)
 }
 
 // SetTruncateMultiline sets whether the GtkText should truncate multi-line text
@@ -688,6 +750,8 @@ func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 	}
 
 	C.gtk_text_set_truncate_multiline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(truncateMultiline)
 }
 
 // SetVisibility sets whether the contents of the GtkText are visible or not.
@@ -712,6 +776,8 @@ func (self *Text) SetVisibility(visible bool) {
 	}
 
 	C.gtk_text_set_visibility(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(visible)
 }
 
 // UnsetInvisibleChar unsets the invisible char.
@@ -723,4 +789,5 @@ func (self *Text) UnsetInvisibleChar() {
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 
 	C.gtk_text_unset_invisible_char(_arg0)
+	runtime.KeepAlive(self)
 }

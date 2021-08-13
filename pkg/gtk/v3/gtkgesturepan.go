@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,9 @@ func NewGesturePan(widget Widgetter, orientation Orientation) *GesturePan {
 
 	_cret = C.gtk_gesture_pan_new(_arg1, _arg2)
 
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(orientation)
+
 	var _gesturePan *GesturePan // out
 
 	_gesturePan = wrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -86,6 +90,8 @@ func (gesture *GesturePan) Orientation() Orientation {
 
 	_cret = C.gtk_gesture_pan_get_orientation(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _orientation Orientation // out
 
 	_orientation = Orientation(_cret)
@@ -102,4 +108,6 @@ func (gesture *GesturePan) SetOrientation(orientation Orientation) {
 	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_gesture_pan_set_orientation(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(orientation)
 }

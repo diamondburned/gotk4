@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -111,6 +112,8 @@ func (backend *TLSBackend) CertificateType() externglib.Type {
 
 	_cret = C.g_tls_backend_get_certificate_type(_arg0)
 
+	runtime.KeepAlive(backend)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -128,6 +131,8 @@ func (backend *TLSBackend) ClientConnectionType() externglib.Type {
 
 	_cret = C.g_tls_backend_get_client_connection_type(_arg0)
 
+	runtime.KeepAlive(backend)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -143,6 +148,8 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
 
 	_cret = C.g_tls_backend_get_default_database(_arg0)
+
+	runtime.KeepAlive(backend)
 
 	var _tlsDatabase TLSDatabaser // out
 
@@ -161,6 +168,8 @@ func (backend *TLSBackend) DTLSClientConnectionType() externglib.Type {
 
 	_cret = C.g_tls_backend_get_dtls_client_connection_type(_arg0)
 
+	runtime.KeepAlive(backend)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -178,6 +187,8 @@ func (backend *TLSBackend) DTLSServerConnectionType() externglib.Type {
 
 	_cret = C.g_tls_backend_get_dtls_server_connection_type(_arg0)
 
+	runtime.KeepAlive(backend)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -193,6 +204,8 @@ func (backend *TLSBackend) FileDatabaseType() externglib.Type {
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
 
 	_cret = C.g_tls_backend_get_file_database_type(_arg0)
+
+	runtime.KeepAlive(backend)
 
 	var _gType externglib.Type // out
 
@@ -210,6 +223,8 @@ func (backend *TLSBackend) ServerConnectionType() externglib.Type {
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
 
 	_cret = C.g_tls_backend_get_server_connection_type(_arg0)
+
+	runtime.KeepAlive(backend)
 
 	var _gType externglib.Type // out
 
@@ -236,6 +251,8 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	}
 
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(database)
 }
 
 // SupportsDTLS checks if DTLS is supported. DTLS support may not be available
@@ -247,6 +264,8 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
 
 	_cret = C.g_tls_backend_supports_dtls(_arg0)
+
+	runtime.KeepAlive(backend)
 
 	var _ok bool // out
 
@@ -266,6 +285,8 @@ func (backend *TLSBackend) SupportsTLS() bool {
 	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
 
 	_cret = C.g_tls_backend_supports_tls(_arg0)
+
+	runtime.KeepAlive(backend)
 
 	var _ok bool // out
 

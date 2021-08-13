@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -79,6 +80,8 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 
+	runtime.KeepAlive(baseStream)
+
 	var _bufferedOutputStream *BufferedOutputStream // out
 
 	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -98,6 +101,9 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
 
+	runtime.KeepAlive(baseStream)
+	runtime.KeepAlive(size)
+
 	var _bufferedOutputStream *BufferedOutputStream // out
 
 	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -113,6 +119,8 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -131,6 +139,8 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
 
@@ -153,6 +163,8 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	}
 
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(autoGrow)
 }
 
 // SetBufferSize sets the size of the internal buffer to size.
@@ -164,4 +176,6 @@ func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(size)
 }

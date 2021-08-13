@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -71,6 +72,8 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -90,6 +93,8 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _drop gdk.Dropper // out
 
 	if _cret != nil {
@@ -108,6 +113,8 @@ func (self *DropControllerMotion) IsPointer() bool {
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 

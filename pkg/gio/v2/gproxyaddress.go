@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -88,6 +89,14 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHo
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
+	runtime.KeepAlive(inetaddr)
+	runtime.KeepAlive(port)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(destHostname)
+	runtime.KeepAlive(destPort)
+	runtime.KeepAlive(username)
+	runtime.KeepAlive(password)
+
 	var _proxyAddress *ProxyAddress // out
 
 	_proxyAddress = wrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -105,6 +114,8 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_address_get_destination_hostname(_arg0)
+
+	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
@@ -124,6 +135,8 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 
 	_cret = C.g_proxy_address_get_destination_port(_arg0)
 
+	runtime.KeepAlive(proxy)
+
 	var _guint16 uint16 // out
 
 	_guint16 = uint16(_cret)
@@ -141,6 +154,8 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 
 	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
 
+	runtime.KeepAlive(proxy)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -156,6 +171,8 @@ func (proxy *ProxyAddress) Password() string {
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_address_get_password(_arg0)
+
+	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
@@ -175,6 +192,8 @@ func (proxy *ProxyAddress) Protocol() string {
 
 	_cret = C.g_proxy_address_get_protocol(_arg0)
 
+	runtime.KeepAlive(proxy)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -190,6 +209,8 @@ func (proxy *ProxyAddress) URI() string {
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_address_get_uri(_arg0)
+
+	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
@@ -208,6 +229,8 @@ func (proxy *ProxyAddress) Username() string {
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
 
 	_cret = C.g_proxy_address_get_username(_arg0)
+
+	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 

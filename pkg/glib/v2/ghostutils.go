@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -28,6 +29,8 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 
 	_cret = C.g_hostname_is_ascii_encoded(_arg1)
 
+	runtime.KeepAlive(hostname)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -49,6 +52,8 @@ func HostnameIsIPAddress(hostname string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_hostname_is_ip_address(_arg1)
+
+	runtime.KeepAlive(hostname)
 
 	var _ok bool // out
 
@@ -75,6 +80,8 @@ func HostnameIsNonASCII(hostname string) bool {
 
 	_cret = C.g_hostname_is_non_ascii(_arg1)
 
+	runtime.KeepAlive(hostname)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -94,6 +101,8 @@ func HostnameToASCII(hostname string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_hostname_to_ascii(_arg1)
+
+	runtime.KeepAlive(hostname)
 
 	var _utf8 string // out
 
@@ -120,6 +129,8 @@ func HostnameToUnicode(hostname string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_hostname_to_unicode(_arg1)
+
+	runtime.KeepAlive(hostname)
 
 	var _utf8 string // out
 

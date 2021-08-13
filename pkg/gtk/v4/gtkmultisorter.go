@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -84,6 +85,8 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 	sorter.Ref()
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sorter)
 }
 
 // Remove removes the sorter at the given position from the list of sorter used
@@ -98,4 +101,6 @@ func (self *MultiSorter) Remove(position uint) {
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
 }

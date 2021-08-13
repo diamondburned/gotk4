@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,9 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(widget)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -89,6 +93,8 @@ func (controller *EventControllerKey) Group() uint {
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -104,6 +110,8 @@ func (controller *EventControllerKey) ImContext() IMContexter {
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
+
+	runtime.KeepAlive(controller)
 
 	var _imContext IMContexter // out
 
@@ -121,4 +129,6 @@ func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
 	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(imContext.Native()))
 
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(imContext)
 }

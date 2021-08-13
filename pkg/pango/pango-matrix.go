@@ -92,6 +92,8 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(newMatrix)))
 
 	C.pango_matrix_concat(_arg0, _arg1)
+	runtime.KeepAlive(matrix)
+	runtime.KeepAlive(newMatrix)
 }
 
 // Copy copies a PangoMatrix.
@@ -104,6 +106,8 @@ func (matrix *Matrix) Copy() *Matrix {
 	}
 
 	_cret = C.pango_matrix_copy(_arg0)
+
+	runtime.KeepAlive(matrix)
 
 	var _ret *Matrix // out
 
@@ -133,6 +137,8 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
+	runtime.KeepAlive(matrix)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -158,6 +164,7 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	}
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(matrix)
 
 	var _xscale float64 // out
 	var _yscale float64 // out
@@ -179,6 +186,8 @@ func (matrix *Matrix) Rotate(degrees float64) {
 	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
+	runtime.KeepAlive(matrix)
+	runtime.KeepAlive(degrees)
 }
 
 // Scale changes the transformation represented by matrix to be the
@@ -194,6 +203,9 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	_arg2 = C.double(scaleY)
 
 	C.pango_matrix_scale(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(matrix)
+	runtime.KeepAlive(scaleX)
+	runtime.KeepAlive(scaleY)
 }
 
 // Translate changes the transformation represented by matrix to be the
@@ -209,4 +221,7 @@ func (matrix *Matrix) Translate(tx float64, ty float64) {
 	_arg2 = C.double(ty)
 
 	C.pango_matrix_translate(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(matrix)
+	runtime.KeepAlive(tx)
+	runtime.KeepAlive(ty)
 }

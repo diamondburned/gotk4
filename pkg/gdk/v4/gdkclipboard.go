@@ -70,6 +70,8 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 
 	_cret = C.gdk_clipboard_get_content(_arg0)
 
+	runtime.KeepAlive(clipboard)
+
 	var _contentProvider *ContentProvider // out
 
 	if _cret != nil {
@@ -88,6 +90,8 @@ func (clipboard *Clipboard) Display() *Display {
 
 	_cret = C.gdk_clipboard_get_display(_arg0)
 
+	runtime.KeepAlive(clipboard)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -104,6 +108,8 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
+
+	runtime.KeepAlive(clipboard)
 
 	var _contentFormats *ContentFormats // out
 
@@ -131,6 +137,8 @@ func (clipboard *Clipboard) IsLocal() bool {
 
 	_cret = C.gdk_clipboard_is_local(_arg0)
 
+	runtime.KeepAlive(clipboard)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -154,6 +162,9 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(result)
 
 	var _outMimeType string            // out
 	var _inputStream gio.InputStreamer // out
@@ -199,6 +210,9 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 	}
 
 	C.gdk_clipboard_read_text_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ReadTextFinish finishes an asynchronous clipboard read.
@@ -214,6 +228,9 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(result)
 
 	var _utf8 string // out
 	var _goerr error // out
@@ -256,6 +273,9 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 	}
 
 	C.gdk_clipboard_read_texture_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ReadTextureFinish finishes an asynchronous clipboard read.
@@ -271,6 +291,9 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(result)
 
 	var _texture Texturer // out
 	var _goerr error      // out
@@ -316,6 +339,11 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 	}
 
 	C.gdk_clipboard_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an asynchronous clipboard read.
@@ -331,6 +359,9 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(result)
 
 	var _value *externglib.Value // out
 	var _goerr error             // out
@@ -366,6 +397,9 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
 
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(provider)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -384,6 +418,8 @@ func (clipboard *Clipboard) Set(value *externglib.Value) {
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_clipboard_set_value(_arg0, _arg1)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(value)
 }
 
 // StoreAsync: asynchronously instructs the clipboard to store its contents
@@ -420,6 +456,10 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, call
 	}
 
 	C.gdk_clipboard_store_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // StoreFinish finishes an asynchronous clipboard store.
@@ -434,6 +474,8 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gdk_clipboard_store_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

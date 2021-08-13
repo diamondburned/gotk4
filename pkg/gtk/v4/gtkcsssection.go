@@ -52,6 +52,10 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 
 	_cret = C.gtk_css_section_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -71,6 +75,8 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 
 	_cret = C.gtk_css_section_get_end_location(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _cssLocation *CSSLocation // out
 
 	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -89,6 +95,8 @@ func (section *CSSSection) File() gio.Filer {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_file(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _file gio.Filer // out
 
@@ -111,6 +119,8 @@ func (section *CSSSection) Parent() *CSSSection {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _cssSection *CSSSection // out
 
@@ -135,6 +145,8 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 
 	_cret = C.gtk_css_section_get_start_location(_arg0)
 
+	runtime.KeepAlive(section)
+
 	var _cssLocation *CSSLocation // out
 
 	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -151,6 +163,8 @@ func (section *CSSSection) String() string {
 	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_to_string(_arg0)
+
+	runtime.KeepAlive(section)
 
 	var _utf8 string // out
 

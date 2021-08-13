@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -44,6 +45,8 @@ func DBusErrorEncodeGError(err error) string {
 
 	_cret = C.g_dbus_error_encode_gerror(_arg1)
 
+	runtime.KeepAlive(err)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -66,6 +69,8 @@ func DBusErrorGetRemoteError(err error) string {
 
 	_cret = C.g_dbus_error_get_remote_error(_arg1)
 
+	runtime.KeepAlive(err)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -86,6 +91,8 @@ func DBusErrorIsRemoteError(err error) bool {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_dbus_error_is_remote_error(_arg1)
+
+	runtime.KeepAlive(err)
 
 	var _ok bool // out
 
@@ -133,6 +140,9 @@ func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) err
 
 	_cret = C.g_dbus_error_new_for_dbus_error(_arg1, _arg2)
 
+	runtime.KeepAlive(dbusErrorName)
+	runtime.KeepAlive(dbusErrorMessage)
+
 	var _err error // out
 
 	_err = gerror.Take(unsafe.Pointer(_cret))
@@ -157,6 +167,10 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_error_register_error(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(errorDomain)
+	runtime.KeepAlive(errorCode)
+	runtime.KeepAlive(dbusErrorName)
 
 	var _ok bool // out
 
@@ -187,6 +201,9 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 	}
 
 	C.g_dbus_error_register_error_domain(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(errorDomainQuarkName)
+	runtime.KeepAlive(quarkVolatile)
+	runtime.KeepAlive(entries)
 }
 
 // DBusErrorStripRemoteError looks for extra information in the error message
@@ -202,6 +219,8 @@ func DBusErrorStripRemoteError(err error) bool {
 	_arg1 = (*C.GError)(gerror.New(err))
 
 	_cret = C.g_dbus_error_strip_remote_error(_arg1)
+
+	runtime.KeepAlive(err)
 
 	var _ok bool // out
 
@@ -226,6 +245,10 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_error_unregister_error(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(errorDomain)
+	runtime.KeepAlive(errorCode)
+	runtime.KeepAlive(dbusErrorName)
 
 	var _ok bool // out
 

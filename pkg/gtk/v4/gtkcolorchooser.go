@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -126,6 +127,10 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	}
 
 	C.gtk_color_chooser_add_palette(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(colorsPerLine)
+	runtime.KeepAlive(colors)
 }
 
 // RGBA gets the currently-selected color.
@@ -136,6 +141,7 @@ func (chooser *ColorChooser) RGBA() gdk.RGBA {
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
 	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
+	runtime.KeepAlive(chooser)
 
 	var _color gdk.RGBA // out
 
@@ -152,6 +158,8 @@ func (chooser *ColorChooser) UseAlpha() bool {
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
+
+	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
@@ -171,6 +179,8 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(color)
 }
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
@@ -185,4 +195,6 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	}
 
 	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(useAlpha)
 }

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -206,6 +207,9 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
 
+	runtime.KeepAlive(applicationId)
+	runtime.KeepAlive(flags)
+
 	var _application *Application // out
 
 	_application = wrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -235,6 +239,8 @@ func (application *Application) AddWindow(window *Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_application_add_window(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(window)
 }
 
 // AccelsForAction gets the accelerators that are currently associated with the
@@ -249,6 +255,9 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(detailedActionName)
 
 	var _utf8s []string // out
 
@@ -299,6 +308,9 @@ func (application *Application) ActionsForAccel(accel string) []string {
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(accel)
+
 	var _utf8s []string // out
 
 	defer C.free(unsafe.Pointer(_cret))
@@ -334,6 +346,8 @@ func (application *Application) ActiveWindow() *Window {
 
 	_cret = C.gtk_application_get_active_window(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _window *Window // out
 
 	if _cret != nil {
@@ -357,6 +371,9 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(id)
 
 	var _menu *gio.Menu // out
 
@@ -384,6 +401,8 @@ func (application *Application) Menubar() gio.MenuModeller {
 
 	_cret = C.gtk_application_get_menubar(_arg0)
 
+	runtime.KeepAlive(application)
+
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
@@ -406,6 +425,9 @@ func (application *Application) WindowByID(id uint) *Window {
 	_arg1 = C.guint(id)
 
 	_cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(id)
 
 	var _window *Window // out
 
@@ -431,6 +453,8 @@ func (application *Application) Windows() []Window {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_get_windows(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _list []Window // out
 
@@ -485,6 +509,11 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(reason)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -503,6 +532,8 @@ func (application *Application) ListActionDescriptions() []string {
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_list_action_descriptions(_arg0)
+
+	runtime.KeepAlive(application)
 
 	var _utf8s []string // out
 
@@ -540,6 +571,8 @@ func (application *Application) RemoveWindow(window *Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_application_remove_window(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(window)
 }
 
 // SetAccelsForAction sets zero or more keyboard accelerators that will trigger
@@ -576,6 +609,9 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 	}
 
 	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(detailedActionName)
+	runtime.KeepAlive(accels)
 }
 
 // SetMenubar sets or unsets the menubar for windows of application.
@@ -605,6 +641,8 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	}
 
 	C.gtk_application_set_menubar(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(menubar)
 }
 
 // Uninhibit removes an inhibitor that has been previously established.
@@ -620,4 +658,6 @@ func (application *Application) Uninhibit(cookie uint) {
 	_arg1 = C.guint(cookie)
 
 	C.gtk_application_uninhibit(_arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(cookie)
 }

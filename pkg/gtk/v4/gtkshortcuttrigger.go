@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -65,6 +66,9 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
+
 	var _alternativeTrigger *AlternativeTrigger // out
 
 	_alternativeTrigger = wrapAlternativeTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -83,6 +87,8 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 
 	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
@@ -100,6 +106,8 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_alternative_trigger_get_second(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
@@ -140,6 +148,9 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 
 	_cret = C.gtk_keyval_trigger_new(_arg1, _arg2)
 
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
 	var _keyvalTrigger *KeyvalTrigger // out
 
 	_keyvalTrigger = wrapKeyvalTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -156,6 +167,8 @@ func (self *KeyvalTrigger) Keyval() uint {
 
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -171,6 +184,8 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_keyval_trigger_get_modifiers(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _modifierType gdk.ModifierType // out
 
@@ -215,6 +230,8 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 
 	_cret = C.gtk_mnemonic_trigger_new(_arg1)
 
+	runtime.KeepAlive(keyval)
+
 	var _mnemonicTrigger *MnemonicTrigger // out
 
 	_mnemonicTrigger = wrapMnemonicTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -230,6 +247,8 @@ func (self *MnemonicTrigger) Keyval() uint {
 	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _guint uint // out
 
@@ -349,6 +368,8 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 
 	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _shortcutTrigger *ShortcutTrigger // out
 
 	if _cret != nil {
@@ -372,6 +393,9 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
+	runtime.KeepAlive(trigger1)
+	runtime.KeepAlive(trigger2)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -392,6 +416,9 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	_arg1 = C.gconstpointer(unsafe.Pointer(trigger2.Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(trigger1)
+	runtime.KeepAlive(trigger2)
 
 	var _ok bool // out
 
@@ -418,6 +445,8 @@ func (trigger *ShortcutTrigger) Hash() uint {
 	_arg0 = C.gconstpointer(unsafe.Pointer(trigger.Native()))
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
+
+	runtime.KeepAlive(trigger)
 
 	var _guint uint // out
 
@@ -446,6 +475,9 @@ func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(display)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -465,6 +497,8 @@ func (self *ShortcutTrigger) String() string {
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -488,6 +522,10 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	}
 
 	_cret = C.gtk_shortcut_trigger_trigger(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(enableMnemonics)
 
 	var _keyMatch gdk.KeyMatch // out
 

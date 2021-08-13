@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -124,6 +125,9 @@ func (vfs *VFS) FileForPath(path string) Filer {
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(path)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -146,6 +150,9 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(uri)
+
 	var _file Filer // out
 
 	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
@@ -161,6 +168,8 @@ func (vfs *VFS) SupportedURISchemes() []string {
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 
 	_cret = C.g_vfs_get_supported_uri_schemes(_arg0)
+
+	runtime.KeepAlive(vfs)
 
 	var _utf8s []string // out
 
@@ -190,6 +199,8 @@ func (vfs *VFS) IsActive() bool {
 
 	_cret = C.g_vfs_is_active(_arg0)
 
+	runtime.KeepAlive(vfs)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -212,6 +223,9 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
+
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(parseName)
 
 	var _file Filer // out
 
@@ -267,6 +281,11 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, pars
 
 	_cret = C.g_vfs_register_uri_scheme(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(scheme)
+	runtime.KeepAlive(uriFunc)
+	runtime.KeepAlive(parseNameFunc)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -288,6 +307,9 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
+
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(scheme)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -113,6 +114,8 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 
 	_cret = C.gtk_size_group_new(_arg1)
 
+	runtime.KeepAlive(mode)
+
 	var _sizeGroup *SizeGroup // out
 
 	_sizeGroup = wrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -138,6 +141,8 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
+	runtime.KeepAlive(sizeGroup)
+	runtime.KeepAlive(widget)
 }
 
 // Mode gets the current mode of the size group.
@@ -148,6 +153,8 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
 
 	_cret = C.gtk_size_group_get_mode(_arg0)
+
+	runtime.KeepAlive(sizeGroup)
 
 	var _sizeGroupMode SizeGroupMode // out
 
@@ -165,6 +172,8 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
+	runtime.KeepAlive(sizeGroup)
+	runtime.KeepAlive(widget)
 }
 
 // SetMode sets the GtkSizeGroupMode of the size group.
@@ -181,4 +190,6 @@ func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 	_arg1 = C.GtkSizeGroupMode(mode)
 
 	C.gtk_size_group_set_mode(_arg0, _arg1)
+	runtime.KeepAlive(sizeGroup)
+	runtime.KeepAlive(mode)
 }

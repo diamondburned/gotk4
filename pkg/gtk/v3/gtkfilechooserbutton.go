@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -116,6 +117,9 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 
 	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
 
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(action)
+
 	var _fileChooserButton *FileChooserButton // out
 
 	_fileChooserButton = wrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -140,6 +144,8 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 
 	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
 
+	runtime.KeepAlive(dialog)
+
 	var _fileChooserButton *FileChooserButton // out
 
 	_fileChooserButton = wrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -158,6 +164,8 @@ func (button *FileChooserButton) FocusOnClick() bool {
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
@@ -178,6 +186,8 @@ func (button *FileChooserButton) Title() string {
 
 	_cret = C.gtk_file_chooser_button_get_title(_arg0)
 
+	runtime.KeepAlive(button)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -194,6 +204,8 @@ func (button *FileChooserButton) WidthChars() int {
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 
 	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
+
+	runtime.KeepAlive(button)
 
 	var _gint int // out
 
@@ -218,6 +230,8 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	}
 
 	C.gtk_file_chooser_button_set_focus_on_click(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(focusOnClick)
 }
 
 // SetTitle modifies the title of the browse dialog used by button.
@@ -230,6 +244,8 @@ func (button *FileChooserButton) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_button_set_title(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(title)
 }
 
 // SetWidthChars sets the width (in characters) that button will use to n_chars.
@@ -241,4 +257,6 @@ func (button *FileChooserButton) SetWidthChars(nChars int) {
 	_arg1 = C.gint(nChars)
 
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(nChars)
 }

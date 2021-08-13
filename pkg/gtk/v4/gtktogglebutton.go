@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -172,6 +173,8 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _toggleButton *ToggleButton // out
 
 	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -192,6 +195,8 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _toggleButton *ToggleButton // out
 
 	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
@@ -209,6 +214,8 @@ func (toggleButton *ToggleButton) Active() bool {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
+
+	runtime.KeepAlive(toggleButton)
 
 	var _ok bool // out
 
@@ -236,6 +243,8 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	}
 
 	C.gtk_toggle_button_set_active(_arg0, _arg1)
+	runtime.KeepAlive(toggleButton)
+	runtime.KeepAlive(isActive)
 }
 
 // SetGroup adds self to the group of group.
@@ -258,6 +267,8 @@ func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	}
 
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
+	runtime.KeepAlive(toggleButton)
+	runtime.KeepAlive(group)
 }
 
 // Toggled emits the ::toggled signal on the GtkToggleButton.
@@ -269,4 +280,5 @@ func (toggleButton *ToggleButton) Toggled() {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
+	runtime.KeepAlive(toggleButton)
 }

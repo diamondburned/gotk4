@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -140,6 +141,8 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 
 	_cret = C.gtk_menu_item_new_with_label(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _menuItem *MenuItem // out
 
 	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -160,6 +163,8 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 
 	_cret = C.gtk_menu_item_new_with_mnemonic(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _menuItem *MenuItem // out
 
 	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -174,6 +179,7 @@ func (menuItem *MenuItem) Activate() {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_item_activate(_arg0)
+	runtime.KeepAlive(menuItem)
 }
 
 // Deselect emits the MenuItem::deselect signal on the given item.
@@ -183,6 +189,7 @@ func (menuItem *MenuItem) Deselect() {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_item_deselect(_arg0)
+	runtime.KeepAlive(menuItem)
 }
 
 // AccelPath: retrieve the accelerator path that was previously set on
@@ -196,6 +203,8 @@ func (menuItem *MenuItem) AccelPath() string {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_accel_path(_arg0)
+
+	runtime.KeepAlive(menuItem)
 
 	var _utf8 string // out
 
@@ -215,6 +224,8 @@ func (menuItem *MenuItem) Label() string {
 
 	_cret = C.gtk_menu_item_get_label(_arg0)
 
+	runtime.KeepAlive(menuItem)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -231,6 +242,8 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
+
+	runtime.KeepAlive(menuItem)
 
 	var _ok bool // out
 
@@ -253,6 +266,8 @@ func (menuItem *MenuItem) RightJustified() bool {
 
 	_cret = C.gtk_menu_item_get_right_justified(_arg0)
 
+	runtime.KeepAlive(menuItem)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -271,6 +286,8 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	_cret = C.gtk_menu_item_get_submenu(_arg0)
+
+	runtime.KeepAlive(menuItem)
 
 	var _widget Widgetter // out
 
@@ -291,6 +308,8 @@ func (menuItem *MenuItem) UseUnderline() bool {
 
 	_cret = C.gtk_menu_item_get_use_underline(_arg0)
 
+	runtime.KeepAlive(menuItem)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -307,6 +326,7 @@ func (menuItem *MenuItem) Select() {
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 
 	C.gtk_menu_item_select(_arg0)
+	runtime.KeepAlive(menuItem)
 }
 
 // SetAccelPath: set the accelerator path on menu_item, through which runtime
@@ -338,6 +358,8 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	}
 
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(accelPath)
 }
 
 // SetLabel sets text on the menu_item label
@@ -350,6 +372,8 @@ func (menuItem *MenuItem) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_item_set_label(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(label)
 }
 
 // SetReserveIndicator sets whether the menu_item should reserve space for the
@@ -366,6 +390,8 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 	}
 
 	C.gtk_menu_item_set_reserve_indicator(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(reserve)
 }
 
 // SetRightJustified sets whether the menu item appears justified at the right
@@ -386,6 +412,8 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	}
 
 	C.gtk_menu_item_set_right_justified(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(rightJustified)
 }
 
 // SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
@@ -400,6 +428,8 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	}
 
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(submenu)
 }
 
 // SetUseUnderline: if true, an underline in the text indicates the next
@@ -414,6 +444,8 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 	}
 
 	C.gtk_menu_item_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(setting)
 }
 
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
@@ -426,4 +458,6 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	_arg1 = C.gint(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(allocation)
 }

@@ -34,6 +34,9 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(timestamp)
 }
 
 // ShowURIFull: this function launches the default application for showing a
@@ -69,6 +72,11 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 	}
 
 	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(timestamp)
+	runtime.KeepAlive(callback)
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
@@ -82,6 +90,8 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 

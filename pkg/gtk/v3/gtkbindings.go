@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -33,6 +34,10 @@ func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.Modi
 
 	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -53,6 +58,9 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 	_arg2 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
+
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
@@ -153,6 +161,9 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 
 	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
 
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(signalDesc)
+
 	var _tokenType glib.TokenType // out
 
 	_tokenType = glib.TokenType(_cret)
@@ -172,6 +183,9 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	_arg3 = C.GdkModifierType(modifiers)
 
 	C.gtk_binding_entry_remove(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
 }
 
 // BindingEntrySkip: install a binding on binding_set which causes key lookups
@@ -186,6 +200,9 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 	_arg3 = C.GdkModifierType(modifiers)
 
 	C.gtk_binding_entry_skip(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
 }
 
 // BindingSet: binding set maintains a list of activatable key bindings. A
@@ -242,6 +259,11 @@ func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, 
 
 	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+	runtime.KeepAlive(object)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -270,6 +292,10 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 	_arg3 = C.GtkPathPriorityType(priority)
 
 	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(pathType)
+	runtime.KeepAlive(pathPattern)
+	runtime.KeepAlive(priority)
 }
 
 // BindingSetFind: find a binding set by its globally unique name.
@@ -284,6 +310,8 @@ func BindingSetFind(setName string) *BindingSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_binding_set_find(_arg1)
+
+	runtime.KeepAlive(setName)
 
 	var _bindingSet *BindingSet // out
 

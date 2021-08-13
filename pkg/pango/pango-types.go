@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -55,6 +56,8 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	}
 
 	C.pango_extents_to_pixels(_arg1, _arg2)
+	runtime.KeepAlive(inclusive)
+	runtime.KeepAlive(nearest)
 }
 
 // UnitsFromDouble converts a floating-point number to Pango units.
@@ -68,6 +71,8 @@ func UnitsFromDouble(d float64) int {
 	_arg1 = C.double(d)
 
 	_cret = C.pango_units_from_double(_arg1)
+
+	runtime.KeepAlive(d)
 
 	var _gint int // out
 
@@ -86,6 +91,8 @@ func UnitsToDouble(i int) float64 {
 	_arg1 = C.int(i)
 
 	_cret = C.pango_units_to_double(_arg1)
+
+	runtime.KeepAlive(i)
 
 	var _gdouble float64 // out
 

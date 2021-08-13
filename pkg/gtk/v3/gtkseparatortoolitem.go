@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -97,6 +98,8 @@ func (item *SeparatorToolItem) Draw() bool {
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
+	runtime.KeepAlive(item)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -119,4 +122,6 @@ func (item *SeparatorToolItem) SetDraw(draw bool) {
 	}
 
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(draw)
 }

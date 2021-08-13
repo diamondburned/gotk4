@@ -126,6 +126,8 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 
 	_cret = C.g_buffered_input_stream_new(_arg1)
 
+	runtime.KeepAlive(baseStream)
+
 	var _bufferedInputStream *BufferedInputStream // out
 
 	_bufferedInputStream = wrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -144,6 +146,9 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
+
+	runtime.KeepAlive(baseStream)
+	runtime.KeepAlive(size)
 
 	var _bufferedInputStream *BufferedInputStream // out
 
@@ -193,6 +198,10 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+
 	var _gssize int  // out
 	var _goerr error // out
 
@@ -232,6 +241,11 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioP
 	}
 
 	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // FillFinish finishes an asynchronous read.
@@ -245,6 +259,9 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
 
 	var _gssize int  // out
 	var _goerr error // out
@@ -266,6 +283,8 @@ func (stream *BufferedInputStream) Available() uint {
 
 	_cret = C.g_buffered_input_stream_get_available(_arg0)
 
+	runtime.KeepAlive(stream)
+
 	var _gsize uint // out
 
 	_gsize = uint(_cret)
@@ -281,6 +300,8 @@ func (stream *BufferedInputStream) BufferSize() uint {
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_buffered_input_stream_get_buffer_size(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
 
@@ -306,6 +327,10 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	_arg2 = C.gsize(offset)
 
 	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(offset)
 
 	var _gsize uint // out
 
@@ -342,6 +367,9 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+
 	var _gint int    // out
 	var _goerr error // out
 
@@ -364,4 +392,6 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(size)
 }

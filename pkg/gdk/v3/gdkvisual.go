@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -183,6 +184,8 @@ func (visual *Visual) BitsPerRGB() int {
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 
+	runtime.KeepAlive(visual)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -205,6 +208,7 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift int, precision int)
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(visual)
 
 	var _mask uint32   // out
 	var _shift int     // out
@@ -231,6 +235,8 @@ func (visual *Visual) ByteOrder() ByteOrder {
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
 
+	runtime.KeepAlive(visual)
+
 	var _byteOrder ByteOrder // out
 
 	_byteOrder = ByteOrder(_cret)
@@ -252,6 +258,8 @@ func (visual *Visual) ColormapSize() int {
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 
+	runtime.KeepAlive(visual)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -267,6 +275,8 @@ func (visual *Visual) Depth() int {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_depth(_arg0)
+
+	runtime.KeepAlive(visual)
 
 	var _gint int // out
 
@@ -290,6 +300,7 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int, precision int
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(visual)
 
 	var _mask uint32   // out
 	var _shift int     // out
@@ -316,6 +327,7 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int, precision int) 
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(visual)
 
 	var _mask uint32   // out
 	var _shift int     // out
@@ -337,6 +349,8 @@ func (visual *Visual) Screen() *Screen {
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 
+	runtime.KeepAlive(visual)
+
 	var _screen *Screen // out
 
 	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
@@ -352,6 +366,8 @@ func (visual *Visual) VisualType() VisualType {
 	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
+
+	runtime.KeepAlive(visual)
 
 	var _visualType VisualType // out
 
@@ -427,6 +443,9 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 
 	_cret = C.gdk_visual_get_best_with_both(_arg1, _arg2)
 
+	runtime.KeepAlive(depth)
+	runtime.KeepAlive(visualType)
+
 	var _visual *Visual // out
 
 	if _cret != nil {
@@ -451,6 +470,8 @@ func VisualGetBestWithDepth(depth int) *Visual {
 
 	_cret = C.gdk_visual_get_best_with_depth(_arg1)
 
+	runtime.KeepAlive(depth)
+
 	var _visual *Visual // out
 
 	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
@@ -472,6 +493,8 @@ func VisualGetBestWithType(visualType VisualType) *Visual {
 	_arg1 = C.GdkVisualType(visualType)
 
 	_cret = C.gdk_visual_get_best_with_type(_arg1)
+
+	runtime.KeepAlive(visualType)
 
 	var _visual *Visual // out
 

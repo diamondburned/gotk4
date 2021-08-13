@@ -310,6 +310,10 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+
 	var _utf8 string // out
 	var _goerr error // out
 
@@ -345,6 +349,10 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 	}
 
 	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
 }
 
 // LookupByAddressFinish retrieves the result of a previous call to
@@ -363,6 +371,9 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _utf8 string // out
 	var _goerr error // out
@@ -414,6 +425,10 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 
 	_cret = C.g_resolver_lookup_by_name(_arg0, _arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+
 	var _list []InetAddress // out
 	var _goerr error        // out
 
@@ -456,6 +471,10 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 	}
 
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(callback)
 }
 
 // LookupByNameFinish retrieves the result of a call to
@@ -474,6 +493,9 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _list []InetAddress // out
 	var _goerr error        // out
@@ -514,6 +536,11 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	_arg2 = C.GResolverNameLookupFlags(flags)
 
 	_cret = C.g_resolver_lookup_by_name_with_flags(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(flags)
 
 	var _list []InetAddress // out
 	var _goerr error        // out
@@ -559,6 +586,11 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 	}
 
 	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupByNameWithFlagsFinish retrieves the result of a call to
@@ -577,6 +609,9 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_by_name_with_flags_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _list []InetAddress // out
 	var _goerr error        // out
@@ -623,6 +658,11 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 	_arg2 = C.GResolverRecordType(recordType)
 
 	_cret = C.g_resolver_lookup_records(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(rrname)
+	runtime.KeepAlive(recordType)
 
 	var _list []*glib.Variant // out
 	var _goerr error          // out
@@ -671,6 +711,11 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 	}
 
 	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(rrname)
+	runtime.KeepAlive(recordType)
+	runtime.KeepAlive(callback)
 }
 
 // LookupRecordsFinish retrieves the result of a previous call to
@@ -690,6 +735,9 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_records_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _list []*glib.Variant // out
 	var _goerr error          // out
@@ -753,6 +801,12 @@ func (resolver *Resolver) LookupService(ctx context.Context, service string, pro
 
 	_cret = C.g_resolver_lookup_service(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(domain)
+
 	var _list []*SrvTarget // out
 	var _goerr error       // out
 
@@ -804,6 +858,12 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service string
 	}
 
 	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(callback)
 }
 
 // LookupServiceFinish retrieves the result of a previous call to
@@ -822,6 +882,9 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_resolver_lookup_service_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(result)
 
 	var _list []*SrvTarget // out
 	var _goerr error       // out
@@ -858,6 +921,7 @@ func (resolver *Resolver) SetDefault() {
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 
 	C.g_resolver_set_default(_arg0)
+	runtime.KeepAlive(resolver)
 }
 
 // ResolverGetDefault gets the default #GResolver. You should unref it when you

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -133,6 +134,7 @@ func (source *DragSource) DragCancel() {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	C.gtk_drag_source_drag_cancel(_arg0)
+	runtime.KeepAlive(source)
 }
 
 // Actions gets the actions that are currently set on the GtkDragSource.
@@ -143,6 +145,8 @@ func (source *DragSource) Actions() gdk.DragAction {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_actions(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _dragAction gdk.DragAction // out
 
@@ -159,6 +163,8 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_content(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _contentProvider *gdk.ContentProvider // out
 
@@ -182,6 +188,8 @@ func (source *DragSource) Drag() gdk.Dragger {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
+
+	runtime.KeepAlive(source)
 
 	var _drag gdk.Dragger // out
 
@@ -208,6 +216,8 @@ func (source *DragSource) SetActions(actions gdk.DragAction) {
 	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drag_source_set_actions(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(actions)
 }
 
 // SetContent sets a content provider on a GtkDragSource.
@@ -230,6 +240,8 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	}
 
 	C.gtk_drag_source_set_content(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(content)
 }
 
 // SetIcon sets a paintable to use as icon during DND operations.
@@ -255,4 +267,8 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) 
 	_arg3 = C.int(hotY)
 
 	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }

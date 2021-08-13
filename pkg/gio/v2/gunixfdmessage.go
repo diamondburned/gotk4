@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -83,6 +84,8 @@ func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
+	runtime.KeepAlive(fdList)
+
 	var _unixFDMessage *UnixFDMessage // out
 
 	_unixFDMessage = wrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -107,6 +110,8 @@ func (message *UnixFDMessage) AppendFd(fd int) error {
 	_arg1 = C.gint(fd)
 
 	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(fd)
 
 	var _goerr error // out
 
@@ -127,6 +132,8 @@ func (message *UnixFDMessage) FdList() *UnixFDList {
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(message.Native()))
 
 	_cret = C.g_unix_fd_message_get_fd_list(_arg0)
+
+	runtime.KeepAlive(message)
 
 	var _unixFDList *UnixFDList // out
 

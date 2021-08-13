@@ -154,6 +154,8 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 
 	_cret = C.gtk_text_buffer_new(_arg1)
 
+	runtime.KeepAlive(table)
+
 	var _textBuffer *TextBuffer // out
 
 	_textBuffer = wrapTextBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -177,6 +179,9 @@ func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_add_mark(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
+	runtime.KeepAlive(where)
 }
 
 // AddSelectionClipboard adds clipboard to the list of clipboards in which the
@@ -190,6 +195,8 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard *Clipboard) {
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	C.gtk_text_buffer_add_selection_clipboard(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
 }
 
 // ApplyTag emits the “apply-tag” signal on buffer. The default handler for the
@@ -207,6 +214,10 @@ func (buffer *TextBuffer) ApplyTag(tag *TextTag, start *TextIter, end *TextIter)
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_apply_tag(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // ApplyTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag table to
@@ -224,6 +235,10 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start *TextIter, end *Text
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_apply_tag_by_name(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // Backspace performs the appropriate action as if the user hit the delete key
@@ -252,6 +267,11 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive bool, defaultEdi
 	}
 
 	_cret = C.gtk_text_buffer_backspace(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(interactive)
+	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
 
@@ -283,6 +303,7 @@ func (buffer *TextBuffer) BeginUserAction() {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_buffer_begin_user_action(_arg0)
+	runtime.KeepAlive(buffer)
 }
 
 // CopyClipboard copies the currently-selected text to a clipboard.
@@ -294,6 +315,8 @@ func (buffer *TextBuffer) CopyClipboard(clipboard *Clipboard) {
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	C.gtk_text_buffer_copy_clipboard(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
 }
 
 // CreateChildAnchor: this is a convenience function which simply creates a
@@ -310,6 +333,9 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_buffer_create_child_anchor(_arg0, _arg1)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
 
 	var _textChildAnchor *TextChildAnchor // out
 
@@ -352,6 +378,11 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 
 	_cret = C.gtk_text_buffer_create_mark(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(markName)
+	runtime.KeepAlive(where)
+	runtime.KeepAlive(leftGravity)
+
 	var _textMark *TextMark // out
 
 	_textMark = wrapTextMark(externglib.Take(unsafe.Pointer(_cret)))
@@ -373,6 +404,9 @@ func (buffer *TextBuffer) CutClipboard(clipboard *Clipboard, defaultEditable boo
 	}
 
 	C.gtk_text_buffer_cut_clipboard(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(defaultEditable)
 }
 
 // Delete deletes text between start and end. The order of start and end is not
@@ -391,6 +425,9 @@ func (buffer *TextBuffer) Delete(start *TextIter, end *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_delete(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // DeleteInteractive deletes all editable text in the given range. Calls
@@ -412,6 +449,11 @@ func (buffer *TextBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIt
 	}
 
 	_cret = C.gtk_text_buffer_delete_interactive(_arg0, _arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(startIter)
+	runtime.KeepAlive(endIter)
+	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
 
@@ -438,6 +480,8 @@ func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	C.gtk_text_buffer_delete_mark(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
 }
 
 // DeleteMarkByName deletes the mark named name; the mark must exist. See
@@ -451,6 +495,8 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_text_buffer_delete_mark_by_name(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(name)
 }
 
 // DeleteSelection deletes the range between the “insert” and “selection_bound”
@@ -473,6 +519,10 @@ func (buffer *TextBuffer) DeleteSelection(interactive bool, defaultEditable bool
 
 	_cret = C.gtk_text_buffer_delete_selection(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(interactive)
+	runtime.KeepAlive(defaultEditable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -491,6 +541,7 @@ func (buffer *TextBuffer) EndUserAction() {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_buffer_end_user_action(_arg0)
+	runtime.KeepAlive(buffer)
 }
 
 // Bounds retrieves the first and last iterators in the buffer, i.e. the entire
@@ -503,6 +554,7 @@ func (buffer *TextBuffer) Bounds() (start TextIter, end TextIter) {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_buffer_get_bounds(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(buffer)
 
 	var _start TextIter // out
 	var _end TextIter   // out
@@ -525,6 +577,8 @@ func (buffer *TextBuffer) CharCount() int {
 
 	_cret = C.gtk_text_buffer_get_char_count(_arg0)
 
+	runtime.KeepAlive(buffer)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -544,6 +598,8 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_copy_target_list(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _targetList *TargetList // out
 
@@ -569,6 +625,7 @@ func (buffer *TextBuffer) EndIter() TextIter {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_buffer_get_end_iter(_arg0, &_arg1)
+	runtime.KeepAlive(buffer)
 
 	var _iter TextIter // out
 
@@ -585,6 +642,8 @@ func (buffer *TextBuffer) HasSelection() bool {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_has_selection(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _ok bool // out
 
@@ -606,6 +665,8 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 
 	_cret = C.gtk_text_buffer_get_insert(_arg0)
 
+	runtime.KeepAlive(buffer)
+
 	var _textMark *TextMark // out
 
 	_textMark = wrapTextMark(externglib.Take(unsafe.Pointer(_cret)))
@@ -623,6 +684,8 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) TextIter {
 	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	C.gtk_text_buffer_get_iter_at_child_anchor(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(anchor)
 
 	var _iter TextIter // out
 
@@ -642,6 +705,8 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
 	_arg2 = C.gint(lineNumber)
 
 	C.gtk_text_buffer_get_iter_at_line(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(lineNumber)
 
 	var _iter TextIter // out
 
@@ -670,6 +735,9 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIte
 	_arg3 = C.gint(byteIndex)
 
 	C.gtk_text_buffer_get_iter_at_line_index(_arg0, &_arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(lineNumber)
+	runtime.KeepAlive(byteIndex)
 
 	var _iter TextIter // out
 
@@ -698,6 +766,9 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber int, charOffset int) TextI
 	_arg3 = C.gint(charOffset)
 
 	C.gtk_text_buffer_get_iter_at_line_offset(_arg0, &_arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(lineNumber)
+	runtime.KeepAlive(charOffset)
 
 	var _iter TextIter // out
 
@@ -716,6 +787,8 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) TextIter {
 	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	C.gtk_text_buffer_get_iter_at_mark(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
 
 	var _iter TextIter // out
 
@@ -737,6 +810,8 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int) TextIter {
 	_arg2 = C.gint(charOffset)
 
 	C.gtk_text_buffer_get_iter_at_offset(_arg0, &_arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(charOffset)
 
 	var _iter TextIter // out
 
@@ -754,6 +829,8 @@ func (buffer *TextBuffer) LineCount() int {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_line_count(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _gint int // out
 
@@ -775,6 +852,9 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 
 	_cret = C.gtk_text_buffer_get_mark(_arg0, _arg1)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(name)
+
 	var _textMark *TextMark // out
 
 	if _cret != nil {
@@ -794,6 +874,8 @@ func (buffer *TextBuffer) Modified() bool {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_modified(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _ok bool // out
 
@@ -816,6 +898,8 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_paste_target_list(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _targetList *TargetList // out
 
@@ -847,6 +931,8 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 
 	_cret = C.gtk_text_buffer_get_selection_bound(_arg0)
 
+	runtime.KeepAlive(buffer)
+
 	var _textMark *TextMark // out
 
 	_textMark = wrapTextMark(externglib.Take(unsafe.Pointer(_cret)))
@@ -868,6 +954,8 @@ func (buffer *TextBuffer) SelectionBounds() (start TextIter, end TextIter, ok bo
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, &_arg1, &_arg2)
+
+	runtime.KeepAlive(buffer)
 
 	var _start TextIter // out
 	var _end TextIter   // out
@@ -906,6 +994,11 @@ func (buffer *TextBuffer) Slice(start *TextIter, end *TextIter, includeHiddenCha
 
 	_cret = C.gtk_text_buffer_get_slice(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(includeHiddenChars)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -924,6 +1017,7 @@ func (buffer *TextBuffer) StartIter() TextIter {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_text_buffer_get_start_iter(_arg0, &_arg1)
+	runtime.KeepAlive(buffer)
 
 	var _iter TextIter // out
 
@@ -940,6 +1034,8 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_text_buffer_get_tag_table(_arg0)
+
+	runtime.KeepAlive(buffer)
 
 	var _textTagTable *TextTagTable // out
 
@@ -970,6 +1066,11 @@ func (buffer *TextBuffer) Text(start *TextIter, end *TextIter, includeHiddenChar
 
 	_cret = C.gtk_text_buffer_get_text(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(includeHiddenChars)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -997,6 +1098,10 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int) {
 	_arg3 = C.gint(len)
 
 	C.gtk_text_buffer_insert(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
 }
 
 // InsertAtCursor: simply calls gtk_text_buffer_insert(), using the current
@@ -1012,6 +1117,9 @@ func (buffer *TextBuffer) InsertAtCursor(text string, len int) {
 	_arg2 = C.gint(len)
 
 	C.gtk_text_buffer_insert_at_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
 }
 
 // InsertChildAnchor inserts a child widget anchor into the text buffer at iter.
@@ -1034,6 +1142,9 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	C.gtk_text_buffer_insert_child_anchor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(anchor)
 }
 
 // InsertInteractive: like gtk_text_buffer_insert(), but the insertion will not
@@ -1062,6 +1173,12 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int
 	}
 
 	_cret = C.gtk_text_buffer_insert_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
 
@@ -1095,6 +1212,11 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int, defaul
 
 	_cret = C.gtk_text_buffer_insert_interactive_at_cursor(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(defaultEditable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1122,6 +1244,10 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	_arg3 = C.gint(len)
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(markup)
+	runtime.KeepAlive(len)
 }
 
 // InsertPixbuf inserts an image into the text buffer at iter. The image will be
@@ -1141,6 +1267,9 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_text_buffer_insert_pixbuf(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(pixbuf)
 }
 
 // InsertRange copies text, tags, and pixbufs between start and end (the order
@@ -1163,6 +1292,10 @@ func (buffer *TextBuffer) InsertRange(iter *TextIter, start *TextIter, end *Text
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_insert_range(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // InsertRangeInteractive: same as gtk_text_buffer_insert_range(), but does
@@ -1188,6 +1321,12 @@ func (buffer *TextBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter
 
 	_cret = C.gtk_text_buffer_insert_range_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(defaultEditable)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -1209,6 +1348,9 @@ func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_move_mark(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
+	runtime.KeepAlive(where)
 }
 
 // MoveMarkByName moves the mark named name (which must exist) to location
@@ -1224,6 +1366,9 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_move_mark_by_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(where)
 }
 
 // PasteClipboard pastes the contents of a clipboard. If override_location is
@@ -1249,6 +1394,10 @@ func (buffer *TextBuffer) PasteClipboard(clipboard *Clipboard, overrideLocation 
 	}
 
 	C.gtk_text_buffer_paste_clipboard(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(overrideLocation)
+	runtime.KeepAlive(defaultEditable)
 }
 
 // PlaceCursor: this function moves the “insert” and “selection_bound” marks
@@ -1265,6 +1414,8 @@ func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_place_cursor(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(where)
 }
 
 // RemoveAllTags removes all tags in the range between start and end. Be careful
@@ -1281,6 +1432,9 @@ func (buffer *TextBuffer) RemoveAllTags(start *TextIter, end *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_remove_all_tags(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // RemoveSelectionClipboard removes a Clipboard added with
@@ -1293,6 +1447,8 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *Clipboard) {
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	C.gtk_text_buffer_remove_selection_clipboard(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
 }
 
 // RemoveTag emits the “remove-tag” signal. The default handler for the signal
@@ -1310,6 +1466,10 @@ func (buffer *TextBuffer) RemoveTag(tag *TextTag, start *TextIter, end *TextIter
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_remove_tag(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // RemoveTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag table
@@ -1327,6 +1487,10 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start *TextIter, end *Tex
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
 	C.gtk_text_buffer_remove_tag_by_name(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // SelectRange: this function moves the “insert” and “selection_bound” marks
@@ -1345,6 +1509,9 @@ func (buffer *TextBuffer) SelectRange(ins *TextIter, bound *TextIter) {
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(bound)))
 
 	C.gtk_text_buffer_select_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ins)
+	runtime.KeepAlive(bound)
 }
 
 // SetModified: used to keep track of whether the buffer has been modified since
@@ -1362,6 +1529,8 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 	}
 
 	C.gtk_text_buffer_set_modified(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(setting)
 }
 
 // SetText deletes current contents of buffer, and inserts text instead. If len
@@ -1377,4 +1546,7 @@ func (buffer *TextBuffer) SetText(text string, len int) {
 	_arg2 = C.gint(len)
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
 }

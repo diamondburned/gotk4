@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -95,6 +96,8 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _renderer gsk.Rendererer // out
 
 	_renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
@@ -110,6 +113,8 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_get_surface(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _surface gdk.Surfacer // out
 
@@ -130,6 +135,7 @@ func (self *NativeSurface) SurfaceTransform() (x float64, y float64) {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(self)
 
 	var _x float64 // out
 	var _y float64 // out
@@ -149,6 +155,7 @@ func (self *NativeSurface) Realize() {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_realize(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Unrealize unrealizes a GtkNative.
@@ -160,6 +167,7 @@ func (self *NativeSurface) Unrealize() {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_unrealize(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // NativeSurfaceGetForSurface finds the GtkNative associated with the surface.
@@ -170,6 +178,8 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gtk_native_get_for_surface(_arg1)
+
+	runtime.KeepAlive(surface)
 
 	var _native NativeSurfacer // out
 

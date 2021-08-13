@@ -100,6 +100,8 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 
+	runtime.KeepAlive(offscreen)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	if _cret != nil {
@@ -129,6 +131,8 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(offscreen.Native()))
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
+
+	runtime.KeepAlive(offscreen)
 
 	var _surface *cairo.Surface // out
 

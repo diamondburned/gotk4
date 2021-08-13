@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -85,6 +86,9 @@ func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream {
 
 	_cret = C.g_unix_output_stream_new(_arg1, _arg2)
 
+	runtime.KeepAlive(fd)
+	runtime.KeepAlive(closeFd)
+
 	var _unixOutputStream *UnixOutputStream // out
 
 	_unixOutputStream = wrapUnixOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -101,6 +105,8 @@ func (stream *UnixOutputStream) CloseFd() bool {
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_output_stream_get_close_fd(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _ok bool // out
 
@@ -119,6 +125,8 @@ func (stream *UnixOutputStream) Fd() int {
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_unix_output_stream_get_fd(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _gint int // out
 
@@ -139,4 +147,6 @@ func (stream *UnixOutputStream) SetCloseFd(closeFd bool) {
 	}
 
 	C.g_unix_output_stream_set_close_fd(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(closeFd)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -88,6 +89,8 @@ func NewVideoForFile(file gio.Filer) *Video {
 
 	_cret = C.gtk_video_new_for_file(_arg1)
 
+	runtime.KeepAlive(file)
+
 	var _video *Video // out
 
 	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
@@ -110,6 +113,8 @@ func NewVideoForFilename(filename string) *Video {
 
 	_cret = C.gtk_video_new_for_filename(_arg1)
 
+	runtime.KeepAlive(filename)
+
 	var _video *Video // out
 
 	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
@@ -127,6 +132,8 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	}
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
+
+	runtime.KeepAlive(stream)
 
 	var _video *Video // out
 
@@ -150,6 +157,8 @@ func NewVideoForResource(resourcePath string) *Video {
 
 	_cret = C.gtk_video_new_for_resource(_arg1)
 
+	runtime.KeepAlive(resourcePath)
+
 	var _video *Video // out
 
 	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
@@ -165,6 +174,8 @@ func (self *Video) Autoplay() bool {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -184,6 +195,8 @@ func (self *Video) File() gio.Filer {
 
 	_cret = C.gtk_video_get_file(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _file gio.Filer // out
 
 	if _cret != nil {
@@ -202,6 +215,8 @@ func (self *Video) Loop() bool {
 
 	_cret = C.gtk_video_get_loop(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -219,6 +234,8 @@ func (self *Video) MediaStream() MediaStreamer {
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _mediaStream MediaStreamer // out
 
@@ -241,6 +258,8 @@ func (self *Video) SetAutoplay(autoplay bool) {
 	}
 
 	C.gtk_video_set_autoplay(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(autoplay)
 }
 
 // SetFile makes self play the given file.
@@ -254,6 +273,8 @@ func (self *Video) SetFile(file gio.Filer) {
 	}
 
 	C.gtk_video_set_file(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(file)
 }
 
 // SetFilename makes self play the given filename.
@@ -270,6 +291,8 @@ func (self *Video) SetFilename(filename string) {
 	}
 
 	C.gtk_video_set_filename(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(filename)
 }
 
 // SetLoop sets whether new files loaded by self should be set to loop.
@@ -283,6 +306,8 @@ func (self *Video) SetLoop(loop bool) {
 	}
 
 	C.gtk_video_set_loop(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(loop)
 }
 
 // SetMediaStream sets the media stream to be played back.
@@ -301,6 +326,8 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	}
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stream)
 }
 
 // SetResource makes self play the resource at the given resource_path.
@@ -317,4 +344,6 @@ func (self *Video) SetResource(resourcePath string) {
 	}
 
 	C.gtk_video_set_resource(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(resourcePath)
 }

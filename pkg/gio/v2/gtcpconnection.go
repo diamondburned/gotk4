@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -62,6 +63,8 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 
 	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 
+	runtime.KeepAlive(connection)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -91,4 +94,6 @@ func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) 
 	}
 
 	C.g_tcp_connection_set_graceful_disconnect(_arg0, _arg1)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(gracefulDisconnect)
 }

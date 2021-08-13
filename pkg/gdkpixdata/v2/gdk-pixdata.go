@@ -4,6 +4,7 @@ package gdkpixdata
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -196,6 +197,9 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 
 	_cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, &_cerr)
 
+	runtime.KeepAlive(pixdata)
+	runtime.KeepAlive(copyPixels)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
@@ -261,6 +265,8 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	}
 
 	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(pixdata)
+	runtime.KeepAlive(stream)
 
 	var _goerr error // out
 

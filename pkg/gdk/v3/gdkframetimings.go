@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -53,6 +54,8 @@ func (timings *FrameTimings) Complete() bool {
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
+	runtime.KeepAlive(timings)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -72,6 +75,8 @@ func (timings *FrameTimings) FrameCounter() int64 {
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
+	runtime.KeepAlive(timings)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -89,6 +94,8 @@ func (timings *FrameTimings) FrameTime() int64 {
 	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
+
+	runtime.KeepAlive(timings)
 
 	var _gint64 int64 // out
 
@@ -114,6 +121,8 @@ func (timings *FrameTimings) PredictedPresentationTime() int64 {
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
+	runtime.KeepAlive(timings)
+
 	var _gint64 int64 // out
 
 	_gint64 = int64(_cret)
@@ -130,6 +139,8 @@ func (timings *FrameTimings) PresentationTime() int64 {
 	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
+
+	runtime.KeepAlive(timings)
 
 	var _gint64 int64 // out
 
@@ -148,6 +159,8 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
+
+	runtime.KeepAlive(timings)
 
 	var _gint64 int64 // out
 

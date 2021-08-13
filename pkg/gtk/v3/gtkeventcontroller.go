@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -69,6 +70,8 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
+	runtime.KeepAlive(controller)
+
 	var _propagationPhase PropagationPhase // out
 
 	_propagationPhase = PropagationPhase(_cret)
@@ -84,6 +87,8 @@ func (controller *EventController) Widget() Widgetter {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
+
+	runtime.KeepAlive(controller)
 
 	var _widget Widgetter // out
 
@@ -101,6 +106,7 @@ func (controller *EventController) Reset() {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_event_controller_reset(_arg0)
+	runtime.KeepAlive(controller)
 }
 
 // SetPropagationPhase sets the propagation phase at which a controller handles
@@ -117,4 +123,6 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	_arg1 = C.GtkPropagationPhase(phase)
 
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(phase)
 }

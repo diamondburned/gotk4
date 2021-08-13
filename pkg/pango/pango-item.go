@@ -174,6 +174,8 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	_arg1 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.pango_item_apply_attrs(_arg0, _arg1)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(iter)
 }
 
 // Copy an existing PangoItem structure.
@@ -186,6 +188,8 @@ func (item *Item) Copy() *Item {
 	}
 
 	_cret = C.pango_item_copy(_arg0)
+
+	runtime.KeepAlive(item)
 
 	var _ret *Item // out
 
@@ -220,6 +224,10 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	_arg2 = C.int(splitOffset)
 
 	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(orig)
+	runtime.KeepAlive(splitIndex)
+	runtime.KeepAlive(splitOffset)
 
 	var _item *Item // out
 

@@ -105,6 +105,18 @@ func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType
 	_arg12 = C.gint(height)
 
 	C.gtk_paint_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(arrowType)
+	runtime.KeepAlive(fill)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintBox draws a box on cr with the given parameters.
@@ -139,6 +151,16 @@ func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintBoxGap draws a box in cr using the given style and state and shadow
@@ -180,6 +202,19 @@ func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg13 = C.gint(gapWidth)
 
 	C.gtk_paint_box_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(gapSide)
+	runtime.KeepAlive(gapX)
+	runtime.KeepAlive(gapWidth)
 }
 
 // PaintCheck draws a check button indicator in the given rectangle on cr with
@@ -215,6 +250,16 @@ func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintDiamond draws a diamond in the given rectangle on window using the given
@@ -250,6 +295,16 @@ func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_diamond(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintExpander draws an expander as used in TreeView. x and y specify the
@@ -287,6 +342,14 @@ func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget 
 	_arg8 = C.GtkExpanderStyle(expanderStyle)
 
 	C.gtk_paint_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(expanderStyle)
 }
 
 // PaintExtension draws an extension, i.e. a notebook tab.
@@ -323,6 +386,17 @@ func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadow
 	_arg11 = C.GtkPositionType(gapSide)
 
 	C.gtk_paint_extension(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(gapSide)
 }
 
 // PaintFlatBox draws a flat box on cr with the given parameters.
@@ -357,6 +431,16 @@ func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_flat_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintFocus draws a focus indicator around the given rectangle on cr using the
@@ -390,6 +474,15 @@ func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg9 = C.gint(height)
 
 	C.gtk_paint_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintHandle draws a handle as used in HandleBox and Paned.
@@ -426,6 +519,17 @@ func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg11 = C.GtkOrientation(orientation)
 
 	C.gtk_paint_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(orientation)
 }
 
 // PaintHline draws a horizontal line from (x1, y) to (x2, y) in cr using the
@@ -457,6 +561,14 @@ func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg8 = C.gint(y)
 
 	C.gtk_paint_hline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y)
 }
 
 // PaintLayout draws a layout on cr using the given parameters.
@@ -491,6 +603,15 @@ func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText b
 	_arg9 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_paint_layout(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(useText)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
 }
 
 // PaintOption draws a radio button indicator in the given rectangle on cr with
@@ -526,6 +647,16 @@ func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintResizeGrip draws a resize grip in the given rectangle on cr using the
@@ -561,6 +692,16 @@ func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widge
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_resize_grip(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintShadow draws a shadow around the given rectangle in cr using the given
@@ -596,6 +737,16 @@ func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_shadow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintShadowGap draws a shadow around the given rectangle in cr using the
@@ -637,6 +788,19 @@ func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadow
 	_arg13 = C.gint(gapWidth)
 
 	C.gtk_paint_shadow_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(gapSide)
+	runtime.KeepAlive(gapX)
+	runtime.KeepAlive(gapWidth)
 }
 
 // PaintSlider draws a slider in the given rectangle on cr using the given style
@@ -674,6 +838,17 @@ func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg11 = C.GtkOrientation(orientation)
 
 	C.gtk_paint_slider(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(orientation)
 }
 
 // PaintSpinner draws a spinner on window using the given parameters.
@@ -709,6 +884,16 @@ func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget W
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_spinner(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintTab draws an option menu tab (i.e. the up and down pointing arrows) in
@@ -744,6 +929,16 @@ func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 	_arg10 = C.gint(height)
 
 	C.gtk_paint_tab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(shadowType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // PaintVline draws a vertical line from (x, y1_) to (x, y2_) in cr using the
@@ -775,6 +970,14 @@ func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 	_arg8 = C.gint(x)
 
 	C.gtk_paint_vline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(x)
 }
 
 // StyleOverrider contains methods that are overridable.
@@ -884,6 +1087,14 @@ func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windowe
 	_arg7 = C.gint(height)
 
 	C.gtk_style_apply_default_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(stateType)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Copy creates a copy of the passed in Style object.
@@ -896,6 +1107,8 @@ func (style *Style) Copy() *Style {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_style_copy(_arg0)
+
+	runtime.KeepAlive(style)
 
 	var _ret *Style // out
 
@@ -914,6 +1127,7 @@ func (style *Style) Detach() {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 
 	C.gtk_style_detach(_arg0)
+	runtime.KeepAlive(style)
 }
 
 // StyleProperty queries the value of a style property corresponding to a widget
@@ -930,6 +1144,9 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(propertyName)
 
 	var _value externglib.Value // out
 
@@ -946,6 +1163,8 @@ func (style *Style) HasContext() bool {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_style_has_context(_arg0)
+
+	runtime.KeepAlive(style)
 
 	var _ok bool // out
 
@@ -974,6 +1193,9 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 
 	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(colorName)
+
 	var _color gdk.Color // out
 	var _ok bool         // out
 
@@ -999,6 +1221,9 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_icon_set(_arg0, _arg1)
+
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out
 
@@ -1040,6 +1265,14 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 
 	_cret = C.gtk_style_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
@@ -1071,6 +1304,9 @@ func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 	_arg2 = C.GtkStateType(stateType)
 
 	C.gtk_style_set_background(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(stateType)
 }
 
 // WidgetGetDefaultStyle returns the default style used by all widgets

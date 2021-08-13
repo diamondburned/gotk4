@@ -44,6 +44,8 @@ func DBusAddressEscapeValue(_string string) string {
 
 	_cret = C.g_dbus_address_escape_value(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -72,6 +74,9 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 	_arg1 = C.GBusType(busType)
 
 	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
 
 	var _utf8 string // out
 	var _goerr error // out
@@ -115,6 +120,9 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 	}
 
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
 }
 
 // DBusAddressGetStreamFinish finishes an operation started with
@@ -131,6 +139,8 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, &_cerr)
+
+	runtime.KeepAlive(res)
 
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
@@ -176,6 +186,9 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 
 	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
 
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
@@ -206,6 +219,8 @@ func DBusIsAddress(_string string) bool {
 
 	_cret = C.g_dbus_is_address(_arg1)
 
+	runtime.KeepAlive(_string)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -227,6 +242,7 @@ func DBusIsSupportedAddress(_string string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_is_supported_address(_arg1, &_cerr)
+	runtime.KeepAlive(_string)
 
 	var _goerr error // out
 

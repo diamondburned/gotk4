@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -246,6 +247,9 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 
 	_cret = C.gtk_stack_add_child(_arg0, _arg1)
 
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+
 	var _stackPage *StackPage // out
 
 	_stackPage = wrapStackPage(externglib.Take(unsafe.Pointer(_cret)))
@@ -270,6 +274,10 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 	}
 
 	_cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
 
 	var _stackPage *StackPage // out
 
@@ -300,6 +308,11 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 
 	_cret = C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(title)
+
 	var _stackPage *StackPage // out
 
 	_stackPage = wrapStackPage(externglib.Take(unsafe.Pointer(_cret)))
@@ -321,6 +334,9 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -338,6 +354,8 @@ func (stack *Stack) Hhomogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -357,6 +375,8 @@ func (stack *Stack) InterpolateSize() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_interpolate_size(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -378,6 +398,9 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 
 	_cret = C.gtk_stack_get_page(_arg0, _arg1)
 
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
+
 	var _stackPage *StackPage // out
 
 	_stackPage = wrapStackPage(externglib.Take(unsafe.Pointer(_cret)))
@@ -397,6 +420,8 @@ func (stack *Stack) Pages() SelectionModeller {
 
 	_cret = C.gtk_stack_get_pages(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _selectionModel SelectionModeller // out
 
 	_selectionModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SelectionModeller)
@@ -414,6 +439,8 @@ func (stack *Stack) TransitionDuration() uint {
 
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -430,6 +457,8 @@ func (stack *Stack) TransitionRunning() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_transition_running(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -450,6 +479,8 @@ func (stack *Stack) TransitionType() StackTransitionType {
 
 	_cret = C.gtk_stack_get_transition_type(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _stackTransitionType StackTransitionType // out
 
 	_stackTransitionType = StackTransitionType(_cret)
@@ -465,6 +496,8 @@ func (stack *Stack) Vhomogeneous() bool {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
+
+	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
@@ -486,6 +519,8 @@ func (stack *Stack) VisibleChild() Widgetter {
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -506,6 +541,8 @@ func (stack *Stack) VisibleChildName() string {
 
 	_cret = C.gtk_stack_get_visible_child_name(_arg0)
 
+	runtime.KeepAlive(stack)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -524,6 +561,8 @@ func (stack *Stack) Remove(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_remove(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
 }
 
 // SetHhomogeneous sets the GtkStack to be horizontally homogeneous or not.
@@ -541,6 +580,8 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 	}
 
 	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(hhomogeneous)
 }
 
 // SetInterpolateSize sets whether or not stack will interpolate its size when
@@ -559,6 +600,8 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 	}
 
 	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(interpolateSize)
 }
 
 // SetTransitionDuration sets the duration that transitions between pages in
@@ -571,6 +614,8 @@ func (stack *Stack) SetTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(duration)
 }
 
 // SetTransitionType sets the type of animation that will be used for
@@ -589,6 +634,8 @@ func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 	_arg1 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(transition)
 }
 
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not.
@@ -606,6 +653,8 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 	}
 
 	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(vhomogeneous)
 }
 
 // SetVisibleChild makes child the visible child of stack.
@@ -623,6 +672,8 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(child)
 }
 
 // SetVisibleChildFull makes the child with the given name visible.
@@ -640,6 +691,9 @@ func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionT
 	_arg2 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(transition)
 }
 
 // SetVisibleChildName makes the child with the given name visible.
@@ -658,6 +712,8 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
 }
 
 // StackPage: GtkStackPage is an auxiliary class used by GtkStack.
@@ -691,6 +747,8 @@ func (self *StackPage) Child() Widgetter {
 
 	_cret = C.gtk_stack_page_get_child(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -706,6 +764,8 @@ func (self *StackPage) IconName() string {
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_stack_page_get_icon_name(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -725,6 +785,8 @@ func (self *StackPage) Name() string {
 
 	_cret = C.gtk_stack_page_get_name(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -742,6 +804,8 @@ func (self *StackPage) NeedsAttention() bool {
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_stack_page_get_needs_attention(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -761,6 +825,8 @@ func (self *StackPage) Title() string {
 
 	_cret = C.gtk_stack_page_get_title(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -778,6 +844,8 @@ func (self *StackPage) UseUnderline() bool {
 	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_stack_page_get_use_underline(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -799,6 +867,8 @@ func (self *StackPage) Visible() bool {
 
 	_cret = C.gtk_stack_page_get_visible(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -818,6 +888,8 @@ func (self *StackPage) SetIconName(setting string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetName sets the name of the page.
@@ -830,6 +902,8 @@ func (self *StackPage) SetName(setting string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_name(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetNeedsAttention sets whether the page is marked as “needs attention”.
@@ -843,6 +917,8 @@ func (self *StackPage) SetNeedsAttention(setting bool) {
 	}
 
 	C.gtk_stack_page_set_needs_attention(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetTitle sets the page title.
@@ -855,6 +931,8 @@ func (self *StackPage) SetTitle(setting string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_page_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetUseUnderline sets whether underlines in the page title indicate mnemonics.
@@ -868,6 +946,8 @@ func (self *StackPage) SetUseUnderline(setting bool) {
 	}
 
 	C.gtk_stack_page_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(setting)
 }
 
 // SetVisible sets whether page is visible in its GtkStack.
@@ -881,4 +961,6 @@ func (self *StackPage) SetVisible(visible bool) {
 	}
 
 	C.gtk_stack_page_set_visible(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(visible)
 }

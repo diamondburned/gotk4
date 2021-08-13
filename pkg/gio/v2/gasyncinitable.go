@@ -268,6 +268,10 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, ca
 	}
 
 	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // InitFinish finishes asynchronous initialization and returns the result. See
@@ -281,6 +285,8 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(res)
 
 	var _goerr error // out
 
@@ -303,6 +309,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(res)
 
 	var _object *externglib.Object // out
 	var _goerr error               // out

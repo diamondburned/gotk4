@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -142,6 +143,8 @@ func (bar *HeaderBar) DecorationLayout() string {
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -160,6 +163,8 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 
 	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
+
+	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
@@ -181,6 +186,8 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 
 	_cret = C.gtk_header_bar_get_title_widget(_arg0)
 
+	runtime.KeepAlive(bar)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -199,6 +206,8 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
@@ -210,6 +219,8 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // Remove removes a child from the GtkHeaderBar.
@@ -224,6 +235,8 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_header_bar_remove(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(child)
 }
 
 // SetDecorationLayout sets the decoration layout for this header bar.
@@ -253,6 +266,8 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	}
 
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(layout)
 }
 
 // SetShowTitleButtons sets whether this header bar shows the standard window
@@ -267,6 +282,8 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 	}
 
 	C.gtk_header_bar_set_show_title_buttons(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(setting)
 }
 
 // SetTitleWidget sets the title for the GtkHeaderBar.
@@ -289,4 +306,6 @@ func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	}
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
+	runtime.KeepAlive(bar)
+	runtime.KeepAlive(titleWidget)
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -113,6 +114,8 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
+	runtime.KeepAlive(group)
+
 	var _radioMenuItem *RadioMenuItem // out
 
 	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -137,6 +140,9 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 	}
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
+
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
@@ -165,6 +171,9 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 	}
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
+
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
@@ -203,4 +212,6 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	}
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
+	runtime.KeepAlive(radioMenuItem)
+	runtime.KeepAlive(groupSource)
 }

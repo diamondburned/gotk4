@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -86,6 +87,11 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+
 	var _recentAction *RecentAction // out
 
 	_recentAction = wrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -126,6 +132,12 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(manager)
+
 	var _recentAction *RecentAction // out
 
 	_recentAction = wrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -144,6 +156,8 @@ func (action *RecentAction) ShowNumbers() bool {
 	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -170,4 +184,6 @@ func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	}
 
 	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(showNumbers)
 }

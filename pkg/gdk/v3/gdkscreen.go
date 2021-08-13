@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -71,6 +72,8 @@ func (screen *Screen) ActiveWindow() Windower {
 
 	_cret = C.gdk_screen_get_active_window(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _window Windower // out
 
 	if _cret != nil {
@@ -89,6 +92,8 @@ func (screen *Screen) Display() *Display {
 
 	_cret = C.gdk_screen_get_display(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _display *Display // out
 
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
@@ -105,6 +110,8 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_font_options(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _fontOptions *cairo.FontOptions // out
 
@@ -128,6 +135,8 @@ func (screen *Screen) Height() int {
 
 	_cret = C.gdk_screen_get_height(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -149,6 +158,8 @@ func (screen *Screen) HeightMm() int {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_height_mm(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _gint int // out
 
@@ -173,6 +184,10 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 
 	_cret = C.gdk_screen_get_monitor_at_point(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -193,6 +208,9 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
+
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(window)
 
 	var _gint int // out
 
@@ -222,6 +240,8 @@ func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
 	_arg1 = C.gint(monitorNum)
 
 	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
 
 	var _dest Rectangle // out
 
@@ -242,6 +262,9 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_height_mm(_arg0, _arg1)
+
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
 
 	var _gint int // out
 
@@ -264,6 +287,9 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_plug_name(_arg0, _arg1)
+
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
 
 	var _utf8 string // out
 
@@ -294,6 +320,9 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 
 	_cret = C.gdk_screen_get_monitor_scale_factor(_arg0, _arg1)
 
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -314,6 +343,9 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 	_arg1 = C.gint(monitorNum)
 
 	_cret = C.gdk_screen_get_monitor_width_mm(_arg0, _arg1)
+
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
 
 	var _gint int // out
 
@@ -347,6 +379,8 @@ func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
 	_arg1 = C.gint(monitorNum)
 
 	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(monitorNum)
 
 	var _dest Rectangle // out
 
@@ -366,6 +400,8 @@ func (screen *Screen) NMonitors() int {
 
 	_cret = C.gdk_screen_get_n_monitors(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -384,6 +420,8 @@ func (screen *Screen) Number() int {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_number(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _gint int // out
 
@@ -410,6 +448,8 @@ func (screen *Screen) PrimaryMonitor() int {
 
 	_cret = C.gdk_screen_get_primary_monitor(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -426,6 +466,8 @@ func (screen *Screen) Resolution() float64 {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_resolution(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _gdouble float64 // out
 
@@ -454,6 +496,8 @@ func (screen *Screen) RGBAVisual() *Visual {
 
 	_cret = C.gdk_screen_get_rgba_visual(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _visual *Visual // out
 
 	if _cret != nil {
@@ -471,6 +515,8 @@ func (screen *Screen) RootWindow() Windower {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_root_window(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _window Windower // out
 
@@ -496,6 +542,10 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 
 	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -514,6 +564,8 @@ func (screen *Screen) SystemVisual() *Visual {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_system_visual(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _visual *Visual // out
 
@@ -535,6 +587,8 @@ func (screen *Screen) ToplevelWindows() []Windower {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_toplevel_windows(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _list []Windower // out
 
@@ -562,6 +616,8 @@ func (screen *Screen) Width() int {
 
 	_cret = C.gdk_screen_get_width(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -583,6 +639,8 @@ func (screen *Screen) WidthMm() int {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_get_width_mm(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _gint int // out
 
@@ -613,6 +671,8 @@ func (screen *Screen) WindowStack() []Windower {
 
 	_cret = C.gdk_screen_get_window_stack(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _list []Windower // out
 
 	if _cret != nil {
@@ -641,6 +701,8 @@ func (screen *Screen) IsComposited() bool {
 
 	_cret = C.gdk_screen_is_composited(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -663,6 +725,8 @@ func (screen *Screen) ListVisuals() []Visual {
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_screen_list_visuals(_arg0)
+
+	runtime.KeepAlive(screen)
 
 	var _list []Visual // out
 
@@ -689,6 +753,8 @@ func (screen *Screen) MakeDisplayName() string {
 
 	_cret = C.gdk_screen_make_display_name(_arg0)
 
+	runtime.KeepAlive(screen)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -711,6 +777,8 @@ func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 	}
 
 	C.gdk_screen_set_font_options(_arg0, _arg1)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(options)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This is a
@@ -725,6 +793,8 @@ func (screen *Screen) SetResolution(dpi float64) {
 	_arg1 = C.gdouble(dpi)
 
 	C.gdk_screen_set_resolution(_arg0, _arg1)
+	runtime.KeepAlive(screen)
+	runtime.KeepAlive(dpi)
 }
 
 // ScreenGetDefault gets the default screen for the default display. (See

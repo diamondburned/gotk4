@@ -102,6 +102,9 @@ func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Cred
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
 
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+
 	var _credentials *Credentials // out
 	var _goerr error              // out
 
@@ -139,6 +142,9 @@ func (connection *UnixConnection) ReceiveCredentialsAsync(ctx context.Context, c
 	}
 
 	C.g_unix_connection_receive_credentials_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ReceiveCredentialsFinish finishes an asynchronous receive credentials
@@ -153,6 +159,9 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(result)
 
 	var _credentials *Credentials // out
 	var _goerr error              // out
@@ -184,6 +193,9 @@ func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	}
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
 
 	var _gint int    // out
 	var _goerr error // out
@@ -232,6 +244,8 @@ func (connection *UnixConnection) SendCredentials(ctx context.Context) error {
 	}
 
 	C.g_unix_connection_send_credentials(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
@@ -268,6 +282,9 @@ func (connection *UnixConnection) SendCredentialsAsync(ctx context.Context, call
 	}
 
 	C.g_unix_connection_send_credentials_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // SendCredentialsFinish finishes an asynchronous send credentials operation
@@ -281,6 +298,8 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	C.g_unix_connection_send_credentials_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -312,6 +331,9 @@ func (connection *UnixConnection) SendFd(ctx context.Context, fd int) error {
 	_arg1 = C.gint(fd)
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(fd)
 
 	var _goerr error // out
 

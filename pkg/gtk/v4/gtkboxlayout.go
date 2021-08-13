@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -67,6 +68,8 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 
 	_cret = C.gtk_box_layout_new(_arg1)
 
+	runtime.KeepAlive(orientation)
+
 	var _boxLayout *BoxLayout // out
 
 	_boxLayout = wrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -84,6 +87,8 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
 
+	runtime.KeepAlive(boxLayout)
+
 	var _baselinePosition BaselinePosition // out
 
 	_baselinePosition = BaselinePosition(_cret)
@@ -99,6 +104,8 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
+
+	runtime.KeepAlive(boxLayout)
 
 	var _ok bool // out
 
@@ -117,6 +124,8 @@ func (boxLayout *BoxLayout) Spacing() uint {
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
+
+	runtime.KeepAlive(boxLayout)
 
 	var _guint uint // out
 
@@ -139,6 +148,8 @@ func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(boxLayout)
+	runtime.KeepAlive(position)
 }
 
 // SetHomogeneous sets whether the box layout will allocate the same size to all
@@ -153,6 +164,8 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 	}
 
 	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(boxLayout)
+	runtime.KeepAlive(homogeneous)
 }
 
 // SetSpacing sets how much spacing to put between children.
@@ -164,4 +177,6 @@ func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
+	runtime.KeepAlive(boxLayout)
+	runtime.KeepAlive(spacing)
 }

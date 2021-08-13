@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -99,6 +100,9 @@ func (text *EditableText) CopyText(startPos int, endPos int) {
 	_arg2 = C.gint(endPos)
 
 	C.atk_editable_text_copy_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // CutText: copy text from start_pos up to, but not including end_pos to the
@@ -113,6 +117,9 @@ func (text *EditableText) CutText(startPos int, endPos int) {
 	_arg2 = C.gint(endPos)
 
 	C.atk_editable_text_cut_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // DeleteText: delete text start_pos up to, but not including end_pos.
@@ -126,6 +133,9 @@ func (text *EditableText) DeleteText(startPos int, endPos int) {
 	_arg2 = C.gint(endPos)
 
 	C.atk_editable_text_delete_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // InsertText: insert text at a given position.
@@ -142,6 +152,10 @@ func (text *EditableText) InsertText(_string string, length int, position *int) 
 	_arg3 = (*C.gint)(unsafe.Pointer(position))
 
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(_string)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(position)
 }
 
 // PasteText: paste text from clipboard to specified position.
@@ -153,6 +167,8 @@ func (text *EditableText) PasteText(position int) {
 	_arg1 = C.gint(position)
 
 	C.atk_editable_text_paste_text(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(position)
 }
 
 // SetTextContents: set text contents of text.
@@ -165,4 +181,6 @@ func (text *EditableText) SetTextContents(_string string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_editable_text_set_text_contents(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(_string)
 }

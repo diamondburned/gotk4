@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -119,6 +120,7 @@ func (self *NativeDialog) Destroy() {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_dialog_destroy(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // Modal returns whether the dialog is modal.
@@ -129,6 +131,8 @@ func (self *NativeDialog) Modal() bool {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -148,6 +152,8 @@ func (self *NativeDialog) Title() string {
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -166,6 +172,8 @@ func (self *NativeDialog) TransientFor() *Window {
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _window *Window // out
 
 	if _cret != nil {
@@ -183,6 +191,8 @@ func (self *NativeDialog) Visible() bool {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
@@ -205,6 +215,7 @@ func (self *NativeDialog) Hide() {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_dialog_hide(_arg0)
+	runtime.KeepAlive(self)
 }
 
 // SetModal sets a dialog modal or non-modal.
@@ -224,6 +235,8 @@ func (self *NativeDialog) SetModal(modal bool) {
 	}
 
 	C.gtk_native_dialog_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(modal)
 }
 
 // SetTitle sets the title of the GtkNativeDialog.
@@ -236,6 +249,8 @@ func (self *NativeDialog) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_native_dialog_set_title(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(title)
 }
 
 // SetTransientFor: dialog windows should be set transient for the main
@@ -255,6 +270,8 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 	}
 
 	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(parent)
 }
 
 // Show shows the dialog on the display.
@@ -270,4 +287,5 @@ func (self *NativeDialog) Show() {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_dialog_show(_arg0)
+	runtime.KeepAlive(self)
 }

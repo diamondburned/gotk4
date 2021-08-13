@@ -32,6 +32,8 @@ func TransformParse(_string string) (*Transform, bool) {
 
 	_cret = C.gsk_transform_parse(_arg1, &_arg2)
 
+	runtime.KeepAlive(_string)
+
 	var _outTransform *Transform // out
 	var _ok bool                 // out
 

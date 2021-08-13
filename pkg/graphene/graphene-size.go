@@ -74,6 +74,9 @@ func (a *Size) Equal(b *Size) bool {
 
 	_cret = C.graphene_size_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -96,6 +99,10 @@ func (s *Size) Init(width float32, height float32) *Size {
 
 	_cret = C.graphene_size_init(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
 	var _size *Size // out
 
 	_size = (*Size)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -114,6 +121,9 @@ func (s *Size) InitFromSize(src *Size) *Size {
 	_arg1 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_size_init_from_size(_arg0, _arg1)
+
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(src)
 
 	var _size *Size // out
 
@@ -135,6 +145,9 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	_arg2 = C.double(factor)
 
 	C.graphene_size_interpolate(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(factor)
 
 	var _res Size // out
 
@@ -153,6 +166,8 @@ func (s *Size) Scale(factor float32) Size {
 	_arg1 = C.float(factor)
 
 	C.graphene_size_scale(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(factor)
 
 	var _res Size // out
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -69,6 +70,8 @@ func NewListStore(itemType externglib.Type) *ListStore {
 
 	_cret = C.g_list_store_new(_arg1)
 
+	runtime.KeepAlive(itemType)
+
 	var _listStore *ListStore // out
 
 	_listStore = wrapListStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -90,6 +93,8 @@ func (store *ListStore) Append(item *externglib.Object) {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_append(_arg0, _arg1)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(item)
 }
 
 // Find looks up the given item in the list store by looping over the items
@@ -108,6 +113,9 @@ func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(item)
 
 	var _position uint // out
 	var _ok bool       // out
@@ -138,6 +146,9 @@ func (store *ListStore) Insert(position uint, item *externglib.Object) {
 	_arg2 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(item)
 }
 
 // InsertSorted inserts item into store at a position to be determined by the
@@ -163,6 +174,10 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 
 	_cret = C.g_list_store_insert_sorted(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(compareFunc)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -183,6 +198,8 @@ func (store *ListStore) Remove(position uint) {
 	_arg1 = C.guint(position)
 
 	C.g_list_store_remove(_arg0, _arg1)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(position)
 }
 
 // RemoveAll removes all items from store.
@@ -192,6 +209,7 @@ func (store *ListStore) RemoveAll() {
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 
 	C.g_list_store_remove_all(_arg0)
+	runtime.KeepAlive(store)
 }
 
 // Sort the items in store according to compare_func.
@@ -206,6 +224,8 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	defer gbox.Delete(uintptr(_arg2))
 
 	C.g_list_store_sort(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(compareFunc)
 }
 
 // Splice changes store by removing n_removals items and adding n_additions
@@ -242,4 +262,8 @@ func (store *ListStore) Splice(position uint, nRemovals uint, additions []*exter
 	}
 
 	C.g_list_store_splice(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nRemovals)
+	runtime.KeepAlive(additions)
 }

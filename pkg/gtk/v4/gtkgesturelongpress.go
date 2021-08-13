@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -79,6 +80,8 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 
 	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _gdouble float64 // out
 
 	_gdouble = float64(_cret)
@@ -98,4 +101,6 @@ func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	_arg1 = C.double(delayFactor)
 
 	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(delayFactor)
 }

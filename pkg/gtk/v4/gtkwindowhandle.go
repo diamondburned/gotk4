@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -86,6 +87,8 @@ func (self *WindowHandle) Child() Widgetter {
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -106,4 +109,6 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 	}
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(child)
 }

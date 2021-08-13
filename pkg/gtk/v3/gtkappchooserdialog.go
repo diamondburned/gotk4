@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -102,6 +103,10 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(file)
+
 	var _appChooserDialog *AppChooserDialog // out
 
 	_appChooserDialog = wrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
@@ -126,6 +131,10 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 
 	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(contentType)
+
 	var _appChooserDialog *AppChooserDialog // out
 
 	_appChooserDialog = wrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
@@ -141,6 +150,8 @@ func (self *AppChooserDialog) Heading() string {
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
@@ -160,6 +171,8 @@ func (self *AppChooserDialog) Widget() Widgetter {
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -178,4 +191,6 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(heading)
 }

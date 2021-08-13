@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -88,6 +89,8 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 
+	runtime.KeepAlive(actionBar)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -107,6 +110,8 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
+	runtime.KeepAlive(actionBar)
+	runtime.KeepAlive(child)
 }
 
 // PackStart adds child to action_bar, packed with reference to the start of the
@@ -119,6 +124,8 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
+	runtime.KeepAlive(actionBar)
+	runtime.KeepAlive(child)
 }
 
 // SetCenterWidget sets the center widget for the ActionBar.
@@ -132,4 +139,6 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	}
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
+	runtime.KeepAlive(actionBar)
+	runtime.KeepAlive(centerWidget)
 }

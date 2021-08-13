@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -206,6 +207,8 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_add_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(child)
 }
 
 // AppendPage appends a page to the assistant.
@@ -218,6 +221,9 @@ func (assistant *Assistant) AppendPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _gint int // out
 
@@ -239,6 +245,7 @@ func (assistant *Assistant) Commit() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_commit(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // CurrentPage returns the page number of the current page.
@@ -249,6 +256,8 @@ func (assistant *Assistant) CurrentPage() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_current_page(_arg0)
+
+	runtime.KeepAlive(assistant)
 
 	var _gint int // out
 
@@ -265,6 +274,8 @@ func (assistant *Assistant) NPages() int {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
+
+	runtime.KeepAlive(assistant)
 
 	var _gint int // out
 
@@ -283,6 +294,9 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	_arg1 = C.gint(pageNum)
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 
 	var _widget Widgetter // out
 
@@ -304,6 +318,9 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 
 	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -323,6 +340,9 @@ func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
@@ -346,6 +366,9 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_header_image(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
@@ -377,6 +400,9 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 
 	_cret = C.gtk_assistant_get_page_side_image(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
@@ -405,6 +431,9 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 
 	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -422,6 +451,9 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _assistantPageType AssistantPageType // out
 
@@ -443,6 +475,10 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 
 	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(position)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -462,6 +498,7 @@ func (assistant *Assistant) NextPage() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_next_page(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // PrependPage prepends a page to the assistant.
@@ -474,6 +511,9 @@ func (assistant *Assistant) PrependPage(page Widgetter) int {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
+
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
 
 	var _gint int // out
 
@@ -495,6 +535,7 @@ func (assistant *Assistant) PreviousPage() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_previous_page(_arg0)
+	runtime.KeepAlive(assistant)
 }
 
 // RemoveActionWidget removes a widget from the action area of a Assistant.
@@ -506,6 +547,8 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(child)
 }
 
 // RemovePage removes the page_num’s page from assistant.
@@ -517,6 +560,8 @@ func (assistant *Assistant) RemovePage(pageNum int) {
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_assistant_remove_page(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 }
 
 // SetCurrentPage switches the page to page_num.
@@ -531,6 +576,8 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageNum)
 }
 
 // SetForwardPageFunc sets the page forwarding function to be page_func.
@@ -553,6 +600,8 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 	}
 
 	C.gtk_assistant_set_forward_page_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(pageFunc)
 }
 
 // SetPageComplete sets whether page contents are complete.
@@ -571,6 +620,9 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 	}
 
 	C.gtk_assistant_set_page_complete(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(complete)
 }
 
 // SetPageHasPadding sets whether the assistant is adding padding around the
@@ -587,6 +639,9 @@ func (assistant *Assistant) SetPageHasPadding(page Widgetter, hasPadding bool) {
 	}
 
 	C.gtk_assistant_set_page_has_padding(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(hasPadding)
 }
 
 // SetPageHeaderImage sets a header image for page.
@@ -605,6 +660,9 @@ func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf *gdkpixbuf
 	}
 
 	C.gtk_assistant_set_page_header_image(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetPageSideImage sets a side image for page.
@@ -625,6 +683,9 @@ func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf *gdkpixbuf.P
 	}
 
 	C.gtk_assistant_set_page_side_image(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(pixbuf)
 }
 
 // SetPageTitle sets a title for page.
@@ -642,6 +703,9 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(title)
 }
 
 // SetPageType sets the page type for page.
@@ -657,6 +721,9 @@ func (assistant *Assistant) SetPageType(page Widgetter, typ AssistantPageType) {
 	_arg2 = C.GtkAssistantPageType(typ)
 
 	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(typ)
 }
 
 // UpdateButtonsState forces assistant to recompute the buttons state.
@@ -674,4 +741,5 @@ func (assistant *Assistant) UpdateButtonsState() {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 
 	C.gtk_assistant_update_buttons_state(_arg0)
+	runtime.KeepAlive(assistant)
 }

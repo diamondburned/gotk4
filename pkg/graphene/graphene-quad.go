@@ -60,6 +60,7 @@ func (q *Quad) Bounds() Rect {
 	_arg0 = (*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_quad_bounds(_arg0, &_arg1)
+	runtime.KeepAlive(q)
 
 	var _r Rect // out
 
@@ -80,6 +81,9 @@ func (q *Quad) Contains(p *Point) bool {
 
 	_cret = C.graphene_quad_contains(_arg0, _arg1)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(p)
+
 	var _ok bool // out
 
 	if _cret {
@@ -99,6 +103,9 @@ func (q *Quad) Point(index_ uint) *Point {
 	_arg1 = C.uint(index_)
 
 	_cret = C.graphene_quad_get_point(_arg0, _arg1)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(index_)
 
 	var _point *Point // out
 
@@ -124,6 +131,12 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 
 	_cret = C.graphene_quad_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(p1)
+	runtime.KeepAlive(p2)
+	runtime.KeepAlive(p3)
+	runtime.KeepAlive(p4)
+
 	var _quad *Quad // out
 
 	_quad = (*Quad)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -141,6 +154,9 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(&points))
 
 	_cret = C.graphene_quad_init_from_points(_arg0, _arg1)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(points)
 
 	var _quad *Quad // out
 
@@ -160,6 +176,9 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
 	_cret = C.graphene_quad_init_from_rect(_arg0, _arg1)
+
+	runtime.KeepAlive(q)
+	runtime.KeepAlive(r)
 
 	var _quad *Quad // out
 

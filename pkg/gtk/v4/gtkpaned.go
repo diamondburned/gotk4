@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -128,6 +129,8 @@ func NewPaned(orientation Orientation) *Paned {
 
 	_cret = C.gtk_paned_new(_arg1)
 
+	runtime.KeepAlive(orientation)
+
 	var _paned *Paned // out
 
 	_paned = wrapPaned(externglib.Take(unsafe.Pointer(_cret)))
@@ -145,6 +148,8 @@ func (paned *Paned) EndChild() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
 
@@ -164,6 +169,8 @@ func (paned *Paned) Position() int {
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -179,6 +186,8 @@ func (paned *Paned) ResizeEndChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_resize_end_child(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
@@ -198,6 +207,8 @@ func (paned *Paned) ResizeStartChild() bool {
 
 	_cret = C.gtk_paned_get_resize_start_child(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -216,6 +227,8 @@ func (paned *Paned) ShrinkEndChild() bool {
 
 	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -233,6 +246,8 @@ func (paned *Paned) ShrinkStartChild() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
@@ -254,6 +269,8 @@ func (paned *Paned) StartChild() Widgetter {
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _widget Widgetter // out
 
 	if _cret != nil {
@@ -271,6 +288,8 @@ func (paned *Paned) WideHandle() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
@@ -290,6 +309,8 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_set_end_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
 }
 
 // SetPosition sets the position of the divider between the two panes.
@@ -301,6 +322,8 @@ func (paned *Paned) SetPosition(position int) {
 	_arg1 = C.int(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(position)
 }
 
 // SetResizeEndChild sets the GtkPaned:resize-end-child property
@@ -314,6 +337,8 @@ func (paned *Paned) SetResizeEndChild(resize bool) {
 	}
 
 	C.gtk_paned_set_resize_end_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(resize)
 }
 
 // SetResizeStartChild sets the GtkPaned:resize-start-child property
@@ -327,6 +352,8 @@ func (paned *Paned) SetResizeStartChild(resize bool) {
 	}
 
 	C.gtk_paned_set_resize_start_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(resize)
 }
 
 // SetShrinkEndChild sets the GtkPaned:shrink-end-child property
@@ -340,6 +367,8 @@ func (paned *Paned) SetShrinkEndChild(resize bool) {
 	}
 
 	C.gtk_paned_set_shrink_end_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(resize)
 }
 
 // SetShrinkStartChild sets the GtkPaned:shrink-start-child property
@@ -353,6 +382,8 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 	}
 
 	C.gtk_paned_set_shrink_start_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(resize)
 }
 
 // SetStartChild sets the start child of paned to child.
@@ -364,6 +395,8 @@ func (paned *Paned) SetStartChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_set_start_child(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
 }
 
 // SetWideHandle sets whether the separator should be wide.
@@ -377,4 +410,6 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	}
 
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(wide)
 }

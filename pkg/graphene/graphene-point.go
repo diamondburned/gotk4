@@ -76,6 +76,9 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 
 	_cret = C.graphene_point_distance(_arg0, _arg1, &_arg2, &_arg3)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _dX float32     // out
 	var _dY float32     // out
 	var _gfloat float32 // out
@@ -102,6 +105,9 @@ func (a *Point) Equal(b *Point) bool {
 
 	_cret = C.graphene_point_equal(_arg0, _arg1)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
 	var _ok bool // out
 
 	if _cret {
@@ -126,6 +132,10 @@ func (p *Point) Init(x float32, y float32) *Point {
 
 	_cret = C.graphene_point_init(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _point *Point // out
 
 	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -143,6 +153,9 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_point_init_from_point(_arg0, _arg1)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(src)
 
 	var _point *Point // out
 
@@ -162,6 +175,9 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_point_init_from_vec2(_arg0, _arg1)
+
+	runtime.KeepAlive(p)
+	runtime.KeepAlive(src)
 
 	var _point *Point // out
 
@@ -183,6 +199,9 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	_arg2 = C.double(factor)
 
 	C.graphene_point_interpolate(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(factor)
 
 	var _res Point // out
 
@@ -205,6 +224,10 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 	_cret = C.graphene_point_near(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+	runtime.KeepAlive(epsilon)
+
 	var _ok bool // out
 
 	if _cret {
@@ -223,6 +246,7 @@ func (p *Point) ToVec2() Vec2 {
 	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_point_to_vec2(_arg0, &_arg1)
+	runtime.KeepAlive(p)
 
 	var _v Vec2 // out
 

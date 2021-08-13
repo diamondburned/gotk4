@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -35,6 +36,9 @@ func EnvironGetenv(envp []string, variable string) string {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_environ_getenv(_arg1, _arg2)
+
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(variable)
 
 	var _filename string // out
 
@@ -72,6 +76,11 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	}
 
 	_cret = C.g_environ_setenv(_arg1, _arg2, _arg3, _arg4)
+
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(variable)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(overwrite)
 
 	var _filenames []string // out
 
@@ -116,6 +125,9 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_environ_unsetenv(_arg1, _arg2)
+
+	runtime.KeepAlive(envp)
+	runtime.KeepAlive(variable)
 
 	var _filenames []string // out
 
@@ -188,6 +200,8 @@ func Getenv(variable string) string {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_getenv(_arg1)
+
+	runtime.KeepAlive(variable)
 
 	var _filename string // out
 
@@ -264,6 +278,10 @@ func Setenv(variable string, value string, overwrite bool) bool {
 
 	_cret = C.g_setenv(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(variable)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(overwrite)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -296,4 +314,5 @@ func Unsetenv(variable string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_unsetenv(_arg1)
+	runtime.KeepAlive(variable)
 }

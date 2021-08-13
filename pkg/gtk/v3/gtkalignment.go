@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -88,6 +89,11 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 	_cret = C.gtk_alignment_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(xscale)
+	runtime.KeepAlive(yscale)
+
 	var _alignment *Alignment // out
 
 	_alignment = wrapAlignment(externglib.Take(unsafe.Pointer(_cret)))
@@ -109,6 +115,7 @@ func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, padd
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(alignment)
 
 	var _paddingTop uint    // out
 	var _paddingBottom uint // out
@@ -140,6 +147,11 @@ func (alignment *Alignment) Set(xalign float32, yalign float32, xscale float32, 
 	_arg4 = C.gfloat(yscale)
 
 	C.gtk_alignment_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(alignment)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(xscale)
+	runtime.KeepAlive(yscale)
 }
 
 // SetPadding sets the padding on the different sides of the widget. The padding
@@ -161,4 +173,9 @@ func (alignment *Alignment) SetPadding(paddingTop uint, paddingBottom uint, padd
 	_arg4 = C.guint(paddingRight)
 
 	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(alignment)
+	runtime.KeepAlive(paddingTop)
+	runtime.KeepAlive(paddingBottom)
+	runtime.KeepAlive(paddingLeft)
+	runtime.KeepAlive(paddingRight)
 }

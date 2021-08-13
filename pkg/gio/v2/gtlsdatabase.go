@@ -263,6 +263,9 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(certificate)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -310,6 +313,12 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(handle)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
 
@@ -353,6 +362,12 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, ha
 	}
 
 	C.g_tls_database_lookup_certificate_for_handle_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(handle)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupCertificateForHandleFinish: finish an asynchronous lookup of a
@@ -371,6 +386,9 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(result)
 
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
@@ -413,6 +431,12 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 
 	_cret = C.g_tls_database_lookup_certificate_issuer(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(certificate)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
 
@@ -453,6 +477,12 @@ func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certi
 	}
 
 	C.g_tls_database_lookup_certificate_issuer_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(certificate)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
@@ -468,6 +498,9 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(result)
 
 	var _tlsCertificate TLSCertificater // out
 	var _goerr error                    // out
@@ -512,6 +545,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 
 	_cret = C.g_tls_database_lookup_certificates_issued_by(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(issuerRawDn)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
@@ -567,6 +606,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, is
 	}
 
 	C.g_tls_database_lookup_certificates_issued_by_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(issuerRawDn)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
@@ -582,6 +627,9 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_lookup_certificates_issued_by_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(result)
 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
@@ -664,6 +712,14 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 
 	_cret = C.g_tls_database_verify_chain(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_cerr)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(chain)
+	runtime.KeepAlive(purpose)
+	runtime.KeepAlive(identity)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+
 	var _tlsCertificateFlags TLSCertificateFlags // out
 	var _goerr error                             // out
 
@@ -711,6 +767,14 @@ func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertific
 	}
 
 	C.g_tls_database_verify_chain_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(chain)
+	runtime.KeepAlive(purpose)
+	runtime.KeepAlive(identity)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // VerifyChainFinish: finish an asynchronous verify chain operation. See
@@ -732,6 +796,9 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	_cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, &_cerr)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(result)
 
 	var _tlsCertificateFlags TLSCertificateFlags // out
 	var _goerr error                             // out

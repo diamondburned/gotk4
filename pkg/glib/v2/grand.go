@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"runtime"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -32,6 +36,9 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 	_arg2 = C.gdouble(end)
 
 	_cret = C.g_random_double_range(_arg1, _arg2)
+
+	runtime.KeepAlive(begin)
+	runtime.KeepAlive(end)
 
 	var _gdouble float64 // out
 
@@ -66,6 +73,9 @@ func RandomIntRange(begin int32, end int32) int32 {
 
 	_cret = C.g_random_int_range(_arg1, _arg2)
 
+	runtime.KeepAlive(begin)
+	runtime.KeepAlive(end)
+
 	var _gint32 int32 // out
 
 	_gint32 = int32(_cret)
@@ -81,4 +91,5 @@ func RandomSetSeed(seed uint32) {
 	_arg1 = C.guint32(seed)
 
 	C.g_random_set_seed(_arg1)
+	runtime.KeepAlive(seed)
 }

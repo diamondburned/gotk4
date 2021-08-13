@@ -70,6 +70,8 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 
 	_cret = C.g_data_output_stream_new(_arg1)
 
+	runtime.KeepAlive(baseStream)
+
 	var _dataOutputStream *DataOutputStream // out
 
 	_dataOutputStream = wrapDataOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -85,6 +87,8 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
 
 	_cret = C.g_data_output_stream_get_byte_order(_arg0)
+
+	runtime.KeepAlive(stream)
 
 	var _dataStreamByteOrder DataStreamByteOrder // out
 
@@ -109,6 +113,9 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	_arg1 = C.guchar(data)
 
 	C.g_data_output_stream_put_byte(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -135,6 +142,9 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 	_arg1 = C.gint16(data)
 
 	C.g_data_output_stream_put_int16(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -161,6 +171,9 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 	_arg1 = C.gint32(data)
 
 	C.g_data_output_stream_put_int32(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -187,6 +200,9 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 	_arg1 = C.gint64(data)
 
 	C.g_data_output_stream_put_int64(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -214,6 +230,9 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(str)
 
 	var _goerr error // out
 
@@ -240,6 +259,9 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 	_arg1 = C.guint16(data)
 
 	C.g_data_output_stream_put_uint16(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -266,6 +288,9 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 	_arg1 = C.guint32(data)
 
 	C.g_data_output_stream_put_uint32(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -292,6 +317,9 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 	_arg1 = C.guint64(data)
 
 	C.g_data_output_stream_put_uint64(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(data)
 
 	var _goerr error // out
 
@@ -311,4 +339,6 @@ func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	_arg1 = C.GDataStreamByteOrder(order)
 
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(order)
 }

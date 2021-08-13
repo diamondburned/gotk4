@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -37,6 +38,8 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	}
 
 	_cret = C.g_dbus_message_bytes_needed(_arg1, _arg2, &_cerr)
+
+	runtime.KeepAlive(blob)
 
 	var _gssize int  // out
 	var _goerr error // out

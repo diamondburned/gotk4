@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -102,6 +103,9 @@ func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 
 	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 
+	runtime.KeepAlive(native)
+	runtime.KeepAlive(len)
+
 	var _socketAddress *SocketAddress // out
 
 	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -117,6 +121,8 @@ func (address *SocketAddress) Family() SocketFamily {
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_socket_address_get_family(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _socketFamily SocketFamily // out
 
@@ -134,6 +140,8 @@ func (address *SocketAddress) NativeSize() int {
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
+
+	runtime.KeepAlive(address)
 
 	var _gssize int // out
 
@@ -159,6 +167,9 @@ func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	_arg2 = C.gsize(destlen)
 
 	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(destlen)
 
 	var _goerr error // out
 

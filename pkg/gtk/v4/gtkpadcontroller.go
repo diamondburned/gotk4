@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -143,6 +144,9 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
 
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(pad)
+
 	var _padController *PadController // out
 
 	_padController = wrapPadController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -177,6 +181,12 @@ func (controller *PadController) SetAction(typ PadActionType, index int, mode in
 	defer C.free(unsafe.Pointer(_arg5))
 
 	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(index)
+	runtime.KeepAlive(mode)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(actionName)
 }
 
 // SetActionEntries: convenience function to add a group of action entries on
@@ -195,6 +205,8 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	}
 
 	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(entries)
 }
 
 // PadActionEntry: struct defining a pad action entry.

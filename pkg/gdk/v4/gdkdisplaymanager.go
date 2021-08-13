@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -58,6 +59,7 @@ func SetAllowedBackends(backends string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
+	runtime.KeepAlive(backends)
 }
 
 // DisplayManager: singleton object that offers notification when displays
@@ -125,6 +127,8 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 
+	runtime.KeepAlive(manager)
+
 	var _display *Display // out
 
 	if _cret != nil {
@@ -146,6 +150,9 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(name)
+
 	var _display *Display // out
 
 	if _cret != nil {
@@ -164,6 +171,8 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(display)
 }
 
 // DisplayManagerGet gets the singleton GdkDisplayManager object.

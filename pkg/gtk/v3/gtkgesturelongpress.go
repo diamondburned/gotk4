@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -59,6 +60,8 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_gesture_long_press_new(_arg1)
+
+	runtime.KeepAlive(widget)
 
 	var _gestureLongPress *GestureLongPress // out
 

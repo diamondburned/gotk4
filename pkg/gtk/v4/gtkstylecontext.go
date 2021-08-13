@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -164,6 +165,8 @@ func (context *StyleContext) AddClass(className string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_add_class(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 }
 
 // AddProvider adds a style provider to context, to be used in style
@@ -186,6 +189,9 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 	_arg2 = C.guint(priority)
 
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(priority)
 }
 
 // Border gets the border for a given state as a GtkBorder.
@@ -196,6 +202,7 @@ func (context *StyleContext) Border() Border {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_get_border(_arg0, &_arg1)
+	runtime.KeepAlive(context)
 
 	var _border Border // out
 
@@ -212,6 +219,7 @@ func (context *StyleContext) Color() gdk.RGBA {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_get_color(_arg0, &_arg1)
+	runtime.KeepAlive(context)
 
 	var _color gdk.RGBA // out
 
@@ -228,6 +236,8 @@ func (context *StyleContext) Display() *gdk.Display {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_display(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _display *gdk.Display // out
 
@@ -249,6 +259,7 @@ func (context *StyleContext) Margin() Border {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_get_margin(_arg0, &_arg1)
+	runtime.KeepAlive(context)
 
 	var _margin Border // out
 
@@ -265,6 +276,7 @@ func (context *StyleContext) Padding() Border {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_get_padding(_arg0, &_arg1)
+	runtime.KeepAlive(context)
 
 	var _padding Border // out
 
@@ -281,6 +293,8 @@ func (context *StyleContext) Scale() int {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
+
+	runtime.KeepAlive(context)
 
 	var _gint int // out
 
@@ -302,6 +316,8 @@ func (context *StyleContext) State() StateFlags {
 
 	_cret = C.gtk_style_context_get_state(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _stateFlags StateFlags // out
 
 	_stateFlags = StateFlags(_cret)
@@ -320,6 +336,9 @@ func (context *StyleContext) HasClass(className string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 
 	var _ok bool // out
 
@@ -343,6 +362,9 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(colorName)
+
 	var _color gdk.RGBA // out
 	var _ok bool        // out
 
@@ -364,6 +386,8 @@ func (context *StyleContext) RemoveClass(className string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_style_context_remove_class(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(className)
 }
 
 // RemoveProvider removes provider from the style providers list in context.
@@ -375,6 +399,8 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(provider)
 }
 
 // Restore restores context state to a previous stage.
@@ -386,6 +412,7 @@ func (context *StyleContext) Restore() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_restore(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // Save saves the context state.
@@ -402,6 +429,7 @@ func (context *StyleContext) Save() {
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_style_context_save(_arg0)
+	runtime.KeepAlive(context)
 }
 
 // SetDisplay attaches context to the given display.
@@ -419,6 +447,8 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_style_context_set_display(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(display)
 }
 
 // SetScale sets the scale to use when getting image assets for the style.
@@ -430,6 +460,8 @@ func (context *StyleContext) SetScale(scale int) {
 	_arg1 = C.int(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(scale)
 }
 
 // SetState sets the state to be used for style matching.
@@ -441,6 +473,8 @@ func (context *StyleContext) SetState(flags StateFlags) {
 	_arg1 = C.GtkStateFlags(flags)
 
 	C.gtk_style_context_set_state(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(flags)
 }
 
 // String converts the style context into a string representation.
@@ -461,6 +495,9 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	_arg1 = C.GtkStyleContextPrintFlags(flags)
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(flags)
 
 	var _utf8 string // out
 
@@ -489,6 +526,9 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 	_arg3 = C.guint(priority)
 
 	C.gtk_style_context_add_provider_for_display(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(priority)
 }
 
 // StyleContextRemoveProviderForDisplay removes provider from the global style
@@ -501,4 +541,6 @@ func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StylePr
 	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
 
 	C.gtk_style_context_remove_provider_for_display(_arg1, _arg2)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(provider)
 }

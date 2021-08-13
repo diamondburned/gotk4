@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -88,6 +89,8 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 
 	_cret = C.gtk_tool_item_group_new(_arg1)
 
+	runtime.KeepAlive(label)
+
 	var _toolItemGroup *ToolItemGroup // out
 
 	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
@@ -103,6 +106,8 @@ func (group *ToolItemGroup) Collapsed() bool {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_collapsed(_arg0)
+
+	runtime.KeepAlive(group)
 
 	var _ok bool // out
 
@@ -126,6 +131,10 @@ func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
 
 	_cret = C.gtk_tool_item_group_get_drop_item(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _toolItem *ToolItem // out
 
 	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -142,6 +151,8 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 
 	_cret = C.gtk_tool_item_group_get_ellipsize(_arg0)
 
+	runtime.KeepAlive(group)
+
 	var _ellipsizeMode pango.EllipsizeMode // out
 
 	_ellipsizeMode = pango.EllipsizeMode(_cret)
@@ -157,6 +168,8 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_header_relief(_arg0)
+
+	runtime.KeepAlive(group)
 
 	var _reliefStyle ReliefStyle // out
 
@@ -176,6 +189,9 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 
 	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
 
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(item)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -191,6 +207,8 @@ func (group *ToolItemGroup) Label() string {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_label(_arg0)
+
+	runtime.KeepAlive(group)
 
 	var _utf8 string // out
 
@@ -209,6 +227,8 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 
 	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
 
+	runtime.KeepAlive(group)
+
 	var _widget Widgetter // out
 
 	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
@@ -224,6 +244,8 @@ func (group *ToolItemGroup) NItems() uint {
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_tool_item_group_get_n_items(_arg0)
+
+	runtime.KeepAlive(group)
 
 	var _guint uint // out
 
@@ -243,6 +265,9 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 
 	_cret = C.gtk_tool_item_group_get_nth_item(_arg0, _arg1)
 
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(index)
+
 	var _toolItem *ToolItem // out
 
 	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
@@ -261,6 +286,9 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(position)
 }
 
 // SetCollapsed sets whether the group should be collapsed or expanded.
@@ -274,6 +302,8 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	}
 
 	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(collapsed)
 }
 
 // SetEllipsize sets the ellipsization mode which should be used by labels in
@@ -286,6 +316,8 @@ func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 	_arg1 = C.PangoEllipsizeMode(ellipsize)
 
 	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(ellipsize)
 }
 
 // SetHeaderRelief: set the button relief of the group header. See
@@ -298,6 +330,8 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 	_arg1 = C.GtkReliefStyle(style)
 
 	C.gtk_tool_item_group_set_header_relief(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(style)
 }
 
 // SetItemPosition sets the position of item in the list of children of group.
@@ -311,6 +345,9 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_set_item_position(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(position)
 }
 
 // SetLabel sets the label of the tool item group. The label is displayed in the
@@ -324,6 +361,8 @@ func (group *ToolItemGroup) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_group_set_label(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(label)
 }
 
 // SetLabelWidget sets the label of the tool item group. The label widget is
@@ -336,4 +375,6 @@ func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(labelWidget)
 }

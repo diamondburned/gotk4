@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -121,6 +122,8 @@ func NewPaned(orientation Orientation) *Paned {
 
 	_cret = C.gtk_paned_new(_arg1)
 
+	runtime.KeepAlive(orientation)
+
 	var _paned *Paned // out
 
 	_paned = wrapPaned(externglib.Take(unsafe.Pointer(_cret)))
@@ -138,6 +141,8 @@ func (paned *Paned) Add1(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
 }
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
@@ -150,6 +155,8 @@ func (paned *Paned) Add2(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
 }
 
 // Child1 obtains the first child of the paned widget.
@@ -160,6 +167,8 @@ func (paned *Paned) Child1() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child1(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
 
@@ -178,6 +187,8 @@ func (paned *Paned) Child2() Widgetter {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_child2(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
 
@@ -199,6 +210,8 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _window gdk.Windower // out
 
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
@@ -215,6 +228,8 @@ func (paned *Paned) Position() int {
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
+	runtime.KeepAlive(paned)
+
 	var _gint int // out
 
 	_gint = int(_cret)
@@ -230,6 +245,8 @@ func (paned *Paned) WideHandle() bool {
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
+
+	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
@@ -257,6 +274,10 @@ func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 	}
 
 	C.gtk_paned_pack1(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(resize)
+	runtime.KeepAlive(shrink)
 }
 
 // Pack2 adds a child to the bottom or right pane.
@@ -276,6 +297,10 @@ func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
 	}
 
 	C.gtk_paned_pack2(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(resize)
+	runtime.KeepAlive(shrink)
 }
 
 // SetPosition sets the position of the divider between the two panes.
@@ -287,6 +312,8 @@ func (paned *Paned) SetPosition(position int) {
 	_arg1 = C.gint(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(position)
 }
 
 // SetWideHandle sets the Paned:wide-handle property.
@@ -300,4 +327,6 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	}
 
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(wide)
 }

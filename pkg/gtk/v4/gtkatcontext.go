@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -72,6 +73,10 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 
 	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(accessibleRole)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(display)
+
 	var _atContext *ATContext // out
 
 	if _cret != nil {
@@ -90,6 +95,8 @@ func (self *ATContext) Accessible() Accessibler {
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
+	runtime.KeepAlive(self)
+
 	var _accessible Accessibler // out
 
 	_accessible = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
@@ -105,6 +112,8 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 	_arg0 = (*C.GtkATContext)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_at_context_get_accessible_role(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _accessibleRole AccessibleRole // out
 

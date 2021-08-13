@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -53,6 +54,8 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
+
+	runtime.KeepAlive(widget)
 
 	var _eventControllerMotion *EventControllerMotion // out
 

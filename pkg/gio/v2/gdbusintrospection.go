@@ -115,6 +115,9 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 
 	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
 
+	runtime.KeepAlive(annotations)
+	runtime.KeepAlive(name)
+
 	var _utf8 string // out
 
 	if _cret != nil {
@@ -316,6 +319,7 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	C.g_dbus_interface_info_cache_build(_arg0)
+	runtime.KeepAlive(info)
 }
 
 // CacheRelease decrements the usage count for the cache for info built by
@@ -327,6 +331,7 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	C.g_dbus_interface_info_cache_release(_arg0)
+	runtime.KeepAlive(info)
 }
 
 // LookupMethod looks up information about a method.
@@ -343,6 +348,9 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
@@ -372,6 +380,9 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
 
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
+
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	if _cret != nil {
@@ -399,6 +410,9 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
 
 	var _dBusSignalInfo *DBusSignalInfo // out
 
@@ -532,6 +546,8 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 
 	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
 
+	runtime.KeepAlive(xmlData)
+
 	var _dBusNodeInfo *DBusNodeInfo // out
 	var _goerr error                // out
 
@@ -646,6 +662,9 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 

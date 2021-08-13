@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -59,6 +60,8 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
 
+	runtime.KeepAlive(model)
+
 	var _flattenListModel *FlattenListModel // out
 
 	_flattenListModel = wrapFlattenListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -74,6 +77,8 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _listModel gio.ListModeller // out
 
@@ -95,6 +100,9 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
 
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+
 	var _listModel gio.ListModeller // out
 
 	_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
@@ -113,4 +121,6 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	}
 
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(model)
 }

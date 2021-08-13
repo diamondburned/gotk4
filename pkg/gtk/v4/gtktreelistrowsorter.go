@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -65,6 +66,8 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
 
+	runtime.KeepAlive(sorter)
+
 	var _treeListRowSorter *TreeListRowSorter // out
 
 	_treeListRowSorter = wrapTreeListRowSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -80,6 +83,8 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(self.Native()))
 
 	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
+
+	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
@@ -104,4 +109,6 @@ func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	}
 
 	C.gtk_tree_list_row_sorter_set_sorter(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sorter)
 }

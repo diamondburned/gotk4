@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -86,6 +87,8 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 	_arg1 = C.gint(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desktop)
 }
 
 // SetDisplay sets the display on which applications will be launched when using
@@ -100,6 +103,8 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(display)
 }
 
 // SetIcon sets the icon for applications that are launched with this context.
@@ -118,6 +123,8 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	}
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(icon)
 }
 
 // SetIconName sets the icon for applications that are launched with this
@@ -139,6 +146,8 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 	}
 
 	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(iconName)
 }
 
 // SetScreen sets the screen on which applications will be launched when using
@@ -154,6 +163,8 @@ func (context *AppLaunchContext) SetScreen(screen *Screen) {
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gdk_app_launch_context_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(screen)
 }
 
 // SetTimestamp sets the timestamp of context. The timestamp should ideally be
@@ -170,4 +181,6 @@ func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(timestamp)
 }

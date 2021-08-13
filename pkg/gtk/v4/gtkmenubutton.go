@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -158,6 +159,8 @@ func (menuButton *MenuButton) Direction() ArrowType {
 
 	_cret = C.gtk_menu_button_get_direction(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _arrowType ArrowType // out
 
 	_arrowType = ArrowType(_cret)
@@ -173,6 +176,8 @@ func (menuButton *MenuButton) HasFrame() bool {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_has_frame(_arg0)
+
+	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out
 
@@ -192,6 +197,8 @@ func (menuButton *MenuButton) IconName() string {
 
 	_cret = C.gtk_menu_button_get_icon_name(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -208,6 +215,8 @@ func (menuButton *MenuButton) Label() string {
 
 	_cret = C.gtk_menu_button_get_label(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -223,6 +232,8 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
+
+	runtime.KeepAlive(menuButton)
 
 	var _menuModel gio.MenuModeller // out
 
@@ -244,6 +255,8 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	_cret = C.gtk_menu_button_get_popover(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _popover *Popover // out
 
 	if _cret != nil {
@@ -263,6 +276,8 @@ func (menuButton *MenuButton) UseUnderline() bool {
 
 	_cret = C.gtk_menu_button_get_use_underline(_arg0)
 
+	runtime.KeepAlive(menuButton)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -279,6 +294,7 @@ func (menuButton *MenuButton) Popdown() {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	C.gtk_menu_button_popdown(_arg0)
+	runtime.KeepAlive(menuButton)
 }
 
 // Popup: pop up the menu.
@@ -288,6 +304,7 @@ func (menuButton *MenuButton) Popup() {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	C.gtk_menu_button_popup(_arg0)
+	runtime.KeepAlive(menuButton)
 }
 
 // SetCreatePopupFunc sets func to be called when a popup is about to be shown.
@@ -316,6 +333,8 @@ func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
 	}
 
 	C.gtk_menu_button_set_create_popup_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(fn)
 }
 
 // SetDirection sets the direction in which the popup will be popped up.
@@ -336,6 +355,8 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	_arg1 = C.GtkArrowType(direction)
 
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(direction)
 }
 
 // SetHasFrame sets the style of the button.
@@ -349,6 +370,8 @@ func (menuButton *MenuButton) SetHasFrame(hasFrame bool) {
 	}
 
 	C.gtk_menu_button_set_has_frame(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(hasFrame)
 }
 
 // SetIconName sets the name of an icon to show inside the menu button.
@@ -361,6 +384,8 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(iconName)
 }
 
 // SetLabel sets the label to show inside the menu button.
@@ -373,6 +398,8 @@ func (menuButton *MenuButton) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_label(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(label)
 }
 
 // SetMenuModel sets the GMenuModel from which the popup will be constructed.
@@ -395,6 +422,8 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	}
 
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(menuModel)
 }
 
 // SetPopover sets the GtkPopover that will be popped up when the menu_button is
@@ -414,6 +443,8 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	}
 
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(popover)
 }
 
 // SetUseUnderline: if true, an underline in the text indicates a mnemonic.
@@ -427,4 +458,6 @@ func (menuButton *MenuButton) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.gtk_menu_button_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(menuButton)
+	runtime.KeepAlive(useUnderline)
 }

@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -298,6 +299,12 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y flo
 	_arg5 = C.guint32(timestamp)
 
 	C.gdk_toplevel_begin_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(timestamp)
 }
 
 // BeginResize begins an interactive resize operation.
@@ -323,6 +330,13 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 	_arg6 = C.guint32(timestamp)
 
 	C.gdk_toplevel_begin_resize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(timestamp)
 }
 
 // Focus sets keyboard focus to surface.
@@ -337,6 +351,8 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_toplevel_focus(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(timestamp)
 }
 
 // State gets the bitwise or of the currently active surface state flags, from
@@ -348,6 +364,8 @@ func (toplevel *Toplevel) State() ToplevelState {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_get_state(_arg0)
+
+	runtime.KeepAlive(toplevel)
 
 	var _toplevelState ToplevelState // out
 
@@ -386,6 +404,8 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	}
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(event)
 }
 
 // Lower asks to lower the toplevel below other windows.
@@ -398,6 +418,8 @@ func (toplevel *Toplevel) Lower() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_lower(_arg0)
+
+	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out
 
@@ -418,6 +440,8 @@ func (toplevel *Toplevel) Minimize() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_minimize(_arg0)
+
+	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out
 
@@ -446,6 +470,8 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_toplevel_present(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(layout)
 }
 
 // RestoreSystemShortcuts: restore default system keyboard shortcuts which were
@@ -458,6 +484,7 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	C.gdk_toplevel_restore_system_shortcuts(_arg0)
+	runtime.KeepAlive(toplevel)
 }
 
 // SetDecorated sets the toplevel to be decorated.
@@ -475,6 +502,8 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	}
 
 	C.gdk_toplevel_set_decorated(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(decorated)
 }
 
 // SetDeletable sets the toplevel to be deletable.
@@ -491,6 +520,8 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	}
 
 	C.gdk_toplevel_set_deletable(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(deletable)
 }
 
 // SetIconList sets a list of icons for the surface.
@@ -515,6 +546,8 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	defer C.g_list_free(_arg1)
 
 	C.gdk_toplevel_set_icon_list(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(surfaces)
 }
 
 // SetModal sets the toplevel to be modal.
@@ -535,6 +568,8 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 	}
 
 	C.gdk_toplevel_set_modal(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(modal)
 }
 
 // SetStartupID sets the startup notification ID.
@@ -550,6 +585,8 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_startup_id(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(startupId)
 }
 
 // SetTitle sets the title of a toplevel surface.
@@ -564,6 +601,8 @@ func (toplevel *Toplevel) SetTitle(title string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_toplevel_set_title(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(title)
 }
 
 // SetTransientFor sets a transient-for parent.
@@ -581,6 +620,8 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 
 	C.gdk_toplevel_set_transient_for(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(parent)
 }
 
 // ShowWindowMenu asks the windowing system to show the window menu.
@@ -598,6 +639,9 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
+
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
@@ -617,6 +661,8 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 
 	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
+
+	runtime.KeepAlive(toplevel)
 
 	var _ok bool // out
 

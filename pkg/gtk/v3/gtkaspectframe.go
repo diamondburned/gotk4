@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -88,6 +89,12 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 
 	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(ratio)
+	runtime.KeepAlive(obeyChild)
+
 	var _aspectFrame *AspectFrame // out
 
 	_aspectFrame = wrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
@@ -112,4 +119,9 @@ func (aspectFrame *AspectFrame) Set(xalign float32, yalign float32, ratio float3
 	}
 
 	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(aspectFrame)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(ratio)
+	runtime.KeepAlive(obeyChild)
 }

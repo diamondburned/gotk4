@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -111,6 +112,8 @@ func (obj *Socket) Embed(plugId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_socket_embed(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(plugId)
 }
 
 // IsOccupied determines whether or not the socket has an embedded plug.
@@ -121,6 +124,8 @@ func (obj *Socket) IsOccupied() bool {
 	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_socket_is_occupied(_arg0)
+
+	runtime.KeepAlive(obj)
 
 	var _ok bool // out
 

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -85,6 +86,11 @@ func NewToggleAction(name string, label string, tooltip string, stockId string) 
 
 	_cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
 
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+
 	var _toggleAction *ToggleAction // out
 
 	_toggleAction = wrapToggleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -102,6 +108,8 @@ func (action *ToggleAction) Active() bool {
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_toggle_action_get_active(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -123,6 +131,8 @@ func (action *ToggleAction) DrawAsRadio() bool {
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
 
 	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
+
+	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
@@ -146,6 +156,8 @@ func (action *ToggleAction) SetActive(isActive bool) {
 	}
 
 	C.gtk_toggle_action_set_active(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(isActive)
 }
 
 // SetDrawAsRadio sets whether the action should have proxies like a radio
@@ -162,6 +174,8 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	}
 
 	C.gtk_toggle_action_set_draw_as_radio(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(drawAsRadio)
 }
 
 // Toggled emits the “toggled” signal on the toggle action.
@@ -173,4 +187,5 @@ func (action *ToggleAction) Toggled() {
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_toggle_action_toggled(_arg0)
+	runtime.KeepAlive(action)
 }

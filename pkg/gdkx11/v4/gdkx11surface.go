@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -29,6 +30,8 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
+
+	runtime.KeepAlive(surface)
 
 	var _guint32 uint32 // out
 
@@ -64,6 +67,8 @@ func (surface *X11Surface) Desktop() uint32 {
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 
+	runtime.KeepAlive(surface)
+
 	var _guint32 uint32 // out
 
 	_guint32 = uint32(_cret)
@@ -79,6 +84,8 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
+
+	runtime.KeepAlive(surface)
 
 	var _ret gdk.Surfacer // out
 
@@ -98,6 +105,7 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	C.gdk_x11_surface_move_to_current_desktop(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // MoveToDesktop moves the surface to the given workspace when running unde a
@@ -112,6 +120,8 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(desktop)
 }
 
 // SetFrameSyncEnabled: this function can be used to disable frame
@@ -130,6 +140,8 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	}
 
 	C.gdk_x11_surface_set_frame_sync_enabled(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(frameSyncEnabled)
 }
 
 // SetGroup sets the group leader of surface to be leader. See the ICCCM for
@@ -142,6 +154,8 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
 
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(leader)
 }
 
 // SetSkipPagerHint sets a hint on surface that pagers should not display it.
@@ -156,6 +170,8 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	}
 
 	C.gdk_x11_surface_set_skip_pager_hint(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(skipsPager)
 }
 
 // SetSkipTaskbarHint sets a hint on surface that taskbars should not display
@@ -170,6 +186,8 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	}
 
 	C.gdk_x11_surface_set_skip_taskbar_hint(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(skipsTaskbar)
 }
 
 // SetThemeVariant: GTK applications can request a dark theme variant. In order
@@ -189,6 +207,8 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(variant)
 }
 
 // SetUrgencyHint sets a hint on surface that it needs user attention. See the
@@ -203,6 +223,8 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	}
 
 	C.gdk_x11_surface_set_urgency_hint(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(urgent)
 }
 
 // SetUserTime: application can use this call to update the _NET_WM_USER_TIME
@@ -223,6 +245,8 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(timestamp)
 }
 
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
@@ -242,4 +266,7 @@ func (surface *X11Surface) SetUTF8Property(name string, value string) {
 	}
 
 	C.gdk_x11_surface_set_utf8_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
 }

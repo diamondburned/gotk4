@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -68,6 +69,9 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 
 	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
+	runtime.KeepAlive(baseIoStream)
+	runtime.KeepAlive(socket)
+
 	var _tcpWrapperConnection *TCPWrapperConnection // out
 
 	_tcpWrapperConnection = wrapTCPWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -83,6 +87,8 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(conn.Native()))
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
+
+	runtime.KeepAlive(conn)
 
 	var _ioStream IOStreamer // out
 

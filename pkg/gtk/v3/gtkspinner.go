@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -82,6 +83,7 @@ func (spinner *Spinner) Start() {
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_start(_arg0)
+	runtime.KeepAlive(spinner)
 }
 
 // Stop stops the animation of the spinner.
@@ -91,4 +93,5 @@ func (spinner *Spinner) Stop() {
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
 
 	C.gtk_spinner_stop(_arg0)
+	runtime.KeepAlive(spinner)
 }

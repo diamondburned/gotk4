@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -63,6 +64,9 @@ func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 	_arg2 = C.gsize(len)
 
 	_cret = C.g_native_socket_address_new(_arg1, _arg2)
+
+	runtime.KeepAlive(native)
+	runtime.KeepAlive(len)
 
 	var _nativeSocketAddress *NativeSocketAddress // out
 

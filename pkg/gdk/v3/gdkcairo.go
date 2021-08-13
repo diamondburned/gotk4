@@ -41,6 +41,8 @@ func CairoCreate(window Windower) *cairo.Context {
 
 	_cret = C.gdk_cairo_create(_arg1)
 
+	runtime.KeepAlive(window)
+
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
@@ -88,6 +90,15 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source int, sourceType 
 	_arg9 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(sourceType)
+	runtime.KeepAlive(bufferScale)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // CairoGetClipRectangle: this is a convenience function around
@@ -101,6 +112,8 @@ func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
+
+	runtime.KeepAlive(cr)
 
 	var _rect Rectangle // out
 	var _ok bool        // out
@@ -123,6 +136,8 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 
 	_cret = C.gdk_cairo_get_drawing_context(_arg1)
 
+	runtime.KeepAlive(cr)
+
 	var _drawingContext *DrawingContext // out
 
 	if _cret != nil {
@@ -141,6 +156,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_cairo_rectangle(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(rectangle)
 }
 
 // CairoRegion adds the given region to the current path of cr.
@@ -152,6 +169,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_cairo_region(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(region)
 }
 
 // CairoRegionCreateFromSurface creates region that describes covers the area
@@ -166,6 +185,8 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_cairo_region_create_from_surface(_arg1)
+
+	runtime.KeepAlive(surface)
 
 	var _region *cairo.Region // out
 
@@ -191,6 +212,8 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gdk_cairo_set_source_color(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(color)
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for cr.
@@ -209,6 +232,10 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX f
 	_arg4 = C.gdouble(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(pixbufX)
+	runtime.KeepAlive(pixbufY)
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
@@ -220,6 +247,8 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(rgba)
 }
 
 // CairoSetSourceWindow sets the given window as the source pattern for cr.
@@ -242,6 +271,10 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x float64, y float
 	_arg4 = C.gdouble(y)
 
 	C.gdk_cairo_set_source_window(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
@@ -259,6 +292,10 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 	}
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)
+
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(forWindow)
 
 	var _surface *cairo.Surface // out
 

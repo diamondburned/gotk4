@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -66,6 +67,8 @@ func (context *IMMulticontext) ContextID() string {
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
+	runtime.KeepAlive(context)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -86,4 +89,6 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(contextId)
 }

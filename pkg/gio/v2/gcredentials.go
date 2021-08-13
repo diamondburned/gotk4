@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -107,6 +108,8 @@ func (credentials *Credentials) UnixPid() (int, error) {
 
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 
+	runtime.KeepAlive(credentials)
+
 	var _gint int    // out
 	var _goerr error // out
 
@@ -132,6 +135,8 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 
+	runtime.KeepAlive(credentials)
+
 	var _guint uint  // out
 	var _goerr error // out
 
@@ -155,6 +160,8 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(credentials)
+	runtime.KeepAlive(otherCredentials)
 
 	var _goerr error // out
 
@@ -181,6 +188,9 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 	_arg2 = (C.gpointer)(unsafe.Pointer(native))
 
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(credentials)
+	runtime.KeepAlive(nativeType)
+	runtime.KeepAlive(native)
 }
 
 // SetUnixUser tries to set the UNIX user identifier on credentials. This method
@@ -198,6 +208,8 @@ func (credentials *Credentials) SetUnixUser(uid uint) error {
 	_arg1 = C.uid_t(uid)
 
 	C.g_credentials_set_unix_user(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(credentials)
+	runtime.KeepAlive(uid)
 
 	var _goerr error // out
 
@@ -218,6 +230,8 @@ func (credentials *Credentials) String() string {
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_credentials_to_string(_arg0)
+
+	runtime.KeepAlive(credentials)
 
 	var _utf8 string // out
 

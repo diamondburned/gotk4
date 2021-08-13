@@ -527,6 +527,8 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	_cret = C.gdk_content_formats_new(_arg1, _arg2)
 
+	runtime.KeepAlive(mimeTypes)
+
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -545,6 +547,8 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	_arg1 = C.GType(typ)
 
 	_cret = C.gdk_content_formats_new_for_gtype(_arg1)
+
+	runtime.KeepAlive(typ)
 
 	var _contentFormats *ContentFormats // out
 
@@ -567,6 +571,9 @@ func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 
 	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
 
+	runtime.KeepAlive(formats)
+	runtime.KeepAlive(typ)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -588,6 +595,9 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
 
+	runtime.KeepAlive(formats)
+	runtime.KeepAlive(mimeType)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -607,6 +617,9 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_match(_arg0, _arg1)
+
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
 
 	var _ok bool // out
 
@@ -630,6 +643,9 @@ func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type 
 
 	_cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
 
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
+
 	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
@@ -650,6 +666,9 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
+
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
 
 	var _utf8 string // out
 
@@ -672,6 +691,8 @@ func (formats *ContentFormats) String() string {
 
 	_cret = C.gdk_content_formats_to_string(_arg0)
 
+	runtime.KeepAlive(formats)
+
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
@@ -691,6 +712,9 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_union(_arg0, _arg1)
+
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
 
 	var _contentFormats *ContentFormats // out
 
@@ -712,6 +736,8 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 
 	_cret = C.gdk_content_formats_union_deserialize_gtypes(_arg0)
 
+	runtime.KeepAlive(formats)
+
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -731,6 +757,8 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_deserialize_mime_types(_arg0)
+
+	runtime.KeepAlive(formats)
 
 	var _contentFormats *ContentFormats // out
 
@@ -752,6 +780,8 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 
 	_cret = C.gdk_content_formats_union_serialize_gtypes(_arg0)
 
+	runtime.KeepAlive(formats)
+
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -771,6 +801,8 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_serialize_mime_types(_arg0)
+
+	runtime.KeepAlive(formats)
 
 	var _contentFormats *ContentFormats // out
 
@@ -883,6 +915,10 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 
 	_cret = C.gdk_rectangle_contains_point(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -902,6 +938,9 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect2)))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
+
+	runtime.KeepAlive(rect1)
+	runtime.KeepAlive(rect2)
 
 	var _ok bool // out
 
@@ -929,6 +968,9 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
+
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
 
 	var _dest Rectangle // out
 	var _ok bool        // out
@@ -958,6 +1000,8 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
 
 	var _dest Rectangle // out
 

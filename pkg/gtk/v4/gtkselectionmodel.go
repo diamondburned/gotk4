@@ -183,6 +183,8 @@ func (model *SelectionModel) Selection() *Bitset {
 
 	_cret = C.gtk_selection_model_get_selection(_arg0)
 
+	runtime.KeepAlive(model)
+
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -210,6 +212,10 @@ func (model *SelectionModel) SelectionInRange(position uint, nItems uint) *Bitse
 
 	_cret = C.gtk_selection_model_get_selection_in_range(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
+
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
@@ -231,6 +237,9 @@ func (model *SelectionModel) IsSelected(position uint) bool {
 
 	_cret = C.gtk_selection_model_is_selected(_arg0, _arg1)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -248,6 +257,8 @@ func (model *SelectionModel) SelectAll() bool {
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_selection_model_select_all(_arg0)
+
+	runtime.KeepAlive(model)
 
 	var _ok bool // out
 
@@ -272,6 +283,10 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 	}
 
 	_cret = C.gtk_selection_model_select_item(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(unselectRest)
 
 	var _ok bool // out
 
@@ -299,6 +314,11 @@ func (model *SelectionModel) SelectRange(position uint, nItems uint, unselectRes
 
 	_cret = C.gtk_selection_model_select_range(_arg0, _arg1, _arg2, _arg3)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
+	runtime.KeepAlive(unselectRest)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -322,6 +342,9 @@ func (model *SelectionModel) SelectionChanged(position uint, nItems uint) {
 	_arg2 = C.guint(nItems)
 
 	C.gtk_selection_model_selection_changed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
 }
 
 // SetSelection: make selection changes.
@@ -367,6 +390,10 @@ func (model *SelectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 
 	_cret = C.gtk_selection_model_set_selection(_arg0, _arg1, _arg2)
 
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(selected)
+	runtime.KeepAlive(mask)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -384,6 +411,8 @@ func (model *SelectionModel) UnselectAll() bool {
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	_cret = C.gtk_selection_model_unselect_all(_arg0)
+
+	runtime.KeepAlive(model)
 
 	var _ok bool // out
 
@@ -404,6 +433,9 @@ func (model *SelectionModel) UnselectItem(position uint) bool {
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_selection_model_unselect_item(_arg0, _arg1)
+
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
 
 	var _ok bool // out
 
@@ -426,6 +458,10 @@ func (model *SelectionModel) UnselectRange(position uint, nItems uint) bool {
 	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_selection_model_unselect_range(_arg0, _arg1, _arg2)
+
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
 
 	var _ok bool // out
 

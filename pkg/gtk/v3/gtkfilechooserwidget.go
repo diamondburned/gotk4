@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -83,6 +84,8 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	_arg1 = C.GtkFileChooserAction(action)
 
 	_cret = C.gtk_file_chooser_widget_new(_arg1)
+
+	runtime.KeepAlive(action)
 
 	var _fileChooserWidget *FileChooserWidget // out
 

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -1754,6 +1755,8 @@ func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	_arg1 = C.int(cmpfuncResult)
 
 	_cret = C.gtk_ordering_from_cmpfunc(_arg1)
+
+	runtime.KeepAlive(cmpfuncResult)
 
 	var _ordering Ordering // out
 

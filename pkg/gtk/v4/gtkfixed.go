@@ -115,6 +115,8 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
 
 	var _x float64 // out
 	var _y float64 // out
@@ -136,6 +138,9 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
+
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
 
 	var _transform *gsk.Transform // out
 
@@ -164,6 +169,10 @@ func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
 	_arg3 = C.double(y)
 
 	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // Put adds a widget to a GtkFixed at the given position.
@@ -179,6 +188,10 @@ func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
 	_arg3 = C.double(y)
 
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
 }
 
 // Remove removes a child from fixed.
@@ -190,6 +203,8 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_fixed_remove(_arg0, _arg1)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
 }
 
 // SetChildTransform sets the transformation for widget.
@@ -208,4 +223,7 @@ func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform
 	}
 
 	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(transform)
 }

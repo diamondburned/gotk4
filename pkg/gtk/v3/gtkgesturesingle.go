@@ -67,6 +67,8 @@ func (gesture *GestureSingle) Button() uint {
 
 	_cret = C.gtk_gesture_single_get_button(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -84,6 +86,8 @@ func (gesture *GestureSingle) CurrentButton() uint {
 
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _guint uint // out
 
 	_guint = uint(_cret)
@@ -100,6 +104,8 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_current_sequence(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _eventSequence *gdk.EventSequence // out
 
@@ -123,6 +129,8 @@ func (gesture *GestureSingle) Exclusive() bool {
 
 	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
 
+	runtime.KeepAlive(gesture)
+
 	var _ok bool // out
 
 	if _cret != 0 {
@@ -140,6 +148,8 @@ func (gesture *GestureSingle) TouchOnly() bool {
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
+
+	runtime.KeepAlive(gesture)
 
 	var _ok bool // out
 
@@ -161,6 +171,8 @@ func (gesture *GestureSingle) SetButton(button uint) {
 	_arg1 = C.guint(button)
 
 	C.gtk_gesture_single_set_button(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(button)
 }
 
 // SetExclusive sets whether gesture is exclusive. An exclusive gesture will
@@ -176,6 +188,8 @@ func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 	}
 
 	C.gtk_gesture_single_set_exclusive(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(exclusive)
 }
 
 // SetTouchOnly: if touch_only is TRUE, gesture will only handle events of type
@@ -191,4 +205,6 @@ func (gesture *GestureSingle) SetTouchOnly(touchOnly bool) {
 	}
 
 	C.gtk_gesture_single_set_touch_only(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(touchOnly)
 }

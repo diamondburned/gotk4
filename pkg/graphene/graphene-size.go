@@ -24,13 +24,17 @@ func init() {
 
 // Size: size.
 type Size struct {
-	nocopy gextras.NoCopy
+	*size
+}
+
+// size is the struct that's finalized.
+type size struct {
 	native *C.graphene_size_t
 }
 
 func marshalSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Size{native: (*C.graphene_size_t)(unsafe.Pointer(b))}, nil
+	return &Size{&size{(*C.graphene_size_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewSizeAlloc constructs a struct Size.
@@ -42,9 +46,12 @@ func NewSizeAlloc() *Size {
 	var _size *Size // out
 
 	_size = (*Size)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_size, func(v *Size) {
-		C.graphene_size_free((*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_size)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_size_free((*C.graphene_size_t)(intern.C))
+		},
+	)
 
 	return _size
 }

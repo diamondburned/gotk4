@@ -534,9 +534,12 @@ func (image *Image) IconSet() (*IconSet, int) {
 	if _arg1 != nil {
 		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
 		C.gtk_icon_set_ref(_arg1)
-		runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-			C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_iconSet)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			},
+		)
 	}
 	_size = int(_arg2)
 

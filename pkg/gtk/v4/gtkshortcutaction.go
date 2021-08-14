@@ -98,9 +98,12 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
 	if arg1 != nil {
 		args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-		runtime.SetFinalizer(args, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(args)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 
 	fn := v.(ShortcutFunc)

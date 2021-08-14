@@ -615,9 +615,12 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
+		},
+	)
 
 	return _textAttributes
 }
@@ -1023,9 +1026,12 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	if _cret != nil {
 		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-			C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tabArray)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+			},
+		)
 	}
 
 	return _tabArray

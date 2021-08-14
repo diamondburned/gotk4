@@ -7,7 +7,6 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -109,6 +108,10 @@ func (buildable *Buildable) BuildableID() string {
 
 // BuildableParser: sub-parser for GtkBuildable implementations.
 type BuildableParser struct {
-	nocopy gextras.NoCopy
+	*buildableParser
+}
+
+// buildableParser is the struct that's finalized.
+type buildableParser struct {
 	native *C.GtkBuildableParser
 }

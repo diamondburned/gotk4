@@ -1686,11 +1686,15 @@ func (event *TouchpadEvent) PinchScale() float64 {
 // EventSequence: GdkEventSequence is an opaque type representing a sequence of
 // related touch events.
 type EventSequence struct {
-	nocopy gextras.NoCopy
+	*eventSequence
+}
+
+// eventSequence is the struct that's finalized.
+type eventSequence struct {
 	native *C.GdkEventSequence
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &EventSequence{native: (*C.GdkEventSequence)(unsafe.Pointer(b))}, nil
+	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(unsafe.Pointer(b))}}, nil
 }

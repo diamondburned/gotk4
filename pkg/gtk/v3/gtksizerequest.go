@@ -49,7 +49,11 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().
 type RequestedSize struct {
-	nocopy gextras.NoCopy
+	*requestedSize
+}
+
+// requestedSize is the struct that's finalized.
+type requestedSize struct {
 	native *C.GtkRequestedSize
 }
 

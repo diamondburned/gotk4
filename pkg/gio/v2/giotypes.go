@@ -310,13 +310,17 @@ func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.g
 
 // FileAttributeMatcher determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
-	nocopy gextras.NoCopy
+	*fileAttributeMatcher
+}
+
+// fileAttributeMatcher is the struct that's finalized.
+type fileAttributeMatcher struct {
 	native *C.GFileAttributeMatcher
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FileAttributeMatcher{native: (*C.GFileAttributeMatcher)(unsafe.Pointer(b))}, nil
+	return &FileAttributeMatcher{&fileAttributeMatcher{(*C.GFileAttributeMatcher)(unsafe.Pointer(b))}}, nil
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
@@ -333,9 +337,12 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
 	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
+		},
+	)
 
 	return _fileAttributeMatcher
 }
@@ -463,9 +470,12 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 
 	if _cret != nil {
 		_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
+			},
+		)
 	}
 
 	return _fileAttributeMatcher
@@ -514,7 +524,11 @@ func (matcher *FileAttributeMatcher) String() string {
 // Flags relevant to this message will be returned in flags. For example,
 // MSG_EOR or MSG_TRUNC.
 type InputMessage struct {
-	nocopy gextras.NoCopy
+	*inputMessage
+}
+
+// inputMessage is the struct that's finalized.
+type inputMessage struct {
 	native *C.GInputMessage
 }
 
@@ -522,7 +536,11 @@ type InputMessage struct {
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
 type InputVector struct {
-	nocopy gextras.NoCopy
+	*inputVector
+}
+
+// inputVector is the struct that's finalized.
+type inputVector struct {
 	native *C.GInputVector
 }
 
@@ -548,7 +566,11 @@ func (i *InputVector) Size() uint {
 // If address is NULL then the message is sent to the default receiver (as
 // previously set by g_socket_connect()).
 type OutputMessage struct {
-	nocopy gextras.NoCopy
+	*outputMessage
+}
+
+// outputMessage is the struct that's finalized.
+type outputMessage struct {
 	native *C.GOutputMessage
 }
 
@@ -556,7 +578,11 @@ type OutputMessage struct {
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
 type OutputVector struct {
-	nocopy gextras.NoCopy
+	*outputVector
+}
+
+// outputVector is the struct that's finalized.
+type outputVector struct {
 	native *C.GOutputVector
 }
 
@@ -721,13 +747,17 @@ func (o *OutputVector) Size() uint {
 // is not strictly required. It is possible to overlay the location of a single
 // resource with an individual file.
 type Resource struct {
-	nocopy gextras.NoCopy
+	*resource
+}
+
+// resource is the struct that's finalized.
+type resource struct {
 	native *C.GResource
 }
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Resource{native: (*C.GResource)(unsafe.Pointer(b))}, nil
+	return &Resource{&resource{(*C.GResource)(unsafe.Pointer(b))}}, nil
 }
 
 // EnumerateChildren returns all the names of children at the specified path in
@@ -860,13 +890,17 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 // to connect to the remote service, you can use Service's Connectable interface
 // and not need to worry about Target at all.
 type SrvTarget struct {
-	nocopy gextras.NoCopy
+	*srvTarget
+}
+
+// srvTarget is the struct that's finalized.
+type srvTarget struct {
 	native *C.GSrvTarget
 }
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SrvTarget{native: (*C.GSrvTarget)(unsafe.Pointer(b))}, nil
+	return &SrvTarget{&srvTarget{(*C.GSrvTarget)(unsafe.Pointer(b))}}, nil
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
@@ -892,9 +926,12 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	var _srvTarget *SrvTarget // out
 
 	_srvTarget = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_srvTarget)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+		},
+	)
 
 	return _srvTarget
 }
@@ -912,9 +949,12 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	var _srvTarget *SrvTarget // out
 
 	_srvTarget = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_srvTarget)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+		},
+	)
 
 	return _srvTarget
 }

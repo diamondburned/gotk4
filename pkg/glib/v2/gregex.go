@@ -600,13 +600,17 @@ func (r RegexMatchFlags) Has(other RegexMatchFlags) bool {
 
 // MatchInfo is an opaque struct used to return information about matches.
 type MatchInfo struct {
-	nocopy gextras.NoCopy
+	*matchInfo
+}
+
+// matchInfo is the struct that's finalized.
+type matchInfo struct {
 	native *C.GMatchInfo
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MatchInfo{native: (*C.GMatchInfo)(unsafe.Pointer(b))}, nil
+	return &MatchInfo{&matchInfo{(*C.GMatchInfo)(unsafe.Pointer(b))}}, nil
 }
 
 // ExpandReferences returns a new string containing the text in string_to_expand
@@ -879,9 +883,12 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	var _regex *Regex // out
 
 	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_regex)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_regex_unref((*C.GRegex)(intern.C))
+		},
+	)
 
 	return _regex
 }
@@ -1055,13 +1062,17 @@ func (matchInfo *MatchInfo) Next() error {
 // The regular expressions low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
 type Regex struct {
-	nocopy gextras.NoCopy
+	*regex
+}
+
+// regex is the struct that's finalized.
+type regex struct {
 	native *C.GRegex
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Regex{native: (*C.GRegex)(unsafe.Pointer(b))}, nil
+	return &Regex{&regex{(*C.GRegex)(unsafe.Pointer(b))}}, nil
 }
 
 // NewRegex constructs a struct Regex.
@@ -1087,9 +1098,12 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	if _cret != nil {
 		_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_regex, func(v *Regex) {
-			C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_regex)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_regex_unref((*C.GRegex)(intern.C))
+			},
+		)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -1307,9 +1321,12 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
+			},
+		)
 	}
 	if _cret != 0 {
 		_ok = true
@@ -1353,9 +1370,12 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-			C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
+			},
+		)
 	}
 	if _cret != 0 {
 		_ok = true

@@ -39,13 +39,17 @@ func init() {
 // The main use case for GtkBitset is implementing complex selections for
 // gtk.SelectionModel.
 type Bitset struct {
-	nocopy gextras.NoCopy
+	*bitset
+}
+
+// bitset is the struct that's finalized.
+type bitset struct {
 	native *C.GtkBitset
 }
 
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Bitset{native: (*C.GtkBitset)(unsafe.Pointer(b))}, nil
+	return &Bitset{&bitset{(*C.GtkBitset)(unsafe.Pointer(b))}}, nil
 }
 
 // NewBitsetEmpty constructs a struct Bitset.
@@ -57,9 +61,12 @@ func NewBitsetEmpty() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bitset)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
 
 	return _bitset
 }
@@ -80,9 +87,12 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bitset)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
 
 	return _bitset
 }
@@ -202,9 +212,12 @@ func (self *Bitset) Copy() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bitset)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
 
 	return _bitset
 }

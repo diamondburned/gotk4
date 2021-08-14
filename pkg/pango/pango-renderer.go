@@ -526,9 +526,12 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			},
+		)
 	}
 
 	return _layoutLine

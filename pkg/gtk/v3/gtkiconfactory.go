@@ -356,9 +356,12 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_icon_set_ref(_cret)
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSet)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+		},
+	)
 
 	return _iconSet
 }
@@ -398,9 +401,12 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_icon_set_ref(_cret)
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSet)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+		},
+	)
 
 	return _iconSet
 }

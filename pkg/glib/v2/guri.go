@@ -408,13 +408,17 @@ func (u URIParamsFlags) Has(other URIParamsFlags) bool {
 // data:,foo and data:;base64,Zm9v resolve to the same thing according to the
 // data: URI specification which GLib does not handle.
 type URI struct {
-	nocopy gextras.NoCopy
+	*urI
+}
+
+// urI is the struct that's finalized.
+type urI struct {
 	native *C.GUri
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &URI{native: (*C.GUri)(unsafe.Pointer(b))}, nil
+	return &URI{&urI{(*C.GUri)(unsafe.Pointer(b))}}, nil
 }
 
 // AuthParams gets uri's authentication parameters, which may contain
@@ -670,9 +674,12 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _goerr error // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_uri)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -781,9 +788,12 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 	var _uri *URI // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_uri)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _uri
 }
@@ -855,9 +865,12 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 	var _uri *URI // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_uri)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _uri
 }
@@ -1128,9 +1141,12 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	var _goerr error // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_uri)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1585,7 +1601,11 @@ func URIUnescapeString(escapedString string, illegalCharacters string) string {
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
 type URIParamsIter struct {
-	nocopy gextras.NoCopy
+	*uriParamsIter
+}
+
+// uriParamsIter is the struct that's finalized.
+type uriParamsIter struct {
 	native *C.GUriParamsIter
 }
 

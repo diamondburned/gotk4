@@ -9,7 +9,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -1469,7 +1468,11 @@ func (accessible *ObjectClass) SetRole(role Role) {
 //
 // A string name/value pair representing a generic attribute.
 type Attribute struct {
-	nocopy gextras.NoCopy
+	*attribute
+}
+
+// attribute is the struct that's finalized.
+type attribute struct {
 	native *C.AtkAttribute
 }
 
@@ -1491,7 +1494,11 @@ func (a *Attribute) Value() string {
 // valid value. This is a field defined with the purpose of contain the previous
 // value of the property, but is not used anymore.
 type PropertyValues struct {
-	nocopy gextras.NoCopy
+	*propertyValues
+}
+
+// propertyValues is the struct that's finalized.
+type propertyValues struct {
 	native *C.AtkPropertyValues
 }
 

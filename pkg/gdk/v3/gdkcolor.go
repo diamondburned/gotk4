@@ -27,13 +27,17 @@ func init() {
 //
 // Deprecated: Use RGBA.
 type Color struct {
-	nocopy gextras.NoCopy
+	*color
+}
+
+// color is the struct that's finalized.
+type color struct {
 	native *C.GdkColor
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Color{native: (*C.GdkColor)(unsafe.Pointer(b))}, nil
+	return &Color{&color{(*C.GdkColor)(unsafe.Pointer(b))}}, nil
 }
 
 // Pixel: for allocated colors, the pixel value used to draw this color on the
@@ -83,9 +87,12 @@ func (color *Color) Copy() *Color {
 	var _ret *Color // out
 
 	_ret = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.gdk_color_free((*C.GdkColor)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ret)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_free((*C.GdkColor)(intern.C))
+		},
+	)
 
 	return _ret
 }

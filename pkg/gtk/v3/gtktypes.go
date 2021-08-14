@@ -33,13 +33,17 @@ func init() {
 }
 
 type IconSet struct {
-	nocopy gextras.NoCopy
+	*iconSet
+}
+
+// iconSet is the struct that's finalized.
+type iconSet struct {
 	native *C.GtkIconSet
 }
 
 func marshalIconSet(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IconSet{native: (*C.GtkIconSet)(unsafe.Pointer(b))}, nil
+	return &IconSet{&iconSet{(*C.GtkIconSet)(unsafe.Pointer(b))}}, nil
 }
 
 // NewIconSet constructs a struct IconSet.
@@ -51,9 +55,12 @@ func NewIconSet() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSet)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+		},
+	)
 
 	return _iconSet
 }
@@ -71,9 +78,12 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSet)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+		},
+	)
 
 	return _iconSet
 }
@@ -130,9 +140,12 @@ func (iconSet *IconSet) Copy() *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSet)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+		},
+	)
 
 	return _iconSet
 }
@@ -301,13 +314,17 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 }
 
 type IconSource struct {
-	nocopy gextras.NoCopy
+	*iconSource
+}
+
+// iconSource is the struct that's finalized.
+type iconSource struct {
 	native *C.GtkIconSource
 }
 
 func marshalIconSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IconSource{native: (*C.GtkIconSource)(unsafe.Pointer(b))}, nil
+	return &IconSource{&iconSource{(*C.GtkIconSource)(unsafe.Pointer(b))}}, nil
 }
 
 // NewIconSource constructs a struct IconSource.
@@ -319,9 +336,12 @@ func NewIconSource() *IconSource {
 	var _iconSource *IconSource // out
 
 	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.gtk_icon_source_free((*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSource)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
+		},
+	)
 
 	return _iconSource
 }
@@ -341,9 +361,12 @@ func (source *IconSource) Copy() *IconSource {
 	var _iconSource *IconSource // out
 
 	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
-		C.gtk_icon_source_free((*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_iconSource)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
+		},
+	)
 
 	return _iconSource
 }
@@ -740,13 +763,17 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 }
 
 type SelectionData struct {
-	nocopy gextras.NoCopy
+	*selectionData
+}
+
+// selectionData is the struct that's finalized.
+type selectionData struct {
 	native *C.GtkSelectionData
 }
 
 func marshalSelectionData(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &SelectionData{native: (*C.GtkSelectionData)(unsafe.Pointer(b))}, nil
+	return &SelectionData{&selectionData{(*C.GtkSelectionData)(unsafe.Pointer(b))}}, nil
 }
 
 // Copy makes a copy of a SelectionData-struct and its data.
@@ -762,9 +789,12 @@ func (data *SelectionData) Copy() *SelectionData {
 	var _selectionData *SelectionData // out
 
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_selectionData, func(v *SelectionData) {
-		C.gtk_selection_data_free((*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_selectionData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_selection_data_free((*C.GtkSelectionData)(intern.C))
+		},
+	)
 
 	return _selectionData
 }
@@ -1110,13 +1140,17 @@ func (selectionData *SelectionData) TargetsIncludeURI() bool {
 // All this information will be used to match the style information that applies
 // to the described widget.
 type WidgetPath struct {
-	nocopy gextras.NoCopy
+	*widgetPath
+}
+
+// widgetPath is the struct that's finalized.
+type widgetPath struct {
 	native *C.GtkWidgetPath
 }
 
 func marshalWidgetPath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &WidgetPath{native: (*C.GtkWidgetPath)(unsafe.Pointer(b))}, nil
+	return &WidgetPath{&widgetPath{(*C.GtkWidgetPath)(unsafe.Pointer(b))}}, nil
 }
 
 // NewWidgetPath constructs a struct WidgetPath.
@@ -1128,9 +1162,12 @@ func NewWidgetPath() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
 
 	return _widgetPath
 }
@@ -1220,9 +1257,12 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
 
 	return _widgetPath
 }
@@ -1473,9 +1513,12 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
 
 	return _widgetPath
 }

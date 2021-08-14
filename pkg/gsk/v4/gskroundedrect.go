@@ -29,7 +29,11 @@ import "C"
 // The algorithm used for normalizing corner sizes is described in the CSS
 // specification (https://drafts.csswg.org/css-backgrounds-3/#border-radius).
 type RoundedRect struct {
-	nocopy gextras.NoCopy
+	*roundedRect
+}
+
+// roundedRect is the struct that's finalized.
+type roundedRect struct {
 	native *C.GskRoundedRect
 }
 

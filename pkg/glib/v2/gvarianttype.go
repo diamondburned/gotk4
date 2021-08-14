@@ -181,13 +181,17 @@ func init() {
 // of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
 type VariantType struct {
-	nocopy gextras.NoCopy
+	*variantType
+}
+
+// variantType is the struct that's finalized.
+type variantType struct {
 	native *C.GVariantType
 }
 
 func marshalVariantType(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantType{native: (*C.GVariantType)(unsafe.Pointer(b))}, nil
+	return &VariantType{&variantType{(*C.GVariantType)(unsafe.Pointer(b))}}, nil
 }
 
 // NewVariantType constructs a struct VariantType.
@@ -204,9 +208,12 @@ func NewVariantType(typeString string) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }
@@ -224,9 +231,12 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }
@@ -247,9 +257,12 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }
@@ -267,9 +280,12 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }
@@ -291,9 +307,12 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }
@@ -312,9 +331,12 @@ func (typ *VariantType) Copy() *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantType, func(v *VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantType)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_type_free((*C.GVariantType)(intern.C))
+		},
+	)
 
 	return _variantType
 }

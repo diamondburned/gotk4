@@ -174,7 +174,11 @@ func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 //
 // Deprecated: Use Time or #guint64 instead.
 type TimeVal struct {
-	nocopy gextras.NoCopy
+	*timeVal
+}
+
+// timeVal is the struct that's finalized.
+type timeVal struct {
 	native *C.GTimeVal
 }
 

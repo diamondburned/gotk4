@@ -4788,7 +4788,11 @@ func WindowSetDebugUpdates(setting bool) {
 // max_aspect to the same value, thus forcing the window to keep a constant
 // aspect ratio.
 type Geometry struct {
-	nocopy gextras.NoCopy
+	*geometry
+}
+
+// geometry is the struct that's finalized.
+type geometry struct {
 	native *C.GdkGeometry
 }
 
@@ -4877,7 +4881,11 @@ func (g *Geometry) WinGravity() Gravity {
 
 // WindowAttr attributes to use for a newly-created window.
 type WindowAttr struct {
-	nocopy gextras.NoCopy
+	*windowAttr
+}
+
+// windowAttr is the struct that's finalized.
+type windowAttr struct {
 	native *C.GdkWindowAttr
 }
 

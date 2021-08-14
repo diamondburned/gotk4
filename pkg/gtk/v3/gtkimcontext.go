@@ -312,9 +312,12 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_attrs)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+		},
+	)
 	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos

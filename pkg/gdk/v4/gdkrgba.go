@@ -31,13 +31,17 @@ func init() {
 // transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will
 // be clamped to this range when drawing.
 type RGBA struct {
-	nocopy gextras.NoCopy
+	*rgbA
+}
+
+// rgbA is the struct that's finalized.
+type rgbA struct {
 	native *C.GdkRGBA
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &RGBA{native: (*C.GdkRGBA)(unsafe.Pointer(b))}, nil
+	return &RGBA{&rgbA{(*C.GdkRGBA)(unsafe.Pointer(b))}}, nil
 }
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive
@@ -84,9 +88,12 @@ func (rgba *RGBA) Copy() *RGBA {
 	var _rgbA *RGBA // out
 
 	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.gdk_rgba_free((*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_rgbA)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
+		},
+	)
 
 	return _rgbA
 }

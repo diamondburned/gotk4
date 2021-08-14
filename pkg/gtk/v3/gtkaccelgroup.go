@@ -531,7 +531,11 @@ func (accelGroup *AccelGroup) Unlock() {
 }
 
 type AccelGroupEntry struct {
-	nocopy gextras.NoCopy
+	*accelGroupEntry
+}
+
+// accelGroupEntry is the struct that's finalized.
+type accelGroupEntry struct {
 	native *C.GtkAccelGroupEntry
 }
 
@@ -548,7 +552,11 @@ func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
 }
 
 type AccelKey struct {
-	nocopy gextras.NoCopy
+	*accelKey
+}
+
+// accelKey is the struct that's finalized.
+type accelKey struct {
 	native *C.GtkAccelKey
 }
 

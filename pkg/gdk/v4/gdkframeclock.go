@@ -227,9 +227,12 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-			C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
+			},
+		)
 	}
 
 	return _frameTimings
@@ -368,9 +371,12 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-			C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
+			},
+		)
 	}
 
 	return _frameTimings

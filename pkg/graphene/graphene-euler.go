@@ -200,13 +200,17 @@ func (e EulerOrder) String() string {
 // The contents of the #graphene_euler_t structure are private and should never
 // be accessed directly.
 type Euler struct {
-	nocopy gextras.NoCopy
+	*euler
+}
+
+// euler is the struct that's finalized.
+type euler struct {
 	native *C.graphene_euler_t
 }
 
 func marshalEuler(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Euler{native: (*C.graphene_euler_t)(unsafe.Pointer(b))}, nil
+	return &Euler{&euler{(*C.graphene_euler_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewEulerAlloc constructs a struct Euler.
@@ -218,9 +222,12 @@ func NewEulerAlloc() *Euler {
 	var _euler *Euler // out
 
 	_euler = (*Euler)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_euler, func(v *Euler) {
-		C.graphene_euler_free((*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_euler)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_euler_free((*C.graphene_euler_t)(intern.C))
+		},
+	)
 
 	return _euler
 }

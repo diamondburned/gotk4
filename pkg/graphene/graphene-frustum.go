@@ -27,13 +27,17 @@ func init() {
 // The contents of the graphene_frustum_t are private, and should not be
 // modified directly.
 type Frustum struct {
-	nocopy gextras.NoCopy
+	*frustum
+}
+
+// frustum is the struct that's finalized.
+type frustum struct {
 	native *C.graphene_frustum_t
 }
 
 func marshalFrustum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Frustum{native: (*C.graphene_frustum_t)(unsafe.Pointer(b))}, nil
+	return &Frustum{&frustum{(*C.graphene_frustum_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewFrustumAlloc constructs a struct Frustum.
@@ -45,9 +49,12 @@ func NewFrustumAlloc() *Frustum {
 	var _frustum *Frustum // out
 
 	_frustum = (*Frustum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_frustum, func(v *Frustum) {
-		C.graphene_frustum_free((*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_frustum)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_frustum_free((*C.graphene_frustum_t)(intern.C))
+		},
+	)
 
 	return _frustum
 }

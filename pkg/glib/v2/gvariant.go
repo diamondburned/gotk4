@@ -435,13 +435,17 @@ func (v VariantParseError) String() string {
 // type, we would use more memory for the serialised data and buffer management
 // for those dictionaries, but the type information would be shared.
 type Variant struct {
-	nocopy gextras.NoCopy
+	*variant
+}
+
+// variant is the struct that's finalized.
+type variant struct {
 	native *C.GVariant
 }
 
 func marshalVariant(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Variant{native: (*C.GVariant)(unsafe.Pointer(b))}, nil
+	return &Variant{&variant{(*C.GVariant)(unsafe.Pointer(b))}}, nil
 }
 
 // NewVariantArray constructs a struct Variant.
@@ -469,9 +473,12 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -492,9 +499,12 @@ func NewVariantBoolean(value bool) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -513,9 +523,12 @@ func NewVariantByte(value byte) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -537,9 +550,12 @@ func NewVariantBytestring(_string []byte) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -568,9 +584,12 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -592,9 +611,12 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -613,9 +635,12 @@ func NewVariantDouble(value float64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -643,9 +668,12 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -664,9 +692,12 @@ func NewVariantHandle(value int32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -685,9 +716,12 @@ func NewVariantInt16(value int16) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -706,9 +740,12 @@ func NewVariantInt32(value int32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -727,9 +764,12 @@ func NewVariantInt64(value int64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -755,9 +795,12 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -777,9 +820,12 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -808,9 +854,12 @@ func NewVariantObjv(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -830,9 +879,12 @@ func NewVariantSignature(signature string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -852,9 +904,12 @@ func NewVariantString(_string string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -883,9 +938,12 @@ func NewVariantStrv(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -908,9 +966,12 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -929,9 +990,12 @@ func NewVariantUint16(value uint16) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -950,9 +1014,12 @@ func NewVariantUint32(value uint32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -971,9 +1038,12 @@ func NewVariantUint64(value uint64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -992,9 +1062,12 @@ func NewVariantVariant(value *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1021,9 +1094,12 @@ func (value *Variant) Byteswap() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1299,9 +1375,12 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1463,9 +1542,12 @@ func (value *Variant) Maybe() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_variant, func(v *Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 
 	return _variant
@@ -1506,9 +1588,12 @@ func (value *Variant) NormalForm() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1687,9 +1772,12 @@ func (value *Variant) Variant() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1859,9 +1947,12 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1951,9 +2042,12 @@ func (value *Variant) RefSink() *Variant {
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -2088,13 +2182,17 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 // Builder is not threadsafe in any way. Do not attempt to access it from more
 // than one thread.
 type VariantBuilder struct {
-	nocopy gextras.NoCopy
+	*variantBuilder
+}
+
+// variantBuilder is the struct that's finalized.
+type variantBuilder struct {
 	native *C.GVariantBuilder
 }
 
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantBuilder{native: (*C.GVariantBuilder)(unsafe.Pointer(b))}, nil
+	return &VariantBuilder{&variantBuilder{(*C.GVariantBuilder)(unsafe.Pointer(b))}}, nil
 }
 
 // NewVariantBuilder constructs a struct VariantBuilder.
@@ -2110,9 +2208,12 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	var _variantBuilder *VariantBuilder // out
 
 	_variantBuilder = (*VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.g_variant_builder_unref((*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantBuilder)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
+		},
+	)
 
 	return _variantBuilder
 }
@@ -2181,9 +2282,12 @@ func (builder *VariantBuilder) End() *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -2293,13 +2397,17 @@ func (builder *VariantBuilder) Open(typ *VariantType) {
 //        return result;
 //      }
 type VariantDict struct {
-	nocopy gextras.NoCopy
+	*variantDict
+}
+
+// variantDict is the struct that's finalized.
+type variantDict struct {
 	native *C.GVariantDict
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &VariantDict{native: (*C.GVariantDict)(unsafe.Pointer(b))}, nil
+	return &VariantDict{&variantDict{(*C.GVariantDict)(unsafe.Pointer(b))}}, nil
 }
 
 // NewVariantDict constructs a struct VariantDict.
@@ -2317,9 +2425,12 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var _variantDict *VariantDict // out
 
 	_variantDict = (*VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantDict)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
+		},
+	)
 
 	return _variantDict
 }
@@ -2388,9 +2499,12 @@ func (dict *VariantDict) End() *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -2445,9 +2559,12 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	var _variant *Variant // out
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }

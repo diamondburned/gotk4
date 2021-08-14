@@ -162,9 +162,12 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
+		},
+	)
 
 	return _fontMetrics
 }

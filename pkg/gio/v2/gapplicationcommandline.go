@@ -294,9 +294,12 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_dict_ref(_cret)
-	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
-		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variantDict)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
+		},
+	)
 
 	return _variantDict
 }
@@ -322,9 +325,12 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 
 	return _variant

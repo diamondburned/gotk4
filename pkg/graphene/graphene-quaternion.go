@@ -27,13 +27,17 @@ func init() {
 // The contents of the #graphene_quaternion_t structure are private and should
 // never be accessed directly.
 type Quaternion struct {
-	nocopy gextras.NoCopy
+	*quaternion
+}
+
+// quaternion is the struct that's finalized.
+type quaternion struct {
 	native *C.graphene_quaternion_t
 }
 
 func marshalQuaternion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Quaternion{native: (*C.graphene_quaternion_t)(unsafe.Pointer(b))}, nil
+	return &Quaternion{&quaternion{(*C.graphene_quaternion_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewQuaternionAlloc constructs a struct Quaternion.
@@ -45,9 +49,12 @@ func NewQuaternionAlloc() *Quaternion {
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_quaternion, func(v *Quaternion) {
-		C.graphene_quaternion_free((*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_quaternion)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_quaternion_free((*C.graphene_quaternion_t)(intern.C))
+		},
+	)
 
 	return _quaternion
 }

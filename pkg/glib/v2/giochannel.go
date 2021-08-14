@@ -273,9 +273,12 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -283,13 +286,17 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 // IOChannel: data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
 type IOChannel struct {
-	nocopy gextras.NoCopy
+	*ioChannel
+}
+
+// ioChannel is the struct that's finalized.
+type ioChannel struct {
 	native *C.GIOChannel
 }
 
 func marshalIOChannel(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &IOChannel{native: (*C.GIOChannel)(unsafe.Pointer(b))}, nil
+	return &IOChannel{&ioChannel{(*C.GIOChannel)(unsafe.Pointer(b))}}, nil
 }
 
 // NewIOChannelFile constructs a struct IOChannel.
@@ -312,9 +319,12 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _goerr error          // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
-		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -335,9 +345,12 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ioChannel, func(v *IOChannel) {
-		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+		},
+	)
 
 	return _ioChannel
 }
@@ -993,6 +1006,10 @@ func IOChannelErrorFromErrno(en int) IOChannelError {
 // IOFuncs: table of functions used to handle different types of OChannel in a
 // generic way.
 type IOFuncs struct {
-	nocopy gextras.NoCopy
+	*ioFuncs
+}
+
+// ioFuncs is the struct that's finalized.
+type ioFuncs struct {
 	native *C.GIOFuncs
 }

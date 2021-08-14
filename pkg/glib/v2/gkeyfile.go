@@ -237,13 +237,17 @@ func (k KeyFileFlags) Has(other KeyFileFlags) bool {
 // KeyFile struct contains only private data and should not be accessed
 // directly.
 type KeyFile struct {
-	nocopy gextras.NoCopy
+	*keyFile
+}
+
+// keyFile is the struct that's finalized.
+type keyFile struct {
 	native *C.GKeyFile
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &KeyFile{native: (*C.GKeyFile)(unsafe.Pointer(b))}, nil
+	return &KeyFile{&keyFile{(*C.GKeyFile)(unsafe.Pointer(b))}}, nil
 }
 
 // NewKeyFile constructs a struct KeyFile.
@@ -255,9 +259,12 @@ func NewKeyFile() *KeyFile {
 	var _keyFile *KeyFile // out
 
 	_keyFile = (*KeyFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_keyFile)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _keyFile
 }

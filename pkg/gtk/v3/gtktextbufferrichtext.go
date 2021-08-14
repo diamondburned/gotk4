@@ -39,9 +39,12 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
 	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(iter, func(v *TextIter) {
-		C.gtk_text_iter_free((*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(iter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+		},
+	)
 	data = unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4)
 	runtime.SetFinalizer(&data, func(v *[]byte) {
 		C.free(unsafe.Pointer(&(*v)[0]))
@@ -79,13 +82,19 @@ func _gotk4_gtk3_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextB
 	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
 	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(start, func(v *TextIter) {
-		C.gtk_text_iter_free((*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(start)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+		},
+	)
 	end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	runtime.SetFinalizer(end, func(v *TextIter) {
-		C.gtk_text_iter_free((*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(end)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+		},
+	)
 
 	fn := v.(TextBufferSerializeFunc)
 	length, guint8 := fn(registerBuffer, contentBuffer, start, end)

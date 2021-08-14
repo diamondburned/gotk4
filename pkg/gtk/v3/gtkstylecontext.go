@@ -1136,9 +1136,12 @@ func (context *StyleContext) Path() *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
 
 	return _widgetPath
 }
@@ -1249,9 +1252,12 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	if _cret != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_css_section_ref(_cret)
-		runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_cssSection)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+			},
+		)
 	}
 
 	return _cssSection
@@ -1464,9 +1470,12 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	if _cret != nil {
 		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_icon_set_ref(_cret)
-		runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-			C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_iconSet)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			},
+		)
 	}
 
 	return _iconSet

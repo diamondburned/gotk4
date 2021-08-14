@@ -39,7 +39,11 @@ const ANALYSIS_FLAG_NEED_HYPHEN = 4
 // Analysis: PangoAnalysis structure stores information about the properties of
 // a segment of text.
 type Analysis struct {
-	nocopy gextras.NoCopy
+	*analysis
+}
+
+// analysis is the struct that's finalized.
+type analysis struct {
 	native *C.PangoAnalysis
 }
 
@@ -103,13 +107,17 @@ func (a *Analysis) Language() *Language {
 //
 // You typically obtain PangoItems by itemizing a piece of text with itemize.
 type Item struct {
-	nocopy gextras.NoCopy
+	*item
+}
+
+// item is the struct that's finalized.
+type item struct {
 	native *C.PangoItem
 }
 
 func marshalItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Item{native: (*C.PangoItem)(unsafe.Pointer(b))}, nil
+	return &Item{&item{(*C.PangoItem)(unsafe.Pointer(b))}}, nil
 }
 
 // NewItem constructs a struct Item.
@@ -121,9 +129,12 @@ func NewItem() *Item {
 	var _item *Item // out
 
 	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_item)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_item_free((*C.PangoItem)(intern.C))
+		},
+	)
 
 	return _item
 }
@@ -194,9 +205,12 @@ func (item *Item) Copy() *Item {
 
 	if _cret != nil {
 		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_ret, func(v *Item) {
-			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_ret)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_item_free((*C.PangoItem)(intern.C))
+			},
+		)
 	}
 
 	return _ret
@@ -230,9 +244,12 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _item *Item // out
 
 	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_item)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_item_free((*C.PangoItem)(intern.C))
+		},
+	)
 
 	return _item
 }

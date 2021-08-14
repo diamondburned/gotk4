@@ -150,9 +150,12 @@ func NewChildWatchSource(pid Pid) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -245,9 +248,12 @@ func NewIdleSource() *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -263,9 +269,12 @@ func MainCurrentSource() *Source {
 	if _cret != nil {
 		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_source_ref(_cret)
-		runtime.SetFinalizer(_source, func(v *Source) {
-			C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_source)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_source_unref((*C.GSource)(intern.C))
+			},
+		)
 	}
 
 	return _source
@@ -359,9 +368,12 @@ func NewTimeoutSource(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -388,9 +400,12 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -398,13 +413,17 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 // MainContext: GMainContext struct is an opaque data type representing a set of
 // sources to be handled in a main loop.
 type MainContext struct {
-	nocopy gextras.NoCopy
+	*mainContext
+}
+
+// mainContext is the struct that's finalized.
+type mainContext struct {
 	native *C.GMainContext
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MainContext{native: (*C.GMainContext)(unsafe.Pointer(b))}, nil
+	return &MainContext{&mainContext{(*C.GMainContext)(unsafe.Pointer(b))}}, nil
 }
 
 // NewMainContext constructs a struct MainContext.
@@ -416,9 +435,12 @@ func NewMainContext() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mainContext)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_main_context_unref((*C.GMainContext)(intern.C))
+		},
+	)
 
 	return _mainContext
 }
@@ -542,9 +564,12 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -578,9 +603,12 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -604,9 +632,12 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -835,9 +866,12 @@ func MainContextDefault() *MainContext {
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mainContext)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_main_context_unref((*C.GMainContext)(intern.C))
+		},
+	)
 
 	return _mainContext
 }
@@ -862,9 +896,12 @@ func MainContextGetThreadDefault() *MainContext {
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_main_context_ref(_cret)
-		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_mainContext)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_main_context_unref((*C.GMainContext)(intern.C))
+			},
+		)
 	}
 
 	return _mainContext
@@ -884,9 +921,12 @@ func MainContextRefThreadDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mainContext)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_main_context_unref((*C.GMainContext)(intern.C))
+		},
+	)
 
 	return _mainContext
 }
@@ -894,13 +934,17 @@ func MainContextRefThreadDefault() *MainContext {
 // MainLoop: GMainLoop struct is an opaque data type representing the main event
 // loop of a GLib or GTK+ application.
 type MainLoop struct {
-	nocopy gextras.NoCopy
+	*mainLoop
+}
+
+// mainLoop is the struct that's finalized.
+type mainLoop struct {
 	native *C.GMainLoop
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MainLoop{native: (*C.GMainLoop)(unsafe.Pointer(b))}, nil
+	return &MainLoop{&mainLoop{(*C.GMainLoop)(unsafe.Pointer(b))}}, nil
 }
 
 // NewMainLoop constructs a struct MainLoop.
@@ -923,9 +967,12 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.g_main_loop_unref((*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mainLoop)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_main_loop_unref((*C.GMainLoop)(intern.C))
+		},
+	)
 
 	return _mainLoop
 }
@@ -944,9 +991,12 @@ func (loop *MainLoop) Context() *MainContext {
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mainContext)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_main_context_unref((*C.GMainContext)(intern.C))
+		},
+	)
 
 	return _mainContext
 }
@@ -999,13 +1049,17 @@ func (loop *MainLoop) Run() {
 
 // Source: GSource struct is an opaque data type representing an event source.
 type Source struct {
-	nocopy gextras.NoCopy
+	*source
+}
+
+// source is the struct that's finalized.
+type source struct {
 	native *C.GSource
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Source{native: (*C.GSource)(unsafe.Pointer(b))}, nil
+	return &Source{&source{(*C.GSource)(unsafe.Pointer(b))}}, nil
 }
 
 // NewSource constructs a struct Source.
@@ -1024,9 +1078,12 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -1202,9 +1259,12 @@ func (source *Source) Context() *MainContext {
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_main_context_ref(_cret)
-		runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-			C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_mainContext)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_main_context_unref((*C.GMainContext)(intern.C))
+			},
+		)
 	}
 
 	return _mainContext
@@ -1734,7 +1794,11 @@ func SourceSetNameByID(tag uint, name string) {
 // SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
-	nocopy gextras.NoCopy
+	*sourceCallbackFuncs
+}
+
+// sourceCallbackFuncs is the struct that's finalized.
+type sourceCallbackFuncs struct {
 	native *C.GSourceCallbackFuncs
 }
 
@@ -1759,6 +1823,10 @@ type SourceCallbackFuncs struct {
 // it tests the results of the poll() call to see if the required condition has
 // been met, and returns TRUE if so.
 type SourceFuncs struct {
-	nocopy gextras.NoCopy
+	*sourceFuncs
+}
+
+// sourceFuncs is the struct that's finalized.
+type sourceFuncs struct {
 	native *C.GSourceFuncs
 }

@@ -301,9 +301,12 @@ func (entry *Entry) Attributes() *pango.AttrList {
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_attrList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			},
+		)
 	}
 
 	return _attrList

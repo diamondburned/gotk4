@@ -842,7 +842,11 @@ func (orig *RCStyle) Copy() *RCStyle {
 
 // RCProperty: deprecated
 type RCProperty struct {
-	nocopy gextras.NoCopy
+	*rcProperty
+}
+
+// rcProperty is the struct that's finalized.
+type rcProperty struct {
 	native *C.GtkRcProperty
 }
 

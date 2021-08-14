@@ -850,7 +850,11 @@ func SettingGet(name string, value *externglib.Value) bool {
 // EventAny contains the fields which are common to all event structs. Any event
 // pointer can safely be cast to a pointer to a EventAny to access these fields.
 type EventAny struct {
-	nocopy gextras.NoCopy
+	*eventAny
+}
+
+// eventAny is the struct that's finalized.
+type eventAny struct {
 	native *C.GdkEventAny
 }
 
@@ -920,7 +924,11 @@ func (e *EventAny) SendEvent() int8 {
 // a second of the first. For a triple click to occur, the third button press
 // must also occur within 1/2 second of the first button press.
 type EventButton struct {
-	nocopy gextras.NoCopy
+	*eventButton
+}
+
+// eventButton is the struct that's finalized.
+type eventButton struct {
 	native *C.GdkEventButton
 }
 
@@ -1016,7 +1024,11 @@ func (e *EventButton) YRoot() float64 {
 
 // EventConfigure: generated when a window size or position has changed.
 type EventConfigure struct {
-	nocopy gextras.NoCopy
+	*eventConfigure
+}
+
+// eventConfigure is the struct that's finalized.
+type eventConfigure struct {
 	native *C.GdkEventConfigure
 }
 
@@ -1071,7 +1083,11 @@ func (e *EventConfigure) Height() int {
 
 // EventCrossing: generated when the pointer enters or leaves a window.
 type EventCrossing struct {
-	nocopy gextras.NoCopy
+	*eventCrossing
+}
+
+// eventCrossing is the struct that's finalized.
+type eventCrossing struct {
 	native *C.GdkEventCrossing
 }
 
@@ -1177,7 +1193,11 @@ func (e *EventCrossing) State() ModifierType {
 
 // EventDND: generated during DND operations.
 type EventDND struct {
-	nocopy gextras.NoCopy
+	*eventDND
+}
+
+// eventDND is the struct that's finalized.
+type eventDND struct {
 	native *C.GdkEventDND
 }
 
@@ -1236,7 +1256,11 @@ func (e *EventDND) YRoot() int16 {
 // EventExpose: generated when all or part of a window becomes visible and needs
 // to be redrawn.
 type EventExpose struct {
-	nocopy gextras.NoCopy
+	*eventExpose
+}
+
+// eventExpose is the struct that's finalized.
+type eventExpose struct {
 	native *C.GdkEventExpose
 }
 
@@ -1294,7 +1318,11 @@ func (e *EventExpose) Count() int {
 
 // EventFocus describes a change of keyboard focus.
 type EventFocus struct {
-	nocopy gextras.NoCopy
+	*eventFocus
+}
+
+// eventFocus is the struct that's finalized.
+type eventFocus struct {
 	native *C.GdkEventFocus
 }
 
@@ -1333,7 +1361,11 @@ func (e *EventFocus) In() int16 {
 // keyboard again. Note that implicit grabs (which are initiated by button
 // presses) can also cause EventGrabBroken events.
 type EventGrabBroken struct {
-	nocopy gextras.NoCopy
+	*eventGrabBroken
+}
+
+// eventGrabBroken is the struct that's finalized.
+type eventGrabBroken struct {
 	native *C.GdkEventGrabBroken
 }
 
@@ -1388,7 +1420,11 @@ func (e *EventGrabBroken) GrabWindow() Windower {
 
 // EventKey describes a key press or key release event.
 type EventKey struct {
-	nocopy gextras.NoCopy
+	*eventKey
+}
+
+// eventKey is the struct that's finalized.
+type eventKey struct {
 	native *C.GdkEventKey
 }
 
@@ -1474,7 +1510,11 @@ func (e *EventKey) Group() byte {
 
 // EventMotion: generated when the pointer moves.
 type EventMotion struct {
-	nocopy gextras.NoCopy
+	*eventMotion
+}
+
+// eventMotion is the struct that's finalized.
+type eventMotion struct {
 	native *C.GdkEventMotion
 }
 
@@ -1569,14 +1609,22 @@ func (e *EventMotion) YRoot() float64 {
 // this information is only available if the X server supports the XFIXES
 // extension.
 type EventOwnerChange struct {
-	nocopy gextras.NoCopy
+	*eventOwnerChange
+}
+
+// eventOwnerChange is the struct that's finalized.
+type eventOwnerChange struct {
 	native *C.GdkEventOwnerChange
 }
 
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
 // sensors.
 type EventPadAxis struct {
-	nocopy gextras.NoCopy
+	*eventPadAxis
+}
+
+// eventPadAxis is the struct that's finalized.
+type eventPadAxis struct {
 	native *C.GdkEventPadAxis
 }
 
@@ -1641,7 +1689,11 @@ func (e *EventPadAxis) Value() float64 {
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
 // releases.
 type EventPadButton struct {
-	nocopy gextras.NoCopy
+	*eventPadButton
+}
+
+// eventPadButton is the struct that's finalized.
+type eventPadButton struct {
 	native *C.GdkEventPadButton
 }
 
@@ -1699,7 +1751,11 @@ func (e *EventPadButton) Mode() uint {
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
 // group.
 type EventPadGroupMode struct {
-	nocopy gextras.NoCopy
+	*eventPadGroupMode
+}
+
+// eventPadGroupMode is the struct that's finalized.
+type eventPadGroupMode struct {
 	native *C.GdkEventPadGroupMode
 }
 
@@ -1749,7 +1805,11 @@ func (e *EventPadGroupMode) Mode() uint {
 
 // EventProperty describes a property change on a window.
 type EventProperty struct {
-	nocopy gextras.NoCopy
+	*eventProperty
+}
+
+// eventProperty is the struct that's finalized.
+type eventProperty struct {
 	native *C.GdkEventProperty
 }
 
@@ -1763,7 +1823,11 @@ type EventProperty struct {
 // This event type will be used pretty rarely. It only is important for XInput
 // aware programs that are drawing their own cursor.
 type EventProximity struct {
-	nocopy gextras.NoCopy
+	*eventProximity
+}
+
+// eventProximity is the struct that's finalized.
+type eventProximity struct {
 	native *C.GdkEventProximity
 }
 
@@ -1811,7 +1875,11 @@ func (e *EventProximity) Device() Devicer {
 // recognized by the GDK_SCROLL_SMOOTH scroll direction. For these, the scroll
 // deltas can be obtained with gdk_event_get_scroll_deltas().
 type EventScroll struct {
-	nocopy gextras.NoCopy
+	*eventScroll
+}
+
+// eventScroll is the struct that's finalized.
+type eventScroll struct {
 	native *C.GdkEventScroll
 }
 
@@ -1912,23 +1980,35 @@ func (e *EventScroll) DeltaY() float64 {
 // EventSelection: generated when a selection is requested or ownership of a
 // selection is taken over by another client application.
 type EventSelection struct {
-	nocopy gextras.NoCopy
+	*eventSelection
+}
+
+// eventSelection is the struct that's finalized.
+type eventSelection struct {
 	native *C.GdkEventSelection
 }
 
 type EventSequence struct {
-	nocopy gextras.NoCopy
+	*eventSequence
+}
+
+// eventSequence is the struct that's finalized.
+type eventSequence struct {
 	native *C.GdkEventSequence
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &EventSequence{native: (*C.GdkEventSequence)(unsafe.Pointer(b))}, nil
+	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(unsafe.Pointer(b))}}, nil
 }
 
 // EventSetting: generated when a setting is modified.
 type EventSetting struct {
-	nocopy gextras.NoCopy
+	*eventSetting
+}
+
+// eventSetting is the struct that's finalized.
+type eventSetting struct {
 	native *C.GdkEventSetting
 }
 
@@ -1978,7 +2058,11 @@ func (e *EventSetting) Name() string {
 // event. With multitouch devices, there may be several active sequences at the
 // same time.
 type EventTouch struct {
-	nocopy gextras.NoCopy
+	*eventTouch
+}
+
+// eventTouch is the struct that's finalized.
+type eventTouch struct {
 	native *C.GdkEventTouch
 }
 
@@ -2081,7 +2165,11 @@ func (e *EventTouch) YRoot() float64 {
 
 // EventTouchpadPinch: generated during touchpad swipe gestures.
 type EventTouchpadPinch struct {
-	nocopy gextras.NoCopy
+	*eventTouchpadPinch
+}
+
+// eventTouchpadPinch is the struct that's finalized.
+type eventTouchpadPinch struct {
 	native *C.GdkEventTouchpadPinch
 }
 
@@ -2195,7 +2283,11 @@ func (e *EventTouchpadPinch) State() ModifierType {
 
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
 type EventTouchpadSwipe struct {
-	nocopy gextras.NoCopy
+	*eventTouchpadSwipe
+}
+
+// eventTouchpadSwipe is the struct that's finalized.
+type eventTouchpadSwipe struct {
 	native *C.GdkEventTouchpadSwipe
 }
 
@@ -2297,7 +2389,11 @@ func (e *EventTouchpadSwipe) State() ModifierType {
 // make it impossible to track the visibility of a window reliably, so this
 // event can not be guaranteed to provide useful information.
 type EventVisibility struct {
-	nocopy gextras.NoCopy
+	*eventVisibility
+}
+
+// eventVisibility is the struct that's finalized.
+type eventVisibility struct {
 	native *C.GdkEventVisibility
 }
 
@@ -2332,7 +2428,11 @@ func (e *EventVisibility) State() VisibilityState {
 
 // EventWindowState: generated when the state of a toplevel window changes.
 type EventWindowState struct {
-	nocopy gextras.NoCopy
+	*eventWindowState
+}
+
+// eventWindowState is the struct that's finalized.
+type eventWindowState struct {
 	native *C.GdkEventWindowState
 }
 

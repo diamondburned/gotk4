@@ -4057,9 +4057,12 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 	var _goerr error                                  // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -4095,9 +4098,12 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	var _goerr error                                  // out
 
 	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

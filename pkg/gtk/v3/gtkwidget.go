@@ -1736,9 +1736,12 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	if _cret != nil {
 		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_target_list_ref(_cret)
-		runtime.SetFinalizer(_targetList, func(v *TargetList) {
-			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_targetList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+			},
+		)
 	}
 
 	return _targetList
@@ -1963,9 +1966,12 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	if _cret != nil {
 		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_target_list_ref(_cret)
-		runtime.SetFinalizer(_targetList, func(v *TargetList) {
-			C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_targetList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+			},
+		)
 	}
 
 	return _targetList
@@ -3198,9 +3204,12 @@ func (widget *Widget) GetPath() *WidgetPath {
 
 	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
 
 	return _widgetPath
 }
@@ -6876,13 +6885,17 @@ func WidgetSetDefaultDirection(dir TextDirection) {
 // Requisition represents the desired size of a widget. See [GtkWidget’s
 // geometry management section][geometry-management] for more information.
 type Requisition struct {
-	nocopy gextras.NoCopy
+	*requisition
+}
+
+// requisition is the struct that's finalized.
+type requisition struct {
 	native *C.GtkRequisition
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Requisition{native: (*C.GtkRequisition)(unsafe.Pointer(b))}, nil
+	return &Requisition{&requisition{(*C.GtkRequisition)(unsafe.Pointer(b))}}, nil
 }
 
 // NewRequisition constructs a struct Requisition.
@@ -6894,9 +6907,12 @@ func NewRequisition() *Requisition {
 	var _requisition *Requisition // out
 
 	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_requisition)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
+		},
+	)
 
 	return _requisition
 }
@@ -6928,9 +6944,12 @@ func (requisition *Requisition) Copy() *Requisition {
 	var _ret *Requisition // out
 
 	_ret = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ret)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
+		},
+	)
 
 	return _ret
 }

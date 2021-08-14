@@ -9,7 +9,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -495,7 +494,11 @@ func (table *Table) SetRowSpacings(spacing uint) {
 }
 
 type TableChild struct {
-	nocopy gextras.NoCopy
+	*tableChild
+}
+
+// tableChild is the struct that's finalized.
+type tableChild struct {
 	native *C.GtkTableChild
 }
 
@@ -542,7 +545,11 @@ func (t *TableChild) Ypadding() uint16 {
 }
 
 type TableRowCol struct {
-	nocopy gextras.NoCopy
+	*tableRowCol
+}
+
+// tableRowCol is the struct that's finalized.
+type tableRowCol struct {
 	native *C.GtkTableRowCol
 }
 

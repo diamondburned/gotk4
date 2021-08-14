@@ -28,13 +28,17 @@ func init() {
 // The contents of the #graphene_vec4_t structure are private and should never
 // be accessed directly.
 type Vec4 struct {
-	nocopy gextras.NoCopy
+	*vec4
+}
+
+// vec4 is the struct that's finalized.
+type vec4 struct {
 	native *C.graphene_vec4_t
 }
 
 func marshalVec4(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Vec4{native: (*C.graphene_vec4_t)(unsafe.Pointer(b))}, nil
+	return &Vec4{&vec4{(*C.graphene_vec4_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewVec4Alloc constructs a struct Vec4.
@@ -46,9 +50,12 @@ func NewVec4Alloc() *Vec4 {
 	var _vec4 *Vec4 // out
 
 	_vec4 = (*Vec4)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_vec4, func(v *Vec4) {
-		C.graphene_vec4_free((*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_vec4)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_vec4_free((*C.graphene_vec4_t)(intern.C))
+		},
+	)
 
 	return _vec4
 }

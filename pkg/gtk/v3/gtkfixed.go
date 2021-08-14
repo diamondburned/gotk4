@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -143,7 +142,11 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 }
 
 type FixedChild struct {
-	nocopy gextras.NoCopy
+	*fixedChild
+}
+
+// fixedChild is the struct that's finalized.
+type fixedChild struct {
 	native *C.GtkFixedChild
 }
 

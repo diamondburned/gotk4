@@ -7,7 +7,6 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -217,7 +216,11 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 //
 // See g_action_map_add_action_entries() for an example.
 type ActionEntry struct {
-	nocopy gextras.NoCopy
+	*actionEntry
+}
+
+// actionEntry is the struct that's finalized.
+type actionEntry struct {
 	native *C.GActionEntry
 }
 

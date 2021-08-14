@@ -147,13 +147,17 @@ func (a AnchorHints) Has(other AnchorHints) bool {
 // position accordingly. But you have to be careful avoid changing the size of
 // the popover, or it has to be presented again.
 type PopupLayout struct {
-	nocopy gextras.NoCopy
+	*popupLayout
+}
+
+// popupLayout is the struct that's finalized.
+type popupLayout struct {
 	native *C.GdkPopupLayout
 }
 
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PopupLayout{native: (*C.GdkPopupLayout)(unsafe.Pointer(b))}, nil
+	return &PopupLayout{&popupLayout{(*C.GdkPopupLayout)(unsafe.Pointer(b))}}, nil
 }
 
 // NewPopupLayout constructs a struct PopupLayout.
@@ -175,9 +179,12 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
+		},
+	)
 
 	return _popupLayout
 }
@@ -195,9 +202,12 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
+		},
+	)
 
 	return _popupLayout
 }

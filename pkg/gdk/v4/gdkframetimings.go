@@ -31,13 +31,17 @@ func init() {
 // and for measuring quality metrics for the application’s display, such as
 // latency and jitter.
 type FrameTimings struct {
-	nocopy gextras.NoCopy
+	*frameTimings
+}
+
+// frameTimings is the struct that's finalized.
+type frameTimings struct {
 	native *C.GdkFrameTimings
 }
 
 func marshalFrameTimings(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FrameTimings{native: (*C.GdkFrameTimings)(unsafe.Pointer(b))}, nil
+	return &FrameTimings{&frameTimings{(*C.GdkFrameTimings)(unsafe.Pointer(b))}}, nil
 }
 
 // Complete returns whether timings are complete.

@@ -392,9 +392,12 @@ func (font *Font) Describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
 
 	return _fontDescription
 }
@@ -415,9 +418,12 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
 
 	return _fontDescription
 }
@@ -551,9 +557,12 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
+		},
+	)
 
 	return _fontMetrics
 }
@@ -665,9 +674,12 @@ func (face *FontFace) Describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
 
 	return _fontDescription
 }
@@ -967,13 +979,17 @@ func (family *FontFamily) ListFaces() []FontFacer {
 // available on the system and also for specifying the characteristics of a font
 // to load.
 type FontDescription struct {
-	nocopy gextras.NoCopy
+	*fontDescription
+}
+
+// fontDescription is the struct that's finalized.
+type fontDescription struct {
 	native *C.PangoFontDescription
 }
 
 func marshalFontDescription(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FontDescription{native: (*C.PangoFontDescription)(unsafe.Pointer(b))}, nil
+	return &FontDescription{&fontDescription{(*C.PangoFontDescription)(unsafe.Pointer(b))}}, nil
 }
 
 // NewFontDescription constructs a struct FontDescription.
@@ -985,9 +1001,12 @@ func NewFontDescription() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
 
 	return _fontDescription
 }
@@ -1045,9 +1064,12 @@ func (desc *FontDescription) Copy() *FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			},
+		)
 	}
 
 	return _fontDescription
@@ -1075,9 +1097,12 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			},
+		)
 	}
 
 	return _fontDescription
@@ -1697,9 +1722,12 @@ func FontDescriptionFromString(str string) *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
 
 	return _fontDescription
 }
@@ -1712,13 +1740,17 @@ func FontDescriptionFromString(str string) *FontDescription {
 // backend. See the documentation of the corresponding getters for documentation
 // of their meaning.
 type FontMetrics struct {
-	nocopy gextras.NoCopy
+	*fontMetrics
+}
+
+// fontMetrics is the struct that's finalized.
+type fontMetrics struct {
 	native *C.PangoFontMetrics
 }
 
 func marshalFontMetrics(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &FontMetrics{native: (*C.PangoFontMetrics)(unsafe.Pointer(b))}, nil
+	return &FontMetrics{&fontMetrics{(*C.PangoFontMetrics)(unsafe.Pointer(b))}}, nil
 }
 
 // ApproximateCharWidth gets the approximate character width for a font metrics

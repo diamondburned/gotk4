@@ -254,9 +254,12 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *RecentInfo) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -309,9 +312,12 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 
 	if _cret != nil {
 		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+			},
+		)
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -416,7 +422,11 @@ func RecentManagerGetDefault() *RecentManager {
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
 // registering a recently used resource.
 type RecentData struct {
-	nocopy gextras.NoCopy
+	*recentData
+}
+
+// recentData is the struct that's finalized.
+type recentData struct {
 	native *C.GtkRecentData
 }
 
@@ -495,13 +505,17 @@ func (r *RecentData) IsPrivate() bool {
 // RecentInfo constains all the meta-data associated with an entry in the
 // recently used files list.
 type RecentInfo struct {
-	nocopy gextras.NoCopy
+	*recentInfo
+}
+
+// recentInfo is the struct that's finalized.
+type recentInfo struct {
 	native *C.GtkRecentInfo
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &RecentInfo{native: (*C.GtkRecentInfo)(unsafe.Pointer(b))}, nil
+	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(unsafe.Pointer(b))}}, nil
 }
 
 // CreateAppInfo creates a Info for the specified RecentInfo

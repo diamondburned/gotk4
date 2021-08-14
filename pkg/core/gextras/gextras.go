@@ -10,10 +10,9 @@ import (
 	"unsafe"
 )
 
-type record struct {
-	_ NoCopy
-	p unsafe.Pointer
-}
+type record struct{ intern *internRecord }
+
+type internRecord struct{ c unsafe.Pointer }
 
 // StructNative returns the underlying C pointer of the given Go record struct
 // pointer. It can be used like so:
@@ -22,7 +21,12 @@ type record struct {
 //    c := (*namespace_record)(StructPtr(unsafe.Pointer(rec)))
 //
 func StructNative(ptr unsafe.Pointer) unsafe.Pointer {
-	return (*record)(ptr).p
+	return (*record)(ptr).intern.c
+}
+
+// StructIntern returns the given struct's internal struct pointer.
+func StructIntern(ptr unsafe.Pointer) *struct{ C unsafe.Pointer } {
+	return (*struct{ C unsafe.Pointer })(unsafe.Pointer((*record)(ptr).intern))
 }
 
 // SetStructNative sets the native value inside the Go struct value that the
@@ -32,25 +36,15 @@ func StructNative(ptr unsafe.Pointer) unsafe.Pointer {
 //    SetStructNative(&rec, cvalue) // T(cvalue) = *namespace_record
 //
 func SetStructNative(dst, native unsafe.Pointer) {
-	(*record)(dst).p = native
+	(*record)(dst).intern.c = native
 }
 
 // NewStructNative creates a new Go struct from the given native pointer. The
 // finalizer is NOT set.
 func NewStructNative(native unsafe.Pointer) unsafe.Pointer {
-	var r record
-	(*record)(&r).p = native
+	r := record{intern: &internRecord{native}}
 	return unsafe.Pointer(&r)
 }
-
-// NoCopy is a zero-sized type that triggers a warning in go vet when a struct
-// containing this type is copied.
-//
-// See https://github.com/golang/go/issues/8005#issuecomment-190753527.
-type NoCopy struct{}
-
-func (*NoCopy) Lock()   {}
-func (*NoCopy) Unlock() {}
 
 // HashTableSize returns the size of the *GHashTable.
 func HashTableSize(ptr unsafe.Pointer) int {

@@ -122,7 +122,11 @@ func (t TraverseFlags) Has(other TraverseFlags) bool {
 
 // Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
 type Node struct {
-	nocopy gextras.NoCopy
+	*node
+}
+
+// node is the struct that's finalized.
+type node struct {
 	native *C.GNode
 }
 

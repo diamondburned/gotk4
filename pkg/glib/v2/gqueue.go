@@ -17,7 +17,11 @@ import "C"
 
 // Queue contains the public fields of a [Queue][glib-Double-ended-Queues].
 type Queue struct {
-	nocopy gextras.NoCopy
+	*queue
+}
+
+// queue is the struct that's finalized.
+type queue struct {
 	native *C.GQueue
 }
 

@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -613,13 +612,17 @@ func (component *Component) SetSize(width int, height int) bool {
 // Rectangle: data structure for holding a rectangle. Those coordinates are
 // relative to the component top-level parent.
 type Rectangle struct {
-	nocopy gextras.NoCopy
+	*rectangle
+}
+
+// rectangle is the struct that's finalized.
+type rectangle struct {
 	native *C.AtkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{native: (*C.AtkRectangle)(unsafe.Pointer(b))}, nil
+	return &Rectangle{&rectangle{(*C.AtkRectangle)(unsafe.Pointer(b))}}, nil
 }
 
 // X coordinate of the left side of the rectangle.

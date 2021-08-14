@@ -64,13 +64,19 @@ func _gotk4_gtk3_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 
 	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	a = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(a, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(a)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
+		},
+	)
 	b = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(b, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(b)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
+		},
+	)
 
 	fn := v.(TreeIterCompareFunc)
 	gint := fn(model, a, b)

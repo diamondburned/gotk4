@@ -208,7 +208,11 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 }
 
 type SettingsValue struct {
-	nocopy gextras.NoCopy
+	*settingsValue
+}
+
+// settingsValue is the struct that's finalized.
+type settingsValue struct {
 	native *C.GtkSettingsValue
 }
 

@@ -293,9 +293,12 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
-			C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			},
+		)
 	}
 
 	return _fontDescription

@@ -246,13 +246,17 @@ func MarkupEscapeText(text string, length int) string {
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
 type MarkupParseContext struct {
-	nocopy gextras.NoCopy
+	*markupParseContext
+}
+
+// markupParseContext is the struct that's finalized.
+type markupParseContext struct {
 	native *C.GMarkupParseContext
 }
 
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MarkupParseContext{native: (*C.GMarkupParseContext)(unsafe.Pointer(b))}, nil
+	return &MarkupParseContext{&markupParseContext{(*C.GMarkupParseContext)(unsafe.Pointer(b))}}, nil
 }
 
 // EndParse signals to the ParseContext that all data has been fed into the
@@ -471,6 +475,10 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
 type MarkupParser struct {
-	nocopy gextras.NoCopy
+	*markupParser
+}
+
+// markupParser is the struct that's finalized.
+type markupParser struct {
 	native *C.GMarkupParser
 }

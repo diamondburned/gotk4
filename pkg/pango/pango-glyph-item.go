@@ -30,13 +30,17 @@ func init() {
 // with PangoLayout is a list of PangoLayoutLine, each of which contains a list
 // of PangoGlyphItem.
 type GlyphItem struct {
-	nocopy gextras.NoCopy
+	*glyphItem
+}
+
+// glyphItem is the struct that's finalized.
+type glyphItem struct {
 	native *C.PangoGlyphItem
 }
 
 func marshalGlyphItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphItem{native: (*C.PangoGlyphItem)(unsafe.Pointer(b))}, nil
+	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(unsafe.Pointer(b))}}, nil
 }
 
 // Item: corresponding PangoItem
@@ -69,9 +73,12 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 
 	if _cret != nil {
 		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-			C.pango_glyph_item_free((*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+			},
+		)
 	}
 
 	return _glyphItem
@@ -106,9 +113,12 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _glyphItem *GlyphItem // out
 
 	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.pango_glyph_item_free((*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_glyphItem)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+		},
+	)
 
 	return _glyphItem
 }
@@ -151,13 +161,17 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 //
 // None of the members of a PangoGlyphItemIter should be modified manually.
 type GlyphItemIter struct {
-	nocopy gextras.NoCopy
+	*glyphItemIter
+}
+
+// glyphItemIter is the struct that's finalized.
+type glyphItemIter struct {
 	native *C.PangoGlyphItemIter
 }
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphItemIter{native: (*C.PangoGlyphItemIter)(unsafe.Pointer(b))}, nil
+	return &GlyphItemIter{&glyphItemIter{(*C.PangoGlyphItemIter)(unsafe.Pointer(b))}}, nil
 }
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
@@ -224,9 +238,12 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 
 	if _cret != nil {
 		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-			C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glyphItemIter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(intern.C))
+			},
+		)
 	}
 
 	return _glyphItemIter

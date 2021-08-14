@@ -27,13 +27,17 @@ func init() {
 // tree][glib-Balanced-Binary-Trees]. It should be accessed only by using the
 // following functions.
 type Tree struct {
-	nocopy gextras.NoCopy
+	*tree
+}
+
+// tree is the struct that's finalized.
+type tree struct {
 	native *C.GTree
 }
 
 func marshalTree(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Tree{native: (*C.GTree)(unsafe.Pointer(b))}, nil
+	return &Tree{&tree{(*C.GTree)(unsafe.Pointer(b))}}, nil
 }
 
 // Destroy removes all keys and values from the #GTree and decreases its

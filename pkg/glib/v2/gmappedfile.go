@@ -26,13 +26,17 @@ func init() {
 // MappedFile represents a file mapping created with g_mapped_file_new(). It has
 // only private members and should not be accessed directly.
 type MappedFile struct {
-	nocopy gextras.NoCopy
+	*mappedFile
+}
+
+// mappedFile is the struct that's finalized.
+type mappedFile struct {
 	native *C.GMappedFile
 }
 
 func marshalMappedFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &MappedFile{native: (*C.GMappedFile)(unsafe.Pointer(b))}, nil
+	return &MappedFile{&mappedFile{(*C.GMappedFile)(unsafe.Pointer(b))}}, nil
 }
 
 // NewMappedFile constructs a struct MappedFile.
@@ -56,9 +60,12 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -86,9 +93,12 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

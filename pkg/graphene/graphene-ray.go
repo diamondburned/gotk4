@@ -54,13 +54,17 @@ func (r RayIntersectionKind) String() string {
 // The contents of the graphene_ray_t structure are private, and should not be
 // modified directly.
 type Ray struct {
-	nocopy gextras.NoCopy
+	*ray
+}
+
+// ray is the struct that's finalized.
+type ray struct {
 	native *C.graphene_ray_t
 }
 
 func marshalRay(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Ray{native: (*C.graphene_ray_t)(unsafe.Pointer(b))}, nil
+	return &Ray{&ray{(*C.graphene_ray_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewRayAlloc constructs a struct Ray.
@@ -72,9 +76,12 @@ func NewRayAlloc() *Ray {
 	var _ray *Ray // out
 
 	_ray = (*Ray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ray, func(v *Ray) {
-		C.graphene_ray_free((*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ray)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_ray_free((*C.graphene_ray_t)(intern.C))
+		},
+	)
 
 	return _ray
 }

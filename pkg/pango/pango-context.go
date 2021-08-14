@@ -67,9 +67,12 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 		src := (*C.PangoItem)(v)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(&dst, func(v *Item) {
-			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_item_free((*C.PangoItem)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -119,9 +122,12 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 		src := (*C.PangoItem)(v)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(&dst, func(v *Item) {
-			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_item_free((*C.PangoItem)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -314,9 +320,12 @@ func (context *Context) Language() *Language {
 	var _language *Language // out
 
 	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_language, func(v *Language) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_language)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _language
 }
@@ -376,9 +385,12 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
+		},
+	)
 
 	return _fontMetrics
 }

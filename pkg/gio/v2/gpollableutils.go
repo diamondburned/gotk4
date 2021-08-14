@@ -46,9 +46,12 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }
@@ -81,9 +84,12 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Objec
 	var _source *glib.Source // out
 
 	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
 
 	return _source
 }

@@ -2,21 +2,25 @@
 
 package graphene
 
-import (
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-)
-
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <graphene-gobject.h>
 import "C"
 
 type SIMD4F struct {
-	nocopy gextras.NoCopy
+	*simD4F
+}
+
+// simD4F is the struct that's finalized.
+type simD4F struct {
 	native *C.graphene_simd4f_t
 }
 
 type SIMD4X4F struct {
-	nocopy gextras.NoCopy
+	*simD4X4F
+}
+
+// simD4X4F is the struct that's finalized.
+type simD4X4F struct {
 	native *C.graphene_simd4x4f_t
 }

@@ -35,13 +35,17 @@ func init() {
 // internally operate on a normalized copy; all functions returning a
 // #graphene_rect_t will always return a normalized rectangle.
 type Rect struct {
-	nocopy gextras.NoCopy
+	*rect
+}
+
+// rect is the struct that's finalized.
+type rect struct {
 	native *C.graphene_rect_t
 }
 
 func marshalRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rect{native: (*C.graphene_rect_t)(unsafe.Pointer(b))}, nil
+	return &Rect{&rect{(*C.graphene_rect_t)(unsafe.Pointer(b))}}, nil
 }
 
 // Origin coordinates of the origin of the rectangle
@@ -747,9 +751,12 @@ func RectAlloc() *Rect {
 	var _rect *Rect // out
 
 	_rect = (*Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_rect, func(v *Rect) {
-		C.graphene_rect_free((*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_rect)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_rect_free((*C.graphene_rect_t)(intern.C))
+		},
+	)
 
 	return _rect
 }

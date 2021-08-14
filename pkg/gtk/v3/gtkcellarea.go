@@ -47,13 +47,19 @@ func _gotk4_gtk3_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 
 	renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
 	cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(cellArea, func(v *gdk.Rectangle) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(cellArea)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 	cellBackground = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(cellBackground, func(v *gdk.Rectangle) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(cellBackground)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	fn := v.(CellAllocCallback)
 	ok := fn(renderer, cellArea, cellBackground)

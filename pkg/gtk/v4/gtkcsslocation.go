@@ -2,10 +2,6 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-)
-
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -23,7 +19,11 @@ import "C"
 // "\r", "\n" and "\f" as newlines.) If your document uses different rules for
 // line breaking, you might want run into problems here.
 type CSSLocation struct {
-	nocopy gextras.NoCopy
+	*cssLocation
+}
+
+// cssLocation is the struct that's finalized.
+type cssLocation struct {
 	native *C.GtkCssLocation
 }
 

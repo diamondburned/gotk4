@@ -115,9 +115,12 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_dbus_interface_info_ref(_cret)
-	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
-		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+		},
+	)
 
 	return _dBusInterfaceInfo
 }

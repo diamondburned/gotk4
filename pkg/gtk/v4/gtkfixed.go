@@ -146,9 +146,12 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	if _cret != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gsk_transform_ref(_cret)
-		runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
-			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
 	}
 
 	return _transform

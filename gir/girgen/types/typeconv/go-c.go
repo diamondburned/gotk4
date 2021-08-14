@@ -555,7 +555,9 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// then we detach the finalizer so Go can't.
 		if !value.ShouldFree() && types.RecordHasRef(v) == nil {
 			value.header.Import("runtime")
-			value.p.Linef("runtime.SetFinalizer(%s, nil)", value.InName)
+			value.vtmpl(
+				"runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(<.InNamePtr 1>)), nil)",
+			)
 		}
 		return true
 

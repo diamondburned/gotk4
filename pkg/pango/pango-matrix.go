@@ -30,13 +30,17 @@ func init() {
 //    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
 //    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
 type Matrix struct {
-	nocopy gextras.NoCopy
+	*matrix
+}
+
+// matrix is the struct that's finalized.
+type matrix struct {
 	native *C.PangoMatrix
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Matrix{native: (*C.PangoMatrix)(unsafe.Pointer(b))}, nil
+	return &Matrix{&matrix{(*C.PangoMatrix)(unsafe.Pointer(b))}}, nil
 }
 
 // XX: 1st component of the transformation matrix
@@ -112,9 +116,12 @@ func (matrix *Matrix) Copy() *Matrix {
 
 	if _cret != nil {
 		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_ret, func(v *Matrix) {
-			C.pango_matrix_free((*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_ret)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_matrix_free((*C.PangoMatrix)(intern.C))
+			},
+		)
 	}
 
 	return _ret

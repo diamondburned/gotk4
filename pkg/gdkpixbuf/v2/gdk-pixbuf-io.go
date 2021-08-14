@@ -293,13 +293,17 @@ func PixbufInitModules(path string) error {
 // Only modules should access the fields directly, applications should use the
 // gdk_pixbuf_format_* family of functions.
 type PixbufFormat struct {
-	nocopy gextras.NoCopy
+	*pixbufFormat
+}
+
+// pixbufFormat is the struct that's finalized.
+type pixbufFormat struct {
 	native *C.GdkPixbufFormat
 }
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PixbufFormat{native: (*C.GdkPixbufFormat)(unsafe.Pointer(b))}, nil
+	return &PixbufFormat{&pixbufFormat{(*C.GdkPixbufFormat)(unsafe.Pointer(b))}}, nil
 }
 
 // Copy creates a copy of format.
@@ -315,9 +319,12 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _pixbufFormat *PixbufFormat // out
 
 	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
-		C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_pixbufFormat)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(intern.C))
+		},
+	)
 
 	return _pixbufFormat
 }

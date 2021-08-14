@@ -161,7 +161,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.InName)
 		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.In.Type)
 		value.p.Linef("%s = make(%s, len)", value.Out.Set, value.Out.Type)
-		value.p.Linef("for i := 0; i < len; i++ {", value.InName)
+		value.p.Linef("for i := 0; i < len; i++ {")
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -301,6 +301,7 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 	return false
 }
 
+/*
 // cFree calls the free function of the given value on the given string
 // variable. v should be of type unsafe.Pointer. If value is nil, then a generic
 // C.free is returned.
@@ -355,6 +356,7 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 
 	return fmt.Sprintf("C.free(%s)", v)
 }
+*/
 
 func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// TODO: make the freeing use cFree().
@@ -552,8 +554,9 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.ImportCore("gextras")
 
 		// Require 1 pointer to avoid weird copies.
-		value.vtmpl(
-			"<.Out.Set> = <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))")
+		value.vtmpl(`
+			<.Out.Set> = <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))
+		`)
 		if value.fail {
 			value.Logln(logger.Debug, "record set fail")
 			return false
@@ -577,22 +580,26 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// We can take ownership if the type can be reference-counted anyway.
 		if value.ShouldFree() || unref {
 			value.header.Import("runtime")
-			value.vtmpl(
-				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {")
+			value.vtmpl(`
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(<.OutInPtr 1><.OutName>)),
+					func(intern *struct{ C unsafe.Pointer }) {
+			`)
 			if value.fail {
 				value.Logln(logger.Debug, "SetFinalizer set fail")
 			}
 
 			if free != nil {
 				value.p.Linef(
-					"C.%s((%s)(gextras.StructNative(unsafe.Pointer(v))))",
+					"C.%s((%s)(intern.C))",
 					free.CIdentifier, types.AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
 				)
 			} else {
-				value.p.Linef("C.free(gextras.StructNative(unsafe.Pointer(v)))")
+				value.p.Linef("C.free(intern.C)")
 			}
 
-			value.p.Linef("})")
+			value.p.Linef("},")
+			value.p.Linef(")")
 		}
 
 		return true

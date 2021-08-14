@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -513,7 +512,11 @@ func (device *Device) HasBidiLayouts() bool {
 
 // TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
-	nocopy gextras.NoCopy
+	*timeCoord
+}
+
+// timeCoord is the struct that's finalized.
+type timeCoord struct {
 	native *C.GdkTimeCoord
 }
 

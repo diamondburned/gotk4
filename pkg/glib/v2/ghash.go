@@ -305,13 +305,17 @@ func StrHash(v cgo.Handle) uint {
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
 type HashTable struct {
-	nocopy gextras.NoCopy
+	*hashTable
+}
+
+// hashTable is the struct that's finalized.
+type hashTable struct {
 	native *C.GHashTable
 }
 
 func marshalHashTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &HashTable{native: (*C.GHashTable)(unsafe.Pointer(b))}, nil
+	return &HashTable{&hashTable{(*C.GHashTable)(unsafe.Pointer(b))}}, nil
 }
 
 // HashTableAdd: this is a convenience function for using a Table as a set. It
@@ -747,7 +751,11 @@ func HashTableStealExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.H
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
 type HashTableIter struct {
-	nocopy gextras.NoCopy
+	*hashTableIter
+}
+
+// hashTableIter is the struct that's finalized.
+type hashTableIter struct {
 	native *C.GHashTableIter
 }
 

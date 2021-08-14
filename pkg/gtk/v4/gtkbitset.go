@@ -21,7 +21,11 @@ import "C"
 // gtk.BitsetIter().InitFirst, gtk.BitsetIter().InitLast or
 // gtk.BitsetIter().InitAt.
 type BitsetIter struct {
-	nocopy gextras.NoCopy
+	*bitsetIter
+}
+
+// bitsetIter is the struct that's finalized.
+type bitsetIter struct {
 	native *C.GtkBitsetIter
 }
 

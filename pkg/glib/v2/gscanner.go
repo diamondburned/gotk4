@@ -194,7 +194,11 @@ func (t TokenType) String() string {
 // If you want to use your own message handler you can set the msg_handler
 // field. The type of the message handler function is declared by MsgFunc.
 type Scanner struct {
-	nocopy gextras.NoCopy
+	*scanner
+}
+
+// scanner is the struct that's finalized.
+type scanner struct {
 	native *C.GScanner
 }
 
@@ -516,7 +520,11 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
 type ScannerConfig struct {
-	nocopy gextras.NoCopy
+	*scannerConfig
+}
+
+// scannerConfig is the struct that's finalized.
+type scannerConfig struct {
 	native *C.GScannerConfig
 }
 

@@ -688,9 +688,12 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
 			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			runtime.SetFinalizer(_textRanges[i], func(v *TextRange) {
-				C.free(gextras.StructNative(unsafe.Pointer(v)))
-			})
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
 		}
 	}
 
@@ -1245,13 +1248,17 @@ func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int)
 
 // TextRange: structure used to describe a text range.
 type TextRange struct {
-	nocopy gextras.NoCopy
+	*textRange
+}
+
+// textRange is the struct that's finalized.
+type textRange struct {
 	native *C.AtkTextRange
 }
 
 func marshalTextRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextRange{native: (*C.AtkTextRange)(unsafe.Pointer(b))}, nil
+	return &TextRange{&textRange{(*C.AtkTextRange)(unsafe.Pointer(b))}}, nil
 }
 
 // Bounds: rectangle giving the bounds of the text range
@@ -1284,7 +1291,11 @@ func (t *TextRange) Content() string {
 
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
-	nocopy gextras.NoCopy
+	*textRectangle
+}
+
+// textRectangle is the struct that's finalized.
+type textRectangle struct {
 	native *C.AtkTextRectangle
 }
 

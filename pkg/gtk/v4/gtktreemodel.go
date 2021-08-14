@@ -99,13 +99,19 @@ func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 
 	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(path, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(iter, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(iter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
+		},
+	)
 
 	fn := v.(TreeModelForeachFunc)
 	ok := fn(model, path, iter)
@@ -688,9 +694,12 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 
 	return _treePath
 }
@@ -1090,13 +1099,17 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 // expected to put a unique integer in the stamp member, and put model-specific
 // data in the three user_data members.
 type TreeIter struct {
-	nocopy gextras.NoCopy
+	*treeIter
+}
+
+// treeIter is the struct that's finalized.
+type treeIter struct {
 	native *C.GtkTreeIter
 }
 
 func marshalTreeIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreeIter{native: (*C.GtkTreeIter)(unsafe.Pointer(b))}, nil
+	return &TreeIter{&treeIter{(*C.GtkTreeIter)(unsafe.Pointer(b))}}, nil
 }
 
 // Stamp: unique stamp to catch invalid iterators
@@ -1144,22 +1157,29 @@ func (iter *TreeIter) Copy() *TreeIter {
 	var _treeIter *TreeIter // out
 
 	_treeIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treeIter, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treeIter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
+		},
+	)
 
 	return _treeIter
 }
 
 // TreePath: opaque structure representing a path to a row in a model.
 type TreePath struct {
-	nocopy gextras.NoCopy
+	*treePath
+}
+
+// treePath is the struct that's finalized.
+type treePath struct {
 	native *C.GtkTreePath
 }
 
 func marshalTreePath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreePath{native: (*C.GtkTreePath)(unsafe.Pointer(b))}, nil
+	return &TreePath{&treePath{(*C.GtkTreePath)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTreePath constructs a struct TreePath.
@@ -1171,9 +1191,12 @@ func NewTreePath() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 
 	return _treePath
 }
@@ -1187,9 +1210,12 @@ func NewTreePathFirst() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 
 	return _treePath
 }
@@ -1211,9 +1237,12 @@ func NewTreePathFromIndices(indices []int) *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 
 	return _treePath
 }
@@ -1233,9 +1262,12 @@ func NewTreePathFromString(path string) *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_treePath, func(v *TreePath) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_treePath)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
 	}
 
 	return _treePath
@@ -1292,9 +1324,12 @@ func (path *TreePath) Copy() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
 
 	return _treePath
 }
@@ -1462,13 +1497,17 @@ func (path *TreePath) Up() bool {
 // row (a TreePath refers to a position, not a fixed row). Create a new
 // GtkTreeRowReference with gtk_tree_row_reference_new().
 type TreeRowReference struct {
-	nocopy gextras.NoCopy
+	*treeRowReference
+}
+
+// treeRowReference is the struct that's finalized.
+type treeRowReference struct {
 	native *C.GtkTreeRowReference
 }
 
 func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TreeRowReference{native: (*C.GtkTreeRowReference)(unsafe.Pointer(b))}, nil
+	return &TreeRowReference{&treeRowReference{(*C.GtkTreeRowReference)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.
@@ -1488,9 +1527,12 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 
 	if _cret != nil {
 		_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+			},
+		)
 	}
 
 	return _treeRowReference
@@ -1516,9 +1558,12 @@ func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path
 
 	if _cret != nil {
 		_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+			},
+		)
 	}
 
 	return _treeRowReference
@@ -1537,9 +1582,12 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 	var _treeRowReference *TreeRowReference // out
 
 	_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+		},
+	)
 
 	return _treeRowReference
 }
@@ -1576,9 +1624,12 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_treePath, func(v *TreePath) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_treePath)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
 	}
 
 	return _treePath

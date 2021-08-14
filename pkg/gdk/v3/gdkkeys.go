@@ -557,7 +557,11 @@ func KeymapGetForDisplay(display *Display) *Keymap {
 
 // KeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
-	nocopy gextras.NoCopy
+	*keymapKey
+}
+
+// keymapKey is the struct that's finalized.
+type keymapKey struct {
 	native *C.GdkKeymapKey
 }
 

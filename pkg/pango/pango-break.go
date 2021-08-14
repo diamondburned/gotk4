@@ -175,6 +175,10 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 // LogAttr: PangoLogAttr structure stores information about the attributes of a
 // single character.
 type LogAttr struct {
-	nocopy gextras.NoCopy
+	*logAttr
+}
+
+// logAttr is the struct that's finalized.
+type logAttr struct {
 	native *C.PangoLogAttr
 }

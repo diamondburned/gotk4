@@ -30,13 +30,17 @@ func init() {
 // Toplevel surfaces are sovereign windows that can be presented to the user in
 // various states (maximized, on all workspaces, etc).
 type ToplevelLayout struct {
-	nocopy gextras.NoCopy
+	*toplevelLayout
+}
+
+// toplevelLayout is the struct that's finalized.
+type toplevelLayout struct {
 	native *C.GdkToplevelLayout
 }
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ToplevelLayout{native: (*C.GdkToplevelLayout)(unsafe.Pointer(b))}, nil
+	return &ToplevelLayout{&toplevelLayout{(*C.GdkToplevelLayout)(unsafe.Pointer(b))}}, nil
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
@@ -48,9 +52,12 @@ func NewToplevelLayout() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
+		},
+	)
 
 	return _toplevelLayout
 }
@@ -68,9 +75,12 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
+		},
+	)
 
 	return _toplevelLayout
 }

@@ -206,7 +206,11 @@ func (o OptionFlags) Has(other OptionFlags) bool {
 // added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().
 type OptionEntry struct {
-	nocopy gextras.NoCopy
+	*optionEntry
+}
+
+// optionEntry is the struct that's finalized.
+type optionEntry struct {
 	native *C.GOptionEntry
 }
 
@@ -287,13 +291,17 @@ func (o *OptionEntry) ArgDescription() string {
 // getting a GOptionGroup holding their options, which the application can then
 // add to its Context.
 type OptionGroup struct {
-	nocopy gextras.NoCopy
+	*optionGroup
+}
+
+// optionGroup is the struct that's finalized.
+type optionGroup struct {
 	native *C.GOptionGroup
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &OptionGroup{native: (*C.GOptionGroup)(unsafe.Pointer(b))}, nil
+	return &OptionGroup{&optionGroup{(*C.GOptionGroup)(unsafe.Pointer(b))}}, nil
 }
 
 // AddEntries adds the options specified in entries to group.

@@ -937,7 +937,11 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 
 // TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
-	nocopy gextras.NoCopy
+	*timeCoord
+}
+
+// timeCoord is the struct that's finalized.
+type timeCoord struct {
 	native *C.GdkTimeCoord
 }
 

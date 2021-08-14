@@ -27,13 +27,17 @@ func init() {
 // The contents of a #graphene_quad_t are private and should never be accessed
 // directly.
 type Quad struct {
-	nocopy gextras.NoCopy
+	*quad
+}
+
+// quad is the struct that's finalized.
+type quad struct {
 	native *C.graphene_quad_t
 }
 
 func marshalQuad(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Quad{native: (*C.graphene_quad_t)(unsafe.Pointer(b))}, nil
+	return &Quad{&quad{(*C.graphene_quad_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewQuadAlloc constructs a struct Quad.
@@ -45,9 +49,12 @@ func NewQuadAlloc() *Quad {
 	var _quad *Quad // out
 
 	_quad = (*Quad)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_quad, func(v *Quad) {
-		C.graphene_quad_free((*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_quad)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_quad_free((*C.graphene_quad_t)(intern.C))
+		},
+	)
 
 	return _quad
 }

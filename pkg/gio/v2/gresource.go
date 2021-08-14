@@ -179,9 +179,12 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _goerr error        // out
 
 	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_resource, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_resource)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_resource_unref((*C.GResource)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -192,7 +195,11 @@ func ResourceLoad(filename string) (*Resource, error) {
 // StaticResource is an opaque data structure and can only be accessed using the
 // following functions.
 type StaticResource struct {
-	nocopy gextras.NoCopy
+	*staticResource
+}
+
+// staticResource is the struct that's finalized.
+type staticResource struct {
 	native *C.GStaticResource
 }
 
@@ -229,9 +236,12 @@ func (staticResource *StaticResource) Resource() *Resource {
 
 	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_resource_ref(_cret)
-	runtime.SetFinalizer(_resource, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_resource)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_resource_unref((*C.GResource)(intern.C))
+		},
+	)
 
 	return _resource
 }

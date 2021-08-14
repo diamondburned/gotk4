@@ -27,13 +27,17 @@ func init() {
 // The contents of the #graphene_matrix_t structure are private and should never
 // be accessed directly.
 type Matrix struct {
-	nocopy gextras.NoCopy
+	*matrix
+}
+
+// matrix is the struct that's finalized.
+type matrix struct {
 	native *C.graphene_matrix_t
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Matrix{native: (*C.graphene_matrix_t)(unsafe.Pointer(b))}, nil
+	return &Matrix{&matrix{(*C.graphene_matrix_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewMatrixAlloc constructs a struct Matrix.
@@ -45,9 +49,12 @@ func NewMatrixAlloc() *Matrix {
 	var _matrix *Matrix // out
 
 	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_matrix, func(v *Matrix) {
-		C.graphene_matrix_free((*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_matrix)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_matrix_free((*C.graphene_matrix_t)(intern.C))
+		},
+	)
 
 	return _matrix
 }

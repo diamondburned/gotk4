@@ -539,9 +539,12 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 
 	return _variant
@@ -581,9 +584,12 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_variant)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 
 	return _variant
@@ -739,27 +745,39 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	}
 	if _arg3 != nil {
 		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(_parameterType, func(v *glib.VariantType) {
-			C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameterType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
 	}
 	if _arg4 != nil {
 		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-		runtime.SetFinalizer(_stateType, func(v *glib.VariantType) {
-			C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
 	}
 	if _arg5 != nil {
 		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-		runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateHint)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 	if _arg6 != nil {
 		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
-		runtime.SetFinalizer(_state, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_state)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 	}
 	if _cret != 0 {
 		_ok = true

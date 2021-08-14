@@ -111,9 +111,12 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 	var filterInfo *RecentFilterInfo // out
 
 	filterInfo = (*RecentFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(filterInfo, func(v *RecentFilterInfo) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(filterInfo)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	fn := v.(RecentFilterFunc)
 	ok := fn(filterInfo)
@@ -414,7 +417,11 @@ func (filter *RecentFilter) SetName(name string) {
 // RecentFilterInfo struct is used to pass information about the tested file to
 // gtk_recent_filter_filter().
 type RecentFilterInfo struct {
-	nocopy gextras.NoCopy
+	*recentFilterInfo
+}
+
+// recentFilterInfo is the struct that's finalized.
+type recentFilterInfo struct {
 	native *C.GtkRecentFilterInfo
 }
 

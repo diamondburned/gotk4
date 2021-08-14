@@ -45,9 +45,12 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 
 	grabWidget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
 	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(event, func(v *gdk.EventKey) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(event)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event)
@@ -394,9 +397,12 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _optionGroup *glib.OptionGroup // out
 
 	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
-		C.g_option_group_unref((*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_optionGroup)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_option_group_unref((*C.GOptionGroup)(intern.C))
+		},
+	)
 
 	return _optionGroup
 }

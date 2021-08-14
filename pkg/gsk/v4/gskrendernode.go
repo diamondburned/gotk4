@@ -43,13 +43,19 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 	var err error            // out
 
 	start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(start, func(v *ParseLocation) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(start)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 	end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(end, func(v *ParseLocation) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(end)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 	err = gerror.Take(unsafe.Pointer(arg2))
 
 	fn := v.(ParseErrorFunc)
@@ -189,7 +195,11 @@ func (node *RenderNode) WriteToFile(filename string) error {
 
 // ColorStop: color stop in a gradient node.
 type ColorStop struct {
-	nocopy gextras.NoCopy
+	*colorStop
+}
+
+// colorStop is the struct that's finalized.
+type colorStop struct {
 	native *C.GskColorStop
 }
 
@@ -209,7 +219,11 @@ func (c *ColorStop) Color() gdk.RGBA {
 
 // ParseLocation: location in a parse buffer.
 type ParseLocation struct {
-	nocopy gextras.NoCopy
+	*parseLocation
+}
+
+// parseLocation is the struct that's finalized.
+type parseLocation struct {
 	native *C.GskParseLocation
 }
 
@@ -250,7 +264,11 @@ func (p *ParseLocation) LineChars() uint {
 
 // Shadow: shadow parameters in a shadow node.
 type Shadow struct {
-	nocopy gextras.NoCopy
+	*shadow
+}
+
+// shadow is the struct that's finalized.
+type shadow struct {
 	native *C.GskShadow
 }
 

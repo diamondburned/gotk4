@@ -130,9 +130,12 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 
 	_timeRead = uint64(_arg2)
 	_unixMountEntry = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_unixMountEntry)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _timeRead, _unixMountEntry
 }
@@ -170,9 +173,12 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	var _unixMountEntry *UnixMountEntry // out
 
 	_unixMountEntry = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_unixMountEntry)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _unixMountEntry
 }
@@ -198,9 +204,12 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 
 	_timeRead = uint64(_arg2)
 	_unixMountEntry = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_unixMountEntry, func(v *UnixMountEntry) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_unixMountEntry)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _timeRead, _unixMountEntry
 }
@@ -476,9 +485,12 @@ func UnixMountPointsGet() (uint64, []*UnixMountPoint) {
 		src := (*C.GUnixMountPoint)(v)
 		var dst *UnixMountPoint // out
 		dst = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *UnixMountPoint) {
-			C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_unix_mount_point_free((*C.GUnixMountPoint)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -523,9 +535,12 @@ func UnixMountsGet() (uint64, []*UnixMountEntry) {
 		src := (*C.GUnixMountEntry)(v)
 		var dst *UnixMountEntry // out
 		dst = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *UnixMountEntry) {
-			C.free(gextras.StructNative(unsafe.Pointer(v)))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -609,25 +624,33 @@ func UnixMountMonitorGet() *UnixMountMonitor {
 // UnixMountEntry defines a Unix mount entry (e.g.
 // <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
 type UnixMountEntry struct {
-	nocopy gextras.NoCopy
+	*unixMountEntry
+}
+
+// unixMountEntry is the struct that's finalized.
+type unixMountEntry struct {
 	native *C.GUnixMountEntry
 }
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &UnixMountEntry{native: (*C.GUnixMountEntry)(unsafe.Pointer(b))}, nil
+	return &UnixMountEntry{&unixMountEntry{(*C.GUnixMountEntry)(unsafe.Pointer(b))}}, nil
 }
 
 // UnixMountPoint defines a Unix mount point (e.g. <filename>/dev</filename>).
 // This corresponds roughly to a fstab entry.
 type UnixMountPoint struct {
-	nocopy gextras.NoCopy
+	*unixMountPoint
+}
+
+// unixMountPoint is the struct that's finalized.
+type unixMountPoint struct {
 	native *C.GUnixMountPoint
 }
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &UnixMountPoint{native: (*C.GUnixMountPoint)(unsafe.Pointer(b))}, nil
+	return &UnixMountPoint{&unixMountPoint{(*C.GUnixMountPoint)(unsafe.Pointer(b))}}, nil
 }
 
 // Compare compares two unix mount points.
@@ -663,9 +686,12 @@ func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 	var _unixMountPoint *UnixMountPoint // out
 
 	_unixMountPoint = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-		C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_unixMountPoint)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_unix_mount_point_free((*C.GUnixMountPoint)(intern.C))
+		},
+	)
 
 	return _unixMountPoint
 }
@@ -892,9 +918,12 @@ func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
 	_timeRead = uint64(_arg2)
 	if _cret != nil {
 		_unixMountPoint = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
-			C.g_unix_mount_point_free((*C.GUnixMountPoint)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_unixMountPoint)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_unix_mount_point_free((*C.GUnixMountPoint)(intern.C))
+			},
+		)
 	}
 
 	return _timeRead, _unixMountPoint

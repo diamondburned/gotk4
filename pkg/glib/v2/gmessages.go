@@ -723,7 +723,11 @@ func LogWriterSupportsColor(outputFd int) bool {
 // have a trailing nul byte. Otherwise, length must be set to a non-negative
 // value.
 type LogField struct {
-	nocopy gextras.NoCopy
+	*logField
+}
+
+// logField is the struct that's finalized.
+type logField struct {
 	native *C.GLogField
 }
 

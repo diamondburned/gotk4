@@ -28,13 +28,17 @@ func init() {
 // Because sections are nested into one another, you can use
 // gtk_css_section_get_parent() to get the containing region.
 type CSSSection struct {
-	nocopy gextras.NoCopy
+	*cssSection
+}
+
+// cssSection is the struct that's finalized.
+type cssSection struct {
 	native *C.GtkCssSection
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &CSSSection{native: (*C.GtkCssSection)(unsafe.Pointer(b))}, nil
+	return &CSSSection{&cssSection{(*C.GtkCssSection)(unsafe.Pointer(b))}}, nil
 }
 
 // NewCSSSection constructs a struct CSSSection.
@@ -58,9 +62,12 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_cssSection)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+		},
+	)
 
 	return _cssSection
 }
@@ -123,9 +130,12 @@ func (section *CSSSection) Parent() *CSSSection {
 	if _cret != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_css_section_ref(_cret)
-		runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_cssSection)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+			},
+		)
 	}
 
 	return _cssSection

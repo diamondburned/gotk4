@@ -732,7 +732,11 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 
 // StockItem: deprecated: since version 3.10.
 type StockItem struct {
-	nocopy gextras.NoCopy
+	*stockItem
+}
+
+// stockItem is the struct that's finalized.
+type stockItem struct {
 	native *C.GtkStockItem
 }
 

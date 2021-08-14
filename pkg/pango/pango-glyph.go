@@ -111,9 +111,12 @@ func ReorderItems(logicalItems []Item) []Item {
 		src := (*C.PangoItem)(v)
 		var dst Item // out
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(&dst, func(v *Item) {
-			C.pango_item_free((*C.PangoItem)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_item_free((*C.PangoItem)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 
@@ -242,7 +245,11 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 // GlyphGeometry: PangoGlyphGeometry structure contains width and positioning
 // information for a single glyph.
 type GlyphGeometry struct {
-	nocopy gextras.NoCopy
+	*glyphGeometry
+}
+
+// glyphGeometry is the struct that's finalized.
+type glyphGeometry struct {
 	native *C.PangoGlyphGeometry
 }
 
@@ -270,7 +277,11 @@ func (g *GlyphGeometry) YOffset() GlyphUnit {
 // GlyphInfo: PangoGlyphInfo structure represents a single glyph with
 // positioning information and visual attributes.
 type GlyphInfo struct {
-	nocopy gextras.NoCopy
+	*glyphInfo
+}
+
+// glyphInfo is the struct that's finalized.
+type glyphInfo struct {
 	native *C.PangoGlyphInfo
 }
 
@@ -301,13 +312,17 @@ func (g *GlyphInfo) Attr() GlyphVisAttr {
 // The storage for the glyph information is owned by the structure which
 // simplifies memory management.
 type GlyphString struct {
-	nocopy gextras.NoCopy
+	*glyphString
+}
+
+// glyphString is the struct that's finalized.
+type glyphString struct {
 	native *C.PangoGlyphString
 }
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &GlyphString{native: (*C.PangoGlyphString)(unsafe.Pointer(b))}, nil
+	return &GlyphString{&glyphString{(*C.PangoGlyphString)(unsafe.Pointer(b))}}, nil
 }
 
 // NewGlyphString constructs a struct GlyphString.
@@ -319,9 +334,12 @@ func NewGlyphString() *GlyphString {
 	var _glyphString *GlyphString // out
 
 	_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.pango_glyph_string_free((*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_glyphString)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
+		},
+	)
 
 	return _glyphString
 }
@@ -342,9 +360,12 @@ func (_string *GlyphString) Copy() *GlyphString {
 
 	if _cret != nil {
 		_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-			C.pango_glyph_string_free((*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_glyphString)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
+			},
+		)
 	}
 
 	return _glyphString
@@ -531,6 +552,10 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 // Currently, it contains only cluster start information. yMore attributes may
 // be added in the future.
 type GlyphVisAttr struct {
-	nocopy gextras.NoCopy
+	*glyphVisAttr
+}
+
+// glyphVisAttr is the struct that's finalized.
+type glyphVisAttr struct {
 	native *C.PangoGlyphVisAttr
 }

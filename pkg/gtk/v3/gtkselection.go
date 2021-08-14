@@ -102,13 +102,17 @@ func SelectionRemoveAll(widget Widgetter) {
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
 type TargetEntry struct {
-	nocopy gextras.NoCopy
+	*targetEntry
+}
+
+// targetEntry is the struct that's finalized.
+type targetEntry struct {
 	native *C.GtkTargetEntry
 }
 
 func marshalTargetEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TargetEntry{native: (*C.GtkTargetEntry)(unsafe.Pointer(b))}, nil
+	return &TargetEntry{&targetEntry{(*C.GtkTargetEntry)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
@@ -131,9 +135,12 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _targetEntry *TargetEntry // out
 
 	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
+		},
+	)
 
 	return _targetEntry
 }
@@ -174,9 +181,12 @@ func (data *TargetEntry) Copy() *TargetEntry {
 	var _targetEntry *TargetEntry // out
 
 	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
+		},
+	)
 
 	return _targetEntry
 }
@@ -184,13 +194,17 @@ func (data *TargetEntry) Copy() *TargetEntry {
 // TargetList is a reference counted list of TargetPair and should be treated as
 // opaque.
 type TargetList struct {
-	nocopy gextras.NoCopy
+	*targetList
+}
+
+// targetList is the struct that's finalized.
+type targetList struct {
 	native *C.GtkTargetList
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TargetList{native: (*C.GtkTargetList)(unsafe.Pointer(b))}, nil
+	return &TargetList{&targetList{(*C.GtkTargetList)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTargetList constructs a struct TargetList.
@@ -210,9 +224,12 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+		},
+	)
 
 	return _targetList
 }
@@ -308,6 +325,10 @@ func (list *TargetList) AddURITargets(info uint) {
 // TargetPair is used to represent the same information as a table of
 // TargetEntry, but in an efficient form.
 type TargetPair struct {
-	nocopy gextras.NoCopy
+	*targetPair
+}
+
+// targetPair is the struct that's finalized.
+type targetPair struct {
 	native *C.GtkTargetPair
 }

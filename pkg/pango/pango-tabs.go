@@ -52,13 +52,17 @@ func (t TabAlign) String() string {
 // PangoTabArray can be used to set tab stops in a PangoLayout. Each tab stop
 // has an alignment and a position.
 type TabArray struct {
-	nocopy gextras.NoCopy
+	*tabArray
+}
+
+// tabArray is the struct that's finalized.
+type tabArray struct {
 	native *C.PangoTabArray
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TabArray{native: (*C.PangoTabArray)(unsafe.Pointer(b))}, nil
+	return &TabArray{&tabArray{(*C.PangoTabArray)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTabArray constructs a struct TabArray.
@@ -79,9 +83,12 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var _tabArray *TabArray // out
 
 	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tabArray)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+		},
+	)
 
 	return _tabArray
 }
@@ -99,9 +106,12 @@ func (src *TabArray) Copy() *TabArray {
 	var _tabArray *TabArray // out
 
 	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tabArray)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+		},
+	)
 
 	return _tabArray
 }

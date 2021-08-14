@@ -24,13 +24,17 @@ func init() {
 
 // Point3D: point with three components: X, Y, and Z.
 type Point3D struct {
-	nocopy gextras.NoCopy
+	*point3D
+}
+
+// point3D is the struct that's finalized.
+type point3D struct {
 	native *C.graphene_point3d_t
 }
 
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Point3D{native: (*C.graphene_point3d_t)(unsafe.Pointer(b))}, nil
+	return &Point3D{&point3D{(*C.graphene_point3d_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewPoint3DAlloc constructs a struct Point3D.
@@ -42,9 +46,12 @@ func NewPoint3DAlloc() *Point3D {
 	var _point3D *Point3D // out
 
 	_point3D = (*Point3D)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_point3D, func(v *Point3D) {
-		C.graphene_point3d_free((*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_point3D)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_point3d_free((*C.graphene_point3d_t)(intern.C))
+		},
+	)
 
 	return _point3D
 }

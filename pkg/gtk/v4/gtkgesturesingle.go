@@ -110,9 +110,12 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	if _cret != nil {
 		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_eventSequence, func(v *gdk.EventSequence) {
-			C.free(gextras.StructNative(unsafe.Pointer(v)))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_eventSequence)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
 	}
 
 	return _eventSequence

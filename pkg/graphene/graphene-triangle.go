@@ -24,13 +24,17 @@ func init() {
 
 // Triangle: triangle.
 type Triangle struct {
-	nocopy gextras.NoCopy
+	*triangle
+}
+
+// triangle is the struct that's finalized.
+type triangle struct {
 	native *C.graphene_triangle_t
 }
 
 func marshalTriangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Triangle{native: (*C.graphene_triangle_t)(unsafe.Pointer(b))}, nil
+	return &Triangle{&triangle{(*C.graphene_triangle_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTriangleAlloc constructs a struct Triangle.
@@ -42,9 +46,12 @@ func NewTriangleAlloc() *Triangle {
 	var _triangle *Triangle // out
 
 	_triangle = (*Triangle)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_triangle, func(v *Triangle) {
-		C.graphene_triangle_free((*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_triangle)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_triangle_free((*C.graphene_triangle_t)(intern.C))
+		},
+	)
 
 	return _triangle
 }

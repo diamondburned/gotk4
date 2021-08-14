@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -254,7 +253,11 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
 type DBusErrorEntry struct {
-	nocopy gextras.NoCopy
+	*dBusErrorEntry
+}
+
+// dBusErrorEntry is the struct that's finalized.
+type dBusErrorEntry struct {
 	native *C.GDBusErrorEntry
 }
 

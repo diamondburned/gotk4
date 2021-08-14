@@ -27,7 +27,11 @@ func init() {
 }
 
 type TextAppearance struct {
-	nocopy gextras.NoCopy
+	*textAppearance
+}
+
+// textAppearance is the struct that's finalized.
+type textAppearance struct {
 	native *C.GtkTextAppearance
 }
 
@@ -57,13 +61,17 @@ func (t *TextAppearance) Rise() int {
 // structs, the fields in this struct should only be read, never modified
 // directly.
 type TextAttributes struct {
-	nocopy gextras.NoCopy
+	*textAttributes
+}
+
+// textAttributes is the struct that's finalized.
+type textAttributes struct {
 	native *C.GtkTextAttributes
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextAttributes{native: (*C.GtkTextAttributes)(unsafe.Pointer(b))}, nil
+	return &TextAttributes{&textAttributes{(*C.GtkTextAttributes)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTextAttributes constructs a struct TextAttributes.
@@ -75,9 +83,12 @@ func NewTextAttributes() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
+		},
+	)
 
 	return _textAttributes
 }
@@ -200,9 +211,12 @@ func (src *TextAttributes) Copy() *TextAttributes {
 	var _textAttributes *TextAttributes // out
 
 	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
+		},
+	)
 
 	return _textAttributes
 }

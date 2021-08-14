@@ -117,13 +117,17 @@ func _gotk4_gtk3_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gbo
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
 type TextIter struct {
-	nocopy gextras.NoCopy
+	*textIter
+}
+
+// textIter is the struct that's finalized.
+type textIter struct {
 	native *C.GtkTextIter
 }
 
 func marshalTextIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &TextIter{native: (*C.GtkTextIter)(unsafe.Pointer(b))}, nil
+	return &TextIter{&textIter{(*C.GtkTextIter)(unsafe.Pointer(b))}}, nil
 }
 
 // Assign assigns the value of other to iter. This function is not useful in
@@ -717,9 +721,12 @@ func (iter *TextIter) Copy() *TextIter {
 	var _textIter *TextIter // out
 
 	_textIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_textIter, func(v *TextIter) {
-		C.gtk_text_iter_free((*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textIter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+		},
+	)
 
 	return _textIter
 }
@@ -1537,9 +1544,12 @@ func (iter *TextIter) Language() *pango.Language {
 	var _language *pango.Language // out
 
 	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_language, func(v *pango.Language) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_language)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	return _language
 }

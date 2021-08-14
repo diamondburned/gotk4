@@ -451,7 +451,11 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 //
 // Deprecated: since version 3.10.
 type ActionEntry struct {
-	nocopy gextras.NoCopy
+	*actionEntry
+}
+
+// actionEntry is the struct that's finalized.
+type actionEntry struct {
 	native *C.GtkActionEntry
 }
 
@@ -499,7 +503,11 @@ func (a *ActionEntry) Tooltip() string {
 //
 // Deprecated: since version 3.10.
 type RadioActionEntry struct {
-	nocopy gextras.NoCopy
+	*radioActionEntry
+}
+
+// radioActionEntry is the struct that's finalized.
+type radioActionEntry struct {
 	native *C.GtkRadioActionEntry
 }
 
@@ -554,7 +562,11 @@ func (r *RadioActionEntry) Value() int {
 //
 // Deprecated: since version 3.10.
 type ToggleActionEntry struct {
-	nocopy gextras.NoCopy
+	*toggleActionEntry
+}
+
+// toggleActionEntry is the struct that's finalized.
+type toggleActionEntry struct {
 	native *C.GtkToggleActionEntry
 }
 

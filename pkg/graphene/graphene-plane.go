@@ -27,13 +27,17 @@ func init() {
 // The contents of the graphene_plane_t are private, and should not be modified
 // directly.
 type Plane struct {
-	nocopy gextras.NoCopy
+	*plane
+}
+
+// plane is the struct that's finalized.
+type plane struct {
 	native *C.graphene_plane_t
 }
 
 func marshalPlane(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Plane{native: (*C.graphene_plane_t)(unsafe.Pointer(b))}, nil
+	return &Plane{&plane{(*C.graphene_plane_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewPlaneAlloc constructs a struct Plane.
@@ -45,9 +49,12 @@ func NewPlaneAlloc() *Plane {
 	var _plane *Plane // out
 
 	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_plane, func(v *Plane) {
-		C.graphene_plane_free((*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_plane)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_plane_free((*C.graphene_plane_t)(intern.C))
+		},
+	)
 
 	return _plane
 }

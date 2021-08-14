@@ -102,9 +102,12 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 	var filterInfo *FileFilterInfo // out
 
 	filterInfo = (*FileFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(filterInfo, func(v *FileFilterInfo) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(filterInfo)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo)
@@ -377,9 +380,12 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -387,7 +393,11 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 // FileFilterInfo is used to pass information about the tested file to
 // gtk_file_filter_filter().
 type FileFilterInfo struct {
-	nocopy gextras.NoCopy
+	*fileFilterInfo
+}
+
+// fileFilterInfo is the struct that's finalized.
+type fileFilterInfo struct {
 	native *C.GtkFileFilterInfo
 }
 

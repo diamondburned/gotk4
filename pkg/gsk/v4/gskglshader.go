@@ -354,13 +354,17 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
-	nocopy gextras.NoCopy
+	*shaderArgsBuilder
+}
+
+// shaderArgsBuilder is the struct that's finalized.
+type shaderArgsBuilder struct {
 	native *C.GskShaderArgsBuilder
 }
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ShaderArgsBuilder{native: (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))}, nil
+	return &ShaderArgsBuilder{&shaderArgsBuilder{(*C.GskShaderArgsBuilder)(unsafe.Pointer(b))}}, nil
 }
 
 // SetBool sets the value of the uniform idx.

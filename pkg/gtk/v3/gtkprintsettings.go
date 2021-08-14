@@ -656,9 +656,12 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.gtk_paper_size_free((*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_paperSize)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+		},
+	)
 
 	return _paperSize
 }
@@ -1425,9 +1428,12 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	return _variant
 }
@@ -1468,7 +1474,11 @@ func (settings *PrintSettings) Unset(key string) {
 
 // PageRange: see also gtk_print_settings_set_page_ranges().
 type PageRange struct {
-	nocopy gextras.NoCopy
+	*pageRange
+}
+
+// pageRange is the struct that's finalized.
+type pageRange struct {
 	native *C.GtkPageRange
 }
 

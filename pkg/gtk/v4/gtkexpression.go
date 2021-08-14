@@ -407,9 +407,12 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 
 	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
+		},
+	)
 
 	return _expressionWatch
 }
@@ -520,9 +523,12 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 
 	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
+		},
+	)
 
 	return _expressionWatch
 }
@@ -665,13 +671,17 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 // The contents of GtkExpressionWatch should only be accessed through the
 // provided API.
 type ExpressionWatch struct {
-	nocopy gextras.NoCopy
+	*expressionWatch
+}
+
+// expressionWatch is the struct that's finalized.
+type expressionWatch struct {
 	native *C.GtkExpressionWatch
 }
 
 func marshalExpressionWatch(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ExpressionWatch{native: (*C.GtkExpressionWatch)(unsafe.Pointer(b))}, nil
+	return &ExpressionWatch{&expressionWatch{(*C.GtkExpressionWatch)(unsafe.Pointer(b))}}, nil
 }
 
 // Evaluate evaluates the watched expression and on success stores the result in

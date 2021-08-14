@@ -264,9 +264,12 @@ func (drag *Drag) Formats() *ContentFormats {
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }

@@ -837,7 +837,11 @@ func (m ModifierType) Has(other ModifierType) bool {
 
 // Point defines the x and y coordinates of a point.
 type Point struct {
-	nocopy gextras.NoCopy
+	*point
+}
+
+// point is the struct that's finalized.
+type point struct {
 	native *C.GdkPoint
 }
 
@@ -858,13 +862,17 @@ func (p *Point) Y() int {
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
-	nocopy gextras.NoCopy
+	*rectangle
+}
+
+// rectangle is the struct that's finalized.
+type rectangle struct {
 	native *C.GdkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{native: (*C.GdkRectangle)(unsafe.Pointer(b))}, nil
+	return &Rectangle{&rectangle{(*C.GdkRectangle)(unsafe.Pointer(b))}}, nil
 }
 
 func (r *Rectangle) X() int {

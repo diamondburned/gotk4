@@ -24,13 +24,17 @@ func init() {
 
 // Sphere: sphere, represented by its center and radius.
 type Sphere struct {
-	nocopy gextras.NoCopy
+	*sphere
+}
+
+// sphere is the struct that's finalized.
+type sphere struct {
 	native *C.graphene_sphere_t
 }
 
 func marshalSphere(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Sphere{native: (*C.graphene_sphere_t)(unsafe.Pointer(b))}, nil
+	return &Sphere{&sphere{(*C.graphene_sphere_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewSphereAlloc constructs a struct Sphere.
@@ -42,9 +46,12 @@ func NewSphereAlloc() *Sphere {
 	var _sphere *Sphere // out
 
 	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.graphene_sphere_free((*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_sphere)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_sphere_free((*C.graphene_sphere_t)(intern.C))
+		},
+	)
 
 	return _sphere
 }

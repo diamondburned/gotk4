@@ -589,9 +589,12 @@ func ScriptGetSampleLanguage(script Script) *Language {
 
 	if _cret != nil {
 		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_language, func(v *Language) {
-			C.free(gextras.StructNative(unsafe.Pointer(v)))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_language)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.free(intern.C)
+			},
+		)
 	}
 
 	return _language
@@ -600,13 +603,17 @@ func ScriptGetSampleLanguage(script Script) *Language {
 // ScriptIter: PangoScriptIter is used to iterate through a string and identify
 // ranges in different scripts.
 type ScriptIter struct {
-	nocopy gextras.NoCopy
+	*scriptIter
+}
+
+// scriptIter is the struct that's finalized.
+type scriptIter struct {
 	native *C.PangoScriptIter
 }
 
 func marshalScriptIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ScriptIter{native: (*C.PangoScriptIter)(unsafe.Pointer(b))}, nil
+	return &ScriptIter{&scriptIter{(*C.PangoScriptIter)(unsafe.Pointer(b))}}, nil
 }
 
 // NewScriptIter constructs a struct ScriptIter.
@@ -626,9 +633,12 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	var _scriptIter *ScriptIter // out
 
 	_scriptIter = (*ScriptIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_scriptIter, func(v *ScriptIter) {
-		C.pango_script_iter_free((*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_scriptIter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_script_iter_free((*C.PangoScriptIter)(intern.C))
+		},
+	)
 
 	return _scriptIter
 }

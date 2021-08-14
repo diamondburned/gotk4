@@ -128,9 +128,12 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	if _cret != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			},
+		)
 	}
 
 	return _contentFormats

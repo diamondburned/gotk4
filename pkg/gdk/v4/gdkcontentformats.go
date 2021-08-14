@@ -46,13 +46,17 @@ func InternMIMEType(_string string) string {
 // ContentFormatsBuilder: GdkContentFormatsBuilder is an auxiliary struct used
 // to create new GdkContentFormats, and should not be kept around.
 type ContentFormatsBuilder struct {
-	nocopy gextras.NoCopy
+	*contentFormatsBuilder
+}
+
+// contentFormatsBuilder is the struct that's finalized.
+type contentFormatsBuilder struct {
 	native *C.GdkContentFormatsBuilder
 }
 
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ContentFormatsBuilder{native: (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))}, nil
+	return &ContentFormatsBuilder{&contentFormatsBuilder{(*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))}}, nil
 }
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
@@ -64,9 +68,12 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
 	_contentFormatsBuilder = (*ContentFormatsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
-		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormatsBuilder)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(intern.C))
+		},
+	)
 
 	return _contentFormatsBuilder
 }
@@ -131,9 +138,12 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }

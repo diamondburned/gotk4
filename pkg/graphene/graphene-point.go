@@ -24,13 +24,17 @@ func init() {
 
 // Point: point with two coordinates.
 type Point struct {
-	nocopy gextras.NoCopy
+	*point
+}
+
+// point is the struct that's finalized.
+type point struct {
 	native *C.graphene_point_t
 }
 
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Point{native: (*C.graphene_point_t)(unsafe.Pointer(b))}, nil
+	return &Point{&point{(*C.graphene_point_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewPointAlloc constructs a struct Point.
@@ -42,9 +46,12 @@ func NewPointAlloc() *Point {
 	var _point *Point // out
 
 	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_point, func(v *Point) {
-		C.graphene_point_free((*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_point)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_point_free((*C.graphene_point_t)(intern.C))
+		},
+	)
 
 	return _point
 }

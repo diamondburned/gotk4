@@ -61,13 +61,17 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
 type PollFD struct {
-	nocopy gextras.NoCopy
+	*pollFD
+}
+
+// pollFD is the struct that's finalized.
+type pollFD struct {
 	native *C.GPollFD
 }
 
 func marshalPollFD(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &PollFD{native: (*C.GPollFD)(unsafe.Pointer(b))}, nil
+	return &PollFD{&pollFD{(*C.GPollFD)(unsafe.Pointer(b))}}, nil
 }
 
 // Fd: file descriptor to poll (or a HANDLE on Win32)

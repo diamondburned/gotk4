@@ -262,9 +262,12 @@ func (layout *Layout) Attributes() *AttrList {
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(_attrList, func(v *AttrList) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_attrList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			},
+		)
 	}
 
 	return _attrList
@@ -515,9 +518,12 @@ func (layout *Layout) Iter() *LayoutIter {
 	var _layoutIter *LayoutIter // out
 
 	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-		C.pango_layout_iter_free((*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_layoutIter)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
+		},
+	)
 
 	return _layoutIter
 }
@@ -563,9 +569,12 @@ func (layout *Layout) Line(line int) *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			},
+		)
 	}
 
 	return _layoutLine
@@ -609,9 +618,12 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-			C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			},
+		)
 	}
 
 	return _layoutLine
@@ -813,9 +825,12 @@ func (layout *Layout) Tabs() *TabArray {
 
 	if _cret != nil {
 		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-			C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tabArray)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+			},
+		)
 	}
 
 	return _tabArray
@@ -1479,13 +1494,17 @@ func (layout *Layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool
 //
 // The PangoLayoutIter structure is opaque, and has no user-visible fields.
 type LayoutIter struct {
-	nocopy gextras.NoCopy
+	*layoutIter
+}
+
+// layoutIter is the struct that's finalized.
+type layoutIter struct {
 	native *C.PangoLayoutIter
 }
 
 func marshalLayoutIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &LayoutIter{native: (*C.PangoLayoutIter)(unsafe.Pointer(b))}, nil
+	return &LayoutIter{&layoutIter{(*C.PangoLayoutIter)(unsafe.Pointer(b))}}, nil
 }
 
 // AtLastLine determines whether iter is on the last line of the layout.
@@ -1523,9 +1542,12 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 
 	if _cret != nil {
 		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_layoutIter, func(v *LayoutIter) {
-			C.pango_layout_iter_free((*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_layoutIter)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
+			},
+		)
 	}
 
 	return _layoutIter
@@ -1665,9 +1687,12 @@ func (iter *LayoutIter) Line() *LayoutLine {
 
 	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.pango_layout_line_ref(_cret)
-	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+		},
+	)
 
 	return _layoutLine
 }
@@ -1713,9 +1738,12 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 
 	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.pango_layout_line_ref(_cret)
-	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+		},
+	)
 
 	return _layoutLine
 }
@@ -1906,13 +1934,17 @@ func (iter *LayoutIter) NextRun() bool {
 // are only valid until the text, attributes, or settings of the parent
 // PangoLayout are modified.
 type LayoutLine struct {
-	nocopy gextras.NoCopy
+	*layoutLine
+}
+
+// layoutLine is the struct that's finalized.
+type layoutLine struct {
 	native *C.PangoLayoutLine
 }
 
 func marshalLayoutLine(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &LayoutLine{native: (*C.PangoLayoutLine)(unsafe.Pointer(b))}, nil
+	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(unsafe.Pointer(b))}}, nil
 }
 
 // Layout: layout this line belongs to, might be NULL

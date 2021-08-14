@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -204,7 +203,11 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
-	nocopy gextras.NoCopy
+	*padActionEntry
+}
+
+// padActionEntry is the struct that's finalized.
+type padActionEntry struct {
 	native *C.GtkPadActionEntry
 }
 

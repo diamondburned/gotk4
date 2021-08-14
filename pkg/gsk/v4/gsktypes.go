@@ -33,13 +33,17 @@ func init() {
 // means code can safely expose them as properties of objects without having to
 // worry about others changing them.
 type Transform struct {
-	nocopy gextras.NoCopy
+	*transform
+}
+
+// transform is the struct that's finalized.
+type transform struct {
 	native *C.GskTransform
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Transform{native: (*C.GskTransform)(unsafe.Pointer(b))}, nil
+	return &Transform{&transform{(*C.GskTransform)(unsafe.Pointer(b))}}, nil
 }
 
 // NewTransform constructs a struct Transform.
@@ -51,9 +55,12 @@ func NewTransform() *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -124,9 +131,12 @@ func (self *Transform) Invert() *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_transform, func(v *Transform) {
-			C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
 	}
 
 	return _transform
@@ -150,9 +160,12 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -179,9 +192,12 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -204,9 +220,12 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -234,9 +253,12 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -264,9 +286,12 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -295,9 +320,12 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -464,9 +492,12 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -531,9 +562,12 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }
@@ -556,9 +590,12 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
 
 	return _transform
 }

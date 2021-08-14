@@ -97,9 +97,12 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gc
 	methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 	invocation = wrapDBusMethodInvocation(externglib.AssumeOwnership(unsafe.Pointer(arg6)))
 
 	fn := v.(DBusInterfaceMethodCallFunc)
@@ -134,9 +137,12 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.g
 	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	runtime.SetFinalizer(value, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	fn := v.(DBusInterfaceSetPropertyFunc)
 	err, ok := fn(connection, sender, objectPath, interfaceName, propertyName, value)
@@ -267,9 +273,12 @@ func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
-	runtime.SetFinalizer(parameters, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(parameters)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
 
 	fn := v.(DBusSignalCallback)
 	fn(connection, senderName, objectPath, interfaceName, signalName, parameters)
@@ -310,7 +319,7 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 	*arg5 = (C.gpointer)(unsafe.Pointer(outUserData))
 	if dBusInterfaceVTable != nil {
 		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
-		runtime.SetFinalizer(dBusInterfaceVTable, nil)
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(dBusInterfaceVTable)), nil)
 	}
 
 	return cret
@@ -666,13 +675,21 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 // an implementation of the Set call. If implementing the call, you must return
 // the value of type G_VARIANT_TYPE_UNIT.
 type DBusInterfaceVTable struct {
-	nocopy gextras.NoCopy
+	*dBusInterfaceVTable
+}
+
+// dBusInterfaceVTable is the struct that's finalized.
+type dBusInterfaceVTable struct {
 	native *C.GDBusInterfaceVTable
 }
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
 // g_dbus_connection_register_subtree().
 type DBusSubtreeVTable struct {
-	nocopy gextras.NoCopy
+	*dBusSubtreeVTable
+}
+
+// dBusSubtreeVTable is the struct that's finalized.
+type dBusSubtreeVTable struct {
 	native *C.GDBusSubtreeVTable
 }

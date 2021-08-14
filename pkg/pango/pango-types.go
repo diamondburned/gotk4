@@ -105,7 +105,11 @@ func UnitsToDouble(i int) float64 {
 // a single glyph or section of text. (See, for instance,
 // pango.Font.GetGlyphExtents().)
 type Rectangle struct {
-	nocopy gextras.NoCopy
+	*rectangle
+}
+
+// rectangle is the struct that's finalized.
+type rectangle struct {
 	native *C.PangoRectangle
 }
 

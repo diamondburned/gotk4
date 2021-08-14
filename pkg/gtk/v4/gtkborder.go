@@ -26,13 +26,17 @@ func init() {
 //
 // Each side can have different width.
 type Border struct {
-	nocopy gextras.NoCopy
+	*border
+}
+
+// border is the struct that's finalized.
+type border struct {
 	native *C.GtkBorder
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Border{native: (*C.GtkBorder)(unsafe.Pointer(b))}, nil
+	return &Border{&border{(*C.GtkBorder)(unsafe.Pointer(b))}}, nil
 }
 
 // NewBorder constructs a struct Border.
@@ -44,9 +48,12 @@ func NewBorder() *Border {
 	var _border *Border // out
 
 	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_border)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_border_free((*C.GtkBorder)(intern.C))
+		},
+	)
 
 	return _border
 }
@@ -92,9 +99,12 @@ func (border_ *Border) Copy() *Border {
 	var _border *Border // out
 
 	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_border)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_border_free((*C.GtkBorder)(intern.C))
+		},
+	)
 
 	return _border
 }

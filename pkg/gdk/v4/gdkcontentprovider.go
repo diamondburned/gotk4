@@ -211,9 +211,12 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -236,9 +239,12 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }

@@ -72,7 +72,11 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 // BindingArg holds the data associated with an argument for a key binding
 // signal emission as stored in BindingSignal.
 type BindingArg struct {
-	nocopy gextras.NoCopy
+	*bindingArg
+}
+
+// bindingArg is the struct that's finalized.
+type bindingArg struct {
 	native *C.GtkBindingArg
 }
 
@@ -86,7 +90,11 @@ func (b *BindingArg) ArgType() externglib.Type {
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
-	nocopy gextras.NoCopy
+	*bindingEntry
+}
+
+// bindingEntry is the struct that's finalized.
+type bindingEntry struct {
 	native *C.GtkBindingEntry
 }
 
@@ -208,7 +216,11 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 // WidgetPath. When a binding within a set is matched upon activation, an action
 // signal is emitted on the target widget to carry out the actual activation.
 type BindingSet struct {
-	nocopy gextras.NoCopy
+	*bindingSet
+}
+
+// bindingSet is the struct that's finalized.
+type bindingSet struct {
 	native *C.GtkBindingSet
 }
 
@@ -320,6 +332,10 @@ func BindingSetFind(setName string) *BindingSet {
 // BindingSignal stores the necessary information to activate a widget in
 // response to a key press via a signal emission.
 type BindingSignal struct {
-	nocopy gextras.NoCopy
+	*bindingSignal
+}
+
+// bindingSignal is the struct that's finalized.
+type bindingSignal struct {
 	native *C.GtkBindingSignal
 }

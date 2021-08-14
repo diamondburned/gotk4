@@ -670,9 +670,12 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 		src := (*C.GVariant)(v)
 		var dst *glib.Variant // out
 		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -744,9 +747,12 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 		src := (*C.GVariant)(v)
 		var dst *glib.Variant // out
 		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *glib.Variant) {
-			C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -811,9 +817,12 @@ func (resolver *Resolver) LookupService(ctx context.Context, service string, pro
 		src := (*C.GSrvTarget)(v)
 		var dst *SrvTarget // out
 		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *SrvTarget) {
-			C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -889,9 +898,12 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 		src := (*C.GSrvTarget)(v)
 		var dst *SrvTarget // out
 		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *SrvTarget) {
-			C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

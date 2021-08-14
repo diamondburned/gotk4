@@ -597,9 +597,12 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+		},
+	)
 
 	return _targetList
 }
@@ -891,9 +894,12 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 
 	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+		},
+	)
 
 	return _targetList
 }

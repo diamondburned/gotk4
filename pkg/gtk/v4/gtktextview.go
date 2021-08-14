@@ -1018,9 +1018,12 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	if _cret != nil {
 		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-			C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_tabArray)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+			},
+		)
 	}
 
 	return _tabArray

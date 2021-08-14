@@ -109,13 +109,19 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 	var b *RecentInfo // out
 
 	a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(a, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(a)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+		},
+	)
 	b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(b, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(b)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+		},
+	)
 
 	fn := v.(RecentSortFunc)
 	gint := fn(a, b)
@@ -309,9 +315,12 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	var _recentInfo *RecentInfo // out
 
 	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_recentInfo)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+		},
+	)
 
 	return _recentInfo
 }
@@ -372,9 +381,12 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(dst, func(v *RecentInfo) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+			},
+		)
 		_list = append(_list, dst)
 	})
 

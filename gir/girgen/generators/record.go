@@ -33,16 +33,22 @@ var recordIgnoreSuffixes = []string{
 }
 
 var recordTmpl = gotmpl.NewGoTemplate(`
+	{{ $impl := UnexportPascal .GoName }}
+
 	{{ GoDoc . 0 }}
 	type {{ .GoName }} struct {
-		nocopy gextras.NoCopy
+		*{{ $impl }}
+	}
+
+	// {{ $impl }} is the struct that's finalized.
+	type {{ $impl }} struct {
 		native *C.{{.CType}}
 	}
 
 	{{ if .GLibGetType }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-		return &{{ .GoName }}{native: (*C.{{.CType}})(unsafe.Pointer(b))}, nil
+		return &{{ .GoName }}{&{{ $impl }}{(*C.{{.CType}})(unsafe.Pointer(b))}}, nil
 	}
 	{{ end }}
 
@@ -142,7 +148,6 @@ func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 	}
 
 	writer := FileWriterFromType(gen, record)
-	writer.Header().ImportCore("gextras")
 
 	if record.GLibGetType != "" && !types.FilterCType(gen, record.GLibGetType) {
 		writer.Header().AddMarshaler(record.GLibGetType, recordGen.GoName)

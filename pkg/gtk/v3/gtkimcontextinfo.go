@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -17,7 +15,11 @@ import "C"
 
 // IMContextInfo: bookkeeping information about a loadable input method.
 type IMContextInfo struct {
-	nocopy gextras.NoCopy
+	*imContextInfo
+}
+
+// imContextInfo is the struct that's finalized.
+type imContextInfo struct {
 	native *C.GtkIMContextInfo
 }
 

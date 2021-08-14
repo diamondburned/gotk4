@@ -243,7 +243,11 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 // Deprecated: GdkPixdata should not be used any more. GResource should be used
 // to save the original compressed images inside the program's binary.
 type Pixdata struct {
-	nocopy gextras.NoCopy
+	*pixdata
+}
+
+// pixdata is the struct that's finalized.
+type pixdata struct {
 	native *C.GdkPixdata
 }
 

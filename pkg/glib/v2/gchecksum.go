@@ -125,13 +125,17 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 // new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
 type Checksum struct {
-	nocopy gextras.NoCopy
+	*checksum
+}
+
+// checksum is the struct that's finalized.
+type checksum struct {
 	native *C.GChecksum
 }
 
 func marshalChecksum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Checksum{native: (*C.GChecksum)(unsafe.Pointer(b))}, nil
+	return &Checksum{&checksum{(*C.GChecksum)(unsafe.Pointer(b))}}, nil
 }
 
 // NewChecksum constructs a struct Checksum.
@@ -148,9 +152,12 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	if _cret != nil {
 		_checksum = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_checksum, func(v *Checksum) {
-			C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
-		})
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_checksum)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_checksum_free((*C.GChecksum)(intern.C))
+			},
+		)
 	}
 
 	return _checksum
@@ -171,9 +178,12 @@ func (checksum *Checksum) Copy() *Checksum {
 	var _ret *Checksum // out
 
 	_ret = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ret)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_checksum_free((*C.GChecksum)(intern.C))
+		},
+	)
 
 	return _ret
 }

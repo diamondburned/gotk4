@@ -7,8 +7,6 @@ import (
 	"runtime"
 	"strings"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -815,7 +813,11 @@ func SetPrgname(prgname string) {
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
 type DebugKey struct {
-	nocopy gextras.NoCopy
+	*debugKey
+}
+
+// debugKey is the struct that's finalized.
+type debugKey struct {
 	native *C.GDebugKey
 }
 

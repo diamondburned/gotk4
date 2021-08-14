@@ -25,13 +25,17 @@ func init() {
 // Box: 3D box, described as the volume between a minimum and a maximum
 // vertices.
 type Box struct {
-	nocopy gextras.NoCopy
+	*box
+}
+
+// box is the struct that's finalized.
+type box struct {
 	native *C.graphene_box_t
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Box{native: (*C.graphene_box_t)(unsafe.Pointer(b))}, nil
+	return &Box{&box{(*C.graphene_box_t)(unsafe.Pointer(b))}}, nil
 }
 
 // NewBoxAlloc constructs a struct Box.
@@ -43,9 +47,12 @@ func NewBoxAlloc() *Box {
 	var _box *Box // out
 
 	_box = (*Box)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_box, func(v *Box) {
-		C.graphene_box_free((*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_box)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.graphene_box_free((*C.graphene_box_t)(intern.C))
+		},
+	)
 
 	return _box
 }

@@ -27,13 +27,17 @@ func init() {
 // individual subrange this full range is splitted if available. See Value
 // documentation for further details.
 type Range struct {
-	nocopy gextras.NoCopy
+	*_range
+}
+
+// _range is the struct that's finalized.
+type _range struct {
 	native *C.AtkRange
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Range{native: (*C.AtkRange)(unsafe.Pointer(b))}, nil
+	return &Range{&_range{(*C.AtkRange)(unsafe.Pointer(b))}}, nil
 }
 
 // NewRange constructs a struct Range.
@@ -56,9 +60,12 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	var __range *Range // out
 
 	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(__range)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.atk_range_free((*C.AtkRange)(intern.C))
+		},
+	)
 
 	return __range
 }
@@ -76,9 +83,12 @@ func (src *Range) Copy() *Range {
 	var __range *Range // out
 
 	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(__range)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.atk_range_free((*C.AtkRange)(intern.C))
+		},
+	)
 
 	return __range
 }

@@ -514,13 +514,17 @@ func (m ModifierType) Has(other ModifierType) bool {
 // the types it represents. Instead, new GdkContentFormats have to be created.
 // The gdk.ContentFormatsBuilder` structure is meant to help in this endeavor.
 type ContentFormats struct {
-	nocopy gextras.NoCopy
+	*contentFormats
+}
+
+// contentFormats is the struct that's finalized.
+type contentFormats struct {
 	native *C.GdkContentFormats
 }
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &ContentFormats{native: (*C.GdkContentFormats)(unsafe.Pointer(b))}, nil
+	return &ContentFormats{&contentFormats{(*C.GdkContentFormats)(unsafe.Pointer(b))}}, nil
 }
 
 // NewContentFormats constructs a struct ContentFormats.
@@ -546,9 +550,12 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -566,9 +573,12 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -725,9 +735,12 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -746,9 +759,12 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -767,9 +783,12 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -788,9 +807,12 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
@@ -809,16 +831,23 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
-	})
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+		},
+	)
 
 	return _contentFormats
 }
 
 // KeymapKey: GdkKeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
-	nocopy gextras.NoCopy
+	*keymapKey
+}
+
+// keymapKey is the struct that's finalized.
+type keymapKey struct {
 	native *C.GdkKeymapKey
 }
 
@@ -867,13 +896,17 @@ func (k *KeymapKey) Level() int {
 // The Graphene library has a number of other data types for regions and volumes
 // in 2D and 3D.
 type Rectangle struct {
-	nocopy gextras.NoCopy
+	*rectangle
+}
+
+// rectangle is the struct that's finalized.
+type rectangle struct {
 	native *C.GdkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return &Rectangle{native: (*C.GdkRectangle)(unsafe.Pointer(b))}, nil
+	return &Rectangle{&rectangle{(*C.GdkRectangle)(unsafe.Pointer(b))}}, nil
 }
 
 // X: x coordinate of the top left corner

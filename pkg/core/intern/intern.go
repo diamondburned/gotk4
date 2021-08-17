@@ -125,7 +125,7 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	shared.mu.Unlock()
 
 	if init {
-		// C.g_object_ref_sink(C.gpointer(gobject))
+		C.g_object_ref_sink(C.gpointer(gobject))
 		C.g_object_add_toggle_ref(
 			(*C.GObject)(gobject),
 			(*[0]byte)(C.goToggleNotify), nil,
@@ -139,7 +139,7 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 		}
 
 		// Undo the initial ref_sink.
-		// C.g_object_unref(C.gpointer(gobject))
+		C.g_object_unref(C.gpointer(gobject))
 	}
 
 	return box

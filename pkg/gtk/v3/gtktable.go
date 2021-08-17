@@ -493,6 +493,7 @@ func (table *Table) SetRowSpacings(spacing uint) {
 	runtime.KeepAlive(spacing)
 }
 
+// TableChild: instance of this type is always passed by reference.
 type TableChild struct {
 	*tableChild
 }
@@ -544,6 +545,7 @@ func (t *TableChild) Ypadding() uint16 {
 	return v
 }
 
+// TableRowCol: instance of this type is always passed by reference.
 type TableRowCol struct {
 	*tableRowCol
 }

@@ -64,6 +64,8 @@ func init() {
 // (ie: .gschema.xml files) instead of a gschemas.compiled file. In that case,
 // the plugin loading system must compile the schemas for itself before
 // attempting to create the settings source.
+//
+// An instance of this type is always passed by reference.
 type SettingsSchema struct {
 	*settingsSchema
 }
@@ -245,6 +247,8 @@ func (schema *SettingsSchema) ListKeys() []string {
 
 // SettingsSchemaKey is an opaque data structure and can only be accessed using
 // the following functions.
+//
+// An instance of this type is always passed by reference.
 type SettingsSchemaKey struct {
 	*settingsSchemaKey
 }
@@ -462,6 +466,8 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
 // directly.
+//
+// An instance of this type is always passed by reference.
 type SettingsSchemaSource struct {
 	*settingsSchemaSource
 }

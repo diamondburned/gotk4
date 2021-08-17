@@ -368,7 +368,6 @@ var _ Objector = (*Object)(nil)
 
 // Object is a representation of GLib's GObject.
 type Object struct {
-	*objectNative
 	box *intern.Box
 }
 
@@ -385,18 +384,7 @@ func InternObject(obj Objector) *Object {
 // To be clear, this should mostly be used when Gtk says "transfer none". Refer
 // to AssumeOwnership for more details.
 func Take(ptr unsafe.Pointer) *Object {
-	obj := newObject(ptr)
-	if obj == nil {
-		return nil
-	}
-
-	// Ensure that the reference is sunken.
-	obj.RefSink()
-	defer obj.Unref()
-
-	obj.addToggleRef()
-
-	return obj
+	return newObject(ptr, true)
 }
 
 // AssumeOwnership is similar to Take, except the function does not take a
@@ -409,66 +397,18 @@ func Take(ptr unsafe.Pointer) *Object {
 // we're now referencing an object that might possibly be kept by C, so we
 // should take our own.
 func AssumeOwnership(ptr unsafe.Pointer) *Object {
-	obj := newObject(ptr)
-	if obj == nil {
-		return nil
-	}
-
-	obj.RefSink()
-	defer obj.Unref()
-
-	obj.addToggleRef()
-	obj.Unref()
-
-	return obj
-}
-
-//export goToggleNotify
-func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
-	intern.Toggle(unsafe.Pointer(obj), isLastInt != 0)
-}
-
-// objectNative wraps around a native C object. It exists to work around
-// runtime.SetFinalizer's cyclic restriction.
-type objectNative struct {
-	GObject *C.GObject
+	return newObject(ptr, false)
 }
 
 // newObject creates a new Object from a GObject pointer with the finalizer set.
-func newObject(ptr unsafe.Pointer) *Object {
+func newObject(ptr unsafe.Pointer, take bool) *Object {
 	if ptr == nil {
 		return nil
 	}
 
-	native := &objectNative{GObject: (*C.GObject)(ptr)}
-	native.attachFinalizer()
-
 	return &Object{
-		objectNative: native,
-		box:          intern.ObjectBox(ptr),
+		box: intern.Get(ptr, take),
 	}
-}
-
-func (native *objectNative) addToggleRef() {
-	C.g_object_add_toggle_ref(native.GObject, (*[0]byte)(C.goToggleNotify), nil)
-}
-
-func (native *objectNative) removeToggleRef() {
-	C.g_object_remove_toggle_ref(native.GObject, (*[0]byte)(C.goToggleNotify), nil)
-}
-
-func (native *objectNative) attachFinalizer() {
-	runtime.SetFinalizer(native, finalizeObjectNative)
-}
-
-func finalizeObjectNative(native *objectNative) {
-	if !intern.ShouldFree(unsafe.Pointer(native.GObject)) {
-		// Delegate finalizing to the next cycle.
-		native.attachFinalizer()
-		return
-	}
-
-	native.removeToggleRef()
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
@@ -496,11 +436,10 @@ func (v *Object) baseObject() *Object {
 
 // native returns a pointer to the underlying GObject.
 func (v *Object) native() *C.GObject {
-	if v == nil || v.GObject == nil {
+	if v == nil || v.box == nil {
 		return nil
 	}
-	p := unsafe.Pointer(v.GObject)
-	return (*C.GObject)(p)
+	return (*C.GObject)(v.box.Object())
 }
 
 // Native returns a pointer to the underlying GObject.
@@ -520,50 +459,11 @@ func (v *Object) TypeFromInstance() Type {
 	return Type(c)
 }
 
-// // ToGObject type converts an unsafe.Pointer as a native C GObject.
-// // This function is exported for visibility in other gotk3 packages and
-// // is not meant to be used by applications.
-// func ToGObject(p unsafe.Pointer) *C.GObject {
-// 	return (*C.GObject)(p)
-// }
-
-// Ref is a wrapper around g_object_ref().
-func (v *Object) Ref() {
-	C.g_object_ref(C.gpointer(v.GObject))
-	runtime.KeepAlive(v)
-}
-
-// Unref is a wrapper around g_object_unref().
-func (v *Object) Unref() {
-	C.g_object_unref(C.gpointer(v.GObject))
-	runtime.KeepAlive(v)
-}
-
-// RefSink is a wrapper around g_object_ref_sink().
-func (v *Object) RefSink() {
-	C.g_object_ref_sink(C.gpointer(v.GObject))
-	runtime.KeepAlive(v)
-}
-
-// IsFloating is a wrapper around g_object_is_floating().
-func (v *Object) IsFloating() bool {
-	c := C.g_object_is_floating(C.gpointer(v.GObject))
-	runtime.KeepAlive(v)
-	return gobool(c)
-}
-
-// ForceFloating is a wrapper around g_object_force_floating().
-func (v *Object) ForceFloating() {
-	C.g_object_force_floating(v.GObject)
-	runtime.KeepAlive(v)
-}
-
 // StopEmission is a wrapper around g_signal_stop_emission_by_name().
 func (v *Object) StopEmission(s string) {
 	cstr := C.CString(s)
 	defer C.free(unsafe.Pointer(cstr))
-	C.g_signal_stop_emission_by_name((C.gpointer)(v.GObject),
-		(*C.gchar)(cstr))
+	C.g_signal_stop_emission_by_name((C.gpointer)(v.Native()), (*C.gchar)(cstr))
 	runtime.KeepAlive(v)
 }
 
@@ -600,7 +500,7 @@ func (v *Object) ObjectProperty(name string) interface{} {
 
 	p := InitValue(t)
 
-	C.g_object_get_property(v.GObject, (*C.gchar)(cstr), p.native())
+	C.g_object_get_property(v.native(), (*C.gchar)(cstr), p.native())
 	runtime.KeepAlive(v)
 
 	return p.GoValue()
@@ -613,7 +513,7 @@ func (v *Object) SetObjectProperty(name string, value interface{}) {
 
 	p := NewValue(value)
 
-	C.g_object_set_property(v.GObject, (*C.gchar)(cstr), p.native())
+	C.g_object_set_property(v.native(), (*C.gchar)(cstr), p.native())
 	runtime.KeepAlive(v)
 }
 
@@ -655,20 +555,20 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 
 // HandlerBlock is a wrapper around g_signal_handler_block().
 func (v *Object) HandlerBlock(handle SignalHandle) {
-	C.g_signal_handler_block(C.gpointer(v.GObject), C.gulong(handle))
+	C.g_signal_handler_block(C.gpointer(v.Native()), C.gulong(handle))
 	runtime.KeepAlive(v)
 }
 
 // HandlerUnblock is a wrapper around g_signal_handler_unblock().
 func (v *Object) HandlerUnblock(handle SignalHandle) {
-	C.g_signal_handler_unblock(C.gpointer(v.GObject), C.gulong(handle))
+	C.g_signal_handler_unblock(C.gpointer(v.Native()), C.gulong(handle))
 	runtime.KeepAlive(v)
 }
 
 // HandlerDisconnect is a wrapper around g_signal_handler_disconnect().
 func (v *Object) HandlerDisconnect(handle SignalHandle) {
 	// Ensure that Gtk will not use the closure beforehand.
-	C.g_signal_handler_disconnect(C.gpointer(v.GObject), C.gulong(handle))
+	C.g_signal_handler_disconnect(C.gpointer(v.Native()), C.gulong(handle))
 	runtime.KeepAlive(v)
 }
 

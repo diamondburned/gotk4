@@ -207,6 +207,7 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	return _settings
 }
 
+// SettingsValue: instance of this type is always passed by reference.
 type SettingsValue struct {
 	*settingsValue
 }

@@ -25,6 +25,8 @@ func init() {
 // Border: struct that specifies a border around a rectangular area.
 //
 // Each side can have different width.
+//
+// An instance of this type is always passed by reference.
 type Border struct {
 	*border
 }

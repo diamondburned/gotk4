@@ -599,6 +599,8 @@ func (r RegexMatchFlags) Has(other RegexMatchFlags) bool {
 }
 
 // MatchInfo is an opaque struct used to return information about matches.
+//
+// An instance of this type is always passed by reference.
 type MatchInfo struct {
 	*matchInfo
 }
@@ -1061,6 +1063,8 @@ func (matchInfo *MatchInfo) Next() error {
 //
 // The regular expressions low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
+//
+// An instance of this type is always passed by reference.
 type Regex struct {
 	*regex
 }

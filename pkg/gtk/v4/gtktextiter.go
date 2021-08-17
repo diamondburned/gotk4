@@ -117,6 +117,8 @@ func _gotk4_gtk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gbo
 // You may wish to begin by reading the text widget conceptual overview
 // (section-text-widget.html), which gives an overview of all the objects and
 // data types related to the text widget and how they work together.
+//
+// An instance of this type is always passed by reference.
 type TextIter struct {
 	*textIter
 }

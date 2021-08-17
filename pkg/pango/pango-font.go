@@ -978,6 +978,8 @@ func (family *FontFamily) ListFaces() []FontFacer {
 // PangoFontDescription structures are used both to list what fonts are
 // available on the system and also for specifying the characteristics of a font
 // to load.
+//
+// An instance of this type is always passed by reference.
 type FontDescription struct {
 	*fontDescription
 }
@@ -1739,6 +1741,8 @@ func FontDescriptionFromString(str string) *FontDescription {
 // script. The fields of this structure are private to implementations of a font
 // backend. See the documentation of the corresponding getters for documentation
 // of their meaning.
+//
+// An instance of this type is always passed by reference.
 type FontMetrics struct {
 	*fontMetrics
 }

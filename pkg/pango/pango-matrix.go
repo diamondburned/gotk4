@@ -29,6 +29,9 @@ func init() {
 //
 //    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
 //    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
+//
+//
+// An instance of this type is always passed by reference.
 type Matrix struct {
 	*matrix
 }

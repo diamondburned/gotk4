@@ -7,6 +7,7 @@ package graphene
 // #include <graphene-gobject.h>
 import "C"
 
+// SIMD4F: instance of this type is always passed by reference.
 type SIMD4F struct {
 	*simD4F
 }
@@ -16,6 +17,7 @@ type simD4F struct {
 	native *C.graphene_simd4f_t
 }
 
+// SIMD4X4F: instance of this type is always passed by reference.
 type SIMD4X4F struct {
 	*simD4X4F
 }

@@ -107,6 +107,8 @@ func (buildable *Buildable) BuildableID() string {
 }
 
 // BuildableParser: sub-parser for GtkBuildable implementations.
+//
+// An instance of this type is always passed by reference.
 type BuildableParser struct {
 	*buildableParser
 }

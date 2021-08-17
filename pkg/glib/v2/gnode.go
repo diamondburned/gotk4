@@ -121,6 +121,8 @@ func (t TraverseFlags) Has(other TraverseFlags) bool {
 }
 
 // Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
+//
+// An instance of this type is always passed by reference.
 type Node struct {
 	*node
 }

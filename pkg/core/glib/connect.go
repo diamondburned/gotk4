@@ -42,7 +42,7 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 	defer C.free(unsafe.Pointer(cstr))
 
 	gclosure := closureNew(v, fs)
-	c := C.g_signal_connect_closure(C.gpointer(v.GObject), (*C.gchar)(cstr), gclosure, gbool(after))
+	c := C.g_signal_connect_closure(C.gpointer(v.Native()), (*C.gchar)(cstr), gclosure, gbool(after))
 
 	runtime.KeepAlive(v)
 
@@ -61,8 +61,8 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	gclosure := C.g_closure_new_simple(C.sizeof_GClosure, nil)
 	v.box.Closures.Register(unsafe.Pointer(gclosure), fs)
 
-	C.g_closure_set_meta_marshal(gclosure, C.gpointer(v.GObject), (*[0]byte)(C.goMarshal))
-	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.GObject), (*[0]byte)(C.removeClosure))
+	C.g_closure_set_meta_marshal(gclosure, C.gpointer(v.Native()), (*[0]byte)(C.goMarshal))
+	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.Native()), (*[0]byte)(C.removeClosure))
 
 	return gclosure
 }

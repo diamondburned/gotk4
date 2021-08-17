@@ -34,6 +34,8 @@ func init() {
 // positive values. All functions taking a #graphene_rect_t as an argument will
 // internally operate on a normalized copy; all functions returning a
 // #graphene_rect_t will always return a normalized rectangle.
+//
+// An instance of this type is always passed by reference.
 type Rect struct {
 	*rect
 }

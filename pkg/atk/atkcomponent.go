@@ -611,6 +611,8 @@ func (component *Component) SetSize(width int, height int) bool {
 
 // Rectangle: data structure for holding a rectangle. Those coordinates are
 // relative to the component top-level parent.
+//
+// An instance of this type is always passed by reference.
 type Rectangle struct {
 	*rectangle
 }

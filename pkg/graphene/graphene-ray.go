@@ -53,6 +53,8 @@ func (r RayIntersectionKind) String() string {
 //
 // The contents of the graphene_ray_t structure are private, and should not be
 // modified directly.
+//
+// An instance of this type is always passed by reference.
 type Ray struct {
 	*ray
 }

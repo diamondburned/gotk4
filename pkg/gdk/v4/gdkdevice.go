@@ -511,6 +511,8 @@ func (device *Device) HasBidiLayouts() bool {
 }
 
 // TimeCoord stores a single event in a motion history.
+//
+// An instance of this type is always passed by reference.
 type TimeCoord struct {
 	*timeCoord
 }

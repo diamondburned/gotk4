@@ -193,6 +193,8 @@ func (t TokenType) String() string {
 //
 // If you want to use your own message handler you can set the msg_handler
 // field. The type of the message handler function is declared by MsgFunc.
+//
+// An instance of this type is always passed by reference.
 type Scanner struct {
 	*scanner
 }
@@ -519,6 +521,8 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
+//
+// An instance of this type is always passed by reference.
 type ScannerConfig struct {
 	*scannerConfig
 }

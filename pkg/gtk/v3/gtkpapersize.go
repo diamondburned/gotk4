@@ -58,6 +58,8 @@ const PAPER_NAME_LETTER = "na_letter"
 // margins][print-margins].
 //
 // Printing support has been added in GTK+ 2.10.
+//
+// An instance of this type is always passed by reference.
 type PaperSize struct {
 	*paperSize
 }

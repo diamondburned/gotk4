@@ -23,6 +23,8 @@ func init() {
 }
 
 // Point: point with two coordinates.
+//
+// An instance of this type is always passed by reference.
 type Point struct {
 	*point
 }

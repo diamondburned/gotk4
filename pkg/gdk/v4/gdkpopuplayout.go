@@ -146,6 +146,8 @@ func (a AnchorHints) Has(other AnchorHints) bool {
 // be used to adjust the rendering. For example, gtk.Popover changes its arrow
 // position accordingly. But you have to be careful avoid changing the size of
 // the popover, or it has to be presented again.
+//
+// An instance of this type is always passed by reference.
 type PopupLayout struct {
 	*popupLayout
 }

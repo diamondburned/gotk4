@@ -23,6 +23,8 @@ func init() {
 }
 
 // Size: size.
+//
+// An instance of this type is always passed by reference.
 type Size struct {
 	*size
 }

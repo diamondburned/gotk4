@@ -836,6 +836,8 @@ func (m ModifierType) Has(other ModifierType) bool {
 }
 
 // Point defines the x and y coordinates of a point.
+//
+// An instance of this type is always passed by reference.
 type Point struct {
 	*point
 }
@@ -861,6 +863,8 @@ func (p *Point) Y() int {
 
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
+//
+// An instance of this type is always passed by reference.
 type Rectangle struct {
 	*rectangle
 }

@@ -101,6 +101,8 @@ func SelectionRemoveAll(widget Widgetter) {
 
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
+//
+// An instance of this type is always passed by reference.
 type TargetEntry struct {
 	*targetEntry
 }
@@ -193,6 +195,8 @@ func (data *TargetEntry) Copy() *TargetEntry {
 
 // TargetList is a reference counted list of TargetPair and should be treated as
 // opaque.
+//
+// An instance of this type is always passed by reference.
 type TargetList struct {
 	*targetList
 }
@@ -324,6 +328,8 @@ func (list *TargetList) AddURITargets(info uint) {
 
 // TargetPair is used to represent the same information as a table of
 // TargetEntry, but in an efficient form.
+//
+// An instance of this type is always passed by reference.
 type TargetPair struct {
 	*targetPair
 }

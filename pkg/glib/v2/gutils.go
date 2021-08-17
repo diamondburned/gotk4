@@ -812,6 +812,8 @@ func SetPrgname(prgname string) {
 }
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
+//
+// An instance of this type is always passed by reference.
 type DebugKey struct {
 	*debugKey
 }

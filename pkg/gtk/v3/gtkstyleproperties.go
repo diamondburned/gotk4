@@ -252,6 +252,8 @@ func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 // represent gradients. As its handling is not conforming to modern web
 // standards, it is not used anymore. If you want to use gradients in your own
 // code, please use Cairo directly.
+//
+// An instance of this type is always passed by reference.
 type Gradient struct {
 	*gradient
 }
@@ -448,6 +450,8 @@ func (gradient *Gradient) String() string {
 //
 // SymbolicColor is deprecated. Symbolic colors are considered an implementation
 // detail of GTK+.
+//
+// An instance of this type is always passed by reference.
 type SymbolicColor struct {
 	*symbolicColor
 }

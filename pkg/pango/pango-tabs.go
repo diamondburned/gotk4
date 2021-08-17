@@ -51,6 +51,8 @@ func (t TabAlign) String() string {
 //
 // PangoTabArray can be used to set tab stops in a PangoLayout. Each tab stop
 // has an alignment and a position.
+//
+// An instance of this type is always passed by reference.
 type TabArray struct {
 	*tabArray
 }

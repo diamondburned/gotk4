@@ -412,6 +412,8 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 
 // MainContext: GMainContext struct is an opaque data type representing a set of
 // sources to be handled in a main loop.
+//
+// An instance of this type is always passed by reference.
 type MainContext struct {
 	*mainContext
 }
@@ -933,6 +935,8 @@ func MainContextRefThreadDefault() *MainContext {
 
 // MainLoop: GMainLoop struct is an opaque data type representing the main event
 // loop of a GLib or GTK+ application.
+//
+// An instance of this type is always passed by reference.
 type MainLoop struct {
 	*mainLoop
 }
@@ -1048,6 +1052,8 @@ func (loop *MainLoop) Run() {
 }
 
 // Source: GSource struct is an opaque data type representing an event source.
+//
+// An instance of this type is always passed by reference.
 type Source struct {
 	*source
 }
@@ -1793,6 +1799,8 @@ func SourceSetNameByID(tag uint, name string) {
 
 // SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for
 // managing callback objects.
+//
+// An instance of this type is always passed by reference.
 type SourceCallbackFuncs struct {
 	*sourceCallbackFuncs
 }
@@ -1822,6 +1830,8 @@ type sourceCallbackFuncs struct {
 // that it doesn't mind how long the poll() call blocks. In the check function,
 // it tests the results of the poll() call to see if the required condition has
 // been met, and returns TRUE if so.
+//
+// An instance of this type is always passed by reference.
 type SourceFuncs struct {
 	*sourceFuncs
 }

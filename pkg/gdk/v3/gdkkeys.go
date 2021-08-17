@@ -556,6 +556,8 @@ func KeymapGetForDisplay(display *Display) *Keymap {
 }
 
 // KeymapKey is a hardware key that can be mapped to a keyval.
+//
+// An instance of this type is always passed by reference.
 type KeymapKey struct {
 	*keymapKey
 }

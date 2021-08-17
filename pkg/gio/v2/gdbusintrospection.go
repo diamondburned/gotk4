@@ -40,6 +40,8 @@ func init() {
 }
 
 // DBusAnnotationInfo: information about an annotation.
+//
+// An instance of this type is always passed by reference.
 type DBusAnnotationInfo struct {
 	*dBusAnnotationInfo
 }
@@ -134,6 +136,8 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 }
 
 // DBusArgInfo: information about an argument for a method or a signal.
+//
+// An instance of this type is always passed by reference.
 type DBusArgInfo struct {
 	*dBusArgInfo
 }
@@ -197,6 +201,8 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
+//
+// An instance of this type is always passed by reference.
 type DBusInterfaceInfo struct {
 	*dBusInterfaceInfo
 }
@@ -463,6 +469,8 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 }
 
 // DBusMethodInfo: information about a method on an D-Bus interface.
+//
+// An instance of this type is always passed by reference.
 type DBusMethodInfo struct {
 	*dBusMethodInfo
 }
@@ -573,6 +581,8 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
+//
+// An instance of this type is always passed by reference.
 type DBusNodeInfo struct {
 	*dBusNodeInfo
 }
@@ -745,6 +755,8 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 }
 
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
+//
+// An instance of this type is always passed by reference.
 type DBusPropertyInfo struct {
 	*dBusPropertyInfo
 }
@@ -815,6 +827,8 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
+//
+// An instance of this type is always passed by reference.
 type DBusSignalInfo struct {
 	*dBusSignalInfo
 }

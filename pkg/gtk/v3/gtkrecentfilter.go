@@ -416,6 +416,8 @@ func (filter *RecentFilter) SetName(name string) {
 
 // RecentFilterInfo struct is used to pass information about the tested file to
 // gtk_recent_filter_filter().
+//
+// An instance of this type is always passed by reference.
 type RecentFilterInfo struct {
 	*recentFilterInfo
 }

@@ -513,6 +513,8 @@ func (m ModifierType) Has(other ModifierType) bool {
 // GdkContentFormats is an immutable struct. After creation, you cannot change
 // the types it represents. Instead, new GdkContentFormats have to be created.
 // The gdk.ContentFormatsBuilder` structure is meant to help in this endeavor.
+//
+// An instance of this type is always passed by reference.
 type ContentFormats struct {
 	*contentFormats
 }
@@ -842,6 +844,8 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 }
 
 // KeymapKey: GdkKeymapKey is a hardware key that can be mapped to a keyval.
+//
+// An instance of this type is always passed by reference.
 type KeymapKey struct {
 	*keymapKey
 }
@@ -895,6 +899,8 @@ func (k *KeymapKey) Level() int {
 //
 // The Graphene library has a number of other data types for regions and volumes
 // in 2D and 3D.
+//
+// An instance of this type is always passed by reference.
 type Rectangle struct {
 	*rectangle
 }

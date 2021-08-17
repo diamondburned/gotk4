@@ -18,6 +18,8 @@ import "C"
 // line break is encountered. (CSS defines the C character sequences "\r\n",
 // "\r", "\n" and "\f" as newlines.) If your document uses different rules for
 // line breaking, you might want run into problems here.
+//
+// An instance of this type is always passed by reference.
 type CSSLocation struct {
 	*cssLocation
 }

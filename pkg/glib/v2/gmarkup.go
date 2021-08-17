@@ -245,6 +245,8 @@ func MarkupEscapeText(text string, length int) string {
 // expect to contain marked-up text.
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
+//
+// An instance of this type is always passed by reference.
 type MarkupParseContext struct {
 	*markupParseContext
 }
@@ -474,6 +476,8 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 // are intended to be set from these callbacks. If you set an error from a
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
+//
+// An instance of this type is always passed by reference.
 type MarkupParser struct {
 	*markupParser
 }

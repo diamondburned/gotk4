@@ -26,6 +26,8 @@ func init() {
 //
 // The contents of the graphene_plane_t are private, and should not be modified
 // directly.
+//
+// An instance of this type is always passed by reference.
 type Plane struct {
 	*plane
 }

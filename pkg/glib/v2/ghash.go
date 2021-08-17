@@ -304,6 +304,8 @@ func StrHash(v cgo.Handle) uint {
 // HashTable struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
+//
+// An instance of this type is always passed by reference.
 type HashTable struct {
 	*hashTable
 }
@@ -750,6 +752,8 @@ func HashTableStealExtended(hashTable map[cgo.Handle]cgo.Handle, lookupKey cgo.H
 //
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
+//
+// An instance of this type is always passed by reference.
 type HashTableIter struct {
 	*hashTableIter
 }

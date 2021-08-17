@@ -38,6 +38,8 @@ const ANALYSIS_FLAG_NEED_HYPHEN = 4
 
 // Analysis: PangoAnalysis structure stores information about the properties of
 // a segment of text.
+//
+// An instance of this type is always passed by reference.
 type Analysis struct {
 	*analysis
 }
@@ -106,6 +108,8 @@ func (a *Analysis) Language() *Language {
 // Item: PangoItem structure stores information about a segment of text.
 //
 // You typically obtain PangoItems by itemizing a piece of text with itemize.
+//
+// An instance of this type is always passed by reference.
 type Item struct {
 	*item
 }

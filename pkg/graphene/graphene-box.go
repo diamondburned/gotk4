@@ -24,6 +24,8 @@ func init() {
 
 // Box: 3D box, described as the volume between a minimum and a maximum
 // vertices.
+//
+// An instance of this type is always passed by reference.
 type Box struct {
 	*box
 }

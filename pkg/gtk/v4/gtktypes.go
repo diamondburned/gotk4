@@ -38,6 +38,8 @@ func init() {
 //
 // The main use case for GtkBitset is implementing complex selections for
 // gtk.SelectionModel.
+//
+// An instance of this type is always passed by reference.
 type Bitset struct {
 	*bitset
 }

@@ -1685,6 +1685,8 @@ func (event *TouchpadEvent) PinchScale() float64 {
 
 // EventSequence: GdkEventSequence is an opaque type representing a sequence of
 // related touch events.
+//
+// An instance of this type is always passed by reference.
 type EventSequence struct {
 	*eventSequence
 }

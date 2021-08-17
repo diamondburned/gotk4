@@ -194,6 +194,8 @@ func ResourceLoad(filename string) (*Resource, error) {
 
 // StaticResource is an opaque data structure and can only be accessed using the
 // following functions.
+//
+// An instance of this type is always passed by reference.
 type StaticResource struct {
 	*staticResource
 }

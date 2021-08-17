@@ -90,8 +90,6 @@ extern gboolean sourceFunc(gpointer data);
 extern void goMarshal(GClosure *, GValue *, guint, GValue *, gpointer,
                       GObject *);
 
-extern void goToggleNotify(gpointer, GObject *, gboolean);
-
 extern void removeClosure(GObject *, GClosure *);
 
 static inline guint _g_signal_new(const gchar *name) {

@@ -236,6 +236,8 @@ func (k KeyFileFlags) Has(other KeyFileFlags) bool {
 
 // KeyFile struct contains only private data and should not be accessed
 // directly.
+//
+// An instance of this type is always passed by reference.
 type KeyFile struct {
 	*keyFile
 }

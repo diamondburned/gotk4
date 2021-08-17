@@ -530,6 +530,7 @@ func (accelGroup *AccelGroup) Unlock() {
 	runtime.KeepAlive(accelGroup)
 }
 
+// AccelGroupEntry: instance of this type is always passed by reference.
 type AccelGroupEntry struct {
 	*accelGroupEntry
 }
@@ -551,6 +552,7 @@ func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
 	return v
 }
 
+// AccelKey: instance of this type is always passed by reference.
 type AccelKey struct {
 	*accelKey
 }

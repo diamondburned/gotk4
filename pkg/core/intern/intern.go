@@ -1,6 +1,11 @@
 // Package intern implements value interning for Cgo sharing.
 package intern
 
+// #cgo pkg-config: gobject-2.0
+// #include <glib-object.h>
+// extern void goToggleNotify(gpointer, GObject*, gboolean);
+import "C"
+
 import (
 	"runtime"
 	"sync"
@@ -20,6 +25,11 @@ type Box struct {
 	obj uintptr
 }
 
+// Object returns Box's C GObject pointer.
+func (b *Box) Object() unsafe.Pointer {
+	return unsafe.Pointer(b.obj)
+}
+
 // Hack to force an object on the heap.
 var never bool
 var sink interface{}
@@ -35,24 +45,12 @@ func newBox(obj unsafe.Pointer) *Box {
 		sink = box
 	}
 
-	runtime.SetFinalizer(box, finalizeBox)
-
 	return box
-}
-
-func finalizeBox(box *Box) {
-	shared.mu.Lock()
-	defer shared.mu.Unlock()
-
-	if box.obj != 0 {
-		runtime.SetFinalizer(box, finalizeBox)
-		return
-	}
 }
 
 // shared contains shared closure data.
 var shared = struct {
-	mu sync.RWMutex
+	mu sync.Mutex
 	// weak stores *Box while the object is in Go's heap. The finalizer will
 	// move *Box to strong if the reference is toggled. This is only the case,
 	// because the finalizer will not run otherwise.
@@ -70,12 +68,11 @@ var shared = struct {
 // ObjectClosure gets the FuncStack instance from the given GObject and GClosure
 // pointers. The given unsafe.Pointers MUST be C pointers.
 func ObjectClosure(gobject, gclosure unsafe.Pointer) *closure.FuncStack {
-	shared.mu.RLock()
+	shared.mu.Lock()
 	box, _ := gets(gobject)
-	shared.mu.RUnlock()
+	shared.mu.Unlock()
 
-	if box == nil || box.obj == 0 {
-		// log.Println("gobject", gobject, "requesting destroyed box")
+	if box == nil {
 		return nil
 	}
 
@@ -84,13 +81,12 @@ func ObjectClosure(gobject, gclosure unsafe.Pointer) *closure.FuncStack {
 
 // RemoveClosure removes the given GClosure callback.
 func RemoveClosure(gobject, gclosure unsafe.Pointer) {
-	shared.mu.RLock()
+	shared.mu.Lock()
 	box, _ := gets(gobject)
-	shared.mu.RUnlock()
+	shared.mu.Unlock()
 
 	if box != nil {
 		box.Closures.Delete(gclosure)
-		// log.Println("deleting object", unsafe.Pointer(gobject), "closure", unsafe.Pointer(gclosure))
 	}
 
 	// The closure missing here isn't very important. It can happen when the
@@ -99,48 +95,92 @@ func RemoveClosure(gobject, gclosure unsafe.Pointer) {
 	// will have already handled it.
 }
 
-// ObjectBox gets the interned box for the given GObject C pointer. If the
-// object is new or unknown, then a new box is made.
-func ObjectBox(gobject unsafe.Pointer) *Box {
-	if box := weakCheck(gobject); box != nil {
-		return box
-	}
-
+// Get gets the interned box for the given GObject C pointer. If the object is
+// new or unknown, then a new box is made. If the intern box already exists for
+// a given C pointer, then that box is weakly referenced and returned. The box
+// will be reference-counted; the caller must use ShouldFree to unreference it.
+func Get(gobject unsafe.Pointer, take bool) *Box {
 	// If the registry does not exist, then we'll have to globally register it.
 	// If the registry is currently strongly referenced, then we must move it to
 	// a weak reference.
 
+	var init bool
+
 	shared.mu.Lock()
-	defer shared.mu.Unlock()
 
 	box, strong := gets(gobject)
 	if box == nil {
 		box = newBox(gobject)
-	} else if strong {
-		// Ensure that this box is weakly referenced.
+		init = true
+		// Where the box is put doesn't matter here; see the comment below.
+	} else if !strong {
 		delete(shared.strong, gobject)
 	}
 
+	// Ensure that this box is weakly referenced, since the parent object will
+	// keep it alive by the caller. If this is incorrect, then it'll be updated
+	// by switching the reference.
 	shared.weak[gobject] = uintptr(unsafe.Pointer(box))
+
+	shared.mu.Unlock()
+
+	if init {
+		// C.g_object_ref_sink(C.gpointer(gobject))
+		C.g_object_add_toggle_ref(
+			(*C.GObject)(gobject),
+			(*[0]byte)(C.goToggleNotify), nil,
+		)
+
+		runtime.SetFinalizer(box, finalizeBox)
+
+		if !take {
+			// Return the reference that we had before.
+			C.g_object_unref(C.gpointer(gobject))
+		}
+
+		// Undo the initial ref_sink.
+		// C.g_object_unref(C.gpointer(gobject))
+	}
+
 	return box
 }
 
-// weakCheck is a fast path if the given object is already a known object that
-// has a gobject pointer and a weak reference.
-//
-// TODO: this stage can be lazily delegated to each objectNative instance having
-// its own sync.Once.
-func weakCheck(gobject unsafe.Pointer) *Box {
-	shared.mu.RLock()
-	defer shared.mu.RUnlock()
-
-	// Fast path if if this is a known object.
-	box, strong := gets(gobject)
-	if box != nil && !strong {
-		return box
+// finalizeBox only delays its finalization until GLib notifies us a toggle. It
+// does so for as long as an object is stored only in the Go heap. Once the
+// object is also shared, the toggle notifier will strongly reference the Box.
+func finalizeBox(box *Box) {
+	if !freeBox(box) {
+		// Delegate finalizing to the next cycle.
+		runtime.SetFinalizer(box, finalizeBox)
+	} else {
+		// Unreference the object. This will potentially free the object as
+		// well. The closures are definitely gone at this point.
+		C.g_object_remove_toggle_ref(
+			(*C.GObject)(unsafe.Pointer(box.obj)),
+			(*[0]byte)(C.goToggleNotify), nil,
+		)
 	}
+}
 
-	return nil
+// goToggleNotify is called by GLib on each toggle notification. It doesn't
+// actually free anything and relies on Box's finalizer to free both the box and
+// the C GObject.
+//
+//export goToggleNotify
+func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
+	gobject := unsafe.Pointer(obj)
+	isLast := isLastInt != 0
+
+	shared.mu.Lock()
+	defer shared.mu.Unlock()
+
+	if isLast {
+		delete(shared.sharing, gobject)
+		makeWeak(gobject)
+	} else {
+		shared.sharing[gobject] = struct{}{}
+		makeStrong(gobject)
+	}
 }
 
 //go:nocheckptr
@@ -158,20 +198,6 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 	}
 
 	return nil, false
-}
-
-// Toggle is called on the GToggleNotify callback.
-func Toggle(gobject unsafe.Pointer, isLast bool) {
-	shared.mu.Lock()
-	defer shared.mu.Unlock()
-
-	if isLast {
-		delete(shared.sharing, gobject)
-		makeWeak(gobject)
-	} else {
-		shared.sharing[gobject] = struct{}{}
-		makeStrong(gobject)
-	}
 }
 
 // makeStrong forces the Box instance associated with the given object to be
@@ -204,82 +230,38 @@ func makeWeak(gobject unsafe.Pointer) {
 	}
 }
 
-// ShouldFree must only be called during finalizing of an object. It's used to
-// know if an object should be freed or not during finalization. If false is
-// returned, then the object must not be freed yet.
+// freeBox must only be called during finalizing of a box. It's used to know if
+// a box should be freed or not during finalization. If false is returned, then
+// the object must not be freed yet.
 //
 //go:nocheckptr
-func ShouldFree(gobject unsafe.Pointer) bool {
-	// shared.mu.RLock()
-	// result, weak := preemptiveShouldFree(gobject)
-	// shared.mu.RUnlock()
-
-	// if !weak {
-	// 	return result
-	// }
-
-	// return true
-
+func freeBox(box *Box) bool {
 	shared.mu.Lock()
 	defer shared.mu.Unlock()
 
-	if _, ok := shared.sharing[gobject]; ok {
-		return false
-	}
-
-	// Recheck to ensure that the state stayed the same while we couldn't
-	// acquire the lock.
-	result, weak := preemptiveShouldFree(gobject)
-	if !weak {
-		return result
-	}
-
-	box := (*Box)(unsafe.Pointer(shared.weak[gobject]))
-	if box == nil {
-		// The weak flag is incorrect, for some reason. Allow freeing.
-		return true
-	}
-
-	// log.Printf("deleting object %p closure, result=%v, weak=%v", gobject, result, weak)
-
-	// If the closures are weak-referenced, then the object reference hasn't
-	// been toggled yet. Since the object is going away and we're still weakly
-	// referenced, we can wipe the closures away.
-	delete(shared.weak, gobject)
-
-	// By setting *box to a zero-value of closures, we're nilling out the maps,
-	// which will signal to Go that these cyclical objects can be freed
-	// altogether.
-	*box = Box{}
-
-	// We can proceed to free the object.
-	return true
-}
-
-// preemptiveShouldFree is a fast path that can be executed using just a
-// read-only lock. The only edge case that this function cannot fully handle is
-// if the GObject is found in the weak reference map, in which weak=true is
-// returned.
-func preemptiveShouldFree(gobject unsafe.Pointer) (res, weak bool) {
-	if len(shared.strong) == 0 && len(shared.weak) == 0 {
-		// We have no boxes, so we can free.
-		return true, false
-	}
+	gobject := unsafe.Pointer(box.obj)
 
 	_, ok := shared.strong[gobject]
 	if ok {
 		// If the closures are strong-referenced, then they might still be
 		// referenced from the C side, and those closures might access this
 		// object. Don't free.
-		return false, false
+		return false
 	}
 
 	_, ok = shared.weak[gobject]
 	if ok {
-		return false, true
+		// If the closures are weak-referenced, then the object reference hasn't
+		// been toggled yet. Since the object is going away and we're still
+		// weakly referenced, we can wipe the closures away.
+		delete(shared.weak, gobject)
+
+		// By setting *box to a zero-value of closures, we're nilling out the
+		// maps, which will signal to Go that these cyclical objects can be
+		// freed altogether.
+		*box = Box{obj: box.obj}
 	}
 
-	// We're not seeing any closures belonging to this object, so it can be
-	// freed.
-	return true, false
+	// We can proceed to free the object.
+	return true
 }

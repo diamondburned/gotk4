@@ -532,11 +532,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		if !value.ShouldFree() {
 			// Caller is taking ownership, which means it will steal our
 			// reference. Ensure that we take our own.
-			if !value.IsPublic {
-				value.p.Linef("%s.Ref()", value.InNamePtrPubl(1))
-			} else {
-				value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
-			}
+			value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
 		}
 
 		return true

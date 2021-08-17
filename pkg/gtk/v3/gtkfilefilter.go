@@ -392,6 +392,8 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 // FileFilterInfo is used to pass information about the tested file to
 // gtk_file_filter_filter().
+//
+// An instance of this type is always passed by reference.
 type FileFilterInfo struct {
 	*fileFilterInfo
 }

@@ -194,6 +194,8 @@ func (node *RenderNode) WriteToFile(filename string) error {
 }
 
 // ColorStop: color stop in a gradient node.
+//
+// An instance of this type is always passed by reference.
 type ColorStop struct {
 	*colorStop
 }
@@ -218,6 +220,8 @@ func (c *ColorStop) Color() gdk.RGBA {
 }
 
 // ParseLocation: location in a parse buffer.
+//
+// An instance of this type is always passed by reference.
 type ParseLocation struct {
 	*parseLocation
 }
@@ -263,6 +267,8 @@ func (p *ParseLocation) LineChars() uint {
 }
 
 // Shadow: shadow parameters in a shadow node.
+//
+// An instance of this type is always passed by reference.
 type Shadow struct {
 	*shadow
 }

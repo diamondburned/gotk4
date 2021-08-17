@@ -45,6 +45,8 @@ func InternMIMEType(_string string) string {
 
 // ContentFormatsBuilder: GdkContentFormatsBuilder is an auxiliary struct used
 // to create new GdkContentFormats, and should not be kept around.
+//
+// An instance of this type is always passed by reference.
 type ContentFormatsBuilder struct {
 	*contentFormatsBuilder
 }

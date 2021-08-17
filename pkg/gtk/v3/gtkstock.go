@@ -731,6 +731,8 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 }
 
 // StockItem: deprecated: since version 3.10.
+//
+// An instance of this type is always passed by reference.
 type StockItem struct {
 	*stockItem
 }

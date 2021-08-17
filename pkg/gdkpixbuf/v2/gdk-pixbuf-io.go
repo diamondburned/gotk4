@@ -292,6 +292,8 @@ func PixbufInitModules(path string) error {
 //
 // Only modules should access the fields directly, applications should use the
 // gdk_pixbuf_format_* family of functions.
+//
+// An instance of this type is always passed by reference.
 type PixbufFormat struct {
 	*pixbufFormat
 }

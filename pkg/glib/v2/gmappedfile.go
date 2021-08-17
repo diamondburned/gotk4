@@ -25,6 +25,8 @@ func init() {
 
 // MappedFile represents a file mapping created with g_mapped_file_new(). It has
 // only private members and should not be accessed directly.
+//
+// An instance of this type is always passed by reference.
 type MappedFile struct {
 	*mappedFile
 }

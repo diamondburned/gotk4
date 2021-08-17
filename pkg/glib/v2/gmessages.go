@@ -722,6 +722,8 @@ func LogWriterSupportsColor(outputFd int) bool {
 // bytes. If the field contains a string, the string must be UTF-8 encoded and
 // have a trailing nul byte. Otherwise, length must be set to a non-negative
 // value.
+//
+// An instance of this type is always passed by reference.
 type LogField struct {
 	*logField
 }

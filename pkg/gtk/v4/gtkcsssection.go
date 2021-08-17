@@ -27,6 +27,8 @@ func init() {
 //
 // Because sections are nested into one another, you can use
 // gtk_css_section_get_parent() to get the containing region.
+//
+// An instance of this type is always passed by reference.
 type CSSSection struct {
 	*cssSection
 }

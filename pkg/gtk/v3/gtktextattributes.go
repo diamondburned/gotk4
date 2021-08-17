@@ -26,6 +26,7 @@ func init() {
 	})
 }
 
+// TextAppearance: instance of this type is always passed by reference.
 type TextAppearance struct {
 	*textAppearance
 }
@@ -60,6 +61,8 @@ func (t *TextAppearance) Rise() int {
 // It’s primarily useful with gtk_text_iter_get_attributes(). As with most GTK+
 // structs, the fields in this struct should only be read, never modified
 // directly.
+//
+// An instance of this type is always passed by reference.
 type TextAttributes struct {
 	*textAttributes
 }

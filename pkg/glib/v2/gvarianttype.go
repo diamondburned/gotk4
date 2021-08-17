@@ -180,6 +180,8 @@ func init() {
 // to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the key
 // of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
+//
+// An instance of this type is always passed by reference.
 type VariantType struct {
 	*variantType
 }

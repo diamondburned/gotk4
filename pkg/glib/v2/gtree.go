@@ -26,6 +26,8 @@ func init() {
 // Tree struct is an opaque data structure representing a [balanced binary
 // tree][glib-Balanced-Binary-Trees]. It should be accessed only by using the
 // following functions.
+//
+// An instance of this type is always passed by reference.
 type Tree struct {
 	*tree
 }

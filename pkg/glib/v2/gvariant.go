@@ -434,6 +434,8 @@ func (v VariantParseError) String() string {
 // use an additional 48 bytes. If we were to have other dictionaries of the same
 // type, we would use more memory for the serialised data and buffer management
 // for those dictionaries, but the type information would be shared.
+//
+// An instance of this type is always passed by reference.
 type Variant struct {
 	*variant
 }
@@ -2181,6 +2183,8 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 //
 // Builder is not threadsafe in any way. Do not attempt to access it from more
 // than one thread.
+//
+// An instance of this type is always passed by reference.
 type VariantBuilder struct {
 	*variantBuilder
 }
@@ -2396,6 +2400,8 @@ func (builder *VariantBuilder) Open(typ *VariantType) {
 //
 //        return result;
 //      }
+//
+// An instance of this type is always passed by reference.
 type VariantDict struct {
 	*variantDict
 }

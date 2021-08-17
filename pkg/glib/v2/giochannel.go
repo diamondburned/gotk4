@@ -285,6 +285,8 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 
 // IOChannel: data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
+//
+// An instance of this type is always passed by reference.
 type IOChannel struct {
 	*ioChannel
 }
@@ -1005,6 +1007,8 @@ func IOChannelErrorFromErrno(en int) IOChannelError {
 
 // IOFuncs: table of functions used to handle different types of OChannel in a
 // generic way.
+//
+// An instance of this type is always passed by reference.
 type IOFuncs struct {
 	*ioFuncs
 }

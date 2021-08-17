@@ -275,6 +275,8 @@ func marshalUtiller(p uintptr) (interface{}, error) {
 func (*Util) privateUtil() {}
 
 // KeyEventStruct encapsulates information about a key event.
+//
+// An instance of this type is always passed by reference.
 type KeyEventStruct struct {
 	*keyEventStruct
 }

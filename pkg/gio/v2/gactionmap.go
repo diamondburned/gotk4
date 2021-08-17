@@ -215,6 +215,8 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 // Additional optional fields may be added in the future.
 //
 // See g_action_map_add_action_entries() for an example.
+//
+// An instance of this type is always passed by reference.
 type ActionEntry struct {
 	*actionEntry
 }

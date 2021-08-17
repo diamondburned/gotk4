@@ -391,7 +391,7 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 	var _cret *C.GtkExpressionWatch // in
 
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	self.Ref()
+	C.g_object_ref(C.gpointer(self.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -670,6 +670,8 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 //
 // The contents of GtkExpressionWatch should only be accessed through the
 // provided API.
+//
+// An instance of this type is always passed by reference.
 type ExpressionWatch struct {
 	*expressionWatch
 }

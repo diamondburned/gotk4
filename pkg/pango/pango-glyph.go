@@ -244,6 +244,8 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 
 // GlyphGeometry: PangoGlyphGeometry structure contains width and positioning
 // information for a single glyph.
+//
+// An instance of this type is always passed by reference.
 type GlyphGeometry struct {
 	*glyphGeometry
 }
@@ -276,6 +278,8 @@ func (g *GlyphGeometry) YOffset() GlyphUnit {
 
 // GlyphInfo: PangoGlyphInfo structure represents a single glyph with
 // positioning information and visual attributes.
+//
+// An instance of this type is always passed by reference.
 type GlyphInfo struct {
 	*glyphInfo
 }
@@ -311,6 +315,8 @@ func (g *GlyphInfo) Attr() GlyphVisAttr {
 //
 // The storage for the glyph information is owned by the structure which
 // simplifies memory management.
+//
+// An instance of this type is always passed by reference.
 type GlyphString struct {
 	*glyphString
 }
@@ -551,6 +557,8 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 //
 // Currently, it contains only cluster start information. yMore attributes may
 // be added in the future.
+//
+// An instance of this type is always passed by reference.
 type GlyphVisAttr struct {
 	*glyphVisAttr
 }

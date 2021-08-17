@@ -309,6 +309,8 @@ func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.g
 }
 
 // FileAttributeMatcher determines if a string matches a file attribute.
+//
+// An instance of this type is always passed by reference.
 type FileAttributeMatcher struct {
 	*fileAttributeMatcher
 }
@@ -523,6 +525,8 @@ func (matcher *FileAttributeMatcher) String() string {
 //
 // Flags relevant to this message will be returned in flags. For example,
 // MSG_EOR or MSG_TRUNC.
+//
+// An instance of this type is always passed by reference.
 type InputMessage struct {
 	*inputMessage
 }
@@ -535,6 +539,8 @@ type inputMessage struct {
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
+//
+// An instance of this type is always passed by reference.
 type InputVector struct {
 	*inputVector
 }
@@ -565,6 +571,8 @@ func (i *InputVector) Size() uint {
 //
 // If address is NULL then the message is sent to the default receiver (as
 // previously set by g_socket_connect()).
+//
+// An instance of this type is always passed by reference.
 type OutputMessage struct {
 	*outputMessage
 }
@@ -577,6 +585,8 @@ type outputMessage struct {
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
+//
+// An instance of this type is always passed by reference.
 type OutputVector struct {
 	*outputVector
 }
@@ -746,6 +756,8 @@ func (o *OutputVector) Size() uint {
 // before the '='. The path after the slash should ideally be absolute, but this
 // is not strictly required. It is possible to overlay the location of a single
 // resource with an individual file.
+//
+// An instance of this type is always passed by reference.
 type Resource struct {
 	*resource
 }
@@ -889,6 +901,8 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 // to find the Targets for a given service. However, if you are simply planning
 // to connect to the remote service, you can use Service's Connectable interface
 // and not need to worry about Target at all.
+//
+// An instance of this type is always passed by reference.
 type SrvTarget struct {
 	*srvTarget
 }

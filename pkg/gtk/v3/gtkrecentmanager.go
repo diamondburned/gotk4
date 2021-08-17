@@ -421,6 +421,8 @@ func RecentManagerGetDefault() *RecentManager {
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
 // registering a recently used resource.
+//
+// An instance of this type is always passed by reference.
 type RecentData struct {
 	*recentData
 }
@@ -504,6 +506,8 @@ func (r *RecentData) IsPrivate() bool {
 //
 // RecentInfo constains all the meta-data associated with an entry in the
 // recently used files list.
+//
+// An instance of this type is always passed by reference.
 type RecentInfo struct {
 	*recentInfo
 }

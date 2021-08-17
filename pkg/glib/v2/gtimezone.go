@@ -56,6 +56,8 @@ func (t TimeType) String() string {
 }
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
+//
+// An instance of this type is always passed by reference.
 type TimeZone struct {
 	*timeZone
 }

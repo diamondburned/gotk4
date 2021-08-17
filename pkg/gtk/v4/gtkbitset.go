@@ -20,6 +20,8 @@ import "C"
 // Before a GtkBitsetIter can be used, it needs to be initialized with
 // gtk.BitsetIter().InitFirst, gtk.BitsetIter().InitLast or
 // gtk.BitsetIter().InitAt.
+//
+// An instance of this type is always passed by reference.
 type BitsetIter struct {
 	*bitsetIter
 }

@@ -1247,6 +1247,8 @@ func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int)
 }
 
 // TextRange: structure used to describe a text range.
+//
+// An instance of this type is always passed by reference.
 type TextRange struct {
 	*textRange
 }
@@ -1290,6 +1292,8 @@ func (t *TextRange) Content() string {
 }
 
 // TextRectangle: structure used to store a rectangle used by AtkText.
+//
+// An instance of this type is always passed by reference.
 type TextRectangle struct {
 	*textRectangle
 }

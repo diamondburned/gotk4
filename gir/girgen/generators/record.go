@@ -35,7 +35,7 @@ var recordIgnoreSuffixes = []string{
 var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ $impl := UnexportPascal .GoName }}
 
-	{{ GoDoc . 0 }}
+	{{ GoDoc . 0 (AdditionalString "An instance of this type is always passed by reference.") }}
 	type {{ .GoName }} struct {
 		*{{ $impl }}
 	}

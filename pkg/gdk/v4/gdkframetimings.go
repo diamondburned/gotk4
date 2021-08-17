@@ -30,6 +30,8 @@ func init() {
 // useful for precise synchronization of video with the event or audio streams,
 // and for measuring quality metrics for the application’s display, such as
 // latency and jitter.
+//
+// An instance of this type is always passed by reference.
 type FrameTimings struct {
 	*frameTimings
 }

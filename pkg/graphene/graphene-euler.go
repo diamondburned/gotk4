@@ -199,6 +199,8 @@ func (e EulerOrder) String() string {
 //
 // The contents of the #graphene_euler_t structure are private and should never
 // be accessed directly.
+//
+// An instance of this type is always passed by reference.
 type Euler struct {
 	*euler
 }

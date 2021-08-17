@@ -1,9 +1,9 @@
 self: super: {
 	go = super.go.overrideAttrs (old: {
-		version = "1.17rc2";
+		version = "1.17";
 		src = builtins.fetchurl {
-			url    = "https://golang.org/dl/go1.17rc2.linux-amd64.tar.gz";
-			sha256 = "sha256:015dg39aj0s6ka5hkqgr9rjmfwz9jzzxgd3cdhfsbln7qznkb0ij";
+			url    = "https://golang.org/dl/go1.17.linux-amd64.tar.gz";
+			sha256 = "sha256:0b9p61m7ysiny61k4c0qm3kjsjclsni81b3yrxqkhxmdyp29zy3b";
 		};
 		doCheck = false;
 		patches = [

@@ -32,6 +32,8 @@ func init() {
 // GskTransform objects are immutable and cannot be changed after creation. This
 // means code can safely expose them as properties of objects without having to
 // worry about others changing them.
+//
+// An instance of this type is always passed by reference.
 type Transform struct {
 	*transform
 }

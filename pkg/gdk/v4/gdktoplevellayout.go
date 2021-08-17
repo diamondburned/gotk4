@@ -29,6 +29,8 @@ func init() {
 //
 // Toplevel surfaces are sovereign windows that can be presented to the user in
 // various states (maximized, on all workspaces, etc).
+//
+// An instance of this type is always passed by reference.
 type ToplevelLayout struct {
 	*toplevelLayout
 }

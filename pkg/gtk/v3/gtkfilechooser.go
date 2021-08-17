@@ -476,7 +476,7 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	filter.Ref()
+	C.g_object_ref(C.gpointer(filter.Native()))
 
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)

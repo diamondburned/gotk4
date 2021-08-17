@@ -23,6 +23,8 @@ func init() {
 }
 
 // Triangle: triangle.
+//
+// An instance of this type is always passed by reference.
 type Triangle struct {
 	*triangle
 }

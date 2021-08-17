@@ -353,6 +353,8 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 }
 
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.
+//
+// An instance of this type is always passed by reference.
 type ShaderArgsBuilder struct {
 	*shaderArgsBuilder
 }

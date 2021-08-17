@@ -23,6 +23,8 @@ func init() {
 }
 
 // Point3D: point with three components: X, Y, and Z.
+//
+// An instance of this type is always passed by reference.
 type Point3D struct {
 	*point3D
 }

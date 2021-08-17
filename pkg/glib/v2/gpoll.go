@@ -60,6 +60,8 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
+//
+// An instance of this type is always passed by reference.
 type PollFD struct {
 	*pollFD
 }

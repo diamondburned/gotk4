@@ -178,7 +178,7 @@ func (self *MultiFilter) Append(filter *Filter) {
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
-	filter.Ref()
+	C.g_object_ref(C.gpointer(filter.Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 	runtime.KeepAlive(self)

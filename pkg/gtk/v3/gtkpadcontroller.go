@@ -202,6 +202,8 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 }
 
 // PadActionEntry: struct defining a pad action entry.
+//
+// An instance of this type is always passed by reference.
 type PadActionEntry struct {
 	*padActionEntry
 }

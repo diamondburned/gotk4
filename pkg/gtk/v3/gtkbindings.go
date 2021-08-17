@@ -71,6 +71,8 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 
 // BindingArg holds the data associated with an argument for a key binding
 // signal emission as stored in BindingSignal.
+//
+// An instance of this type is always passed by reference.
 type BindingArg struct {
 	*bindingArg
 }
@@ -89,6 +91,8 @@ func (b *BindingArg) ArgType() externglib.Type {
 
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
+//
+// An instance of this type is always passed by reference.
 type BindingEntry struct {
 	*bindingEntry
 }
@@ -215,6 +219,8 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 // contexts, can be matched by any information contained in a widgets
 // WidgetPath. When a binding within a set is matched upon activation, an action
 // signal is emitted on the target widget to carry out the actual activation.
+//
+// An instance of this type is always passed by reference.
 type BindingSet struct {
 	*bindingSet
 }
@@ -331,6 +337,8 @@ func BindingSetFind(setName string) *BindingSet {
 
 // BindingSignal stores the necessary information to activate a widget in
 // response to a key press via a signal emission.
+//
+// An instance of this type is always passed by reference.
 type BindingSignal struct {
 	*bindingSignal
 }

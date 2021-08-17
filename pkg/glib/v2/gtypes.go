@@ -173,6 +173,8 @@ func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 // systems GTimeVal is subject to the year 2038 problem.
 //
 // Deprecated: Use Time or #guint64 instead.
+//
+// An instance of this type is always passed by reference.
 type TimeVal struct {
 	*timeVal
 }

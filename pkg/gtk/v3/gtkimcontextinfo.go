@@ -14,6 +14,8 @@ import (
 import "C"
 
 // IMContextInfo: bookkeeping information about a loadable input method.
+//
+// An instance of this type is always passed by reference.
 type IMContextInfo struct {
 	*imContextInfo
 }

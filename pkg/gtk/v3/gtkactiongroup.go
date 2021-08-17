@@ -450,6 +450,8 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 // actions.
 //
 // Deprecated: since version 3.10.
+//
+// An instance of this type is always passed by reference.
 type ActionEntry struct {
 	*actionEntry
 }
@@ -502,6 +504,8 @@ func (a *ActionEntry) Tooltip() string {
 // to construct groups of radio actions.
 //
 // Deprecated: since version 3.10.
+//
+// An instance of this type is always passed by reference.
 type RadioActionEntry struct {
 	*radioActionEntry
 }
@@ -561,6 +565,8 @@ func (r *RadioActionEntry) Value() int {
 // to construct toggle actions.
 //
 // Deprecated: since version 3.10.
+//
+// An instance of this type is always passed by reference.
 type ToggleActionEntry struct {
 	*toggleActionEntry
 }

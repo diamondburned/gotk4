@@ -26,6 +26,8 @@ func init() {
 //
 // The contents of the #graphene_quaternion_t structure are private and should
 // never be accessed directly.
+//
+// An instance of this type is always passed by reference.
 type Quaternion struct {
 	*quaternion
 }

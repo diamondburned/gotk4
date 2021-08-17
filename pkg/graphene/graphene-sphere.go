@@ -23,6 +23,8 @@ func init() {
 }
 
 // Sphere: sphere, represented by its center and radius.
+//
+// An instance of this type is always passed by reference.
 type Sphere struct {
 	*sphere
 }

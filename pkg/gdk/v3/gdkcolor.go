@@ -26,6 +26,8 @@ func init() {
 // X11 drawing API.
 //
 // Deprecated: Use RGBA.
+//
+// An instance of this type is always passed by reference.
 type Color struct {
 	*color
 }

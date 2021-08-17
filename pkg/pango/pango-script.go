@@ -602,6 +602,8 @@ func ScriptGetSampleLanguage(script Script) *Language {
 
 // ScriptIter: PangoScriptIter is used to iterate through a string and identify
 // ranges in different scripts.
+//
+// An instance of this type is always passed by reference.
 type ScriptIter struct {
 	*scriptIter
 }

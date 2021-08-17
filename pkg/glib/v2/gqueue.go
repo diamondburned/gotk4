@@ -16,6 +16,8 @@ import (
 import "C"
 
 // Queue contains the public fields of a [Queue][glib-Double-ended-Queues].
+//
+// An instance of this type is always passed by reference.
 type Queue struct {
 	*queue
 }

@@ -1061,6 +1061,8 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 // TreeIter is the primary structure for accessing a TreeModel. Models are
 // expected to put a unique integer in the stamp member, and put model-specific
 // data in the three user_data members.
+//
+// An instance of this type is always passed by reference.
 type TreeIter struct {
 	*treeIter
 }
@@ -1130,6 +1132,7 @@ func (iter *TreeIter) Copy() *TreeIter {
 	return _treeIter
 }
 
+// TreePath: instance of this type is always passed by reference.
 type TreePath struct {
 	*treePath
 }
@@ -1453,6 +1456,8 @@ func (path *TreePath) Up() bool {
 // TreeRowReference tracks model changes so that it always refers to the same
 // row (a TreePath refers to a position, not a fixed row). Create a new
 // GtkTreeRowReference with gtk_tree_row_reference_new().
+//
+// An instance of this type is always passed by reference.
 type TreeRowReference struct {
 	*treeRowReference
 }

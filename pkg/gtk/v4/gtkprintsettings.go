@@ -1487,6 +1487,8 @@ func (settings *PrintSettings) Unset(key string) {
 // PageRange: range of pages to print.
 //
 // See also gtk.PrintSettings.SetPageRanges().
+//
+// An instance of this type is always passed by reference.
 type PageRange struct {
 	*pageRange
 }

@@ -252,6 +252,8 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 }
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
+//
+// An instance of this type is always passed by reference.
 type DBusErrorEntry struct {
 	*dBusErrorEntry
 }

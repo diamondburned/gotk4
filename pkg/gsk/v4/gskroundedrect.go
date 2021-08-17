@@ -28,6 +28,8 @@ import "C"
 //
 // The algorithm used for normalizing corner sizes is described in the CSS
 // specification (https://drafts.csswg.org/css-backgrounds-3/#border-radius).
+//
+// An instance of this type is always passed by reference.
 type RoundedRect struct {
 	*roundedRect
 }

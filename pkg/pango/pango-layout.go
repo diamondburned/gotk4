@@ -1493,6 +1493,8 @@ func (layout *Layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool
 // To obtain a PangoLayoutIter, use pango.Layout.GetIter().
 //
 // The PangoLayoutIter structure is opaque, and has no user-visible fields.
+//
+// An instance of this type is always passed by reference.
 type LayoutIter struct {
 	*layoutIter
 }
@@ -1933,6 +1935,8 @@ func (iter *LayoutIter) NextRun() bool {
 // PangoLayoutLine structures are obtained by calling pango.Layout.GetLine() and
 // are only valid until the text, attributes, or settings of the parent
 // PangoLayout are modified.
+//
+// An instance of this type is always passed by reference.
 type LayoutLine struct {
 	*layoutLine
 }

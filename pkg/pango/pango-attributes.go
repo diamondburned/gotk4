@@ -1206,6 +1206,8 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 
 // AttrColor: PangoAttrColor structure is used to represent attributes that are
 // colors.
+//
+// An instance of this type is always passed by reference.
 type AttrColor struct {
 	*attrColor
 }
@@ -1231,6 +1233,8 @@ func (a *AttrColor) Color() Color {
 
 // AttrFloat: PangoAttrFloat structure is used to represent attributes with a
 // float or double value.
+//
+// An instance of this type is always passed by reference.
 type AttrFloat struct {
 	*attrFloat
 }
@@ -1256,6 +1260,8 @@ func (a *AttrFloat) Value() float64 {
 
 // AttrFontDesc: PangoAttrFontDesc structure is used to store an attribute that
 // sets all aspects of the font description at once.
+//
+// An instance of this type is always passed by reference.
 type AttrFontDesc struct {
 	*attrFontDesc
 }
@@ -1307,6 +1313,8 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 
 // AttrFontFeatures: PangoAttrFontFeatures structure is used to represent
 // OpenType font features as an attribute.
+//
+// An instance of this type is always passed by reference.
 type AttrFontFeatures struct {
 	*attrFontFeatures
 }
@@ -1356,6 +1364,8 @@ func NewAttrFontFeatures(features string) *Attribute {
 
 // AttrInt: PangoAttrInt structure is used to represent attributes with an
 // integer or enumeration value.
+//
+// An instance of this type is always passed by reference.
 type AttrInt struct {
 	*attrInt
 }
@@ -1385,6 +1395,8 @@ func (a *AttrInt) Value() int {
 // iterator is created, it can be advanced through the style changes in the text
 // using pango.AttrIterator.Next(). At each style change, the range of the
 // current style segment and the attributes currently in effect can be queried.
+//
+// An instance of this type is always passed by reference.
 type AttrIterator struct {
 	*attrIterator
 }
@@ -1500,6 +1512,8 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 
 // AttrLanguage: PangoAttrLanguage structure is used to represent attributes
 // that are languages.
+//
+// An instance of this type is always passed by reference.
 type AttrLanguage struct {
 	*attrLanguage
 }
@@ -1557,6 +1571,8 @@ func NewAttrLanguage(language *Language) *Attribute {
 // Since the PangoAttrList structure is stored as a linear list, it is not
 // suitable for storing attributes for large amounts of text. In general, you
 // should not use a single PangoAttrList for more than one paragraph of text.
+//
+// An instance of this type is always passed by reference.
 type AttrList struct {
 	*attrList
 }
@@ -1811,6 +1827,8 @@ func (list *AttrList) Update(pos int, remove int, add int) {
 
 // AttrShape: PangoAttrShape structure is used to represent attributes which
 // impose shape restrictions.
+//
+// An instance of this type is always passed by reference.
 type AttrShape struct {
 	*attrShape
 }
@@ -1852,6 +1870,8 @@ func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 
 // AttrSize: PangoAttrSize structure is used to represent attributes which set
 // font size.
+//
+// An instance of this type is always passed by reference.
 type AttrSize struct {
 	*attrSize
 }
@@ -1924,6 +1944,8 @@ func NewAttrSizeAbsolute(size int) *Attribute {
 
 // AttrString: PangoAttrString structure is used to represent attributes with a
 // string value.
+//
+// An instance of this type is always passed by reference.
 type AttrString struct {
 	*attrString
 }
@@ -1955,6 +1977,8 @@ func (a *AttrString) Value() string {
 // value in the type-specific part of the attribute applies and should be
 // initialized using pango.Attribute.Init(). By default, an attribute will have
 // an all-inclusive range of [0,G_MAXUINT].
+//
+// An instance of this type is always passed by reference.
 type Attribute struct {
 	*attribute
 }
@@ -2027,6 +2051,8 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 
 // Color: PangoColor structure is used to represent a color in an uncalibrated
 // RGB color-space.
+//
+// An instance of this type is always passed by reference.
 type Color struct {
 	*color
 }

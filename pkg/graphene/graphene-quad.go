@@ -26,6 +26,8 @@ func init() {
 //
 // The contents of a #graphene_quad_t are private and should never be accessed
 // directly.
+//
+// An instance of this type is always passed by reference.
 type Quad struct {
 	*quad
 }

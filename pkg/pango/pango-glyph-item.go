@@ -29,6 +29,8 @@ func init() {
 // As an example of the usage of PangoGlyphItem, the results of shaping text
 // with PangoLayout is a list of PangoLayoutLine, each of which contains a list
 // of PangoGlyphItem.
+//
+// An instance of this type is always passed by reference.
 type GlyphItem struct {
 	*glyphItem
 }
@@ -160,6 +162,8 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 // included in the cluster while the one pointed at by end variables is not.
 //
 // None of the members of a PangoGlyphItemIter should be modified manually.
+//
+// An instance of this type is always passed by reference.
 type GlyphItemIter struct {
 	*glyphItemIter
 }

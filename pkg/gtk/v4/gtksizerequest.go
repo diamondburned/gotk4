@@ -45,6 +45,8 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 // RequestedSize represents a request of a screen object in a given orientation.
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().
+//
+// An instance of this type is always passed by reference.
 type RequestedSize struct {
 	*requestedSize
 }

@@ -4787,6 +4787,8 @@ func WindowSetDebugUpdates(setting bool) {
 // window. The most common use of these hints is probably to set min_aspect and
 // max_aspect to the same value, thus forcing the window to keep a constant
 // aspect ratio.
+//
+// An instance of this type is always passed by reference.
 type Geometry struct {
 	*geometry
 }
@@ -4880,6 +4882,8 @@ func (g *Geometry) WinGravity() Gravity {
 }
 
 // WindowAttr attributes to use for a newly-created window.
+//
+// An instance of this type is always passed by reference.
 type WindowAttr struct {
 	*windowAttr
 }

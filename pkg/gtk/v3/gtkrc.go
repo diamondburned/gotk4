@@ -841,6 +841,8 @@ func (orig *RCStyle) Copy() *RCStyle {
 }
 
 // RCProperty: deprecated
+//
+// An instance of this type is always passed by reference.
 type RCProperty struct {
 	*rcProperty
 }

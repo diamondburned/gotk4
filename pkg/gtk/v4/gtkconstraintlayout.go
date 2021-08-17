@@ -239,7 +239,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
-	constraint.Ref()
+	C.g_object_ref(C.gpointer(constraint.Native()))
 
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 	runtime.KeepAlive(layout)
@@ -392,7 +392,7 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
-	guide.Ref()
+	C.g_object_ref(C.gpointer(guide.Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 	runtime.KeepAlive(layout)

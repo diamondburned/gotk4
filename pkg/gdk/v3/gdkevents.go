@@ -849,6 +849,8 @@ func SettingGet(name string, value *externglib.Value) bool {
 
 // EventAny contains the fields which are common to all event structs. Any event
 // pointer can safely be cast to a pointer to a EventAny to access these fields.
+//
+// An instance of this type is always passed by reference.
 type EventAny struct {
 	*eventAny
 }
@@ -923,6 +925,8 @@ func (e *EventAny) SendEvent() int8 {
 // For a double click to occur, the second button press must occur within 1/4 of
 // a second of the first. For a triple click to occur, the third button press
 // must also occur within 1/2 second of the first button press.
+//
+// An instance of this type is always passed by reference.
 type EventButton struct {
 	*eventButton
 }
@@ -1023,6 +1027,8 @@ func (e *EventButton) YRoot() float64 {
 }
 
 // EventConfigure: generated when a window size or position has changed.
+//
+// An instance of this type is always passed by reference.
 type EventConfigure struct {
 	*eventConfigure
 }
@@ -1082,6 +1088,8 @@ func (e *EventConfigure) Height() int {
 }
 
 // EventCrossing: generated when the pointer enters or leaves a window.
+//
+// An instance of this type is always passed by reference.
 type EventCrossing struct {
 	*eventCrossing
 }
@@ -1192,6 +1200,8 @@ func (e *EventCrossing) State() ModifierType {
 }
 
 // EventDND: generated during DND operations.
+//
+// An instance of this type is always passed by reference.
 type EventDND struct {
 	*eventDND
 }
@@ -1255,6 +1265,8 @@ func (e *EventDND) YRoot() int16 {
 
 // EventExpose: generated when all or part of a window becomes visible and needs
 // to be redrawn.
+//
+// An instance of this type is always passed by reference.
 type EventExpose struct {
 	*eventExpose
 }
@@ -1317,6 +1329,8 @@ func (e *EventExpose) Count() int {
 }
 
 // EventFocus describes a change of keyboard focus.
+//
+// An instance of this type is always passed by reference.
 type EventFocus struct {
 	*eventFocus
 }
@@ -1360,6 +1374,8 @@ func (e *EventFocus) In() int16 {
 // ancestors is unmapped), or if the same application grabs the pointer or
 // keyboard again. Note that implicit grabs (which are initiated by button
 // presses) can also cause EventGrabBroken events.
+//
+// An instance of this type is always passed by reference.
 type EventGrabBroken struct {
 	*eventGrabBroken
 }
@@ -1419,6 +1435,8 @@ func (e *EventGrabBroken) GrabWindow() Windower {
 }
 
 // EventKey describes a key press or key release event.
+//
+// An instance of this type is always passed by reference.
 type EventKey struct {
 	*eventKey
 }
@@ -1509,6 +1527,8 @@ func (e *EventKey) Group() byte {
 }
 
 // EventMotion: generated when the pointer moves.
+//
+// An instance of this type is always passed by reference.
 type EventMotion struct {
 	*eventMotion
 }
@@ -1608,6 +1628,8 @@ func (e *EventMotion) YRoot() float64 {
 // EventOwnerChange: generated when the owner of a selection changes. On X11,
 // this information is only available if the X server supports the XFIXES
 // extension.
+//
+// An instance of this type is always passed by reference.
 type EventOwnerChange struct {
 	*eventOwnerChange
 }
@@ -1619,6 +1641,8 @@ type eventOwnerChange struct {
 
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
 // sensors.
+//
+// An instance of this type is always passed by reference.
 type EventPadAxis struct {
 	*eventPadAxis
 }
@@ -1688,6 +1712,8 @@ func (e *EventPadAxis) Value() float64 {
 
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
 // releases.
+//
+// An instance of this type is always passed by reference.
 type EventPadButton struct {
 	*eventPadButton
 }
@@ -1750,6 +1776,8 @@ func (e *EventPadButton) Mode() uint {
 
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
 // group.
+//
+// An instance of this type is always passed by reference.
 type EventPadGroupMode struct {
 	*eventPadGroupMode
 }
@@ -1804,6 +1832,8 @@ func (e *EventPadGroupMode) Mode() uint {
 }
 
 // EventProperty describes a property change on a window.
+//
+// An instance of this type is always passed by reference.
 type EventProperty struct {
 	*eventProperty
 }
@@ -1822,6 +1852,8 @@ type eventProperty struct {
 //
 // This event type will be used pretty rarely. It only is important for XInput
 // aware programs that are drawing their own cursor.
+//
+// An instance of this type is always passed by reference.
 type EventProximity struct {
 	*eventProximity
 }
@@ -1874,6 +1906,8 @@ func (e *EventProximity) Device() Devicer {
 // Some GDK backends can also generate “smooth” scroll events, which can be
 // recognized by the GDK_SCROLL_SMOOTH scroll direction. For these, the scroll
 // deltas can be obtained with gdk_event_get_scroll_deltas().
+//
+// An instance of this type is always passed by reference.
 type EventScroll struct {
 	*eventScroll
 }
@@ -1979,6 +2013,8 @@ func (e *EventScroll) DeltaY() float64 {
 
 // EventSelection: generated when a selection is requested or ownership of a
 // selection is taken over by another client application.
+//
+// An instance of this type is always passed by reference.
 type EventSelection struct {
 	*eventSelection
 }
@@ -1988,6 +2024,7 @@ type eventSelection struct {
 	native *C.GdkEventSelection
 }
 
+// EventSequence: instance of this type is always passed by reference.
 type EventSequence struct {
 	*eventSequence
 }
@@ -2003,6 +2040,8 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 }
 
 // EventSetting: generated when a setting is modified.
+//
+// An instance of this type is always passed by reference.
 type EventSetting struct {
 	*eventSetting
 }
@@ -2057,6 +2096,8 @@ func (e *EventSetting) Name() string {
 // GDK_TOUCH_UPDATE events, and ends with a GDK_TOUCH_END (or GDK_TOUCH_CANCEL)
 // event. With multitouch devices, there may be several active sequences at the
 // same time.
+//
+// An instance of this type is always passed by reference.
 type EventTouch struct {
 	*eventTouch
 }
@@ -2164,6 +2205,8 @@ func (e *EventTouch) YRoot() float64 {
 }
 
 // EventTouchpadPinch: generated during touchpad swipe gestures.
+//
+// An instance of this type is always passed by reference.
 type EventTouchpadPinch struct {
 	*eventTouchpadPinch
 }
@@ -2282,6 +2325,8 @@ func (e *EventTouchpadPinch) State() ModifierType {
 }
 
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
+//
+// An instance of this type is always passed by reference.
 type EventTouchpadSwipe struct {
 	*eventTouchpadSwipe
 }
@@ -2388,6 +2433,8 @@ func (e *EventTouchpadSwipe) State() ModifierType {
 // Deprecated: Modern composited windowing systems with pervasive transparency
 // make it impossible to track the visibility of a window reliably, so this
 // event can not be guaranteed to provide useful information.
+//
+// An instance of this type is always passed by reference.
 type EventVisibility struct {
 	*eventVisibility
 }
@@ -2427,6 +2474,8 @@ func (e *EventVisibility) State() VisibilityState {
 }
 
 // EventWindowState: generated when the state of a toplevel window changes.
+//
+// An instance of this type is always passed by reference.
 type EventWindowState struct {
 	*eventWindowState
 }

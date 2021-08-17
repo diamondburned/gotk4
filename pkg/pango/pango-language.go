@@ -26,6 +26,8 @@ func init() {
 //
 // PangoLanguage pointers can be efficiently copied and compared with each
 // other.
+//
+// An instance of this type is always passed by reference.
 type Language struct {
 	*language
 }

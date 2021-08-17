@@ -32,6 +32,7 @@ func init() {
 	})
 }
 
+// IconSet: instance of this type is always passed by reference.
 type IconSet struct {
 	*iconSet
 }
@@ -313,6 +314,7 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 	return _surface
 }
 
+// IconSource: instance of this type is always passed by reference.
 type IconSource struct {
 	*iconSource
 }
@@ -762,6 +764,7 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SelectionData: instance of this type is always passed by reference.
 type SelectionData struct {
 	*selectionData
 }
@@ -1139,6 +1142,8 @@ func (selectionData *SelectionData) TargetsIncludeURI() bool {
 //
 // All this information will be used to match the style information that applies
 // to the described widget.
+//
+// An instance of this type is always passed by reference.
 type WidgetPath struct {
 	*widgetPath
 }

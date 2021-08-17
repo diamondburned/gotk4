@@ -71,7 +71,7 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 	}
 	if factory != nil {
 		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-		factory.Ref()
+		C.g_object_ref(C.gpointer(factory.Native()))
 	}
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)

@@ -26,6 +26,8 @@ func init() {
 // component (for example an slider or a range control), or to define each
 // individual subrange this full range is splitted if available. See Value
 // documentation for further details.
+//
+// An instance of this type is always passed by reference.
 type Range struct {
 	*_range
 }

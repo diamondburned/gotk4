@@ -55,6 +55,8 @@ const PAPER_NAME_LETTER = "na_letter"
 //
 // The GtkPaperSize object stores not only the dimensions (width and height) of
 // a paper size and its name, it also provides default print margins.
+//
+// An instance of this type is always passed by reference.
 type PaperSize struct {
 	*paperSize
 }

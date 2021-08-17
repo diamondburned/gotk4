@@ -407,6 +407,8 @@ func (u URIParamsFlags) Has(other URIParamsFlags) bool {
 // G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
 // data:,foo and data:;base64,Zm9v resolve to the same thing according to the
 // data: URI specification which GLib does not handle.
+//
+// An instance of this type is always passed by reference.
 type URI struct {
 	*urI
 }
@@ -1600,6 +1602,8 @@ func URIUnescapeString(escapedString string, illegalCharacters string) string {
 // are typically allocated on the stack and then initialized with
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
+//
+// An instance of this type is always passed by reference.
 type URIParamsIter struct {
 	*uriParamsIter
 }

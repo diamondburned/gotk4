@@ -4634,6 +4634,8 @@ func WidgetSetDefaultDirection(dir TextDirection) {
 
 // Requisition represents the desired size of a widget. See [GtkWidget’s
 // geometry management section][geometry-management] for more information.
+//
+// An instance of this type is always passed by reference.
 type Requisition struct {
 	*requisition
 }

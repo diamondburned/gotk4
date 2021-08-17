@@ -623,6 +623,8 @@ func UnixMountMonitorGet() *UnixMountMonitor {
 
 // UnixMountEntry defines a Unix mount entry (e.g.
 // <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
+//
+// An instance of this type is always passed by reference.
 type UnixMountEntry struct {
 	*unixMountEntry
 }
@@ -639,6 +641,8 @@ func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 
 // UnixMountPoint defines a Unix mount point (e.g. <filename>/dev</filename>).
 // This corresponds roughly to a fstab entry.
+//
+// An instance of this type is always passed by reference.
 type UnixMountPoint struct {
 	*unixMountPoint
 }

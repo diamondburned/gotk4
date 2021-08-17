@@ -205,6 +205,8 @@ func (o OptionFlags) Has(other OptionFlags) bool {
 // OptionEntry struct defines a single option. To have an effect, they must be
 // added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().
+//
+// An instance of this type is always passed by reference.
 type OptionEntry struct {
 	*optionEntry
 }
@@ -290,6 +292,8 @@ func (o *OptionEntry) ArgDescription() string {
 // need to parse commandline options are expected to provide a function for
 // getting a GOptionGroup holding their options, which the application can then
 // add to its Context.
+//
+// An instance of this type is always passed by reference.
 type OptionGroup struct {
 	*optionGroup
 }

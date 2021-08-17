@@ -674,6 +674,8 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 // ensure that you either provide a non-NULL set_property() function or provide
 // an implementation of the Set call. If implementing the call, you must return
 // the value of type G_VARIANT_TYPE_UNIT.
+//
+// An instance of this type is always passed by reference.
 type DBusInterfaceVTable struct {
 	*dBusInterfaceVTable
 }
@@ -685,6 +687,8 @@ type dBusInterfaceVTable struct {
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
 // g_dbus_connection_register_subtree().
+//
+// An instance of this type is always passed by reference.
 type DBusSubtreeVTable struct {
 	*dBusSubtreeVTable
 }

@@ -33,6 +33,8 @@ func init() {
 }
 
 // FileAttributeInfo: information about a specific attribute.
+//
+// An instance of this type is always passed by reference.
 type FileAttributeInfo struct {
 	*fileAttributeInfo
 }
@@ -65,6 +67,8 @@ func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
 
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
+//
+// An instance of this type is always passed by reference.
 type FileAttributeInfoList struct {
 	*fileAttributeInfoList
 }

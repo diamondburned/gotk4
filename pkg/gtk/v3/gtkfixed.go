@@ -141,6 +141,7 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	runtime.KeepAlive(y)
 }
 
+// FixedChild: instance of this type is always passed by reference.
 type FixedChild struct {
 	*fixedChild
 }

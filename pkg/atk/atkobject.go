@@ -1467,6 +1467,8 @@ func (accessible *ObjectClass) SetRole(role Role) {
 // information.
 //
 // A string name/value pair representing a generic attribute.
+//
+// An instance of this type is always passed by reference.
 type Attribute struct {
 	*attribute
 }
@@ -1493,6 +1495,8 @@ func (a *Attribute) Value() string {
 // PropertyValues: note: old_value field of PropertyValues will not contain a
 // valid value. This is a field defined with the purpose of contain the previous
 // value of the property, but is not used anymore.
+//
+// An instance of this type is always passed by reference.
 type PropertyValues struct {
 	*propertyValues
 }

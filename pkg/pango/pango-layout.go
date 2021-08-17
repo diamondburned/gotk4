@@ -648,6 +648,58 @@ func (layout *Layout) LineSpacing() float32 {
 	return _gfloat
 }
 
+// Lines returns the lines of the layout as a list.
+//
+// Use the faster pango.Layout.GetLinesReadonly() if you do not plan to modify
+// the contents of the lines (glyphs, glyph widths, etc.).
+func (layout *Layout) Lines() []LayoutLine {
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+
+	_cret = C.pango_layout_get_lines(_arg0)
+	runtime.KeepAlive(layout)
+
+	var _sList []LayoutLine // out
+
+	_sList = make([]LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.PangoLayoutLine)(v)
+		var dst LayoutLine // out
+		dst = *(*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// LinesReadonly returns the lines of the layout as a list.
+//
+// This is a faster alternative to pango.Layout.GetLines(), but the user is not
+// expected to modify the contents of the lines (glyphs, glyph widths, etc.).
+func (layout *Layout) LinesReadonly() []LayoutLine {
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+
+	_cret = C.pango_layout_get_lines_readonly(_arg0)
+	runtime.KeepAlive(layout)
+
+	var _sList []LayoutLine // out
+
+	_sList = make([]LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.PangoLayoutLine)(v)
+		var dst LayoutLine // out
+		dst = *(*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // LogAttrs retrieves an array of logical attributes for each character in the
 // layout.
 func (layout *Layout) LogAttrs() []LogAttr {

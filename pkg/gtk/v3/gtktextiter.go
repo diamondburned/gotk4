@@ -1612,6 +1612,32 @@ func (iter *TextIter) LineOffset() int {
 	return _gint
 }
 
+// Marks returns a list of all TextMark at this location. Because marks are not
+// iterable (they don’t take up any "space" in the buffer, they are just marks
+// in between iterable locations), multiple marks can exist in the same place.
+// The returned list is not in any meaningful order.
+func (iter *TextIter) Marks() []TextMark {
+	var _arg0 *C.GtkTextIter // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_text_iter_get_marks(_arg0)
+	runtime.KeepAlive(iter)
+
+	var _sList []TextMark // out
+
+	_sList = make([]TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTextMark)(v)
+		var dst TextMark // out
+		dst = *wrapTextMark(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Offset returns the character offset of an iterator. Each character in a
 // TextBuffer has an offset, starting with 0 for the first character in the
 // buffer. Use gtk_text_buffer_get_iter_at_offset() to convert an offset back
@@ -1687,6 +1713,31 @@ func (start *TextIter) Slice(end *TextIter) string {
 	return _utf8
 }
 
+// Tags returns a list of tags that apply to iter, in ascending order of
+// priority (highest-priority tags are last). The TextTag in the list don’t have
+// a reference added, but you have to free the list itself.
+func (iter *TextIter) Tags() []TextTag {
+	var _arg0 *C.GtkTextIter // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_text_iter_get_tags(_arg0)
+	runtime.KeepAlive(iter)
+
+	var _sList []TextTag // out
+
+	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTextTag)(v)
+		var dst TextTag // out
+		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Text returns text in the given range. If the range contains non-text elements
 // such as images, the character and byte offsets in the returned string will
 // not correspond to character and byte offsets in the buffer. If you want
@@ -1709,6 +1760,38 @@ func (start *TextIter) Text(end *TextIter) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// ToggledTags returns a list of TextTag that are toggled on or off at this
+// point. (If toggled_on is TRUE, the list contains tags that are toggled on.)
+// If a tag is toggled on at iter, then some non-empty range of characters
+// following iter has that tag applied to it. If a tag is toggled off, then some
+// non-empty range following iter does not have the tag applied to it.
+func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
+	var _arg0 *C.GtkTextIter // out
+	var _arg1 C.gboolean     // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if toggledOn {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C.gtk_text_iter_get_toggled_tags(_arg0, _arg1)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(toggledOn)
+
+	var _sList []TextTag // out
+
+	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkTextTag)(v)
+		var dst TextTag // out
+		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // VisibleLineIndex returns the number of bytes from the start of the line to

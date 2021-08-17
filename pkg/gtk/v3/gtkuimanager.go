@@ -657,6 +657,34 @@ func (manager *UIManager) AddTearoffs() bool {
 	return _ok
 }
 
+// Toplevels obtains a list of all toplevel widgets of the requested types.
+//
+// Deprecated: since version 3.10.
+func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
+	var _arg0 *C.GtkUIManager        // out
+	var _arg1 C.GtkUIManagerItemType // out
+	var _cret *C.GSList              // in
+
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = C.GtkUIManagerItemType(types)
+
+	_cret = C.gtk_ui_manager_get_toplevels(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(types)
+
+	var _sList []Widgetter // out
+
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
+		var dst Widgetter // out
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Ui creates a [UI definition][XML-UI] of the merged UI.
 //
 // Deprecated: since version 3.10.

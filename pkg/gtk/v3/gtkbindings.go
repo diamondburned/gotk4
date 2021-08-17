@@ -180,6 +180,36 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 	return _tokenType
 }
 
+// BindingEntryAddSignall: override or install a new key binding for keyval with
+// modifiers on binding_set.
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []BindingArg) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _arg4 *C.gchar          // out
+	var _arg5 *C.GSList         // out
+
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg4))
+	for i := len(bindingArgs) - 1; i >= 0; i-- {
+		src := bindingArgs[i]
+		var dst *C.GtkBindingArg // out
+		dst = (*C.GtkBindingArg)(gextras.StructNative(unsafe.Pointer((&src))))
+		_arg5 = C.g_slist_prepend(_arg5, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_slist_free(_arg5)
+
+	C.gtk_binding_entry_add_signall(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+	runtime.KeepAlive(signalName)
+	runtime.KeepAlive(bindingArgs)
+}
+
 // BindingEntryRemove: remove a binding previously installed via
 // gtk_binding_entry_add_signal() on binding_set.
 func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {

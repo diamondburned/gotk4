@@ -1718,6 +1718,62 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 	return _flags, _ok
 }
 
+// IterListClasses returns a list with all the class names defined for the
+// widget at position pos in the hierarchy defined in path.
+func (path *WidgetPath) IterListClasses(pos int) []string {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.GSList        // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_list_classes(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
+	var _sList []string // out
+
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// IterListRegions returns a list with all the region names defined for the
+// widget at position pos in the hierarchy defined in path.
+//
+// Deprecated: The use of regions is deprecated.
+func (path *WidgetPath) IterListRegions(pos int) []string {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.GSList        // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_list_regions(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
+	var _sList []string // out
+
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // IterRemoveClass removes the class name from the widget at position pos in the
 // hierarchy defined in path.
 func (path *WidgetPath) IterRemoveClass(pos int, name string) {

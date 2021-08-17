@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -92,6 +93,64 @@ func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 	return wrapRadioToolButton(obj), nil
 }
 
+// NewRadioToolButton creates a new RadioToolButton, adding it to group.
+func NewRadioToolButton(group []RadioButton) *RadioToolButton {
+	var _arg1 *C.GSList      // out
+	var _cret *C.GtkToolItem // in
+
+	if group != nil {
+		for i := len(group) - 1; i >= 0; i-- {
+			src := group[i]
+			var dst *C.GtkRadioButton // out
+			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_slist_free(_arg1)
+	}
+
+	_cret = C.gtk_radio_tool_button_new(_arg1)
+	runtime.KeepAlive(group)
+
+	var _radioToolButton *RadioToolButton // out
+
+	_radioToolButton = wrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _radioToolButton
+}
+
+// NewRadioToolButtonFromStock creates a new RadioToolButton, adding it to
+// group. The new RadioToolButton will contain an icon and label from the stock
+// item indicated by stock_id.
+//
+// Deprecated: Use gtk_radio_tool_button_new() instead.
+func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioToolButton {
+	var _arg1 *C.GSList      // out
+	var _arg2 *C.gchar       // out
+	var _cret *C.GtkToolItem // in
+
+	if group != nil {
+		for i := len(group) - 1; i >= 0; i-- {
+			src := group[i]
+			var dst *C.GtkRadioButton // out
+			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_slist_free(_arg1)
+	}
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.gtk_radio_tool_button_new_from_stock(_arg1, _arg2)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(stockId)
+
+	var _radioToolButton *RadioToolButton // out
+
+	_radioToolButton = wrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
+
+	return _radioToolButton
+}
+
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
 // same group as gruup
 func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
@@ -139,4 +198,47 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 	return _radioToolButton
 }
 
-func (*RadioToolButton) privateRadioToolButton() {}
+// Group returns the radio button group button belongs to.
+func (button *RadioToolButton) Group() []RadioButton {
+	var _arg0 *C.GtkRadioToolButton // out
+	var _cret *C.GSList             // in
+
+	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(button.Native()))
+
+	_cret = C.gtk_radio_tool_button_get_group(_arg0)
+	runtime.KeepAlive(button)
+
+	var _sList []RadioButton // out
+
+	_sList = make([]RadioButton, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkRadioButton)(v)
+		var dst RadioButton // out
+		dst = *wrapRadioButton(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// SetGroup adds button to group, removing it from the group it belonged to
+// before.
+func (button *RadioToolButton) SetGroup(group []RadioButton) {
+	var _arg0 *C.GtkRadioToolButton // out
+	var _arg1 *C.GSList             // out
+
+	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(button.Native()))
+	if group != nil {
+		for i := len(group) - 1; i >= 0; i-- {
+			src := group[i]
+			var dst *C.GtkRadioButton // out
+			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_slist_free(_arg1)
+	}
+
+	C.gtk_radio_tool_button_set_group(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(group)
+}

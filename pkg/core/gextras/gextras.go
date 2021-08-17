@@ -83,3 +83,19 @@ func MoveList(ptr unsafe.Pointer, rm bool, f func(v unsafe.Pointer)) {
 		C.g_list_free((*C.GList)(ptr))
 	}
 }
+
+// SListSize returns the length of the singly-linked list.
+func SListSize(ptr unsafe.Pointer) int {
+	return int(C.g_slist_length((*C.GSList)(ptr)))
+}
+
+// MoveSList is similar to MoveList, except it's used for singly-linked lists.
+func MoveSList(ptr unsafe.Pointer, rm bool, f func(v unsafe.Pointer)) {
+	for v := (*C.GSList)(ptr); v != nil; v = v.next {
+		f(unsafe.Pointer(v.data))
+	}
+
+	if rm {
+		C.g_slist_free((*C.GSList)(ptr))
+	}
+}

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -272,6 +273,12 @@ type FileChooserer interface {
 	// Filename gets the filename for the currently selected file in the file
 	// selector.
 	Filename() string
+	// Filenames lists all the selected files and subfolders in the current
+	// folder of chooser.
+	Filenames() []string
+	// Files lists all the selected files and subfolders in the current folder
+	// of chooser as #GFile.
+	Files() []gio.Filer
 	// Filter gets the current filter; see gtk_file_chooser_set_filter().
 	Filter() *FileFilter
 	// LocalOnly gets whether only local files can be selected in the file
@@ -301,9 +308,21 @@ type FileChooserer interface {
 	ShowHidden() bool
 	// URI gets the URI for the currently selected file in the file selector.
 	URI() string
+	// URIs lists all the selected files and subfolders in the current folder of
+	// chooser.
+	URIs() []string
 	// UsePreviewLabel gets whether a stock label should be drawn with the name
 	// of the previewed file.
 	UsePreviewLabel() bool
+	// ListFilters lists the current set of user-selectable filters; see
+	// gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
+	ListFilters() []FileFilter
+	// ListShortcutFolderURIs queries the list of shortcut folders in the file
+	// chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
+	ListShortcutFolderURIs() []string
+	// ListShortcutFolders queries the list of shortcut folders in the file
+	// chooser, as set by gtk_file_chooser_add_shortcut_folder().
+	ListShortcutFolders() []string
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -781,6 +800,57 @@ func (chooser *FileChooser) Filename() string {
 	return _filename
 }
 
+// Filenames lists all the selected files and subfolders in the current folder
+// of chooser. The returned names are full absolute paths. If files in the
+// current folder cannot be represented as local filenames they will be ignored.
+// (See gtk_file_chooser_get_uris())
+func (chooser *FileChooser) Filenames() []string {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_filenames(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []string // out
+
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// Files lists all the selected files and subfolders in the current folder of
+// chooser as #GFile. An internal function, see gtk_file_chooser_get_uris().
+func (chooser *FileChooser) Files() []gio.Filer {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_files(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []gio.Filer // out
+
+	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GFile)(v)
+		var dst gio.Filer // out
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(gio.Filer)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Filter gets the current filter; see gtk_file_chooser_set_filter().
 func (chooser *FileChooser) Filter() *FileFilter {
 	var _arg0 *C.GtkFileChooser // out
@@ -987,6 +1057,31 @@ func (chooser *FileChooser) URI() string {
 	return _utf8
 }
 
+// URIs lists all the selected files and subfolders in the current folder of
+// chooser. The returned names are full absolute URIs.
+func (chooser *FileChooser) URIs() []string {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_get_uris(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []string // out
+
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // UsePreviewLabel gets whether a stock label should be drawn with the name of
 // the previewed file. See gtk_file_chooser_set_use_preview_label().
 func (chooser *FileChooser) UsePreviewLabel() bool {
@@ -1005,6 +1100,84 @@ func (chooser *FileChooser) UsePreviewLabel() bool {
 	}
 
 	return _ok
+}
+
+// ListFilters lists the current set of user-selectable filters; see
+// gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
+func (chooser *FileChooser) ListFilters() []FileFilter {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_list_filters(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []FileFilter // out
+
+	_sList = make([]FileFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkFileFilter)(v)
+		var dst FileFilter // out
+		dst = *wrapFileFilter(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// ListShortcutFolderURIs queries the list of shortcut folders in the file
+// chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
+func (chooser *FileChooser) ListShortcutFolderURIs() []string {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_list_shortcut_folder_uris(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []string // out
+
+	if _cret != nil {
+		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+		gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+			src := (*C.gchar)(v)
+			var dst string // out
+			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+			defer C.free(unsafe.Pointer(src))
+			_sList = append(_sList, dst)
+		})
+	}
+
+	return _sList
+}
+
+// ListShortcutFolders queries the list of shortcut folders in the file chooser,
+// as set by gtk_file_chooser_add_shortcut_folder().
+func (chooser *FileChooser) ListShortcutFolders() []string {
+	var _arg0 *C.GtkFileChooser // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_file_chooser_list_shortcut_folders(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []string // out
+
+	if _cret != nil {
+		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+		gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+			src := (*C.gchar)(v)
+			var dst string // out
+			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+			defer C.free(unsafe.Pointer(src))
+			_sList = append(_sList, dst)
+		})
+	}
+
+	return _sList
 }
 
 // RemoveChoice removes a 'choice' that has been added with

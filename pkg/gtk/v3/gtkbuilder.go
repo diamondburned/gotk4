@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -807,6 +808,31 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 	}
 
 	return _object
+}
+
+// Objects gets all objects that have been constructed by builder. Note that
+// this function does not increment the reference counts of the returned
+// objects.
+func (builder *Builder) Objects() []*externglib.Object {
+	var _arg0 *C.GtkBuilder // out
+	var _cret *C.GSList     // in
+
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+
+	_cret = C.gtk_builder_get_objects(_arg0)
+	runtime.KeepAlive(builder)
+
+	var _sList []*externglib.Object // out
+
+	_sList = make([]*externglib.Object, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GObject)(v)
+		var dst *externglib.Object // out
+		dst = externglib.Take(unsafe.Pointer(src))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // TranslationDomain gets the translation domain of builder.

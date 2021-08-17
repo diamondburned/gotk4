@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -159,6 +160,29 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	_sizeGroupMode = SizeGroupMode(_cret)
 
 	return _sizeGroupMode
+}
+
+// Widgets returns the list of widgets associated with size_group.
+func (sizeGroup *SizeGroup) Widgets() []Widgetter {
+	var _arg0 *C.GtkSizeGroup // out
+	var _cret *C.GSList       // in
+
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
+
+	_cret = C.gtk_size_group_get_widgets(_arg0)
+	runtime.KeepAlive(sizeGroup)
+
+	var _sList []Widgetter // out
+
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
+		var dst Widgetter // out
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // RemoveWidget removes a widget from a GtkSizeGroup.

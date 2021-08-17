@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -459,6 +460,32 @@ func (action *Action) Name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// Proxies returns the proxy widgets for an action. See also
+// gtk_activatable_get_related_action().
+//
+// Deprecated: since version 3.10.
+func (action *Action) Proxies() []Widgetter {
+	var _arg0 *C.GtkAction // out
+	var _cret *C.GSList    // in
+
+	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+
+	_cret = C.gtk_action_get_proxies(_arg0)
+	runtime.KeepAlive(action)
+
+	var _sList []Widgetter // out
+
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkWidget)(v)
+		var dst Widgetter // out
+		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // Sensitive returns whether the action itself is sensitive. Note that this

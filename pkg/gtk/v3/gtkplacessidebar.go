@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -442,6 +443,29 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 	}
 
 	return _ok
+}
+
+// ListShortcuts gets the list of shortcuts.
+func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
+	var _arg0 *C.GtkPlacesSidebar // out
+	var _cret *C.GSList           // in
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+
+	_cret = C.gtk_places_sidebar_list_shortcuts(_arg0)
+	runtime.KeepAlive(sidebar)
+
+	var _sList []gio.Filer // out
+
+	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GFile)(v)
+		var dst gio.Filer // out
+		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(gio.Filer)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // RemoveShortcut removes an application-specific shortcut that has been

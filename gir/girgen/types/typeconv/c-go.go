@@ -241,7 +241,19 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 	// This is a concern for future me, though.
 
 	switch value.Resolved.GType {
-	case "GLib.List":
+	case "GLib.List", "GLib.SList":
+		var sizeFn string
+		var moveFn string
+
+		switch value.Resolved.GType {
+		case "GLib.List":
+			sizeFn = "ListSize"
+			moveFn = "MoveList"
+		case "GLib.SList":
+			sizeFn = "SListSize"
+			moveFn = "MoveSList"
+		}
+
 		inner := conv.convertInner(value, "src", "dst")
 		if inner == nil {
 			value.Logln(logger.Debug, "List missing inner type")
@@ -253,11 +265,11 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 		value.header.ApplyFrom(inner.Header())
 
 		value.p.Linef(
-			"%s = make([]%s, 0, gextras.ListSize(unsafe.Pointer(%s)))",
-			value.Out.Set, inner.Out.Type, value.InNamePtr(1))
+			"%s = make([]%s, 0, gextras.%s(unsafe.Pointer(%s)))",
+			value.Out.Set, inner.Out.Type, sizeFn, value.InNamePtr(1))
 
-		value.p.Linef("gextras.MoveList(unsafe.Pointer(%s), %t, func(v unsafe.Pointer) {",
-			value.InNamePtr(1), value.ShouldFree())
+		value.p.Linef("gextras.%s(unsafe.Pointer(%s), %t, func(v unsafe.Pointer) {",
+			moveFn, value.InNamePtr(1), value.ShouldFree())
 		value.p.Linef("  src := (%s)(v)", inner.In.Type)
 		value.p.Linef("  %s", inner.Out.Declare)
 		value.p.Linef("  %s", inner.Conversion)

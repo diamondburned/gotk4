@@ -242,7 +242,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			value.Inner[0].GoType,
 			value.Inner[1].GoType,
 		)
-	case "GLib.List":
+	case "GLib.List", "GLib.SList":
 		if value.Resolved.Ptr != 1 {
 			value.Logln(logger.Debug, "unknown List pointer rule", value.Resolved.Ptr)
 			return false

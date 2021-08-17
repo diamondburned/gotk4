@@ -256,6 +256,26 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 	return _width, _height, _pixbufFormat, _goerr
 }
 
+// PixbufGetFormats obtains the available information about the image formats
+// supported by GdkPixbuf.
+func PixbufGetFormats() []PixbufFormat {
+	var _cret *C.GSList // in
+
+	_cret = C.gdk_pixbuf_get_formats()
+
+	var _sList []PixbufFormat // out
+
+	_sList = make([]PixbufFormat, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkPixbufFormat)(v)
+		var dst PixbufFormat // out
+		dst = *(*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // PixbufInitModules initalizes the gdk-pixbuf loader modules referenced by the
 // loaders.cache file present inside that directory.
 //

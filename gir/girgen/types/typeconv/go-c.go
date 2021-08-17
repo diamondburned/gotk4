@@ -298,7 +298,19 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 	// done it, actually. Who knows.
 
 	switch value.Resolved.GType {
-	case "GLib.List":
+	case "GLib.List", "GLib.SList":
+		var prependFn string
+		var freeFn string
+
+		switch value.Resolved.GType {
+		case "GLib.List":
+			prependFn = "g_list_prepend"
+			freeFn = "g_list_free"
+		case "GLib.SList":
+			prependFn = "g_slist_prepend"
+			freeFn = "g_slist_free"
+		}
+
 		inner := conv.convertInner(value, "src", "dst")
 		if inner == nil {
 			value.Logln(logger.Debug, "List missing inner type")
@@ -315,12 +327,12 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 		value.p.Linef(inner.Out.Declare)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef(
-			"%s = C.g_list_prepend(%[1]s, C.gpointer(unsafe.Pointer(dst)))",
-			value.OutInNamePtr(1))
+			"%s = C.%s(%[1]s, C.gpointer(unsafe.Pointer(dst)))",
+			value.OutInNamePtr(1), prependFn)
 		value.p.Linef("}")
 
 		if value.ShouldFree() {
-			value.p.Linef("defer C.g_list_free(%s)", value.OutInNamePtr(1))
+			value.p.Linef("defer C.%s(%s)", freeFn, value.OutInNamePtr(1))
 		}
 
 		return true

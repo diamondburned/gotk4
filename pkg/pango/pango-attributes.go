@@ -1468,6 +1468,35 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	return _attribute
 }
 
+// Attrs gets a list of all attributes at the current position of the iterator.
+func (iterator *AttrIterator) Attrs() []Attribute {
+	var _arg0 *C.PangoAttrIterator // out
+	var _cret *C.GSList            // in
+
+	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+
+	_cret = C.pango_attr_iterator_get_attrs(_arg0)
+	runtime.KeepAlive(iterator)
+
+	var _sList []Attribute // out
+
+	_sList = make([]Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoAttribute)(v)
+		var dst Attribute // out
+		dst = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Next: advance the iterator until the next change of style.
 func (iterator *AttrIterator) Next() bool {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1709,6 +1738,35 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	}
 
 	return _attrList
+}
+
+// Attributes gets a list of all attributes in list.
+func (list *AttrList) Attributes() []Attribute {
+	var _arg0 *C.PangoAttrList // out
+	var _cret *C.GSList        // in
+
+	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.pango_attr_list_get_attributes(_arg0)
+	runtime.KeepAlive(list)
+
+	var _sList []Attribute // out
+
+	_sList = make([]Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoAttribute)(v)
+		var dst Attribute // out
+		dst = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // Iterator: create a iterator initialized to the beginning of the list. list

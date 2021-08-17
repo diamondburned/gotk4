@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -119,6 +120,45 @@ func (action *RadioAction) CurrentValue() int {
 	return _gint
 }
 
+// Group returns the list representing the radio group for this object. Note
+// that the returned list is only valid until the next change to the group.
+//
+// A common way to set up a group of radio group is the following:
+//
+//     GSList *group = NULL;
+//     GtkRadioAction *action;
+//
+//     while ( ...more actions to add... /)
+//       {
+//          action = gtk_radio_action_new (...);
+//
+//          gtk_radio_action_set_group (action, group);
+//          group = gtk_radio_action_get_group (action);
+//       }
+//
+// Deprecated: since version 3.10.
+func (action *RadioAction) Group() []RadioAction {
+	var _arg0 *C.GtkRadioAction // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+
+	_cret = C.gtk_radio_action_get_group(_arg0)
+	runtime.KeepAlive(action)
+
+	var _sList []RadioAction // out
+
+	_sList = make([]RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkRadioAction)(v)
+		var dst RadioAction // out
+		dst = *wrapRadioAction(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // JoinGroup joins a radio action object to the group of another radio action
 // object.
 //
@@ -167,4 +207,27 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(currentValue)
+}
+
+// SetGroup sets the radio group for the radio action object.
+//
+// Deprecated: since version 3.10.
+func (action *RadioAction) SetGroup(group []RadioAction) {
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 *C.GSList         // out
+
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	if group != nil {
+		for i := len(group) - 1; i >= 0; i-- {
+			src := group[i]
+			var dst *C.GtkRadioAction // out
+			dst = (*C.GtkRadioAction)(unsafe.Pointer((&src).Native()))
+			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_slist_free(_arg1)
+	}
+
+	C.gtk_radio_action_set_group(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(group)
 }

@@ -151,6 +151,8 @@ type RecentChooserOverrider interface {
 	// “limit” properties of chooser.
 	Items() []*RecentInfo
 	ItemActivated()
+	// ListFilters gets the RecentFilter objects held by chooser.
+	ListFilters() []RecentFilter
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
 	RemoveFilter(filter *RecentFilter)
@@ -226,6 +228,8 @@ type RecentChooserer interface {
 	ShowTips() bool
 	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
 	SortType() RecentSortType
+	// ListFilters gets the RecentFilter objects held by chooser.
+	ListFilters() []RecentFilter
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
 	RemoveFilter(filter *RecentFilter)
@@ -544,6 +548,29 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 	_recentSortType = RecentSortType(_cret)
 
 	return _recentSortType
+}
+
+// ListFilters gets the RecentFilter objects held by chooser.
+func (chooser *RecentChooser) ListFilters() []RecentFilter {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GSList           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_recent_chooser_list_filters(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []RecentFilter // out
+
+	_sList = make([]RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentFilter)(v)
+		var dst RecentFilter // out
+		dst = *wrapRecentFilter(externglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // RemoveFilter removes filter from the list of RecentFilter objects held by

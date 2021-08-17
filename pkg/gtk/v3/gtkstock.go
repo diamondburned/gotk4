@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -653,6 +654,30 @@ func StockAddStatic(items []StockItem) {
 
 	C.gtk_stock_add_static(_arg1, _arg2)
 	runtime.KeepAlive(items)
+}
+
+// StockListIds retrieves a list of all known stock IDs added to a IconFactory
+// or registered with gtk_stock_add(). The list must be freed with
+// g_slist_free(), and each string in the list must be freed with g_free().
+//
+// Deprecated: since version 3.10.
+func StockListIds() []string {
+	var _cret *C.GSList // in
+
+	_cret = C.gtk_stock_list_ids()
+
+	var _sList []string // out
+
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
+		var dst string // out
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // StockLookup fills item with the registered values for stock_id, returning

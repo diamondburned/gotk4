@@ -59,6 +59,58 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 	return v
 }
 
+// ApplyAttrs splits a shaped item (PangoGlyphItem) into multiple items based on
+// an attribute list.
+//
+// The idea is that if you have attributes that don't affect shaping, such as
+// color or underline, to avoid affecting shaping, you filter them out
+// (pango.AttrList.Filter()), apply the shaping process and then reapply them to
+// the result using this function.
+//
+// All attributes that start or end inside a cluster are applied to that
+// cluster; for instance, if half of a cluster is underlined and the other-half
+// strikethrough, then the cluster will end up with both underline and
+// strikethrough attributes. In these cases, it may happen that
+// item->extra_attrs for some of the result items can have multiple attributes
+// of the same type.
+//
+// This function takes ownership of glyph_item; it will be reused as one of the
+// elements in the list.
+func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []GlyphItem {
+	var _arg0 *C.PangoGlyphItem // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.PangoAttrList  // out
+	var _cret *C.GSList         // in
+
+	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.pango_glyph_item_apply_attrs(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(glyphItem)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(list)
+
+	var _sList []GlyphItem // out
+
+	_sList = make([]GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoGlyphItem)(v)
+		var dst GlyphItem // out
+		dst = *(*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
 // Copy: make a deep copy of an existing PangoGlyphItem structure.
 func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out

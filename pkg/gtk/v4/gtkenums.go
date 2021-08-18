@@ -1151,12 +1151,12 @@ func (c ConstraintAttribute) String() string {
 type ConstraintRelation int
 
 const (
-	// ConstraintRelationLe less than, or equal
-	ConstraintRelationLe ConstraintRelation = -1
+	// ConstraintRelationLE less than, or equal
+	ConstraintRelationLE ConstraintRelation = -1
 	// ConstraintRelationEq: equal
 	ConstraintRelationEq ConstraintRelation = 0
-	// ConstraintRelationGe: greater than, or equal
-	ConstraintRelationGe ConstraintRelation = 1
+	// ConstraintRelationGE: greater than, or equal
+	ConstraintRelationGE ConstraintRelation = 1
 )
 
 func marshalConstraintRelation(p uintptr) (interface{}, error) {
@@ -1166,12 +1166,12 @@ func marshalConstraintRelation(p uintptr) (interface{}, error) {
 // String returns the name in string for ConstraintRelation.
 func (c ConstraintRelation) String() string {
 	switch c {
-	case ConstraintRelationLe:
-		return "Le"
+	case ConstraintRelationLE:
+		return "LE"
 	case ConstraintRelationEq:
 		return "Eq"
-	case ConstraintRelationGe:
-		return "Ge"
+	case ConstraintRelationGE:
+		return "GE"
 	default:
 		return fmt.Sprintf("ConstraintRelation(%d)", c)
 	}

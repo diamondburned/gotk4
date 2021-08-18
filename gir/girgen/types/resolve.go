@@ -616,6 +616,10 @@ var BuiltinHandledTypes = []FilterMatcher{
 	// Special marking for internal types from GLib (apparently for
 	// glib:get-type).
 	AbsoluteFilter("C.intern"),
+	// Ignore all of Bytes' and ByteArray's methods and functions. Use the C
+	// namespace, because record methods aren't filtered properly.
+	RegexFilter(`C.g_bytes_.*`),
+	RegexFilter(`C.g_byte_array_.*`),
 }
 
 // Resolve resolves the given type from the GIR type field. It returns nil if

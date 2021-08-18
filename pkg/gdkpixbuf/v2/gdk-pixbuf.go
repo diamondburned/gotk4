@@ -19,6 +19,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 // gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
@@ -216,6 +217,54 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 	if _cret != nil {
 		_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
+
+	return _pixbuf
+}
+
+// NewPixbufFromBytes creates a new Pixbuf out of in-memory readonly image data.
+//
+// Currently only RGB images with 8 bits per sample are supported.
+//
+// This is the GBytes variant of gdk_pixbuf_new_from_data(), useful for language
+// bindings.
+func NewPixbufFromBytes(data []byte, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) *Pixbuf {
+	var _arg1 *C.GBytes       // out
+	var _arg2 C.GdkColorspace // out
+	var _arg3 C.gboolean      // out
+	var _arg4 C.int           // out
+	var _arg5 C.int           // out
+	var _arg6 C.int           // out
+	var _arg7 C.int           // out
+	var _cret *C.GdkPixbuf    // in
+
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&data[0])),
+		C.gsize(len(data)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(data)),
+	)
+	defer C.g_bytes_unref(_arg1)
+	_arg2 = C.GdkColorspace(colorspace)
+	if hasAlpha {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.int(bitsPerSample)
+	_arg5 = C.int(width)
+	_arg6 = C.int(height)
+	_arg7 = C.int(rowstride)
+
+	_cret = C.gdk_pixbuf_new_from_bytes(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(data)
+	runtime.KeepAlive(colorspace)
+	runtime.KeepAlive(hasAlpha)
+	runtime.KeepAlive(bitsPerSample)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(rowstride)
+
+	var _pixbuf *Pixbuf // out
+
+	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -1259,6 +1308,33 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int)
 	_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbuf
+}
+
+// ReadPixelBytes provides a #GBytes buffer containing the raw pixel data; the
+// data must not be modified.
+//
+// This function allows skipping the implicit copy that must be made if
+// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
+func (pixbuf *Pixbuf) ReadPixelBytes() []byte {
+	var _arg0 *C.GdkPixbuf // out
+	var _cret *C.GBytes    // in
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	_cret = C.gdk_pixbuf_read_pixel_bytes(_arg0)
+	runtime.KeepAlive(pixbuf)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
 }
 
 // ReadPixels provides a read-only pointer to the raw pixel data.

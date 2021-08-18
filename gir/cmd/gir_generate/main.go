@@ -45,6 +45,7 @@ func main() {
 	gen := girgen.NewGenerator(repos, genutil.ModulePath(module, gendata.ImportOverrides))
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.ApplyPreprocessors(gendata.Preprocessors)
+	gen.AddPostprocessors(gendata.Postprocessors)
 	gen.AddFilters(gendata.Filters)
 	gen.AddProcessConverters(gendata.ConversionProcessors)
 

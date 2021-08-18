@@ -360,8 +360,8 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 		value.header.ApplyFrom(vt.Header())
 
 		// libsecret/test-item.c directly passes the value in.
-		kptr := fmt.Sprintf("C.gpointer(unsafe.Pointer(kdst))")
-		vptr := fmt.Sprintf("C.gpointer(unsafe.Pointer(vdst))")
+		const kptr = "C.gpointer(unsafe.Pointer(kdst))"
+		const vptr = "C.gpointer(unsafe.Pointer(vdst))"
 
 		// Since we're using strings, we can use C.free directly.
 		value.p.Linef(
@@ -513,6 +513,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.p.LineTmpl(value,
 			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))")
+
+		if !value.ShouldFree() {
+			// Caller is taking ownership, which means it will steal our
+			// reference. Ensure that we take our own.
+			value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
+		}
 		return true
 
 	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
@@ -521,6 +527,25 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
 			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
 		)
+		return true
+
+	case "GLib.Bytes":
+		value.header.CallbackDelete = true
+		value.header.Import("unsafe")
+		value.header.ImportCore("gbox")
+
+		value.vtmpl(`
+			<.Out.Set> = C.g_bytes_new_with_free_func(
+				C.gconstpointer(unsafe.Pointer(&<.InNamePtr 0>[0])),
+				C.gsize(len(<.InNamePtr 0>)),
+				C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+				C.gpointer(gbox.Assign(<.InNamePtr 0>)),
+			)
+		`)
+
+		if value.ShouldFree() {
+			value.p.Linef("defer C.g_bytes_unref(%s)", value.Out.Set)
+		}
 		return true
 	}
 

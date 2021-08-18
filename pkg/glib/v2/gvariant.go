@@ -8,6 +8,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -17,6 +18,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -665,6 +667,44 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 	runtime.KeepAlive(elements)
 	runtime.KeepAlive(nElements)
 	runtime.KeepAlive(elementSize)
+
+	var _variant *Variant // out
+
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	return _variant
+}
+
+// NewVariantFromBytes constructs a struct Variant.
+func NewVariantFromBytes(typ *VariantType, bytes []byte, trusted bool) *Variant {
+	var _arg1 *C.GVariantType // out
+	var _arg2 *C.GBytes       // out
+	var _arg3 C.gboolean      // out
+	var _cret *C.GVariant     // in
+
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
+	_arg2 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg2)
+	if trusted {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.g_variant_new_from_bytes(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(trusted)
 
 	var _variant *Variant // out
 
@@ -1423,6 +1463,31 @@ func (value *Variant) Data() cgo.Handle {
 	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
 
 	return _gpointer
+}
+
+// DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
+// The semantics of this function are exactly the same as g_variant_get_data(),
+// except that the returned #GBytes holds a reference to the variant data.
+func (value *Variant) DataAsBytes() []byte {
+	var _arg0 *C.GVariant // out
+	var _cret *C.GBytes   // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_get_data_as_bytes(_arg0)
+	runtime.KeepAlive(value)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
 }
 
 // Double returns the double precision floating point value of value.

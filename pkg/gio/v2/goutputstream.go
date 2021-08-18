@@ -27,6 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -264,6 +265,12 @@ type OutputStreamer interface {
 	// WriteAsync: request an asynchronous write of count bytes from buffer into
 	// the stream.
 	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
+	// WriteBytes: wrapper function for g_output_stream_write() which takes a
+	// #GBytes as input.
+	WriteBytes(ctx context.Context, bytes []byte) (int, error)
+	// WriteBytesAsync: this function is similar to
+	// g_output_stream_write_async(), but takes a #GBytes as input.
+	WriteBytesAsync(ctx context.Context, bytes []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
 	WriteBytesFinish(result AsyncResulter) (int, error)
 	// WriteFinish finishes a stream write operation.
@@ -937,6 +944,100 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// WriteBytes: wrapper function for g_output_stream_write() which takes a
+// #GBytes as input. This can be more convenient for use by language bindings or
+// in other cases where the refcounted nature of #GBytes is helpful over a bare
+// pointer interface.
+//
+// However, note that this function may still perform partial writes, just like
+// g_output_stream_write(). If that occurs, to continue writing, you will need
+// to create a new #GBytes containing just the remaining bytes, using
+// g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
+// potentially can result in duplicated data in the output stream.
+func (stream *OutputStream) WriteBytes(ctx context.Context, bytes []byte) (int, error) {
+	var _arg0 *C.GOutputStream // out
+	var _arg2 *C.GCancellable  // out
+	var _arg1 *C.GBytes        // out
+	var _cret C.gssize         // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg1)
+
+	_cret = C.g_output_stream_write_bytes(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(bytes)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
+// WriteBytesAsync: this function is similar to g_output_stream_write_async(),
+// but takes a #GBytes as input. Due to the refcounted nature of #GBytes, this
+// allows the stream to avoid taking a copy of the data.
+//
+// However, note that this function may still perform partial writes, just like
+// g_output_stream_write_async(). If that occurs, to continue writing, you will
+// need to create a new #GBytes containing just the remaining bytes, using
+// g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
+// potentially can result in duplicated data in the output stream.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write_bytes().
+func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg1)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_write_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(bytes)
 	runtime.KeepAlive(ioPriority)
 	runtime.KeepAlive(callback)
 }

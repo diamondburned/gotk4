@@ -14,6 +14,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Postprocessor describes a processor function that modifies a namespace. It is
+// called right before files are finalized within the namespace generator.
+type Postprocessor func(n *NamespaceGenerator) error
+
 // NamespaceGenerator manages generation of a namespace. A namespace contains
 // various files, which are created using the FileWriter method.
 type NamespaceGenerator struct {
@@ -22,8 +26,10 @@ type NamespaceGenerator struct {
 	PkgName    string
 	PkgVersion string
 
+	Files map[string]*FileGenerator
+
+	postprocs  []Postprocessor
 	current    *gir.NamespaceFindResult
-	files      map[string]*FileGenerator
 	canResolve map[string]bool
 }
 
@@ -41,10 +47,15 @@ func NewNamespaceGenerator(g *Generator, n *gir.NamespaceFindResult) *NamespaceG
 		PkgPath:    g.ModPath(n.Namespace),
 		PkgName:    gir.GoNamespace(n.Namespace),
 		PkgVersion: gir.MajorVersion(n.Namespace.Version),
+		Files:      map[string]*FileGenerator{},
 		current:    n,
-		files:      map[string]*FileGenerator{},
 		canResolve: map[string]bool{},
 	}
+}
+
+// AddPostprocessors adds the given list of postprocessors.
+func (n *NamespaceGenerator) AddPostprocessors(pps []Postprocessor) {
+	n.postprocs = append(n.postprocs, pps...)
 }
 
 // Namespace returns the generator's namespace that includes the repository it's
@@ -171,13 +182,13 @@ func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
 		isRoot = true
 	}
 
-	f, ok := n.files[filename]
+	f, ok := n.Files[filename]
 	if ok {
 		return f
 	}
 
 	f = NewFileGenerator(n, filename, isRoot)
-	n.files[filename] = f
+	n.Files[filename] = f
 	return f
 }
 
@@ -246,7 +257,7 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	// Ensure that all files explicitly import runtime/cgo to not trigger an
 	// error in a compiler complaining about implicitly importing runtime/cgo.
 	// https://sourcegraph.com/github.com/golang/go/-/blob/src/cmd/link/internal/ld/lib.go?L563:3.
-	for _, file := range n.files {
+	for _, file := range n.Files {
 		if file.header.HasImport("runtime/cgo") {
 			goto importedCgo
 		}
@@ -256,11 +267,17 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	n.makeFile("").header.DashImport("runtime/cgo")
 
 importedCgo:
-	files := make(map[string][]byte, len(n.files))
+	for _, postproc := range n.postprocs {
+		if err := postproc(n); err != nil {
+			return nil, err
+		}
+	}
+
+	files := make(map[string][]byte, len(n.Files))
 
 	var firstErr error
 
-	for name, file := range n.files {
+	for name, file := range n.Files {
 		if file.IsEmpty() {
 			continue
 		}

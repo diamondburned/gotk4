@@ -38,7 +38,6 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
-		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
@@ -174,12 +173,6 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 			},
 		},
 	}
-}
-
-func marshalBytesIconner(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapBytesIcon(obj), nil
 }
 
 func (*BytesIcon) privateBytesIcon() {}
@@ -5022,6 +5015,184 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 	}
 
 	return _subprocess, _goerr
+}
+
+// Communicate with the subprocess until it terminates, and all input and output
+// has been completed.
+//
+// If stdin_buf is given, the subprocess must have been created with
+// G_SUBPROCESS_FLAGS_STDIN_PIPE. The given data is fed to the stdin of the
+// subprocess and the pipe is closed (ie: EOF).
+//
+// At the same time (as not to cause blocking when dealing with large amounts of
+// data), if G_SUBPROCESS_FLAGS_STDOUT_PIPE or G_SUBPROCESS_FLAGS_STDERR_PIPE
+// were used, reads from those streams. The data that was read is returned in
+// stdout and/or the stderr.
+//
+// If the subprocess was created with G_SUBPROCESS_FLAGS_STDOUT_PIPE, stdout_buf
+// will contain the data read from stdout. Otherwise, for subprocesses not
+// created with G_SUBPROCESS_FLAGS_STDOUT_PIPE, stdout_buf will be set to NULL.
+// Similar provisions apply to stderr_buf and G_SUBPROCESS_FLAGS_STDERR_PIPE.
+//
+// As usual, any output variable may be given as NULL to ignore it.
+//
+// If you desire the stdout and stderr data to be interleaved, create the
+// subprocess with G_SUBPROCESS_FLAGS_STDOUT_PIPE and
+// G_SUBPROCESS_FLAGS_STDERR_MERGE. The merged result will be returned in
+// stdout_buf and stderr_buf will be set to NULL.
+//
+// In case of any error (including cancellation), FALSE will be returned with
+// error set. Some or all of the stdin data may have been written. Any stdout or
+// stderr data that has been read will be discarded. None of the out variables
+// (aside from error) will have been set to anything in particular and should
+// not be inspected.
+//
+// In the case that TRUE is returned, the subprocess has exited and the exit
+// status inspection APIs (eg: g_subprocess_get_if_exited(),
+// g_subprocess_get_exit_status()) may be used.
+//
+// You should not attempt to use any of the subprocess pipes after starting this
+// function, since they may be left in strange states, even if the operation was
+// cancelled. You should especially not attempt to interact with the pipes while
+// the operation is in progress (either from another thread or if using the
+// asynchronous version).
+func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf []byte) (stdoutBuf []byte, stderrBuf []byte, goerr error) {
+	var _arg0 *C.GSubprocess  // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 *C.GBytes       // out
+	var _arg3 *C.GBytes       // in
+	var _arg4 *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if stdinBuf != nil {
+		_arg1 = C.g_bytes_new_with_free_func(
+			C.gconstpointer(unsafe.Pointer(&stdinBuf[0])),
+			C.gsize(len(stdinBuf)),
+			C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+			C.gpointer(gbox.Assign(stdinBuf)),
+		)
+		defer C.g_bytes_unref(_arg1)
+	}
+
+	C.g_subprocess_communicate(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(subprocess)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stdinBuf)
+
+	var _stdoutBuf []byte // out
+	var _stderrBuf []byte // out
+	var _goerr error      // out
+
+	if _arg3 != nil {
+		_stdoutBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&_stdoutBuf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+	if _arg4 != nil {
+		_stderrBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&_stderrBuf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _stdoutBuf, _stderrBuf, _goerr
+}
+
+// CommunicateAsync asynchronous version of g_subprocess_communicate(). Complete
+// invocation with g_subprocess_communicate_finish().
+func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf []byte, callback AsyncReadyCallback) {
+	var _arg0 *C.GSubprocess        // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if stdinBuf != nil {
+		_arg1 = C.g_bytes_new_with_free_func(
+			C.gconstpointer(unsafe.Pointer(&stdinBuf[0])),
+			C.gsize(len(stdinBuf)),
+			C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+			C.gpointer(gbox.Assign(stdinBuf)),
+		)
+		defer C.g_bytes_unref(_arg1)
+	}
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_subprocess_communicate_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(subprocess)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stdinBuf)
+	runtime.KeepAlive(callback)
+}
+
+// CommunicateFinish: complete an invocation of
+// g_subprocess_communicate_async().
+func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf []byte, stderrBuf []byte, goerr error) {
+	var _arg0 *C.GSubprocess  // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GBytes       // in
+	var _arg3 *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	C.g_subprocess_communicate_finish(_arg0, _arg1, &_arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(subprocess)
+	runtime.KeepAlive(result)
+
+	var _stdoutBuf []byte // out
+	var _stderrBuf []byte // out
+	var _goerr error      // out
+
+	if _arg2 != nil {
+		_stdoutBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&_stdoutBuf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+	if _arg3 != nil {
+		_stderrBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(&_stderrBuf)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _stdoutBuf, _stderrBuf, _goerr
 }
 
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the output of

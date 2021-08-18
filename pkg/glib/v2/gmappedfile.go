@@ -108,6 +108,31 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	return _mappedFile, _goerr
 }
 
+// Bytes creates a new #GBytes which references the data mapped from file. The
+// mapped contents of the file must not be modified after creating this bytes
+// object, because a #GBytes should be immutable.
+func (file *MappedFile) Bytes() []byte {
+	var _arg0 *C.GMappedFile // out
+	var _cret *C.GBytes      // in
+
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
+
+	_cret = C.g_mapped_file_get_bytes(_arg0)
+	runtime.KeepAlive(file)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
+}
+
 // Contents returns the contents of a File.
 //
 // Note that the contents may not be zero-terminated, even if the File is backed

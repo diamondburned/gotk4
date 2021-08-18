@@ -29,6 +29,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // void _gotk4_gio2_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
@@ -1123,8 +1124,13 @@ type Filer interface {
 	Hash() uint
 	// IsNative checks to see if a file is native to the platform.
 	IsNative() bool
+	// LoadBytes loads the contents of file and returns it as #GBytes.
+	LoadBytes(ctx context.Context) (string, []byte, error)
 	// LoadBytesAsync: asynchronously loads the contents of file as #GBytes.
 	LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback)
+	// LoadBytesFinish completes an asynchronous request to
+	// g_file_load_bytes_async().
+	LoadBytesFinish(result AsyncResulter) (string, []byte, error)
 	// LoadContents loads the content of the file into memory.
 	LoadContents(ctx context.Context) ([]byte, string, error)
 	// LoadContentsAsync starts an asynchronous load of the file's contents.
@@ -1238,6 +1244,9 @@ type Filer interface {
 	// ReplaceContentsAsync starts an asynchronous replacement of file with the
 	// given contents of length bytes.
 	ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
+	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
+	// takes a #GBytes input instead.
+	ReplaceContentsBytesAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an asynchronous replace of the given file.
 	ReplaceContentsFinish(res AsyncResulter) (string, error)
 	// ReplaceFinish finishes an asynchronous file replace operation started
@@ -2716,6 +2725,57 @@ func (file *File) IsNative() bool {
 	return _ok
 }
 
+// LoadBytes loads the contents of file and returns it as #GBytes.
+//
+// If file is a resource:// based URI, the resulting bytes will reference the
+// embedded resource instead of a copy. Otherwise, this is equivalent to calling
+// g_file_load_contents() and g_bytes_new_take().
+//
+// For resources, etag_out will be set to NULL.
+//
+// The data contained in the resulting #GBytes is always zero-terminated, but
+// this is not included in the #GBytes length. The resulting #GBytes should be
+// freed with g_bytes_unref() when no longer in use.
+func (file *File) LoadBytes(ctx context.Context) (string, []byte, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _arg2 *C.gchar        // in
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	_cret = C.g_file_load_bytes(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+
+	var _etagOut string // out
+	var _bytes []byte   // out
+	var _goerr error    // out
+
+	if _arg2 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _etagOut, _bytes, _goerr
+}
+
 // LoadBytesAsync: asynchronously loads the contents of file as #GBytes.
 //
 // If file is a resource:// based URI, the resulting bytes will reference the
@@ -2747,6 +2807,52 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
+}
+
+// LoadBytesFinish completes an asynchronous request to
+// g_file_load_bytes_async().
+//
+// For resources, etag_out will be set to NULL.
+//
+// The data contained in the resulting #GBytes is always zero-terminated, but
+// this is not included in the #GBytes length. The resulting #GBytes should be
+// freed with g_bytes_unref() when no longer in use.
+//
+// See g_file_load_bytes() for more information.
+func (file *File) LoadBytesFinish(result AsyncResulter) (string, []byte, error) {
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.gchar        // in
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.g_file_load_bytes_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(result)
+
+	var _etagOut string // out
+	var _bytes []byte   // out
+	var _goerr error    // out
+
+	if _arg2 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _etagOut, _bytes, _goerr
 }
 
 // LoadContents loads the content of the file into memory. The data is always
@@ -4457,6 +4563,60 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 	}
 
 	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
+// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but takes
+// a #GBytes input instead. This function will keep a ref on contents until the
+// operation is done. Unlike g_file_replace_contents_async() this allows
+// forgetting about the content without waiting for the callback.
+//
+// When this operation has completed, callback will be called with user_user
+// data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg2 *C.char               // out
+	var _arg3 C.gboolean            // out
+	var _arg4 C.GFileCreateFlags    // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&contents[0])),
+		C.gsize(len(contents)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(contents)),
+	)
+	defer C.g_bytes_unref(_arg1)
+	if etag != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if makeBackup {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.GFileCreateFlags(flags)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_contents_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(contents)

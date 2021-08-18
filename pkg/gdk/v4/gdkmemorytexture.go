@@ -4,8 +4,10 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -13,6 +15,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -115,6 +118,43 @@ func marshalMemoryTexturer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMemoryTexture(obj), nil
+}
+
+// NewMemoryTexture creates a new texture for a blob of image data.
+//
+// The GBytes must contain stride x height pixels in the given format.
+func NewMemoryTexture(width int, height int, format MemoryFormat, bytes []byte, stride uint) *MemoryTexture {
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
+	var _arg3 C.GdkMemoryFormat // out
+	var _arg4 *C.GBytes         // out
+	var _arg5 C.gsize           // out
+	var _cret *C.GdkTexture     // in
+
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = C.GdkMemoryFormat(format)
+	_arg4 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg4)
+	_arg5 = C.gsize(stride)
+
+	_cret = C.gdk_memory_texture_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(format)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(stride)
+
+	var _memoryTexture *MemoryTexture // out
+
+	_memoryTexture = wrapMemoryTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _memoryTexture
 }
 
 func (*MemoryTexture) privateMemoryTexture() {}

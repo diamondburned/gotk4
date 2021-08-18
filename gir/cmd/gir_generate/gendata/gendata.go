@@ -4,6 +4,7 @@ package gendata
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
 	. "github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
@@ -145,13 +146,11 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
 
-	FileFilter("garray."),
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),
 	FileFilter("gbacktrace."),
 	FileFilter("gbase64."),
 	FileFilter("gbitlock."),
-	FileFilter("gbytes."),
 	FileFilter("gdataset."),
 	FileFilter("gdate."),
 	FileFilter("gdatetime."),
@@ -200,6 +199,59 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
 	AbsoluteFilter("C.gdk_window_destroy_notify"),
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
+}
+
+func ppUseBytes(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["garray.go"]
+	if !ok {
+		return nil
+	}
+
+	h := fg.Header()
+	h.Import("runtime")
+	h.ImportCore("gbox")
+	h.ImportCore("gextras")
+	h.CallbackDelete = true
+
+	// We can use the gbox.Assign API for this. The type doesn't matter much,
+	// since we're not actually going to access the data through it.
+
+	p := fg.Pen()
+	p.Line(`
+		// UseBytes is similar to NewBytes, except the given Go byte slice is
+		// not copied, but will be kept alive for the lifetime of the GBytes.
+		// Note that the user must NOT modify data.
+		//
+		// Refer to g_bytes_new_with_free_func() for more information.
+		func UseBytes(data []byte) *Bytes {
+			byteID := gbox.Assign(data)
+
+			v := C.g_bytes_new_with_free_func(
+				C.gconstpointer(unsafe.Pointer(&data[0])),
+				C.gsize(len(data)),
+				C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+				C.gpointer(byteID),
+			)
+
+			_bytes := (*Bytes)(gextras.NewStructNative(unsafe.Pointer(v)))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_bytes)),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.g_bytes_unref((*C.GBytes)(intern.C))
+				},
+			)
+
+			return _bytes
+		}
+	`)
+
+	return nil
+}
+
+// Postprocessors is similar to Append, except the caller can mutate the package
+// in a more flexible manner.
+var Postprocessors = map[string][]girgen.Postprocessor{
+	"GLib": {ppUseBytes},
 }
 
 // Appends contains the contents of files that are appended into generated

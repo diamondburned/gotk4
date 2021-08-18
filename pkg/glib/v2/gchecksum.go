@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -15,6 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -59,6 +61,39 @@ func (c ChecksumType) String() string {
 	default:
 		return fmt.Sprintf("ChecksumType(%d)", c)
 	}
+}
+
+// ComputeChecksumForBytes computes the checksum for a binary data. This is a
+// convenience wrapper for g_checksum_new(), g_checksum_get_string() and
+// g_checksum_free().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForBytes(checksumType ChecksumType, data []byte) string {
+	var _arg1 C.GChecksumType // out
+	var _arg2 *C.GBytes       // out
+	var _cret *C.gchar        // in
+
+	_arg1 = C.GChecksumType(checksumType)
+	_arg2 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&data[0])),
+		C.gsize(len(data)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(data)),
+	)
+	defer C.g_bytes_unref(_arg2)
+
+	_cret = C.g_compute_checksum_for_bytes(_arg1, _arg2)
+	runtime.KeepAlive(checksumType)
+	runtime.KeepAlive(data)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
 }
 
 // ComputeChecksumForData computes the checksum for a binary data of length.

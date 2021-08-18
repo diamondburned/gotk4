@@ -17,6 +17,7 @@ type Generator struct {
 	repos   gir.Repositories
 	modPath types.ModulePathFunc
 
+	postmap   map[string][]Postprocessor
 	filters   []types.FilterMatcher
 	convProcs []typeconv.ConversionProcessor
 }
@@ -28,6 +29,7 @@ func NewGenerator(repos gir.Repositories, modPath types.ModulePathFunc) *Generat
 
 		repos:   repos,
 		modPath: modPath,
+		postmap: make(map[string][]Postprocessor),
 		filters: append([]types.FilterMatcher(nil), types.BuiltinHandledTypes...),
 	}
 }
@@ -40,6 +42,14 @@ func (g *Generator) AddFilters(filters []types.FilterMatcher) {
 // Filters returns the generator's list of type filters.
 func (g *Generator) Filters() []types.FilterMatcher {
 	return g.filters
+}
+
+// AddPostprocessor registers the given postprocessors inside a map that has
+// keys matching the namespace.
+func (g *Generator) AddPostprocessors(ppMap map[string][]Postprocessor) {
+	for k, v := range ppMap {
+		g.postmap[k] = append(g.postmap[k], v...)
+	}
 }
 
 // AddProcessConverters adds the given list of conversion processors.
@@ -73,7 +83,13 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 		return nil
 	}
 
-	return NewNamespaceGenerator(g, res)
+	nsgen := NewNamespaceGenerator(g, res)
+
+	if pps, ok := g.postmap[namespace]; ok {
+		nsgen.AddPostprocessors(pps)
+	}
+
+	return nsgen
 }
 
 // Logln writes a log line into the internal logger.

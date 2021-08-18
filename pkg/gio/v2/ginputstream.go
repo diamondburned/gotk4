@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -138,9 +139,15 @@ type InputStreamer interface {
 	// ReadAllFinish finishes an asynchronous stream read operation started with
 	// g_input_stream_read_all_async().
 	ReadAllFinish(result AsyncResulter) (uint, error)
+	// ReadBytes: like g_input_stream_read(), this tries to read count bytes
+	// from the stream in a blocking fashion.
+	ReadBytes(ctx context.Context, count uint) ([]byte, error)
 	// ReadBytesAsync: request an asynchronous read of count bytes from the
 	// stream into a new #GBytes.
 	ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
+	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
+	// operation.
+	ReadBytesFinish(result AsyncResulter) ([]byte, error)
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
 	// SetPending sets stream to have actions pending.
@@ -355,6 +362,63 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	return _bytesRead, _goerr
 }
 
+// ReadBytes: like g_input_stream_read(), this tries to read count bytes from
+// the stream in a blocking fashion. However, rather than reading into a
+// user-supplied buffer, this will create a new #GBytes containing the data that
+// was read. This may be easier to use from language bindings.
+//
+// If count is zero, returns a zero-length #GBytes and does nothing. A value of
+// count larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, a new #GBytes is returned. It is not an error if the size of this
+// object is not the same as the requested size, as it can happen e.g. near the
+// end of a file. A zero-length #GBytes is returned on end of file (or if count
+// is zero), but never otherwise.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error NULL is returned and error is set accordingly.
+func (stream *InputStream) ReadBytes(ctx context.Context, count uint) ([]byte, error) {
+	var _arg0 *C.GInputStream // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 C.gsize         // out
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+
+	_cret = C.g_input_stream_read_bytes(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+
+	var _bytes []byte // out
+	var _goerr error  // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytes, _goerr
+}
+
 // ReadBytesAsync: request an asynchronous read of count bytes from the stream
 // into a new #GBytes. When the operation is finished callback will be called.
 // You can then call g_input_stream_read_bytes_finish() to get the result of the
@@ -401,6 +465,37 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 	runtime.KeepAlive(count)
 	runtime.KeepAlive(ioPriority)
 	runtime.KeepAlive(callback)
+}
+
+// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes operation.
+func (stream *InputStream) ReadBytesFinish(result AsyncResulter) ([]byte, error) {
+	var _arg0 *C.GInputStream // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+
+	_cret = C.g_input_stream_read_bytes_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _bytes []byte // out
+	var _goerr error  // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytes, _goerr
 }
 
 // ReadFinish finishes an asynchronous stream read operation.

@@ -19,6 +19,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
 import "C"
 
 func init() {
@@ -89,6 +91,9 @@ type RenderNoder interface {
 	Bounds() graphene.Rect
 	// NodeType returns the type of the node.
 	NodeType() RenderNodeType
+	// Serialize serializes the node for later deserialization via
+	// gsk_render_node_deserialize().
+	Serialize() []byte
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	WriteToFile(filename string) error
@@ -164,6 +169,37 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
+// Serialize serializes the node for later deserialization via
+// gsk_render_node_deserialize(). No guarantees are made about the format used
+// other than that the same version of GTK will be able to deserialize the
+// result of a call to gsk_render_node_serialize() and
+// gsk_render_node_deserialize() will correctly reject files it cannot open that
+// were created with previous versions of GTK.
+//
+// The intended use of this functions is testing, benchmarking and debugging.
+// The format is not meant as a permanent storage format.
+func (node *RenderNode) Serialize() []byte {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GBytes        // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
+
+	_cret = C.gsk_render_node_serialize(_arg0)
+	runtime.KeepAlive(node)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
+}
+
 // WriteToFile: this function is equivalent to calling
 // gsk_render_node_serialize() followed by g_file_set_contents().
 //
@@ -191,6 +227,42 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	}
 
 	return _goerr
+}
+
+// RenderNodeDeserialize loads data previously created via
+// gsk_render_node_serialize().
+//
+// For a discussion of the supported format, see that function.
+func RenderNodeDeserialize(bytes []byte, errorFunc ParseErrorFunc) RenderNoder {
+	var _arg1 *C.GBytes           // out
+	var _arg2 C.GskParseErrorFunc // out
+	var _arg3 C.gpointer
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg1)
+	if errorFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gsk4_ParseErrorFunc)
+		_arg3 = C.gpointer(gbox.Assign(errorFunc))
+		defer gbox.Delete(uintptr(_arg3))
+	}
+
+	_cret = C.gsk_render_node_deserialize(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(errorFunc)
+
+	var _renderNode RenderNoder // out
+
+	if _cret != nil {
+		_renderNode = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
+	}
+
+	return _renderNode
 }
 
 // ColorStop: color stop in a gradient node.

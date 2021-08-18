@@ -28,6 +28,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -772,6 +773,40 @@ func marshalResource(p uintptr) (interface{}, error) {
 	return &Resource{&resource{(*C.GResource)(unsafe.Pointer(b))}}, nil
 }
 
+// NewResourceFromData constructs a struct Resource.
+func NewResourceFromData(data []byte) (*Resource, error) {
+	var _arg1 *C.GBytes    // out
+	var _cret *C.GResource // in
+	var _cerr *C.GError    // in
+
+	_arg1 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&data[0])),
+		C.gsize(len(data)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(data)),
+	)
+	defer C.g_bytes_unref(_arg1)
+
+	_cret = C.g_resource_new_from_data(_arg1, &_cerr)
+	runtime.KeepAlive(data)
+
+	var _resource *Resource // out
+	var _goerr error        // out
+
+	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_resource)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_resource_unref((*C.GResource)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _resource, _goerr
+}
+
 // EnumerateChildren returns all the names of children at the specified path in
 // the resource. The return result is a NULL terminated list of strings which
 // should be released with g_strfreev().
@@ -855,6 +890,52 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 	}
 
 	return _size, _flags, _goerr
+}
+
+// LookupData looks for a file at the specified path in the resource and returns
+// a #GBytes that lets you directly access the data in memory.
+//
+// The data is always followed by a zero byte, so you can safely use the data as
+// a C string. However, that byte is not included in the size of the GBytes.
+//
+// For uncompressed resource files this is a pointer directly into the resource
+// bundle, which is typically in some readonly data section in the program
+// binary. For compressed files we allocate memory on the heap and automatically
+// uncompress the data.
+//
+// lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) ([]byte, error) {
+	var _arg0 *C.GResource           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
+	var _cret *C.GBytes              // in
+	var _cerr *C.GError              // in
+
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
+
+	_cret = C.g_resource_lookup_data(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(resource)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(lookupFlags)
+
+	var _bytes []byte // out
+	var _goerr error  // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytes, _goerr
 }
 
 // OpenStream looks for a file at the specified path in the resource and returns

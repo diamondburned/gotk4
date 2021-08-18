@@ -1516,6 +1516,52 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	return _scheme, _user, _password, _authParams, _host, _port, _path, _query, _fragment, _goerr
 }
 
+// URIUnescapeBytes unescapes a segment of an escaped string as binary data.
+//
+// Note that in contrast to g_uri_unescape_string(), this does allow nul bytes
+// to appear in the output.
+//
+// If any of the characters in illegal_characters appears as an escaped
+// character in escaped_string, then that is an error and NULL will be returned.
+// This is useful if you want to avoid for instance having a slash being
+// expanded in an escaped path element, which might confuse pathname handling.
+func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) ([]byte, error) {
+	var _arg1 *C.char   // out
+	var _arg2 C.gssize  // out
+	var _arg3 *C.char   // out
+	var _cret *C.GBytes // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(escapedString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+	if illegalCharacters != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(illegalCharacters)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	_cret = C.g_uri_unescape_bytes(_arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(escapedString)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(illegalCharacters)
+
+	var _bytes []byte // out
+	var _goerr error  // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytes, _goerr
+}
+
 // URIUnescapeSegment unescapes a segment of an escaped string.
 //
 // If any of the characters in illegal_characters or the NUL character appears

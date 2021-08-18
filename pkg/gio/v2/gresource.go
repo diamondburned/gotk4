@@ -102,6 +102,50 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	return _size, _flags, _goerr
 }
 
+// ResourcesLookupData looks for a file at the specified path in the set of
+// globally registered resources and returns a #GBytes that lets you directly
+// access the data in memory.
+//
+// The data is always followed by a zero byte, so you can safely use the data as
+// a C string. However, that byte is not included in the size of the GBytes.
+//
+// For uncompressed resource files this is a pointer directly into the resource
+// bundle, which is typically in some readonly data section in the program
+// binary. For compressed files we allocate memory on the heap and automatically
+// uncompress the data.
+//
+// lookup_flags controls the behaviour of the lookup.
+func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) ([]byte, error) {
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
+	var _cret *C.GBytes              // in
+	var _cerr *C.GError              // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
+
+	_cret = C.g_resources_lookup_data(_arg1, _arg2, &_cerr)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(lookupFlags)
+
+	var _bytes []byte // out
+	var _goerr error  // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytes, _goerr
+}
+
 // ResourcesOpenStream looks for a file at the specified path in the set of
 // globally registered resources and returns a Stream that lets you read the
 // data.

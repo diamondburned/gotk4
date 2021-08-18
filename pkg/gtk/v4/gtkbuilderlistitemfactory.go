@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -13,6 +15,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -61,6 +64,35 @@ func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 	return wrapBuilderListItemFactory(obj), nil
 }
 
+// NewBuilderListItemFactoryFromBytes creates a new GtkBuilderListItemFactory
+// that instantiates widgets using bytes as the data to pass to GtkBuilder.
+func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes []byte) *BuilderListItemFactory {
+	var _arg1 *C.GtkBuilderScope    // out
+	var _arg2 *C.GBytes             // out
+	var _cret *C.GtkListItemFactory // in
+
+	if scope != nil {
+		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	}
+	_arg2 = C.g_bytes_new_with_free_func(
+		C.gconstpointer(unsafe.Pointer(&bytes[0])),
+		C.gsize(len(bytes)),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+		C.gpointer(gbox.Assign(bytes)),
+	)
+	defer C.g_bytes_unref(_arg2)
+
+	_cret = C.gtk_builder_list_item_factory_new_from_bytes(_arg1, _arg2)
+	runtime.KeepAlive(scope)
+	runtime.KeepAlive(bytes)
+
+	var _builderListItemFactory *BuilderListItemFactory // out
+
+	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _builderListItemFactory
+}
+
 // NewBuilderListItemFactoryFromResource creates a new GtkBuilderListItemFactory
 // that instantiates widgets using data read from the given resource_path to
 // pass to GtkBuilder.
@@ -84,6 +116,31 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
+}
+
+// Bytes gets the data used as the GtkBuilder UI template for constructing
+// listitems.
+func (self *BuilderListItemFactory) Bytes() []byte {
+	var _arg0 *C.GtkBuilderListItemFactory // out
+	var _cret *C.GBytes                    // in
+
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_builder_list_item_factory_get_bytes(_arg0)
+	runtime.KeepAlive(self)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_bytes_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
 }
 
 // Resource: if the data references a resource, gets the path of that resource.

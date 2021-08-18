@@ -7,6 +7,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -148,6 +149,30 @@ func (ostream *MemoryOutputStream) Size() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// StealAsBytes returns data from the ostream as a #GBytes. ostream must be
+// closed before calling this function.
+func (ostream *MemoryOutputStream) StealAsBytes() []byte {
+	var _arg0 *C.GMemoryOutputStream // out
+	var _cret *C.GBytes              // in
+
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(ostream.Native()))
+
+	_cret = C.g_memory_output_stream_steal_as_bytes(_arg0)
+	runtime.KeepAlive(ostream)
+
+	var _bytes []byte // out
+
+	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
 }
 
 // StealData gets any loaded data from the ostream. Ownership of the data is

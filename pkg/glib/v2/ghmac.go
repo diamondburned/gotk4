@@ -6,40 +6,27 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 // ComputeHMACForBytes computes the HMAC for a binary data. This is a
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForBytes(digestType ChecksumType, key []byte, data []byte) string {
+func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
 	var _arg3 *C.GBytes       // out
 	var _cret *C.gchar        // in
 
 	_arg1 = C.GChecksumType(digestType)
-	_arg2 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&key[0])),
-		C.gsize(len(key)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(key)),
-	)
-	defer C.g_bytes_unref(_arg2)
-	_arg3 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&data[0])),
-		C.gsize(len(data)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(data)),
-	)
-	defer C.g_bytes_unref(_arg3)
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(key)))
+	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = C.g_compute_hmac_for_bytes(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(digestType)

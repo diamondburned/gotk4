@@ -111,6 +111,10 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	if !call.IsIntrospectable() {
 		return false
 	}
+	// This is broken; unsure why.
+	if types.FilterSub(g.gen, typ.NamespacedType(), call.Name, call.CIdentifier) {
+		return false
+	}
 	// Double-check that the C identifier is allowed.
 	if call.CIdentifier != "" && types.FilterCType(g.gen, call.CIdentifier) {
 		return false
@@ -232,6 +236,11 @@ func (g *Generator) renderBlock() bool {
 
 	g.Conv = typeconv.NewConverter(g.gen, g.typ, callableValues)
 	g.Conv.UseLogger(g)
+
+	if g.Conv == nil {
+		g.Logln(logger.Debug, "converter failed", cFunctionHeader(g.CallableAttrs))
+		return false
+	}
 
 	g.Results = g.Conv.ConvertAll()
 	if g.Results == nil {

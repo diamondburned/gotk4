@@ -103,12 +103,37 @@ var Preprocessors = []Preprocessor{
 	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),
 	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
 
-	// Fix incorrect parameter direction.
-	// ModifyCallable("Gio-2.DBusInterfaceGetPropertyFunc",
-	// 	func(cattrs *gir.CallableAttrs) {
-	// 		FindParameter(cattrs, "error").Direction = "out"
-	// 	},
-	// ),
+	ModifyParamDirections("Gio-2.InputStream.read", map[string]string{
+		"buffer": "in",
+		"count":  "in",
+	}),
+	ModifyParamDirections("Gio-2.InputStream.read_async", map[string]string{
+		"buffer": "in",
+		"count":  "in",
+	}),
+	ModifyParamDirections("Gio-2.InputStream.read_all", map[string]string{
+		"buffer": "in",
+		"count":  "in",
+	}),
+	ModifyParamDirections("Gio-2.InputStream.read_all_async", map[string]string{
+		"buffer": "in",
+		"count":  "in",
+	}),
+	ModifyParamDirections("Gio-2.Socket.receive", map[string]string{
+		"buffer": "in",
+		"size":   "in",
+	}),
+	ModifyParamDirections("Gio-2.Socket.receive_from", map[string]string{
+		"buffer": "in",
+		"size":   "in",
+	}),
+	ModifyParamDirections("Gio-2.Socket.receive_with_blocking", map[string]string{
+		"buffer": "in",
+		"size":   "in",
+	}),
+	ModifyParamDirections("Gio-2.DBusInterfaceGetPropertyFunc", map[string]string{
+		"error": "out",
+	}),
 }
 
 var ConversionProcessors = []ConversionProcessor{
@@ -145,6 +170,11 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.domain"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
+	// Dangerous.
+	AbsoluteFilter("GLib.Bytes.new_take"),
+	AbsoluteFilter("GLib.Bytes.new_static"),
+	AbsoluteFilter("GLib.Bytes.unref_to_data"),
+	AbsoluteFilter("GLib.Bytes.unref_to_array"),
 
 	FileFilter("gasyncqueue."),
 	FileFilter("gatomic."),
@@ -202,7 +232,8 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
 }
 
-func ppUseBytes(nsgen *girgen.NamespaceGenerator) error {
+// GioArrayUseBytes is the postprocessor that adds gio/v2.UseBytes.
+func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["garray.go"]
 	if !ok {
 		return nil
@@ -252,7 +283,7 @@ func ppUseBytes(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib": {ppUseBytes},
+	"GLib-2": {GioArrayUseBytes},
 }
 
 // Appends contains the contents of files that are appended into generated

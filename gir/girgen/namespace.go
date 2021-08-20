@@ -167,7 +167,6 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWrit
 	return n.makeFile(swapFileExt(filename, ".go"))
 }
 
-// swapFileExt returns the base name of the given filepath with its file
 // extension replaced. The given file extension should contain a dot if it's not
 // empty.
 func swapFileExt(filepath, ext string) string {

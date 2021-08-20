@@ -8,7 +8,6 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -18,7 +17,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -683,20 +681,14 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 }
 
 // NewVariantFromBytes constructs a struct Variant.
-func NewVariantFromBytes(typ *VariantType, bytes []byte, trusted bool) *Variant {
+func NewVariantFromBytes(typ *VariantType, bytes *Bytes, trusted bool) *Variant {
 	var _arg1 *C.GVariantType // out
 	var _arg2 *C.GBytes       // out
 	var _arg3 C.gboolean      // out
 	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
-	_arg2 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg2)
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	if trusted {
 		_arg3 = C.TRUE
 	}
@@ -1468,7 +1460,7 @@ func (value *Variant) Data() cgo.Handle {
 // DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
 // The semantics of this function are exactly the same as g_variant_get_data(),
 // except that the returned #GBytes holds a reference to the variant data.
-func (value *Variant) DataAsBytes() []byte {
+func (value *Variant) DataAsBytes() *Bytes {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GBytes   // in
 
@@ -1477,11 +1469,11 @@ func (value *Variant) DataAsBytes() []byte {
 	_cret = C.g_variant_get_data_as_bytes(_arg0)
 	runtime.KeepAlive(value)
 
-	var _bytes []byte // out
+	var _bytes *Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

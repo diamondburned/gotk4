@@ -38,6 +38,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
+		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
@@ -175,7 +176,55 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	}
 }
 
-func (*BytesIcon) privateBytesIcon() {}
+func marshalBytesIconner(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return wrapBytesIcon(obj), nil
+}
+
+// NewBytesIcon creates a new icon for a bytes.
+//
+// This cannot fail, but loading and interpreting the bytes may fail later on
+// (for example, if g_loadable_icon_load() is called) if the image is invalid.
+func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
+	var _arg1 *C.GBytes // out
+	var _cret *C.GIcon  // in
+
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	_cret = C.g_bytes_icon_new(_arg1)
+	runtime.KeepAlive(bytes)
+
+	var _bytesIcon *BytesIcon // out
+
+	_bytesIcon = wrapBytesIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _bytesIcon
+}
+
+// Bytes gets the #GBytes associated with the given icon.
+func (icon *BytesIcon) Bytes() *glib.Bytes {
+	var _arg0 *C.GBytesIcon // out
+	var _cret *C.GBytes     // in
+
+	_arg0 = (*C.GBytesIcon)(unsafe.Pointer(icon.Native()))
+
+	_cret = C.g_bytes_icon_get_bytes(_arg0)
+	runtime.KeepAlive(icon)
+
+	var _bytes *glib.Bytes // out
+
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_bytes_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
+}
 
 // DBusActionGroup is an implementation of the Group interface that can be used
 // as a proxy for an action group that is exported over D-Bus with
@@ -5056,7 +5105,7 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 // cancelled. You should especially not attempt to interact with the pipes while
 // the operation is in progress (either from another thread or if using the
 // asynchronous version).
-func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf []byte) (stdoutBuf []byte, stderrBuf []byte, goerr error) {
+func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf *glib.Bytes) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.GBytes       // out
@@ -5071,13 +5120,7 @@ func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf []byte) 
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if stdinBuf != nil {
-		_arg1 = C.g_bytes_new_with_free_func(
-			C.gconstpointer(unsafe.Pointer(&stdinBuf[0])),
-			C.gsize(len(stdinBuf)),
-			C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-			C.gpointer(gbox.Assign(stdinBuf)),
-		)
-		defer C.g_bytes_unref(_arg1)
+		_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(stdinBuf)))
 	}
 
 	C.g_subprocess_communicate(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -5085,23 +5128,23 @@ func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf []byte) 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stdinBuf)
 
-	var _stdoutBuf []byte // out
-	var _stderrBuf []byte // out
-	var _goerr error      // out
+	var _stdoutBuf *glib.Bytes // out
+	var _stderrBuf *glib.Bytes // out
+	var _goerr error           // out
 
 	if _arg3 != nil {
-		_stdoutBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		_stdoutBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&_stdoutBuf)),
+			gextras.StructIntern(unsafe.Pointer(_stdoutBuf)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.g_bytes_unref((*C.GBytes)(intern.C))
 			},
 		)
 	}
 	if _arg4 != nil {
-		_stderrBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		_stderrBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&_stderrBuf)),
+			gextras.StructIntern(unsafe.Pointer(_stderrBuf)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.g_bytes_unref((*C.GBytes)(intern.C))
 			},
@@ -5116,7 +5159,7 @@ func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf []byte) 
 
 // CommunicateAsync asynchronous version of g_subprocess_communicate(). Complete
 // invocation with g_subprocess_communicate_finish().
-func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf []byte, callback AsyncReadyCallback) {
+func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf *glib.Bytes, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GBytes             // out
@@ -5130,13 +5173,7 @@ func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf []b
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if stdinBuf != nil {
-		_arg1 = C.g_bytes_new_with_free_func(
-			C.gconstpointer(unsafe.Pointer(&stdinBuf[0])),
-			C.gsize(len(stdinBuf)),
-			C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-			C.gpointer(gbox.Assign(stdinBuf)),
-		)
-		defer C.g_bytes_unref(_arg1)
+		_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(stdinBuf)))
 	}
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -5152,7 +5189,7 @@ func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf []b
 
 // CommunicateFinish: complete an invocation of
 // g_subprocess_communicate_async().
-func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf []byte, stderrBuf []byte, goerr error) {
+func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GBytes       // in
@@ -5166,23 +5203,23 @@ func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf
 	runtime.KeepAlive(subprocess)
 	runtime.KeepAlive(result)
 
-	var _stdoutBuf []byte // out
-	var _stderrBuf []byte // out
-	var _goerr error      // out
+	var _stdoutBuf *glib.Bytes // out
+	var _stderrBuf *glib.Bytes // out
+	var _goerr error           // out
 
 	if _arg2 != nil {
-		_stdoutBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+		_stdoutBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&_stdoutBuf)),
+			gextras.StructIntern(unsafe.Pointer(_stdoutBuf)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.g_bytes_unref((*C.GBytes)(intern.C))
 			},
 		)
 	}
 	if _arg3 != nil {
-		_stderrBuf = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+		_stderrBuf = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
 		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(&_stderrBuf)),
+			gextras.StructIntern(unsafe.Pointer(_stderrBuf)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				C.g_bytes_unref((*C.GBytes)(intern.C))
 			},

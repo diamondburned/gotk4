@@ -2,6 +2,7 @@
 package typeconv
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -75,9 +76,12 @@ func NewConverter(
 			return nil
 		}
 
-		if value.ParameterAttrs.Direction == "out" && !types.AnyTypeIsPtr(value.AnyType) {
+		isOutParam := value.ParameterIndex > -1 && value.ParameterAttrs.Direction == "out"
+		if isOutParam && !types.AnyTypeIsPtr(value.AnyType) {
+
 			// Output direction but not pointer parameter is invalid; bail.
 			conv.Logln(logger.Error,
+				fmt.Sprintf("%s (C.%s):", parent.Name(), parent.CType()),
 				"value type", types.AnyTypeC(value.AnyType), "is output but no ptr")
 			return nil
 		}
@@ -160,6 +164,7 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 			// final is true if the value is already manually handled.
 			// Otherwise, exit.
 			if !conv.Results[i].final {
+				result.Logln(logger.Debug, "no conversion")
 				return nil
 			}
 		}

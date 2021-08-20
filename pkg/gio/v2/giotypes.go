@@ -28,7 +28,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -774,18 +773,12 @@ func marshalResource(p uintptr) (interface{}, error) {
 }
 
 // NewResourceFromData constructs a struct Resource.
-func NewResourceFromData(data []byte) (*Resource, error) {
+func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 	var _arg1 *C.GBytes    // out
 	var _cret *C.GResource // in
 	var _cerr *C.GError    // in
 
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&data[0])),
-		C.gsize(len(data)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(data)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = C.g_resource_new_from_data(_arg1, &_cerr)
 	runtime.KeepAlive(data)
@@ -904,7 +897,7 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 // uncompress the data.
 //
 // lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) ([]byte, error) {
+func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -921,12 +914,12 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
 
-	var _bytes []byte // out
-	var _goerr error  // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

@@ -12,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
@@ -19,7 +20,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
-// extern void callbackDelete(gpointer);
 // void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
 import "C"
 
@@ -93,7 +93,7 @@ type RenderNoder interface {
 	NodeType() RenderNodeType
 	// Serialize serializes the node for later deserialization via
 	// gsk_render_node_deserialize().
-	Serialize() []byte
+	Serialize() *glib.Bytes
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	WriteToFile(filename string) error
@@ -178,7 +178,7 @@ func (node *RenderNode) NodeType() RenderNodeType {
 //
 // The intended use of this functions is testing, benchmarking and debugging.
 // The format is not meant as a permanent storage format.
-func (node *RenderNode) Serialize() []byte {
+func (node *RenderNode) Serialize() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
 
@@ -187,11 +187,11 @@ func (node *RenderNode) Serialize() []byte {
 	_cret = C.gsk_render_node_serialize(_arg0)
 	runtime.KeepAlive(node)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
@@ -233,19 +233,13 @@ func (node *RenderNode) WriteToFile(filename string) error {
 // gsk_render_node_serialize().
 //
 // For a discussion of the supported format, see that function.
-func RenderNodeDeserialize(bytes []byte, errorFunc ParseErrorFunc) RenderNoder {
+func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _arg1 *C.GBytes           // out
 	var _arg2 C.GskParseErrorFunc // out
 	var _arg3 C.gpointer
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	if errorFunc != nil {
 		_arg2 = (*[0]byte)(C._gotk4_gsk4_ParseErrorFunc)
 		_arg3 = C.gpointer(gbox.Assign(errorFunc))

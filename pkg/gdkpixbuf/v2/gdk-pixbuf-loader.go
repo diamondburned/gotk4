@@ -6,17 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -342,19 +341,13 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 }
 
 // WriteBytes parses the next contents of the given image buffer.
-func (loader *PixbufLoader) WriteBytes(buffer []byte) error {
+func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.GBytes          // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&buffer[0])),
-		C.gsize(len(buffer)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(buffer)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(buffer)))
 
 	C.gdk_pixbuf_loader_write_bytes(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(loader)

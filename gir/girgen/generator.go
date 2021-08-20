@@ -78,14 +78,16 @@ func (g *Generator) Repositories() gir.Repositories { return g.repos }
 
 // UseNamespace creates a new namespace generator using the given namespace.
 func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator {
-	res := g.repos.FindNamespace(gir.VersionedName(namespace, version))
+	versioned := gir.VersionedName(namespace, version)
+
+	res := g.repos.FindNamespace(versioned)
 	if res == nil {
 		return nil
 	}
 
 	nsgen := NewNamespaceGenerator(g, res)
 
-	if pps, ok := g.postmap[namespace]; ok {
+	if pps, ok := g.postmap[versioned]; ok {
 		nsgen.AddPostprocessors(pps)
 	}
 

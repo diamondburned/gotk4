@@ -13,13 +13,13 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 // gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
@@ -227,7 +227,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 //
 // This is the GBytes variant of gdk_pixbuf_new_from_data(), useful for language
 // bindings.
-func NewPixbufFromBytes(data []byte, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) *Pixbuf {
+func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) *Pixbuf {
 	var _arg1 *C.GBytes       // out
 	var _arg2 C.GdkColorspace // out
 	var _arg3 C.gboolean      // out
@@ -237,13 +237,7 @@ func NewPixbufFromBytes(data []byte, colorspace Colorspace, hasAlpha bool, bitsP
 	var _arg7 C.int           // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&data[0])),
-		C.gsize(len(data)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(data)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(data)))
 	_arg2 = C.GdkColorspace(colorspace)
 	if hasAlpha {
 		_arg3 = C.TRUE
@@ -1315,7 +1309,7 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int)
 //
 // This function allows skipping the implicit copy that must be made if
 // gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
-func (pixbuf *Pixbuf) ReadPixelBytes() []byte {
+func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GBytes    // in
 
@@ -1324,11 +1318,11 @@ func (pixbuf *Pixbuf) ReadPixelBytes() []byte {
 	_cret = C.gdk_pixbuf_read_pixel_bytes(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

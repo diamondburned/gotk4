@@ -7,10 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -19,7 +19,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -1053,7 +1052,7 @@ func marshalGLShaderNoder(p uintptr) (interface{}, error) {
 // compiling the shader, then the node will draw pink. You should use
 // gsk.GLShader.Compile() to ensure the shader will work for the renderer before
 // using it.
-func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args []byte, children []RenderNoder) *GLShaderNode {
+func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNoder) *GLShaderNode {
 	var _arg1 *C.GskGLShader     // out
 	var _arg2 *C.graphene_rect_t // out
 	var _arg3 *C.GBytes          // out
@@ -1063,13 +1062,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args []byte, child
 
 	_arg1 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
-	_arg3 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg3)
+	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg5 = (C.guint)(len(children))
 	_arg4 = (**C.GskRenderNode)(C.malloc(C.ulong(len(children)) * C.ulong(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg4))
@@ -1094,7 +1087,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args []byte, child
 }
 
 // Args gets args for the node.
-func (node *GLShaderNode) Args() []byte {
+func (node *GLShaderNode) Args() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
 
@@ -1103,12 +1096,12 @@ func (node *GLShaderNode) Args() []byte {
 	_cret = C.gsk_gl_shader_node_get_args(_arg0)
 	runtime.KeepAlive(node)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

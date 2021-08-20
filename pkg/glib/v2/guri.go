@@ -1525,7 +1525,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 // character in escaped_string, then that is an error and NULL will be returned.
 // This is useful if you want to avoid for instance having a slash being
 // expanded in an escaped path element, which might confuse pathname handling.
-func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) ([]byte, error) {
+func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) (*Bytes, error) {
 	var _arg1 *C.char   // out
 	var _arg2 C.gssize  // out
 	var _arg3 *C.char   // out
@@ -1545,12 +1545,12 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(illegalCharacters)
 
-	var _bytes []byte // out
+	var _bytes *Bytes // out
 	var _goerr error  // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

@@ -52,24 +52,24 @@ const (
 	LicenseMITX11
 	// LicenseArtistic: artistic License, version 2.0
 	LicenseArtistic
-	// LicenseGPL20Only: GNU General Public License, version 2.0 only. Since
+	// LicenseGPL20_Only: GNU General Public License, version 2.0 only. Since
 	// 3.12.
-	LicenseGPL20Only
-	// LicenseGPL30Only: GNU General Public License, version 3.0 only. Since
+	LicenseGPL20_Only
+	// LicenseGPL30_Only: GNU General Public License, version 3.0 only. Since
 	// 3.12.
-	LicenseGPL30Only
-	// LicenseLGPL21Only: GNU Lesser General Public License, version 2.1 only.
+	LicenseGPL30_Only
+	// LicenseLGPL21_Only: GNU Lesser General Public License, version 2.1 only.
 	// Since 3.12.
-	LicenseLGPL21Only
-	// LicenseLGPL30Only: GNU Lesser General Public License, version 3.0 only.
+	LicenseLGPL21_Only
+	// LicenseLGPL30_Only: GNU Lesser General Public License, version 3.0 only.
 	// Since 3.12.
-	LicenseLGPL30Only
+	LicenseLGPL30_Only
 	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later.
 	// Since: 3.22.
 	LicenseAGPL30
-	// LicenseAGPL30Only: GNU Affero General Public License, version 3.0 only.
+	// LicenseAGPL30_Only: GNU Affero General Public License, version 3.0 only.
 	// Since: 3.22.27.
-	LicenseAGPL30Only
+	LicenseAGPL30_Only
 	// LicenseBSD3: 3-clause BSD licence. Since: 3.24.20.
 	LicenseBSD3
 	// LicenseApache20: apache License, version 2.0. Since: 3.24.20.
@@ -103,18 +103,18 @@ func (l License) String() string {
 		return "MITX11"
 	case LicenseArtistic:
 		return "Artistic"
-	case LicenseGPL20Only:
-		return "GPL20Only"
-	case LicenseGPL30Only:
-		return "GPL30Only"
-	case LicenseLGPL21Only:
-		return "LGPL21Only"
-	case LicenseLGPL30Only:
-		return "LGPL30Only"
+	case LicenseGPL20_Only:
+		return "GPL20_Only"
+	case LicenseGPL30_Only:
+		return "GPL30_Only"
+	case LicenseLGPL21_Only:
+		return "LGPL21_Only"
+	case LicenseLGPL30_Only:
+		return "LGPL30_Only"
 	case LicenseAGPL30:
 		return "AGPL30"
-	case LicenseAGPL30Only:
-		return "AGPL30Only"
+	case LicenseAGPL30_Only:
+		return "AGPL30_Only"
 	case LicenseBSD3:
 		return "BSD3"
 	case LicenseApache20:

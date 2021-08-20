@@ -528,25 +528,6 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
 		)
 		return true
-
-	case "GLib.Bytes":
-		value.header.CallbackDelete = true
-		value.header.Import("unsafe")
-		value.header.ImportCore("gbox")
-
-		value.vtmpl(`
-			<.Out.Set> = C.g_bytes_new_with_free_func(
-				C.gconstpointer(unsafe.Pointer(&<.InNamePtr 0>[0])),
-				C.gsize(len(<.InNamePtr 0>)),
-				C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-				C.gpointer(gbox.Assign(<.InNamePtr 0>)),
-			)
-		`)
-
-		if value.ShouldFree() {
-			value.p.Linef("defer C.g_bytes_unref(%s)", value.Out.Set)
-		}
-		return true
 	}
 
 	if value.Resolved.Extern == nil {

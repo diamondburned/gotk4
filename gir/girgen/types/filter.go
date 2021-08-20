@@ -131,14 +131,33 @@ type modifyCallable struct {
 
 // ModifyCallable is a preprocessor that modifies an existing callable. It only
 // does Function or Callback.
-//
-// TODO: add Method, Virtual Method and Constructor support.
 func ModifyCallable(girType string, f func(c *gir.CallableAttrs)) Preprocessor {
 	girTypeMustBeVersioned(girType)
 	return modifyCallable{
 		girType: girType,
 		modFunc: f,
 	}
+}
+
+// RenameCallable renames a callable using ModifyCallable.
+func RenameCallable(girType, newName string) Preprocessor {
+	return ModifyCallable(girType, func(c *gir.CallableAttrs) {
+		c.Name = newName
+	})
+}
+
+// ModifyParamDirections wraps ModifyCallable to conveniently override the
+// parameters' directions.
+func ModifyParamDirections(girType string, dirOverrides map[string]string) Preprocessor {
+	return ModifyCallable(girType, func(c *gir.CallableAttrs) {
+		for name, dir := range dirOverrides {
+			param := FindParameter(c, name)
+			if param == nil {
+				log.Panicf("cannot find parameter %s for %s", name, girType)
+			}
+			param.Direction = dir
+		}
+	})
 }
 
 func (m modifyCallable) Preprocess(repos gir.Repositories) {

@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -153,7 +154,7 @@ func (ostream *MemoryOutputStream) Size() uint {
 
 // StealAsBytes returns data from the ostream as a #GBytes. ostream must be
 // closed before calling this function.
-func (ostream *MemoryOutputStream) StealAsBytes() []byte {
+func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret *C.GBytes              // in
 
@@ -162,11 +163,11 @@ func (ostream *MemoryOutputStream) StealAsBytes() []byte {
 	_cret = C.g_memory_output_stream_steal_as_bytes(_arg0)
 	runtime.KeepAlive(ostream)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

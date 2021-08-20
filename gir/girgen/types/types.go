@@ -64,12 +64,6 @@ func RecordIsOpaque(rec gir.Record) bool {
 	return len(rec.Fields) == 0 || rec.GLibGetType == "intern"
 }
 
-var acceptableFreeNames = []string{
-	"unref",
-	"free",
-	"destroy",
-}
-
 // methodCanCallDirectly returns true if the method is generated, has no
 // arguments (sans the receiver) and has no returns.
 func methodCanCallDirectly(method *gir.Method) bool {
@@ -343,8 +337,7 @@ var girToBuiltin = map[string]string{
 // GIRPrimitiveGo returns Go built-in types (primitive types and string). It
 // returns an empty string if there's none.
 func GIRBuiltinGo(typ string) string {
-	v, _ := girToBuiltin[typ]
-	return v
+	return girToBuiltin[typ]
 }
 
 // GIRPrimitiveGo returns Go primitive types that can be copied by-value without

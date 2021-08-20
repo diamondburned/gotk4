@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
@@ -17,7 +17,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -147,17 +146,11 @@ func marshalGLShaderer(p uintptr) (interface{}, error) {
 
 // NewGLShaderFromBytes creates a GskGLShader that will render pixels using the
 // specified code.
-func NewGLShaderFromBytes(sourcecode []byte) *GLShader {
+func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 	var _arg1 *C.GBytes      // out
 	var _cret *C.GskGLShader // in
 
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&sourcecode[0])),
-		C.gsize(len(sourcecode)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(sourcecode)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(sourcecode)))
 
 	_cret = C.gsk_gl_shader_new_from_bytes(_arg1)
 	runtime.KeepAlive(sourcecode)
@@ -244,20 +237,14 @@ func (shader *GLShader) FindUniformByName(name string) int {
 // ArgBool gets the value of the uniform idx in the args block.
 //
 // The uniform must be of bool type.
-func (shader *GLShader) ArgBool(args []byte, idx int) bool {
+func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_arg_bool(_arg0, _arg1, _arg2)
@@ -277,20 +264,14 @@ func (shader *GLShader) ArgBool(args []byte, idx int) bool {
 // ArgFloat gets the value of the uniform idx in the args block.
 //
 // The uniform must be of float type.
-func (shader *GLShader) ArgFloat(args []byte, idx int) float32 {
+func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
 	var _cret C.float        // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_arg_float(_arg0, _arg1, _arg2)
@@ -308,20 +289,14 @@ func (shader *GLShader) ArgFloat(args []byte, idx int) float32 {
 // ArgInt gets the value of the uniform idx in the args block.
 //
 // The uniform must be of int type.
-func (shader *GLShader) ArgInt(args []byte, idx int) int32 {
+func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
 	var _cret C.gint32       // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_arg_int(_arg0, _arg1, _arg2)
@@ -339,20 +314,14 @@ func (shader *GLShader) ArgInt(args []byte, idx int) int32 {
 // ArgUint gets the value of the uniform idx in the args block.
 //
 // The uniform must be of uint type.
-func (shader *GLShader) ArgUint(args []byte, idx int) uint32 {
+func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
 	var _cret C.guint32      // in
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_arg_uint(_arg0, _arg1, _arg2)
@@ -370,20 +339,14 @@ func (shader *GLShader) ArgUint(args []byte, idx int) uint32 {
 // ArgVec2 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec2 type.
-func (shader *GLShader) ArgVec2(args []byte, idx int, outValue *graphene.Vec2) {
+func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec2_t // out
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(outValue)))
 
@@ -397,20 +360,14 @@ func (shader *GLShader) ArgVec2(args []byte, idx int, outValue *graphene.Vec2) {
 // ArgVec3 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec3 type.
-func (shader *GLShader) ArgVec3(args []byte, idx int, outValue *graphene.Vec3) {
+func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec3_t // out
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(outValue)))
 
@@ -424,20 +381,14 @@ func (shader *GLShader) ArgVec3(args []byte, idx int, outValue *graphene.Vec3) {
 // ArgVec4 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec4 type.
-func (shader *GLShader) ArgVec4(args []byte, idx int, outValue *graphene.Vec4) {
+func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec4_t // out
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&args[0])),
-		C.gsize(len(args)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(args)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(outValue)))
 
@@ -523,7 +474,7 @@ func (shader *GLShader) Resource() string {
 }
 
 // Source gets the GLSL sourcecode being used to render this shader.
-func (shader *GLShader) Source() []byte {
+func (shader *GLShader) Source() *glib.Bytes {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.GBytes      // in
 
@@ -532,12 +483,12 @@ func (shader *GLShader) Source() []byte {
 	_cret = C.gsk_gl_shader_get_source(_arg0)
 	runtime.KeepAlive(shader)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
@@ -627,20 +578,14 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 }
 
 // NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.
-func NewShaderArgsBuilder(shader *GLShader, initialValues []byte) *ShaderArgsBuilder {
+func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
 	var _arg1 *C.GskGLShader          // out
 	var _arg2 *C.GBytes               // out
 	var _cret *C.GskShaderArgsBuilder // in
 
 	_arg1 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	if initialValues != nil {
-		_arg2 = C.g_bytes_new_with_free_func(
-			C.gconstpointer(unsafe.Pointer(&initialValues[0])),
-			C.gsize(len(initialValues)),
-			C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-			C.gpointer(gbox.Assign(initialValues)),
-		)
-		defer C.g_bytes_unref(_arg2)
+		_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(initialValues)))
 	}
 
 	_cret = C.gsk_shader_args_builder_new(_arg1, _arg2)
@@ -798,7 +743,7 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 //
 // This function is intended primarily for bindings. C code should use
 // gsk.ShaderArgsBuilder.FreeToArgs().
-func (builder *ShaderArgsBuilder) ToArgs() []byte {
+func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GBytes               // in
 
@@ -807,11 +752,11 @@ func (builder *ShaderArgsBuilder) ToArgs() []byte {
 	_cret = C.gsk_shader_args_builder_to_args(_arg0)
 	runtime.KeepAlive(builder)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

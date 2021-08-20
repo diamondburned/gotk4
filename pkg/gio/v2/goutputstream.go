@@ -10,7 +10,9 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -27,7 +29,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -267,10 +268,10 @@ type OutputStreamer interface {
 	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteBytes: wrapper function for g_output_stream_write() which takes a
 	// #GBytes as input.
-	WriteBytes(ctx context.Context, bytes []byte) (int, error)
+	WriteBytes(ctx context.Context, bytes *glib.Bytes) (int, error)
 	// WriteBytesAsync: this function is similar to
 	// g_output_stream_write_async(), but takes a #GBytes as input.
-	WriteBytesAsync(ctx context.Context, bytes []byte, ioPriority int, callback AsyncReadyCallback)
+	WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback)
 	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
 	WriteBytesFinish(result AsyncResulter) (int, error)
 	// WriteFinish finishes a stream write operation.
@@ -958,7 +959,7 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 // to create a new #GBytes containing just the remaining bytes, using
 // g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
 // potentially can result in duplicated data in the output stream.
-func (stream *OutputStream) WriteBytes(ctx context.Context, bytes []byte) (int, error) {
+func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg2 *C.GCancellable  // out
 	var _arg1 *C.GBytes        // out
@@ -971,13 +972,7 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes []byte) (int, 
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_cret = C.g_output_stream_write_bytes(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1007,7 +1002,7 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes []byte) (int, 
 //
 // For the synchronous, blocking version of this function, see
 // g_output_stream_write_bytes().
-func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes []byte, ioPriority int, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.GBytes             // out
@@ -1021,13 +1016,7 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes []byte, i
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	_arg2 = C.int(ioPriority)
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)

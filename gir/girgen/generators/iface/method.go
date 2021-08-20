@@ -2,7 +2,6 @@ package iface
 
 import (
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
@@ -49,24 +48,17 @@ func (m *Methods) reset(capacity int) {
 	*m = make(Methods, 0, capacity*2)
 }
 
-type generateParams struct {
-	self   string
-	cgen   *callable.Generator
-	header *file.Header
-	source *gir.NamespaceFindResult
-}
-
 func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 	m.reset(len(methods))
 
 	for i := range methods {
-		if !g.cgen.Use(&g.Root, &methods[i].CallableAttrs) {
-			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
+		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
+			g.Logln(logger.Debug, "filtered method", methods[i].CIdentifier)
 			continue
 		}
 
-		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
-			g.cgen.Logln(logger.Debug, "filtered method", methods[i].CIdentifier)
+		if !g.cgen.Use(&g.Root, &methods[i].CallableAttrs) {
+			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
 			continue
 		}
 
@@ -79,6 +71,11 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 	m.reset(len(virtuals))
 
 	for i := range virtuals {
+		if types.FilterSub(g.gen, g.Name, virtuals[i].Name, virtuals[i].CIdentifier) {
+			g.Logln(logger.Debug, "filtered method", virtuals[i].CIdentifier)
+			continue
+		}
+
 		if !g.cgen.Use(&g.Root, &virtuals[i].CallableAttrs) {
 			g.cgen.Logln(logger.Debug, "setVirtuals skipped", virtuals[i].CIdentifier)
 			continue

@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -16,7 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -68,19 +66,13 @@ func (c ChecksumType) String() string {
 // g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeChecksumForBytes(checksumType ChecksumType, data []byte) string {
+func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
 	var _cret *C.gchar        // in
 
 	_arg1 = C.GChecksumType(checksumType)
-	_arg2 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&data[0])),
-		C.gsize(len(data)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(data)),
-	)
-	defer C.g_bytes_unref(_arg2)
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = C.g_compute_checksum_for_bytes(_arg1, _arg2)
 	runtime.KeepAlive(checksumType)

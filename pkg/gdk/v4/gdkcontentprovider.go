@@ -13,13 +13,13 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -102,20 +102,14 @@ func marshalContentProviderer(p uintptr) (interface{}, error) {
 
 // NewContentProviderForBytes: create a content provider that provides the given
 // bytes as data for the given mime_type.
-func NewContentProviderForBytes(mimeType string, bytes []byte) *ContentProvider {
+func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
 	var _arg1 *C.char               // out
 	var _arg2 *C.GBytes             // out
 	var _cret *C.GdkContentProvider // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg2)
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_cret = C.gdk_content_provider_new_for_bytes(_arg1, _arg2)
 	runtime.KeepAlive(mimeType)

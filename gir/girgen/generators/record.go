@@ -53,7 +53,7 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ range .Constructors }}
-	{{ if $.UseConstructor . $.GoName }}
+	{{ if $.UseConstructor . }}
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
@@ -219,7 +219,11 @@ func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 	return true
 }
 
-func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor, className string) bool {
+func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor) bool {
+	if types.FilterSub(rg.gen, rg.Name, ctor.Name, ctor.CIdentifier) {
+		return false
+	}
+
 	if !rg.Callable.Use(&rg.typ, &ctor.CallableAttrs) {
 		return false
 	}
@@ -236,6 +240,11 @@ func (rg *RecordGenerator) methods() []callable.Generator {
 
 	for i := range rg.Record.Methods {
 		method := &rg.Record.Methods[i]
+
+		if types.FilterMethod(rg.gen, rg.Name, method) {
+			rg.Logln(logger.Debug, "filtered method", method.CIdentifier)
+			continue
+		}
 
 		cbgen := callable.NewGenerator(rg.gen)
 		if !cbgen.Use(&rg.typ, &method.CallableAttrs) {

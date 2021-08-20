@@ -6,16 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -66,7 +65,7 @@ func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 
 // NewBuilderListItemFactoryFromBytes creates a new GtkBuilderListItemFactory
 // that instantiates widgets using bytes as the data to pass to GtkBuilder.
-func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes []byte) *BuilderListItemFactory {
+func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.GBytes             // out
 	var _cret *C.GtkListItemFactory // in
@@ -74,13 +73,7 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes []byte) *Buil
 	if scope != nil {
 		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
 	}
-	_arg2 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg2)
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_cret = C.gtk_builder_list_item_factory_new_from_bytes(_arg1, _arg2)
 	runtime.KeepAlive(scope)
@@ -120,7 +113,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 
 // Bytes gets the data used as the GtkBuilder UI template for constructing
 // listitems.
-func (self *BuilderListItemFactory) Bytes() []byte {
+func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GBytes                    // in
 
@@ -129,12 +122,12 @@ func (self *BuilderListItemFactory) Bytes() []byte {
 	_cret = C.gtk_builder_list_item_factory_get_bytes(_arg0)
 	runtime.KeepAlive(self)
 
-	var _bytes []byte // out
+	var _bytes *glib.Bytes // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

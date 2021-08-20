@@ -221,11 +221,7 @@ func (g *Generator) hasMethod(name string) bool {
 	}
 
 	// Never override Object's methods.
-	if types.IsObjectorMethod(name) {
-		return true
-	}
-
-	return false
+	return types.IsObjectorMethod(name)
 }
 
 // bodgeClassCtor bodges the given constructor to return exactly the class type

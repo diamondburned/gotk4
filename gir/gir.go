@@ -226,6 +226,11 @@ type NamespaceFindResult struct {
 	Namespace  *Namespace
 }
 
+// Versioned returns the versioned namespace name.
+func (res *NamespaceFindResult) Versioned() string {
+	return VersionedNamespace(res.Namespace)
+}
+
 // Eq compares that the resulting namespace's name and version match.
 func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
 	if other == res {

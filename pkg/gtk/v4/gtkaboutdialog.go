@@ -48,18 +48,18 @@ const (
 	LicenseMITX11
 	// LicenseArtistic: artistic License, version 2.0
 	LicenseArtistic
-	// LicenseGPL20Only: GNU General Public License, version 2.0 only
-	LicenseGPL20Only
-	// LicenseGPL30Only: GNU General Public License, version 3.0 only
-	LicenseGPL30Only
-	// LicenseLGPL21Only: GNU Lesser General Public License, version 2.1 only
-	LicenseLGPL21Only
-	// LicenseLGPL30Only: GNU Lesser General Public License, version 3.0 only
-	LicenseLGPL30Only
+	// LicenseGPL20_Only: GNU General Public License, version 2.0 only
+	LicenseGPL20_Only
+	// LicenseGPL30_Only: GNU General Public License, version 3.0 only
+	LicenseGPL30_Only
+	// LicenseLGPL21_Only: GNU Lesser General Public License, version 2.1 only
+	LicenseLGPL21_Only
+	// LicenseLGPL30_Only: GNU Lesser General Public License, version 3.0 only
+	LicenseLGPL30_Only
 	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later
 	LicenseAGPL30
-	// LicenseAGPL30Only: GNU Affero General Public License, version 3.0 only
-	LicenseAGPL30Only
+	// LicenseAGPL30_Only: GNU Affero General Public License, version 3.0 only
+	LicenseAGPL30_Only
 	// LicenseBSD3: 3-clause BSD licence
 	LicenseBSD3
 	// LicenseApache20: apache License, version 2.0
@@ -93,18 +93,18 @@ func (l License) String() string {
 		return "MITX11"
 	case LicenseArtistic:
 		return "Artistic"
-	case LicenseGPL20Only:
-		return "GPL20Only"
-	case LicenseGPL30Only:
-		return "GPL30Only"
-	case LicenseLGPL21Only:
-		return "LGPL21Only"
-	case LicenseLGPL30Only:
-		return "LGPL30Only"
+	case LicenseGPL20_Only:
+		return "GPL20_Only"
+	case LicenseGPL30_Only:
+		return "GPL30_Only"
+	case LicenseLGPL21_Only:
+		return "LGPL21_Only"
+	case LicenseLGPL30_Only:
+		return "LGPL30_Only"
 	case LicenseAGPL30:
 		return "AGPL30"
-	case LicenseAGPL30Only:
-		return "AGPL30Only"
+	case LicenseAGPL30_Only:
+		return "AGPL30_Only"
 	case LicenseBSD3:
 		return "BSD3"
 	case LicenseApache20:

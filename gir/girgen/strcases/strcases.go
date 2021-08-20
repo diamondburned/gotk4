@@ -194,7 +194,7 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	snakeString = snakeRegex.ReplaceAllStringFunc(snakeString,
 		func(orig string) string {
 			orig = strings.ToUpper(orig)
-			orig = strings.ReplaceAll(orig, "_", "")
+			orig = strings.Replace(orig, "_", "", 2)
 			return orig
 		},
 	)

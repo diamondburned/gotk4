@@ -12,14 +12,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-// ManualTypes is a list of GTypes that are manually converted internally, so
-// they don't actually reference the package that they belong to.
-var ManualTypes = []string{
-	"GLib.HashTable",
-	"GLib.Bytes",
-	"GLib.ByteArray",
-}
-
 // ValueConverted is the result of conversion for a single value.
 //
 // Quick convention note:
@@ -262,12 +254,6 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		}
 
 		value.GoType = fmt.Sprintf("[]%s", value.Inner[0].GoType)
-	case "GLib.Bytes":
-		if value.Resolved.Ptr != 1 {
-			value.Logln(logger.Debug, "unknown Bytes pointer rule", value.Resolved.Ptr)
-			return false
-		}
-		value.GoType = "[]byte"
 	}
 
 	if value.Array != nil {
@@ -369,10 +355,19 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	// we don't import it if that's the case. Ideally, HashTable should be
 	// resolved to a map directly in types/resolved.go, but that requires a
 	// refactor.
-	for _, t := range ManualTypes {
-		if t == vType.Resolved.GType {
-			return vType, true
-		}
+
+	// manualTypes is a set of GTypes that are manually converted internally, so
+	// they don't actually reference the package that they belong to.
+	var manualTypes = map[string]func() bool{
+		"GLib.HashTable": nil,
+		"GLib.ByteArray": nil,
+		"GLib.List":      nil,
+		"GLib.SList":     nil,
+	}
+
+	f, ok := manualTypes[vType.Resolved.GType]
+	if ok && (f == nil || f()) {
+		return vType, true
 	}
 
 	vType.Import(&value.header, value.IsPublic)

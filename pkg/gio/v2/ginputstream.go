@@ -12,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -136,18 +137,30 @@ type InputStreamer interface {
 	HasPending() bool
 	// IsClosed checks if an input stream is closed.
 	IsClosed() bool
+	// Read tries to read count bytes from the stream into the buffer starting
+	// at buffer.
+	Read(ctx context.Context, buffer []byte) (int, error)
+	// ReadAll tries to read count bytes from the stream into the buffer
+	// starting at buffer.
+	ReadAll(ctx context.Context, buffer []byte) (uint, error)
+	// ReadAllAsync: request an asynchronous read of count bytes from the stream
+	// into the buffer starting at buffer.
+	ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// ReadAllFinish finishes an asynchronous stream read operation started with
 	// g_input_stream_read_all_async().
 	ReadAllFinish(result AsyncResulter) (uint, error)
+	// ReadAsync: request an asynchronous read of count bytes from the stream
+	// into the buffer starting at buffer.
+	ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// ReadBytes: like g_input_stream_read(), this tries to read count bytes
 	// from the stream in a blocking fashion.
-	ReadBytes(ctx context.Context, count uint) ([]byte, error)
+	ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error)
 	// ReadBytesAsync: request an asynchronous read of count bytes from the
 	// stream into a new #GBytes.
 	ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
 	// operation.
-	ReadBytesFinish(result AsyncResulter) ([]byte, error)
+	ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error)
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
 	// SetPending sets stream to have actions pending.
@@ -329,6 +342,159 @@ func (stream *InputStream) IsClosed() bool {
 	return _ok
 }
 
+// Read tries to read count bytes from the stream into the buffer starting at
+// buffer. Will block during this read.
+//
+// If count is zero returns zero and does nothing. A value of count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer is returned. It is not
+// an error if this is not the same as the requested size, as it can happen e.g.
+// near the end of a file. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// The returned buffer is not a nul-terminated string, it can contain nul bytes
+// at any position, and this function doesn't nul-terminate the buffer.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error -1 is returned and error is set accordingly.
+func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error) {
+	var _arg0 *C.GInputStream // out
+	var _arg3 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_cret = C.g_input_stream_read(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
+// ReadAll tries to read count bytes from the stream into the buffer starting at
+// buffer. Will block during this read.
+//
+// This function is similar to g_input_stream_read(), except it tries to read as
+// many bytes as requested, only stopping on an error or end of stream.
+//
+// On a successful read of count bytes, or if we reached the end of the stream,
+// TRUE is returned, and bytes_read is set to the number of bytes read into
+// buffer.
+//
+// If there is an error during the operation FALSE is returned and error is set
+// to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns FALSE (and sets error) then bytes_read will
+// be set to the number of bytes that were successfully read before the error
+// was encountered. This functionality is only available from C. If you need it
+// from another language then you must write your own loop around
+// g_input_stream_read().
+func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, error) {
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	C.g_input_stream_read_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _bytesRead uint // out
+	var _goerr error    // out
+
+	_bytesRead = uint(_arg3)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesRead, _goerr
+}
+
+// ReadAllAsync: request an asynchronous read of count bytes from the stream
+// into the buffer starting at buffer.
+//
+// This is the asynchronous equivalent of g_input_stream_read_all().
+//
+// Call g_input_stream_read_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_read_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadAllFinish finishes an asynchronous stream read operation started with
 // g_input_stream_read_all_async().
 //
@@ -362,6 +528,63 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	return _bytesRead, _goerr
 }
 
+// ReadAsync: request an asynchronous read of count bytes from the stream into
+// the buffer starting at buffer. When the operation is finished callback will
+// be called. You can then call g_input_stream_read_finish() to get the result
+// of the operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer will be passed to the
+// callback. It is not an error if this is not the same as the requested size,
+// as it can happen e.g. near the end of a file, but generally we try to read as
+// many bytes as requested. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_read_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadBytes: like g_input_stream_read(), this tries to read count bytes from
 // the stream in a blocking fashion. However, rather than reading into a
 // user-supplied buffer, this will create a new #GBytes containing the data that
@@ -382,7 +605,7 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 // be returned, without an error.
 //
 // On error NULL is returned and error is set accordingly.
-func (stream *InputStream) ReadBytes(ctx context.Context, count uint) ([]byte, error) {
+func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 C.gsize         // out
@@ -402,12 +625,12 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) ([]byte, e
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(count)
 
-	var _bytes []byte // out
-	var _goerr error  // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
@@ -468,7 +691,7 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 }
 
 // ReadBytesFinish finishes an asynchronous stream read-into-#GBytes operation.
-func (stream *InputStream) ReadBytesFinish(result AsyncResulter) ([]byte, error) {
+func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GBytes       // in
@@ -481,12 +704,12 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) ([]byte, error)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
-	var _bytes []byte // out
-	var _goerr error  // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

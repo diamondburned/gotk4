@@ -8,7 +8,6 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -18,7 +17,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -768,20 +766,14 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 
 // LoadFromBytes loads a key file from the data in bytes into an empty File
 // structure. If the object cannot be created then error is set to a FileError.
-func (keyFile *KeyFile) LoadFromBytes(bytes []byte, flags KeyFileFlags) error {
+func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.GBytes       // out
 	var _arg2 C.GKeyFileFlags // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&bytes[0])),
-		C.gsize(len(bytes)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(bytes)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	_arg2 = C.GKeyFileFlags(flags)
 
 	C.g_key_file_load_from_bytes(_arg0, _arg1, _arg2, &_cerr)

@@ -1130,6 +1130,108 @@ func (socket *Socket) Listen() error {
 	return _goerr
 }
 
+// Receive data (up to size bytes) from a socket. This is mainly used by
+// connection-oriented sockets; it is identical to g_socket_receive_from() with
+// address set to NULL.
+//
+// For G_SOCKET_TYPE_DATAGRAM and G_SOCKET_TYPE_SEQPACKET sockets,
+// g_socket_receive() will always read either 0 or 1 complete messages from the
+// socket. If the received message is too large to fit in buffer, then the data
+// beyond size bytes will be discarded, without any explicit indication that
+// this has occurred.
+//
+// For G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any number of
+// bytes, up to size. If more than size bytes have been received, the additional
+// data will be returned in future calls to g_socket_receive().
+//
+// If the socket is in blocking mode the call will block until there is some
+// data to receive, the connection is closed, or there is an error. If there is
+// no data available and the socket is in non-blocking mode, a
+// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data is
+// available, wait for the G_IO_IN condition.
+//
+// On error -1 is returned and error is set accordingly.
+func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
+	var _arg0 *C.GSocket      // out
+	var _arg3 *C.GCancellable // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gsize
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_cret = C.g_socket_receive(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
+// ReceiveFrom: receive data (up to size bytes) from a socket.
+//
+// If address is non-NULL then address will be set equal to the source address
+// of the received packet. address is owned by the caller.
+//
+// See g_socket_receive() for additional information.
+func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAddresser, int, error) {
+	var _arg0 *C.GSocket        // out
+	var _arg4 *C.GCancellable   // out
+	var _arg1 *C.GSocketAddress // in
+	var _arg2 *C.gchar          // out
+	var _arg3 C.gsize
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg3 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_cret = C.g_socket_receive_from(_arg0, &_arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _address SocketAddresser // out
+	var _gssize int              // out
+	var _goerr error             // out
+
+	if _arg1 != nil {
+		_address = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(SocketAddresser)
+	}
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _address, _gssize, _goerr
+}
+
 // ReceiveMessages: receive multiple data messages from socket in one go. This
 // is the most complicated and fully-featured version of this call. For easier
 // use, see g_socket_receive(), g_socket_receive_from(), and
@@ -1212,6 +1314,49 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 	}
 
 	return _gint, _goerr
+}
+
+// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
+// except that the choice of blocking or non-blocking behavior is determined by
+// the blocking argument rather than by socket's properties.
+func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
+	var _arg0 *C.GSocket      // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gsize
+	var _arg3 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
+	if blocking {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.g_socket_receive_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
 }
 
 // Send tries to send size bytes from buffer on the socket. This is mainly used

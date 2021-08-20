@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -115,7 +116,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 // uncompress the data.
 //
 // lookup_flags controls the behaviour of the lookup.
-func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) ([]byte, error) {
+func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
 	var _cret *C.GBytes              // in
@@ -129,12 +130,12 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) ([]byte, 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(lookupFlags)
 
-	var _bytes []byte // out
-	var _goerr error  // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},

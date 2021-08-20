@@ -7,10 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -20,7 +20,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -555,7 +554,7 @@ func (snapshot *Snapshot) PushCrossFade(progress float64) {
 // These will be used directly rather than being re-rendered.
 //
 // For details on how to write shaders, see gsk.GLShader.
-func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Rect, takeArgs []byte) {
+func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GskGLShader     // out
 	var _arg2 *C.graphene_rect_t // out
@@ -564,12 +563,7 @@ func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Re
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
-	_arg3 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&takeArgs[0])),
-		C.gsize(len(takeArgs)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(takeArgs)),
-	)
+	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(takeArgs)))
 
 	C.gtk_snapshot_push_gl_shader(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(snapshot)

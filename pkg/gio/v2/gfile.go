@@ -13,6 +13,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -29,7 +30,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // void _gotk4_gio2_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
@@ -1125,12 +1125,12 @@ type Filer interface {
 	// IsNative checks to see if a file is native to the platform.
 	IsNative() bool
 	// LoadBytes loads the contents of file and returns it as #GBytes.
-	LoadBytes(ctx context.Context) (string, []byte, error)
+	LoadBytes(ctx context.Context) (string, *glib.Bytes, error)
 	// LoadBytesAsync: asynchronously loads the contents of file as #GBytes.
 	LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback)
 	// LoadBytesFinish completes an asynchronous request to
 	// g_file_load_bytes_async().
-	LoadBytesFinish(result AsyncResulter) (string, []byte, error)
+	LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error)
 	// LoadContents loads the content of the file into memory.
 	LoadContents(ctx context.Context) ([]byte, string, error)
 	// LoadContentsAsync starts an asynchronous load of the file's contents.
@@ -1246,7 +1246,7 @@ type Filer interface {
 	ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
 	// takes a #GBytes input instead.
-	ReplaceContentsBytesAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
+	ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an asynchronous replace of the given file.
 	ReplaceContentsFinish(res AsyncResulter) (string, error)
 	// ReplaceFinish finishes an asynchronous file replace operation started
@@ -2736,7 +2736,7 @@ func (file *File) IsNative() bool {
 // The data contained in the resulting #GBytes is always zero-terminated, but
 // this is not included in the #GBytes length. The resulting #GBytes should be
 // freed with g_bytes_unref() when no longer in use.
-func (file *File) LoadBytes(ctx context.Context) (string, []byte, error) {
+func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _arg2 *C.gchar        // in
@@ -2754,17 +2754,17 @@ func (file *File) LoadBytes(ctx context.Context) (string, []byte, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
-	var _etagOut string // out
-	var _bytes []byte   // out
-	var _goerr error    // out
+	var _etagOut string    // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
 	if _arg2 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
@@ -2819,7 +2819,7 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 // freed with g_bytes_unref() when no longer in use.
 //
 // See g_file_load_bytes() for more information.
-func (file *File) LoadBytesFinish(result AsyncResulter) (string, []byte, error) {
+func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
@@ -2833,17 +2833,17 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, []byte, error) 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
-	var _etagOut string // out
-	var _bytes []byte   // out
-	var _goerr error    // out
+	var _etagOut string    // out
+	var _bytes *glib.Bytes // out
+	var _goerr error       // out
 
 	if _arg2 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_bytes = *(*[]byte)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(&_bytes)),
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
@@ -4580,7 +4580,7 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 // When this operation has completed, callback will be called with user_user
 // data, and the operation can be finalized with
 // g_file_replace_contents_finish().
-func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GBytes             // out
@@ -4596,13 +4596,7 @@ func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents []byte
 		defer runtime.KeepAlive(cancellable)
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.g_bytes_new_with_free_func(
-		C.gconstpointer(unsafe.Pointer(&contents[0])),
-		C.gsize(len(contents)),
-		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-		C.gpointer(gbox.Assign(contents)),
-	)
-	defer C.g_bytes_unref(_arg1)
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(contents)))
 	if etag != "" {
 		_arg2 = (*C.char)(unsafe.Pointer(C.CString(etag)))
 		defer C.free(unsafe.Pointer(_arg2))

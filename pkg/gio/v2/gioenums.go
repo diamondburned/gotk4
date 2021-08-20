@@ -1059,8 +1059,8 @@ const (
 	IOErrorReadOnly IOErrorEnum = 21
 	// IOErrorCantCreateBackup: backup couldn't be created.
 	IOErrorCantCreateBackup IOErrorEnum = 22
-	// IOErrorWrongEtag file's Entity Tag was incorrect.
-	IOErrorWrongEtag IOErrorEnum = 23
+	// IOErrorWrongETag file's Entity Tag was incorrect.
+	IOErrorWrongETag IOErrorEnum = 23
 	// IOErrorTimedOut: operation timed out.
 	IOErrorTimedOut IOErrorEnum = 24
 	// IOErrorWouldRecurse: operation would be recursive.
@@ -1176,8 +1176,8 @@ func (i IOErrorEnum) String() string {
 		return "ReadOnly"
 	case IOErrorCantCreateBackup:
 		return "CantCreateBackup"
-	case IOErrorWrongEtag:
-		return "WrongEtag"
+	case IOErrorWrongETag:
+		return "WrongETag"
 	case IOErrorTimedOut:
 		return "TimedOut"
 	case IOErrorWouldRecurse:

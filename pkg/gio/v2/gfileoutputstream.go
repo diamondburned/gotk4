@@ -44,10 +44,10 @@ func init() {
 type FileOutputStreamOverrider interface {
 	CanSeek() bool
 	CanTruncate() bool
-	// Etag gets the entity tag for the file when it has been written. This must
+	// ETag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
-	Etag() string
+	ETag() string
 	// QueryInfo queries a file output stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_output_stream_query_info_async(). While the
@@ -116,10 +116,10 @@ func marshalFileOutputStreamer(p uintptr) (interface{}, error) {
 	return wrapFileOutputStream(obj), nil
 }
 
-// Etag gets the entity tag for the file when it has been written. This must be
+// ETag gets the entity tag for the file when it has been written. This must be
 // called after the stream has been written and closed, as the etag can change
 // while writing.
-func (stream *FileOutputStream) Etag() string {
+func (stream *FileOutputStream) ETag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
 

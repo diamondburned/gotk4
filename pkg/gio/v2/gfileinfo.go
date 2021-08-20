@@ -1005,9 +1005,9 @@ func (info *FileInfo) EditName() string {
 	return _utf8
 }
 
-// Etag gets the [entity tag][gfile-etag] for a given Info. See
+// ETag gets the [entity tag][gfile-etag] for a given Info. See
 // G_FILE_ATTRIBUTE_ETAG_VALUE.
-func (info *FileInfo) Etag() string {
+func (info *FileInfo) ETag() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
 

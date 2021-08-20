@@ -182,6 +182,7 @@ var Filters = []FilterMatcher{
 	FileFilter("gskglrenderer."),
 	FileFilter("gsknglrenderer."),
 	FileFilter("gskvulkanrenderer."),
+	FileFilter("gdesktopappinfo."), // See #28.
 	// These are not found in GTK4 for some reason, but we're ignoring it for
 	// GTK3 as well.
 	FileFilter("gtkpagesetupunixdialog"),

@@ -134,6 +134,14 @@ var Preprocessors = []Preprocessor{
 	ModifyParamDirections("Gio-2.DBusInterfaceGetPropertyFunc", map[string]string{
 		"error": "out",
 	}),
+	ModifyCallable("Gdk-4.Clipboard.read_async", func(c *gir.CallableAttrs) {
+		// Fix this parameter's type not being a proper array.
+		p := FindParameter(c, "mime_types")
+		p.Array = &gir.Array{
+			CType: "const char**",
+			Type:  &gir.Type{Name: "utf8"},
+		}
+	}),
 }
 
 var ConversionProcessors = []ConversionProcessor{

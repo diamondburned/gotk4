@@ -147,6 +147,55 @@ func (clipboard *Clipboard) IsLocal() bool {
 	return _ok
 }
 
+// ReadAsync: asynchronously requests an input stream to read the clipboard's
+// contents from.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadFinish() to get the result of the operation.
+//
+// The clipboard will choose the most suitable mime type from the given list to
+// fulfill the request, preferring the ones listed first.
+func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	{
+		_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
+			var zero *C.char
+			out[len(mimeTypes)] = zero
+			for i := range mimeTypes {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeTypes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadAsync().

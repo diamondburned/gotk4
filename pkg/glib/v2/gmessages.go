@@ -218,10 +218,20 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	var fields []LogField      // out
 
 	logLevel = LogLevelFlags(arg0)
-	fields = unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2)
-	runtime.SetFinalizer(&fields, func(v *[]LogField) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(arg1))
+	{
+		src := unsafe.Slice(arg1, arg2)
+		fields = make([]LogField, arg2)
+		for i := 0; i < int(arg2); i++ {
+			fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&fields[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
 
 	fn := v.(LogWriterFunc)
 	logWriterOutput := fn(logLevel, fields)
@@ -401,8 +411,13 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	if len(fields) > 0 {
-		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
+		for i := range fields {
+			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
+		}
 	}
 
 	C.g_log_structured_array(_arg1, _arg2, _arg3)
@@ -473,8 +488,13 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	if len(fields) > 0 {
-		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
+		for i := range fields {
+			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
+		}
 	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
@@ -574,8 +594,13 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	if len(fields) > 0 {
-		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
+		for i := range fields {
+			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
+		}
 	}
 	if useColor {
 		_arg4 = C.TRUE
@@ -638,8 +663,13 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	if len(fields) > 0 {
-		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
+		for i := range fields {
+			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
+		}
 	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
@@ -677,8 +707,13 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = (C.gsize)(len(fields))
-	if len(fields) > 0 {
-		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	_arg2 = (*C.GLogField)(C.malloc(C.ulong(len(fields)) * C.ulong(C.sizeof_GLogField)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
+		for i := range fields {
+			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
+		}
 	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 

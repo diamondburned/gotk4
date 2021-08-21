@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -27,8 +29,13 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 
 	_arg1 = C.int(extraSpace)
 	_arg2 = (C.guint)(len(sizes))
-	if len(sizes) > 0 {
-		_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(&sizes[0]))
+	_arg3 = (*C.GtkRequestedSize)(C.malloc(C.ulong(len(sizes)) * C.ulong(C.sizeof_GtkRequestedSize)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GtkRequestedSize)(_arg3), len(sizes))
+		for i := range sizes {
+			out[i] = *(*C.GtkRequestedSize)(gextras.StructNative(unsafe.Pointer((&sizes[i]))))
+		}
 	}
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)

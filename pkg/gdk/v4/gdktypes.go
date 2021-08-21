@@ -630,6 +630,64 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	return _ok
 }
 
+// GTypes gets the GTypes included in formats.
+//
+// Note that formats may not contain any #GTypes, in particular when they are
+// empty. In that case NULL will be returned.
+func (formats *ContentFormats) GTypes() []externglib.Type {
+	var _arg0 *C.GdkContentFormats // out
+	var _cret *C.GType             // in
+	var _arg1 C.gsize              // in
+
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+
+	_cret = C.gdk_content_formats_get_gtypes(_arg0, &_arg1)
+	runtime.KeepAlive(formats)
+
+	var _gTypes []externglib.Type // out
+
+	if _cret != nil {
+		{
+			src := unsafe.Slice(_cret, _arg1)
+			_gTypes = make([]externglib.Type, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_gTypes[i] = externglib.Type(src[i])
+			}
+		}
+	}
+
+	return _gTypes
+}
+
+// MIMETypes gets the mime types included in formats.
+//
+// Note that formats may not contain any mime types, in particular when they are
+// empty. In that case NULL will be returned.
+func (formats *ContentFormats) MIMETypes() []string {
+	var _arg0 *C.GdkContentFormats // out
+	var _cret **C.char             // in
+	var _arg1 C.gsize              // in
+
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+
+	_cret = C.gdk_content_formats_get_mime_types(_arg0, &_arg1)
+	runtime.KeepAlive(formats)
+
+	var _utf8s []string // out
+
+	if _cret != nil {
+		{
+			src := unsafe.Slice(_cret, _arg1)
+			_utf8s = make([]string, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			}
+		}
+	}
+
+	return _utf8s
+}
+
 // Match checks if first and second have any matching formats.
 func (first *ContentFormats) Match(second *ContentFormats) bool {
 	var _arg0 *C.GdkContentFormats // out

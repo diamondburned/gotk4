@@ -725,6 +725,25 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 	return _point
 }
 
+// ColorStops retrieves the color stops in the gradient.
+func (node *ConicGradientNode) ColorStops() []ColorStop {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskColorStop  // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
+
+	_cret = C.gsk_conic_gradient_node_get_color_stops(_arg0, &_arg1)
+	runtime.KeepAlive(node)
+
+	var _colorStops []ColorStop // out
+
+	_colorStops = make([]ColorStop, _arg1)
+	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+
+	return _colorStops
+}
+
 // NColorStops retrieves the number of color stops in the gradient.
 func (node *ConicGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -1369,6 +1388,25 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 	return _linearGradientNode
 }
 
+// ColorStops retrieves the color stops in the gradient.
+func (node *LinearGradientNode) ColorStops() []ColorStop {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskColorStop  // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
+
+	_cret = C.gsk_linear_gradient_node_get_color_stops(_arg0, &_arg1)
+	runtime.KeepAlive(node)
+
+	var _colorStops []ColorStop // out
+
+	_colorStops = make([]ColorStop, _arg1)
+	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+
+	return _colorStops
+}
+
 // End retrieves the final point of the linear gradient.
 func (node *LinearGradientNode) End() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -1725,6 +1763,25 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
+}
+
+// ColorStops retrieves the color stops in the gradient.
+func (node *RadialGradientNode) ColorStops() []ColorStop {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskColorStop  // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
+
+	_cret = C.gsk_radial_gradient_node_get_color_stops(_arg0, &_arg1)
+	runtime.KeepAlive(node)
+
+	var _colorStops []ColorStop // out
+
+	_colorStops = make([]ColorStop, _arg1)
+	copy(_colorStops, unsafe.Slice((*ColorStop)(unsafe.Pointer(_cret)), _arg1))
+
+	return _colorStops
 }
 
 // End retrieves the end value for the gradient.
@@ -2264,6 +2321,30 @@ func (node *TextNode) Font() pango.Fonter {
 	_font = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.Fonter)
 
 	return _font
+}
+
+// Glyphs retrieves the glyph information in the node.
+func (node *TextNode) Glyphs() []pango.GlyphInfo {
+	var _arg0 *C.GskRenderNode  // out
+	var _cret *C.PangoGlyphInfo // in
+	var _arg1 C.guint           // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
+
+	_cret = C.gsk_text_node_get_glyphs(_arg0, &_arg1)
+	runtime.KeepAlive(node)
+
+	var _glyphInfos []pango.GlyphInfo // out
+
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_glyphInfos = make([]pango.GlyphInfo, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_glyphInfos[i] = *(*pango.GlyphInfo)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+
+	return _glyphInfos
 }
 
 // NumGlyphs retrieves the number of glyphs in the text node.

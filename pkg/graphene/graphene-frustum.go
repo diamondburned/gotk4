@@ -118,7 +118,12 @@ func (f *Frustum) Planes() [6]Plane {
 
 	var _planes [6]Plane // out
 
-	_planes = *(*[6]Plane)(unsafe.Pointer(&_arg1))
+	{
+		src := &_arg1
+		for i := 0; i < 6; i++ {
+			_planes[i] = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _planes
 }

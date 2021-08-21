@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -1294,8 +1295,13 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	if len(messages) > 0 {
-		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	_arg1 = (*C.GInputMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(C.sizeof_GInputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GInputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
 	}
 	_arg3 = C.gint(flags)
 
@@ -1469,8 +1475,13 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
-	if len(vectors) > 0 {
-		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg2 = (*C.GOutputVector)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
 	}
 	if messages != nil {
 		_arg5 = (C.gint)(len(messages))
@@ -1535,8 +1546,13 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
-	if len(vectors) > 0 {
-		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg2 = (*C.GOutputVector)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
 	}
 	if messages != nil {
 		_arg5 = (C.gint)(len(messages))
@@ -1623,8 +1639,13 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	if len(messages) > 0 {
-		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	_arg1 = (*C.GOutputMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(C.sizeof_GOutputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GOutputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
 	}
 	_arg3 = C.gint(flags)
 

@@ -167,10 +167,9 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GErr
 
 	var buf []byte // out
 
-	buf = unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1)
-	runtime.SetFinalizer(&buf, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(arg0))
+	buf = make([]byte, arg1)
+	copy(buf, unsafe.Slice((*byte)(unsafe.Pointer(arg0)), arg1))
 
 	fn := v.(PixbufSaveFunc)
 	err, ok := fn(buf)

@@ -420,9 +420,16 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 
 	if dBusInterfaceInfos != nil {
 		{
-			var zero *DBusInterfaceInfo
-			dBusInterfaceInfos = append(dBusInterfaceInfos, zero)
-			cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(&dBusInterfaceInfos[0]))
+			cret = (**C.GDBusInterfaceInfo)(C.malloc(C.ulong(len(dBusInterfaceInfos)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+			defer C.free(unsafe.Pointer(cret))
+			{
+				out := unsafe.Slice(cret, len(dBusInterfaceInfos)+1)
+				var zero *C.GDBusInterfaceInfo
+				out[len(dBusInterfaceInfos)] = zero
+				for i := range dBusInterfaceInfos {
+					out[i] = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfos[i])))
+				}
+			}
 		}
 	}
 

@@ -544,6 +544,39 @@ func (accelGroup *AccelGroup) Lock() {
 	runtime.KeepAlive(accelGroup)
 }
 
+// Query queries an accelerator group for all entries matching accel_key and
+// accel_mods.
+func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) []AccelGroupEntry {
+	var _arg0 *C.GtkAccelGroup      // out
+	var _arg1 C.guint               // out
+	var _arg2 C.GdkModifierType     // out
+	var _cret *C.GtkAccelGroupEntry // in
+	var _arg3 C.guint               // in
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg1 = C.guint(accelKey)
+	_arg2 = C.GdkModifierType(accelMods)
+
+	_cret = C.gtk_accel_group_query(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(accelGroup)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+
+	var _accelGroupEntrys []AccelGroupEntry // out
+
+	if _cret != nil {
+		{
+			src := unsafe.Slice(_cret, _arg3)
+			_accelGroupEntrys = make([]AccelGroupEntry, _arg3)
+			for i := 0; i < int(_arg3); i++ {
+				_accelGroupEntrys[i] = *(*AccelGroupEntry)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			}
+		}
+	}
+
+	return _accelGroupEntrys
+}
+
 // Unlock undoes the last call to gtk_accel_group_lock() on this accel_group.
 func (accelGroup *AccelGroup) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out

@@ -1232,6 +1232,31 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 	return _hashTable
 }
 
+// Pixels queries a pointer to the pixel data of a pixbuf.
+//
+// This function will cause an implicit copy of the pixbuf data if the pixbuf
+// was created from read-only data.
+//
+// Please see the section on image data (#image-data) for information about how
+// the pixel data is stored in memory.
+func (pixbuf *Pixbuf) Pixels() []byte {
+	var _arg0 *C.GdkPixbuf // out
+	var _cret *C.guchar    // in
+	var _arg1 C.guint      // in
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+
+	_cret = C.gdk_pixbuf_get_pixels_with_length(_arg0, &_arg1)
+	runtime.KeepAlive(pixbuf)
+
+	var _guint8s []byte // out
+
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
+}
+
 // Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 // between the start of a row and the start of the next row.
 func (pixbuf *Pixbuf) Rowstride() int {
@@ -1487,10 +1512,9 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys []string, optionValue
 	var _buffer []byte // out
 	var _goerr error   // out
 
-	_buffer = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_buffer, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_buffer = make([]byte, _arg2)
+	copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

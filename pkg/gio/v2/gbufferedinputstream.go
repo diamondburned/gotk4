@@ -332,6 +332,27 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	return _gsize
 }
 
+// PeekBuffer returns the buffer with the currently available bytes. The
+// returned buffer must not be modified and will become invalid when reading
+// from the stream or filling the buffer.
+func (stream *BufferedInputStream) PeekBuffer() []byte {
+	var _arg0 *C.GBufferedInputStream // out
+	var _cret unsafe.Pointer          // in
+	var _arg1 C.gsize                 // in
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+
+	_cret = C.g_buffered_input_stream_peek_buffer(_arg0, &_arg1)
+	runtime.KeepAlive(stream)
+
+	var _guint8s []byte // out
+
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
+}
+
 // ReadByte tries to read a single byte from the stream or the buffer. Will
 // block during this read.
 //

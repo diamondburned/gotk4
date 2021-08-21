@@ -167,10 +167,9 @@ func (iconSet *IconSet) Sizes() []int {
 
 	var _sizes []int // out
 
-	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_sizes, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_sizes = make([]int, _arg2)
+	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _sizes
 }
@@ -800,6 +799,25 @@ func (data *SelectionData) Copy() *SelectionData {
 	)
 
 	return _selectionData
+}
+
+// Data retrieves the raw data of the selection along with its length.
+func (selectionData *SelectionData) Data() []byte {
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.guchar           // in
+	var _arg1 C.gint              // in
+
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
+
+	_cret = C.gtk_selection_data_get_data_with_length(_arg0, &_arg1)
+	runtime.KeepAlive(selectionData)
+
+	var _guint8s []byte // out
+
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
 }
 
 // Display retrieves the display of the selection.

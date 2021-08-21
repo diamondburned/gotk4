@@ -1233,6 +1233,96 @@ func (one *Variant) Compare(two *Variant) int {
 	return _gint
 }
 
+// DupBytestring: similar to g_variant_get_bytestring() except that instead of
+// returning a constant string, the string is duplicated.
+//
+// The return value must be freed using g_free().
+func (value *Variant) DupBytestring() []byte {
+	var _arg0 *C.GVariant // out
+	var _cret *C.gchar    // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_dup_bytestring(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _guint8s []byte // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
+}
+
+// DupBytestringArray gets the contents of an array of array of bytes #GVariant.
+// This call makes a deep copy; the return result should be released with
+// g_strfreev().
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) DupBytestringArray() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_dup_bytestring_array(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// DupObjv gets the contents of an array of object paths #GVariant. This call
+// makes a deep copy; the return result should be released with g_strfreev().
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) DupObjv() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_dup_objv(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
 // DupString: similar to g_variant_get_string() except that instead of returning
 // a constant string, the string is duplicated.
 //
@@ -1257,6 +1347,39 @@ func (value *Variant) DupString() (uint, string) {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _length, _utf8
+}
+
+// DupStrv gets the contents of an array of strings #GVariant. This call makes a
+// deep copy; the return result should be released with g_strfreev().
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) DupStrv() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_dup_strv(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
 }
 
 // Equal checks if one and two have the same type and value.
@@ -1370,6 +1493,39 @@ func (value *Variant) Bytestring() []byte {
 	}
 
 	return _guint8s
+}
+
+// BytestringArray gets the contents of an array of array of bytes #GVariant.
+// This call makes a shallow copy; the return result should be released with
+// g_free(), but the individual strings must not be modified.
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) BytestringArray() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_get_bytestring_array(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
 }
 
 // ChildValue reads a child item out of a container #GVariant instance. This
@@ -1657,6 +1813,39 @@ func (value *Variant) NormalForm() *Variant {
 	return _variant
 }
 
+// Objv gets the contents of an array of object paths #GVariant. This call makes
+// a shallow copy; the return result should be released with g_free(), but the
+// individual strings must not be modified.
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) Objv() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_get_objv(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
 // Size determines the number of bytes that would be required to store value
 // with g_variant_store().
 //
@@ -1717,6 +1906,39 @@ func (value *Variant) String() (uint, string) {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _length, _utf8
+}
+
+// Strv gets the contents of an array of strings #GVariant. This call makes a
+// shallow copy; the return result should be released with g_free(), but the
+// individual strings must not be modified.
+//
+// If length is non-NULL then the number of elements in the result is stored
+// there. In any case, the resulting array will be NULL-terminated.
+//
+// For an empty array, length will be set to 0 and a pointer to a NULL pointer
+// will be returned.
+func (value *Variant) Strv() []string {
+	var _arg0 *C.GVariant // out
+	var _cret **C.gchar   // in
+	var _arg1 C.gsize     // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_get_strv(_arg0, &_arg1)
+	runtime.KeepAlive(value)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
 }
 
 // Type determines the type of value.

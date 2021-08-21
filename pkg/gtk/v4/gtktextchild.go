@@ -81,3 +81,30 @@ func (anchor *TextChildAnchor) Deleted() bool {
 
 	return _ok
 }
+
+// Widgets gets a list of all widgets anchored at this child anchor.
+//
+// The order in which the widgets are returned is not defined.
+func (anchor *TextChildAnchor) Widgets() []Widgetter {
+	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret **C.GtkWidget         // in
+	var _arg1 C.guint               // in
+
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+
+	_cret = C.gtk_text_child_anchor_get_widgets(_arg0, &_arg1)
+	runtime.KeepAlive(anchor)
+
+	var _widgets []Widgetter // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_widgets = make([]Widgetter, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_widgets[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(Widgetter)
+		}
+	}
+
+	return _widgets
+}

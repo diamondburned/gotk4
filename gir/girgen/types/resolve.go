@@ -340,8 +340,9 @@ func (typ *Resolved) IsContainerBuiltin() bool {
 
 // CanCast returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
-func (typ *Resolved) CanCast() bool {
-	return typ.IsPrimitive() || typ.IsRecord()
+func (typ *Resolved) CanCast(gen FileGenerator) bool {
+	// We can only directly cast the struct if it only contains primitives.
+	return typ.IsPrimitive() || (typ.IsRecord() && !typ.HasPointer(gen))
 }
 
 // IsBuiltin is a convenient function to compare the builtin type.
@@ -389,8 +390,9 @@ func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 	case *gir.Record:
 		for _, field := range v.Fields {
 			// If field is not a regular type, then it's probably an array or
-			// whatever, which means a pointer.
-			if field.Type == nil {
+			// whatever, which means a pointer. If it's a bitfield OR a private
+			// field, then it's best that we don't touch it.
+			if field.Type == nil || field.Bits != 0 || field.Private {
 				return true
 			}
 

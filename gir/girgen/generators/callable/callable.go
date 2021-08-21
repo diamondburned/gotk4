@@ -180,7 +180,32 @@ func (g *Generator) renderBlock() bool {
 
 		contextParamIx := findGCancellableParam(g.gen, g.Parameters.Parameters)
 
-		for i, param := range g.Parameters.Parameters {
+		// Copy the parameters list so we can freely mutate it.
+		parameters := append([]gir.Parameter(nil), g.Parameters.Parameters...)
+
+		// Preprocess the values to normalize an edge case; see comment below.
+		for i, value := range parameters {
+			if value.AnyType.Array == nil || value.AnyType.Array.Length == nil {
+				continue
+			}
+
+			length := &g.Parameters.Parameters[*value.Array.Length]
+
+			// Special case: check if the length is both an output parameter AND
+			// has a type that isn't a pointer. In such a case, the function
+			// expects the user to supply a buffer of constant length, so we
+			// should treat them as input parameters. We can only do this if the
+			// type is directly castable, however. Changing this will also allow
+			// the function to pass the above output-pointer check.
+			if value.ParameterAttrs.Direction == "out" && value.CallerAllocates {
+				if !types.AnyTypeIsPtr(length.AnyType) {
+					length.Direction = "in"
+					parameters[i].Direction = "in"
+				}
+			}
+		}
+
+		for i, param := range parameters {
 			var in string
 			var out string
 			var dir typeconv.ConversionDirection

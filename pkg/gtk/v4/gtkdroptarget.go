@@ -198,6 +198,34 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	return _contentFormats
 }
 
+// GTypes gets the list of supported GTypes for self.
+//
+// If no type have been set, NULL will be returned.
+func (self *DropTarget) GTypes() []externglib.Type {
+	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GType         // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+
+	_cret = C.gtk_drop_target_get_gtypes(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _gTypes []externglib.Type // out
+
+	if _cret != nil {
+		{
+			src := unsafe.Slice(_cret, _arg1)
+			_gTypes = make([]externglib.Type, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_gTypes[i] = externglib.Type(src[i])
+			}
+		}
+	}
+
+	return _gTypes
+}
+
 // Preload gets whether data should be preloaded on hover.
 func (self *DropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out

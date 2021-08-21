@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -192,8 +193,13 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
 	_arg2 = (C.gint)(len(entries))
-	if len(entries) > 0 {
-		_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg1 = (*C.GtkPadActionEntry)(C.malloc(C.ulong(len(entries)) * C.ulong(C.sizeof_GtkPadActionEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkPadActionEntry)(_arg1), len(entries))
+		for i := range entries {
+			out[i] = *(*C.GtkPadActionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+		}
 	}
 
 	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)

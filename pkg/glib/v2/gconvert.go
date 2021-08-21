@@ -65,6 +65,116 @@ func (c ConvertError) String() string {
 	}
 }
 
+// Convert converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Using extensions such as "//TRANSLIT" may not work (or may not work well) on
+// many platforms. Consider using g_str_to_ascii() instead.
+func Convert(str []byte, toCodeset string, fromCodeset string) (uint, []byte, error) {
+	var _arg1 *C.gchar // out
+	var _arg2 C.gssize
+	var _arg3 *C.gchar  // out
+	var _arg4 *C.gchar  // out
+	var _arg5 C.gsize   // in
+	var _cret *C.gchar  // in
+	var _arg6 C.gsize   // in
+	var _cerr *C.GError // in
+
+	_arg2 = (C.gssize)(len(str))
+	if len(str) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	}
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(fromCodeset)))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	_cret = C.g_convert(_arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6, &_cerr)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(toCodeset)
+	runtime.KeepAlive(fromCodeset)
+
+	var _bytesRead uint // out
+	var _guint8s []byte // out
+	var _goerr error    // out
+
+	_bytesRead = uint(_arg5)
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg6)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg6))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesRead, _guint8s, _goerr
+}
+
+// ConvertWithFallback converts a string from one character set to another,
+// possibly including fallback sequences for characters not representable in the
+// output. Note that it is not guaranteed that the specification for the
+// fallback sequences in fallback will be honored. Some systems may do an
+// approximate conversion from from_codeset to to_codeset in their iconv()
+// functions, in which case GLib will simply return that approximate conversion.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (uint, []byte, error) {
+	var _arg1 *C.gchar // out
+	var _arg2 C.gssize
+	var _arg3 *C.gchar  // out
+	var _arg4 *C.gchar  // out
+	var _arg5 *C.gchar  // out
+	var _arg6 C.gsize   // in
+	var _cret *C.gchar  // in
+	var _arg7 C.gsize   // in
+	var _cerr *C.GError // in
+
+	_arg2 = (C.gssize)(len(str))
+	if len(str) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	}
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(fromCodeset)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(fallback)))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	_cret = C.g_convert_with_fallback(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7, &_cerr)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(toCodeset)
+	runtime.KeepAlive(fromCodeset)
+	runtime.KeepAlive(fallback)
+
+	var _bytesRead uint // out
+	var _guint8s []byte // out
+	var _goerr error    // out
+
+	_bytesRead = uint(_arg6)
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg7)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg7))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesRead, _guint8s, _goerr
+}
+
 // FilenameDisplayBasename returns the display basename for the particular
 // filename, guaranteed to be valid UTF-8. The display name might not be
 // identical to the filename, for instance there might be problems converting it
@@ -329,6 +439,45 @@ func GetFilenameCharsets() ([]string, bool) {
 	}
 
 	return _filenameCharsets, _ok
+}
+
+// LocaleFromUTF8 converts a string from UTF-8 to the encoding used for strings
+// by the C runtime (usually the same as that used by the operating system) in
+// the [current locale][setlocale]. On Windows this means the system codepage.
+//
+// The input string shall not contain nul characters even if the len argument is
+// positive. A nul character found inside the string will result in error
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
+// contain embedded nul characters.
+func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
+	var _arg1 *C.gchar  // out
+	var _arg2 C.gssize  // out
+	var _arg3 C.gsize   // in
+	var _cret *C.gchar  // in
+	var _arg4 C.gsize   // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(utf8String)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(len)
+
+	_cret = C.g_locale_from_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(utf8String)
+	runtime.KeepAlive(len)
+
+	var _bytesRead uint // out
+	var _guint8s []byte // out
+	var _goerr error    // out
+
+	_bytesRead = uint(_arg3)
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg4)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg4))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesRead, _guint8s, _goerr
 }
 
 // LocaleToUTF8 converts a string which is in the encoding used for strings by

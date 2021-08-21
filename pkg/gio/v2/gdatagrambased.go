@@ -484,8 +484,13 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	if len(messages) > 0 {
-		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	_arg1 = (*C.GInputMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(C.sizeof_GInputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GInputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
 	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
@@ -564,8 +569,13 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.guint)(len(messages))
-	if len(messages) > 0 {
-		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	_arg1 = (*C.GOutputMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(C.sizeof_GOutputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GOutputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
 	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)

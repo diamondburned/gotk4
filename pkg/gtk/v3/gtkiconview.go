@@ -286,8 +286,13 @@ func (iconView *IconView) EnableModelDragDest(targets []TargetEntry, actions gdk
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg2 = (C.gint)(len(targets))
-	if len(targets) > 0 {
-		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
 	}
 	_arg3 = C.GdkDragAction(actions)
 
@@ -309,8 +314,13 @@ func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = (C.gint)(len(targets))
-	if len(targets) > 0 {
-		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg2 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
 	}
 	_arg4 = C.GdkDragAction(actions)
 

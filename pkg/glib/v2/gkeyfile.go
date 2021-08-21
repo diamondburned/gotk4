@@ -303,6 +303,45 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	return _goerr
 }
 
+// BooleanList returns the values associated with key under group_name as
+// booleans.
+//
+// If key cannot be found then NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
+// cannot be interpreted as booleans then NULL is returned and error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _cret *C.gboolean // in
+	var _arg3 C.gsize     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_key_file_get_boolean_list(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
+	var _oks []bool  // out
+	var _goerr error // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_oks = make([]bool, _arg3)
+	copy(_oks, unsafe.Slice((*bool)(unsafe.Pointer(_cret)), _arg3))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _oks, _goerr
+}
+
 // Comment retrieves a comment above key from group_name. If key is NULL then
 // comment will be read from above group_name. If both key and group_name are
 // NULL, then comment will be read from above the first group in the file.
@@ -378,6 +417,45 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	}
 
 	return _gdouble, _goerr
+}
+
+// DoubleList returns the values associated with key under group_name as
+// doubles.
+//
+// If key cannot be found then NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
+// cannot be interpreted as doubles then NULL is returned and error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _cret *C.gdouble  // in
+	var _arg3 C.gsize     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_key_file_get_double_list(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
+	var _gdoubles []float64 // out
+	var _goerr error        // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_gdoubles = make([]float64, _arg3)
+	copy(_gdoubles, unsafe.Slice((*float64)(unsafe.Pointer(_cret)), _arg3))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gdoubles, _goerr
 }
 
 // Groups returns all groups in the key file loaded with key_file. The array of
@@ -480,6 +558,45 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	}
 
 	return _gint, _goerr
+}
+
+// IntegerList returns the values associated with key under group_name as
+// integers.
+//
+// If key cannot be found then NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
+// cannot be interpreted as integers, or are out of range for #gint, then NULL
+// is returned and error is set to KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _cret *C.gint     // in
+	var _arg3 C.gsize     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_key_file_get_integer_list(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
+	var _gints []int // out
+	var _goerr error // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_gints = make([]int, _arg3)
+	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg3))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gints, _goerr
 }
 
 // Keys returns all keys for the group name group_name. The array of returned
@@ -617,6 +734,63 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	return _utf8, _goerr
 }
 
+// LocaleStringList returns the values associated with key under group_name
+// translated in the given locale if available. If locale is NULL then the
+// current locale is assumed.
+//
+// If locale is to be non-NULL, or if the current locale will change over the
+// lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
+// order to load strings for all locales.
+//
+// If key cannot be found then NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated with key cannot be
+// interpreted or no suitable translations can be found then the untranslated
+// values are returned. The returned array is NULL-terminated, so length may
+// optionally be NULL.
+func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) ([]string, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _cret **C.gchar   // in
+	var _arg4 C.gsize     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if locale != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	_cret = C.g_key_file_get_locale_string_list(_arg0, _arg1, _arg2, _arg3, &_arg4, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(locale)
+
+	var _utf8s []string // out
+	var _goerr error    // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg4)
+		_utf8s = make([]string, _arg4)
+		for i := 0; i < int(_arg4); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _utf8s, _goerr
+}
+
 // StartGroup returns the name of the start group of the file.
 func (keyFile *KeyFile) StartGroup() string {
 	var _arg0 *C.GKeyFile // out
@@ -671,6 +845,49 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	}
 
 	return _utf8, _goerr
+}
+
+// StringList returns the values associated with key under group_name.
+//
+// In the event the key cannot be found, NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
+// found, NULL is returned and error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _cret **C.gchar   // in
+	var _arg3 C.gsize     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_key_file_get_string_list(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(keyFile)
+	runtime.KeepAlive(groupName)
+	runtime.KeepAlive(key)
+
+	var _utf8s []string // out
+	var _goerr error    // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg3)
+		_utf8s = make([]string, _arg3)
+		for i := 0; i < int(_arg3); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _utf8s, _goerr
 }
 
 // Uint64 returns the value associated with key under group_name as an unsigned

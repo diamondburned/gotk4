@@ -228,6 +228,8 @@ type RecentChooserer interface {
 	ShowTips() bool
 	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
 	SortType() RecentSortType
+	// URIs gets the URI of the recently used resources.
+	URIs() []string
 	// ListFilters gets the RecentFilter objects held by chooser.
 	ListFilters() []RecentFilter
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
@@ -548,6 +550,37 @@ func (chooser *RecentChooser) SortType() RecentSortType {
 	_recentSortType = RecentSortType(_cret)
 
 	return _recentSortType
+}
+
+// URIs gets the URI of the recently used resources.
+//
+// The return value of this function is affected by the “sort-type” and “limit”
+// properties of chooser.
+//
+// Since the returned array is NULL terminated, length may be NULL.
+func (chooser *RecentChooser) URIs() []string {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret **C.gchar           // in
+	var _arg1 C.gsize             // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_recent_chooser_get_uris(_arg0, &_arg1)
+	runtime.KeepAlive(chooser)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
 }
 
 // ListFilters gets the RecentFilter objects held by chooser.

@@ -7,6 +7,8 @@ import (
 	"runtime"
 	"strings"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -745,8 +747,13 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	_arg3 = (C.guint)(len(keys))
-	if len(keys) > 0 {
-		_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
+	_arg2 = (*C.GDebugKey)(C.malloc(C.ulong(len(keys)) * C.ulong(C.sizeof_GDebugKey)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GDebugKey)(_arg2), len(keys))
+		for i := range keys {
+			out[i] = *(*C.GDebugKey)(gextras.StructNative(unsafe.Pointer((&keys[i]))))
+		}
 	}
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)

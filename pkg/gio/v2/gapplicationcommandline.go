@@ -165,6 +165,41 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	return _file
 }
 
+// Arguments gets the list of arguments that was passed on the command line.
+//
+// The strings in the array may contain non-UTF-8 data on UNIX (such as
+// filenames or arguments given in the system locale) but are always in UTF-8 on
+// Windows.
+//
+// If you wish to use the return value with Context, you must use
+// g_option_context_parse_strv().
+//
+// The return value is NULL-terminated and should be freed using g_strfreev().
+func (cmdline *ApplicationCommandLine) Arguments() []string {
+	var _arg0 *C.GApplicationCommandLine // out
+	var _cret **C.gchar                  // in
+	var _arg1 C.int                      // in
+
+	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
+
+	_cret = C.g_application_command_line_get_arguments(_arg0, &_arg1)
+	runtime.KeepAlive(cmdline)
+
+	var _filenames []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_filenames = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _filenames
+}
+
 // Cwd gets the working directory of the command line invocation. The string may
 // contain non-utf8 data.
 //

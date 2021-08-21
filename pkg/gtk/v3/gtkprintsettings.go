@@ -604,6 +604,26 @@ func (settings *PrintSettings) OutputBin() string {
 	return _utf8
 }
 
+// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
+func (settings *PrintSettings) PageRanges() []PageRange {
+	var _arg0 *C.GtkPrintSettings // out
+	var _cret *C.GtkPageRange     // in
+	var _arg1 C.gint              // in
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+
+	_cret = C.gtk_print_settings_get_page_ranges(_arg0, &_arg1)
+	runtime.KeepAlive(settings)
+
+	var _pageRanges []PageRange // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_pageRanges = make([]PageRange, _arg1)
+	copy(_pageRanges, unsafe.Slice((*PageRange)(unsafe.Pointer(_cret)), _arg1))
+
+	return _pageRanges
+}
+
 // PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 func (settings *PrintSettings) PageSet() PageSet {
 	var _arg0 *C.GtkPrintSettings // out

@@ -714,12 +714,50 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	var _attrs []LogAttr // out
 
-	_attrs = unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_attrs, func(v *[]LogAttr) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		src := unsafe.Slice(_arg1, _arg2)
+		_attrs = make([]LogAttr, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _attrs
+}
+
+// LogAttrsReadonly retrieves an array of logical attributes for each character
+// in the layout.
+//
+// This is a faster alternative to pango.Layout.GetLogAttrs(). The returned
+// array is part of layout and must not be modified. Modifying the layout will
+// invalidate the returned array.
+//
+// The number of attributes returned in n_attrs will be one more than the total
+// number of characters in the layout, since there need to be attributes
+// corresponding to both the position before the first character and the
+// position after the last character.
+func (layout *Layout) LogAttrsReadonly() []LogAttr {
+	var _arg0 *C.PangoLayout  // out
+	var _cret *C.PangoLogAttr // in
+	var _arg1 C.gint          // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+
+	_cret = C.pango_layout_get_log_attrs_readonly(_arg0, &_arg1)
+	runtime.KeepAlive(layout)
+
+	var _logAttrs []LogAttr // out
+
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_logAttrs = make([]LogAttr, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_logAttrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+
+	return _logAttrs
 }
 
 // PixelExtents computes the logical and ink extents of layout in device units.
@@ -2113,10 +2151,9 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 
 	var _ranges []int // out
 
-	_ranges = unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4)
-	runtime.SetFinalizer(&_ranges, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg3))
+	_ranges = make([]int, _arg4)
+	copy(_ranges, unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4))
 
 	return _ranges
 }

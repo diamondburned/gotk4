@@ -110,7 +110,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// Safe to do if this is a primitive AND we're not setting this inside a
 		// calllback, since the callback will retain Go memory beyond its
 		// lifetime which is bad.
-		if !value.MustRealloc() && inner.Resolved.CanCast() {
+		if !value.MustRealloc() && inner.Resolved.CanCast(conv.fgen) {
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
 			value.p.Linef(
@@ -127,16 +127,14 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		if !value.MustRealloc() {
 			// We can allocate this on Go's stack or heap.
-			value.p.Linef("%s = &([%d]%s)", value.Out.Set, array.FixedSize, inner.Out.Type)
+			value.p.Linef("var out [%d]%s", array.FixedSize, inner.Out.Type)
+			value.p.Linef("%s = &out[0]", value.Out.Set)
 		} else {
 			value.p.Linef("%s = %s", value.Out.Set, inner.cmalloc(value.InName, false))
 			if value.ShouldFree() {
 				value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 			}
 		}
-
-		value.p.Linef("out := (*[%d]%s)(unsafe.Pointer(%s))",
-			array.FixedSize, inner.Out.Type, value.Out.Set)
 
 		value.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
 		value.p.Linef("  " + inner.Conversion)
@@ -148,7 +146,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	case array.Length != nil:
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
-		if !value.MustRealloc() && inner.Resolved.CanCast() {
+		if !value.MustRealloc() && inner.Resolved.CanCast(conv.fgen) {
 			value.header.Import("unsafe")
 			value.p.Linef("if len(%s) > 0 {", value.InName)
 			value.p.Linef(
@@ -168,7 +166,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 
-		} else if inner.Resolved.CanCast() {
+		} else if inner.Resolved.CanCast(conv.fgen) {
 			// Edge case: we can use the optimized copy() built-in if the type
 			// is castable. This case should never be hit if ShouldFree is true,
 			// because we're still using Go memory.
@@ -250,7 +248,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		defer value.p.Ascend()
 
 		// See if we can possibly reuse the Go slice in a shorter way.
-		if !value.MustRealloc() && inner.Resolved.CanCast() {
+		if !value.MustRealloc() && inner.Resolved.CanCast(conv.fgen) {
 			value.p.Linef("var zero %s", inner.In.Type)
 			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
 			value.p.Linef(

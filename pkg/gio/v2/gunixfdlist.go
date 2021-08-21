@@ -184,3 +184,67 @@ func (list *UnixFDList) Length() int {
 
 	return _gint
 }
+
+// PeekFds returns the array of file descriptors that is contained in this
+// object.
+//
+// After this call, the descriptors remain the property of list. The caller must
+// not close them and must not free the array. The array is valid only until
+// list is changed in any way.
+//
+// If length is non-NULL then it is set to the number of file descriptors in the
+// returned array. The returned array is also terminated with -1.
+//
+// This function never returns NULL. In case there are no file descriptors
+// contained in list, an empty array is returned.
+func (list *UnixFDList) PeekFds() []int {
+	var _arg0 *C.GUnixFDList // out
+	var _cret *C.gint        // in
+	var _arg1 C.gint         // in
+
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
+
+	_cret = C.g_unix_fd_list_peek_fds(_arg0, &_arg1)
+	runtime.KeepAlive(list)
+
+	var _gints []int // out
+
+	_gints = make([]int, _arg1)
+	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1))
+
+	return _gints
+}
+
+// StealFds returns the array of file descriptors that is contained in this
+// object.
+//
+// After this call, the descriptors are no longer contained in list. Further
+// calls will return an empty list (unless more descriptors have been added).
+//
+// The return result of this function must be freed with g_free(). The caller is
+// also responsible for closing all of the file descriptors. The file
+// descriptors in the array are set to close-on-exec.
+//
+// If length is non-NULL then it is set to the number of file descriptors in the
+// returned array. The returned array is also terminated with -1.
+//
+// This function never returns NULL. In case there are no file descriptors
+// contained in list, an empty array is returned.
+func (list *UnixFDList) StealFds() []int {
+	var _arg0 *C.GUnixFDList // out
+	var _cret *C.gint        // in
+	var _arg1 C.gint         // in
+
+	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(list.Native()))
+
+	_cret = C.g_unix_fd_list_steal_fds(_arg0, &_arg1)
+	runtime.KeepAlive(list)
+
+	var _gints []int // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_gints = make([]int, _arg1)
+	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1))
+
+	return _gints
+}

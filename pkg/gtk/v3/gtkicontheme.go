@@ -207,10 +207,9 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _ok bool            // out
 
 	if _arg1 != nil {
-		_points = unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2)
-		runtime.SetFinalizer(&_points, func(v *[]gdk.Point) {
-			C.free(unsafe.Pointer(&(*v)[0]))
-		})
+		defer C.free(unsafe.Pointer(_arg1))
+		_points = make([]gdk.Point, _arg2)
+		copy(_points, unsafe.Slice((*gdk.Point)(unsafe.Pointer(_arg1)), _arg2))
 	}
 	if _cret != 0 {
 		_ok = true

@@ -630,8 +630,13 @@ func StockAdd(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	if len(items) > 0 {
-		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.ulong(len(items)) * C.ulong(C.sizeof_GtkStockItem)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
+		for i := range items {
+			out[i] = *(*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer((&items[i]))))
+		}
 	}
 
 	C.gtk_stock_add(_arg1, _arg2)
@@ -647,8 +652,13 @@ func StockAddStatic(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = (C.guint)(len(items))
-	if len(items) > 0 {
-		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	_arg1 = (*C.GtkStockItem)(C.malloc(C.ulong(len(items)) * C.ulong(C.sizeof_GtkStockItem)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
+		for i := range items {
+			out[i] = *(*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer((&items[i]))))
+		}
 	}
 
 	C.gtk_stock_add_static(_arg1, _arg2)

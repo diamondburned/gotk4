@@ -249,8 +249,13 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(vectors))
-	if len(vectors) > 0 {
-		_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_graphene_vec3_t)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.graphene_vec3_t)(_arg2), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
 	}
 	if center != nil {
 		_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(center)))

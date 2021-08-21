@@ -287,7 +287,12 @@ func (r *Rect) Vertices() [4]Vec2 {
 
 	var _vertices [4]Vec2 // out
 
-	_vertices = *(*[4]Vec2)(unsafe.Pointer(&_arg1))
+	{
+		src := &_arg1
+		for i := 0; i < 4; i++ {
+			_vertices[i] = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _vertices
 }

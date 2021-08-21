@@ -186,10 +186,9 @@ func (coverage *Coverage) ToBytes() []byte {
 
 	var _bytes []byte // out
 
-	_bytes = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_bytes, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_bytes = make([]byte, _arg2)
+	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _bytes
 }

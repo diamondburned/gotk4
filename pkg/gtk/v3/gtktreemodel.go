@@ -1324,6 +1324,28 @@ func (path *TreePath) Depth() int {
 	return _gint
 }
 
+// Indices returns the current indices of path.
+//
+// This is an array of integers, each representing a node in a tree. It also
+// returns the number of elements in the array. The array should not be freed.
+func (path *TreePath) Indices() []int {
+	var _arg0 *C.GtkTreePath // out
+	var _cret *C.gint        // in
+	var _arg1 C.gint         // in
+
+	_arg0 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
+
+	_cret = C.gtk_tree_path_get_indices_with_depth(_arg0, &_arg1)
+	runtime.KeepAlive(path)
+
+	var _gints []int // out
+
+	_gints = make([]int, _arg1)
+	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1))
+
+	return _gints
+}
+
 // IsAncestor returns TRUE if descendant is a descendant of path.
 func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 	var _arg0 *C.GtkTreePath // out

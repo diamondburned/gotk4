@@ -2986,6 +2986,35 @@ func (message *DBusMessage) SetUnixFdList(fdList *UnixFDList) {
 	runtime.KeepAlive(fdList)
 }
 
+// ToBlob serializes message to a blob. The byte order returned by
+// g_dbus_message_get_byte_order() will be used.
+func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, error) {
+	var _arg0 *C.GDBusMessage        // out
+	var _arg2 C.GDBusCapabilityFlags // out
+	var _cret *C.guchar              // in
+	var _arg1 C.gsize                // in
+	var _cerr *C.GError              // in
+
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg2 = C.GDBusCapabilityFlags(capabilities)
+
+	_cret = C.g_dbus_message_to_blob(_arg0, &_arg1, _arg2, &_cerr)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(capabilities)
+
+	var _guint8s []byte // out
+	var _goerr error    // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _guint8s, _goerr
+}
+
 // ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
 // and returns FALSE.
 //

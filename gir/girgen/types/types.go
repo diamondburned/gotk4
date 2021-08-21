@@ -381,9 +381,11 @@ func GuessParameterOutput(param *gir.Parameter) string {
 
 	// GIR is fucking miserable. Why can't they get these properly?
 	if param.Doc != nil && strings.HasPrefix(param.Doc.String, "Return location") {
+		param.Direction = "out"
 		return "out"
 	}
 
 	// default
+	param.Direction = "in"
 	return "in"
 }

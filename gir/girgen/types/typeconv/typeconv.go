@@ -2,7 +2,6 @@
 package typeconv
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -57,32 +56,16 @@ func NewConverter(
 		}
 	}
 
-	// isSameDirection checks that the parameter at the given index has the same
-	// direction. In some cases like g_main_context_query, the output parameter
-	// type is handled weirdly with an opposite direction length input, and
-	// there's no good way to handle that in Go, so we skip.
-	isSameDirection := func(of *ConversionValue, at int) bool {
-		if value := conv.param(at); value != nil {
-			return value.ParameterAttrs.Direction == of.ParameterAttrs.Direction
-		}
-		return true
-	}
-
-	for _, value := range values {
+	for _, value := range conv.Results {
 		// Ensure the direction is valid.
 		if value.Direction == 0 {
-			conv.Logln(logger.Error,
-				"value", value.InName, "->", value.OutName, "has invalid direction")
+			value.Logln(logger.Error, "invalid direction")
 			return nil
 		}
 
-		isOutParam := value.ParameterIndex > -1 && value.ParameterAttrs.Direction == "out"
-		if isOutParam && !types.AnyTypeIsPtr(value.AnyType) {
-
+		if value.ParameterAttrs.Direction == "out" && !types.AnyTypeIsPtr(value.AnyType) {
 			// Output direction but not pointer parameter is invalid; bail.
-			conv.Logln(logger.Error,
-				fmt.Sprintf("%s (C.%s):", parent.Name(), parent.CType()),
-				"value type", types.AnyTypeC(value.AnyType), "is output but no ptr")
+			value.Logln(logger.Error, "is output but no ptr")
 			return nil
 		}
 
@@ -97,11 +80,7 @@ func NewConverter(
 		}
 
 		if value.AnyType.Array != nil && value.AnyType.Array.Length != nil {
-			if !isSameDirection(&value, *value.AnyType.Array.Length) {
-				return nil
-			}
-
-			skip(*value.AnyType.Array.Length)
+			skip(*value.Array.Length)
 		}
 	}
 

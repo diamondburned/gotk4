@@ -526,33 +526,36 @@ func (channel *IOChannel) Init() {
 	runtime.KeepAlive(channel)
 }
 
-// Read reads data from a OChannel.
-//
-// Deprecated: Use g_io_channel_read_chars() instead.
-func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError {
+// ReadChars: replacement for g_io_channel_read() with the new API.
+func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
-	var _arg2 C.gsize       // out
-	var _arg3 *C.gsize      // out
-	var _cret C.GIOError    // in
+	var _arg2 C.gsize
+	var _arg3 C.gsize     // in
+	var _cret C.GIOStatus // in
+	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gsize(count)
-	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
+	_arg2 = (C.gsize)(len(buf))
+	if len(buf) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
+	}
 
-	_cret = C.g_io_channel_read(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.g_io_channel_read_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(channel)
 	runtime.KeepAlive(buf)
-	runtime.KeepAlive(count)
-	runtime.KeepAlive(bytesRead)
 
-	var _ioError IOError // out
+	var _bytesRead uint    // out
+	var _ioStatus IOStatus // out
+	var _goerr error       // out
 
-	_ioError = IOError(_cret)
+	_bytesRead = uint(_arg3)
+	_ioStatus = IOStatus(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
 
-	return _ioError
+	return _bytesRead, _ioStatus, _goerr
 }
 
 // ReadLine reads a line, including the terminating character(s), from a
@@ -606,10 +609,9 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_strReturn = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_strReturn, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_strReturn = make([]byte, _arg2)
+	copy(_strReturn, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 	_ioStatus = IOStatus(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

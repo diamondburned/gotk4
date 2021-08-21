@@ -45,10 +45,9 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
 		},
 	)
-	data = unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4)
-	runtime.SetFinalizer(&data, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(arg3))
+	data = make([]byte, arg4)
+	copy(data, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
 	if arg5 != 0 {
 		createTags = true
 	}

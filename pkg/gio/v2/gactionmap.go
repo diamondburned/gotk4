@@ -7,6 +7,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -154,8 +155,13 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 
 	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
 	_arg2 = (C.gint)(len(entries))
-	if len(entries) > 0 {
-		_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg1 = (*C.GActionEntry)(C.malloc(C.ulong(len(entries)) * C.ulong(C.sizeof_GActionEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GActionEntry)(_arg1), len(entries))
+		for i := range entries {
+			out[i] = *(*C.GActionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+		}
 	}
 	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
 

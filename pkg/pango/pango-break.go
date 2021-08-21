@@ -32,8 +32,13 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg5 = (C.int)(len(attrs))
-	if len(attrs) > 0 {
-		_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
+	_arg4 = (*C.PangoLogAttr)(C.malloc(C.ulong(len(attrs)) * C.ulong(C.sizeof_PangoLogAttr)))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.PangoLogAttr)(_arg4), len(attrs))
+		for i := range attrs {
+			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&attrs[i]))))
+		}
 	}
 
 	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -128,8 +133,13 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	_arg3 = C.int(level)
 	_arg4 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg6 = (C.int)(len(logAttrs))
-	if len(logAttrs) > 0 {
-		_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+	_arg5 = (*C.PangoLogAttr)(C.malloc(C.ulong(len(logAttrs)) * C.ulong(C.sizeof_PangoLogAttr)))
+	defer C.free(unsafe.Pointer(_arg5))
+	{
+		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
+		for i := range logAttrs {
+			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&logAttrs[i]))))
+		}
 	}
 
 	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -160,8 +170,13 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(offset)
 	_arg6 = (C.int)(len(logAttrs))
-	if len(logAttrs) > 0 {
-		_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+	_arg5 = (*C.PangoLogAttr)(C.malloc(C.ulong(len(logAttrs)) * C.ulong(C.sizeof_PangoLogAttr)))
+	defer C.free(unsafe.Pointer(_arg5))
+	{
+		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
+		for i := range logAttrs {
+			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&logAttrs[i]))))
+		}
 	}
 
 	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

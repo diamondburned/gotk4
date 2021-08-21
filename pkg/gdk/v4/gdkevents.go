@@ -728,6 +728,9 @@ type Eventer interface {
 	EventSequence() *EventSequence
 	// EventType retrieves the type of the event.
 	EventType() EventType
+	// History retrieves the history of the device that event is for, as a list
+	// of time and coordinates.
+	History() []TimeCoord
 	// ModifierState returns the modifier state field of an event.
 	ModifierState() ModifierType
 	// PointerEmulated returns whether this event is an 'emulated' pointer
@@ -911,6 +914,40 @@ func (event *Event) EventType() EventType {
 	_eventType = EventType(_cret)
 
 	return _eventType
+}
+
+// History retrieves the history of the device that event is for, as a list of
+// time and coordinates.
+//
+// The history includes positions that are not delivered as separate events to
+// the application because they occurred in the same frame as event.
+//
+// Note that only motion and scroll events record history, and motion events do
+// it only if one of the mouse buttons is down.
+func (event *Event) History() []TimeCoord {
+	var _arg0 *C.GdkEvent     // out
+	var _cret *C.GdkTimeCoord // in
+	var _arg1 C.guint         // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+
+	_cret = C.gdk_event_get_history(_arg0, &_arg1)
+	runtime.KeepAlive(event)
+
+	var _timeCoords []TimeCoord // out
+
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			src := unsafe.Slice(_cret, _arg1)
+			_timeCoords = make([]TimeCoord, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_timeCoords[i] = *(*TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			}
+		}
+	}
+
+	return _timeCoords
 }
 
 // ModifierState returns the modifier state field of an event.

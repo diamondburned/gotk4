@@ -129,6 +129,27 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib
 	return _ret
 }
 
+// TestListAllTypes: return the type ids that have been registered after calling
+// gtk_test_register_all_types().
+func TestListAllTypes() []externglib.Type {
+	var _cret *C.GType // in
+	var _arg1 C.guint  // in
+
+	_cret = C.gtk_test_list_all_types(&_arg1)
+
+	var _gTypes []externglib.Type // out
+
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_gTypes = make([]externglib.Type, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = externglib.Type(src[i])
+		}
+	}
+
+	return _gTypes
+}
+
 // TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
 // types. This allowes to refer to any of those object types via
 // g_type_from_name() after calling this function.

@@ -644,6 +644,33 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bo
 	return _appExec, _count, _time_, _ok
 }
 
+// Applications retrieves the list of applications that have registered this
+// resource.
+func (info *RecentInfo) Applications() []string {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret **C.gchar        // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_cret = C.gtk_recent_info_get_applications(_arg0, &_arg1)
+	runtime.KeepAlive(info)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
 // Description gets the (short) description of the resource.
 func (info *RecentInfo) Description() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -696,6 +723,34 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 	}
 
 	return _icon
+}
+
+// Groups returns all groups registered for the recently used item info. The
+// array of returned group names will be NULL terminated, so length might
+// optionally be NULL.
+func (info *RecentInfo) Groups() []string {
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret **C.gchar        // in
+	var _arg1 C.gsize          // in
+
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_cret = C.gtk_recent_info_get_groups(_arg0, &_arg1)
+	runtime.KeepAlive(info)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
 }
 
 // Icon retrieves the icon of size size associated to the resource MIME type.

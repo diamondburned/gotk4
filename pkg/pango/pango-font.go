@@ -759,10 +759,9 @@ func (face *FontFace) ListSizes() []int {
 	var _sizes []int // out
 
 	if _arg1 != nil {
-		_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
-		runtime.SetFinalizer(&_sizes, func(v *[]int) {
-			C.free(unsafe.Pointer(&(*v)[0]))
-		})
+		defer C.free(unsafe.Pointer(_arg1))
+		_sizes = make([]int, _arg2)
+		copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
 	}
 
 	return _sizes

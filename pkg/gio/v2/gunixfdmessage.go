@@ -139,3 +139,36 @@ func (message *UnixFDMessage) FdList() *UnixFDList {
 
 	return _unixFDList
 }
+
+// StealFds returns the array of file descriptors that is contained in this
+// object.
+//
+// After this call, the descriptors are no longer contained in message. Further
+// calls will return an empty list (unless more descriptors have been added).
+//
+// The return result of this function must be freed with g_free(). The caller is
+// also responsible for closing all of the file descriptors.
+//
+// If length is non-NULL then it is set to the number of file descriptors in the
+// returned array. The returned array is also terminated with -1.
+//
+// This function never returns NULL. In case there are no file descriptors
+// contained in message, an empty array is returned.
+func (message *UnixFDMessage) StealFds() []int {
+	var _arg0 *C.GUnixFDMessage // out
+	var _cret *C.gint           // in
+	var _arg1 C.gint            // in
+
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(message.Native()))
+
+	_cret = C.g_unix_fd_message_steal_fds(_arg0, &_arg1)
+	runtime.KeepAlive(message)
+
+	var _gints []int // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_gints = make([]int, _arg1)
+	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg1))
+
+	return _gints
+}

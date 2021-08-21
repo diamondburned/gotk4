@@ -40,8 +40,18 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	value.Resolved = inner.Resolved
 	value.NeedsNamespace = inner.NeedsNamespace
 
+	// TODO: maybe remove this. I can't remember why this is here. Maybe the
+	// edge cases done in resolveType are not applicable, or resolveType wasn't
+	// called here at all.
 	value.In.Type = types.AnyTypeCGo(value.AnyType)
-	if value.ParameterIsOutput() {
+
+	switch {
+	case value.ParameterIndex == ReturnValueIndex && value.In.Type == "*C.void":
+		// If cgoType is a *C.void return type, then turn it into an
+		// unsafe.Pointer due to a quirk in cgo. See golang/go#21878.
+		value.header.Import("unsafe")
+		value.In.Type = "unsafe.Pointer"
+	case value.ParameterIsOutput():
 		// Dereference the input type, as we'll be passing in references.
 		value.In.Type = strings.TrimPrefix(value.In.Type, "*")
 	}
@@ -68,7 +78,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		// Detect if the underlying is a compatible Go primitive type that isn't
 		// a string. If it is, then we can directly cast the fixed-size array
 		// pointer.
-		if inner.Resolved.CanCast() {
+		if inner.Resolved.CanCast(conv.fgen) {
 			value.p.Linef(
 				"%s = *(*%s)(unsafe.Pointer(&%s))",
 				value.Out.Set, value.Out.Type, value.InName)
@@ -93,6 +103,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		length := conv.convertParam(*array.Length)
 		if length == nil {
+			value.Logln(logger.Debug, "length parameter", *array.Length, "not found")
 			return false
 		}
 
@@ -103,34 +114,15 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			// Length has no outDecl.
 		}
 
-		// If we're owning the new data, then we will directly use the backing
-		// array, but we can only do this if the underlying type is a primitive,
-		// since those have equivalent Go representations. Any other types will
-		// have to be copied or otherwise converted somehow.
-		//
-		// TODO: record conversion should handle ownership: if
-		// transfer-ownership is none, then the native pointer should probably
-		// not be freed.
-		if !value.MustRealloc() && inner.Resolved.CanCast() {
-			value.header.Import("runtime")
-
-			value.p.Linef("%s = unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s)",
-				value.Out.Set, inner.Out.Type, value.InName, length.InName)
-
-			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
-			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.OutName, value.Out.Type)
-			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
-			value.p.Linef("})")
-
-			return true
-		}
+		// No realloc fast path available; setting a finalizer on a slice value
+		// is invalid.
 
 		// Make sure to free the input by the time we're done.
 		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 
-		if inner.Resolved.CanCast() {
+		if inner.Resolved.CanCast(conv.fgen) {
 			// We can cast directly, which means no conversion is needed. Use
 			// the faster built-in copy() for this.
 			value.p.Linef("%s = make(%s, %s)", value.Out.Set, value.Out.Type, length.InName)

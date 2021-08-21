@@ -203,6 +203,31 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	return _ok
 }
 
+// Data: get the byte data in the #GBytes. This data should not be modified.
+//
+// This function will always return the same pointer for a given #GBytes.
+//
+// NULL may be returned if size is 0. This is not guaranteed, as the #GBytes may
+// represent an empty string with data non-NULL and size as 0. NULL will not be
+// returned if size is non-zero.
+func (bytes *Bytes) Data() []byte {
+	var _arg0 *C.GBytes       // out
+	var _cret C.gconstpointer // in
+	var _arg1 C.gsize         // in
+
+	_arg0 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	_cret = C.g_bytes_get_data(_arg0, &_arg1)
+	runtime.KeepAlive(bytes)
+
+	var _guint8s []byte // out
+
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
+}
+
 // Size: get the size of the byte data in the #GBytes.
 //
 // This function will always return the same value for a given #GBytes.

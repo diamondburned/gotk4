@@ -804,6 +804,42 @@ func (context *MainContext) PushThreadDefault() {
 	runtime.KeepAlive(context)
 }
 
+// Query determines information necessary to poll this main loop. You should be
+// careful to pass the resulting fds array and its length n_fds as is when
+// calling g_main_context_check(), as this function relies on assumptions made
+// when the array is filled.
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (context *MainContext) Query(maxPriority int, fds []PollFD) (timeout_ int, gint int) {
+	var _arg0 *C.GMainContext // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // in
+	var _arg3 *C.GPollFD      // out
+	var _arg4 C.gint
+	var _cret C.gint // in
+
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = C.gint(maxPriority)
+	_arg4 = (C.gint)(len(fds))
+	if len(fds) > 0 {
+		_arg3 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
+	}
+
+	_cret = C.g_main_context_query(_arg0, _arg1, &_arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(maxPriority)
+	runtime.KeepAlive(fds)
+
+	var _timeout_ int // out
+	var _gint int     // out
+
+	_timeout_ = int(_arg2)
+	_gint = int(_cret)
+
+	return _timeout_, _gint
+}
+
 // Release releases ownership of a context previously acquired by this thread
 // with g_main_context_acquire(). If the context was acquired multiple times,
 // the ownership will be released only when g_main_context_release() is called

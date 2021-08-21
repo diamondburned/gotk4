@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -190,8 +191,13 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gsize)(unsafe.Pointer(quarkVolatile))
 	_arg4 = (C.guint)(len(entries))
-	if len(entries) > 0 {
-		_arg3 = (*C.GDBusErrorEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = (*C.GDBusErrorEntry)(C.malloc(C.ulong(len(entries)) * C.ulong(C.sizeof_GDBusErrorEntry)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GDBusErrorEntry)(_arg3), len(entries))
+		for i := range entries {
+			out[i] = *(*C.GDBusErrorEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+		}
 	}
 
 	C.g_dbus_error_register_error_domain(_arg1, _arg2, _arg3, _arg4)

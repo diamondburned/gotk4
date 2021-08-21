@@ -364,9 +364,16 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	{
-		var zero glib.OptionEntry
-		entries = append(entries, zero)
-		_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
+		_arg1 = (*C.GOptionEntry)(C.malloc(C.ulong(len(entries)+1) * C.ulong(C.sizeof_GOptionEntry)))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(entries)+1)
+			var zero C.GOptionEntry
+			out[len(entries)] = zero
+			for i := range entries {
+				out[i] = *(*C.GOptionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+			}
+		}
 	}
 
 	C.g_application_add_main_option_entries(_arg0, _arg1)

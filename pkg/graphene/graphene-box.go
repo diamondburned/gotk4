@@ -325,7 +325,12 @@ func (box *Box) Vertices() [8]Vec3 {
 
 	var _vertices [8]Vec3 // out
 
-	_vertices = *(*[8]Vec3)(unsafe.Pointer(&_arg1))
+	{
+		src := &_arg1
+		for i := 0; i < 8; i++ {
+			_vertices[i] = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
 
 	return _vertices
 }
@@ -462,8 +467,13 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 	_arg1 = (C.uint)(len(vectors))
-	if len(vectors) > 0 {
-		_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	_arg2 = (*C.graphene_vec3_t)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_graphene_vec3_t)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.graphene_vec3_t)(_arg2), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
 	}
 
 	_cret = C.graphene_box_init_from_vectors(_arg0, _arg1, _arg2)

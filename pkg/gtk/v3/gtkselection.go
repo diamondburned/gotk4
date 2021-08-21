@@ -99,6 +99,40 @@ func SelectionRemoveAll(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
+// TargetTableNewFromList: this function creates an TargetEntry array that
+// contains the same targets as the passed list. The returned table is newly
+// allocated and should be freed using gtk_target_table_free() when no longer
+// needed.
+func TargetTableNewFromList(list *TargetList) []TargetEntry {
+	var _arg1 *C.GtkTargetList  // out
+	var _cret *C.GtkTargetEntry // in
+	var _arg2 C.gint            // in
+
+	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	_cret = C.gtk_target_table_new_from_list(_arg1, &_arg2)
+	runtime.KeepAlive(list)
+
+	var _targetEntrys []TargetEntry // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice(_cret, _arg2)
+		_targetEntrys = make([]TargetEntry, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_targetEntrys[i] = *(*TargetEntry)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_targetEntrys[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
+				},
+			)
+		}
+	}
+
+	return _targetEntrys
+}
+
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
 //
@@ -218,8 +252,13 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _cret *C.GtkTargetList // in
 
 	_arg2 = (C.guint)(len(targets))
-	if len(targets) > 0 {
-		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
 	}
 
 	_cret = C.gtk_target_list_new(_arg1, _arg2)
@@ -289,8 +328,13 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 
 	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg2 = (C.guint)(len(targets))
-	if len(targets) > 0 {
-		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg1 = (*C.GtkTargetEntry)(C.malloc(C.ulong(len(targets)) * C.ulong(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
 	}
 
 	C.gtk_target_list_add_table(_arg0, _arg1, _arg2)

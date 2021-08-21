@@ -171,6 +171,7 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
 	// Dangerous.
+	AbsoluteFilter("GLib.IOChannel.read"),
 	AbsoluteFilter("GLib.Bytes.new_take"),
 	AbsoluteFilter("GLib.Bytes.new_static"),
 	AbsoluteFilter("GLib.Bytes.unref_to_data"),

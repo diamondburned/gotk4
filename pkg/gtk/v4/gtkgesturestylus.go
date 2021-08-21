@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
@@ -116,10 +117,20 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _backlog []gdk.TimeCoord // out
 	var _ok bool                 // out
 
-	_backlog = unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_backlog, func(v *[]gdk.TimeCoord) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		src := unsafe.Slice(_arg1, _arg2)
+		_backlog = make([]gdk.TimeCoord, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_backlog[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
 	if _cret != 0 {
 		_ok = true
 	}

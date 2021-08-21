@@ -291,3 +291,27 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 
 	return _goerr
 }
+
+// Serialize serializes a Pixdata structure into a byte stream. The byte stream
+// consists of a straightforward writeout of the Pixdata fields in network byte
+// order, plus the pixel_data bytes the structure points to.
+//
+// Deprecated: Use #GResource instead.
+func (pixdata *Pixdata) Serialize() []byte {
+	var _arg0 *C.GdkPixdata // out
+	var _cret *C.guint8     // in
+	var _arg1 C.guint       // in
+
+	_arg0 = (*C.GdkPixdata)(gextras.StructNative(unsafe.Pointer(pixdata)))
+
+	_cret = C.gdk_pixdata_serialize(_arg0, &_arg1)
+	runtime.KeepAlive(pixdata)
+
+	var _guint8s []byte // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
+
+	return _guint8s
+}

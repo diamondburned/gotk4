@@ -2885,10 +2885,9 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 		defer C.free(unsafe.Pointer(_arg4))
@@ -2959,10 +2958,9 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 		defer C.free(unsafe.Pointer(_arg4))
@@ -2997,10 +2995,9 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	if _arg4 != nil {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 		defer C.free(unsafe.Pointer(_arg4))

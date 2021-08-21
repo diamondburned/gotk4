@@ -114,9 +114,16 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 
 	if annotations != nil {
 		{
-			var zero *DBusAnnotationInfo
-			annotations = append(annotations, zero)
-			_arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(&annotations[0]))
+			_arg1 = (**C.GDBusAnnotationInfo)(C.malloc(C.ulong(len(annotations)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+			defer C.free(unsafe.Pointer(_arg1))
+			{
+				out := unsafe.Slice(_arg1, len(annotations)+1)
+				var zero *C.GDBusAnnotationInfo
+				out[len(annotations)] = zero
+				for i := range annotations {
+					out[i] = (*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(annotations[i])))
+				}
+			}
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))

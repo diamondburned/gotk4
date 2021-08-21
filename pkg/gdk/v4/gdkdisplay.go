@@ -431,16 +431,14 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _ok bool          // out
 
 	if _arg2 != nil {
-		_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
-		runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-			C.free(unsafe.Pointer(&(*v)[0]))
-		})
+		defer C.free(unsafe.Pointer(_arg2))
+		_keys = make([]KeymapKey, _arg4)
+		copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
 	}
 	if _arg3 != nil {
-		_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
-		runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
-			C.free(unsafe.Pointer(&(*v)[0]))
-		})
+		defer C.free(unsafe.Pointer(_arg3))
+		_keyvals = make([]uint, _arg4)
+		copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
 	}
 	if _cret != 0 {
 		_ok = true
@@ -481,10 +479,9 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_keys = make([]KeymapKey, _arg3)
+	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
 	if _cret != 0 {
 		_ok = true
 	}

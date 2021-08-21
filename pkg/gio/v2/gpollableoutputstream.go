@@ -309,8 +309,13 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(vectors))
-	if len(vectors) > 0 {
-		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg1 = (*C.GOutputVector)(C.malloc(C.ulong(len(vectors)) * C.ulong(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg1), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
 	}
 
 	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)

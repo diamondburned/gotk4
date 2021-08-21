@@ -115,6 +115,21 @@ func (t Type) Parent() Type {
 	return Type(C.g_type_parent(C.GType(t)))
 }
 
+// Interfaces returns the interfaces of the given type.
+func (t Type) Interfaces() []Type {
+	ifaces := t.interfaces()
+	defer C.free(unsafe.Pointer(&ifaces))
+
+	return append([]Type(nil), ifaces...)
+}
+
+func (t Type) interfaces() []Type {
+	var n C.guint
+	c := C.g_type_interfaces(C.GType(t), &n)
+
+	return unsafe.Slice((*Type)(unsafe.Pointer(c)), n)
+}
+
 // IsA is a wrapper around g_type_is_a().
 func (t Type) IsA(isAType Type) bool {
 	return gobool(C.g_type_is_a(C.GType(t), C.GType(isAType)))
@@ -848,16 +863,37 @@ func (m marshalMap) register(tm []TypeMarshaler) {
 }
 
 func (m marshalMap) lookup(v *Value) GValueMarshaler {
-	actual := v.Type()
-	if f, ok := m[actual]; ok {
+	typ := v.Type()
+
+	// Check the top-level type first.
+	if f, ok := m[typ]; ok {
 		return f
 	}
 
-	fundamental := FundamentalType(actual)
+	// Check the top level type's interface.
+	ifaces := typ.interfaces()
+	defer C.free(unsafe.Pointer(&ifaces[0]))
+
+	for _, t := range ifaces {
+		if f, ok := m[t]; ok {
+			return f
+		}
+	}
+
+	// Check the inheritance tree.
+	for t := typ.Parent(); t != 0; t = t.Parent() {
+		// Traverse the type inheritance tree.
+		if f, ok := m[t]; ok {
+			return f
+		}
+	}
+
+	fundamental := FundamentalType(typ)
 	if f, ok := m[fundamental]; ok {
 		return f
 	}
 
+	log.Printf("gotk4: missing marshaler for type %s (i.e. %s)", v.Type(), fundamental)
 	return nil
 }
 
@@ -988,6 +1024,7 @@ func (v *Value) GoValue() interface{} {
 	g, err := f(uintptr(unsafe.Pointer(v.native())))
 	runtime.KeepAlive(v)
 	if err != nil {
+		log.Printf("gotk4: marshaler error for %s: %v", v.Type(), err)
 		return InvalidValue
 	}
 

@@ -118,16 +118,24 @@ func (t Type) Parent() Type {
 // Interfaces returns the interfaces of the given type.
 func (t Type) Interfaces() []Type {
 	ifaces := t.interfaces()
-	defer C.free(unsafe.Pointer(&ifaces))
+	if len(ifaces) > 0 {
+		defer C.free(unsafe.Pointer(&ifaces[0]))
+		return append([]Type(nil), ifaces...)
+	}
 
-	return append([]Type(nil), ifaces...)
+	return nil
 }
 
 func (t Type) interfaces() []Type {
 	var n C.guint
 	c := C.g_type_interfaces(C.GType(t), &n)
 
-	return unsafe.Slice((*Type)(unsafe.Pointer(c)), n)
+	if n > 0 {
+		return unsafe.Slice((*Type)(unsafe.Pointer(c)), n)
+	}
+
+	C.free(unsafe.Pointer(c))
+	return nil
 }
 
 // IsA is a wrapper around g_type_is_a().
@@ -862,17 +870,11 @@ func (m marshalMap) register(tm []TypeMarshaler) {
 	}
 }
 
-func (m marshalMap) lookup(v *Value) GValueMarshaler {
-	typ := v.Type()
-
-	// Check the top-level type first.
-	if f, ok := m[typ]; ok {
-		return f
+func (m marshalMap) lookupIfaces(t Type) GValueMarshaler {
+	ifaces := t.interfaces()
+	if len(ifaces) > 0 {
+		defer C.free(unsafe.Pointer(&ifaces[0]))
 	}
-
-	// Check the top level type's interface.
-	ifaces := typ.interfaces()
-	defer C.free(unsafe.Pointer(&ifaces[0]))
 
 	for _, t := range ifaces {
 		if f, ok := m[t]; ok {
@@ -880,10 +882,21 @@ func (m marshalMap) lookup(v *Value) GValueMarshaler {
 		}
 	}
 
+	return nil
+}
+
+func (m marshalMap) lookup(v *Value) GValueMarshaler {
+	typ := v.Type()
+
 	// Check the inheritance tree.
-	for t := typ.Parent(); t != 0; t = t.Parent() {
+	for t := typ; t != 0; t = t.Parent() {
 		// Traverse the type inheritance tree.
 		if f, ok := m[t]; ok {
+			return f
+		}
+
+		// Check the top level type's interface.
+		if f := m.lookupIfaces(t); f != nil {
 			return f
 		}
 	}

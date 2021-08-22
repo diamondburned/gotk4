@@ -14,7 +14,7 @@
     "timeout": "10m",
     "only": {
       "variables": [
-        "CACHIX_AUTH_TOKEN",
+        "$CACHIX_AUTH_TOKEN",
       ],
       "changes": [
         ".nix",
@@ -35,8 +35,8 @@
     "timeout": "30m",
     "only": {
       "variables": [
-        "DOCKER_USERNAME",
-        "DOCKER_PASSWORD",
+        "$DOCKER_USERNAME",
+        "$DOCKER_PASSWORD",
       ],
       "changes": [
         ".nix",

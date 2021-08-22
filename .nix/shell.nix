@@ -16,8 +16,10 @@ let minitime = pkgs.writeShellScriptBin "minitime"
 		nix-build shell.nix -A inputDerivation | ${cachix}/bin/cachix push gotk4
 	'';
 
-in pkgs.mkShell {
+in pkgs.stdenv.mkDerivation {
 	name = "gotk4-shell";
+	phases = [ "noopPhase" ];
+	noopPhase = ":";
 
 	# Runtime dependencies.
 	buildInputs = with pkgs; [

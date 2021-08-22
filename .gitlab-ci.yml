@@ -1,21 +1,69 @@
 {
   "image": "nixpkgs/nix",
   "stages": [
-    "generation_stage",
-    "build_stage",
+    "dev_env",
+    "generation",
+    "build",
   ],
+  "before_script": [
+    # Check for nix-env, since we might be executing in the Docker stage.
+    "command -v nix-env && { nix-env -f .nix/pkgs.nix -i cachix && cachix use gotk4; }",
+  ],
+  "cachix": {
+    "stage": "dev_env",
+    "timeout": "10m",
+    "only": {
+      "variables": [
+        "CACHIX_AUTH_TOKEN",
+      ],
+      "changes": [
+        ".nix",
+        "shell.nix",
+      ],
+    },
+    "script": [
+      # Build everything (including the patched Go) and upload it to Cachix.
+      "nix-shell --run publish-cachix",
+    ],
+  },
+  "docker": {
+    "image": "docker:latest",
+    "services": [ "docker:dind" ],
+    "stage": "dev_env",
+    # Use the Cachix-uploaded files to build the Docker image.
+    "needs": ["cachix"],
+    "timeout": "30m",
+    "only": {
+      "variables": [
+        "DOCKER_USERNAME",
+        "DOCKER_PASSWORD",
+      ],
+      "changes": [
+        ".nix",
+        "shell.nix",
+        "Dockerfile",
+      ],
+    },
+    "script": [
+      "docker build -t diamondburned/gotk4 .",
+      "docker push diamondburned/gotk4",
+    ],
+  },
   "generate": {
-    "stage": "generation_stage",
+    "image": "nixpkgs/nix",
+    "needs": ["cachix"],
+    "stage": "generation",
     "timeout": "5m",
     "script": [
-      "nix-shell --run 'go generate'",
-      "[[ $(git status --porcelain) ]] && echo 'Mismatching output.' && exit 1"
-    ]
+      "go generate",
+      "[[ $(git status --porcelain) ]] && echo 'Mismatching output.' && exit 1",
+    ],
   },
   "build": {
-    "stage": "build_stage",
+    "image": "nixpkgs/nix",
+    "stage": "build",
     "script": [
-      "nix-shell --run 'cd pkg && go build -v ./...'"
-    ]
-  }
+      "cd pkg && go build -v ./...",
+    ],
+  },
 }

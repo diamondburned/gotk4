@@ -12,6 +12,10 @@ let minitime = pkgs.writeShellScriptBin "minitime"
 		go build -v ./...
 	'';
 
+	publishCachix = with pkgs; writeShellScriptBin "publish-cachix" ''
+		nix-build shell.nix -A inputDerivation | ${cachix}/bin/cachix push gotk4
+	'';
+
 in pkgs.mkShell {
 	name = "gotk4-shell";
 
@@ -36,6 +40,8 @@ in pkgs.mkShell {
 		minitime
 		generate
 		build
+		cachix
+		publishCachix
 	];
 
 	CGO_ENABLED = "1";

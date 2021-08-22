@@ -26,8 +26,5 @@ let env = pkgs.writeShellScriptBin "docker-env" ''
 
 in pkgs.buildEnv {
 	name  = "gotk4-docker-env";
-	paths = [ env ] ++ (with pkgs.stdenv; [
-		cc
-		shellPackage
-	]);
+	paths = [ env ];
 }

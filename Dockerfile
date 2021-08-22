@@ -6,6 +6,10 @@ WORKDIR /gotk4
 COPY .nix .nix
 COPY shell.nix shell.nix
 
+# Prepare Cachix.
+RUN nix-env -f .nix/pkgs.nix -i cachix
+RUN /root/.nix-profile/bin/cachix use gotk4
+
 # Prepare docker-env.
 RUN nix-env -i -f .nix/docker-env.nix
 

@@ -51,7 +51,6 @@
   },
   "generate": {
     "image": "nixpkgs/nix",
-    "needs": ["cachix"],
     "stage": "generation",
     "timeout": "5m",
     "script": [

@@ -1,14 +1,23 @@
 { pkgs ? (import ./pkgs.nix {}) }:
 
 # minitime is a mini-output time wrapper.
-let minitime = pkgs.writeShellScriptBin
-	"minitime"
-	"command time --format $'%C -> %es\\n' \"$@\"";
+let minitime = pkgs.writeShellScriptBin "minitime"
+		"command time --format $'%C -> %es\\n' \"$@\"";
+
+	generate = pkgs.writeShellScriptBin "generate"
+		"go generate";
+
+	build = pkgs.writeShellScriptBin "build" ''
+		cd pkg
+		go build -v ./...
+	'';
 
 in pkgs.mkShell {
-	# The build inputs, which contains dependencies needed during generation
-	# time, build time and runtime.
+	name = "gotk4-shell";
+
+	# Runtime dependencies.
 	buildInputs = with pkgs; [
+		# Runtime dependencies.
 		gobjectIntrospection
 		glib
 		graphene
@@ -18,12 +27,15 @@ in pkgs.mkShell {
 		vulkan-headers
 	];
 
-	# The native build inputs, which contains dependencies only needed during
-	# generation time and build time.
 	nativeBuildInputs = with pkgs; [
+		# Build dependencies.
 		pkgconfig
 		go
+
+		# Tools.
 		minitime
+		generate
+		build
 	];
 
 	CGO_ENABLED = "1";

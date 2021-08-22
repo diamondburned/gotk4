@@ -33,17 +33,17 @@
     # Use the Cachix-uploaded files to build the Docker image.
     "needs": ["cachix"],
     "timeout": "30m",
-    "only": {
-      "variables": [
-        "$DOCKER_USERNAME",
-        "$DOCKER_PASSWORD",
-      ],
-      "changes": [
-        ".nix",
-        "shell.nix",
-        "Dockerfile",
-      ],
-    },
+    # "only": {
+    #   "variables": [
+    #     "$DOCKER_USERNAME",
+    #     "$DOCKER_PASSWORD",
+    #   ],
+    #   "changes": [
+    #     ".nix",
+    #     "shell.nix",
+    #     "Dockerfile",
+    #   ],
+    # },
     "script": [
       "docker build -t diamondburned/gotk4 .",
       "docker push diamondburned/gotk4",

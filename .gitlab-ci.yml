@@ -1,7 +1,8 @@
 {
   "image": "nixpkgs/nix",
   "stages": [
-    "dev_env",
+    "nix",
+    "docker",
     "generation",
     "build",
   ],
@@ -10,7 +11,7 @@
     "command -v nix-env && { nix-env -f .nix/pkgs.nix -i cachix && cachix use gotk4; }",
   ],
   "cachix": {
-    "stage": "dev_env",
+    "stage": "nix",
     "timeout": "10m",
     "only": {
       "variables": [
@@ -27,11 +28,9 @@
     ],
   },
   "docker": {
+    "stage": "docker",
     "image": "docker:latest",
     "services": [ "docker:dind" ],
-    "stage": "dev_env",
-    # Use the Cachix-uploaded files to build the Docker image.
-    "needs": ["cachix"],
     "timeout": "30m",
     # "only": {
     #   "variables": [

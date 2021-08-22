@@ -9,9 +9,8 @@ outputs are easily reproducible to the exact line of code.
 [nix]: https://nixos.org/guides/how-nix-works.html
 
 However, this also means that contributors are strongly recommended to have Nix
-on their machine, similar to how other projects use Docker for development,
-except Nix is a lot more lightweight. This helps ensure that pull requests to
-the repository have consistent versioning and outputs, and that nothing has been
+or Docker on their machine. This helps ensure that pull requests to the
+repository have consistent versioning and outputs, and that nothing has been
 changed where they don't have to be.
 
 ### Using Nix for development
@@ -32,7 +31,30 @@ This will drop the user into a new shell with Go, GLib libraries and more, and
 all those dependencies will be versioned in a constant fashion as pinned in the
 shell.nix file.
 
-### Updating Nixpkgs
+### Using Docker for development
+
+A small Dockerfile is provided for developers who don't have Nix installed, but
+do have Docker running. The Docker environment will contain everything that the
+Nix environment does, including reproducible, pinned inputs.
+
+To build the Dockerfile and regenerate the repository using it, do:
+
+```sh
+docker build -t gotk4 .
+docker run --rm --volume "$PWD:/gotk4/" -u "$(id -u):$(id -g)" gotk4 generate
+```
+
+To build the generated packages, run:
+
+```sh
+docker run --rm --volume "$PWD:/gotk4/" -u "$(id -u):$(id -g)" gotk4 build
+```
+
+If neither `generate` nor `build` is provided, then the `-it` flag could be
+added for Docker to successfully drop the user into a Bash shell with the right
+environments.
+
+## Updating Nixpkgs
 
 In case a new release of something is added to Nixpkgs Unstable, for example, a
 new Go version, then the `rev` and `sha256` of the `unstable` variable inside

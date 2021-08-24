@@ -847,6 +847,22 @@ type point struct {
 	native *C.GdkPoint
 }
 
+// NewPoint creates a new Point instance from the given
+// fields.
+func NewPoint(x, y int) Point {
+	var f0 C.gint // out
+	f0 = C.gint(x)
+	var f1 C.gint // out
+	f1 = C.gint(y)
+
+	v := C.GdkPoint{
+		x: f0,
+		y: f1,
+	}
+
+	return *(*Point)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // X: x coordinate of the point.
 func (p *Point) X() int {
 	var v int // out
@@ -877,6 +893,28 @@ type rectangle struct {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return &Rectangle{&rectangle{(*C.GdkRectangle)(unsafe.Pointer(b))}}, nil
+}
+
+// NewRectangle creates a new Rectangle instance from the given
+// fields.
+func NewRectangle(x, y, width, height int) Rectangle {
+	var f0 C.int // out
+	f0 = C.int(x)
+	var f1 C.int // out
+	f1 = C.int(y)
+	var f2 C.int // out
+	f2 = C.int(width)
+	var f3 C.int // out
+	f3 = C.int(height)
+
+	v := C.GdkRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
 func (r *Rectangle) X() int {

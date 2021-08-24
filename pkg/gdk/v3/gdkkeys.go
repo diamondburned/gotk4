@@ -564,6 +564,25 @@ type keymapKey struct {
 	native *C.GdkKeymapKey
 }
 
+// NewKeymapKey creates a new KeymapKey instance from the given
+// fields.
+func NewKeymapKey(keycode uint, group, level int) KeymapKey {
+	var f0 C.guint // out
+	f0 = C.guint(keycode)
+	var f1 C.gint // out
+	f1 = C.gint(group)
+	var f2 C.gint // out
+	f2 = C.gint(level)
+
+	v := C.GdkKeymapKey{
+		keycode: f0,
+		group:   f1,
+		level:   f2,
+	}
+
+	return *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Keycode: hardware keycode. This is an identifying number for a physical key.
 func (k *KeymapKey) Keycode() uint {
 	var v uint // out

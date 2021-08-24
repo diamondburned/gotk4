@@ -42,6 +42,28 @@ func marshalColor(p uintptr) (interface{}, error) {
 	return &Color{&color{(*C.GdkColor)(unsafe.Pointer(b))}}, nil
 }
 
+// NewColor creates a new Color instance from the given
+// fields.
+func NewColor(pixel uint32, red, green, blue uint16) Color {
+	var f0 C.guint32 // out
+	f0 = C.guint32(pixel)
+	var f1 C.guint16 // out
+	f1 = C.guint16(red)
+	var f2 C.guint16 // out
+	f2 = C.guint16(green)
+	var f3 C.guint16 // out
+	f3 = C.guint16(blue)
+
+	v := C.GdkColor{
+		pixel: f0,
+		red:   f1,
+		green: f2,
+		blue:  f3,
+	}
+
+	return *(*Color)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Pixel: for allocated colors, the pixel value used to draw this color on the
 // screen. Not used anymore.
 func (c *Color) Pixel() uint32 {

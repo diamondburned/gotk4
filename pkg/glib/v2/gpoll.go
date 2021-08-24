@@ -76,6 +76,25 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 	return &PollFD{&pollFD{(*C.GPollFD)(unsafe.Pointer(b))}}, nil
 }
 
+// NewPollFD creates a new PollFD instance from the given
+// fields.
+func NewPollFD(fd int, events, revents uint16) PollFD {
+	var f0 C.gint // out
+	f0 = C.gint(fd)
+	var f1 C.gushort // out
+	f1 = C.gushort(events)
+	var f2 C.gushort // out
+	f2 = C.gushort(revents)
+
+	v := C.GPollFD{
+		fd:      f0,
+		events:  f1,
+		revents: f2,
+	}
+
+	return *(*PollFD)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Fd: file descriptor to poll (or a HANDLE on Win32)
 func (p *PollFD) Fd() int {
 	var v int // out

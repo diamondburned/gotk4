@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -625,6 +626,28 @@ type rectangle struct {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return &Rectangle{&rectangle{(*C.AtkRectangle)(unsafe.Pointer(b))}}, nil
+}
+
+// NewRectangle creates a new Rectangle instance from the given
+// fields.
+func NewRectangle(x, y, width, height int) Rectangle {
+	var f0 C.gint // out
+	f0 = C.gint(x)
+	var f1 C.gint // out
+	f1 = C.gint(y)
+	var f2 C.gint // out
+	f2 = C.gint(width)
+	var f3 C.gint // out
+	f3 = C.gint(height)
+
+	v := C.AtkRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
 // X coordinate of the left side of the rectangle.

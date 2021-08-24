@@ -57,6 +57,12 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
+	{{ else }}
+	{{ with .ManualConstructor }}
+	// New{{ $.GoName }} creates a new {{ $.GoName }} instance from the given
+	// fields.
+	func New{{ $.GoName }}({{ .Fields }}) {{ $.GoName }} {{ .Body }}
+	{{ end }}
 	{{ end }}
 
 	{{ $recv := (FirstLetter $.GoName) }}
@@ -64,6 +70,11 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ range .Getters }}
 	{{ GoDoc . 0 }}
 	func ({{ $recv }} *{{ $.GoName }}) {{ .Name }}() {{ .Type }} {{ .Block }}
+	{{ end }}
+
+	{{ range .Setters }}
+	{{ GoDoc . 0 }}
+	func ({{ $recv }} *{{ $.GoName }}) Set{{ .Name }}({{ .Param }}) {{ .Block }}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -167,6 +178,11 @@ type RecordGenerator struct {
 	// TODO: move these out of here.
 	Methods []callable.Generator
 	Getters []recordGetter
+	Setters []recordSetter
+
+	// ManualConstructor is the body function of the manually-generated
+	// constructor. Skip if empty.
+	ManualConstructor *RecordConstructor
 
 	// TODO: make a []callableGenerator for constructors
 	Callable callable.Generator
@@ -176,12 +192,26 @@ type RecordGenerator struct {
 	gen FileGenerator
 }
 
+// RecordConstructor describes a manual record constructor.
+type RecordConstructor struct {
+	Fields string
+	Body   string // return struct value
+}
+
 type recordGetter struct {
 	InfoElements gir.InfoElements
 
 	Name  string
 	Type  string
 	Block string // assume first_letter recv
+}
+
+type recordSetter struct {
+	InfoElements gir.InfoElements
+
+	Name  string // not prefixed with Set
+	Param string
+	Block string
 }
 
 func NewRecordGenerator(gen FileGenerator) RecordGenerator {
@@ -213,8 +243,8 @@ func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 
 	rg.Record = rec
 	rg.GoName = strcases.PascalToGo(rec.Name)
-	rg.Methods = rg.methods()
-	rg.Getters = rg.getters()
+	rg.methods()
+	rg.getters()
 
 	return true
 }
@@ -235,7 +265,7 @@ func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor) bool {
 	return true
 }
 
-func (rg *RecordGenerator) methods() []callable.Generator {
+func (rg *RecordGenerator) methods() {
 	callables := callable.Grow(rg.Methods, len(rg.Record.Methods))
 
 	for i := range rg.Record.Methods {
@@ -257,15 +287,16 @@ func (rg *RecordGenerator) methods() []callable.Generator {
 	}
 
 	callable.RenameGetters("", callables)
-	return callables
+	rg.Methods = callables
 }
 
-func (rg *RecordGenerator) getters() []recordGetter {
-	getters := rg.Getters[:0]
+func (rg *RecordGenerator) getters() {
+	rg.Getters = rg.Getters[:0]
+	rg.Setters = rg.Setters[:0]
 
 	// Disguised means opaque, so we're not supposed to access these fields.
 	if rg.Disguised {
-		return getters
+		return
 	}
 
 	methodNames := make(map[string]struct{}, len(rg.Methods))
@@ -281,19 +312,40 @@ func (rg *RecordGenerator) getters() []recordGetter {
 	}
 
 	recv := strcases.FirstLetter(rg.GoName)
-	fields := make([]typeconv.ConversionValue, 0, len(rg.Fields))
+	values := make([]typeconv.ConversionValue, 0, len(rg.Fields))
+
+	// Do a constructor when the record has none.
+	willDoConstructor := len(rg.Fields) > 0 && len(rg.Record.Constructors) == 0
 
 	for _, field := range rg.Fields {
 		if ignoreField(&field) || mustIgnoreAny(rg.gen, field.AnyType) {
 			rg.Logln(logger.Debug, "skipping field", field.Name, "after ignoreField")
+			willDoConstructor = false
 			continue
 		}
 		if types.FilterField(rg.gen, rg.Name, &field) {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", field.Name)
+			willDoConstructor = false
 			continue
 		}
 
-		value := typeconv.NewFieldValue(recv, "v", field)
+		// Check type for constructor.
+		if willDoConstructor {
+			if field.Type == nil ||
+				types.GIRPrimitiveGo(field.Type.Name) == "" ||
+				types.AnyTypeIsPtr(field.AnyType) {
+
+				// Field is more than a primitive. Skip the constructor.
+				willDoConstructor = false
+			}
+		}
+
+		goField := strcases.CGoField(field.Name)
+
+		value := typeconv.NewFieldValue(
+			fmt.Sprintf("%s.native.%s", recv, goField),
+			"v", field,
+		)
 
 		// Double-check if we have a method with the existing name.
 		if fieldCollides(value.Name) {
@@ -301,37 +353,69 @@ func (rg *RecordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		fields = append(fields, value)
+		values = append(values, value)
+
+		// Generate a SetX if no methods collide with the name.
+		if field.Writable && !fieldCollides("set_"+value.Name) {
+			values = append(values, typeconv.NewFieldSetValue(
+				strcases.SnakeToGo(false, field.Name),
+				fmt.Sprintf("%s.native.%s", recv, goField),
+				field,
+			))
+		}
 	}
 
-	converter := typeconv.NewConverter(rg.gen, &rg.typ, fields)
+	converter := typeconv.NewConverter(rg.gen, &rg.typ, values)
 	converter.UseLogger(rg)
 
-	for i := range fields {
+	for i := range values {
 		converted := converter.Convert(i)
 		if converted == nil {
-			rg.Logln(logger.Skip, "record", rg.Name, "field", fields[i].Name)
+			rg.Logln(logger.Skip, "record", rg.Name, "field", values[i].Name)
+			willDoConstructor = false
 			continue
 		}
 
 		file.ApplyHeader(rg, converted)
 
-		b := pen.NewBlock()
-		b.Linef(converted.Out.Declare)
-		b.Linef(converted.Conversion)
-		b.Linef("return v")
+		info := gir.InfoElements{
+			DocElements: gir.DocElements{Doc: values[i].Doc},
+		}
 
-		getters = append(getters, recordGetter{
-			Name:  strcases.SnakeToGo(true, converted.Name),
-			Type:  converted.Out.Type,
-			Block: b.String(),
-			InfoElements: gir.InfoElements{
-				DocElements: gir.DocElements{Doc: fields[i].Doc},
-			},
-		})
+		// TODO: handle setters: we currently cannot yet do this, because we
+		// don't have the freeing code separated in typeconv. This is in the
+		// list of things to do.
+
+		switch converted.Direction {
+		case typeconv.ConvertCToGo: // getter
+			b := pen.NewBlock()
+			b.Linef(converted.Out.Declare)
+			b.Linef(converted.Conversion)
+			b.Linef("return v")
+
+			rg.Getters = append(rg.Getters, recordGetter{
+				Name:         strcases.SnakeToGo(true, converted.Name),
+				Type:         converted.Out.Type,
+				Block:        b.String(),
+				InfoElements: info,
+			})
+		}
+		// case typeconv.ConvertGoToC: // setter
+		// 	b := pen.NewBlock()
+		// 	b.Linef(converted.Conversion)
+
+		// 	rg.Setters = append(rg.Setters, recordSetter{
+		// 		Name:         strcases.SnakeToGo(true, converted.Name),
+		// 		Param:        converted.InName + " " + converted.In.Type,
+		// 		Block:        b.String(),
+		// 		InfoElements: info,
+		// 	})
+		// }
 	}
 
-	return getters
+	if willDoConstructor {
+		rg.genManualConstructor()
+	}
 }
 
 // ignoreField returns true if the given field should be ignored.
@@ -339,6 +423,63 @@ func ignoreField(field *gir.Field) bool {
 	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 	// either?) so we're not doing it.
 	return field.Private || field.Bits > 0 || !field.IsReadable()
+}
+
+func (rg *RecordGenerator) genManualConstructor() {
+	params := pen.NewJoints(", ", len(rg.Fields))
+	convts := make([]typeconv.ConversionValue, 0, len(rg.Fields))
+
+	for i, field := range rg.Fields {
+		name := strcases.SnakeToGo(false, field.Name)
+		// Try and coalesce the type, if we can.
+		param := name
+		// We can do this only if the field is not the last one and that the
+		// type matches. When either of those fails, we have to add the type.
+		if i == len(rg.Fields)-1 || field.Type.Name != rg.Fields[i+1].Type.Name {
+			param += " " + types.GIRPrimitiveGo(field.Type.Name)
+		}
+
+		params.Add(param)
+		// always Go to C.
+		convts = append(convts, typeconv.NewFieldSetValue(name, fmt.Sprintf("f%d", i), field))
+	}
+
+	conv := typeconv.NewConverter(rg.gen, &rg.typ, convts)
+	conv.UseLogger(rg)
+
+	results := conv.ConvertAll()
+	if results == nil {
+		rg.ManualConstructor = nil
+		return
+	}
+
+	p := pen.NewBlockSections(512, 512)
+	p.Linef(1, "v := C.%s{", rg.CType)
+
+	for i, result := range results {
+		if result.Direction != typeconv.ConvertGoToC {
+			continue
+		}
+
+		p.Line(0, result.Out.Declare)
+		p.Line(0, result.Conversion)
+		p.Linef(1, "%s: %s,", rg.Fields[i].Name, result.OutName)
+	}
+
+	p.Linef(1, "}")
+	p.Linef(1, "")
+
+	rg.hdr.Import("unsafe")
+	rg.hdr.ImportCore("gextras")
+
+	// No finalizers needed, since the struct is completely allocated on the Go
+	// heap.
+	p.Linef(1, "return *(*%s)(gextras.NewStructNative(unsafe.Pointer(&v)))", rg.GoName)
+
+	rg.ManualConstructor = &RecordConstructor{
+		Fields: params.Join(),
+		Body:   p.String(),
+	}
 }
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {

@@ -1,12 +1,10 @@
 package typeconv
 
 import (
-	"fmt"
 	"log"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -147,13 +145,32 @@ func NewReturnValue(in, out string, dir ConversionDirection, ret gir.ReturnValue
 	}
 }
 
+// TODO: add field index support into ParameterIndex.
+
 // NewFieldValue creates a new ConversionValue from the given C struct field.
 // The struct is assumed to have a native field.
-func NewFieldValue(recv, out string, field gir.Field) ConversionValue {
+func NewFieldValue(in, out string, field gir.Field) ConversionValue {
 	return ConversionValue{
-		InName:         fmt.Sprintf("%s.native.%s", recv, strcases.CGoField(field.Name)),
+		InName:         in,
 		OutName:        out,
 		Direction:      ConvertCToGo,
+		ParameterIndex: ReturnValueIndex,
+		ParameterAttrs: gir.ParameterAttrs{
+			Name:    field.Name,
+			Skip:    field.Private || !field.IsReadable() || field.Bits > 0,
+			AnyType: field.AnyType,
+			Doc:     field.Doc,
+		},
+	}
+}
+
+// NewFieldSetValue creates a new ConversionValue from the given C struct field
+// that converts a Go to C type.
+func NewFieldSetValue(in, out string, field gir.Field) ConversionValue {
+	return ConversionValue{
+		InName:         in,
+		OutName:        out,
+		Direction:      ConvertGoToC,
 		ParameterIndex: ReturnValueIndex,
 		ParameterAttrs: gir.ParameterAttrs{
 			Name:    field.Name,

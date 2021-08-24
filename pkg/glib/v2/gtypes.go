@@ -184,6 +184,22 @@ type timeVal struct {
 	native *C.GTimeVal
 }
 
+// NewTimeVal creates a new TimeVal instance from the given
+// fields.
+func NewTimeVal(tvSec, tvUsec int32) TimeVal {
+	var f0 C.glong // out
+	f0 = C.glong(tvSec)
+	var f1 C.glong // out
+	f1 = C.glong(tvUsec)
+
+	v := C.GTimeVal{
+		tv_sec:  f0,
+		tv_usec: f1,
+	}
+
+	return *(*TimeVal)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // TvSec: seconds
 func (t *TimeVal) TvSec() int32 {
 	var v int32 // out

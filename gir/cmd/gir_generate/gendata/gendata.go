@@ -102,6 +102,8 @@ var Preprocessors = []Preprocessor{
 	RenameEnumMembers("Pango-1.AttrType", "ATTR_(.*)", "ATTR_TYPE_$1"),
 	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),
 	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
+	// See #28.
+	RemoveCIncludes("Gio-2.0.gir", "gio/gdesktopappinfo.h"),
 
 	ModifyParamDirections("Gio-2.InputStream.read", map[string]string{
 		"buffer": "in",

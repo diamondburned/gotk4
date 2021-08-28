@@ -37,6 +37,31 @@ func (f PreprocessorFunc) Preprocess(repos gir.Repositories) {
 	f(repos)
 }
 
+// RemoveCIncludes removes the given C includes from the given repository.
+func RemoveCIncludes(girFile string, cincls ...string) Preprocessor {
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		repo := repos.FromGIRFile(girFile)
+		if repo == nil {
+			log.Printf("RemoveCIncludes: gir file %s not found", girFile)
+			return
+		}
+
+		cIncludes := repo.CIncludes[:0]
+
+	findCIncl:
+		for _, cincl := range repo.CIncludes {
+			for _, remove := range cincls {
+				if remove == cincl.Name {
+					continue findCIncl
+				}
+			}
+			cIncludes = append(cIncludes, cincl)
+		}
+
+		repo.CIncludes = cIncludes
+	})
+}
+
 func girTypeMustBeVersioned(girType string) {
 	namespace, _ := gir.SplitGIRType(girType)
 

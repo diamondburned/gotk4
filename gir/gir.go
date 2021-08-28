@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -207,6 +208,16 @@ func (repos *Repositories) add(r Repository, pkg, path string) error {
 		Path:       path,
 	})
 
+	return nil
+}
+
+// FromGIRFile finds the repository from the given GIR filename.
+func (repos Repositories) FromGIRFile(girFile string) *PkgRepository {
+	for i, repo := range repos {
+		if filepath.Base(repo.Path) == girFile {
+			return &repos[i]
+		}
+	}
 	return nil
 }
 

@@ -210,7 +210,7 @@ func goMarshal(
 	// Fill beginning of args, up to the minimum of the total number of callback
 	// parameters and parameters from the glib runtime.
 	for i := 0; i < nCbParams && i < nGLibParams; i++ {
-		v := (*Value)(unsafe.Pointer(&gValues[i]))
+		v := &Value{&value{&gValues[i]}}
 		val := v.GoValue()
 
 		// Parameters that are descendants of GObject come wrapped in another
@@ -241,7 +241,7 @@ func goMarshal(
 		if !ok {
 			fs.Panicf(
 				"failed to transform return value from %s to %s",
-				gv.Type(), (*Value)(unsafe.Pointer(retValue)).Type())
+				gv.Type(), (&Value{&value{retValue}}).Type())
 		}
 	}
 }

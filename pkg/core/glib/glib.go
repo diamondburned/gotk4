@@ -4,6 +4,7 @@ package glib
 // #cgo pkg-config: gio-2.0 glib-2.0 gobject-2.0
 // #include <gio/gio.h>
 // #include <stdlib.h>
+// #include <stdint.h>
 // #include <glib.h>
 // #include <glib-object.h>
 // #include "glib.go.h"
@@ -22,11 +23,17 @@ import (
 )
 
 func init() {
-	if unsafe.Sizeof(C.int) != 4 {
+	if C.sizeof_int != 4 {
 		panic("sizeof(C.int) != 4")
 	}
-	if unsafe.Sizeof(C.uint) != 4 {
+	if C.sizeof_uint != 4 {
 		panic("sizeof(C.uint) != 4")
+	}
+	if C.sizeof_gint != 4 {
+		panic("sizeof(C.gint) != 4")
+	}
+	if C.sizeof_guint != 4 {
+		panic("sizeof(C.guint) != 4")
 	}
 }
 

@@ -139,7 +139,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 }
 
 // Hash: hash function suitable for using for a hash table that stores RGBAs.
-func (p *RGBA) Hash() uint {
+func (p *RGBA) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -148,9 +148,9 @@ func (p *RGBA) Hash() uint {
 	_cret = C.gdk_rgba_hash(_arg0)
 	runtime.KeepAlive(p)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

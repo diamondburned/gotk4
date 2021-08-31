@@ -48,7 +48,7 @@ func IsZeroWidth(ch uint32) bool {
 // g_free().
 //
 // Deprecated: since version 1.38.
-func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
+func ParseEnum(typ externglib.Type, str string, warn bool) (int32, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
 	var _arg3 C.int      // in
@@ -70,11 +70,11 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
-	var _value int             // out
+	var _value int32           // out
 	var _possibleValues string // out
 	var _ok bool               // out
 
-	_value = int(_arg3)
+	_value = int32(_arg3)
 	if _arg5 != nil {
 		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -273,14 +273,14 @@ func TrimString(str string) string {
 // This is similar to the macro PANGO_VERSION except that the macro returns the
 // encoded version available at compile-time. A version number can be encoded
 // into an integer using PANGO_VERSION_ENCODE().
-func Version() int {
+func Version() int32 {
 	var _cret C.int // in
 
 	_cret = C.pango_version()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -301,7 +301,7 @@ func Version() int {
 // required_major.required_minor.required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
-func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
+func VersionCheck(requiredMajor int32, requiredMinor int32, requiredMicro int32) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
 	var _arg3 C.int   // out

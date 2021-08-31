@@ -227,7 +227,7 @@ func TextAttributeGetName(attr TextAttribute) string {
 }
 
 // TextAttributeGetValue gets the value for the index of the TextAttribute
-func TextAttributeGetValue(attr TextAttribute, index_ int) string {
+func TextAttributeGetValue(attr TextAttribute, index_ int32) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _arg2 C.gint             // out
 	var _cret *C.gchar           // in
@@ -409,34 +409,34 @@ func (t TextGranularity) String() string {
 // yet, so the interface currently has no use.
 type TextOverrider interface {
 	// AddSelection adds a selection bounded by the specified offsets.
-	AddSelection(startOffset int, endOffset int) bool
+	AddSelection(startOffset int32, endOffset int32) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.
 	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
-	CaretOffset() int
+	CaretOffset() int32
 	// CharacterAtOffset gets the specified text.
-	CharacterAtOffset(offset int) uint32
+	CharacterAtOffset(offset int32) uint32
 	// CharacterCount gets the character count.
-	CharacterCount() int
+	CharacterCount() int32
 	// CharacterExtents: if the extent can not be obtained (e.g. missing
 	// support), all of x, y, width, height are set to -1.
 	//
 	// Get the bounding box containing the glyph representing the character at a
 	// particular text offset.
-	CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
+	CharacterExtents(offset int32, coords CoordType) (x int32, y int32, width int32, height int32)
 	// NSelections gets the number of selected regions.
-	NSelections() int
+	NSelections() int32
 	// OffsetAtPoint gets the offset of the character located at coordinates x
 	// and y. x and y are interpreted as being relative to the screen or this
 	// widget's window depending on coords.
-	OffsetAtPoint(x int, y int, coords CoordType) int
+	OffsetAtPoint(x int32, y int32, coords CoordType) int32
 	// RangeExtents: get the bounding box for text within the specified range.
 	//
 	// If the extents can not be obtained (e.g. or missing support), the
 	// rectangle fields are set to -1.
-	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset int32, endOffset int32, coordType CoordType) TextRectangle
 	// Selection gets the text from the specified selection.
-	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
 	// according to a given offset and a specific granularity, along with the
 	// start and end offsets defining the boundaries of such a portion of text.
@@ -467,13 +467,13 @@ type TextOverrider interface {
 	// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
 	// from the start of the paragraph at or before the offset to the start of
 	// the following paragraph after the offset.
-	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
+	StringAtOffset(offset int32, granularity TextGranularity) (startOffset int32, endOffset int32, utf8 string)
 	// Text gets the specified text.
-	Text(startOffset int, endOffset int) string
+	Text(startOffset int32, endOffset int32) string
 	// TextAfterOffset gets the specified text.
 	//
 	// Deprecated: Please use atk_text_get_string_at_offset() instead.
-	TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// TextAtOffset gets the specified text.
 	//
 	// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the
@@ -501,19 +501,19 @@ type TextOverrider interface {
 	//
 	// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
 	// atk_text_get_string_at_offset() instead.
-	TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// TextBeforeOffset gets the specified text.
 	//
 	// Deprecated: Please use atk_text_get_string_at_offset() instead.
-	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// RemoveSelection removes the specified selection.
-	RemoveSelection(selectionNum int) bool
+	RemoveSelection(selectionNum int32) bool
 	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
-	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	ScrollSubstringTo(startOffset int32, endOffset int32, typ ScrollType) bool
 	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
-	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	ScrollSubstringToPoint(startOffset int32, endOffset int32, coords CoordType, x int32, y int32) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	//
 	// In the case of rich-text content, this method should either grab focus or
@@ -532,12 +532,12 @@ type TextOverrider interface {
 	// does not have a caret motion or focus navigation operation, this method
 	// should try to scroll the new caret position into view while minimizing
 	// unnecessary scroll motion.
-	SetCaretOffset(offset int) bool
+	SetCaretOffset(offset int32) bool
 	// SetSelection changes the start and end offset of the specified selection.
-	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	SetSelection(selectionNum int32, startOffset int32, endOffset int32) bool
 	TextAttributesChanged()
-	TextCaretMoved(location int)
-	TextChanged(position int, length int)
+	TextCaretMoved(location int32)
+	TextChanged(position int32, length int32)
 	TextSelectionChanged()
 }
 
@@ -567,50 +567,50 @@ type Texter interface {
 	externglib.Objector
 
 	// AddSelection adds a selection bounded by the specified offsets.
-	AddSelection(startOffset int, endOffset int) bool
+	AddSelection(startOffset int32, endOffset int32) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.
 	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
-	CaretOffset() int
+	CaretOffset() int32
 	// CharacterAtOffset gets the specified text.
-	CharacterAtOffset(offset int) uint32
+	CharacterAtOffset(offset int32) uint32
 	// CharacterCount gets the character count.
-	CharacterCount() int
+	CharacterCount() int32
 	// CharacterExtents: if the extent can not be obtained (e.g.
-	CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
+	CharacterExtents(offset int32, coords CoordType) (x int32, y int32, width int32, height int32)
 	// NSelections gets the number of selected regions.
-	NSelections() int
+	NSelections() int32
 	// OffsetAtPoint gets the offset of the character located at coordinates x
 	// and y.
-	OffsetAtPoint(x int, y int, coords CoordType) int
+	OffsetAtPoint(x int32, y int32, coords CoordType) int32
 	// RangeExtents: get the bounding box for text within the specified range.
-	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset int32, endOffset int32, coordType CoordType) TextRectangle
 	// Selection gets the text from the specified selection.
-	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
+	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
 	// according to a given offset and a specific granularity, along with the
 	// start and end offsets defining the boundaries of such a portion of text.
-	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
+	StringAtOffset(offset int32, granularity TextGranularity) (startOffset int32, endOffset int32, utf8 string)
 	// Text gets the specified text.
-	Text(startOffset int, endOffset int) string
+	Text(startOffset int32, endOffset int32) string
 	// TextAfterOffset gets the specified text.
-	TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// TextAtOffset gets the specified text.
-	TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// TextBeforeOffset gets the specified text.
-	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
+	TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string)
 	// RemoveSelection removes the specified selection.
-	RemoveSelection(selectionNum int) bool
+	RemoveSelection(selectionNum int32) bool
 	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
-	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	ScrollSubstringTo(startOffset int32, endOffset int32, typ ScrollType) bool
 	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
-	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	ScrollSubstringToPoint(startOffset int32, endOffset int32, coords CoordType, x int32, y int32) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
-	SetCaretOffset(offset int) bool
+	SetCaretOffset(offset int32) bool
 	// SetSelection changes the start and end offset of the specified selection.
-	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	SetSelection(selectionNum int32, startOffset int32, endOffset int32) bool
 }
 
 var _ Texter = (*Text)(nil)
@@ -628,7 +628,7 @@ func marshalTexter(p uintptr) (interface{}, error) {
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
-func (text *Text) AddSelection(startOffset int, endOffset int) bool {
+func (text *Text) AddSelection(startOffset int32, endOffset int32) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -701,7 +701,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 }
 
 // CaretOffset gets the offset of the position of the caret (cursor).
-func (text *Text) CaretOffset() int {
+func (text *Text) CaretOffset() int32 {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -710,15 +710,15 @@ func (text *Text) CaretOffset() int {
 	_cret = C.atk_text_get_caret_offset(_arg0)
 	runtime.KeepAlive(text)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // CharacterAtOffset gets the specified text.
-func (text *Text) CharacterAtOffset(offset int) uint32 {
+func (text *Text) CharacterAtOffset(offset int32) uint32 {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gunichar // in
@@ -738,7 +738,7 @@ func (text *Text) CharacterAtOffset(offset int) uint32 {
 }
 
 // CharacterCount gets the character count.
-func (text *Text) CharacterCount() int {
+func (text *Text) CharacterCount() int32 {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -747,9 +747,9 @@ func (text *Text) CharacterCount() int {
 	_cret = C.atk_text_get_character_count(_arg0)
 	runtime.KeepAlive(text)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -759,7 +759,7 @@ func (text *Text) CharacterCount() int {
 //
 // Get the bounding box containing the glyph representing the character at a
 // particular text offset.
-func (text *Text) CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int) {
+func (text *Text) CharacterExtents(offset int32, coords CoordType) (x int32, y int32, width int32, height int32) {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // in
@@ -777,21 +777,21 @@ func (text *Text) CharacterExtents(offset int, coords CoordType) (x int, y int, 
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(coords)
 
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
+	var _x int32      // out
+	var _y int32      // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_x = int(_arg2)
-	_y = int(_arg3)
-	_width = int(_arg4)
-	_height = int(_arg5)
+	_x = int32(_arg2)
+	_y = int32(_arg3)
+	_width = int32(_arg4)
+	_height = int32(_arg5)
 
 	return _x, _y, _width, _height
 }
 
 // NSelections gets the number of selected regions.
-func (text *Text) NSelections() int {
+func (text *Text) NSelections() int32 {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
@@ -800,9 +800,9 @@ func (text *Text) NSelections() int {
 	_cret = C.atk_text_get_n_selections(_arg0)
 	runtime.KeepAlive(text)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -810,7 +810,7 @@ func (text *Text) NSelections() int {
 // OffsetAtPoint gets the offset of the character located at coordinates x and
 // y. x and y are interpreted as being relative to the screen or this widget's
 // window depending on coords.
-func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
+func (text *Text) OffsetAtPoint(x int32, y int32, coords CoordType) int32 {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -828,9 +828,9 @@ func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(coords)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -839,7 +839,7 @@ func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 //
 // If the extents can not be obtained (e.g. or missing support), the rectangle
 // fields are set to -1.
-func (text *Text) RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
+func (text *Text) RangeExtents(startOffset int32, endOffset int32, coordType CoordType) TextRectangle {
 	var _arg0 *C.AtkText         // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -865,7 +865,7 @@ func (text *Text) RangeExtents(startOffset int, endOffset int, coordType CoordTy
 }
 
 // Selection gets the text from the specified selection.
-func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // in
@@ -879,12 +879,12 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 
-	var _startOffset int // out
-	var _endOffset int   // out
-	var _utf8 string     // out
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
 
-	_startOffset = int(_arg2)
-	_endOffset = int(_arg3)
+	_startOffset = int32(_arg2)
+	_endOffset = int32(_arg3)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -919,7 +919,7 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 // If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is from
 // the start of the paragraph at or before the offset to the start of the
 // following paragraph after the offset.
-func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) StringAtOffset(offset int32, granularity TextGranularity) (startOffset int32, endOffset int32, utf8 string) {
 	var _arg0 *C.AtkText           // out
 	var _arg1 C.gint               // out
 	var _arg2 C.AtkTextGranularity // out
@@ -936,12 +936,12 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(granularity)
 
-	var _startOffset int // out
-	var _endOffset int   // out
-	var _utf8 string     // out
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
 
-	_startOffset = int(_arg3)
-	_endOffset = int(_arg4)
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
@@ -951,7 +951,7 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 }
 
 // Text gets the specified text.
-func (text *Text) Text(startOffset int, endOffset int) string {
+func (text *Text) Text(startOffset int32, endOffset int32) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -977,7 +977,7 @@ func (text *Text) Text(startOffset int, endOffset int) string {
 // TextAfterOffset gets the specified text.
 //
 // Deprecated: Please use atk_text_get_string_at_offset() instead.
-func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
@@ -994,12 +994,12 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
 
-	var _startOffset int // out
-	var _endOffset int   // out
-	var _utf8 string     // out
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
 
-	_startOffset = int(_arg3)
-	_endOffset = int(_arg4)
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -1033,7 +1033,7 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 //
 // Deprecated: This method is deprecated since ATK version 2.9.4. Please use
 // atk_text_get_string_at_offset() instead.
-func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
@@ -1050,12 +1050,12 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
 
-	var _startOffset int // out
-	var _endOffset int   // out
-	var _utf8 string     // out
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
 
-	_startOffset = int(_arg3)
-	_endOffset = int(_arg4)
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -1065,7 +1065,7 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 // TextBeforeOffset gets the specified text.
 //
 // Deprecated: Please use atk_text_get_string_at_offset() instead.
-func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
+func (text *Text) TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset int32, endOffset int32, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
 	var _arg2 C.AtkTextBoundary // out
@@ -1082,12 +1082,12 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(boundaryType)
 
-	var _startOffset int // out
-	var _endOffset int   // out
-	var _utf8 string     // out
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
 
-	_startOffset = int(_arg3)
-	_endOffset = int(_arg4)
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -1095,7 +1095,7 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 }
 
 // RemoveSelection removes the specified selection.
-func (text *Text) RemoveSelection(selectionNum int) bool {
+func (text *Text) RemoveSelection(selectionNum int32) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -1118,7 +1118,7 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 
 // ScrollSubstringTo makes a substring of text visible on the screen by
 // scrolling all necessary parents.
-func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool {
+func (text *Text) ScrollSubstringTo(startOffset int32, endOffset int32, typ ScrollType) bool {
 	var _arg0 *C.AtkText      // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -1147,7 +1147,7 @@ func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollTy
 
 // ScrollSubstringToPoint: move the top-left of a substring of text to a given
 // position of the screen by scrolling all necessary parents.
-func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool {
+func (text *Text) ScrollSubstringToPoint(startOffset int32, endOffset int32, coords CoordType, x int32, y int32) bool {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -1197,7 +1197,7 @@ func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords 
 // method should not trigger one either. If the application does not have a
 // caret motion or focus navigation operation, this method should try to scroll
 // the new caret position into view while minimizing unnecessary scroll motion.
-func (text *Text) SetCaretOffset(offset int) bool {
+func (text *Text) SetCaretOffset(offset int32) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -1219,7 +1219,7 @@ func (text *Text) SetCaretOffset(offset int) bool {
 }
 
 // SetSelection changes the start and end offset of the specified selection.
-func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
+func (text *Text) SetSelection(selectionNum int32, startOffset int32, endOffset int32) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -1271,16 +1271,16 @@ func (t *TextRange) Bounds() TextRectangle {
 }
 
 // StartOffset: start offset of a AtkTextRange
-func (t *TextRange) StartOffset() int {
-	var v int // out
-	v = int(t.native.start_offset)
+func (t *TextRange) StartOffset() int32 {
+	var v int32 // out
+	v = int32(t.native.start_offset)
 	return v
 }
 
 // EndOffset: end offset of a AtkTextRange
-func (t *TextRange) EndOffset() int {
-	var v int // out
-	v = int(t.native.end_offset)
+func (t *TextRange) EndOffset() int32 {
+	var v int32 // out
+	v = int32(t.native.end_offset)
 	return v
 }
 
@@ -1305,7 +1305,7 @@ type textRectangle struct {
 
 // NewTextRectangle creates a new TextRectangle instance from the given
 // fields.
-func NewTextRectangle(x, y, width, height int) TextRectangle {
+func NewTextRectangle(x, y, width, height int32) TextRectangle {
 	var f0 C.gint // out
 	f0 = C.gint(x)
 	var f1 C.gint // out
@@ -1326,29 +1326,29 @@ func NewTextRectangle(x, y, width, height int) TextRectangle {
 }
 
 // X: horizontal coordinate of a rectangle
-func (t *TextRectangle) X() int {
-	var v int // out
-	v = int(t.native.x)
+func (t *TextRectangle) X() int32 {
+	var v int32 // out
+	v = int32(t.native.x)
 	return v
 }
 
 // Y: vertical coordinate of a rectangle
-func (t *TextRectangle) Y() int {
-	var v int // out
-	v = int(t.native.y)
+func (t *TextRectangle) Y() int32 {
+	var v int32 // out
+	v = int32(t.native.y)
 	return v
 }
 
 // Width: width of a rectangle
-func (t *TextRectangle) Width() int {
-	var v int // out
-	v = int(t.native.width)
+func (t *TextRectangle) Width() int32 {
+	var v int32 // out
+	v = int32(t.native.width)
 	return v
 }
 
 // Height: height of a rectangle
-func (t *TextRectangle) Height() int {
-	var v int // out
-	v = int(t.native.height)
+func (t *TextRectangle) Height() int32 {
+	var v int32 // out
+	v = int32(t.native.height)
 	return v
 }

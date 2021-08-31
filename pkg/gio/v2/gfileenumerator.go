@@ -47,7 +47,7 @@ type FileEnumeratorOverrider interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
 	// g_file_enumerator_close_finish().
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a file enumerator, started from
 	// g_file_enumerator_close_async().
 	//
@@ -92,7 +92,7 @@ type FileEnumeratorOverrider interface {
 	// Any outstanding i/o request with higher priority (lower numerical value)
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
-	NextFilesAsync(ctx context.Context, numFiles int, ioPriority int, callback AsyncReadyCallback)
+	NextFilesAsync(ctx context.Context, numFiles int32, ioPriority int32, callback AsyncReadyCallback)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
 	NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
@@ -174,7 +174,7 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned in
 // g_file_enumerator_close_finish().
-func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -442,7 +442,7 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 // Any outstanding i/o request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles int, ioPriority int, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles int32, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.int                 // out

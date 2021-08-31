@@ -42,7 +42,7 @@ type MenuItemOverrider interface {
 	SetLabel(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
-	ToggleSizeAllocate(allocation int)
+	ToggleSizeAllocate(allocation int32)
 }
 
 // MenuItem widget and the derived widgets are the only valid children for
@@ -442,7 +442,7 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 // given item.
-func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
+func (menuItem *MenuItem) ToggleSizeAllocate(allocation int32) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gint         // out
 

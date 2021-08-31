@@ -78,7 +78,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 }
 
 // ScreenNumber returns the index of a X11Screen.
-func (screen *X11Screen) ScreenNumber() int {
+func (screen *X11Screen) ScreenNumber() int32 {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret C.int           // in
 
@@ -87,9 +87,9 @@ func (screen *X11Screen) ScreenNumber() int {
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

@@ -273,7 +273,7 @@ func (popover *Popover) MnemonicsVisible() bool {
 }
 
 // Offset gets the offset previous set with gtk_popover_set_offset().
-func (popover *Popover) Offset() (xOffset int, yOffset int) {
+func (popover *Popover) Offset() (xOffset int32, yOffset int32) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // in
 	var _arg2 C.int         // in
@@ -283,11 +283,11 @@ func (popover *Popover) Offset() (xOffset int, yOffset int) {
 	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(popover)
 
-	var _xOffset int // out
-	var _yOffset int // out
+	var _xOffset int32 // out
+	var _yOffset int32 // out
 
-	_xOffset = int(_arg1)
-	_yOffset = int(_arg2)
+	_xOffset = int32(_arg1)
+	_yOffset = int32(_arg2)
 
 	return _xOffset, _yOffset
 }
@@ -482,7 +482,7 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 //
 // These values are used when preparing the gdk.PopupLayout for positioning the
 // popover.
-func (popover *Popover) SetOffset(xOffset int, yOffset int) {
+func (popover *Popover) SetOffset(xOffset int32, yOffset int32) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out

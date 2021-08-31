@@ -36,7 +36,7 @@ func init() {
 //
 // When the operation is finished, callback will be called. You must then call
 // content_deserialize_finish to get the result of the operation.
-func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ externglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
 	var _arg2 *C.char               // out
@@ -203,7 +203,7 @@ func (deserializer *ContentDeserializer) MIMEType() string {
 // Priority gets the I/O priority for the current operation.
 //
 // This is the priority that was passed to [funccontent_deserialize_async].
-func (deserializer *ContentDeserializer) Priority() int {
+func (deserializer *ContentDeserializer) Priority() int32 {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.int                     // in
 
@@ -212,9 +212,9 @@ func (deserializer *ContentDeserializer) Priority() int {
 	_cret = C.gdk_content_deserializer_get_priority(_arg0)
 	runtime.KeepAlive(deserializer)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

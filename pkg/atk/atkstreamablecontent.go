@@ -30,9 +30,9 @@ func init() {
 type StreamableContentOverrider interface {
 	// MIMEType gets the character string of the specified mime type. The first
 	// mime type is at position 0, the second at position 1, and so on.
-	MIMEType(i int) string
+	MIMEType(i int32) string
 	// NMIMETypes gets the number of mime types supported by this object.
-	NMIMETypes() int
+	NMIMETypes() int32
 	// Stream gets the content in the specified mime type.
 	Stream(mimeType string) *glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
@@ -70,9 +70,9 @@ type StreamableContenter interface {
 	externglib.Objector
 
 	// MIMEType gets the character string of the specified mime type.
-	MIMEType(i int) string
+	MIMEType(i int32) string
 	// NMIMETypes gets the number of mime types supported by this object.
-	NMIMETypes() int
+	NMIMETypes() int32
 	// Stream gets the content in the specified mime type.
 	Stream(mimeType string) *glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
@@ -97,7 +97,7 @@ func marshalStreamableContenter(p uintptr) (interface{}, error) {
 
 // MIMEType gets the character string of the specified mime type. The first mime
 // type is at position 0, the second at position 1, and so on.
-func (streamable *StreamableContent) MIMEType(i int) string {
+func (streamable *StreamableContent) MIMEType(i int32) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
@@ -117,7 +117,7 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 }
 
 // NMIMETypes gets the number of mime types supported by this object.
-func (streamable *StreamableContent) NMIMETypes() int {
+func (streamable *StreamableContent) NMIMETypes() int32 {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
@@ -126,9 +126,9 @@ func (streamable *StreamableContent) NMIMETypes() int {
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 	runtime.KeepAlive(streamable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

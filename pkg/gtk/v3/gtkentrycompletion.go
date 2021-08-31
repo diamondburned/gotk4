@@ -72,7 +72,7 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryCompletionOverrider interface {
-	ActionActivated(index_ int)
+	ActionActivated(index_ int32)
 	CursorOnMatch(model TreeModeller, iter *TreeIter) bool
 	InsertPrefix(prefix string) bool
 	MatchSelected(model TreeModeller, iter *TreeIter) bool
@@ -217,7 +217,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 //
 // Note that index_ is a relative position and the position of an action may
 // have changed since it was inserted.
-func (completion *EntryCompletion) DeleteAction(index_ int) {
+func (completion *EntryCompletion) DeleteAction(index_ int32) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 
@@ -304,7 +304,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 }
 
 // MinimumKeyLength returns the minimum key length as set for completion.
-func (completion *EntryCompletion) MinimumKeyLength() int {
+func (completion *EntryCompletion) MinimumKeyLength() int32 {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gint                // in
 
@@ -313,9 +313,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -401,7 +401,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 }
 
 // TextColumn returns the column in the model of completion to get strings from.
-func (completion *EntryCompletion) TextColumn() int {
+func (completion *EntryCompletion) TextColumn() int32 {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gint                // in
 
@@ -410,16 +410,16 @@ func (completion *EntryCompletion) TextColumn() int {
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // InsertActionMarkup inserts an action in completion’s action item list at
 // position index_ with markup markup.
-func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string) {
+func (completion *EntryCompletion) InsertActionMarkup(index_ int32, markup string) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.gchar              // out
@@ -441,7 +441,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 //
 // Note that index_ is a relative position in the list of actions and the
 // position of an action can change when deleting a different action.
-func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
+func (completion *EntryCompletion) InsertActionText(index_ int32, text string) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.gchar              // out
@@ -522,7 +522,7 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 // be at least length. This is useful for long lists, where completing using a
 // small key takes a lot of time and will come up with meaningless results
 // anyway (ie, a too large dataset).
-func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 
@@ -608,7 +608,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 // This functions creates and adds a CellRendererText for the selected column.
 // If you need to set the text column, but don't want the cell renderer, use
 // g_object_set() to set the EntryCompletion:text-column property directly.
-func (completion *EntryCompletion) SetTextColumn(column int) {
+func (completion *EntryCompletion) SetTextColumn(column int32) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 

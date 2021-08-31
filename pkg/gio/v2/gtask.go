@@ -371,7 +371,7 @@ func (task *Task) Name() string {
 }
 
 // Priority gets task's priority
-func (task *Task) Priority() int {
+func (task *Task) Priority() int32 {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
 
@@ -380,9 +380,9 @@ func (task *Task) Priority() int {
 	_cret = C.g_task_get_priority(_arg0)
 	runtime.KeepAlive(task)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -744,7 +744,7 @@ func (task *Task) SetName(name string) {
 // This will affect the priority of #GSources created with
 // g_task_attach_source() and the scheduling of tasks run in threads, and can
 // also be explicitly retrieved later via g_task_get_priority().
-func (task *Task) SetPriority(priority int) {
+func (task *Task) SetPriority(priority int32) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 

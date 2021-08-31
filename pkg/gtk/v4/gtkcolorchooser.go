@@ -44,7 +44,7 @@ type ColorChooserOverrider interface {
 	// the default color palette from the color chooser.
 	//
 	// If colors is NULL, removes all previously added palettes.
-	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA)
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
@@ -69,7 +69,7 @@ type ColorChooserer interface {
 	externglib.Objector
 
 	// AddPalette adds a palette to the color chooser.
-	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
+	AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
@@ -111,7 +111,7 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // default color palette from the color chooser.
 //
 // If colors is NULL, removes all previously added palettes.
-func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
+func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GtkOrientation   // out
 	var _arg2 C.int              // out

@@ -94,7 +94,7 @@ func NewGrid() *Grid {
 //
 // The position of child is determined by left and top. The number of “cells”
 // that child will occupy is determined by width and height.
-func (grid *Grid) Attach(child Widgetter, left int, top int, width int, height int) {
+func (grid *Grid) Attach(child Widgetter, left int32, top int32, width int32, height int32) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -126,7 +126,7 @@ func (grid *Grid) Attach(child Widgetter, left int, top int, width int, height i
 //
 // Attaching widgets labeled [1], [2], [3] with sibling == NULL and side ==
 // GTK_POS_LEFT yields a layout of [3][2][1].
-func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side PositionType, width int, height int) {
+func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side PositionType, width int32, height int32) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.GtkWidget      // out
@@ -153,7 +153,7 @@ func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side Position
 }
 
 // BaselineRow returns which row defines the global baseline of grid.
-func (grid *Grid) BaselineRow() int {
+func (grid *Grid) BaselineRow() int32 {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.gint     // in
 
@@ -162,16 +162,16 @@ func (grid *Grid) BaselineRow() int {
 	_cret = C.gtk_grid_get_baseline_row(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // ChildAt gets the child of grid whose area covers the grid cell whose upper
 // left corner is at left, top.
-func (grid *Grid) ChildAt(left int, top int) Widgetter {
+func (grid *Grid) ChildAt(left int32, top int32) Widgetter {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -215,7 +215,7 @@ func (grid *Grid) ColumnHomogeneous() bool {
 }
 
 // ColumnSpacing returns the amount of space between the columns of grid.
-func (grid *Grid) ColumnSpacing() uint {
+func (grid *Grid) ColumnSpacing() uint32 {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
 
@@ -224,9 +224,9 @@ func (grid *Grid) ColumnSpacing() uint {
 	_cret = C.gtk_grid_get_column_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -234,7 +234,7 @@ func (grid *Grid) ColumnSpacing() uint {
 // RowBaselinePosition returns the baseline position of row as set by
 // gtk_grid_set_row_baseline_position() or the default value
 // GTK_BASELINE_POSITION_CENTER.
-func (grid *Grid) RowBaselinePosition(row int) BaselinePosition {
+func (grid *Grid) RowBaselinePosition(row int32) BaselinePosition {
 	var _arg0 *C.GtkGrid            // out
 	var _arg1 C.gint                // out
 	var _cret C.GtkBaselinePosition // in
@@ -273,7 +273,7 @@ func (grid *Grid) RowHomogeneous() bool {
 }
 
 // RowSpacing returns the amount of space between the rows of grid.
-func (grid *Grid) RowSpacing() uint {
+func (grid *Grid) RowSpacing() uint32 {
 	var _arg0 *C.GtkGrid // out
 	var _cret C.guint    // in
 
@@ -282,9 +282,9 @@ func (grid *Grid) RowSpacing() uint {
 	_cret = C.gtk_grid_get_row_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -294,7 +294,7 @@ func (grid *Grid) RowSpacing() uint {
 // Children which are attached at or to the right of this position are moved one
 // column to the right. Children which span across this position are grown to
 // span the new column.
-func (grid *Grid) InsertColumn(position int) {
+func (grid *Grid) InsertColumn(position int32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -330,7 +330,7 @@ func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
 //
 // Children which are attached at or below this position are moved one row down.
 // Children which span across this position are grown to span the new row.
-func (grid *Grid) InsertRow(position int) {
+func (grid *Grid) InsertRow(position int32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -347,7 +347,7 @@ func (grid *Grid) InsertRow(position int) {
 // Children that are placed in this column are removed, spanning children that
 // overlap this column have their width reduced by one, and children after the
 // column are moved to the left.
-func (grid *Grid) RemoveColumn(position int) {
+func (grid *Grid) RemoveColumn(position int32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -364,7 +364,7 @@ func (grid *Grid) RemoveColumn(position int) {
 // Children that are placed in this row are removed, spanning children that
 // overlap this row have their height reduced by one, and children below the row
 // are moved up.
-func (grid *Grid) RemoveRow(position int) {
+func (grid *Grid) RemoveRow(position int32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -379,7 +379,7 @@ func (grid *Grid) RemoveRow(position int) {
 // SetBaselineRow sets which row defines the global baseline for the entire
 // grid. Each row in the grid can have its own local baseline, but only one of
 // those is global, meaning it will be the baseline in the parent of the grid.
-func (grid *Grid) SetBaselineRow(row int) {
+func (grid *Grid) SetBaselineRow(row int32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.gint     // out
 
@@ -408,7 +408,7 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 }
 
 // SetColumnSpacing sets the amount of space between columns of grid.
-func (grid *Grid) SetColumnSpacing(spacing uint) {
+func (grid *Grid) SetColumnSpacing(spacing uint32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 
@@ -422,7 +422,7 @@ func (grid *Grid) SetColumnSpacing(spacing uint) {
 
 // SetRowBaselinePosition sets how the baseline should be positioned on row of
 // the grid, in case that row is assigned more space than is requested.
-func (grid *Grid) SetRowBaselinePosition(row int, pos BaselinePosition) {
+func (grid *Grid) SetRowBaselinePosition(row int32, pos BaselinePosition) {
 	var _arg0 *C.GtkGrid            // out
 	var _arg1 C.gint                // out
 	var _arg2 C.GtkBaselinePosition // out
@@ -453,7 +453,7 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 }
 
 // SetRowSpacing sets the amount of space between rows of grid.
-func (grid *Grid) SetRowSpacing(spacing uint) {
+func (grid *Grid) SetRowSpacing(spacing uint32) {
 	var _arg0 *C.GtkGrid // out
 	var _arg1 C.guint    // out
 

@@ -34,7 +34,7 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos int32, endPos int32)
 	// DoDeleteText deletes a sequence of characters.
 	//
 	// The characters that are deleted are those characters at positions from
@@ -42,7 +42,7 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DoDeleteText(startPos int, endPos int)
+	DoDeleteText(startPos int32, endPos int32)
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
 	//
@@ -55,7 +55,7 @@ type EditableOverrider interface {
 	// returned.
 	//
 	// Note that positions are specified in characters, not bytes.
-	SelectionBounds() (startPos int, endPos int, ok bool)
+	SelectionBounds() (startPos int32, endPos int32, ok bool)
 	// Text retrieves the contents of editable.
 	//
 	// The returned string is owned by GTK and must not be modified or freed.
@@ -68,7 +68,7 @@ type EditableOverrider interface {
 	// the text.
 	//
 	// Note that positions are specified in characters, not bytes.
-	SetSelectionBounds(startPos int, endPos int)
+	SetSelectionBounds(startPos int32, endPos int32)
 }
 
 // Editable: GtkEditable is an interface for text editing widgets.
@@ -204,13 +204,13 @@ type Editabler interface {
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
 	// DeleteText deletes a sequence of characters.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos int32, endPos int32)
 	// FinishDelegate undoes the setup done by gtk.Editable.InitDelegate().
 	FinishDelegate()
 	// Alignment gets the alignment of the editable.
 	Alignment() float32
 	// Chars retrieves a sequence of characters.
-	Chars(startPos int, endPos int) string
+	Chars(startPos int32, endPos int32) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
 	Delegate() Editabler
@@ -220,21 +220,21 @@ type Editabler interface {
 	EnableUndo() bool
 	// MaxWidthChars retrieves the desired maximum width of editable, in
 	// characters.
-	MaxWidthChars() int
+	MaxWidthChars() int32
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
-	Position() int
+	Position() int32
 	// SelectionBounds retrieves the selection bound of the editable.
-	SelectionBounds() (startPos int, endPos int, ok bool)
+	SelectionBounds() (startPos int32, endPos int32, ok bool)
 	// Text retrieves the contents of editable.
 	Text() string
 	// WidthChars gets the number of characters of space reserved for the
 	// contents of the editable.
-	WidthChars() int
+	WidthChars() int32
 	// InitDelegate sets up a delegate for GtkEditable.
 	InitDelegate()
 	// SelectRegion selects a region of text.
-	SelectRegion(startPos int, endPos int)
+	SelectRegion(startPos int32, endPos int32)
 	// SetAlignment sets the alignment for the contents of the editable.
 	SetAlignment(xalign float32)
 	// SetEditable determines if the user can edit the text in the editable
@@ -245,14 +245,14 @@ type Editabler interface {
 	SetEnableUndo(enableUndo bool)
 	// SetMaxWidthChars sets the desired maximum width in characters of
 	// editable.
-	SetMaxWidthChars(nChars int)
+	SetMaxWidthChars(nChars int32)
 	// SetPosition sets the cursor position in the editable to the given value.
-	SetPosition(position int)
+	SetPosition(position int32)
 	// SetText sets the text in the editable to the given value.
 	SetText(text string)
 	// SetWidthChars changes the size request of the editable to be about the
 	// right size for n_chars characters.
-	SetWidthChars(nChars int)
+	SetWidthChars(nChars int32)
 }
 
 var _ Editabler = (*Editable)(nil)
@@ -302,7 +302,7 @@ func (editable *Editable) DeleteSelection() {
 // characters deleted are those from start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
-func (editable *Editable) DeleteText(startPos int, endPos int) {
+func (editable *Editable) DeleteText(startPos int32, endPos int32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -355,7 +355,7 @@ func (editable *Editable) Alignment() float32 {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) Chars(startPos int, endPos int) string {
+func (editable *Editable) Chars(startPos int32, endPos int32) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -439,7 +439,7 @@ func (editable *Editable) EnableUndo() bool {
 }
 
 // MaxWidthChars retrieves the desired maximum width of editable, in characters.
-func (editable *Editable) MaxWidthChars() int {
+func (editable *Editable) MaxWidthChars() int32 {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -448,9 +448,9 @@ func (editable *Editable) MaxWidthChars() int {
 	_cret = C.gtk_editable_get_max_width_chars(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -459,7 +459,7 @@ func (editable *Editable) MaxWidthChars() int {
 // of the content of the editable.
 //
 // Note that this position is in characters, not in bytes.
-func (editable *Editable) Position() int {
+func (editable *Editable) Position() int32 {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -468,9 +468,9 @@ func (editable *Editable) Position() int {
 	_cret = C.gtk_editable_get_position(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -482,7 +482,7 @@ func (editable *Editable) Position() int {
 // returned.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) {
+func (editable *Editable) SelectionBounds() (startPos int32, endPos int32, ok bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
@@ -493,12 +493,12 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(editable)
 
-	var _startPos int // out
-	var _endPos int   // out
-	var _ok bool      // out
+	var _startPos int32 // out
+	var _endPos int32   // out
+	var _ok bool        // out
 
-	_startPos = int(_arg1)
-	_endPos = int(_arg2)
+	_startPos = int32(_arg1)
+	_endPos = int32(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -527,7 +527,7 @@ func (editable *Editable) Text() string {
 
 // WidthChars gets the number of characters of space reserved for the contents
 // of the editable.
-func (editable *Editable) WidthChars() int {
+func (editable *Editable) WidthChars() int32 {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -536,9 +536,9 @@ func (editable *Editable) WidthChars() int {
 	_cret = C.gtk_editable_get_width_chars(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -567,7 +567,7 @@ func (editable *Editable) InitDelegate() {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) SelectRegion(startPos int, endPos int) {
+func (editable *Editable) SelectRegion(startPos int32, endPos int32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -634,7 +634,7 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of editable.
-func (editable *Editable) SetMaxWidthChars(nChars int) {
+func (editable *Editable) SetMaxWidthChars(nChars int32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 
@@ -653,7 +653,7 @@ func (editable *Editable) SetMaxWidthChars(nChars int) {
 // number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
-func (editable *Editable) SetPosition(position int) {
+func (editable *Editable) SetPosition(position int32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 
@@ -687,7 +687,7 @@ func (editable *Editable) SetText(text string) {
 // Note that it changes the size request, the size can still be affected by how
 // you pack the widget into containers. If n_chars is -1, the size reverts to
 // the default size.
-func (editable *Editable) SetWidthChars(nChars int) {
+func (editable *Editable) SetWidthChars(nChars int32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 

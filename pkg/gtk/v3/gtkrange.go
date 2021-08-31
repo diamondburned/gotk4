@@ -34,7 +34,7 @@ type RangeOverrider interface {
 	AdjustBounds(newValue float64)
 	ChangeValue(scroll ScrollType, newValue float64) bool
 	RangeBorder(border_ *Border)
-	RangeSizeRequest(orientation Orientation, minimum *int, natural *int)
+	RangeSizeRequest(orientation Orientation, minimum *int32, natural *int32)
 	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
@@ -69,7 +69,7 @@ type Ranger interface {
 	// points to the 'lower' end of the GtkRange’s adjustment.
 	LowerStepperSensitivity() SensitivityType
 	// MinSliderSize: this function is useful mainly for Range subclasses.
-	MinSliderSize() int
+	MinSliderSize() int32
 	// RangeRect: this function returns the area that contains the range’s
 	// trough and its steppers, in widget->window coordinates.
 	RangeRect() gdk.Rectangle
@@ -78,12 +78,12 @@ type Ranger interface {
 	RestrictToFillLevel() bool
 	// RoundDigits gets the number of digits to round the value to when it
 	// changes.
-	RoundDigits() int
+	RoundDigits() int32
 	// ShowFillLevel gets whether the range displays the fill level graphically.
 	ShowFillLevel() bool
 	// SliderRange: this function returns sliders range along the long
 	// dimension, in widget->window coordinates.
-	SliderRange() (sliderStart int, sliderEnd int)
+	SliderRange() (sliderStart int32, sliderEnd int32)
 	// SliderSizeFixed: this function is useful mainly for Range subclasses.
 	SliderSizeFixed() bool
 	// UpperStepperSensitivity gets the sensitivity policy for the stepper that
@@ -108,7 +108,7 @@ type Ranger interface {
 	// that points to the 'lower' end of the GtkRange’s adjustment.
 	SetLowerStepperSensitivity(sensitivity SensitivityType)
 	// SetMinSliderSize sets the minimum size of the range’s slider.
-	SetMinSliderSize(minSize int)
+	SetMinSliderSize(minSize int32)
 	// SetRange sets the allowable values in the Range, and clamps the range
 	// value to be between min and max.
 	SetRange(min float64, max float64)
@@ -117,7 +117,7 @@ type Ranger interface {
 	SetRestrictToFillLevel(restrictToFillLevel bool)
 	// SetRoundDigits sets the number of digits to round the value to when it
 	// changes.
-	SetRoundDigits(roundDigits int)
+	SetRoundDigits(roundDigits int32)
 	// SetShowFillLevel sets whether a graphical fill level is show on the
 	// trough.
 	SetShowFillLevel(showFillLevel bool)
@@ -258,7 +258,7 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 // See gtk_range_set_min_slider_size().
 //
 // Deprecated: Use the min-height/min-width CSS properties on the slider node.
-func (_range *Range) MinSliderSize() int {
+func (_range *Range) MinSliderSize() int32 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gint      // in
 
@@ -267,9 +267,9 @@ func (_range *Range) MinSliderSize() int {
 	_cret = C.gtk_range_get_min_slider_size(_arg0)
 	runtime.KeepAlive(_range)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -315,7 +315,7 @@ func (_range *Range) RestrictToFillLevel() bool {
 
 // RoundDigits gets the number of digits to round the value to when it changes.
 // See Range::change-value.
-func (_range *Range) RoundDigits() int {
+func (_range *Range) RoundDigits() int32 {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gint      // in
 
@@ -324,9 +324,9 @@ func (_range *Range) RoundDigits() int {
 	_cret = C.gtk_range_get_round_digits(_arg0)
 	runtime.KeepAlive(_range)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -354,7 +354,7 @@ func (_range *Range) ShowFillLevel() bool {
 // widget->window coordinates.
 //
 // This function is useful mainly for Range subclasses.
-func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
+func (_range *Range) SliderRange() (sliderStart int32, sliderEnd int32) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -364,11 +364,11 @@ func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(_range)
 
-	var _sliderStart int // out
-	var _sliderEnd int   // out
+	var _sliderStart int32 // out
+	var _sliderEnd int32   // out
 
-	_sliderStart = int(_arg1)
-	_sliderEnd = int(_arg2)
+	_sliderStart = int32(_arg1)
+	_sliderEnd = int32(_arg2)
 
 	return _sliderStart, _sliderEnd
 }
@@ -548,7 +548,7 @@ func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 // This function is useful mainly for Range subclasses.
 //
 // Deprecated: Use the min-height/min-width CSS properties on the slider node.
-func (_range *Range) SetMinSliderSize(minSize int) {
+func (_range *Range) SetMinSliderSize(minSize int32) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // out
 
@@ -597,7 +597,7 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 
 // SetRoundDigits sets the number of digits to round the value to when it
 // changes. See Range::change-value.
-func (_range *Range) SetRoundDigits(roundDigits int) {
+func (_range *Range) SetRoundDigits(roundDigits int32) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // out
 

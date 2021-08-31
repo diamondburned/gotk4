@@ -264,7 +264,7 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 // places sidebar, and returns one of them. This function is used by FileChooser
 // to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which activate the
 // cooresponding bookmark.
-func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
+func (sidebar *PlacesSidebar) NthBookmark(n int32) gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
 	var _cret *C.GFile            // in

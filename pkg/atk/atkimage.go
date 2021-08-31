@@ -35,14 +35,14 @@ type ImageOverrider interface {
 	//
 	// If the position can not be obtained (e.g. missing support), x and y are
 	// set to -1.
-	ImagePosition(coordType CoordType) (x int, y int)
+	ImagePosition(coordType CoordType) (x int32, y int32)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of width and height are returned as -1 if the values cannot be
 	// obtained (for instance, if the object is not onscreen).
 	//
 	// If the size can not be obtained (e.g. missing support), x and y are set
 	// to -1.
-	ImageSize() (width int, height int)
+	ImageSize() (width int32, height int32)
 	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
 }
@@ -72,9 +72,9 @@ type Imager interface {
 	ImageLocale() string
 	// ImagePosition gets the position of the image in the form of a point
 	// specifying the images top-left corner.
-	ImagePosition(coordType CoordType) (x int, y int)
+	ImagePosition(coordType CoordType) (x int32, y int32)
 	// ImageSize: get the width and height in pixels for the specified image.
-	ImageSize() (width int, height int)
+	ImageSize() (width int32, height int32)
 	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
 }
@@ -134,7 +134,7 @@ func (image *Image) ImageLocale() string {
 //
 // If the position can not be obtained (e.g. missing support), x and y are set
 // to -1.
-func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
+func (image *Image) ImagePosition(coordType CoordType) (x int32, y int32) {
 	var _arg0 *C.AtkImage    // out
 	var _arg1 C.gint         // in
 	var _arg2 C.gint         // in
@@ -147,11 +147,11 @@ func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(coordType)
 
-	var _x int // out
-	var _y int // out
+	var _x int32 // out
+	var _y int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -162,7 +162,7 @@ func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to
 // -1.
-func (image *Image) ImageSize() (width int, height int) {
+func (image *Image) ImageSize() (width int32, height int32) {
 	var _arg0 *C.AtkImage // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -172,11 +172,11 @@ func (image *Image) ImageSize() (width int, height int) {
 	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(image)
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(_arg1)
-	_height = int(_arg2)
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }

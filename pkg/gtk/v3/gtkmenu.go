@@ -163,7 +163,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgetter, leftAttach uint32, rightAttach uint32, topAttach uint32, bottomAttach uint32) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -270,7 +270,7 @@ func (menu *Menu) AttachWidget() Widgetter {
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
-func (menu *Menu) Monitor() int {
+func (menu *Menu) Monitor() int32 {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gint     // in
 
@@ -279,9 +279,9 @@ func (menu *Menu) Monitor() int {
 	_cret = C.gtk_menu_get_monitor(_arg0)
 	runtime.KeepAlive(menu)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -371,7 +371,7 @@ func (menu *Menu) Popdown() {
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
-func (menu *Menu) ReorderChild(child Widgetter, position int) {
+func (menu *Menu) ReorderChild(child Widgetter, position int32) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -452,7 +452,7 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 
 // SetActive selects the specified menu item within the menu. This is used by
 // the ComboBox and should not be used by anyone else.
-func (menu *Menu) SetActive(index uint) {
+func (menu *Menu) SetActive(index uint32) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.guint    // out
 
@@ -472,7 +472,7 @@ func (menu *Menu) SetActive(index uint) {
 // inferred from the coordinates returned by a MenuPositionFunc, since, for very
 // long menus, these coordinates may extend beyond the monitor boundaries or
 // even the screen boundaries.
-func (menu *Menu) SetMonitor(monitorNum int) {
+func (menu *Menu) SetMonitor(monitorNum int32) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gint     // out
 

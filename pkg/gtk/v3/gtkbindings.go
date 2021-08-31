@@ -22,7 +22,7 @@ import "C"
 
 // BindingsActivate: find a key binding matching keyval and modifiers and
 // activate the binding on object.
-func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
+func BindingsActivate(object *externglib.Object, keyval uint32, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -103,9 +103,9 @@ type bindingEntry struct {
 }
 
 // Keyval: key value to match
-func (b *BindingEntry) Keyval() uint {
-	var v uint // out
-	v = uint(b.native.keyval)
+func (b *BindingEntry) Keyval() uint32 {
+	var v uint32 // out
+	v = uint32(b.native.keyval)
 	return v
 }
 
@@ -182,7 +182,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 
 // BindingEntryAddSignall: override or install a new key binding for keyval with
 // modifiers on binding_set.
-func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []BindingArg) {
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType, signalName string, bindingArgs []BindingArg) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -212,7 +212,7 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.M
 
 // BindingEntryRemove: remove a binding previously installed via
 // gtk_binding_entry_add_signal() on binding_set.
-func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
+func BindingEntryRemove(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -229,7 +229,7 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 
 // BindingEntrySkip: install a binding on binding_set which causes key lookups
 // to be aborted, to prevent bindings from lower priority sets to be activated.
-func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
+func BindingEntrySkip(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -268,9 +268,9 @@ func (b *BindingSet) SetName() string {
 }
 
 // Priority: unused
-func (b *BindingSet) Priority() int {
-	var v int // out
-	v = int(b.native.priority)
+func (b *BindingSet) Priority() int32 {
+	var v int32 // out
+	v = int32(b.native.priority)
 	return v
 }
 
@@ -290,7 +290,7 @@ func (b *BindingSet) Current() *BindingEntry {
 
 // Activate: find a key binding matching keyval and modifiers within binding_set
 // and activate the binding on object.
-func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *externglib.Object) bool {
+func (bindingSet *BindingSet) Activate(keyval uint32, modifiers gdk.ModifierType, object *externglib.Object) bool {
 	var _arg0 *C.GtkBindingSet  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

@@ -49,7 +49,7 @@ type Surfacer interface {
 	CreateGLContext() (GLContexter, error)
 	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
 	// possible with the given surface.
-	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
+	CreateSimilarSurface(content cairo.Content, width int32, height int32) *cairo.Surface
 	// CreateVulkanContext creates a new GdkVulkanContext for rendering on
 	// surface.
 	CreateVulkanContext() (VulkanContexter, error)
@@ -69,14 +69,14 @@ type Surfacer interface {
 	// FrameClock gets the frame clock for the surface.
 	FrameClock() FrameClocker
 	// Height returns the height of the given surface.
-	Height() int
+	Height() int32
 	// Mapped checks whether the surface has been mapped.
 	Mapped() bool
 	// ScaleFactor returns the internal scale factor that maps from surface
 	// coordinates to the actual device pixels.
-	ScaleFactor() int
+	ScaleFactor() int32
 	// Width returns the width of the given surface.
-	Width() int
+	Width() int32
 	// Hide the surface.
 	Hide()
 	// IsDestroyed: check to see if a surface is destroyed.
@@ -225,7 +225,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 // This function always returns a valid pointer, but it will return a pointer to
 // a “nil” surface if other is already in an error state or any other error
 // occurs.
-func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int32, height int32) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -418,7 +418,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk.Surface.GetScaleFactor()).
-func (surface *Surface) Height() int {
+func (surface *Surface) Height() int32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -427,9 +427,9 @@ func (surface *Surface) Height() int {
 	_cret = C.gdk_surface_get_height(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -466,7 +466,7 @@ func (surface *Surface) Mapped() bool {
 // higher resolution data.
 //
 // The scale of a surface may change during runtime.
-func (surface *Surface) ScaleFactor() int {
+func (surface *Surface) ScaleFactor() int32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -475,9 +475,9 @@ func (surface *Surface) ScaleFactor() int {
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -486,7 +486,7 @@ func (surface *Surface) ScaleFactor() int {
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk.Surface.GetScaleFactor()).
-func (surface *Surface) Width() int {
+func (surface *Surface) Width() int32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -495,9 +495,9 @@ func (surface *Surface) Width() int {
 	_cret = C.gdk_surface_get_width(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

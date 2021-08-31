@@ -108,7 +108,7 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 // only works on GdkX11Window.
 //
 // Deprecated: Use gdk_window_set_shadow_width() instead.
-func (window *X11Window) SetFrameExtents(left int, right int, top int, bottom int) {
+func (window *X11Window) SetFrameExtents(left int32, right int32, top int32, bottom int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

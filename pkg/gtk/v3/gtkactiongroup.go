@@ -555,9 +555,9 @@ func (r *RadioActionEntry) Tooltip() string {
 
 // Value: value to set on the radio action. See
 // gtk_radio_action_get_current_value().
-func (r *RadioActionEntry) Value() int {
-	var v int // out
-	v = int(r.native.value)
+func (r *RadioActionEntry) Value() int32 {
+	var v int32 // out
+	v = int32(r.native.value)
 	return v
 }
 

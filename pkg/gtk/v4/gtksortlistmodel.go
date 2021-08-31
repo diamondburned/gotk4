@@ -135,7 +135,7 @@ func (self *SortListModel) Model() gio.ListModeller {
 //
 // If no sort operation is ongoing - in particular when
 // gtk.SortListModel:incremental is FALSE - this function returns 0.
-func (self *SortListModel) Pending() uint {
+func (self *SortListModel) Pending() uint32 {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.guint             // in
 
@@ -144,9 +144,9 @@ func (self *SortListModel) Pending() uint {
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

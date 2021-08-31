@@ -86,7 +86,7 @@ func NewCellAreaBox() *CellAreaBox {
 }
 
 // Spacing gets the spacing added between cell renderers.
-func (box *CellAreaBox) Spacing() int {
+func (box *CellAreaBox) Spacing() int32 {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.int             // in
 
@@ -95,9 +95,9 @@ func (box *CellAreaBox) Spacing() int {
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 	runtime.KeepAlive(box)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -165,7 +165,7 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bo
 }
 
 // SetSpacing sets the spacing to add between cell renderers in box.
-func (box *CellAreaBox) SetSpacing(spacing int) {
+func (box *CellAreaBox) SetSpacing(spacing int32) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.int             // out
 

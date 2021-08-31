@@ -116,7 +116,7 @@ type Dragger interface {
 	Surface() Surfacer
 	// SetHotspot sets the position of the drag surface that will be kept under
 	// the cursor hotspot.
-	SetHotspot(hotX int, hotY int)
+	SetHotspot(hotX int32, hotY int32)
 }
 
 var _ Dragger = (*Drag)(nil)
@@ -312,7 +312,7 @@ func (drag *Drag) Surface() Surfacer {
 // cursor hotspot.
 //
 // Initially, the hotspot is at the top left corner of the drag surface.
-func (drag *Drag) SetHotspot(hotX int, hotY int) {
+func (drag *Drag) SetHotspot(hotX int32, hotY int32) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

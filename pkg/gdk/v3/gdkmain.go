@@ -53,14 +53,14 @@ func DisableMultidevice() {
 //
 // Prior to GDK 3.0, this function would not automatically sync for you, so you
 // had to gdk_flush() if your last call to Xlib was not a blocking round trip.
-func ErrorTrapPop() int {
+func ErrorTrapPop() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_error_trap_pop()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -368,7 +368,7 @@ func SetAllowedBackends(backends string) {
 // gdk_display_set_double_click_time(). See also
 // gdk_display_set_double_click_distance(). Applications should not set this, it
 // is a global user-configured setting.
-func SetDoubleClickTime(msec uint) {
+func SetDoubleClickTime(msec uint32) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(msec)
@@ -398,14 +398,14 @@ func SetProgramClass(programClass string) {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information.
-func ScreenHeight() int {
+func ScreenHeight() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_height()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -414,14 +414,14 @@ func ScreenHeight() int {
 // that on many X servers this value will not be correct.
 //
 // Deprecated: Use per-monitor information.
-func ScreenHeightMm() int {
+func ScreenHeightMm() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_height_mm()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -431,14 +431,14 @@ func ScreenHeightMm() int {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information.
-func ScreenWidth() int {
+func ScreenWidth() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_width()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -447,14 +447,14 @@ func ScreenWidth() int {
 // that on many X servers this value will not be correct.
 //
 // Deprecated: Use per-monitor information.
-func ScreenWidthMm() int {
+func ScreenWidthMm() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_width_mm()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

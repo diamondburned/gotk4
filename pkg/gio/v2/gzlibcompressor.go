@@ -53,7 +53,7 @@ func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 }
 
 // NewZlibCompressor creates a new Compressor.
-func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
+func NewZlibCompressor(format ZlibCompressorFormat, level int32) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
 	var _cret *C.GZlibCompressor      // in

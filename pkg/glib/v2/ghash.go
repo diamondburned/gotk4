@@ -88,7 +88,7 @@ func DirectEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 //
 // This hash function is also appropriate for keys that are integers stored in
 // pointers, such as GINT_TO_POINTER (n).
-func DirectHash(v cgo.Handle) uint {
+func DirectHash(v cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -97,9 +97,9 @@ func DirectHash(v cgo.Handle) uint {
 	_cret = C.g_direct_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -133,7 +133,7 @@ func DoubleEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 // to g_hash_table_new() as the hash_func parameter, It can be passed to
 // g_hash_table_new() as the hash_func parameter, when using non-NULL pointers
 // to doubles as keys in a Table.
-func DoubleHash(v cgo.Handle) uint {
+func DoubleHash(v cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -142,9 +142,9 @@ func DoubleHash(v cgo.Handle) uint {
 	_cret = C.g_double_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -178,7 +178,7 @@ func Int64Equal(v1 cgo.Handle, v2 cgo.Handle) bool {
 //
 // It can be passed to g_hash_table_new() as the hash_func parameter, when using
 // non-NULL pointers to 64-bit integer values as keys in a Table.
-func Int64Hash(v cgo.Handle) uint {
+func Int64Hash(v cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -187,9 +187,9 @@ func Int64Hash(v cgo.Handle) uint {
 	_cret = C.g_int64_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -229,7 +229,7 @@ func IntEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 // Note that this function acts on pointers to #gint, not on #gint directly: if
 // your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_hash() instead.
-func IntHash(v cgo.Handle) uint {
+func IntHash(v cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -238,9 +238,9 @@ func IntHash(v cgo.Handle) uint {
 	_cret = C.g_int_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -285,7 +285,7 @@ func StrEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
 //
 // Note that this function may not be a perfect fit for all use cases. For
 // example, it produces some hash collisions with strings as short as 2.
-func StrHash(v cgo.Handle) uint {
+func StrHash(v cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -294,9 +294,9 @@ func StrHash(v cgo.Handle) uint {
 	_cret = C.g_str_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -627,7 +627,7 @@ func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle, value
 }
 
 // HashTableSize returns the number of elements contained in the Table.
-func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
+func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint32 {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
 
@@ -644,9 +644,9 @@ func HashTableSize(hashTable map[cgo.Handle]cgo.Handle) uint {
 	_cret = C.g_hash_table_size(_arg1)
 	runtime.KeepAlive(hashTable)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

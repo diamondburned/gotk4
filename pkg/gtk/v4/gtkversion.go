@@ -57,7 +57,7 @@ const MINOR_VERSION = 2
 // against an old version of GTK and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
+func CheckVersion(requiredMajor uint32, requiredMinor uint32, requiredMicro uint32) string {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
 	var _arg3 C.guint // out
@@ -84,14 +84,14 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // GetBinaryAge returns the binary age as passed to libtool.
 //
 // If libtool means nothing to you, don't worry about it.
-func GetBinaryAge() uint {
+func GetBinaryAge() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_binary_age()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -99,14 +99,14 @@ func GetBinaryAge() uint {
 // GetInterfaceAge returns the interface age as passed to libtool.
 //
 // If libtool means nothing to you, don't worry about it.
-func GetInterfaceAge() uint {
+func GetInterfaceAge() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_interface_age()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -119,14 +119,14 @@ func GetInterfaceAge() uint {
 // is running against. Contrast with the GTK_MAJOR_VERSION macro, which
 // represents the major version of the GTK headers you have included when
 // compiling your code.
-func GetMajorVersion() uint {
+func GetMajorVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_major_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -139,14 +139,14 @@ func GetMajorVersion() uint {
 // is are running against. Contrast with the GTK_MICRO_VERSION macro, which
 // represents the micro version of the GTK headers you have included when
 // compiling your code.
-func GetMicroVersion() uint {
+func GetMicroVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_micro_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -159,14 +159,14 @@ func GetMicroVersion() uint {
 // is are running against. Contrast with the GTK_MINOR_VERSION macro, which
 // represents the minor version of the GTK headers you have included when
 // compiling your code.
-func GetMinorVersion() uint {
+func GetMinorVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_minor_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

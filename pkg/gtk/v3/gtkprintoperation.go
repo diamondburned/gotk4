@@ -308,11 +308,11 @@ type PrintOperationOverrider interface {
 	BeginPrint(context *PrintContext)
 	CustomWidgetApply(widget Widgetter)
 	Done(result PrintOperationResult)
-	DrawPage(context *PrintContext, pageNr int)
+	DrawPage(context *PrintContext, pageNr int32)
 	EndPrint(context *PrintContext)
 	Paginate(context *PrintContext) bool
 	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
-	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
+	RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
 	StatusChanged()
 	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 }
@@ -523,7 +523,7 @@ func (op *PrintOperation) HasSelection() bool {
 // gtk_print_operation_get_n_pages_to_print() when print status is
 // GTK_PRINT_STATUS_GENERATING_DATA. This is typically used to track the
 // progress of print operation.
-func (op *PrintOperation) NPagesToPrint() int {
+func (op *PrintOperation) NPagesToPrint() int32 {
 	var _arg0 *C.GtkPrintOperation // out
 	var _cret C.gint               // in
 
@@ -532,9 +532,9 @@ func (op *PrintOperation) NPagesToPrint() int {
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 	runtime.KeepAlive(op)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -748,7 +748,7 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 // select to print only the current page.
 //
 // Note that this only makes sense for pre-paginated documents.
-func (op *PrintOperation) SetCurrentPage(currentPage int) {
+func (op *PrintOperation) SetCurrentPage(currentPage int32) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gint               // out
 
@@ -891,7 +891,7 @@ func (op *PrintOperation) SetJobName(jobName string) {
 // Note that the page numbers passed to the PrintOperation::request-page-setup
 // and PrintOperation::draw-page signals are 0-based, i.e. if the user chooses
 // to print all pages, the last ::draw-page signal will be for page n_pages - 1.
-func (op *PrintOperation) SetNPages(nPages int) {
+func (op *PrintOperation) SetNPages(nPages int32) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gint               // out
 

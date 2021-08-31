@@ -113,7 +113,7 @@ func (self *ListItem) Item() *externglib.Object {
 // Position gets the position in the model that self currently displays.
 //
 // If self is unbound, GTK_INVALID_LIST_POSITION is returned.
-func (self *ListItem) Position() uint {
+func (self *ListItem) Position() uint32 {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
 
@@ -122,9 +122,9 @@ func (self *ListItem) Position() uint {
 	_cret = C.gtk_list_item_get_position(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

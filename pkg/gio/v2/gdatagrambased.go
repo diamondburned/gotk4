@@ -150,7 +150,7 @@ type DatagramBasedOverrider interface {
 	// messages successfully received before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
-	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
 	//
@@ -194,7 +194,7 @@ type DatagramBasedOverrider interface {
 	// messages successfully sent before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
-	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
 }
 
 // DatagramBased is a networking interface for representing datagram-based
@@ -261,10 +261,10 @@ type DatagramBasedder interface {
 	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
 	// ReceiveMessages: receive one or more data messages from datagram_based in
 	// one go.
-	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
-	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
 }
 
 var _ DatagramBasedder = (*DatagramBased)(nil)
@@ -466,7 +466,7 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
+func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GInputMessage  // out
@@ -501,10 +501,10 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(timeout)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -551,7 +551,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
+func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GOutputMessage // out
@@ -586,10 +586,10 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(timeout)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

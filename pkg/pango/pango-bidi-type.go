@@ -144,7 +144,7 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
-func FindBaseDir(text string, length int) Direction {
+func FindBaseDir(text string, length int32) Direction {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
 	var _cret C.PangoDirection // in

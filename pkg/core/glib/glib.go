@@ -21,6 +21,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
+func init() {
+	if unsafe.Sizeof(C.int) != 4 {
+		panic("sizeof(C.int) != 4")
+	}
+	if unsafe.Sizeof(C.uint) != 4 {
+		panic("sizeof(C.uint) != 4")
+	}
+}
+
 func gbool(b bool) C.gboolean {
 	if b {
 		return C.gboolean(1)

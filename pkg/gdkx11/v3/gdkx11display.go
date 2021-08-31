@@ -34,7 +34,7 @@ func init() {
 //
 // This function should only be needed in unusual circumstances, e.g. when
 // filtering XInput extension events on the root window.
-func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents int) {
+func X11RegisterStandardEventType(display *X11Display, eventBase int32, nEvents int32) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
@@ -93,7 +93,7 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
 //
 // See gdk_error_trap_pop() for the all-displays-at-once equivalent.
-func (display *X11Display) ErrorTrapPop() int {
+func (display *X11Display) ErrorTrapPop() int32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
@@ -102,9 +102,9 @@ func (display *X11Display) ErrorTrapPop() int {
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -198,7 +198,7 @@ func (display *X11Display) Grab() {
 // gdk_cursor_new_from_pixbuf() will have to be handled by the application (GTK+
 // applications can learn about cursor theme changes by listening for change
 // notification for the corresponding Setting).
-func (display *X11Display) SetCursorTheme(theme string, size int) {
+func (display *X11Display) SetCursorTheme(theme string, size int32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -249,7 +249,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
-func (display *X11Display) SetWindowScale(scale int) {
+func (display *X11Display) SetWindowScale(scale int32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 

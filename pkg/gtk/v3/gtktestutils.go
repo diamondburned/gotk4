@@ -202,7 +202,7 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 // or decrease of spin button’s value.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
+func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
@@ -276,7 +276,7 @@ func TestTextSet(widget Widgetter, _string string) {
 // details.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) bool {
+func TestWidgetClick(widget Widgetter, button uint32, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -307,7 +307,7 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 // For other widgets, this is usually widget->window. Certain caveats should be
 // considered when using this function, in particular because the mouse pointer
 // is warped to the key press location, see gdk_test_simulate_key() for details.
-func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType) bool {
+func TestWidgetSendKey(widget Widgetter, keyval uint32, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out

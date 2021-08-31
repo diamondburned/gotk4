@@ -94,7 +94,7 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 }
 
 // SetCursorTheme sets the cursor theme for the given display.
-func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
+func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out

@@ -156,7 +156,7 @@ func (listStore *ListStore) Clear() {
 // then the new row will be appended to the list. The row will be empty after
 // this function is called. To fill in values, you need to call
 // gtk_list_store_set() or gtk_list_store_set_value().
-func (listStore *ListStore) Insert(position int) TreeIter {
+func (listStore *ListStore) Insert(position int32) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.int           // out
@@ -230,7 +230,7 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) TreeIter {
 // the columns and values as two arrays, instead of varargs.
 //
 // This function is mainly intended for language-bindings.
-func (listStore *ListStore) InsertWithValues(position int, columns []int, values []externglib.Value) TreeIter {
+func (listStore *ListStore) InsertWithValues(position int32, columns []int32, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.int           // out
@@ -377,13 +377,13 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 
 // Reorder reorders store to follow the order indicated by new_order. Note that
 // this function only works with unsorted stores.
-func (store *ListStore) Reorder(newOrder []int) {
+func (store *ListStore) Reorder(newOrder []int32) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.int          // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	{
-		var zero int
+		var zero int32
 		newOrder = append(newOrder, zero)
 		_arg1 = (*C.int)(unsafe.Pointer(&newOrder[0]))
 	}
@@ -420,7 +420,7 @@ func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
-func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
+func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -442,7 +442,7 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externgl
 // values as two arrays, instead of varargs. This function is mainly intended
 // for language-bindings and in case the number of columns to change is not
 // known until run-time.
-func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
+func (listStore *ListStore) Set(iter *TreeIter, columns []int32, values []externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.int          // out

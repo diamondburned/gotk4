@@ -911,13 +911,13 @@ func (*ImplementorIface) privateImplementorIface() {}
 // yet, so the interface currently has no use.
 type ObjectClassOverrider interface {
 	ActiveDescendantChanged(child *cgo.Handle)
-	ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
+	ChildrenChanged(changeIndex uint32, changedChild cgo.Handle)
 	FocusEvent(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	Description() string
 	// IndexInParent gets the 0-based index of this accessible in its parent;
 	// returns -1 if the accessible does not have an accessible parent.
-	IndexInParent() int
+	IndexInParent() int32
 	// Layer gets the layer of the accessible.
 	//
 	// Deprecated: Use atk_component_get_layer instead.
@@ -926,8 +926,8 @@ type ObjectClassOverrider interface {
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
-	MDIZOrder() int
-	NChildren() int
+	MDIZOrder() int32
+	NChildren() int32
 	// Name gets the accessible name of the accessible.
 	Name() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
@@ -958,7 +958,7 @@ type ObjectClassOverrider interface {
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: See atk_object_connect_property_change_handler().
-	RemovePropertyChangeHandler(handlerId uint)
+	RemovePropertyChangeHandler(handlerId uint32)
 	// SetDescription sets the accessible description of the accessible. You
 	// can't set the description to NULL. This is reserved for the initial
 	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
@@ -1072,7 +1072,7 @@ func (accessible *ObjectClass) Description() string {
 
 // IndexInParent gets the 0-based index of this accessible in its parent;
 // returns -1 if the accessible does not have an accessible parent.
-func (accessible *ObjectClass) IndexInParent() int {
+func (accessible *ObjectClass) IndexInParent() int32 {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1081,9 +1081,9 @@ func (accessible *ObjectClass) IndexInParent() int {
 	_cret = C.atk_object_get_index_in_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1111,7 +1111,7 @@ func (accessible *ObjectClass) Layer() Layer {
 // returned if the layer of the accessible is not ATK_LAYER_MDI.
 //
 // Deprecated: Use atk_component_get_mdi_zorder instead.
-func (accessible *ObjectClass) MDIZOrder() int {
+func (accessible *ObjectClass) MDIZOrder() int32 {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1120,15 +1120,15 @@ func (accessible *ObjectClass) MDIZOrder() int {
 	_cret = C.atk_object_get_mdi_zorder(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NAccessibleChildren gets the number of accessible children of the accessible.
-func (accessible *ObjectClass) NAccessibleChildren() int {
+func (accessible *ObjectClass) NAccessibleChildren() int32 {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1137,9 +1137,9 @@ func (accessible *ObjectClass) NAccessibleChildren() int {
 	_cret = C.atk_object_get_n_accessible_children(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1283,7 +1283,7 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 // RefAccessibleChild gets a reference to the specified accessible child of the
 // object. The accessible children are 0-based so the first accessible child is
 // at index 0, the second at index 1 and so on.
-func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
+func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -1340,7 +1340,7 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 // RemovePropertyChangeHandler removes a property change handler.
 //
 // Deprecated: See atk_object_connect_property_change_handler().
-func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
+func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 

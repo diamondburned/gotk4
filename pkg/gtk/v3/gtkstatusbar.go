@@ -29,8 +29,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StatusbarOverrider interface {
-	TextPopped(contextId uint, text string)
-	TextPushed(contextId uint, text string)
+	TextPopped(contextId uint32, text string)
+	TextPushed(contextId uint32, text string)
 }
 
 // Statusbar is usually placed along the bottom of an application's main Window.
@@ -115,7 +115,7 @@ func NewStatusbar() *Statusbar {
 
 // ContextID returns a new context identifier, given a description of the actual
 // context. Note that the description is not shown in the UI.
-func (statusbar *Statusbar) ContextID(contextDescription string) uint {
+func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -128,9 +128,9 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextDescription)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -157,7 +157,7 @@ func (statusbar *Statusbar) MessageArea() *Box {
 //
 // Note that this may not change the displayed message, if the message at the
 // top of the stack has a different context id.
-func (statusbar *Statusbar) Pop(contextId uint) {
+func (statusbar *Statusbar) Pop(contextId uint32) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -170,7 +170,7 @@ func (statusbar *Statusbar) Pop(contextId uint) {
 }
 
 // Push pushes a new message onto a statusbar’s stack.
-func (statusbar *Statusbar) Push(contextId uint, text string) uint {
+func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.gchar        // out
@@ -186,16 +186,16 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	runtime.KeepAlive(contextId)
 	runtime.KeepAlive(text)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
 // context_id and message_id must be specified.
-func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
+func (statusbar *Statusbar) Remove(contextId uint32, messageId uint32) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -212,7 +212,7 @@ func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
 // the exact context_id.
-func (statusbar *Statusbar) RemoveAll(contextId uint) {
+func (statusbar *Statusbar) RemoveAll(contextId uint32) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 

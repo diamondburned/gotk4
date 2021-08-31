@@ -50,7 +50,7 @@ type IOStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
 	CloseFinish(result AsyncResulter) error
 	CloseFn(ctx context.Context) error
@@ -120,7 +120,7 @@ type IOStreamer interface {
 	Close(ctx context.Context) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it.
-	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
 	CloseFinish(result AsyncResulter) error
 	// InputStream gets the input stream for this object.
@@ -136,7 +136,7 @@ type IOStreamer interface {
 	// SpliceAsync: asynchronously splice the output stream of stream1 to the
 	// input stream of stream2, and splice the output stream of stream2 to the
 	// input stream of stream1.
-	SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
+	SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int32, callback AsyncReadyCallback)
 }
 
 var _ IOStreamer = (*IOStream)(nil)
@@ -229,7 +229,7 @@ func (stream *IOStream) Close(ctx context.Context) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -376,7 +376,7 @@ func (stream *IOStream) SetPending() error {
 //
 // When the operation is finished callback will be called. You can then call
 // g_io_stream_splice_finish() to get the result of the operation.
-func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
+func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out

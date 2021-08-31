@@ -140,7 +140,7 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 }
 
 // UnixMountCompare compares two unix mounts.
-func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
+func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int32 {
 	var _arg1 *C.GUnixMountEntry // out
 	var _arg2 *C.GUnixMountEntry // out
 	var _cret C.gint             // in
@@ -152,9 +152,9 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 	runtime.KeepAlive(mount1)
 	runtime.KeepAlive(mount2)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -588,7 +588,7 @@ func NewUnixMountMonitor() *UnixMountMonitor {
 // have side effects for other users of the monitor.
 //
 // Deprecated: This function does nothing. Don't call it.
-func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
+func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int32) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out
 
@@ -657,7 +657,7 @@ func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 }
 
 // Compare compares two unix mount points.
-func (mount1 *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
+func (mount1 *UnixMountPoint) Compare(mount2 *UnixMountPoint) int32 {
 	var _arg0 *C.GUnixMountPoint // out
 	var _arg1 *C.GUnixMountPoint // out
 	var _cret C.gint             // in
@@ -669,9 +669,9 @@ func (mount1 *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
 	runtime.KeepAlive(mount1)
 	runtime.KeepAlive(mount2)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

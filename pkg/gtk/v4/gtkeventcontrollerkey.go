@@ -84,7 +84,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 // Group gets the key group of the current event of this controller.
 //
 // See gdk.KeyEvent.GetLayout().
-func (controller *EventControllerKey) Group() uint {
+func (controller *EventControllerKey) Group() uint32 {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
@@ -93,9 +93,9 @@ func (controller *EventControllerKey) Group() uint {
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 	runtime.KeepAlive(controller)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

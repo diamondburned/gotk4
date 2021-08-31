@@ -67,7 +67,7 @@ type FileMonitorrer interface {
 	IsCancelled() bool
 	// SetRateLimit sets the rate limit to which the monitor will report
 	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
+	SetRateLimit(limitMsecs int32)
 }
 
 var _ FileMonitorrer = (*FileMonitor)(nil)
@@ -148,7 +148,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 
 // SetRateLimit sets the rate limit to which the monitor will report consecutive
 // change events to the same file.
-func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
+func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 

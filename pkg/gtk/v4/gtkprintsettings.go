@@ -434,7 +434,7 @@ func (settings *PrintSettings) Finishings() string {
 }
 
 // Int returns the integer value of key, or 0.
-func (settings *PrintSettings) Int(key string) int {
+func (settings *PrintSettings) Int(key string) int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
 	var _cret C.int               // in
@@ -447,16 +447,16 @@ func (settings *PrintSettings) Int(key string) int {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // IntWithDefault returns the value of key, interpreted as an integer, or the
 // default value.
-func (settings *PrintSettings) IntWithDefault(key string, def int) int {
+func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -472,9 +472,9 @@ func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(def)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -525,7 +525,7 @@ func (settings *PrintSettings) MediaType() string {
 }
 
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
-func (settings *PrintSettings) NCopies() int {
+func (settings *PrintSettings) NCopies() int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.int               // in
 
@@ -534,15 +534,15 @@ func (settings *PrintSettings) NCopies() int {
 	_cret = C.gtk_print_settings_get_n_copies(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-func (settings *PrintSettings) NumberUp() int {
+func (settings *PrintSettings) NumberUp() int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.int               // in
 
@@ -551,9 +551,9 @@ func (settings *PrintSettings) NumberUp() int {
 	_cret = C.gtk_print_settings_get_number_up(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -783,7 +783,7 @@ func (settings *PrintSettings) Quality() PrintQuality {
 }
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
-func (settings *PrintSettings) Resolution() int {
+func (settings *PrintSettings) Resolution() int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.int               // in
 
@@ -792,15 +792,15 @@ func (settings *PrintSettings) Resolution() int {
 	_cret = C.gtk_print_settings_get_resolution(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
-func (settings *PrintSettings) ResolutionX() int {
+func (settings *PrintSettings) ResolutionX() int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.int               // in
 
@@ -809,15 +809,15 @@ func (settings *PrintSettings) ResolutionX() int {
 	_cret = C.gtk_print_settings_get_resolution_x(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (settings *PrintSettings) ResolutionY() int {
+func (settings *PrintSettings) ResolutionY() int32 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.int               // in
 
@@ -826,9 +826,9 @@ func (settings *PrintSettings) ResolutionY() int {
 	_cret = C.gtk_print_settings_get_resolution_y(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1097,7 +1097,7 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 }
 
 // SetInt sets key to an integer value.
-func (settings *PrintSettings) SetInt(key string, value int) {
+func (settings *PrintSettings) SetInt(key string, value int32) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -1150,7 +1150,7 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 }
 
 // SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
-func (settings *PrintSettings) SetNCopies(numCopies int) {
+func (settings *PrintSettings) SetNCopies(numCopies int32) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
 
@@ -1163,7 +1163,7 @@ func (settings *PrintSettings) SetNCopies(numCopies int) {
 }
 
 // SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-func (settings *PrintSettings) SetNumberUp(numberUp int) {
+func (settings *PrintSettings) SetNumberUp(numberUp int32) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
 
@@ -1347,7 +1347,7 @@ func (settings *PrintSettings) SetQuality(quality PrintQuality) {
 
 // SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (settings *PrintSettings) SetResolution(resolution int) {
+func (settings *PrintSettings) SetResolution(resolution int32) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
 
@@ -1361,7 +1361,7 @@ func (settings *PrintSettings) SetResolution(resolution int) {
 
 // SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (settings *PrintSettings) SetResolutionXY(resolutionX int, resolutionY int) {
+func (settings *PrintSettings) SetResolutionXY(resolutionX int32, resolutionY int32) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
@@ -1520,7 +1520,7 @@ type pageRange struct {
 
 // NewPageRange creates a new PageRange instance from the given
 // fields.
-func NewPageRange(start, end int) PageRange {
+func NewPageRange(start, end int32) PageRange {
 	var f0 C.int // out
 	f0 = C.int(start)
 	var f1 C.int // out
@@ -1535,15 +1535,15 @@ func NewPageRange(start, end int) PageRange {
 }
 
 // Start: start of page range.
-func (p *PageRange) Start() int {
-	var v int // out
-	v = int(p.native.start)
+func (p *PageRange) Start() int32 {
+	var v int32 // out
+	v = int32(p.native.start)
 	return v
 }
 
 // End: end of page range.
-func (p *PageRange) End() int {
-	var v int // out
-	v = int(p.native.end)
+func (p *PageRange) End() int32 {
+	var v int32 // out
+	v = int32(p.native.end)
 	return v
 }

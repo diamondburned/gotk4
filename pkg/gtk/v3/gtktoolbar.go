@@ -60,7 +60,7 @@ func (t ToolbarSpaceStyle) String() string {
 // yet, so the interface currently has no use.
 type ToolbarOverrider interface {
 	OrientationChanged(orientation Orientation)
-	PopupContextMenu(x int, y int, buttonNumber int) bool
+	PopupContextMenu(x int32, y int32, buttonNumber int32) bool
 	StyleChanged(style ToolbarStyle)
 }
 
@@ -157,7 +157,7 @@ func NewToolbar() *Toolbar {
 // returns the position a new item should be inserted.
 //
 // x and y are in toolbar coordinates.
-func (toolbar *Toolbar) DropIndex(x int, y int) int {
+func (toolbar *Toolbar) DropIndex(x int32, y int32) int32 {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
@@ -172,9 +172,9 @@ func (toolbar *Toolbar) DropIndex(x int, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -199,7 +199,7 @@ func (toolbar *Toolbar) IconSize() IconSize {
 
 // ItemIndex returns the position of item on the toolbar, starting from 0. It is
 // an error if item is not a child of the toolbar.
-func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
+func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _cret C.gint         // in
@@ -211,15 +211,15 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NItems returns the number of items on the toolbar.
-func (toolbar *Toolbar) NItems() int {
+func (toolbar *Toolbar) NItems() int32 {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gint        // in
 
@@ -228,16 +228,16 @@ func (toolbar *Toolbar) NItems() int {
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 	runtime.KeepAlive(toolbar)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NthItem returns the n'th item on toolbar, or NULL if the toolbar does not
 // contain an n'th item.
-func (toolbar *Toolbar) NthItem(n int) *ToolItem {
+func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 C.gint         // out
 	var _cret *C.GtkToolItem // in
@@ -317,7 +317,7 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 // Insert a ToolItem into the toolbar at position pos. If pos is 0 the item is
 // prepended to the start of the toolbar. If pos is negative, the item is
 // appended to the end of the toolbar.
-func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
+func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
@@ -339,7 +339,7 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 // The tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to any
 // widget hierarchy or used as highlight item for another toolbar.
-func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
+func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out

@@ -124,7 +124,7 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information instead.
-func (screen *Screen) Height() int {
+func (screen *Screen) Height() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -133,9 +133,9 @@ func (screen *Screen) Height() int {
 	_cret = C.gdk_screen_get_height(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -147,7 +147,7 @@ func (screen *Screen) Height() int {
 // dimensions instead.
 //
 // Deprecated: Use per-monitor information instead.
-func (screen *Screen) HeightMm() int {
+func (screen *Screen) HeightMm() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -156,9 +156,9 @@ func (screen *Screen) HeightMm() int {
 	_cret = C.gdk_screen_get_height_mm(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -167,7 +167,7 @@ func (screen *Screen) HeightMm() int {
 // located.
 //
 // Deprecated: Use gdk_display_get_monitor_at_point() instead.
-func (screen *Screen) MonitorAtPoint(x int, y int) int {
+func (screen *Screen) MonitorAtPoint(x int32, y int32) int32 {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -182,9 +182,9 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -193,7 +193,7 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 // of the bounding rectangle of window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
-func (screen *Screen) MonitorAtWindow(window Windower) int {
+func (screen *Screen) MonitorAtWindow(window Windower) int32 {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.GdkWindow // out
 	var _cret C.gint       // in
@@ -205,9 +205,9 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -224,7 +224,7 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 // gdk_screen_get_width() and gdk_screen_get_height().
 //
 // Deprecated: Use gdk_monitor_get_geometry() instead.
-func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
+func (screen *Screen) MonitorGeometry(monitorNum int32) Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
 	var _arg2 C.GdkRectangle // in
@@ -246,7 +246,7 @@ func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
 // MonitorHeightMm gets the height in millimeters of the specified monitor.
 //
 // Deprecated: Use gdk_monitor_get_height_mm() instead.
-func (screen *Screen) MonitorHeightMm(monitorNum int) int {
+func (screen *Screen) MonitorHeightMm(monitorNum int32) int32 {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
@@ -258,9 +258,9 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -270,7 +270,7 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 // device.
 //
 // Deprecated: Use gdk_monitor_get_model() instead.
-func (screen *Screen) MonitorPlugName(monitorNum int) string {
+func (screen *Screen) MonitorPlugName(monitorNum int32) string {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -301,7 +301,7 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 // to use gdk_window_get_scale_factor() instead.
 //
 // Deprecated: Use gdk_monitor_get_scale_factor() instead.
-func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
+func (screen *Screen) MonitorScaleFactor(monitorNum int32) int32 {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
@@ -313,9 +313,9 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -324,7 +324,7 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 // available.
 //
 // Deprecated: Use gdk_monitor_get_width_mm() instead.
-func (screen *Screen) MonitorWidthMm(monitorNum int) int {
+func (screen *Screen) MonitorWidthMm(monitorNum int32) int32 {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _cret C.gint       // in
@@ -336,9 +336,9 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -359,7 +359,7 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 // gdk_screen_get_n_monitors().
 //
 // Deprecated: Use gdk_monitor_get_workarea() instead.
-func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
+func (screen *Screen) MonitorWorkarea(monitorNum int32) Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
 	var _arg2 C.GdkRectangle // in
@@ -381,7 +381,7 @@ func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
 // NMonitors returns the number of monitors which screen consists of.
 //
 // Deprecated: Use gdk_display_get_n_monitors() instead.
-func (screen *Screen) NMonitors() int {
+func (screen *Screen) NMonitors() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -390,9 +390,9 @@ func (screen *Screen) NMonitors() int {
 	_cret = C.gdk_screen_get_n_monitors(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -401,7 +401,7 @@ func (screen *Screen) NMonitors() int {
 // belongs. (See gdk_screen_get_display())
 //
 // Deprecated: since version 3.22.
-func (screen *Screen) Number() int {
+func (screen *Screen) Number() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -410,9 +410,9 @@ func (screen *Screen) Number() int {
 	_cret = C.gdk_screen_get_number(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -427,7 +427,7 @@ func (screen *Screen) Number() int {
 // defaulting to the first monitor.
 //
 // Deprecated: Use gdk_display_get_primary_monitor() instead.
-func (screen *Screen) PrimaryMonitor() int {
+func (screen *Screen) PrimaryMonitor() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -436,9 +436,9 @@ func (screen *Screen) PrimaryMonitor() int {
 	_cret = C.gdk_screen_get_primary_monitor(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -588,7 +588,7 @@ func (screen *Screen) ToplevelWindows() []Windower {
 // gdk_screen_get_monitor_scale_factor()).
 //
 // Deprecated: Use per-monitor information instead.
-func (screen *Screen) Width() int {
+func (screen *Screen) Width() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -597,9 +597,9 @@ func (screen *Screen) Width() int {
 	_cret = C.gdk_screen_get_width(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -611,7 +611,7 @@ func (screen *Screen) Width() int {
 // dimensions instead.
 //
 // Deprecated: Use per-monitor information instead.
-func (screen *Screen) WidthMm() int {
+func (screen *Screen) WidthMm() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gint       // in
 
@@ -620,9 +620,9 @@ func (screen *Screen) WidthMm() int {
 	_cret = C.gdk_screen_get_width_mm(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

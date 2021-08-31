@@ -23,14 +23,14 @@ func init() {
 }
 
 // X11GetDefaultScreen gets the default GTK+ screen number.
-func X11GetDefaultScreen() int {
+func X11GetDefaultScreen() int32 {
 	var _cret C.gint // in
 
 	_cret = C.gdk_x11_get_default_screen()
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -94,7 +94,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 }
 
 // ScreenNumber returns the index of a Screen.
-func (screen *X11Screen) ScreenNumber() int {
+func (screen *X11Screen) ScreenNumber() int32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
 
@@ -103,9 +103,9 @@ func (screen *X11Screen) ScreenNumber() int {
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

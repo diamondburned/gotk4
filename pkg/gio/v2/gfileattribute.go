@@ -109,9 +109,9 @@ func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 }
 
 // NInfos: number of values in the array.
-func (f *FileAttributeInfoList) NInfos() int {
-	var v int // out
-	v = int(f.native.n_infos)
+func (f *FileAttributeInfoList) NInfos() int32 {
+	var v int32 // out
+	v = int32(f.native.n_infos)
 	return v
 }
 

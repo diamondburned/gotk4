@@ -171,7 +171,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 //
 // The hotspot position on the paintable is aligned with the hotspot of the
 // cursor.
-func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX int, hotY int) {
+func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX int32, hotY int32) {
 	var _arg1 *C.GdkDrag      // out
 	var _arg2 *C.GdkPaintable // out
 	var _arg3 C.int           // out

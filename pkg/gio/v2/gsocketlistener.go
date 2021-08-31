@@ -471,7 +471,7 @@ func (listener *SocketListener) Close() {
 // example, by calling g_socket_listener_add_inet_port()) to be effective.
 //
 // See g_socket_set_listen_backlog() for details
-func (listener *SocketListener) SetBacklog(listenBacklog int) {
+func (listener *SocketListener) SetBacklog(listenBacklog int32) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
 

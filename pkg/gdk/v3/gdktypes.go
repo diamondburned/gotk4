@@ -849,7 +849,7 @@ type point struct {
 
 // NewPoint creates a new Point instance from the given
 // fields.
-func NewPoint(x, y int) Point {
+func NewPoint(x, y int32) Point {
 	var f0 C.gint // out
 	f0 = C.gint(x)
 	var f1 C.gint // out
@@ -864,16 +864,16 @@ func NewPoint(x, y int) Point {
 }
 
 // X: x coordinate of the point.
-func (p *Point) X() int {
-	var v int // out
-	v = int(p.native.x)
+func (p *Point) X() int32 {
+	var v int32 // out
+	v = int32(p.native.x)
 	return v
 }
 
 // Y: y coordinate of the point.
-func (p *Point) Y() int {
-	var v int // out
-	v = int(p.native.y)
+func (p *Point) Y() int32 {
+	var v int32 // out
+	v = int32(p.native.y)
 	return v
 }
 
@@ -897,7 +897,7 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // NewRectangle creates a new Rectangle instance from the given
 // fields.
-func NewRectangle(x, y, width, height int) Rectangle {
+func NewRectangle(x, y, width, height int32) Rectangle {
 	var f0 C.int // out
 	f0 = C.int(x)
 	var f1 C.int // out
@@ -917,27 +917,27 @@ func NewRectangle(x, y, width, height int) Rectangle {
 	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
+func (r *Rectangle) X() int32 {
+	var v int32 // out
+	v = int32(r.native.x)
 	return v
 }
 
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
+func (r *Rectangle) Y() int32 {
+	var v int32 // out
+	v = int32(r.native.y)
 	return v
 }
 
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
+func (r *Rectangle) Width() int32 {
+	var v int32 // out
+	v = int32(r.native.width)
 	return v
 }
 
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
+func (r *Rectangle) Height() int32 {
+	var v int32 // out
+	v = int32(r.native.height)
 	return v
 }
 

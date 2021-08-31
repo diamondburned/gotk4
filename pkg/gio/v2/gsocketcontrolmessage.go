@@ -38,11 +38,11 @@ func init() {
 type SocketControlMessageOverrider interface {
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
-	Level() int
+	Level() int32
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
-	Type() int
+	Type() int32
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
@@ -78,9 +78,9 @@ type SocketControlMessager interface {
 	externglib.Objector
 
 	// Level returns the "level" (i.e.
-	Level() int
+	Level() int32
 	// MsgType returns the protocol specific type of the control message.
-	MsgType() int
+	MsgType() int32
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
@@ -105,7 +105,7 @@ func marshalSocketControlMessager(p uintptr) (interface{}, error) {
 
 // Level returns the "level" (i.e. the originating protocol) of the control
 // message. This is often SOL_SOCKET.
-func (message *SocketControlMessage) Level() int {
+func (message *SocketControlMessage) Level() int32 {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -114,16 +114,16 @@ func (message *SocketControlMessage) Level() int {
 	_cret = C.g_socket_control_message_get_level(_arg0)
 	runtime.KeepAlive(message)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // MsgType returns the protocol specific type of the control message. For
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
-func (message *SocketControlMessage) MsgType() int {
+func (message *SocketControlMessage) MsgType() int32 {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -132,9 +132,9 @@ func (message *SocketControlMessage) MsgType() int {
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 	runtime.KeepAlive(message)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -180,7 +180,7 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 //
 // If there is no implementation for this kind of control message, NULL will be
 // returned.
-func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketControlMessager {
+func SocketControlMessageDeserialize(level int32, typ int32, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
 	var _arg4 C.gpointer // out

@@ -155,7 +155,7 @@ func (iconSet *IconSet) Copy() *IconSet {
 // array must be freed with g_free().
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) Sizes() []int {
+func (iconSet *IconSet) Sizes() []int32 {
 	var _arg0 *C.GtkIconSet  // out
 	var _arg1 *C.GtkIconSize // in
 	var _arg2 C.gint         // in
@@ -165,11 +165,11 @@ func (iconSet *IconSet) Sizes() []int {
 	C.gtk_icon_set_get_sizes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconSet)
 
-	var _sizes []int // out
+	var _sizes []int32 // out
 
 	defer C.free(unsafe.Pointer(_arg1))
-	_sizes = make([]int, _arg2)
-	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+	_sizes = make([]int32, _arg2)
+	copy(_sizes, unsafe.Slice((*int32)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _sizes
 }
@@ -181,7 +181,7 @@ func (iconSet *IconSet) Sizes() []int {
 // load), a default "missing image" icon will be returned instead.
 //
 // Deprecated: Use gtk_icon_set_render_icon_pixbuf() instead.
-func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
+func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 C.GtkTextDirection // out
@@ -240,7 +240,7 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 // instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpixbuf.Pixbuf {
+func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int32) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -280,7 +280,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpi
 // returned instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale int, forWindow gdk.Windower) *cairo.Surface {
+func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int32, scale int32, forWindow gdk.Windower) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -493,7 +493,7 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 // useful/meaningful if the icon size is not wildcarded.
 //
 // Deprecated: Use IconTheme instead.
-func (source *IconSource) Size() int {
+func (source *IconSource) Size() int32 {
 	var _arg0 *C.GtkIconSource // out
 	var _cret C.GtkIconSize    // in
 
@@ -502,9 +502,9 @@ func (source *IconSource) Size() int {
 	_cret = C.gtk_icon_source_get_size(_arg0)
 	runtime.KeepAlive(source)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -676,7 +676,7 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 // calling this function.
 //
 // Deprecated: Use IconTheme instead.
-func (source *IconSource) SetSize(size int) {
+func (source *IconSource) SetSize(size int32) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 C.GtkIconSize    // out
 
@@ -843,7 +843,7 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 }
 
 // Format retrieves the format of the selection.
-func (selectionData *SelectionData) Format() int {
+func (selectionData *SelectionData) Format() int32 {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gint              // in
 
@@ -852,15 +852,15 @@ func (selectionData *SelectionData) Format() int {
 	_cret = C.gtk_selection_data_get_format(_arg0)
 	runtime.KeepAlive(selectionData)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // Length retrieves the length of the raw data of the selection.
-func (selectionData *SelectionData) Length() int {
+func (selectionData *SelectionData) Length() int32 {
 	var _arg0 *C.GtkSelectionData // out
 	var _cret C.gint              // in
 
@@ -869,9 +869,9 @@ func (selectionData *SelectionData) Length() int {
 	_cret = C.gtk_selection_data_get_length(_arg0)
 	runtime.KeepAlive(selectionData)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -981,7 +981,7 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 
 // SetText sets the contents of the selection from a UTF-8 encoded string. The
 // string is converted to the form determined by selection_data->target.
-func (selectionData *SelectionData) SetText(str string, len int) bool {
+func (selectionData *SelectionData) SetText(str string, len int32) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gint              // out
@@ -1199,7 +1199,7 @@ func NewWidgetPath() *WidgetPath {
 // represented by path. This function is a shortcut for adding information from
 // widget to the given path. This includes setting the name or adding the style
 // classes from widget.
-func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
+func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidget     // out
 	var _cret C.gint           // in
@@ -1211,15 +1211,15 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(widget)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // AppendType appends a widget type to the widget hierarchy represented by path.
-func (path *WidgetPath) AppendType(typ externglib.Type) int {
+func (path *WidgetPath) AppendType(typ externglib.Type) int32 {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.GType          // out
 	var _cret C.gint           // in
@@ -1231,9 +1231,9 @@ func (path *WidgetPath) AppendType(typ externglib.Type) int {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(typ)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1245,7 +1245,7 @@ func (path *WidgetPath) AppendType(typ externglib.Type) int {
 // requires a lot more care in widget implementations as widgets need to make
 // sure to call gtk_widget_reset_style() on all involved widgets when the
 // siblings path changes.
-func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint) int {
+func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint32) int32 {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidgetPath // out
 	var _arg2 C.guint          // out
@@ -1260,9 +1260,9 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 	runtime.KeepAlive(siblings)
 	runtime.KeepAlive(siblingIndex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1356,7 +1356,7 @@ func (path *WidgetPath) IsType(typ externglib.Type) bool {
 
 // IterAddClass adds the class name to the widget at position pos in the
 // hierarchy defined in path. See gtk_style_context_add_class().
-func (path *WidgetPath) IterAddClass(pos int, name string) {
+func (path *WidgetPath) IterAddClass(pos int32, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1379,7 +1379,7 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 // with a lowercase letter.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
+func (path *WidgetPath) IterAddRegion(pos int32, name string, flags RegionFlags) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1400,7 +1400,7 @@ func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 
 // IterClearClasses removes all classes from the widget at position pos in the
 // hierarchy defined in path.
-func (path *WidgetPath) IterClearClasses(pos int) {
+func (path *WidgetPath) IterClearClasses(pos int32) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 
@@ -1416,7 +1416,7 @@ func (path *WidgetPath) IterClearClasses(pos int) {
 // hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterClearRegions(pos int) {
+func (path *WidgetPath) IterClearRegions(pos int32) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 
@@ -1430,7 +1430,7 @@ func (path *WidgetPath) IterClearRegions(pos int) {
 
 // IterGetName returns the name corresponding to the widget found at the
 // position pos in the widget hierarchy defined by path
-func (path *WidgetPath) IterGetName(pos int) string {
+func (path *WidgetPath) IterGetName(pos int32) string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.gchar         // in
@@ -1453,7 +1453,7 @@ func (path *WidgetPath) IterGetName(pos int) string {
 
 // IterGetObjectName returns the object name that is at position pos in the
 // widget hierarchy defined in path.
-func (path *WidgetPath) IterGetObjectName(pos int) string {
+func (path *WidgetPath) IterGetObjectName(pos int32) string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.char          // in
@@ -1476,7 +1476,7 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 
 // IterGetObjectType returns the object #GType that is at position pos in the
 // widget hierarchy defined in path.
-func (path *WidgetPath) IterGetObjectType(pos int) externglib.Type {
+func (path *WidgetPath) IterGetObjectType(pos int32) externglib.Type {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret C.GType          // in
@@ -1499,7 +1499,7 @@ func (path *WidgetPath) IterGetObjectType(pos int) externglib.Type {
 // element at pos as returned by gtk_widget_path_iter_get_siblings(). If that
 // function would return NULL because the element at pos has no siblings, this
 // function will return 0.
-func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
+func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret C.guint          // in
@@ -1511,16 +1511,16 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // IterGetSiblings returns the list of siblings for the element at pos. If the
 // element was not added with siblings, NULL is returned.
-func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
+func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkWidgetPath // in
@@ -1548,7 +1548,7 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 
 // IterGetState returns the state flags corresponding to the widget found at the
 // position pos in the widget hierarchy defined by path
-func (path *WidgetPath) IterGetState(pos int) StateFlags {
+func (path *WidgetPath) IterGetState(pos int32) StateFlags {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret C.GtkStateFlags  // in
@@ -1569,7 +1569,7 @@ func (path *WidgetPath) IterGetState(pos int) StateFlags {
 
 // IterHasClass returns TRUE if the widget at position pos has the class name
 // defined, FALSE otherwise.
-func (path *WidgetPath) IterHasClass(pos int, name string) bool {
+func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1596,7 +1596,7 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 
 // IterHasName returns TRUE if the widget at position pos has the name name,
 // FALSE otherwise.
-func (path *WidgetPath) IterHasName(pos int, name string) bool {
+func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1623,7 +1623,7 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 
 // IterHasQclass: see gtk_widget_path_iter_has_class(). This is a version that
 // operates with GQuarks.
-func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
+func (path *WidgetPath) IterHasQclass(pos int32, qname glib.Quark) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 C.GQuark         // out
@@ -1649,7 +1649,7 @@ func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
 
 // IterHasQname: see gtk_widget_path_iter_has_name(). This is a version that
 // operates on #GQuarks.
-func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
+func (path *WidgetPath) IterHasQname(pos int32, qname glib.Quark) bool {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 C.GQuark         // out
@@ -1677,7 +1677,7 @@ func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
 // operates with GQuarks.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, bool) {
+func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags, bool) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 C.GQuark         // out
@@ -1708,7 +1708,7 @@ func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, 
 // defined, FALSE otherwise.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) {
+func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1738,7 +1738,7 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 
 // IterListClasses returns a list with all the class names defined for the
 // widget at position pos in the hierarchy defined in path.
-func (path *WidgetPath) IterListClasses(pos int) []string {
+func (path *WidgetPath) IterListClasses(pos int32) []string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GSList        // in
@@ -1767,7 +1767,7 @@ func (path *WidgetPath) IterListClasses(pos int) []string {
 // widget at position pos in the hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterListRegions(pos int) []string {
+func (path *WidgetPath) IterListRegions(pos int32) []string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _cret *C.GSList        // in
@@ -1794,7 +1794,7 @@ func (path *WidgetPath) IterListRegions(pos int) []string {
 
 // IterRemoveClass removes the class name from the widget at position pos in the
 // hierarchy defined in path.
-func (path *WidgetPath) IterRemoveClass(pos int, name string) {
+func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1814,7 +1814,7 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 // the hierarchy defined in path.
 //
 // Deprecated: The use of regions is deprecated.
-func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
+func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1832,7 +1832,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 
 // IterSetName sets the widget name for the widget found at position pos in the
 // widget hierarchy defined by path.
-func (path *WidgetPath) IterSetName(pos int, name string) {
+func (path *WidgetPath) IterSetName(pos int32, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.gchar         // out
@@ -1852,7 +1852,7 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 // hierarchy defined by path.
 //
 // When set, the object name overrides the object type when matching CSS.
-func (path *WidgetPath) IterSetObjectName(pos int, name string) {
+func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 *C.char          // out
@@ -1872,7 +1872,7 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 
 // IterSetObjectType sets the object type for a given position in the widget
 // hierarchy defined by path.
-func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
+func (path *WidgetPath) IterSetObjectType(pos int32, typ externglib.Type) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 C.GType          // out
@@ -1896,7 +1896,7 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 // Setting a flag
 //
 //    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);
-func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
+func (path *WidgetPath) IterSetState(pos int32, state StateFlags) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
 	var _arg2 C.GtkStateFlags  // out
@@ -1913,7 +1913,7 @@ func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
 
 // Length returns the number of Widget #GTypes between the represented widget
 // and its topmost container.
-func (path *WidgetPath) Length() int {
+func (path *WidgetPath) Length() int32 {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret C.gint           // in
 
@@ -1922,9 +1922,9 @@ func (path *WidgetPath) Length() int {
 	_cret = C.gtk_widget_path_length(_arg0)
 	runtime.KeepAlive(path)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

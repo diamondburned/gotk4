@@ -184,7 +184,7 @@ func (context *StyleContext) AddClass(className string) {
 // Note: If both priorities are the same, a GtkStyleProvider added through this
 // function takes precedence over another added through
 // gtk.StyleContext().AddProviderForDisplay.
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -290,7 +290,7 @@ func (context *StyleContext) Padding() Border {
 }
 
 // Scale returns the scale used for assets.
-func (context *StyleContext) Scale() int {
+func (context *StyleContext) Scale() int32 {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
 
@@ -299,9 +299,9 @@ func (context *StyleContext) Scale() int {
 	_cret = C.gtk_style_context_get_scale(_arg0)
 	runtime.KeepAlive(context)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -452,7 +452,7 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 }
 
 // SetScale sets the scale to use when getting image assets for the style.
-func (context *StyleContext) SetScale(scale int) {
+func (context *StyleContext) SetScale(scale int32) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
@@ -515,7 +515,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 // Note: If both priorities are the same, A GtkStyleProvider added through
 // gtk.StyleContext.AddProvider() takes precedence over another added through
 // this function.
-func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
+func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint32) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out
 	var _arg3 C.guint             // out

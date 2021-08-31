@@ -47,28 +47,28 @@ const VERSION_MIN_REQUIRED = 2
 
 // GetBinaryAge returns the binary age as passed to libtool when building the
 // ATK library the process is running against.
-func GetBinaryAge() uint {
+func GetBinaryAge() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_binary_age()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // GetInterfaceAge returns the interface age as passed to libtool when building
 // the ATK library the process is running against.
-func GetInterfaceAge() uint {
+func GetInterfaceAge() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_interface_age()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -79,14 +79,14 @@ func GetInterfaceAge() uint {
 // This function is in the library, so it represents the ATK library your code
 // is running against. In contrast, the K_MAJOR_VERSION macro represents the
 // major version of the ATK headers you have included when compiling your code.
-func GetMajorVersion() uint {
+func GetMajorVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_major_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -97,14 +97,14 @@ func GetMajorVersion() uint {
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MICRO_VERSION macro represents the
 // micro version of the ATK headers you have included when compiling your code.
-func GetMicroVersion() uint {
+func GetMicroVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_micro_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -115,14 +115,14 @@ func GetMicroVersion() uint {
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MINOR_VERSION macro represents the
 // minor version of the ATK headers you have included when compiling your code.
-func GetMinorVersion() uint {
+func GetMinorVersion() uint32 {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_minor_version()
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -42,7 +42,7 @@ type IconOverrider interface {
 	// Equal checks if two icons are equal.
 	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
-	Hash() uint
+	Hash() uint32
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
 	// be retrieved back by calling g_icon_deserialize() on the returned value.
 	// As serialization will avoid using raw icon data when possible, it only
@@ -219,7 +219,7 @@ func IconDeserialize(value *glib.Variant) Iconner {
 }
 
 // IconHash gets a hash for an icon.
-func IconHash(icon cgo.Handle) uint {
+func IconHash(icon cgo.Handle) uint32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -228,9 +228,9 @@ func IconHash(icon cgo.Handle) uint {
 	_cret = C.g_icon_hash(_arg1)
 	runtime.KeepAlive(icon)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

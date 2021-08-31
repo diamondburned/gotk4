@@ -236,9 +236,9 @@ func (o *OptionEntry) ShortName() byte {
 }
 
 // Flags from Flags
-func (o *OptionEntry) Flags() int {
-	var v int // out
-	v = int(o.native.flags)
+func (o *OptionEntry) Flags() int32 {
+	var v int32 // out
+	v = int32(o.native.flags)
 	return v
 }
 

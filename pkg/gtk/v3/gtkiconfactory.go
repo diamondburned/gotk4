@@ -27,7 +27,7 @@ func init() {
 // IconSizeFromName looks up the icon size associated with name.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeFromName(name string) int {
+func IconSizeFromName(name string) int32 {
 	var _arg1 *C.gchar      // out
 	var _cret C.GtkIconSize // in
 
@@ -37,9 +37,9 @@ func IconSizeFromName(name string) int {
 	_cret = C.gtk_icon_size_from_name(_arg1)
 	runtime.KeepAlive(name)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -48,7 +48,7 @@ func IconSizeFromName(name string) int {
 // string is statically allocated and should not be freed.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeGetName(size int) string {
+func IconSizeGetName(size int32) string {
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.gchar      // in
 
@@ -71,7 +71,7 @@ func IconSizeGetName(size int) string {
 // pixbuf may not even correspond to the width/height returned by
 // gtk_icon_size_lookup(), because themes are free to render the pixbuf however
 // they like, including changing the usual size.
-func IconSizeLookup(size int) (width int, height int, ok bool) {
+func IconSizeLookup(size int32) (width int32, height int32, ok bool) {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gint        // in
 	var _arg3 C.gint        // in
@@ -82,12 +82,12 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 	_cret = C.gtk_icon_size_lookup(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(size)
 
-	var _width int  // out
-	var _height int // out
-	var _ok bool    // out
+	var _width int32  // out
+	var _height int32 // out
+	var _ok bool      // out
 
-	_width = int(_arg2)
-	_height = int(_arg3)
+	_width = int32(_arg2)
+	_height = int32(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -105,7 +105,7 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 // they like, including changing the usual size.
 //
 // Deprecated: Use gtk_icon_size_lookup() instead.
-func IconSizeLookupForSettings(settings *Settings, size int) (width int, height int, ok bool) {
+func IconSizeLookupForSettings(settings *Settings, size int32) (width int32, height int32, ok bool) {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.GtkIconSize  // out
 	var _arg3 C.gint         // in
@@ -119,12 +119,12 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(size)
 
-	var _width int  // out
-	var _height int // out
-	var _ok bool    // out
+	var _width int32  // out
+	var _height int32 // out
+	var _ok bool      // out
 
-	_width = int(_arg3)
-	_height = int(_arg4)
+	_width = int32(_arg3)
+	_height = int32(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -136,7 +136,7 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 // K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeRegister(name string, width int, height int) int {
+func IconSizeRegister(name string, width int32, height int32) int32 {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
@@ -152,9 +152,9 @@ func IconSizeRegister(name string, width int, height int) int {
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -163,7 +163,7 @@ func IconSizeRegister(name string, width int, height int) int {
 // gtk_icon_size_from_name() with alias as argument will return target.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeRegisterAlias(alias string, target int) {
+func IconSizeRegisterAlias(alias string, target int32) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 

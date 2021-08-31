@@ -335,7 +335,7 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 }
 
 // NewIOChannelUnix constructs a struct IOChannel.
-func NewIOChannelUnix(fd int) *IOChannel {
+func NewIOChannelUnix(fd int32) *IOChannel {
 	var _arg1 C.int         // out
 	var _cret *C.GIOChannel // in
 
@@ -493,7 +493,7 @@ func (channel *IOChannel) Flags() IOFlags {
 
 // LineTerm: this returns the string that OChannel uses to determine where in
 // the file a line break occurs. A value of NULL indicates autodetection.
-func (channel *IOChannel) LineTerm(length *int) string {
+func (channel *IOChannel) LineTerm(length *int32) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
 	var _cret *C.gchar      // in
@@ -830,7 +830,7 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 
 // SetLineTerm: this sets the string that OChannel uses to determine where in
 // the file a line break occurs.
-func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
+func (channel *IOChannel) SetLineTerm(lineTerm string, length int32) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -881,7 +881,7 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 //
 // On Windows this function returns the file descriptor or socket of the
 // OChannel.
-func (channel *IOChannel) UnixGetFd() int {
+func (channel *IOChannel) UnixGetFd() int32 {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gint        // in
 
@@ -890,9 +890,9 @@ func (channel *IOChannel) UnixGetFd() int {
 	_cret = C.g_io_channel_unix_get_fd(_arg0)
 	runtime.KeepAlive(channel)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -991,7 +991,7 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 }
 
 // IOChannelErrorFromErrno converts an errno error number to a OChannelError.
-func IOChannelErrorFromErrno(en int) IOChannelError {
+func IOChannelErrorFromErrno(en int32) IOChannelError {
 	var _arg1 C.gint            // out
 	var _cret C.GIOChannelError // in
 

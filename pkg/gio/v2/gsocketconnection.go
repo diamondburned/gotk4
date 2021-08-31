@@ -246,7 +246,7 @@ func (connection *SocketConnection) IsConnected() bool {
 // protocol_id.
 //
 // If no type is registered, the Connection base type is returned.
-func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) externglib.Type {
+func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int32) externglib.Type {
 	var _arg1 C.GSocketFamily // out
 	var _arg2 C.GSocketType   // out
 	var _arg3 C.gint          // out
@@ -273,7 +273,7 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 // protocol.
 //
 // If no type is registered, the Connection base type is returned.
-func SocketConnectionFactoryRegisterType(gType externglib.Type, family SocketFamily, typ SocketType, protocol int) {
+func SocketConnectionFactoryRegisterType(gType externglib.Type, family SocketFamily, typ SocketType, protocol int32) {
 	var _arg1 C.GType         // out
 	var _arg2 C.GSocketFamily // out
 	var _arg3 C.GSocketType   // out

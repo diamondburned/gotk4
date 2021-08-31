@@ -368,7 +368,7 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 }
 
 // PurgeItems purges every item from the recently used resources list.
-func (manager *RecentManager) PurgeItems() (int, error) {
+func (manager *RecentManager) PurgeItems() (int32, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.int               // in
 	var _cerr *C.GError           // in
@@ -378,10 +378,10 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 	runtime.KeepAlive(manager)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -579,7 +579,7 @@ func (info *RecentInfo) Exists() bool {
 
 // Age gets the number of days elapsed since the last update of the resource
 // pointed by info.
-func (info *RecentInfo) Age() int {
+func (info *RecentInfo) Age() int32 {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.int            // in
 
@@ -588,9 +588,9 @@ func (info *RecentInfo) Age() int {
 	_cret = C.gtk_recent_info_get_age(_arg0)
 	runtime.KeepAlive(info)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

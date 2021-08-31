@@ -595,7 +595,7 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 }
 
 // NewSymbolicColorWin32 constructs a struct SymbolicColor.
-func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
+func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gint              // out
 	var _cret *C.GtkSymbolicColor // in

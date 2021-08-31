@@ -64,7 +64,7 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 //
 // The conversion is done by multiplying d by PANGO_SCALE and rounding the
 // result to nearest integer.
-func UnitsFromDouble(d float64) int {
+func UnitsFromDouble(d float64) int32 {
 	var _arg1 C.double // out
 	var _cret C.int    // in
 
@@ -73,9 +73,9 @@ func UnitsFromDouble(d float64) int {
 	_cret = C.pango_units_from_double(_arg1)
 	runtime.KeepAlive(d)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -83,7 +83,7 @@ func UnitsFromDouble(d float64) int {
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
 // The conversion is done by dividing i by PANGO_SCALE.
-func UnitsToDouble(i int) float64 {
+func UnitsToDouble(i int32) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in
 
@@ -117,7 +117,7 @@ type rectangle struct {
 
 // NewRectangle creates a new Rectangle instance from the given
 // fields.
-func NewRectangle(x, y, width, height int) Rectangle {
+func NewRectangle(x, y, width, height int32) Rectangle {
 	var f0 C.int // out
 	f0 = C.int(x)
 	var f1 C.int // out
@@ -138,29 +138,29 @@ func NewRectangle(x, y, width, height int) Rectangle {
 }
 
 // X coordinate of the left side of the rectangle.
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
+func (r *Rectangle) X() int32 {
+	var v int32 // out
+	v = int32(r.native.x)
 	return v
 }
 
 // Y coordinate of the the top side of the rectangle.
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
+func (r *Rectangle) Y() int32 {
+	var v int32 // out
+	v = int32(r.native.y)
 	return v
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
+func (r *Rectangle) Width() int32 {
+	var v int32 // out
+	v = int32(r.native.width)
 	return v
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
+func (r *Rectangle) Height() int32 {
+	var v int32 // out
+	v = int32(r.native.height)
 	return v
 }

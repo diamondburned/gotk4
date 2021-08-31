@@ -68,7 +68,7 @@ type ContentProviderOverrider interface {
 	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
 	//
 	// The given stream will not be closed.
-	WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback)
+	WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int32, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -283,7 +283,7 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given stream will not be closed.
-func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
+func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int32, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out

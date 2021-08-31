@@ -85,7 +85,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 }
 
 // NumFallbacks gets the number of fallbacks that converter has applied so far.
-func (converter *CharsetConverter) NumFallbacks() uint {
+func (converter *CharsetConverter) NumFallbacks() uint32 {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
 
@@ -94,9 +94,9 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 	runtime.KeepAlive(converter)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -98,7 +98,7 @@ func NewCredentials() *Credentials {
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX process
 // ID (for example this is the case for G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (credentials *Credentials) UnixPid() (int, error) {
+func (credentials *Credentials) UnixPid() (int32, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.pid_t         // in
 	var _cerr *C.GError       // in
@@ -108,10 +108,10 @@ func (credentials *Credentials) UnixPid() (int, error) {
 	_cret = C.g_credentials_get_unix_pid(_arg0, &_cerr)
 	runtime.KeepAlive(credentials)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -124,7 +124,7 @@ func (credentials *Credentials) UnixPid() (int, error) {
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user.
-func (credentials *Credentials) UnixUser() (uint, error) {
+func (credentials *Credentials) UnixUser() (uint32, error) {
 	var _arg0 *C.GCredentials // out
 	var _cret C.uid_t         // in
 	var _cerr *C.GError       // in
@@ -134,10 +134,10 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 	_cret = C.g_credentials_get_unix_user(_arg0, &_cerr)
 	runtime.KeepAlive(credentials)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -196,7 +196,7 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user. It
 // can also fail if the OS does not allow the use of "spoofed" credentials.
-func (credentials *Credentials) SetUnixUser(uid uint) error {
+func (credentials *Credentials) SetUnixUser(uid uint32) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out
 	var _cerr *C.GError       // in

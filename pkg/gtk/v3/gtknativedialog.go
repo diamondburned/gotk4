@@ -34,7 +34,7 @@ type NativeDialogOverrider interface {
 	//
 	// If the dialog is not visible this does nothing.
 	Hide()
-	Response(responseId int)
+	Response(responseId int32)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
 	// automatically hidden and the NativeDialog::response signal will be
@@ -80,7 +80,7 @@ type NativeDialogger interface {
 	Hide()
 	// Run blocks in a recursive main loop until self emits the
 	// NativeDialog::response signal.
-	Run() int
+	Run() int32
 	// SetModal sets a dialog modal or non-modal.
 	SetModal(modal bool)
 	// SetTitle sets the title of the NativeDialog.
@@ -244,7 +244,7 @@ func (self *NativeDialog) Hide() {
 // window group while the dialog is run), callbacks such as timeouts, IO channel
 // watches, DND drops, etc, will be triggered during a gtk_native_dialog_run()
 // call.
-func (self *NativeDialog) Run() int {
+func (self *NativeDialog) Run() int32 {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gint             // in
 
@@ -253,9 +253,9 @@ func (self *NativeDialog) Run() int {
 	_cret = C.gtk_native_dialog_run(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

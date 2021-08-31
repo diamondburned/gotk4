@@ -531,7 +531,7 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
 // cannot be interpreted as an integer, or is out of range for a #gint, then 0
 // is returned and error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
+func (keyFile *KeyFile) Integer(groupName string, key string) (int32, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -549,10 +549,10 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -567,7 +567,7 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
 // cannot be interpreted as integers, or are out of range for #gint, then NULL
 // is returned and error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
+func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int32, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -586,12 +586,12 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
 
-	var _gints []int // out
-	var _goerr error // out
+	var _gints []int32 // out
+	var _goerr error   // out
 
 	defer C.free(unsafe.Pointer(_cret))
-	_gints = make([]int, _arg3)
-	copy(_gints, unsafe.Slice((*int)(unsafe.Pointer(_cret)), _arg3))
+	_gints = make([]int32, _arg3)
+	copy(_gints, unsafe.Slice((*int32)(unsafe.Pointer(_cret)), _arg3))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1437,7 +1437,7 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 
 // SetInteger associates a new integer value with key under group_name. If key
 // cannot be found then it is created.
-func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
+func (keyFile *KeyFile) SetInteger(groupName string, key string, value int32) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -1459,7 +1459,7 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 
 // SetIntegerList associates a list of integer values with key under group_name.
 // If key cannot be found then it is created.
-func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
+func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int32) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out

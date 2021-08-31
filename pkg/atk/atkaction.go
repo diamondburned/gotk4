@@ -27,9 +27,9 @@ func init() {
 // yet, so the interface currently has no use.
 type ActionOverrider interface {
 	// DoAction: perform the specified action on the object.
-	DoAction(i int) bool
+	DoAction(i int32) bool
 	// Description returns a description of the specified action of the object.
-	Description(i int) string
+	Description(i int32) string
 	// Keybinding gets the keybinding which can be used to activate this action,
 	// if one exists. The string returned should contain localized,
 	// human-readable, key sequences as they would appear when displayed on
@@ -55,14 +55,14 @@ type ActionOverrider interface {
 	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
 	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
 	// ";;Strg+N" respectively.
-	Keybinding(i int) string
+	Keybinding(i int32) string
 	// LocalizedName returns the localized name of the specified action of the
 	// object.
-	LocalizedName(i int) string
+	LocalizedName(i int32) string
 	// NActions gets the number of accessible actions available on the object.
 	// If there are more than one, the first one is considered the "default"
 	// action of the object.
-	NActions() int
+	NActions() int32
 	// Name returns a non-localized string naming the specified action of the
 	// object. This name is generally not descriptive of the end result of the
 	// action, but instead names the 'interaction type' which the object
@@ -75,9 +75,9 @@ type ActionOverrider interface {
 	// For technical reasons, some toolkits cannot guarantee that the reported
 	// action is actually 'bound' to a nontrivial user event; i.e. the result of
 	// some actions via atk_action_do_action() may be NIL.
-	Name(i int) string
+	Name(i int32) string
 	// SetDescription sets a description of the specified action of the object.
-	SetDescription(i int, desc string) bool
+	SetDescription(i int32, desc string) bool
 }
 
 // Action should be implemented by instances of Object classes with which the
@@ -103,22 +103,22 @@ type Actioner interface {
 	externglib.Objector
 
 	// DoAction: perform the specified action on the object.
-	DoAction(i int) bool
+	DoAction(i int32) bool
 	// Description returns a description of the specified action of the object.
-	Description(i int) string
+	Description(i int32) string
 	// Keybinding gets the keybinding which can be used to activate this action,
 	// if one exists.
-	Keybinding(i int) string
+	Keybinding(i int32) string
 	// LocalizedName returns the localized name of the specified action of the
 	// object.
-	LocalizedName(i int) string
+	LocalizedName(i int32) string
 	// NActions gets the number of accessible actions available on the object.
-	NActions() int
+	NActions() int32
 	// Name returns a non-localized string naming the specified action of the
 	// object.
-	Name(i int) string
+	Name(i int32) string
 	// SetDescription sets a description of the specified action of the object.
-	SetDescription(i int, desc string) bool
+	SetDescription(i int32, desc string) bool
 }
 
 var _ Actioner = (*Action)(nil)
@@ -136,7 +136,7 @@ func marshalActioner(p uintptr) (interface{}, error) {
 }
 
 // DoAction: perform the specified action on the object.
-func (action *Action) DoAction(i int) bool {
+func (action *Action) DoAction(i int32) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
@@ -158,7 +158,7 @@ func (action *Action) DoAction(i int) bool {
 }
 
 // Description returns a description of the specified action of the object.
-func (action *Action) Description(i int) string {
+func (action *Action) Description(i int32) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -203,7 +203,7 @@ func (action *Action) Description(i int) string {
 // would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
 // for the German locale. If, hypothetically, this menu item lacked a mnemonic,
 // it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
-func (action *Action) Keybinding(i int) string {
+func (action *Action) Keybinding(i int32) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -226,7 +226,7 @@ func (action *Action) Keybinding(i int) string {
 
 // LocalizedName returns the localized name of the specified action of the
 // object.
-func (action *Action) LocalizedName(i int) string {
+func (action *Action) LocalizedName(i int32) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -250,7 +250,7 @@ func (action *Action) LocalizedName(i int) string {
 // NActions gets the number of accessible actions available on the object. If
 // there are more than one, the first one is considered the "default" action of
 // the object.
-func (action *Action) NActions() int {
+func (action *Action) NActions() int32 {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
@@ -259,9 +259,9 @@ func (action *Action) NActions() int {
 	_cret = C.atk_action_get_n_actions(_arg0)
 	runtime.KeepAlive(action)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -278,7 +278,7 @@ func (action *Action) NActions() int {
 // For technical reasons, some toolkits cannot guarantee that the reported
 // action is actually 'bound' to a nontrivial user event; i.e. the result of
 // some actions via atk_action_do_action() may be NIL.
-func (action *Action) Name(i int) string {
+func (action *Action) Name(i int32) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -300,7 +300,7 @@ func (action *Action) Name(i int) string {
 }
 
 // SetDescription sets a description of the specified action of the object.
-func (action *Action) SetDescription(i int, desc string) bool {
+func (action *Action) SetDescription(i int32, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.gchar     // out

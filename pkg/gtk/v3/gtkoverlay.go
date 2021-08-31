@@ -153,7 +153,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 // A widget’s index in the overlay children list determines which order the
 // children are drawn if they overlap. The first child is drawn at the bottom.
 // It also affects the default focus chain order.
-func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
+func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out

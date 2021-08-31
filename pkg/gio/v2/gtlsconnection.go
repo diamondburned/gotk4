@@ -73,7 +73,7 @@ type TLSConnectionOverrider interface {
 	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 	// g_tls_connection_handshake() for more information.
-	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
+	HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
 	HandshakeFinish(result AsyncResulter) error
@@ -127,7 +127,7 @@ type TLSConnectioner interface {
 	// Handshake attempts a TLS handshake on conn.
 	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
-	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
+	HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -478,7 +478,7 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 
 // HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 // g_tls_connection_handshake() for more information.
-func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

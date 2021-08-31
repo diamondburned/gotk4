@@ -437,7 +437,7 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 // Normally a Error value goes into a #GError returned from a function that
 // manipulates files. So you would use g_file_error_from_errno() when
 // constructing a #GError.
-func FileErrorFromErrno(errNo int) FileError {
+func FileErrorFromErrno(errNo int32) FileError {
 	var _arg1 C.gint       // out
 	var _cret C.GFileError // in
 
@@ -502,7 +502,7 @@ func FileGetContents(filename string) ([]byte, error) {
 // Upon success, and if name_used is non-NULL, the actual name used is returned
 // in name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
-func FileOpenTmp(tmpl string) (string, int, error) {
+func FileOpenTmp(tmpl string) (string, int32, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _cret C.gint    // in
@@ -517,12 +517,12 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	runtime.KeepAlive(tmpl)
 
 	var _nameUsed string // out
-	var _gint int        // out
+	var _gint int32      // out
 	var _goerr error     // out
 
 	_nameUsed = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -641,7 +641,7 @@ func FileSetContents(filename string, contents []byte) error {
 // If the file didn’t exist before and is created, it will be given the
 // permissions from mode. Otherwise, the permissions of the existing file may be
 // changed to mode depending on flags, or they may remain unchanged.
-func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) error {
+func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int32) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
@@ -759,7 +759,7 @@ func GetCurrentDir() string {
 
 // MkdirWithParents: create a directory if it doesn't already exist. Create
 // intermediate parent directories as needed, too.
-func MkdirWithParents(pathname string, mode int) int {
+func MkdirWithParents(pathname string, mode int32) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -772,9 +772,9 @@ func MkdirWithParents(pathname string, mode int) int {
 	runtime.KeepAlive(pathname)
 	runtime.KeepAlive(mode)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

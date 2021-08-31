@@ -62,7 +62,7 @@ type ScaleOverrider interface {
 	//
 	// If the gtkscale:draw-value property is FALSE, the return values are
 	// undefined.
-	LayoutOffsets() (x int, y int)
+	LayoutOffsets() (x int32, y int32)
 }
 
 // Scale: GtkScale is a slider control used to select a numeric value.
@@ -278,7 +278,7 @@ func (scale *Scale) ClearMarks() {
 }
 
 // Digits gets the number of decimal places that are displayed in the value.
-func (scale *Scale) Digits() int {
+func (scale *Scale) Digits() int32 {
 	var _arg0 *C.GtkScale // out
 	var _cret C.int       // in
 
@@ -287,9 +287,9 @@ func (scale *Scale) Digits() int {
 	_cret = C.gtk_scale_get_digits(_arg0)
 	runtime.KeepAlive(scale)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -368,7 +368,7 @@ func (scale *Scale) Layout() *pango.Layout {
 //
 // If the gtkscale:draw-value property is FALSE, the return values are
 // undefined.
-func (scale *Scale) LayoutOffsets() (x int, y int) {
+func (scale *Scale) LayoutOffsets() (x int32, y int32) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
@@ -378,11 +378,11 @@ func (scale *Scale) LayoutOffsets() (x int, y int) {
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(scale)
 
-	var _x int // out
-	var _y int // out
+	var _x int32 // out
+	var _y int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -415,7 +415,7 @@ func (scale *Scale) ValuePos() PositionType {
 // Note that rounding to a small number of digits can interfere with the smooth
 // autoscrolling that is built into GtkScale. As an alternative, you can use
 // gtk.Scale.SetFormatValueFunc() to format the displayed value yourself.
-func (scale *Scale) SetDigits(digits int) {
+func (scale *Scale) SetDigits(digits int32) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // out
 

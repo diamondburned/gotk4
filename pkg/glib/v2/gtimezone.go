@@ -201,7 +201,7 @@ func NewTimeZoneUtc() *TimeZone {
 // times. If the non-existent local time_ of 02:30 were requested on March 14th
 // 2010 in Toronto then this function would adjust time_ to be 03:00 and return
 // the interval containing the adjusted time.
-func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
+func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 *C.gint64    // out
@@ -216,9 +216,9 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -239,7 +239,7 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 // It is still possible for this function to fail. In Toronto, for example,
 // 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
 // daylight savings time). -1 is returned in that case.
-func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
+func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 C.gint64     // out
@@ -254,9 +254,9 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -266,7 +266,7 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 //
 // For example, in Toronto this is currently "EST" during the winter months and
 // "EDT" during the summer months when daylight savings time is in effect.
-func (tz *TimeZone) Abbreviation(interval int) string {
+func (tz *TimeZone) Abbreviation(interval int32) string {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -315,7 +315,7 @@ func (tz *TimeZone) Identifier() string {
 // The offset is the number of seconds that you add to UTC time to arrive at
 // local time for tz (ie: negative numbers for time zones west of GMT, positive
 // numbers for east).
-func (tz *TimeZone) Offset(interval int) int32 {
+func (tz *TimeZone) Offset(interval int32) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret C.gint32     // in
@@ -336,7 +336,7 @@ func (tz *TimeZone) Offset(interval int) int32 {
 
 // IsDst determines if daylight savings time is in effect during a particular
 // interval of time in the time zone tz.
-func (tz *TimeZone) IsDst(interval int) bool {
+func (tz *TimeZone) IsDst(interval int32) bool {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in

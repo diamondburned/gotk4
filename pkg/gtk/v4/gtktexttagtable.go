@@ -144,7 +144,7 @@ func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 }
 
 // Size returns the size of the table (number of tags)
-func (table *TextTagTable) Size() int {
+func (table *TextTagTable) Size() int32 {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.int              // in
 
@@ -153,9 +153,9 @@ func (table *TextTagTable) Size() int {
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
 	runtime.KeepAlive(table)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

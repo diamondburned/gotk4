@@ -153,7 +153,7 @@ type DialogOverrider interface {
 	// Response emits the ::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
-	Response(responseId int)
+	Response(responseId int32)
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
@@ -352,7 +352,7 @@ func NewDialog() *Dialog {
 //
 // If you want to add a non-activatable widget, simply pack it into the
 // action_area field of the GtkDialog struct.
-func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -373,7 +373,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 // gtk.Dialog::response signal with the given response_id. The button is
 // appended to the end of the dialog’s action area. The button widget is
 // returned, but usually you don’t need it.
-func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
+func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -435,7 +435,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -447,16 +447,16 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(widget)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
+func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _cret *C.GtkWidget // in
@@ -480,7 +480,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 // Response emits the ::response signal with the given response ID.
 //
 // Used to indicate that the user has responded to the dialog in some way.
-func (dialog *Dialog) Response(responseId int) {
+func (dialog *Dialog) Response(responseId int32) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
@@ -496,7 +496,7 @@ func (dialog *Dialog) Response(responseId int) {
 // response ID.
 //
 // Pressing “Enter” normally activates the default widget.
-func (dialog *Dialog) SetDefaultResponse(responseId int) {
+func (dialog *Dialog) SetDefaultResponse(responseId int32) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 
@@ -512,7 +512,7 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 //
 // Calls gtk_widget_set_sensitive (widget, setting) for each widget in the
 // dialog’s action area with the given response_id.
-func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
+func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _arg2 C.gboolean   // out

@@ -243,7 +243,7 @@ func (self *DropDown) Model() gio.ListModeller {
 }
 
 // Selected gets the position of the selected item.
-func (self *DropDown) Selected() uint {
+func (self *DropDown) Selected() uint32 {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
 
@@ -252,9 +252,9 @@ func (self *DropDown) Selected() uint {
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -361,7 +361,7 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 }
 
 // SetSelected selects the item at the given position.
-func (self *DropDown) SetSelected(position uint) {
+func (self *DropDown) SetSelected(position uint32) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 

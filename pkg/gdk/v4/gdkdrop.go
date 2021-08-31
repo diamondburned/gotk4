@@ -68,12 +68,12 @@ type Dropper interface {
 	Surface() Surfacer
 	// ReadAsync: asynchronously read the dropped data from a GdkDrop in a
 	// format that complies with one of the mime types.
-	ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback)
+	ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback)
 	// ReadFinish finishes an async drop read operation.
 	ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error)
 	// ReadValueAsync: asynchronously request the drag operation's contents
 	// converted to the given type.
-	ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback)
+	ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int32, callback gio.AsyncReadyCallback)
 	// ReadValueFinish finishes an async drop read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 	// Status selects all actions that are potentially supported by the
@@ -240,7 +240,7 @@ func (self *Drop) Surface() Surfacer {
 
 // ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
 // that complies with one of the mime types.
-func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
+func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 **C.char              // out
@@ -328,7 +328,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 // For local drag'n'drop operations that are available in the given GType, the
 // value will be copied directly. Otherwise, GDK will try to use
 // gdk.ContentDeserializeAsync() to convert the data.
-func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out

@@ -48,7 +48,7 @@ type FontMapOverrider interface {
 	//
 	// This can be used to automatically detect changes to a PangoFontMap, like
 	// in PangoContext.
-	Serial() uint
+	Serial() uint32
 	// ListFamilies: list all families for a fontmap.
 	ListFamilies() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
@@ -80,7 +80,7 @@ type FontMapper interface {
 	// Family gets a font family by name.
 	Family(name string) FontFamilier
 	// Serial returns the current serial number of fontmap.
-	Serial() uint
+	Serial() uint32
 	// ListFamilies: list all families for a fontmap.
 	ListFamilies() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
@@ -177,7 +177,7 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 //
 // This can be used to automatically detect changes to a PangoFontMap, like in
 // PangoContext.
-func (fontmap *FontMap) Serial() uint {
+func (fontmap *FontMap) Serial() uint32 {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
 
@@ -186,9 +186,9 @@ func (fontmap *FontMap) Serial() uint {
 	_cret = C.pango_font_map_get_serial(_arg0)
 	runtime.KeepAlive(fontmap)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

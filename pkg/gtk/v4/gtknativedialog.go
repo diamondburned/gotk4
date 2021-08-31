@@ -33,7 +33,7 @@ type NativeDialogOverrider interface {
 	//
 	// If the dialog is not visible this does nothing.
 	Hide()
-	Response(responseId int)
+	Response(responseId int32)
 	// Show shows the dialog on the display.
 	//
 	// When the user accepts the state of the dialog the dialog will be

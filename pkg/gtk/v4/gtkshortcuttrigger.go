@@ -135,7 +135,7 @@ func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
 
 // NewKeyvalTrigger creates a GtkShortcutTrigger that will trigger whenever the
 // key with the given keyval and modifiers is pressed.
-func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
+func NewKeyvalTrigger(keyval uint32, modifiers gdk.ModifierType) *KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -155,7 +155,7 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering self.
-func (self *KeyvalTrigger) Keyval() uint {
+func (self *KeyvalTrigger) Keyval() uint32 {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
 
@@ -164,9 +164,9 @@ func (self *KeyvalTrigger) Keyval() uint {
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -216,7 +216,7 @@ func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
 //
 // Mnemonics are activated by calling code when a key event with the right
 // modifiers is detected.
-func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
+func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
 
@@ -233,7 +233,7 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering self.
-func (self *MnemonicTrigger) Keyval() uint {
+func (self *MnemonicTrigger) Keyval() uint32 {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
 
@@ -242,9 +242,9 @@ func (self *MnemonicTrigger) Keyval() uint {
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -308,11 +308,11 @@ type ShortcutTriggerer interface {
 
 	// Compare types of trigger1 and trigger2 are #gconstpointer only to allow
 	// use of this function as a Func.
-	Compare(trigger2 ShortcutTriggerer) int
+	Compare(trigger2 ShortcutTriggerer) int32
 	// Equal checks if trigger1 and trigger2 trigger under the same conditions.
 	Equal(trigger2 ShortcutTriggerer) bool
 	// Hash generates a hash value for a GtkShortcutTrigger.
-	Hash() uint
+	Hash() uint32
 	// ToLabel gets textual representation for the given trigger.
 	ToLabel(display *gdk.Display) string
 	// String prints the given trigger into a human-readable string.
@@ -374,7 +374,7 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 // of this function as a Func.
 //
 // They must each be a GtkShortcutTrigger.
-func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
+func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
@@ -386,9 +386,9 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -427,7 +427,7 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 //
 // The types of trigger is #gconstpointer only to allow use of this function
 // with Table. They must each be a GtkShortcutTrigger.
-func (trigger *ShortcutTrigger) Hash() uint {
+func (trigger *ShortcutTrigger) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -436,9 +436,9 @@ func (trigger *ShortcutTrigger) Hash() uint {
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 	runtime.KeepAlive(trigger)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

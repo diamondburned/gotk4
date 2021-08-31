@@ -326,7 +326,7 @@ func (window *Window) AddAccelGroup(accelGroup *AccelGroup) {
 }
 
 // AddMnemonic adds a mnemonic to this window.
-func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
+func (window *Window) AddMnemonic(keyval uint32, target Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -346,7 +346,7 @@ func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
 // be done using the standard mechanism for the [window manager][gtk-X11-arch]
 // or windowing system. Otherwise, GDK will try to emulate window movement,
 // potentially not all that well, depending on the windowing system.
-func (window *Window) BeginMoveDrag(button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDrag(button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -373,7 +373,7 @@ func (window *Window) BeginMoveDrag(button int, rootX int, rootY int, timestamp 
 // manager][gtk-X11-arch] or windowing system. Otherwise, GDK will try to
 // emulate window resizing, potentially not all that well, depending on the
 // windowing system.
-func (window *Window) BeginResizeDrag(edge gdk.WindowEdge, button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginResizeDrag(edge gdk.WindowEdge, button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GtkWindow    // out
 	var _arg1 C.GdkWindowEdge // out
 	var _arg2 C.gint          // out
@@ -448,7 +448,7 @@ func (window *Window) Fullscreen() {
 //
 // You can track the fullscreen state via the "window-state-event" signal on
 // Widget.
-func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int) {
+func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out
@@ -544,7 +544,7 @@ func (window *Window) Decorated() bool {
 // DefaultSize gets the default size of the window. A value of -1 for the width
 // or height indicates that a default size has not been explicitly set for that
 // dimension, so the “natural” size of the window will be used.
-func (window *Window) DefaultSize() (width int, height int) {
+func (window *Window) DefaultSize() (width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -554,11 +554,11 @@ func (window *Window) DefaultSize() (width int, height int) {
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(_arg1)
-	_height = int(_arg2)
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -956,7 +956,7 @@ func (window *Window) Opacity() float64 {
 // state to effectively do so. The appropriate way to implement saving the
 // window position is to use a platform-specific protocol, wherever that is
 // available.
-func (window *Window) Position() (rootX int, rootY int) {
+func (window *Window) Position() (rootX int32, rootY int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -966,11 +966,11 @@ func (window *Window) Position() (rootX int, rootY int) {
 	C.gtk_window_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _rootX int // out
-	var _rootY int // out
+	var _rootX int32 // out
+	var _rootY int32 // out
 
-	_rootX = int(_arg1)
-	_rootY = int(_arg2)
+	_rootX = int32(_arg1)
+	_rootY = int32(_arg2)
 
 	return _rootX, _rootY
 }
@@ -1102,7 +1102,7 @@ func (window *Window) Screen() *gdk.Screen {
 // no knowledge. Additionally, positioning windows in global screen coordinates
 // may not be allowed by the windowing system. For more information, see:
 // gtk_window_set_position().
-func (window *Window) Size() (width int, height int) {
+func (window *Window) Size() (width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -1112,11 +1112,11 @@ func (window *Window) Size() (width int, height int) {
 	C.gtk_window_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(_arg1)
-	_height = int(_arg2)
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -1401,7 +1401,7 @@ func (window *Window) Maximize() {
 }
 
 // MnemonicActivate activates the targets associated with the mnemonic.
-func (window *Window) MnemonicActivate(keyval uint, modifier gdk.ModifierType) bool {
+func (window *Window) MnemonicActivate(keyval uint32, modifier gdk.ModifierType) bool {
 	var _arg0 *C.GtkWindow      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -1457,7 +1457,7 @@ func (window *Window) MnemonicActivate(keyval uint, modifier gdk.ModifierType) b
 // in the “implementation notes” section.
 //
 // The gtk_window_get_position() documentation may also be relevant.
-func (window *Window) Move(x int, y int) {
+func (window *Window) Move(x int32, y int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -1647,7 +1647,7 @@ func (window *Window) RemoveAccelGroup(accelGroup *AccelGroup) {
 }
 
 // RemoveMnemonic removes a mnemonic from this window.
-func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
+func (window *Window) RemoveMnemonic(keyval uint32, target Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -1701,7 +1701,7 @@ func (window *Window) ReshowWithInitialSize() {
 // configuration and cause the titlebar widget to grow in height, this will
 // result in a window content smaller that specified by gtk_window_resize() and
 // not a larger window.
-func (window *Window) Resize(width int, height int) {
+func (window *Window) Resize(width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -1744,7 +1744,7 @@ func (window *Window) ResizeGripIsVisible() bool {
 //
 // Deprecated: This function does nothing. Use gtk_window_resize() and compute
 // the geometry yourself.
-func (window *Window) ResizeToGeometry(width int, height int) {
+func (window *Window) ResizeToGeometry(width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -1879,7 +1879,7 @@ func (window *Window) SetDefault(defaultWidget Widgetter) {
 //
 // Deprecated: This function does nothing. If you want to set a default size,
 // use gtk_window_set_default_size() instead.
-func (window *Window) SetDefaultGeometry(width int, height int) {
+func (window *Window) SetDefaultGeometry(width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -1926,7 +1926,7 @@ func (window *Window) SetDefaultGeometry(width int, height int) {
 // that the appropriate size to save is the one returned by
 // gtk_window_get_size(). Using the window allocation directly will not work in
 // all circumstances and can lead to growing or shrinking windows.
-func (window *Window) SetDefaultSize(width int, height int) {
+func (window *Window) SetDefaultSize(width int32, height int32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

@@ -279,7 +279,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 }
 
 // MinimumKeyLength returns the minimum key length as set for completion.
-func (completion *EntryCompletion) MinimumKeyLength() int {
+func (completion *EntryCompletion) MinimumKeyLength() int32 {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -288,9 +288,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -377,7 +377,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 }
 
 // TextColumn returns the column in the model of completion to get strings from.
-func (completion *EntryCompletion) TextColumn() int {
+func (completion *EntryCompletion) TextColumn() int32 {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -386,9 +386,9 @@ func (completion *EntryCompletion) TextColumn() int {
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -461,7 +461,7 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 // This is useful for long lists, where completing using a small key takes a lot
 // of time and will come up with meaningless results anyway (ie, a too large
 // dataset).
-func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
@@ -553,7 +553,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 // column. If you need to set the text column, but don't want the cell renderer,
 // use g_object_set() to set the gtk.EntryCompletion:text-column property
 // directly.
-func (completion *EntryCompletion) SetTextColumn(column int) {
+func (completion *EntryCompletion) SetTextColumn(column int32) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 

@@ -214,7 +214,7 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 
 // FindUniformByName looks for a uniform by the name name, and returns the index
 // of the uniform, or -1 if it was not found.
-func (shader *GLShader) FindUniformByName(name string) int {
+func (shader *GLShader) FindUniformByName(name string) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
@@ -227,9 +227,9 @@ func (shader *GLShader) FindUniformByName(name string) int {
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(name)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -237,7 +237,7 @@ func (shader *GLShader) FindUniformByName(name string) int {
 // ArgBool gets the value of the uniform idx in the args block.
 //
 // The uniform must be of bool type.
-func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
+func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
@@ -264,7 +264,7 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 // ArgFloat gets the value of the uniform idx in the args block.
 //
 // The uniform must be of float type.
-func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
+func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
@@ -289,7 +289,7 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 // ArgInt gets the value of the uniform idx in the args block.
 //
 // The uniform must be of int type.
-func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
+func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
@@ -314,7 +314,7 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 // ArgUint gets the value of the uniform idx in the args block.
 //
 // The uniform must be of uint type.
-func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
+func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
 	var _arg2 C.int          // out
@@ -339,7 +339,7 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 // ArgVec2 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec2 type.
-func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2) {
+func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.Vec2) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
@@ -360,7 +360,7 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgVec3 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec3 type.
-func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3) {
+func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.Vec3) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
@@ -381,7 +381,7 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgVec4 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec4 type.
-func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4) {
+func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.Vec4) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
 	var _arg2 C.int              // out
@@ -422,7 +422,7 @@ func (shader *GLShader) ArgsSize() uint {
 // This can be used to check that the a passed shader works in your usecase. It
 // is determined by looking at the highest u_textureN value that the shader
 // defines.
-func (shader *GLShader) NTextures() int {
+func (shader *GLShader) NTextures() int32 {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -431,15 +431,15 @@ func (shader *GLShader) NTextures() int {
 	_cret = C.gsk_gl_shader_get_n_textures(_arg0)
 	runtime.KeepAlive(shader)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NUniforms: get the number of declared uniforms for this shader.
-func (shader *GLShader) NUniforms() int {
+func (shader *GLShader) NUniforms() int32 {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
@@ -448,9 +448,9 @@ func (shader *GLShader) NUniforms() int {
 	_cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
 	runtime.KeepAlive(shader)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -499,7 +499,7 @@ func (shader *GLShader) Source() *glib.Bytes {
 
 // UniformName: get the name of the declared uniform for this shader at index
 // idx.
-func (shader *GLShader) UniformName(idx int) string {
+func (shader *GLShader) UniformName(idx int32) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
@@ -520,7 +520,7 @@ func (shader *GLShader) UniformName(idx int) string {
 
 // UniformOffset: get the offset into the data block where data for this
 // uniforms is stored.
-func (shader *GLShader) UniformOffset(idx int) int {
+func (shader *GLShader) UniformOffset(idx int32) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
 	var _cret C.int          // in
@@ -532,16 +532,16 @@ func (shader *GLShader) UniformOffset(idx int) int {
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(idx)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // UniformType: get the type of the declared uniform for this shader at index
 // idx.
-func (shader *GLShader) UniformType(idx int) GLUniformType {
+func (shader *GLShader) UniformType(idx int32) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in
@@ -608,7 +608,7 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 // SetBool sets the value of the uniform idx.
 //
 // The uniform must be of bool type.
-func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
+func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.gboolean              // out
@@ -628,7 +628,7 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 // SetFloat sets the value of the uniform idx.
 //
 // The uniform must be of float type.
-func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
+func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.float                 // out
@@ -646,7 +646,7 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 // SetInt sets the value of the uniform idx.
 //
 // The uniform must be of int type.
-func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
+func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.gint32                // out
@@ -664,7 +664,7 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 // SetUint sets the value of the uniform idx.
 //
 // The uniform must be of uint type.
-func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
+func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 C.guint32               // out
@@ -682,7 +682,7 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 // SetVec2 sets the value of the uniform idx.
 //
 // The uniform must be of vec2 type.
-func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
+func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec2_t      // out
@@ -700,7 +700,7 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 // SetVec3 sets the value of the uniform idx.
 //
 // The uniform must be of vec3 type.
-func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
+func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec3_t      // out
@@ -718,7 +718,7 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 // SetVec4 sets the value of the uniform idx.
 //
 // The uniform must be of vec4 type.
-func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
+func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec4_t      // out

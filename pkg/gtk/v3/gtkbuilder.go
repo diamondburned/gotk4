@@ -419,7 +419,7 @@ func NewBuilderFromString(_string string, length int) *Builder {
 // program, and it’s possible that memory was leaked leading up to the reported
 // failure. The only reasonable thing to do when an error is detected is to call
 // g_error().
-func (builder *Builder) AddFromFile(filename string) (uint, error) {
+func (builder *Builder) AddFromFile(filename string) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
@@ -433,10 +433,10 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -454,7 +454,7 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
-func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
+func (builder *Builder) AddFromResource(resourcePath string) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _cret C.guint       // in
@@ -468,10 +468,10 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -489,7 +489,7 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
-func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) {
+func (builder *Builder) AddFromString(buffer string, length uint) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
@@ -506,10 +506,10 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -527,7 +527,7 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
-func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar     // out
@@ -556,10 +556,10 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -577,7 +577,7 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
-func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 **C.gchar     // out
@@ -606,10 +606,10 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	runtime.KeepAlive(resourcePath)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -627,7 +627,7 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
-func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gsize       // out
@@ -659,10 +659,10 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -726,7 +726,7 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
-func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
+func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint32, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.GType       // out
@@ -749,10 +749,10 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType extern
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

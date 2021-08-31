@@ -330,7 +330,7 @@ func (self *Text) InvisibleChar() uint32 {
 //
 // This is equivalent to getting self's GtkEntryBuffer and calling
 // gtk.EntryBuffer.GetMaxLength() on it.
-func (self *Text) MaxLength() int {
+func (self *Text) MaxLength() int32 {
 	var _arg0 *C.GtkText // out
 	var _cret C.int      // in
 
@@ -339,9 +339,9 @@ func (self *Text) MaxLength() int {
 	_cret = C.gtk_text_get_max_length(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -645,7 +645,7 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 //
 // This is equivalent to getting self's GtkEntryBuffer and calling
 // gtk.EntryBuffer.SetMaxLength() on it.
-func (self *Text) SetMaxLength(length int) {
+func (self *Text) SetMaxLength(length int32) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.int      // out
 

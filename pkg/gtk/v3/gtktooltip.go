@@ -115,7 +115,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
 // to be the icon indicated by gicon with the size indicated by size. If gicon
 // is NULL, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -135,7 +135,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 // SetIconFromIconName sets the icon of the tooltip (which is in front of the
 // text) to be the icon indicated by icon_name with the size indicated by size.
 // If icon_name is NULL, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
+func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -158,7 +158,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 // If stock_id is NULL, the image will be hidden.
 //
 // Deprecated: Use gtk_tooltip_set_icon_from_icon_name() instead.
-func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
+func (tooltip *Tooltip) SetIconFromStock(stockId string, size int32) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out

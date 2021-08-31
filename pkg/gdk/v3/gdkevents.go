@@ -998,9 +998,9 @@ func (e *EventButton) State() ModifierType {
 // button 1 is the left mouse button, 2 is the middle button, and 3 is the right
 // button. On 2-button mice, the middle button can often be simulated by
 // pressing both mouse buttons together.
-func (e *EventButton) Button() uint {
-	var v uint // out
-	v = uint(e.native.button)
+func (e *EventButton) Button() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.button)
 	return v
 }
 
@@ -1060,30 +1060,30 @@ func (e *EventConfigure) SendEvent() int8 {
 }
 
 // X: new x coordinate of the window, relative to its parent.
-func (e *EventConfigure) X() int {
-	var v int // out
-	v = int(e.native.x)
+func (e *EventConfigure) X() int32 {
+	var v int32 // out
+	v = int32(e.native.x)
 	return v
 }
 
 // Y: new y coordinate of the window, relative to its parent.
-func (e *EventConfigure) Y() int {
-	var v int // out
-	v = int(e.native.y)
+func (e *EventConfigure) Y() int32 {
+	var v int32 // out
+	v = int32(e.native.y)
 	return v
 }
 
 // Width: new width of the window.
-func (e *EventConfigure) Width() int {
-	var v int // out
-	v = int(e.native.width)
+func (e *EventConfigure) Width() int32 {
+	var v int32 // out
+	v = int32(e.native.width)
 	return v
 }
 
 // Height: new height of the window.
-func (e *EventConfigure) Height() int {
-	var v int // out
-	v = int(e.native.height)
+func (e *EventConfigure) Height() int32 {
+	var v int32 // out
+	v = int32(e.native.height)
 	return v
 }
 
@@ -1322,9 +1322,9 @@ func (e *EventExpose) Region() *cairo.Region {
 // use for this is “exposure compression”, i.e. handling all contiguous
 // GDK_EXPOSE events in one go, though GDK performs some exposure compression so
 // this is not normally needed.
-func (e *EventExpose) Count() int {
-	var v int // out
-	v = int(e.native.count)
+func (e *EventExpose) Count() int32 {
+	var v int32 // out
+	v = int32(e.native.count)
 	return v
 }
 
@@ -1484,16 +1484,16 @@ func (e *EventKey) State() ModifierType {
 
 // Keyval: key that was pressed or released. See the gdk/gdkkeysyms.h header
 // file for a complete list of GDK key codes.
-func (e *EventKey) Keyval() uint {
-	var v uint // out
-	v = uint(e.native.keyval)
+func (e *EventKey) Keyval() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.keyval)
 	return v
 }
 
 // Length: length of string.
-func (e *EventKey) Length() int {
-	var v int // out
-	v = int(e.native.length)
+func (e *EventKey) Length() int32 {
+	var v int32 // out
+	v = int32(e.native.length)
 	return v
 }
 
@@ -1682,24 +1682,24 @@ func (e *EventPadAxis) Time() uint32 {
 
 // Group: pad group the ring/strip belongs to. A GDK_SOURCE_TABLET_PAD device
 // may have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadAxis) Group() uint {
-	var v uint // out
-	v = uint(e.native.group)
+func (e *EventPadAxis) Group() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.group)
 	return v
 }
 
 // Index: number of strip/ring that was interacted. This number is 0-indexed.
-func (e *EventPadAxis) Index() uint {
-	var v uint // out
-	v = uint(e.native.index)
+func (e *EventPadAxis) Index() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.index)
 	return v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadAxis) Mode() uint {
-	var v uint // out
-	v = uint(e.native.mode)
+func (e *EventPadAxis) Mode() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.mode)
 	return v
 }
 
@@ -1753,24 +1753,24 @@ func (e *EventPadButton) Time() uint32 {
 
 // Group: pad group the button belongs to. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadButton) Group() uint {
-	var v uint // out
-	v = uint(e.native.group)
+func (e *EventPadButton) Group() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.group)
 	return v
 }
 
 // Button: pad button that was pressed.
-func (e *EventPadButton) Button() uint {
-	var v uint // out
-	v = uint(e.native.button)
+func (e *EventPadButton) Button() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.button)
 	return v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadButton) Mode() uint {
-	var v uint // out
-	v = uint(e.native.mode)
+func (e *EventPadButton) Mode() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.mode)
 	return v
 }
 
@@ -1817,17 +1817,17 @@ func (e *EventPadGroupMode) Time() uint32 {
 
 // Group: pad group that is switching mode. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadGroupMode) Group() uint {
-	var v uint // out
-	v = uint(e.native.group)
+func (e *EventPadGroupMode) Group() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.group)
 	return v
 }
 
 // Mode: new mode of group. Different groups in a GDK_SOURCE_TABLET_PAD device
 // may have different current modes.
-func (e *EventPadGroupMode) Mode() uint {
-	var v uint // out
-	v = uint(e.native.mode)
+func (e *EventPadGroupMode) Mode() uint32 {
+	var v uint32 // out
+	v = uint32(e.native.mode)
 	return v
 }
 

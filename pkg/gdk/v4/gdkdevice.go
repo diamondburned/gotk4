@@ -106,7 +106,7 @@ type Devicer interface {
 	// locked.
 	NumLockState() bool
 	// NumTouches retrieves the number of touch points associated to device.
-	NumTouches() uint
+	NumTouches() uint32
 	// ProductID returns the product ID of this device.
 	ProductID() string
 	// ScrollLockState retrieves whether the Scroll Lock modifier of the
@@ -302,7 +302,7 @@ func (device *Device) NumLockState() bool {
 }
 
 // NumTouches retrieves the number of touch points associated to device.
-func (device *Device) NumTouches() uint {
+func (device *Device) NumTouches() uint32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
 
@@ -311,9 +311,9 @@ func (device *Device) NumTouches() uint {
 	_cret = C.gdk_device_get_num_touches(_arg0)
 	runtime.KeepAlive(device)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

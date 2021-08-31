@@ -206,7 +206,7 @@ type scanner struct {
 
 // CurLine returns the current line in the input stream (counting from 1). This
 // is the line of the last token parsed via g_scanner_get_next_token().
-func (scanner *Scanner) CurLine() uint {
+func (scanner *Scanner) CurLine() uint32 {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -215,9 +215,9 @@ func (scanner *Scanner) CurLine() uint {
 	_cret = C.g_scanner_cur_line(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -225,7 +225,7 @@ func (scanner *Scanner) CurLine() uint {
 // CurPosition returns the current position in the current line (counting from
 // 0). This is the position of the last token parsed via
 // g_scanner_get_next_token().
-func (scanner *Scanner) CurPosition() uint {
+func (scanner *Scanner) CurPosition() uint32 {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -234,9 +234,9 @@ func (scanner *Scanner) CurPosition() uint {
 	_cret = C.g_scanner_cur_position(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -309,7 +309,7 @@ func (scanner *Scanner) NextToken() TokenType {
 }
 
 // InputFile prepares to scan a file.
-func (scanner *Scanner) InputFile(inputFd int) {
+func (scanner *Scanner) InputFile(inputFd int32) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
 
@@ -322,7 +322,7 @@ func (scanner *Scanner) InputFile(inputFd int) {
 }
 
 // InputText prepares to scan a text buffer.
-func (scanner *Scanner) InputText(text string, textLen uint) {
+func (scanner *Scanner) InputText(text string, textLen uint32) {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.guint     // out
@@ -388,7 +388,7 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
-func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Handle) {
+func (scanner *Scanner) ScopeAddSymbol(scopeId uint32, symbol string, value cgo.Handle) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -409,7 +409,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, NULL is returned.
-func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handle {
+func (scanner *Scanner) ScopeLookupSymbol(scopeId uint32, symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -433,7 +433,7 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.
-func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
+func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint32, symbol string) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -450,7 +450,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 }
 
 // SetScope sets the current scope.
-func (scanner *Scanner) SetScope(scopeId uint) uint {
+func (scanner *Scanner) SetScope(scopeId uint32) uint32 {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -462,9 +462,9 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(scopeId)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -487,7 +487,7 @@ func (scanner *Scanner) SyncFileOffset() {
 // intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
 // evaluates the scanner's current token (not the peeked token) to construct
 // part of the message.
-func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int32) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out
 	var _arg2 *C.gchar     // out

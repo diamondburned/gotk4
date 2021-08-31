@@ -76,7 +76,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
-func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
+func NewMappedFileFromFd(fd int32, writable bool) (*MappedFile, error) {
 	var _arg1 C.gint         // out
 	var _arg2 C.gboolean     // out
 	var _cret *C.GMappedFile // in

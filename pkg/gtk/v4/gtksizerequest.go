@@ -21,7 +21,7 @@ import "C"
 // The remaining space will be added to the minimum_size member of the
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
-func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
+func DistributeNaturalAllocation(extraSpace int32, sizes []RequestedSize) int32 {
 	var _arg1 C.int               // out
 	var _arg3 *C.GtkRequestedSize // out
 	var _arg2 C.guint
@@ -42,9 +42,9 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	runtime.KeepAlive(extraSpace)
 	runtime.KeepAlive(sizes)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -71,15 +71,15 @@ func (r *RequestedSize) Data() cgo.Handle {
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation
-func (r *RequestedSize) MinimumSize() int {
-	var v int // out
-	v = int(r.native.minimum_size)
+func (r *RequestedSize) MinimumSize() int32 {
+	var v int32 // out
+	v = int32(r.native.minimum_size)
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation
-func (r *RequestedSize) NaturalSize() int {
-	var v int // out
-	v = int(r.native.natural_size)
+func (r *RequestedSize) NaturalSize() int32 {
+	var v int32 // out
+	v = int32(r.native.natural_size)
 	return v
 }

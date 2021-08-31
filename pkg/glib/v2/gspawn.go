@@ -314,7 +314,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var _childPid Pid // out
 	var _goerr error  // out
 
-	_childPid = int(_arg7)
+	_childPid = int32(_arg7)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -324,7 +324,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
-func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (Pid, error) {
+func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int32, stdoutFd int32, stderrFd int32) (Pid, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -389,7 +389,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var _childPid Pid // out
 	var _goerr error  // out
 
-	_childPid = int(_arg7)
+	_childPid = int32(_arg7)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -399,7 +399,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 
 // SpawnAsyncWithPipes: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
-func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, goerr error) {
+func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int32, standardOutput int32, standardError int32, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -455,16 +455,16 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(childSetup)
 
-	var _childPid Pid       // out
-	var _standardInput int  // out
-	var _standardOutput int // out
-	var _standardError int  // out
-	var _goerr error        // out
+	var _childPid Pid         // out
+	var _standardInput int32  // out
+	var _standardOutput int32 // out
+	var _standardError int32  // out
+	var _goerr error          // out
 
-	_childPid = int(_arg7)
-	_standardInput = int(_arg8)
-	_standardOutput = int(_arg9)
-	_standardError = int(_arg10)
+	_childPid = int32(_arg7)
+	_standardInput = int32(_arg8)
+	_standardOutput = int32(_arg9)
+	_standardError = int32(_arg10)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -646,7 +646,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
-func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int, sourceFds []int, targetFds []int) (childPidOut Pid, stdinPipeOut int, stdoutPipeOut int, stderrPipeOut int, goerr error) {
+func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int32, stdoutFd int32, stderrFd int32, sourceFds []int32, targetFds []int32) (childPidOut Pid, stdinPipeOut int32, stdoutPipeOut int32, stderrPipeOut int32, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -724,16 +724,16 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 	runtime.KeepAlive(sourceFds)
 	runtime.KeepAlive(targetFds)
 
-	var _childPidOut Pid   // out
-	var _stdinPipeOut int  // out
-	var _stdoutPipeOut int // out
-	var _stderrPipeOut int // out
-	var _goerr error       // out
+	var _childPidOut Pid     // out
+	var _stdinPipeOut int32  // out
+	var _stdoutPipeOut int32 // out
+	var _stderrPipeOut int32 // out
+	var _goerr error         // out
 
-	_childPidOut = int(_arg13)
-	_stdinPipeOut = int(_arg14)
-	_stdoutPipeOut = int(_arg15)
-	_stderrPipeOut = int(_arg16)
+	_childPidOut = int32(_arg13)
+	_stdinPipeOut = int32(_arg14)
+	_stdoutPipeOut = int32(_arg15)
+	_stderrPipeOut = int32(_arg16)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -776,7 +776,7 @@ func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []st
 // WEXITSTATUS() on exit_status directly. Do not attempt to scan or parse the
 // error message string; it may be translated and/or change in future versions
 // of GLib.
-func SpawnCheckExitStatus(exitStatus int) error {
+func SpawnCheckExitStatus(exitStatus int32) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
 
@@ -855,7 +855,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int32, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _arg3 *C.gchar  // in
@@ -870,7 +870,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
-	var _exitStatus int        // out
+	var _exitStatus int32      // out
 	var _goerr error           // out
 
 	if _arg2 != nil {
@@ -905,7 +905,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 	}
-	_exitStatus = int(_arg4)
+	_exitStatus = int32(_arg4)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -931,7 +931,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int32, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -988,7 +988,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
-	var _exitStatus int        // out
+	var _exitStatus int32      // out
 	var _goerr error           // out
 
 	if _arg7 != nil {
@@ -1023,7 +1023,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 			}
 		}
 	}
-	_exitStatus = int(_arg9)
+	_exitStatus = int32(_arg9)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

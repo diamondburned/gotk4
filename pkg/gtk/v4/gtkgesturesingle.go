@@ -59,7 +59,7 @@ func marshalGestureSingler(p uintptr) (interface{}, error) {
 // Button returns the button number gesture listens for.
 //
 // If this is 0, the gesture reacts to any button press.
-func (gesture *GestureSingle) Button() uint {
+func (gesture *GestureSingle) Button() uint32 {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
 
@@ -68,16 +68,16 @@ func (gesture *GestureSingle) Button() uint {
 	_cret = C.gtk_gesture_single_get_button(_arg0)
 	runtime.KeepAlive(gesture)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // CurrentButton returns the button number currently interacting with gesture,
 // or 0 if there is none.
-func (gesture *GestureSingle) CurrentButton() uint {
+func (gesture *GestureSingle) CurrentButton() uint32 {
 	var _arg0 *C.GtkGestureSingle // out
 	var _cret C.guint             // in
 
@@ -86,9 +86,9 @@ func (gesture *GestureSingle) CurrentButton() uint {
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 	runtime.KeepAlive(gesture)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -165,7 +165,7 @@ func (gesture *GestureSingle) TouchOnly() bool {
 //
 // If non-0, every button press from a different button number will be ignored.
 // Touch events implicitly match with button 1.
-func (gesture *GestureSingle) SetButton(button uint) {
+func (gesture *GestureSingle) SetButton(button uint32) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.guint             // out
 

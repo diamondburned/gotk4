@@ -216,7 +216,7 @@ func (comboBox *ComboBoxText) ActiveText() string {
 // ComboBox:id-column.
 //
 // If position is negative then text is appended.
-func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
+func (comboBox *ComboBoxText) Insert(position int32, id string, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.gchar           // out
@@ -245,7 +245,7 @@ func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
 //
 // This is the same as calling gtk_combo_box_text_insert() with a NULL ID
 // string.
-func (comboBox *ComboBoxText) InsertText(position int, text string) {
+func (comboBox *ComboBoxText) InsertText(position int32, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.gchar           // out
@@ -302,7 +302,7 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 }
 
 // Remove removes the string at position from combo_box.
-func (comboBox *ComboBoxText) Remove(position int) {
+func (comboBox *ComboBoxText) Remove(position int32) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
 

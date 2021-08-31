@@ -166,7 +166,7 @@ func (self *GridView) Factory() *ListItemFactory {
 }
 
 // MaxColumns gets the maximum number of columns that the grid will use.
-func (self *GridView) MaxColumns() uint {
+func (self *GridView) MaxColumns() uint32 {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
@@ -175,15 +175,15 @@ func (self *GridView) MaxColumns() uint {
 	_cret = C.gtk_grid_view_get_max_columns(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // MinColumns gets the minimum number of columns that the grid will use.
-func (self *GridView) MinColumns() uint {
+func (self *GridView) MinColumns() uint32 {
 	var _arg0 *C.GtkGridView // out
 	var _cret C.guint        // in
 
@@ -192,9 +192,9 @@ func (self *GridView) MinColumns() uint {
 	_cret = C.gtk_grid_view_get_min_columns(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -275,7 +275,7 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 //
 // If max_columns is smaller than the minimum set via
 // gtk.GridView.SetMinColumns(), that value is used instead.
-func (self *GridView) SetMaxColumns(maxColumns uint) {
+func (self *GridView) SetMaxColumns(maxColumns uint32) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 
@@ -293,7 +293,7 @@ func (self *GridView) SetMaxColumns(maxColumns uint) {
 //
 // If min_columns is smaller than the minimum set via
 // gtk.GridView.SetMaxColumns(), that value is ignored.
-func (self *GridView) SetMinColumns(minColumns uint) {
+func (self *GridView) SetMinColumns(minColumns uint32) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
 

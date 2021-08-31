@@ -33,7 +33,7 @@ type PrintOperationPreviewOverrider interface {
 	GotPageSize(context *PrintContext, pageSetup *PageSetup)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
-	IsSelected(pageNr int) bool
+	IsSelected(pageNr int32) bool
 	Ready(context *PrintContext)
 	// RenderPage renders a page to the preview.
 	//
@@ -45,7 +45,7 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// Note that this function requires a suitable cairo context to be
 	// associated with the print context.
-	RenderPage(pageNr int)
+	RenderPage(pageNr int32)
 }
 
 // PrintOperationPreview: GtkPrintOperationPreview is the interface that is used
@@ -65,9 +65,9 @@ type PrintOperationPreviewer interface {
 	EndPreview()
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
-	IsSelected(pageNr int) bool
+	IsSelected(pageNr int32) bool
 	// RenderPage renders a page to the preview.
-	RenderPage(pageNr int)
+	RenderPage(pageNr int32)
 }
 
 var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
@@ -98,7 +98,7 @@ func (preview *PrintOperationPreview) EndPreview() {
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
-func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
+func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 	var _cret C.gboolean                  // in
@@ -129,7 +129,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 //
 // Note that this function requires a suitable cairo context to be associated
 // with the print context.
-func (preview *PrintOperationPreview) RenderPage(pageNr int) {
+func (preview *PrintOperationPreview) RenderPage(pageNr int32) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 

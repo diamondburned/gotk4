@@ -40,7 +40,7 @@ type ListModelOverrider interface {
 	//
 	// NULL is never returned for an index that is smaller than the length of
 	// the list. See g_list_model_get_n_items().
-	Item(position uint) *externglib.Object
+	Item(position uint32) *externglib.Object
 	// ItemType gets the type of the items in list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
@@ -52,7 +52,7 @@ type ListModelOverrider interface {
 	// Depending on the model implementation, calling this function may be less
 	// efficient than iterating the list with increasing values for position
 	// until g_list_model_get_item() returns NULL.
-	NItems() uint
+	NItems() uint32
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -108,11 +108,11 @@ type ListModeller interface {
 	// ItemType gets the type of the items in list.
 	ItemType() externglib.Type
 	// NItems gets the number of items in list.
-	NItems() uint
+	NItems() uint32
 	// Item: get the item at position.
-	Item(position uint) *externglib.Object
+	Item(position uint32) *externglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
-	ItemsChanged(position uint, removed uint, added uint)
+	ItemsChanged(position uint32, removed uint32, added uint32)
 }
 
 var _ ListModeller = (*ListModel)(nil)
@@ -155,7 +155,7 @@ func (list *ListModel) ItemType() externglib.Type {
 // Depending on the model implementation, calling this function may be less
 // efficient than iterating the list with increasing values for position until
 // g_list_model_get_item() returns NULL.
-func (list *ListModel) NItems() uint {
+func (list *ListModel) NItems() uint32 {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
 
@@ -164,9 +164,9 @@ func (list *ListModel) NItems() uint {
 	_cret = C.g_list_model_get_n_items(_arg0)
 	runtime.KeepAlive(list)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -176,7 +176,7 @@ func (list *ListModel) NItems() uint {
 //
 // NULL is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
-func (list *ListModel) Item(position uint) *externglib.Object {
+func (list *ListModel) Item(position uint32) *externglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in
@@ -215,7 +215,7 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 // accesses to the model via the API, without returning to the mainloop, and
 // without calling other code, will continue to view the same contents of the
 // model.
-func (list *ListModel) ItemsChanged(position uint, removed uint, added uint) {
+func (list *ListModel) ItemsChanged(position uint32, removed uint32, added uint32) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

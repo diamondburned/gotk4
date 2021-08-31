@@ -415,7 +415,7 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 // The ID of a GtkApplicationWindow can be retrieved with
 // gtk.ApplicationWindow.GetID().
-func (application *Application) WindowByID(id uint) *Window {
+func (application *Application) WindowByID(id uint32) *Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkWindow      // in
@@ -487,7 +487,7 @@ func (application *Application) Windows() []Window {
 //
 // If window is given, the session manager may point the user to this window to
 // find out more about why the action is inhibited.
-func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint {
+func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint32 {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 *C.GtkWindow                 // out
 	var _arg2 C.GtkApplicationInhibitFlags // out
@@ -510,9 +510,9 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(reason)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -645,7 +645,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 // See gtk.Application.Inhibit().
 //
 // Inhibitors are also cleared when the application exits.
-func (application *Application) Uninhibit(cookie uint) {
+func (application *Application) Uninhibit(cookie uint32) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 

@@ -616,7 +616,7 @@ type FontFaceOverrider interface {
 	// at the location pointed to by sizes and 0 at the location pointed to by
 	// n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
-	ListSizes() []int
+	ListSizes() []int32
 }
 
 // FontFace: PangoFontFace is used to represent a group of fonts with the same
@@ -642,7 +642,7 @@ type FontFacer interface {
 	// emboldening, or lightening it.
 	IsSynthesized() bool
 	// ListSizes: list the available sizes for a font.
-	ListSizes() []int
+	ListSizes() []int32
 }
 
 var _ FontFacer = (*FontFace)(nil)
@@ -746,7 +746,7 @@ func (face *FontFace) IsSynthesized() bool {
 // This is only applicable to bitmap fonts. For scalable fonts, stores NULL at
 // the location pointed to by sizes and 0 at the location pointed to by n_sizes.
 // The sizes returned are in Pango units and are sorted in ascending order.
-func (face *FontFace) ListSizes() []int {
+func (face *FontFace) ListSizes() []int32 {
 	var _arg0 *C.PangoFontFace // out
 	var _arg1 *C.int           // in
 	var _arg2 C.int            // in
@@ -756,12 +756,12 @@ func (face *FontFace) ListSizes() []int {
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(face)
 
-	var _sizes []int // out
+	var _sizes []int32 // out
 
 	if _arg1 != nil {
 		defer C.free(unsafe.Pointer(_arg1))
-		_sizes = make([]int, _arg2)
-		copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+		_sizes = make([]int32, _arg2)
+		copy(_sizes, unsafe.Slice((*int32)(unsafe.Pointer(_arg1)), _arg2))
 	}
 
 	return _sizes
@@ -1196,7 +1196,7 @@ func (desc *FontDescription) SetFields() FontMask {
 // Size gets the size field of a font description.
 //
 // See pango.FontDescription.SetSize().
-func (desc *FontDescription) Size() int {
+func (desc *FontDescription) Size() int32 {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gint                  // in
 
@@ -1205,9 +1205,9 @@ func (desc *FontDescription) Size() int {
 	_cret = C.pango_font_description_get_size(_arg0)
 	runtime.KeepAlive(desc)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1336,7 +1336,7 @@ func (desc *FontDescription) Weight() Weight {
 //
 // This is suitable to be used, for example, as an argument to
 // g_hash_table_new(). The hash value is independent of desc->mask.
-func (desc *FontDescription) Hash() uint {
+func (desc *FontDescription) Hash() uint32 {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.guint                 // in
 
@@ -1345,9 +1345,9 @@ func (desc *FontDescription) Hash() uint {
 	_cret = C.pango_font_description_hash(_arg0)
 	runtime.KeepAlive(desc)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1481,7 +1481,7 @@ func (desc *FontDescription) SetGravity(gravity Gravity) {
 // SetSize sets the size field of a font description in fractional points.
 //
 // This is mutually exclusive with pango.FontDescription.SetAbsoluteSize().
-func (desc *FontDescription) SetSize(size int) {
+func (desc *FontDescription) SetSize(size int32) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.gint                  // out
 
@@ -1762,7 +1762,7 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 // This is merely a representative value useful, for example, for determining
 // the initial size for a window. Actual characters in text will be wider and
 // narrower than this.
-func (metrics *FontMetrics) ApproximateCharWidth() int {
+func (metrics *FontMetrics) ApproximateCharWidth() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1771,9 +1771,9 @@ func (metrics *FontMetrics) ApproximateCharWidth() int {
 	_cret = C.pango_font_metrics_get_approximate_char_width(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1785,7 +1785,7 @@ func (metrics *FontMetrics) ApproximateCharWidth() int {
 // the initial size for a window. Actual digits in text can be wider or narrower
 // than this, though this value is generally somewhat more accurate than the
 // result of pango_font_metrics_get_approximate_char_width() for digits.
-func (metrics *FontMetrics) ApproximateDigitWidth() int {
+func (metrics *FontMetrics) ApproximateDigitWidth() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1794,9 +1794,9 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int {
 	_cret = C.pango_font_metrics_get_approximate_digit_width(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1806,7 +1806,7 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int {
 // The ascent is the distance from the baseline to the logical top of a line of
 // text. (The logical top may be above or below the top of the actual drawn ink.
 // It is necessary to lay out the text to figure where the ink will be.)
-func (metrics *FontMetrics) Ascent() int {
+func (metrics *FontMetrics) Ascent() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1815,9 +1815,9 @@ func (metrics *FontMetrics) Ascent() int {
 	_cret = C.pango_font_metrics_get_ascent(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1828,7 +1828,7 @@ func (metrics *FontMetrics) Ascent() int {
 // of text. (The logical bottom may be above or below the bottom of the actual
 // drawn ink. It is necessary to lay out the text to figure where the ink will
 // be.)
-func (metrics *FontMetrics) Descent() int {
+func (metrics *FontMetrics) Descent() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1837,9 +1837,9 @@ func (metrics *FontMetrics) Descent() int {
 	_cret = C.pango_font_metrics_get_descent(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1849,7 +1849,7 @@ func (metrics *FontMetrics) Descent() int {
 // The line height is the distance between successive baselines in wrapped text.
 //
 // If the line height is not available, 0 is returned.
-func (metrics *FontMetrics) Height() int {
+func (metrics *FontMetrics) Height() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1858,9 +1858,9 @@ func (metrics *FontMetrics) Height() int {
 	_cret = C.pango_font_metrics_get_height(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1869,7 +1869,7 @@ func (metrics *FontMetrics) Height() int {
 //
 // The value returned is the distance *above* the baseline of the top of the
 // strikethrough.
-func (metrics *FontMetrics) StrikethroughPosition() int {
+func (metrics *FontMetrics) StrikethroughPosition() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1878,16 +1878,16 @@ func (metrics *FontMetrics) StrikethroughPosition() int {
 	_cret = C.pango_font_metrics_get_strikethrough_position(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // StrikethroughThickness gets the suggested thickness to draw for the
 // strikethrough.
-func (metrics *FontMetrics) StrikethroughThickness() int {
+func (metrics *FontMetrics) StrikethroughThickness() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1896,9 +1896,9 @@ func (metrics *FontMetrics) StrikethroughThickness() int {
 	_cret = C.pango_font_metrics_get_strikethrough_thickness(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1908,7 +1908,7 @@ func (metrics *FontMetrics) StrikethroughThickness() int {
 // The value returned is the distance *above* the baseline of the top of the
 // underline. Since most fonts have underline positions beneath the baseline,
 // this value is typically negative.
-func (metrics *FontMetrics) UnderlinePosition() int {
+func (metrics *FontMetrics) UnderlinePosition() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1917,15 +1917,15 @@ func (metrics *FontMetrics) UnderlinePosition() int {
 	_cret = C.pango_font_metrics_get_underline_position(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // UnderlineThickness gets the suggested thickness to draw for the underline.
-func (metrics *FontMetrics) UnderlineThickness() int {
+func (metrics *FontMetrics) UnderlineThickness() int32 {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
 
@@ -1934,9 +1934,9 @@ func (metrics *FontMetrics) UnderlineThickness() int {
 	_cret = C.pango_font_metrics_get_underline_thickness(_arg0)
 	runtime.KeepAlive(metrics)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

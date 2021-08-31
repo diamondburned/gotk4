@@ -102,7 +102,7 @@ func (q *Quad) Contains(p *Point) bool {
 }
 
 // Point retrieves the point of a #graphene_quad_t at the given index.
-func (q *Quad) Point(index_ uint) *Point {
+func (q *Quad) Point(index_ uint32) *Point {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 C.uint              // out
 	var _cret *C.graphene_point_t // in

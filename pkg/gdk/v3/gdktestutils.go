@@ -37,7 +37,7 @@ func TestRenderSync(window Windower) {
 // testing purposes, gtk_test_widget_click() is the right function to call which
 // will generate a button press event followed by its accompanying button
 // release event.
-func TestSimulateButton(window Windower, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
+func TestSimulateButton(window Windower, x int32, y int32, button uint32, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
@@ -84,7 +84,7 @@ func TestSimulateButton(window Windower, x int, y int, button uint, modifiers Mo
 // testing purposes, gtk_test_widget_send_key() is the right function to call
 // which will generate a key press event followed by its accompanying key
 // release event.
-func TestSimulateKey(window Windower, x int, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
+func TestSimulateKey(window Windower, x int32, y int32, keyval uint32, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out

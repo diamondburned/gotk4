@@ -85,7 +85,7 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 
 // NewConstraint creates a new constraint representing a relation between a
 // layout attribute on a source and a layout attribute on a target.
-func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint {
+func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int32) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -128,7 +128,7 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 
 // NewConstraintConstant creates a new constraint representing a relation
 // between a layout attribute on a target and a constant value.
-func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
+func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int32) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -252,7 +252,7 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 }
 
 // Strength retrieves the strength of the constraint.
-func (constraint *Constraint) Strength() int {
+func (constraint *Constraint) Strength() int32 {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.int            // in
 
@@ -261,9 +261,9 @@ func (constraint *Constraint) Strength() int {
 	_cret = C.gtk_constraint_get_strength(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

@@ -335,7 +335,7 @@ func (self *ColumnView) Sorter() *Sorter {
 // InsertColumn inserts a column at the given position in the columns of self.
 //
 // If column is already a column of self, it will be repositioned.
-func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
+func (self *ColumnView) InsertColumn(position uint32, column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 C.guint                // out
 	var _arg2 *C.GtkColumnViewColumn // out

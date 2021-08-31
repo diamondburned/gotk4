@@ -551,7 +551,7 @@ func marshalButtonEventer(p uintptr) (interface{}, error) {
 }
 
 // Button: extract the button number from a button event.
-func (event *ButtonEvent) Button() uint {
+func (event *ButtonEvent) Button() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -560,9 +560,9 @@ func (event *ButtonEvent) Button() uint {
 	_cret = C.gdk_button_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1225,7 +1225,7 @@ func (event *KeyEvent) ConsumedModifiers() ModifierType {
 }
 
 // Keycode extracts the keycode from a key event.
-func (event *KeyEvent) Keycode() uint {
+func (event *KeyEvent) Keycode() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1234,15 +1234,15 @@ func (event *KeyEvent) Keycode() uint {
 	_cret = C.gdk_key_event_get_keycode(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // Keyval extracts the keyval from a key event.
-func (event *KeyEvent) Keyval() uint {
+func (event *KeyEvent) Keyval() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1251,15 +1251,15 @@ func (event *KeyEvent) Keyval() uint {
 	_cret = C.gdk_key_event_get_keyval(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // Layout extracts the layout from a key event.
-func (event *KeyEvent) Layout() uint {
+func (event *KeyEvent) Layout() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1268,15 +1268,15 @@ func (event *KeyEvent) Layout() uint {
 	_cret = C.gdk_key_event_get_layout(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // Level extracts the shift level from a key event.
-func (event *KeyEvent) Level() uint {
+func (event *KeyEvent) Level() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1285,9 +1285,9 @@ func (event *KeyEvent) Level() uint {
 	_cret = C.gdk_key_event_get_level(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1295,7 +1295,7 @@ func (event *KeyEvent) Level() uint {
 // Match gets a keyval and modifier combination that will match the event.
 //
 // See gdk.KeyEvent.Matches().
-func (event *KeyEvent) Match() (uint, ModifierType, bool) {
+func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
@@ -1306,11 +1306,11 @@ func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	_cret = C.gdk_key_event_get_match(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _keyval uint            // out
+	var _keyval uint32          // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = uint(_arg1)
+	_keyval = uint32(_arg1)
 	_modifiers = ModifierType(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -1346,7 +1346,7 @@ func (event *KeyEvent) IsModifier() bool {
 // active group is ignored.
 //
 // Note that we ignore Caps Lock for matching.
-func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
+func (event *KeyEvent) Matches(keyval uint32, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -1409,7 +1409,7 @@ func marshalPadEventer(p uintptr) (interface{}, error) {
 }
 
 // AxisValue extracts the information from a pad strip or ring event.
-func (event *PadEvent) AxisValue() (uint, float64) {
+func (event *PadEvent) AxisValue() (uint32, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
@@ -1419,17 +1419,17 @@ func (event *PadEvent) AxisValue() (uint, float64) {
 	C.gdk_pad_event_get_axis_value(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _index uint    // out
+	var _index uint32  // out
 	var _value float64 // out
 
-	_index = uint(_arg1)
+	_index = uint32(_arg1)
 	_value = float64(_arg2)
 
 	return _index, _value
 }
 
 // Button extracts information about the pressed button from a pad event.
-func (event *PadEvent) Button() uint {
+func (event *PadEvent) Button() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1438,15 +1438,15 @@ func (event *PadEvent) Button() uint {
 	_cret = C.gdk_pad_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
 
 // GroupMode extracts group and mode information from a pad event.
-func (event *PadEvent) GroupMode() (group uint, mode uint) {
+func (event *PadEvent) GroupMode() (group uint32, mode uint32) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -1456,11 +1456,11 @@ func (event *PadEvent) GroupMode() (group uint, mode uint) {
 	C.gdk_pad_event_get_group_mode(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _group uint // out
-	var _mode uint  // out
+	var _group uint32 // out
+	var _mode uint32  // out
 
-	_group = uint(_arg1)
-	_mode = uint(_arg2)
+	_group = uint32(_arg1)
+	_mode = uint32(_arg2)
 
 	return _group, _mode
 }
@@ -1670,7 +1670,7 @@ func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 }
 
 // NFingers extracts the number of fingers from a touchpad event.
-func (event *TouchpadEvent) NFingers() uint {
+func (event *TouchpadEvent) NFingers() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1679,9 +1679,9 @@ func (event *TouchpadEvent) NFingers() uint {
 	_cret = C.gdk_touchpad_event_get_n_fingers(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

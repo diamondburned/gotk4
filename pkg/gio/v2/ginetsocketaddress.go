@@ -78,7 +78,7 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //
 // If address is an IPv6 address, it can also contain a scope ID (separated from
 // the address by a %).
-func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
+func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
 	var _cret *C.GSocketAddress // in

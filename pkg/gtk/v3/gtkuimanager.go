@@ -416,7 +416,7 @@ func NewUIManager() *UIManager {
 // before or after this item, depending on top.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
+func (manager *UIManager) AddUi(mergeId uint32, path string, name string, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.guint                // out
 	var _arg2 *C.gchar               // out
@@ -454,7 +454,7 @@ func (manager *UIManager) AddUi(mergeId uint, path string, name string, action s
 // it with the current contents of manager.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
+func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -468,10 +468,10 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(filename)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -483,7 +483,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 // and merges it with the current contents of manager.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
+func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret C.guint         // in
@@ -497,10 +497,10 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(resourcePath)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -513,7 +513,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 // added if it is missing.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
+func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gssize        // out
@@ -530,10 +530,10 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -748,7 +748,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 // action_group will be inserted at the end of the internal list.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
+func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
 	var _arg2 C.gint            // out
@@ -767,7 +767,7 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 // gtk_ui_manager_add_ui().
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) NewMergeID() uint {
+func (manager *UIManager) NewMergeID() uint32 {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.guint         // in
 
@@ -776,9 +776,9 @@ func (manager *UIManager) NewMergeID() uint {
 	_cret = C.gtk_ui_manager_new_merge_id(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -802,7 +802,7 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 // RemoveUi unmerges the part of manager's content identified by merge_id.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) RemoveUi(mergeId uint) {
+func (manager *UIManager) RemoveUi(mergeId uint32) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.guint         // out
 

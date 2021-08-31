@@ -142,7 +142,7 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 // file descriptor.
 //
 // See also g_cancellable_make_pollfd().
-func (cancellable *Cancellable) Fd() int {
+func (cancellable *Cancellable) Fd() int32 {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
 
@@ -153,9 +153,9 @@ func (cancellable *Cancellable) Fd() int {
 	_cret = C.g_cancellable_get_fd(_arg0)
 	runtime.KeepAlive(cancellable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

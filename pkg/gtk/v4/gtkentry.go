@@ -350,7 +350,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 
 // CurrentIconDragSource returns the index of the icon which is the source of
 // the current DND operation, or -1.
-func (entry *Entry) CurrentIconDragSource() int {
+func (entry *Entry) CurrentIconDragSource() int32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.int       // in
 
@@ -359,9 +359,9 @@ func (entry *Entry) CurrentIconDragSource() int {
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -458,7 +458,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 // The position’s coordinates are relative to the entry’s top left corner. If x,
 // y doesn’t lie inside an icon, -1 is returned. This function is intended for
 // use in a gtk.Widget::query-tooltip signal handler.
-func (entry *Entry) IconAtPos(x int, y int) int {
+func (entry *Entry) IconAtPos(x int32, y int32) int32 {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 	var _arg2 C.int       // out
@@ -473,9 +473,9 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -702,7 +702,7 @@ func (entry *Entry) InvisibleChar() uint32 {
 // MaxLength retrieves the maximum allowed length of the text in entry.
 //
 // See gtk.Entry.SetMaxLength().
-func (entry *Entry) MaxLength() int {
+func (entry *Entry) MaxLength() int32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.int       // in
 
@@ -711,9 +711,9 @@ func (entry *Entry) MaxLength() int {
 	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1268,7 +1268,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //
 // This is equivalent to getting entry's GtkEntryBuffer and calling
 // gtk.EntryBuffer.SetMaxLength() on it.
-func (entry *Entry) SetMaxLength(max int) {
+func (entry *Entry) SetMaxLength(max int32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 

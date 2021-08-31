@@ -307,7 +307,7 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_line_finish() to get the result of the operation.
-func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.gint                // out
@@ -620,7 +620,7 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //
 // Deprecated: Use g_data_input_stream_read_upto_async() instead, which has more
 // consistent behaviour regarding the stop character.
-func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -743,7 +743,7 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_upto_finish() to get the result of the operation.
-func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out

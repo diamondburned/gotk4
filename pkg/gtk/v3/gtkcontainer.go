@@ -285,7 +285,7 @@ type Containerer interface {
 	// Foreach invokes callback on each non-internal child of container.
 	Foreach(callback Callback)
 	// BorderWidth retrieves the border width of the container.
-	BorderWidth() uint
+	BorderWidth() uint32
 	// Children returns the container’s non-internal children.
 	Children() []Widgetter
 	// FocusChain retrieves the focus chain of the container, if one has been
@@ -313,7 +313,7 @@ type Containerer interface {
 	// ResizeChildren: deprecated: since version 3.10.
 	ResizeChildren()
 	// SetBorderWidth sets the border width of the container.
-	SetBorderWidth(borderWidth uint)
+	SetBorderWidth(borderWidth uint32)
 	// SetFocusChain sets a focus chain, overriding the one computed
 	// automatically by GTK+.
 	SetFocusChain(focusableWidgets []Widgetter)
@@ -525,7 +525,7 @@ func (container *Container) Foreach(callback Callback) {
 
 // BorderWidth retrieves the border width of the container. See
 // gtk_container_set_border_width().
-func (container *Container) BorderWidth() uint {
+func (container *Container) BorderWidth() uint32 {
 	var _arg0 *C.GtkContainer // out
 	var _cret C.guint         // in
 
@@ -534,9 +534,9 @@ func (container *Container) BorderWidth() uint {
 	_cret = C.gtk_container_get_border_width(_arg0)
 	runtime.KeepAlive(container)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -776,7 +776,7 @@ func (container *Container) ResizeChildren() {
 // border is added on all sides of the container. To add space to only one side,
 // use a specific Widget:margin property on the child widget, for example
 // Widget:margin-top.
-func (container *Container) SetBorderWidth(borderWidth uint) {
+func (container *Container) SetBorderWidth(borderWidth uint32) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.guint         // out
 

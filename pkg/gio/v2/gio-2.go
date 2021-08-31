@@ -622,7 +622,7 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 // after user_data is no longer needed. (It is not guaranteed to be called
 // synchronously when the filter is removed, and may be called after connection
 // has been destroyed.)
-func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
+func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint32 {
 	var _arg0 *C.GDBusConnection           // out
 	var _arg1 C.GDBusMessageFilterFunction // out
 	var _arg2 C.gpointer
@@ -638,9 +638,9 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterFunction)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -686,7 +686,7 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
 // G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-func (connection *DBusConnection) Call(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Call(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg9 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -805,7 +805,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
-func (connection *DBusConnection) CallSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
+func (connection *DBusConnection) CallSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg9 *C.GCancellable    // out
 	var _arg1 *C.gchar           // out
@@ -889,7 +889,7 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName string, 
 // G_VARIANT_TYPE_HANDLE in the body of the message.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
+func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32, fdList *UnixFDList, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg10 *C.GCancellable       // out
 	var _arg1 *C.gchar               // out
@@ -1003,7 +1003,7 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 // g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
+func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg11 *C.GCancellable   // out
 	var _arg1 *C.gchar           // out
@@ -1243,7 +1243,7 @@ func (connection *DBusConnection) EmitSignal(destinationBusName string, objectPa
 // change requests are rather likely to cause changes on the action group, this
 // effectively limits a given action group to being exported from only one main
 // context.
-func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
+func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint32, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GActionGroup    // out
@@ -1260,10 +1260,10 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(actionGroup)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1282,7 +1282,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // You can unexport the menu model using g_dbus_connection_unexport_menu_model()
 // with the return value of this function.
-func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
+func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint32, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -1299,10 +1299,10 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(menu)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1583,7 +1583,7 @@ func (connection *DBusConnection) IsClosed() bool {
 // filter might be using. Instead, you should pass a Notify to
 // g_dbus_connection_add_filter(), which will be called when it is guaranteed
 // that the data is no longer needed.
-func (connection *DBusConnection) RemoveFilter(filterId uint) {
+func (connection *DBusConnection) RemoveFilter(filterId uint32) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -1671,7 +1671,7 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
+func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int32, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
@@ -1773,7 +1773,7 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //
 // Note that message must be unlocked, unless flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
+func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int32) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
@@ -1882,7 +1882,7 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 // to never be zero.
 //
 // This function can never fail.
-func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
+func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint32 {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -1931,9 +1931,9 @@ func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName s
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(callback)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1946,7 +1946,7 @@ func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName s
 // Notify function passed to g_dbus_connection_signal_subscribe() is called, in
 // order to avoid memory leaks through callbacks queued on the Context after
 // it’s stopped being iterated.
-func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
+func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -1977,7 +1977,7 @@ func (connection *DBusConnection) StartMessageProcessing() {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_action_group() or to call it with the same ID more
 // than once.
-func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
+func (connection *DBusConnection) UnexportActionGroup(exportId uint32) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -1995,7 +1995,7 @@ func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_menu_model() or to call it with the same ID more
 // than once.
-func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
+func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2008,7 +2008,7 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 }
 
 // UnregisterObject unregisters an object.
-func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
+func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -2030,7 +2030,7 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 }
 
 // UnregisterSubtree unregisters a subtree.
-func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
+func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -2705,7 +2705,7 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //    Body: ()
 //    UNIX File Descriptors:
 //      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-func (message *DBusMessage) Print(indent uint) string {
+func (message *DBusMessage) Print(indent uint32) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
 	var _cret *C.gchar        // in
@@ -3294,7 +3294,7 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName string, errorM
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
-func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
+func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int32, message string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 C.GQuark                 // out
 	var _arg2 C.gint                   // out
@@ -3735,7 +3735,7 @@ func (menu *Menu) Freeze() {
 // Insert: convenience function for inserting a normal menu item into menu.
 // Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
-func (menu *Menu) Insert(position int, label string, detailedAction string) {
+func (menu *Menu) Insert(position int32, label string, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 	var _arg2 *C.gchar // out
@@ -3775,7 +3775,7 @@ func (menu *Menu) Insert(position int, label string, detailedAction string) {
 // There are many convenience functions to take care of common cases. See
 // g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
 // as "prepend" and "append" variants of each of these functions.
-func (menu *Menu) InsertItem(position int, item *MenuItem) {
+func (menu *Menu) InsertItem(position int32, item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.GMenuItem // out
@@ -3793,7 +3793,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 // InsertSection: convenience function for inserting a section menu item into
 // menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
+func (menu *Menu) InsertSection(position int32, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3817,7 +3817,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 // InsertSubmenu: convenience function for inserting a submenu menu item into
 // menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
+func (menu *Menu) InsertSubmenu(position int32, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3929,7 +3929,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 // It is not possible to remove items by identity since items are added to the
 // menu simply by copying their links and attributes (ie: identity of the item
 // itself is not preserved).
-func (menu *Menu) Remove(position int) {
+func (menu *Menu) Remove(position int32) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 
@@ -4006,7 +4006,7 @@ func NewMenuItem(label string, detailedAction string) *MenuItem {
 //
 // item_index must be valid (ie: be sure to call g_menu_model_get_n_items()
 // first).
-func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
+func NewMenuItemFromModel(model MenuModeller, itemIndex int32) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
@@ -5398,7 +5398,7 @@ func (subprocess *Subprocess) ForceExit() {
 //
 // It is an error to call this function before g_subprocess_wait() and unless
 // g_subprocess_get_if_exited() returned TRUE.
-func (subprocess *Subprocess) ExitStatus() int {
+func (subprocess *Subprocess) ExitStatus() int32 {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -5407,9 +5407,9 @@ func (subprocess *Subprocess) ExitStatus() int {
 	_cret = C.g_subprocess_get_exit_status(_arg0)
 	runtime.KeepAlive(subprocess)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -5492,7 +5492,7 @@ func (subprocess *Subprocess) IfSignaled() bool {
 // by g_subprocess_get_exit_status().
 //
 // It is an error to call this function before g_subprocess_wait() has returned.
-func (subprocess *Subprocess) Status() int {
+func (subprocess *Subprocess) Status() int32 {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -5501,9 +5501,9 @@ func (subprocess *Subprocess) Status() int {
 	_cret = C.g_subprocess_get_status(_arg0)
 	runtime.KeepAlive(subprocess)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -5607,7 +5607,7 @@ func (subprocess *Subprocess) Successful() bool {
 //
 // It is an error to call this function before g_subprocess_wait() and unless
 // g_subprocess_get_if_signaled() returned TRUE.
-func (subprocess *Subprocess) TermSig() int {
+func (subprocess *Subprocess) TermSig() int32 {
 	var _arg0 *C.GSubprocess // out
 	var _cret C.gint         // in
 
@@ -5616,9 +5616,9 @@ func (subprocess *Subprocess) TermSig() int {
 	_cret = C.g_subprocess_get_term_sig(_arg0)
 	runtime.KeepAlive(subprocess)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -5630,7 +5630,7 @@ func (subprocess *Subprocess) TermSig() int {
 // signalled.
 //
 // This API is not available on Windows.
-func (subprocess *Subprocess) SendSignal(signalNum int) {
+func (subprocess *Subprocess) SendSignal(signalNum int32) {
 	var _arg0 *C.GSubprocess // out
 	var _arg1 C.gint         // out
 
@@ -6133,7 +6133,7 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 // An example use case is GNUPG, which has a command line argument
 // --passphrase-fd providing a file descriptor number where it expects the
 // passphrase to be written.
-func (self *SubprocessLauncher) TakeFd(sourceFd int, targetFd int) {
+func (self *SubprocessLauncher) TakeFd(sourceFd int32, targetFd int32) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
@@ -6164,7 +6164,7 @@ func (self *SubprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 // launcher flags contain any flags directing stderr elsewhere.
 //
 // This feature is only available on UNIX.
-func (self *SubprocessLauncher) TakeStderrFd(fd int) {
+func (self *SubprocessLauncher) TakeStderrFd(fd int32) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -6194,7 +6194,7 @@ func (self *SubprocessLauncher) TakeStderrFd(fd int) {
 // launcher flags contain any flags directing stdin elsewhere.
 //
 // This feature is only available on UNIX.
-func (self *SubprocessLauncher) TakeStdinFd(fd int) {
+func (self *SubprocessLauncher) TakeStdinFd(fd int32) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 
@@ -6223,7 +6223,7 @@ func (self *SubprocessLauncher) TakeStdinFd(fd int) {
 // launcher flags contain any flags directing stdout elsewhere.
 //
 // This feature is only available on UNIX.
-func (self *SubprocessLauncher) TakeStdoutFd(fd int) {
+func (self *SubprocessLauncher) TakeStdoutFd(fd int32) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 

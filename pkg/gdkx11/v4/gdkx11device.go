@@ -13,7 +13,7 @@ import (
 import "C"
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
-func X11DeviceGetID(device *X11DeviceXI2) int {
+func X11DeviceGetID(device *X11DeviceXI2) int32 {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.int        // in
 
@@ -22,9 +22,9 @@ func X11DeviceGetID(device *X11DeviceXI2) int {
 	_cret = C.gdk_x11_device_get_id(_arg1)
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

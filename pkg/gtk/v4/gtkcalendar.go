@@ -121,7 +121,7 @@ func (calendar *Calendar) ClearMarks() {
 }
 
 // DayIsMarked returns if the day of the calendar is already marked.
-func (calendar *Calendar) DayIsMarked(day uint) bool {
+func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
@@ -207,7 +207,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 }
 
 // MarkDay places a visual marker on a particular day.
-func (calendar *Calendar) MarkDay(day uint) {
+func (calendar *Calendar) MarkDay(day uint32) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -268,7 +268,7 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
-func (calendar *Calendar) UnmarkDay(day uint) {
+func (calendar *Calendar) UnmarkDay(day uint32) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 

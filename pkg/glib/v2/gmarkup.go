@@ -309,7 +309,7 @@ func (context *MarkupParseContext) Element() string {
 // that line. Intended for use in error messages; there are no strict semantics
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
-func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
+func (context *MarkupParseContext) Position() (lineNumber int32, charNumber int32) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 C.gint                 // in
 	var _arg2 C.gint                 // in
@@ -319,11 +319,11 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _lineNumber int // out
-	var _charNumber int // out
+	var _lineNumber int32 // out
+	var _charNumber int32 // out
 
-	_lineNumber = int(_arg1)
-	_charNumber = int(_arg2)
+	_lineNumber = int32(_arg1)
+	_charNumber = int32(_arg2)
 
 	return _lineNumber, _charNumber
 }

@@ -222,7 +222,7 @@ func NewRecentFilter() *RecentFilter {
 
 // AddAge adds a rule that allows resources based on their age - that is, the
 // number of days elapsed since they were last modified.
-func (filter *RecentFilter) AddAge(days int) {
+func (filter *RecentFilter) AddAge(days int32) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
@@ -495,8 +495,8 @@ func (r *RecentFilterInfo) Groups() []string {
 }
 
 // Age: number of days elapsed since the file has been registered.
-func (r *RecentFilterInfo) Age() int {
-	var v int // out
-	v = int(r.native.age)
+func (r *RecentFilterInfo) Age() int32 {
+	var v int32 // out
+	v = int32(r.native.age)
 	return v
 }

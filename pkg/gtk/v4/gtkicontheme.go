@@ -137,7 +137,7 @@ func marshalIconPaintabler(p uintptr) (interface{}, error) {
 // size and scale.
 //
 // The icon can then be rendered by using it as a GdkPaintable.
-func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable {
+func NewIconPaintableForFile(file gio.Filer, size int32, scale int32) *IconPaintable {
 	var _arg1 *C.GFile            // out
 	var _arg2 C.int               // out
 	var _arg3 C.int               // out
@@ -391,7 +391,7 @@ func (self *IconTheme) IconNames() []string {
 //
 // A size of -1 means that the icon is available in a scalable format. The array
 // is zero-terminated.
-func (self *IconTheme) IconSizes(iconName string) []int {
+func (self *IconTheme) IconSizes(iconName string) []int32 {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 	var _cret *C.int          // in
@@ -404,7 +404,7 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
 
-	var _gints []int // out
+	var _gints []int32 // out
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
@@ -415,9 +415,9 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 		}
 
 		src := unsafe.Slice(_cret, i)
-		_gints = make([]int, i)
+		_gints = make([]int32, i)
 		for i := range src {
-			_gints[i] = int(src[i])
+			_gints[i] = int32(src[i])
 		}
 	}
 
@@ -564,7 +564,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
-func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int32, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out
@@ -611,7 +611,7 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, dire
 // Note that you probably want to listen for icon theme changes and update the
 // icon. This is usually done by overriding the GtkWidgetClass.css-changed()
 // function.
-func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int32, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.char              // out
 	var _arg2 **C.char             // out

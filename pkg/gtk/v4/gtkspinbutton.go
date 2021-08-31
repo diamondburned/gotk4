@@ -293,7 +293,7 @@ func marshalSpinButtonner(p uintptr) (interface{}, error) {
 }
 
 // NewSpinButton creates a new GtkSpinButton.
-func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
+func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
 	var _arg3 C.guint          // out
@@ -353,7 +353,7 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 //
 // The adjustment, climb rate, and number of decimal places are updated
 // accordingly.
-func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {
+func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint32) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.double         // out
@@ -408,7 +408,7 @@ func (spinButton *SpinButton) ClimbRate() float64 {
 }
 
 // Digits fetches the precision of spin_button.
-func (spinButton *SpinButton) Digits() uint {
+func (spinButton *SpinButton) Digits() uint32 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.guint          // in
 
@@ -417,9 +417,9 @@ func (spinButton *SpinButton) Digits() uint {
 	_cret = C.gtk_spin_button_get_digits(_arg0)
 	runtime.KeepAlive(spinButton)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -543,7 +543,7 @@ func (spinButton *SpinButton) Value() float64 {
 }
 
 // ValueAsInt: get the value spin_button represented as an integer.
-func (spinButton *SpinButton) ValueAsInt() int {
+func (spinButton *SpinButton) ValueAsInt() int32 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.int            // in
 
@@ -552,9 +552,9 @@ func (spinButton *SpinButton) ValueAsInt() int {
 	_cret = C.gtk_spin_button_get_value_as_int(_arg0)
 	runtime.KeepAlive(spinButton)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -609,7 +609,7 @@ func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 // SetDigits: set the precision to be displayed by spin_button.
 //
 // Up to 20 digit precision is allowed.
-func (spinButton *SpinButton) SetDigits(digits uint) {
+func (spinButton *SpinButton) SetDigits(digits uint32) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.guint          // out
 

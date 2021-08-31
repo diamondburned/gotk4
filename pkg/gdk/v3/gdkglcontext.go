@@ -86,13 +86,13 @@ type GLContexter interface {
 	ForwardCompatible() bool
 	// RequiredVersion retrieves the major and minor version requested by
 	// calling gdk_gl_context_set_required_version().
-	RequiredVersion() (major int, minor int)
+	RequiredVersion() (major int32, minor int32)
 	// SharedContext retrieves the GLContext that this context share data with.
 	SharedContext() GLContexter
 	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
 	UseES() bool
 	// Version retrieves the OpenGL version of the context.
-	Version() (major int, minor int)
+	Version() (major int32, minor int32)
 	// Window retrieves the Window used by the context.
 	Window() Windower
 	// IsLegacy: whether the GLContext is in legacy mode or not.
@@ -108,10 +108,10 @@ type GLContexter interface {
 	// compatible.
 	SetForwardCompatible(compatible bool)
 	// SetRequiredVersion sets the major and minor version of OpenGL to request.
-	SetRequiredVersion(major int, minor int)
+	SetRequiredVersion(major int32, minor int32)
 	// SetUseES requests that GDK create a OpenGL ES context instead of an
 	// OpenGL one, if the platform and windowing system allows it.
-	SetUseES(useEs int)
+	SetUseES(useEs int32)
 }
 
 var _ GLContexter = (*GLContext)(nil)
@@ -189,7 +189,7 @@ func (context *GLContext) ForwardCompatible() bool {
 
 // RequiredVersion retrieves the major and minor version requested by calling
 // gdk_gl_context_set_required_version().
-func (context *GLContext) RequiredVersion() (major int, minor int) {
+func (context *GLContext) RequiredVersion() (major int32, minor int32) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -199,11 +199,11 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _major int // out
-	var _minor int // out
+	var _major int32 // out
+	var _minor int32 // out
 
-	_major = int(_arg1)
-	_minor = int(_arg2)
+	_major = int32(_arg1)
+	_minor = int32(_arg2)
 
 	return _major, _minor
 }
@@ -249,7 +249,7 @@ func (context *GLContext) UseES() bool {
 // Version retrieves the OpenGL version of the context.
 //
 // The context must be realized prior to calling this function.
-func (context *GLContext) Version() (major int, minor int) {
+func (context *GLContext) Version() (major int32, minor int32) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -259,11 +259,11 @@ func (context *GLContext) Version() (major int, minor int) {
 	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _major int // out
-	var _minor int // out
+	var _major int32 // out
+	var _minor int32 // out
 
-	_major = int(_arg1)
-	_minor = int(_arg2)
+	_major = int32(_arg1)
+	_minor = int32(_arg2)
 
 	return _major, _minor
 }
@@ -401,7 +401,7 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 // The GLContext must not be realized or made current prior to calling this
 // function.
-func (context *GLContext) SetRequiredVersion(major int, minor int) {
+func (context *GLContext) SetRequiredVersion(major int32, minor int32) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -427,7 +427,7 @@ func (context *GLContext) SetRequiredVersion(major int, minor int) {
 // You should check the return value of gdk_gl_context_get_use_es() after
 // calling gdk_gl_context_realize() to decide whether to use the OpenGL or
 // OpenGL ES API, extensions, or shaders.
-func (context *GLContext) SetUseES(useEs int) {
+func (context *GLContext) SetUseES(useEs int32) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 

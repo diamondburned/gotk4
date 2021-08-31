@@ -148,7 +148,7 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //
 // This function is similar in function to pango_item_split() (and uses it
 // internally.)
-func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 C.int             // out
@@ -242,39 +242,39 @@ func (g *GlyphItemIter) Text() string {
 	return v
 }
 
-func (g *GlyphItemIter) StartGlyph() int {
-	var v int // out
-	v = int(g.native.start_glyph)
+func (g *GlyphItemIter) StartGlyph() int32 {
+	var v int32 // out
+	v = int32(g.native.start_glyph)
 	return v
 }
 
-func (g *GlyphItemIter) StartIndex() int {
-	var v int // out
-	v = int(g.native.start_index)
+func (g *GlyphItemIter) StartIndex() int32 {
+	var v int32 // out
+	v = int32(g.native.start_index)
 	return v
 }
 
-func (g *GlyphItemIter) StartChar() int {
-	var v int // out
-	v = int(g.native.start_char)
+func (g *GlyphItemIter) StartChar() int32 {
+	var v int32 // out
+	v = int32(g.native.start_char)
 	return v
 }
 
-func (g *GlyphItemIter) EndGlyph() int {
-	var v int // out
-	v = int(g.native.end_glyph)
+func (g *GlyphItemIter) EndGlyph() int32 {
+	var v int32 // out
+	v = int32(g.native.end_glyph)
 	return v
 }
 
-func (g *GlyphItemIter) EndIndex() int {
-	var v int // out
-	v = int(g.native.end_index)
+func (g *GlyphItemIter) EndIndex() int32 {
+	var v int32 // out
+	v = int32(g.native.end_index)
 	return v
 }
 
-func (g *GlyphItemIter) EndChar() int {
-	var v int // out
-	v = int(g.native.end_char)
+func (g *GlyphItemIter) EndChar() int32 {
+	var v int32 // out
+	v = int32(g.native.end_char)
 	return v
 }
 

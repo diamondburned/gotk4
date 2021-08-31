@@ -128,7 +128,7 @@ func (monitor *Monitor) Geometry() Rectangle {
 }
 
 // HeightMm gets the height in millimeters of the monitor.
-func (monitor *Monitor) HeightMm() int {
+func (monitor *Monitor) HeightMm() int32 {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -137,9 +137,9 @@ func (monitor *Monitor) HeightMm() int {
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -190,7 +190,7 @@ func (monitor *Monitor) Model() string {
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
-func (monitor *Monitor) RefreshRate() int {
+func (monitor *Monitor) RefreshRate() int32 {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -199,9 +199,9 @@ func (monitor *Monitor) RefreshRate() int {
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -213,7 +213,7 @@ func (monitor *Monitor) RefreshRate() int {
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a window where it is better
 // to use gdk_window_get_scale_factor() instead.
-func (monitor *Monitor) ScaleFactor() int {
+func (monitor *Monitor) ScaleFactor() int32 {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -222,9 +222,9 @@ func (monitor *Monitor) ScaleFactor() int {
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -248,7 +248,7 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 }
 
 // WidthMm gets the width in millimeters of the monitor.
-func (monitor *Monitor) WidthMm() int {
+func (monitor *Monitor) WidthMm() int32 {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -257,9 +257,9 @@ func (monitor *Monitor) WidthMm() int {
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

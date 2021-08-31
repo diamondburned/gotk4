@@ -28,18 +28,18 @@ func init() {
 type TableCellOverrider interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
-	ColumnSpan() int
+	ColumnSpan() int32
 	// Position retrieves the tabular position of this cell.
-	Position() (row int, column int, ok bool)
+	Position() (row int32, column int32, ok bool)
 	// RowColumnSpan gets the row and column indexes and span of this cell
 	// accessible.
 	//
 	// Note: If the object does not implement this function, then, by default,
 	// atk will implement this function by calling get_row_span and
 	// get_column_span on the object.
-	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
-	RowSpan() int
+	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
 	Table() *ObjectClass
 }
@@ -59,14 +59,14 @@ type TableCeller interface {
 
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
-	ColumnSpan() int
+	ColumnSpan() int32
 	// Position retrieves the tabular position of this cell.
-	Position() (row int, column int, ok bool)
+	Position() (row int32, column int32, ok bool)
 	// RowColumnSpan gets the row and column indexes and span of this cell
 	// accessible.
-	RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool)
+	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
-	RowSpan() int
+	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
 	Table() *ObjectClass
 }
@@ -88,7 +88,7 @@ func marshalTableCeller(p uintptr) (interface{}, error) {
 }
 
 // ColumnSpan returns the number of columns occupied by this cell accessible.
-func (cell *TableCell) ColumnSpan() int {
+func (cell *TableCell) ColumnSpan() int32 {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -97,15 +97,15 @@ func (cell *TableCell) ColumnSpan() int {
 	_cret = C.atk_table_cell_get_column_span(_arg0)
 	runtime.KeepAlive(cell)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // Position retrieves the tabular position of this cell.
-func (cell *TableCell) Position() (row int, column int, ok bool) {
+func (cell *TableCell) Position() (row int32, column int32, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -116,12 +116,12 @@ func (cell *TableCell) Position() (row int, column int, ok bool) {
 	_cret = C.atk_table_cell_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(cell)
 
-	var _row int    // out
-	var _column int // out
-	var _ok bool    // out
+	var _row int32    // out
+	var _column int32 // out
+	var _ok bool      // out
 
-	_row = int(_arg1)
-	_column = int(_arg2)
+	_row = int32(_arg1)
+	_column = int32(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -135,7 +135,7 @@ func (cell *TableCell) Position() (row int, column int, ok bool) {
 // Note: If the object does not implement this function, then, by default, atk
 // will implement this function by calling get_row_span and get_column_span on
 // the object.
-func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, columnSpan int, ok bool) {
+func (cell *TableCell) RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
@@ -148,16 +148,16 @@ func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, column
 	_cret = C.atk_table_cell_get_row_column_span(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(cell)
 
-	var _row int        // out
-	var _column int     // out
-	var _rowSpan int    // out
-	var _columnSpan int // out
-	var _ok bool        // out
+	var _row int32        // out
+	var _column int32     // out
+	var _rowSpan int32    // out
+	var _columnSpan int32 // out
+	var _ok bool          // out
 
-	_row = int(_arg1)
-	_column = int(_arg2)
-	_rowSpan = int(_arg3)
-	_columnSpan = int(_arg4)
+	_row = int32(_arg1)
+	_column = int32(_arg2)
+	_rowSpan = int32(_arg3)
+	_columnSpan = int32(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -166,7 +166,7 @@ func (cell *TableCell) RowColumnSpan() (row int, column int, rowSpan int, column
 }
 
 // RowSpan returns the number of rows occupied by this cell accessible.
-func (cell *TableCell) RowSpan() int {
+func (cell *TableCell) RowSpan() int32 {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
 
@@ -175,9 +175,9 @@ func (cell *TableCell) RowSpan() int {
 	_cret = C.atk_table_cell_get_row_span(_arg0)
 	runtime.KeepAlive(cell)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

@@ -177,7 +177,7 @@ type Devicer interface {
 	// Axes returns the axes currently available on the device.
 	Axes() AxisFlags
 	// AxisUse returns the axis use for index_.
-	AxisUse(index_ uint) AxisUse
+	AxisUse(index_ uint32) AxisUse
 	// DeviceType returns the device type for device.
 	DeviceType() DeviceType
 	// Display returns the Display to which device pertains.
@@ -186,7 +186,7 @@ type Devicer interface {
 	HasCursor() bool
 	// Key: if index_ has a valid keyval, this function will return TRUE and
 	// fill in keyval and modifiers with the keyval settings.
-	Key(index_ uint) (uint, ModifierType, bool)
+	Key(index_ uint32) (uint32, ModifierType, bool)
 	// LastEventWindow gets information about which window the given pointer
 	// device is in, based on events that have been received so far from the
 	// display server.
@@ -194,13 +194,13 @@ type Devicer interface {
 	// Mode determines the mode of the device.
 	Mode() InputMode
 	// NAxes returns the number of axes the device currently has.
-	NAxes() int
+	NAxes() int32
 	// NKeys returns the number of keys the device currently has.
-	NKeys() int
+	NKeys() int32
 	// Name determines the name of the device.
 	Name() string
 	// Position gets the current location of device.
-	Position() (screen *Screen, x int, y int)
+	Position() (screen *Screen, x int32, y int32)
 	// PositionDouble gets the current location of device in double precision.
 	PositionDouble() (screen *Screen, x float64, y float64)
 	// ProductID returns the product ID of this device, or NULL if this
@@ -215,7 +215,7 @@ type Devicer interface {
 	VendorID() string
 	// WindowAtPosition obtains the window underneath device, returning the
 	// location of the device in win_x and win_y.
-	WindowAtPosition() (winX int, winY int, window Windower)
+	WindowAtPosition() (winX int32, winY int32, window Windower)
 	// WindowAtPositionDouble obtains the window underneath device, returning
 	// the location of the device in win_x and win_y in double precision.
 	WindowAtPositionDouble() (winX float64, winY float64, window Windower)
@@ -228,10 +228,10 @@ type Devicer interface {
 	// return NULL
 	ListSlaveDevices() []Devicer
 	// SetAxisUse specifies how an axis of a device is used.
-	SetAxisUse(index_ uint, use AxisUse)
+	SetAxisUse(index_ uint32, use AxisUse)
 	// SetKey specifies the X key event to generate when a macro button of a
 	// device is pressed.
-	SetKey(index_ uint, keyval uint, modifiers ModifierType)
+	SetKey(index_ uint32, keyval uint32, modifiers ModifierType)
 	// SetMode sets a the mode of an input device.
 	SetMode(mode InputMode) bool
 	// Ungrab: release any grab on device.
@@ -239,7 +239,7 @@ type Devicer interface {
 	// Warp warps device in display to the point x,y on the screen screen,
 	// unless the device is confined to a window by a grab, in which case it
 	// will be moved as far as allowed by the grab.
-	Warp(screen *Screen, x int, y int)
+	Warp(screen *Screen, x int32, y int32)
 }
 
 var _ Devicer = (*Device)(nil)
@@ -300,7 +300,7 @@ func (device *Device) Axes() AxisFlags {
 }
 
 // AxisUse returns the axis use for index_.
-func (device *Device) AxisUse(index_ uint) AxisUse {
+func (device *Device) AxisUse(index_ uint32) AxisUse {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
 	var _cret C.GdkAxisUse // in
@@ -375,7 +375,7 @@ func (device *Device) HasCursor() bool {
 
 // Key: if index_ has a valid keyval, this function will return TRUE and fill in
 // keyval and modifiers with the keyval settings.
-func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
+func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // in
@@ -389,11 +389,11 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	runtime.KeepAlive(device)
 	runtime.KeepAlive(index_)
 
-	var _keyval uint            // out
+	var _keyval uint32          // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = uint(_arg2)
+	_keyval = uint32(_arg2)
 	_modifiers = ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -443,7 +443,7 @@ func (device *Device) Mode() InputMode {
 }
 
 // NAxes returns the number of axes the device currently has.
-func (device *Device) NAxes() int {
+func (device *Device) NAxes() int32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
@@ -452,15 +452,15 @@ func (device *Device) NAxes() int {
 	_cret = C.gdk_device_get_n_axes(_arg0)
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
 
 // NKeys returns the number of keys the device currently has.
-func (device *Device) NKeys() int {
+func (device *Device) NKeys() int32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
@@ -469,9 +469,9 @@ func (device *Device) NKeys() int {
 	_cret = C.gdk_device_get_n_keys(_arg0)
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -497,7 +497,7 @@ func (device *Device) Name() string {
 // are those of its master pointer, This function may not be called on devices
 // of type GDK_DEVICE_TYPE_SLAVE, unless there is an ongoing grab on them, see
 // gdk_device_grab().
-func (device *Device) Position() (screen *Screen, x int, y int) {
+func (device *Device) Position() (screen *Screen, x int32, y int32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
 	var _arg2 C.gint       // in
@@ -509,14 +509,14 @@ func (device *Device) Position() (screen *Screen, x int, y int) {
 	runtime.KeepAlive(device)
 
 	var _screen *Screen // out
-	var _x int          // out
-	var _y int          // out
+	var _x int32        // out
+	var _y int32        // out
 
 	if _arg1 != nil {
 		_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
 	}
-	_x = int(_arg2)
-	_y = int(_arg3)
+	_x = int32(_arg2)
+	_y = int32(_arg3)
 
 	return _screen, _x, _y
 }
@@ -653,7 +653,7 @@ func (device *Device) VendorID() string {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
-func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
+func (device *Device) WindowAtPosition() (winX int32, winY int32, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -664,12 +664,12 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(device)
 
-	var _winX int        // out
-	var _winY int        // out
+	var _winX int32      // out
+	var _winY int32      // out
 	var _window Windower // out
 
-	_winX = int(_arg1)
-	_winY = int(_arg2)
+	_winX = int32(_arg1)
+	_winY = int32(_arg2)
 	if _cret != nil {
 		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 	}
@@ -798,7 +798,7 @@ func (device *Device) ListSlaveDevices() []Devicer {
 }
 
 // SetAxisUse specifies how an axis of a device is used.
-func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
+func (device *Device) SetAxisUse(index_ uint32, use AxisUse) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
 	var _arg2 C.GdkAxisUse // out
@@ -815,7 +815,7 @@ func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 
 // SetKey specifies the X key event to generate when a macro button of a device
 // is pressed.
-func (device *Device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
+func (device *Device) SetKey(index_ uint32, keyval uint32, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out
@@ -884,7 +884,7 @@ func (device *Device) Ungrab(time_ uint32) {
 // Note that the pointer should normally be under the control of the user. This
 // function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
-func (device *Device) Warp(screen *Screen, x int, y int) {
+func (device *Device) Warp(screen *Screen, x int32, y int32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out

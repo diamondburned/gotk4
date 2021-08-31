@@ -750,7 +750,7 @@ func OffscreenWindowSetEmbedder(window Windower, embedder Windower) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
-	CreateSurface(width int, height int) *cairo.Surface
+	CreateSurface(width int32, height int32) *cairo.Surface
 	FromEmbedder(embedderX float64, embedderY float64, offscreenX *float64, offscreenY *float64)
 	ToEmbedder(offscreenX float64, offscreenY float64, embedderX *float64, embedderY *float64)
 }
@@ -770,10 +770,10 @@ type Windower interface {
 	// region on window, and provides you with a DrawingContext.
 	BeginDrawFrame(region *cairo.Region) *DrawingContext
 	// BeginMoveDrag begins a window move operation (for a toplevel window).
-	BeginMoveDrag(button int, rootX int, rootY int, timestamp uint32)
+	BeginMoveDrag(button int32, rootX int32, rootY int32, timestamp uint32)
 	// BeginMoveDragForDevice begins a window move operation (for a toplevel
 	// window).
-	BeginMoveDragForDevice(device Devicer, button int, rootX int, rootY int, timestamp uint32)
+	BeginMoveDragForDevice(device Devicer, button int32, rootX int32, rootY int32, timestamp uint32)
 	// BeginPaintRect: convenience wrapper around
 	// gdk_window_begin_paint_region() which creates a rectangular region for
 	// you.
@@ -782,10 +782,10 @@ type Windower interface {
 	// redrawing region.
 	BeginPaintRegion(region *cairo.Region)
 	// BeginResizeDrag begins a window resize operation (for a toplevel window).
-	BeginResizeDrag(edge WindowEdge, button int, rootX int, rootY int, timestamp uint32)
+	BeginResizeDrag(edge WindowEdge, button int32, rootX int32, rootY int32, timestamp uint32)
 	// BeginResizeDragForDevice begins a window resize operation (for a toplevel
 	// window).
-	BeginResizeDragForDevice(edge WindowEdge, device Devicer, button int, rootX int, rootY int, timestamp uint32)
+	BeginResizeDragForDevice(edge WindowEdge, device Devicer, button int32, rootX int32, rootY int32, timestamp uint32)
 	// ConfigureFinished does nothing, present only for compatiblity.
 	ConfigureFinished()
 	// CoordsFromParent transforms window coordinates from a parent window to a
@@ -803,10 +803,10 @@ type Windower interface {
 	CreateGLContext() (GLContexter, error)
 	// CreateSimilarImageSurface: create a new image surface that is efficient
 	// to draw on the given window.
-	CreateSimilarImageSurface(format cairo.Format, width int, height int, scale int) *cairo.Surface
+	CreateSimilarImageSurface(format cairo.Format, width int32, height int32, scale int32) *cairo.Surface
 	// CreateSimilarSurface: create a new surface that is as compatible as
 	// possible with the given window.
-	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
+	CreateSimilarSurface(content cairo.Content, width int32, height int32) *cairo.Surface
 	// Deiconify: attempt to deiconify (unminimize) window.
 	Deiconify()
 	// Destroy destroys the window system resources associated with window and
@@ -839,7 +839,7 @@ type Windower interface {
 	Fullscreen()
 	// FullscreenOnMonitor moves the window into fullscreen mode on the given
 	// monitor.
-	FullscreenOnMonitor(monitor int)
+	FullscreenOnMonitor(monitor int32)
 	// GeometryChanged: this function informs GDK that the geometry of an
 	// embedded offscreen window has changed.
 	GeometryChanged()
@@ -872,7 +872,7 @@ type Windower interface {
 	// specific device.
 	DeviceEvents(device Devicer) EventMask
 	// DevicePosition obtains the current device position and modifier state.
-	DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret Windower)
+	DevicePosition(device Devicer) (x int32, y int32, mask ModifierType, ret Windower)
 	// DevicePositionDouble obtains the current device position in doubles and
 	// modifier state.
 	DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret Windower)
@@ -902,35 +902,35 @@ type Windower interface {
 	FullscreenMode() FullscreenMode
 	// Geometry: any of the return location arguments to this function may be
 	// NULL, if you aren’t interested in getting the value of that field.
-	Geometry() (x int, y int, width int, height int)
+	Geometry() (x int32, y int32, width int32, height int32)
 	// Group returns the group leader window for window.
 	Group() Windower
 	// Height returns the height of the given window.
-	Height() int
+	Height() int32
 	// ModalHint determines whether or not the window manager is hinted that
 	// window has modal behaviour.
 	ModalHint() bool
 	// Origin obtains the position of a window in root window coordinates.
-	Origin() (x int, y int, gint int)
+	Origin() (x int32, y int32, gint int32)
 	// Parent obtains the parent of window, as known to GDK.
 	Parent() Windower
 	// PassThrough returns whether input to the window is passed through to the
 	// window below.
 	PassThrough() bool
 	// Pointer obtains the current pointer position and modifier state.
-	Pointer() (x int, y int, mask ModifierType, ret Windower)
+	Pointer() (x int32, y int32, mask ModifierType, ret Windower)
 	// Position obtains the position of the window as reported in the
 	// most-recently-processed EventConfigure.
-	Position() (x int, y int)
+	Position() (x int32, y int32)
 	// RootCoords obtains the position of a window position in root window
 	// coordinates.
-	RootCoords(x int, y int) (rootX int, rootY int)
+	RootCoords(x int32, y int32) (rootX int32, rootY int32)
 	// RootOrigin obtains the top-left corner of the window manager frame in
 	// root window coordinates.
-	RootOrigin() (x int, y int)
+	RootOrigin() (x int32, y int32)
 	// ScaleFactor returns the internal scale factor that maps from window
 	// coordiantes to the actual device pixels.
-	ScaleFactor() int
+	ScaleFactor() int32
 	// Screen gets the Screen associated with a Window.
 	Screen() *Screen
 	// SourceEvents returns the event mask for window corresponding to the
@@ -958,7 +958,7 @@ type Windower interface {
 	// Visual gets the Visual describing the pixel format of window.
 	Visual() *Visual
 	// Width returns the width of the given window.
-	Width() int
+	Width() int32
 	// WindowType gets the type of the window.
 	WindowType() WindowType
 	// HasNative checks whether the window has a native window or not.
@@ -971,7 +971,7 @@ type Windower interface {
 	Iconify()
 	// InputShapeCombineRegion: like gdk_window_shape_combine_region(), but the
 	// shape applies only to event handling.
-	InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int)
+	InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int32, offsetY int32)
 	// InvalidateMaybeRecurse adds region to the update area for window.
 	InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc)
 	// InvalidateRect: convenience wrapper around gdk_window_invalidate_region()
@@ -1005,16 +1005,16 @@ type Windower interface {
 	// shape mask for window.
 	MergeChildShapes()
 	// Move repositions a window relative to its parent window.
-	Move(x int, y int)
+	Move(x int32, y int32)
 	// MoveRegion: move the part of window indicated by region by dy pixels in
 	// the Y direction and dx pixels in the X direction.
-	MoveRegion(region *cairo.Region, dx int, dy int)
+	MoveRegion(region *cairo.Region, dx int32, dy int32)
 	// MoveResize: equivalent to calling gdk_window_move() and
 	// gdk_window_resize(), except that both operations are performed at once,
 	// avoiding strange visual effects.
-	MoveResize(x int, y int, width int, height int)
+	MoveResize(x int32, y int32, width int32, height int32)
 	// MoveToRect moves window to rect, aligning their anchor points.
-	MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
+	MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int32, rectAnchorDy int32)
 	// PeekChildren: like gdk_window_get_children(), but does not copy the list
 	// of children, so the list does not need to be freed.
 	PeekChildren() []Windower
@@ -1026,17 +1026,17 @@ type Windower interface {
 	// RegisterDnd registers a window as a potential drop destination.
 	RegisterDnd()
 	// Reparent reparents window into the given new_parent.
-	Reparent(newParent Windower, x int, y int)
+	Reparent(newParent Windower, x int32, y int32)
 	// Resize resizes window; for toplevel windows, asks the window manager to
 	// resize the window.
-	Resize(width int, height int)
+	Resize(width int32, height int32)
 	// Restack changes the position of window in the Z-order (stacking order),
 	// so that it is above sibling (if above is TRUE) or below sibling (if above
 	// is FALSE).
 	Restack(sibling Windower, above bool)
 	// Scroll the contents of window, both pixels and children, by the given
 	// amount.
-	Scroll(dx int, dy int)
+	Scroll(dx int32, dy int32)
 	// SetAcceptFocus: setting accept_focus to FALSE hints the desktop
 	// environment that the window doesn’t want to receive input focus.
 	SetAcceptFocus(acceptFocus bool)
@@ -1118,7 +1118,7 @@ type Windower interface {
 	// SetShadowWidth: newer GTK+ windows using client-side decorations use
 	// extra geometry around their frames for effects like shadows and invisible
 	// borders.
-	SetShadowWidth(left int, right int, top int, bottom int)
+	SetShadowWidth(left int32, right int32, top int32, bottom int32)
 	// SetSkipPagerHint toggles whether a window should appear in a pager
 	// (workspace switcher, or other desktop utility program that displays a
 	// small thumbnail representation of the windows on the desktop).
@@ -1154,7 +1154,7 @@ type Windower interface {
 	SetUserData(userData *externglib.Object)
 	// ShapeCombineRegion makes pixels in window outside shape_region be
 	// transparent, so that the window may be nonrectangular.
-	ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int)
+	ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int32, offsetY int32)
 	// Show: like gdk_window_show_unraised(), but also raises the window to the
 	// top of the window stack (moves the window to the front of the Z-order).
 	Show()
@@ -1284,7 +1284,7 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 // This function assumes that the drag is controlled by the client pointer
 // device, use gdk_window_begin_move_drag_for_device() to begin a drag with a
 // different device.
-func (window *Window) BeginMoveDrag(button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDrag(button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -1310,7 +1310,7 @@ func (window *Window) BeginMoveDrag(button int, rootX int, rootY int, timestamp 
 // example. The function works best with window managers that support the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // but has a fallback implementation for other window managers.
-func (window *Window) BeginMoveDragForDevice(device Devicer, button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDragForDevice(device Devicer, button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _arg2 C.gint       // out
@@ -1404,7 +1404,7 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 // This function assumes that the drag is controlled by the client pointer
 // device, use gdk_window_begin_resize_drag_for_device() to begin a drag with a
 // different device.
-func (window *Window) BeginResizeDrag(edge WindowEdge, button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginResizeDrag(edge WindowEdge, button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
 	var _arg1 C.GdkWindowEdge // out
 	var _arg2 C.gint          // out
@@ -1434,7 +1434,7 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button int, rootX int, ro
 // managers that support the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
 // implementation for other window managers.
-func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button int, rootX int, rootY int, timestamp uint32) {
+func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button int32, rootX int32, rootY int32, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
 	var _arg1 C.GdkWindowEdge // out
 	var _arg2 *C.GdkDevice    // out
@@ -1605,7 +1605,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 //
 // Note that unlike cairo_surface_create_similar_image(), the new surface's
 // device scale is set to scale, or to the scale factor of window if scale is 0.
-func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, height int, scale int) *cairo.Surface {
+func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int32, height int32, scale int32) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_format_t   // out
 	var _arg2 C.int              // out
@@ -1647,7 +1647,7 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, 
 //
 // Initially the surface contents are all 0 (transparent if contents have
 // transparency, black otherwise.)
-func (window *Window) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+func (window *Window) CreateSimilarSurface(content cairo.Content, width int32, height int32) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -1862,7 +1862,7 @@ func (window *Window) Fullscreen() {
 // panels or task bars.
 //
 // If the window was already fullscreen, then this function does nothing.
-func (window *Window) FullscreenOnMonitor(monitor int) {
+func (window *Window) FullscreenOnMonitor(monitor int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 
@@ -2138,7 +2138,7 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 // position is given in coordinates relative to the upper left corner of window.
 //
 // Use gdk_window_get_device_position_double() if you need subpixel precision.
-func (window *Window) DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret Windower) {
+func (window *Window) DevicePosition(device Devicer) (x int32, y int32, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkDevice      // out
 	var _arg2 C.gint            // in
@@ -2153,13 +2153,13 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 
-	var _x int             // out
-	var _y int             // out
+	var _x int32           // out
+	var _y int32           // out
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	_x = int(_arg2)
-	_y = int(_arg3)
+	_x = int32(_arg2)
+	_y = int32(_arg3)
 	_mask = ModifierType(_arg4)
 	if _cret != nil {
 		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2414,7 +2414,7 @@ func (window *Window) FullscreenMode() FullscreenMode {
 // instead, because it avoids the roundtrip to the X server and because these
 // functions support the full 32-bit coordinate space, whereas
 // gdk_window_get_geometry() is restricted to the 16-bit coordinates of X11.
-func (window *Window) Geometry() (x int, y int, width int, height int) {
+func (window *Window) Geometry() (x int32, y int32, width int32, height int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -2426,15 +2426,15 @@ func (window *Window) Geometry() (x int, y int, width int, height int) {
 	C.gdk_window_get_geometry(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
+	var _x int32      // out
+	var _y int32      // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
-	_width = int(_arg3)
-	_height = int(_arg4)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+	_width = int32(_arg3)
+	_height = int32(_arg4)
 
 	return _x, _y, _width, _height
 }
@@ -2461,7 +2461,7 @@ func (window *Window) Group() Windower {
 // On the X11 platform the returned size is the size reported in the
 // most-recently-processed configure event, rather than the current size on the
 // X server.
-func (window *Window) Height() int {
+func (window *Window) Height() int32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
 
@@ -2470,9 +2470,9 @@ func (window *Window) Height() int {
 	_cret = C.gdk_window_get_height(_arg0)
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2500,7 +2500,7 @@ func (window *Window) ModalHint() bool {
 // Origin obtains the position of a window in root window coordinates. (Compare
 // with gdk_window_get_position() and gdk_window_get_geometry() which return the
 // position of a window relative to its parent window.)
-func (window *Window) Origin() (x int, y int, gint int) {
+func (window *Window) Origin() (x int32, y int32, gint int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -2511,13 +2511,13 @@ func (window *Window) Origin() (x int, y int, gint int) {
 	_cret = C.gdk_window_get_origin(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _x int    // out
-	var _y int    // out
-	var _gint int // out
+	var _x int32    // out
+	var _y int32    // out
+	var _gint int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
-	_gint = int(_cret)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+	_gint = int32(_cret)
 
 	return _x, _y, _gint
 }
@@ -2574,7 +2574,7 @@ func (window *Window) PassThrough() bool {
 // is given in coordinates relative to the upper left corner of window.
 //
 // Deprecated: Use gdk_window_get_device_position() instead.
-func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) {
+func (window *Window) Pointer() (x int32, y int32, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 C.gint            // in
 	var _arg2 C.gint            // in
@@ -2586,13 +2586,13 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 	_cret = C.gdk_window_get_pointer(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(window)
 
-	var _x int             // out
-	var _y int             // out
+	var _x int32           // out
+	var _y int32           // out
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 	_mask = ModifierType(_arg3)
 	if _cret != nil {
 		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
@@ -2607,7 +2607,7 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 // position, regardless of which events have been received or processed.
 //
 // The position coordinates are relative to the window’s parent window.
-func (window *Window) Position() (x int, y int) {
+func (window *Window) Position() (x int32, y int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -2617,11 +2617,11 @@ func (window *Window) Position() (x int, y int) {
 	C.gdk_window_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _x int // out
-	var _y int // out
+	var _x int32 // out
+	var _y int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -2629,7 +2629,7 @@ func (window *Window) Position() (x int, y int) {
 // RootCoords obtains the position of a window position in root window
 // coordinates. This is similar to gdk_window_get_origin() but allows you to
 // pass in any position in the window, not just the origin.
-func (window *Window) RootCoords(x int, y int) (rootX int, rootY int) {
+func (window *Window) RootCoords(x int32, y int32) (rootX int32, rootY int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2645,18 +2645,18 @@ func (window *Window) RootCoords(x int, y int) (rootX int, rootY int) {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _rootX int // out
-	var _rootY int // out
+	var _rootX int32 // out
+	var _rootY int32 // out
 
-	_rootX = int(_arg3)
-	_rootY = int(_arg4)
+	_rootX = int32(_arg3)
+	_rootY = int32(_arg4)
 
 	return _rootX, _rootY
 }
 
 // RootOrigin obtains the top-left corner of the window manager frame in root
 // window coordinates.
-func (window *Window) RootOrigin() (x int, y int) {
+func (window *Window) RootOrigin() (x int32, y int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -2666,11 +2666,11 @@ func (window *Window) RootOrigin() (x int, y int) {
 	C.gdk_window_get_root_origin(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _x int // out
-	var _y int // out
+	var _x int32 // out
+	var _y int32 // out
 
-	_x = int(_arg1)
-	_y = int(_arg2)
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -2686,7 +2686,7 @@ func (window *Window) RootOrigin() (x int, y int) {
 //
 // The scale of a window may change during runtime, if this happens a configure
 // event will be sent to the toplevel window.
-func (window *Window) ScaleFactor() int {
+func (window *Window) ScaleFactor() int32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gint       // in
 
@@ -2695,9 +2695,9 @@ func (window *Window) ScaleFactor() int {
 	_cret = C.gdk_window_get_scale_factor(_arg0)
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2913,7 +2913,7 @@ func (window *Window) Visual() *Visual {
 // On the X11 platform the returned size is the size reported in the
 // most-recently-processed configure event, rather than the current size on the
 // X server.
-func (window *Window) Width() int {
+func (window *Window) Width() int32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.int        // in
 
@@ -2922,9 +2922,9 @@ func (window *Window) Width() int {
 	_cret = C.gdk_window_get_width(_arg0)
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -3005,7 +3005,7 @@ func (window *Window) Iconify() {
 //
 // On the Win32 platform, this functionality is not present and the function
 // does nothing.
-func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
+func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int32, offsetY int32) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out
@@ -3307,7 +3307,7 @@ func (window *Window) MergeChildShapes() {
 //
 // If you’re also planning to resize the window, use gdk_window_move_resize() to
 // both move and resize simultaneously, for a nicer visual effect.
-func (window *Window) Move(x int, y int) {
+func (window *Window) Move(x int32, y int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -3327,7 +3327,7 @@ func (window *Window) Move(x int, y int) {
 // covered by the new position of region are invalidated.
 //
 // Child windows are not moved.
-func (window *Window) MoveRegion(region *cairo.Region, dx int, dy int) {
+func (window *Window) MoveRegion(region *cairo.Region, dx int32, dy int32) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out
@@ -3349,7 +3349,7 @@ func (window *Window) MoveRegion(region *cairo.Region, dx int, dy int) {
 // except that both operations are performed at once, avoiding strange visual
 // effects. (i.e. the user may be able to see the window first move, then
 // resize, if you don’t use gdk_window_move_resize().)
-func (window *Window) MoveResize(x int, y int, width int, height int) {
+func (window *Window) MoveResize(x int32, y int32, width int32, height int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -3385,7 +3385,7 @@ func (window *Window) MoveResize(x int, y int, width int, height int) {
 //
 // Connect to the Window::moved-to-rect signal to find out how it was actually
 // positioned.
-func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int) {
+func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int32, rectAnchorDy int32) {
 	var _arg0 *C.GdkWindow     // out
 	var _arg1 *C.GdkRectangle  // out
 	var _arg2 C.GdkGravity     // out
@@ -3488,7 +3488,7 @@ func (window *Window) RegisterDnd() {
 
 // Reparent reparents window into the given new_parent. The window being
 // reparented will be unmapped as a side effect.
-func (window *Window) Reparent(newParent Windower, x int, y int) {
+func (window *Window) Reparent(newParent Windower, x int32, y int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out
@@ -3514,7 +3514,7 @@ func (window *Window) Reparent(newParent Windower, x int, y int) {
 //
 // If you’re also planning to move the window, use gdk_window_move_resize() to
 // both move and resize simultaneously, for a nicer visual effect.
-func (window *Window) Resize(width int, height int) {
+func (window *Window) Resize(width int32, height int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -3567,7 +3567,7 @@ func (window *Window) Restack(sibling Windower, above bool) {
 // or if the edges of the window’s parent do not extend beyond the edges of the
 // window. In other cases, a multi-step process is used to scroll the window
 // which may produce temporary visual artifacts and unnecessary invalidations.
-func (window *Window) Scroll(dx int, dy int) {
+func (window *Window) Scroll(dx int32, dy int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -4242,7 +4242,7 @@ func (window *Window) SetRole(role string) {
 // Note that this property is automatically updated by GTK+, so this function
 // should only be used by applications which do not use GTK+ to create toplevel
 // windows.
-func (window *Window) SetShadowWidth(left int, right int, top int, bottom int) {
+func (window *Window) SetShadowWidth(left int32, right int32, top int32, bottom int32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -4483,7 +4483,7 @@ func (window *Window) SetUserData(userData *externglib.Object) {
 // shape extension, this function will do nothing.
 //
 // This function works on both toplevel and child windows.
-func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
+func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int32, offsetY int32) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.cairo_region_t // out
 	var _arg2 C.gint            // out
@@ -4649,19 +4649,19 @@ func (window *Window) Withdraw() {
 // gdk_display_get_window_at_pointer() instead.
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
-func WindowAtPointer() (winX int, winY int, window Windower) {
+func WindowAtPointer() (winX int32, winY int32, window Windower) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_window_at_pointer(&_arg1, &_arg2)
 
-	var _winX int        // out
-	var _winY int        // out
+	var _winX int32      // out
+	var _winY int32      // out
 	var _window Windower // out
 
-	_winX = int(_arg1)
-	_winY = int(_arg2)
+	_winX = int32(_arg1)
+	_winY = int32(_arg2)
 	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
@@ -4669,7 +4669,7 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 
 // WindowConstrainSize constrains a desired width and height according to a set
 // of geometry hints (such as minimum and maximum size).
-func WindowConstrainSize(geometry *Geometry, flags WindowHints, width int, height int) (newWidth int, newHeight int) {
+func WindowConstrainSize(geometry *Geometry, flags WindowHints, width int32, height int32) (newWidth int32, newHeight int32) {
 	var _arg1 *C.GdkGeometry   // out
 	var _arg2 C.GdkWindowHints // out
 	var _arg3 C.gint           // out
@@ -4688,11 +4688,11 @@ func WindowConstrainSize(geometry *Geometry, flags WindowHints, width int, heigh
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
-	var _newWidth int  // out
-	var _newHeight int // out
+	var _newWidth int32  // out
+	var _newHeight int32 // out
 
-	_newWidth = int(_arg5)
-	_newHeight = int(_arg6)
+	_newWidth = int32(_arg5)
+	_newHeight = int32(_arg6)
 
 	return _newWidth, _newHeight
 }
@@ -4800,63 +4800,63 @@ type geometry struct {
 
 // MinWidth: minimum width of window (or -1 to use requisition, with Window
 // only)
-func (g *Geometry) MinWidth() int {
-	var v int // out
-	v = int(g.native.min_width)
+func (g *Geometry) MinWidth() int32 {
+	var v int32 // out
+	v = int32(g.native.min_width)
 	return v
 }
 
 // MinHeight: minimum height of window (or -1 to use requisition, with Window
 // only)
-func (g *Geometry) MinHeight() int {
-	var v int // out
-	v = int(g.native.min_height)
+func (g *Geometry) MinHeight() int32 {
+	var v int32 // out
+	v = int32(g.native.min_height)
 	return v
 }
 
 // MaxWidth: maximum width of window (or -1 to use requisition, with Window
 // only)
-func (g *Geometry) MaxWidth() int {
-	var v int // out
-	v = int(g.native.max_width)
+func (g *Geometry) MaxWidth() int32 {
+	var v int32 // out
+	v = int32(g.native.max_width)
 	return v
 }
 
 // MaxHeight: maximum height of window (or -1 to use requisition, with Window
 // only)
-func (g *Geometry) MaxHeight() int {
-	var v int // out
-	v = int(g.native.max_height)
+func (g *Geometry) MaxHeight() int32 {
+	var v int32 // out
+	v = int32(g.native.max_height)
 	return v
 }
 
 // BaseWidth: allowed window widths are base_width + width_inc * N where N is
 // any integer (-1 allowed with Window)
-func (g *Geometry) BaseWidth() int {
-	var v int // out
-	v = int(g.native.base_width)
+func (g *Geometry) BaseWidth() int32 {
+	var v int32 // out
+	v = int32(g.native.base_width)
 	return v
 }
 
 // BaseHeight: allowed window widths are base_height + height_inc * N where N is
 // any integer (-1 allowed with Window)
-func (g *Geometry) BaseHeight() int {
-	var v int // out
-	v = int(g.native.base_height)
+func (g *Geometry) BaseHeight() int32 {
+	var v int32 // out
+	v = int32(g.native.base_height)
 	return v
 }
 
 // WidthInc: width resize increment
-func (g *Geometry) WidthInc() int {
-	var v int // out
-	v = int(g.native.width_inc)
+func (g *Geometry) WidthInc() int32 {
+	var v int32 // out
+	v = int32(g.native.width_inc)
 	return v
 }
 
 // HeightInc: height resize increment
-func (g *Geometry) HeightInc() int {
-	var v int // out
-	v = int(g.native.height_inc)
+func (g *Geometry) HeightInc() int32 {
+	var v int32 // out
+	v = int32(g.native.height_inc)
 	return v
 }
 
@@ -4901,37 +4901,37 @@ func (w *WindowAttr) Title() string {
 }
 
 // EventMask: event mask (see gdk_window_set_events())
-func (w *WindowAttr) EventMask() int {
-	var v int // out
-	v = int(w.native.event_mask)
+func (w *WindowAttr) EventMask() int32 {
+	var v int32 // out
+	v = int32(w.native.event_mask)
 	return v
 }
 
 // X coordinate relative to parent window (see gdk_window_move())
-func (w *WindowAttr) X() int {
-	var v int // out
-	v = int(w.native.x)
+func (w *WindowAttr) X() int32 {
+	var v int32 // out
+	v = int32(w.native.x)
 	return v
 }
 
 // Y coordinate relative to parent window (see gdk_window_move())
-func (w *WindowAttr) Y() int {
-	var v int // out
-	v = int(w.native.y)
+func (w *WindowAttr) Y() int32 {
+	var v int32 // out
+	v = int32(w.native.y)
 	return v
 }
 
 // Width: width of window
-func (w *WindowAttr) Width() int {
-	var v int // out
-	v = int(w.native.width)
+func (w *WindowAttr) Width() int32 {
+	var v int32 // out
+	v = int32(w.native.width)
 	return v
 }
 
 // Height: height of window
-func (w *WindowAttr) Height() int {
-	var v int // out
-	v = int(w.native.height)
+func (w *WindowAttr) Height() int32 {
+	var v int32 // out
+	v = int32(w.native.height)
 	return v
 }
 

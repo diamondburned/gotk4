@@ -172,6 +172,10 @@ func init() {
 // CountPtr counts the number of pointers in the given type string. If the
 // string contains "[]", then the pointer is counted up to that.
 func CountPtr(typ string) int {
+	if typ == "" {
+		return 0
+	}
+
 	sliceIx := strings.Index(typ, "[]")
 	if sliceIx == -1 {
 		sliceIx = len(typ) - 1

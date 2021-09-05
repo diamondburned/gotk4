@@ -84,7 +84,9 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 		// Don't apply the headers naively. We only import the types, since
 		// we're not yet converting these.
 		for _, result := range g.cgen.Results {
-			g.header.ImportPubl(result.Resolved)
+			if result.NeedsNamespace {
+				g.header.ImportPubl(result.Resolved)
+			}
 		}
 
 		*m = append(*m, newMethod(&g.cgen))

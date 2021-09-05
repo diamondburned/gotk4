@@ -171,7 +171,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// is castable. This case should never be hit if ShouldFree is true,
 			// because we're still using Go memory.
 			value.p.Linef(
-				"copy(unsafe.Slice((*%s)(%s)), %s)",
+				"copy(unsafe.Slice((*%s)(%s), len(%[3]s)), %[3]s)",
 				inner.In.Type, value.OutName, value.InName,
 			)
 			return true

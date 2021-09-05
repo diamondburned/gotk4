@@ -185,10 +185,12 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return false
 	}
 
-	var ok bool
-	value.ValueType, ok = value.resolveTypeInner(conv, typ)
-	if !ok {
-		return false
+	if value.ValueType == (ValueType{}) {
+		var ok bool
+		value.ValueType, ok = value.resolveTypeInner(conv, typ)
+		if !ok {
+			return false
+		}
 	}
 
 	value.Inner = make([]ValueType, 0, len(typ.Types))
@@ -217,6 +219,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// The inner type inside a container must always be a pointer, so if
 		// it's not, then make it one.
 		cgoType = "*" + cgoType
+		value.log(logger.Unusual, "guessed container go type", value.GoType)
 	}
 
 	if value.ParameterIsOutput() {
@@ -367,6 +370,8 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 
 	f, ok := manualTypes[vType.Resolved.GType]
 	if ok && (f == nil || f()) {
+		// Hack so the caller doesn't add the import.
+		vType.NeedsNamespace = false
 		return vType, true
 	}
 

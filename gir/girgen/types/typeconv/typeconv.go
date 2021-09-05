@@ -246,6 +246,7 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 // inner value converted.
 func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueConverted {
 	var inner *gir.Type
+
 	switch {
 	case of.Array != nil:
 		inner = of.Array.Type
@@ -257,13 +258,23 @@ func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueCo
 		return nil
 	}
 
-	return conv.convertType(of, in, out, inner)
+	var existing *ValueType
+	if len(of.Inner) > 0 {
+		existing = &of.Inner[0]
+	}
+
+	return conv.convertTypeExisting(of, in, out, inner, existing)
 }
 
 // convertType converts a manually-crafted value with the given type.
 func (conv *Converter) convertType(
 	of *ValueConverted, in, out string, typ *gir.Type) *ValueConverted {
 
+	return conv.convertTypeExisting(of, in, out, typ, nil)
+}
+
+func (conv *Converter) convertTypeExisting(
+	of *ValueConverted, in, out string, typ *gir.Type, existing *ValueType) *ValueConverted {
 	// If the array's ownership is ONLY container, then we must not take over
 	// the inner values. Therefore, we only generate the appropriate code.
 	owner := of.TransferOwnership.TransferOwnership
@@ -285,6 +296,10 @@ func (conv *Converter) convertType(
 		ParameterAttrs: attrs,
 		InContainer:    of.Type != nil && len(of.Type.Types) > 0, // is container type
 	})
+
+	if existing != nil {
+		result.ValueType = *existing
+	}
 
 	// If the value is in a container, then its direction is always in. This is
 	// because container-inner types are converted in a callback.

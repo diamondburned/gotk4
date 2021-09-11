@@ -183,7 +183,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 }
 
 // Row retrieves the given row vector at index_ inside a matrix.
-func (m *Matrix) Row(index_ uint32) Vec4 {
+func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
 	var _arg2 C.graphene_vec4_t    // in
@@ -203,7 +203,7 @@ func (m *Matrix) Row(index_ uint32) Vec4 {
 }
 
 // Value retrieves the value at the given row and col index.
-func (m *Matrix) Value(row uint32, col uint32) float32 {
+func (m *Matrix) Value(row uint, col uint) float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
 	var _arg2 C.uint               // out

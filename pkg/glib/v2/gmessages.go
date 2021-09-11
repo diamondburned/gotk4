@@ -241,7 +241,7 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	return cret
 }
 
-func AssertWarning(logDomain string, file string, line int32, prettyFunction string, expression string) {
+func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
 	var _arg3 C.int   // out
@@ -318,7 +318,7 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-func LogRemoveHandler(logDomain string, handlerId uint32) {
+func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.guint  // out
 
@@ -627,7 +627,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 // following construct without needing any additional error handling:
 //
 //    is_journald = g_log_writer_is_journald (fileno (stderr));
-func LogWriterIsJournald(outputFd int32) bool {
+func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
@@ -732,7 +732,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 // LogWriterSupportsColor: check whether the given output_fd file descriptor
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
-func LogWriterSupportsColor(outputFd int32) bool {
+func LogWriterSupportsColor(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 

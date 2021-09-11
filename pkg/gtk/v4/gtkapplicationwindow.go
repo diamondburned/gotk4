@@ -195,7 +195,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 // ID returns the unique ID of the window.
 //
 //    If the window has not yet been added to a GtkApplication, returns 0.
-func (window *ApplicationWindow) ID() uint32 {
+func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
 
@@ -204,9 +204,9 @@ func (window *ApplicationWindow) ID() uint32 {
 	_cret = C.gtk_application_window_get_id(_arg0)
 	runtime.KeepAlive(window)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

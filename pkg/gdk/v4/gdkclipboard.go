@@ -155,7 +155,7 @@ func (clipboard *Clipboard) IsLocal() bool {
 //
 // The clipboard will choose the most suitable mime type from the given list to
 // fulfill the request, preferring the ones listed first.
-func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 **C.char              // out
@@ -362,7 +362,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 // For local clipboard contents that are available in the given GType, the value
 // will be copied directly. Otherwise, GDK will try to use
 // content_deserialize_async to convert the clipboard's data.
-func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out
@@ -479,7 +479,7 @@ func (clipboard *Clipboard) Set(value *externglib.Value) {
 //
 // This function is called automatically when a gtk.Application is shut down, so
 // you likely don't need to call it.
-func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

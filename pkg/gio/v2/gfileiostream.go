@@ -70,7 +70,7 @@ type FileIOStreamOverrider interface {
 	//
 	// For the synchronous version of this function, see
 	// g_file_io_stream_query_info().
-	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback)
+	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
@@ -196,7 +196,7 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 //
 // For the synchronous version of this function, see
 // g_file_io_stream_query_info().
-func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileIOStream      // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out

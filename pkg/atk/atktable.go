@@ -27,11 +27,11 @@ func init() {
 // yet, so the interface currently has no use.
 type TableOverrider interface {
 	// AddColumnSelection adds the specified column to the selection.
-	AddColumnSelection(column int32) bool
+	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified row to the selection.
-	AddRowSelection(row int32) bool
-	ColumnDeleted(column int32, numDeleted int32)
-	ColumnInserted(column int32, numInserted int32)
+	AddRowSelection(row int) bool
+	ColumnDeleted(column int, numDeleted int)
+	ColumnInserted(column int, numInserted int)
 	ColumnReordered()
 	// Caption gets the caption for the table.
 	Caption() *ObjectClass
@@ -39,80 +39,80 @@ type TableOverrider interface {
 	// index_.
 	//
 	// Deprecated: Since 2.12.
-	ColumnAtIndex(index_ int32) int32
+	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified column in
 	// the table
-	ColumnDescription(column int32) string
+	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
-	ColumnExtentAt(row int32, column int32) int32
+	ColumnExtentAt(row int, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
-	ColumnHeader(column int32) *ObjectClass
+	ColumnHeader(column int) *ObjectClass
 	// IndexAt gets a #gint representing the index at the specified row and
 	// column.
 	//
 	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
 	// accessible that represents the cell at (row, column).
-	IndexAt(row int32, column int32) int32
+	IndexAt(row int, column int) int
 	// NColumns gets the number of columns in the table.
-	NColumns() int32
+	NColumns() int
 	// NRows gets the number of rows in the table.
-	NRows() int32
+	NRows() int
 	// RowAtIndex gets a #gint representing the row at the specified index_.
 	//
 	// Deprecated: since 2.12.
-	RowAtIndex(index_ int32) int32
+	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
 	// table
-	RowDescription(row int32) string
+	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
-	RowExtentAt(row int32, column int32) int32
+	RowExtentAt(row int, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
-	RowHeader(row int32) *ObjectClass
+	RowHeader(row int) *ObjectClass
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers. This array should be freed
 	// by the caller.
-	SelectedColumns(selected **int32) int32
+	SelectedColumns(selected **int) int
 	// SelectedRows gets the selected rows of the table by initializing
 	// **selected with the selected row numbers. This array should be freed by
 	// the caller.
-	SelectedRows(selected **int32) int32
+	SelectedRows(selected **int) int
 	// Summary gets the summary description of the table.
 	Summary() *ObjectClass
 	// IsColumnSelected gets a boolean value indicating whether the specified
 	// column is selected
-	IsColumnSelected(column int32) bool
+	IsColumnSelected(column int) bool
 	// IsRowSelected gets a boolean value indicating whether the specified row
 	// is selected
-	IsRowSelected(row int32) bool
+	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified row and column is selected
-	IsSelected(row int32, column int32) bool
+	IsSelected(row int, column int) bool
 	ModelChanged()
 	// RefAt: get a reference to the table cell at row, column. This cell should
 	// implement the interface TableCell
-	RefAt(row int32, column int32) *ObjectClass
+	RefAt(row int, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified column to the selection.
-	RemoveColumnSelection(column int32) bool
+	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified row from the selection.
-	RemoveRowSelection(row int32) bool
-	RowDeleted(row int32, numDeleted int32)
-	RowInserted(row int32, numInserted int32)
+	RemoveRowSelection(row int) bool
+	RowDeleted(row int, numDeleted int)
+	RowInserted(row int, numInserted int)
 	RowReordered()
 	// SetCaption sets the caption for the table.
 	SetCaption(caption *ObjectClass)
 	// SetColumnDescription sets the description text for the specified column
 	// of the table.
-	SetColumnDescription(column int32, description string)
+	SetColumnDescription(column int, description string)
 	// SetColumnHeader sets the specified column header to header.
-	SetColumnHeader(column int32, header *ObjectClass)
+	SetColumnHeader(column int, header *ObjectClass)
 	// SetRowDescription sets the description text for the specified row of
 	// table.
-	SetRowDescription(row int32, description string)
+	SetRowDescription(row int, description string)
 	// SetRowHeader sets the specified row header to header.
-	SetRowHeader(row int32, header *ObjectClass)
+	SetRowHeader(row int, header *ObjectClass)
 	// SetSummary sets the summary description of the table.
 	SetSummary(accessible *ObjectClass)
 }
@@ -150,75 +150,75 @@ type Tabler interface {
 	externglib.Objector
 
 	// AddColumnSelection adds the specified column to the selection.
-	AddColumnSelection(column int32) bool
+	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified row to the selection.
-	AddRowSelection(row int32) bool
+	AddRowSelection(row int) bool
 	// Caption gets the caption for the table.
 	Caption() *ObjectClass
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// index_.
-	ColumnAtIndex(index_ int32) int32
+	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified column in
 	// the table
-	ColumnDescription(column int32) string
+	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
-	ColumnExtentAt(row int32, column int32) int32
+	ColumnExtentAt(row int, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
-	ColumnHeader(column int32) *ObjectClass
+	ColumnHeader(column int) *ObjectClass
 	// IndexAt gets a #gint representing the index at the specified row and
 	// column.
-	IndexAt(row int32, column int32) int32
+	IndexAt(row int, column int) int
 	// NColumns gets the number of columns in the table.
-	NColumns() int32
+	NColumns() int
 	// NRows gets the number of rows in the table.
-	NRows() int32
+	NRows() int
 	// RowAtIndex gets a #gint representing the row at the specified index_.
-	RowAtIndex(index_ int32) int32
+	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
 	// table
-	RowDescription(row int32) string
+	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
-	RowExtentAt(row int32, column int32) int32
+	RowExtentAt(row int, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
-	RowHeader(row int32) *ObjectClass
+	RowHeader(row int) *ObjectClass
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers.
-	SelectedColumns(selected **int32) int32
+	SelectedColumns(selected **int) int
 	// SelectedRows gets the selected rows of the table by initializing
 	// **selected with the selected row numbers.
-	SelectedRows(selected **int32) int32
+	SelectedRows(selected **int) int
 	// Summary gets the summary description of the table.
 	Summary() *ObjectClass
 	// IsColumnSelected gets a boolean value indicating whether the specified
 	// column is selected
-	IsColumnSelected(column int32) bool
+	IsColumnSelected(column int) bool
 	// IsRowSelected gets a boolean value indicating whether the specified row
 	// is selected
-	IsRowSelected(row int32) bool
+	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified row and column is selected
-	IsSelected(row int32, column int32) bool
+	IsSelected(row int, column int) bool
 	// RefAt: get a reference to the table cell at row, column.
-	RefAt(row int32, column int32) *ObjectClass
+	RefAt(row int, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified column to the selection.
-	RemoveColumnSelection(column int32) bool
+	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified row from the selection.
-	RemoveRowSelection(row int32) bool
+	RemoveRowSelection(row int) bool
 	// SetCaption sets the caption for the table.
 	SetCaption(caption *ObjectClass)
 	// SetColumnDescription sets the description text for the specified column
 	// of the table.
-	SetColumnDescription(column int32, description string)
+	SetColumnDescription(column int, description string)
 	// SetColumnHeader sets the specified column header to header.
-	SetColumnHeader(column int32, header *ObjectClass)
+	SetColumnHeader(column int, header *ObjectClass)
 	// SetRowDescription sets the description text for the specified row of
 	// table.
-	SetRowDescription(row int32, description string)
+	SetRowDescription(row int, description string)
 	// SetRowHeader sets the specified row header to header.
-	SetRowHeader(row int32, header *ObjectClass)
+	SetRowHeader(row int, header *ObjectClass)
 	// SetSummary sets the summary description of the table.
 	SetSummary(accessible *ObjectClass)
 }
@@ -238,7 +238,7 @@ func marshalTabler(p uintptr) (interface{}, error) {
 }
 
 // AddColumnSelection adds the specified column to the selection.
-func (table *Table) AddColumnSelection(column int32) bool {
+func (table *Table) AddColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -260,7 +260,7 @@ func (table *Table) AddColumnSelection(column int32) bool {
 }
 
 // AddRowSelection adds the specified row to the selection.
-func (table *Table) AddRowSelection(row int32) bool {
+func (table *Table) AddRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -303,7 +303,7 @@ func (table *Table) Caption() *ObjectClass {
 // ColumnAtIndex gets a #gint representing the column at the specified index_.
 //
 // Deprecated: Since 2.12.
-func (table *Table) ColumnAtIndex(index_ int32) int32 {
+func (table *Table) ColumnAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -315,16 +315,16 @@ func (table *Table) ColumnAtIndex(index_ int32) int32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // ColumnDescription gets the description text of the specified column in the
 // table
-func (table *Table) ColumnDescription(column int32) string {
+func (table *Table) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
@@ -345,7 +345,7 @@ func (table *Table) ColumnDescription(column int32) string {
 
 // ColumnExtentAt gets the number of columns occupied by the accessible object
 // at the specified row and column in the table.
-func (table *Table) ColumnExtentAt(row int32, column int32) int32 {
+func (table *Table) ColumnExtentAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -360,16 +360,16 @@ func (table *Table) ColumnExtentAt(row int32, column int32) int32 {
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // ColumnHeader gets the column header of a specified column in an accessible
 // table.
-func (table *Table) ColumnHeader(column int32) *ObjectClass {
+func (table *Table) ColumnHeader(column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -394,7 +394,7 @@ func (table *Table) ColumnHeader(column int32) *ObjectClass {
 //
 // Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
 // that represents the cell at (row, column).
-func (table *Table) IndexAt(row int32, column int32) int32 {
+func (table *Table) IndexAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -409,15 +409,15 @@ func (table *Table) IndexAt(row int32, column int32) int32 {
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NColumns gets the number of columns in the table.
-func (table *Table) NColumns() int32 {
+func (table *Table) NColumns() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
@@ -426,15 +426,15 @@ func (table *Table) NColumns() int32 {
 	_cret = C.atk_table_get_n_columns(_arg0)
 	runtime.KeepAlive(table)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NRows gets the number of rows in the table.
-func (table *Table) NRows() int32 {
+func (table *Table) NRows() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
@@ -443,9 +443,9 @@ func (table *Table) NRows() int32 {
 	_cret = C.atk_table_get_n_rows(_arg0)
 	runtime.KeepAlive(table)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -453,7 +453,7 @@ func (table *Table) NRows() int32 {
 // RowAtIndex gets a #gint representing the row at the specified index_.
 //
 // Deprecated: since 2.12.
-func (table *Table) RowAtIndex(index_ int32) int32 {
+func (table *Table) RowAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -465,15 +465,15 @@ func (table *Table) RowAtIndex(index_ int32) int32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // RowDescription gets the description text of the specified row in the table
-func (table *Table) RowDescription(row int32) string {
+func (table *Table) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
@@ -496,7 +496,7 @@ func (table *Table) RowDescription(row int32) string {
 
 // RowExtentAt gets the number of rows occupied by the accessible object at a
 // specified row and column in the table.
-func (table *Table) RowExtentAt(row int32, column int32) int32 {
+func (table *Table) RowExtentAt(row int, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -511,15 +511,15 @@ func (table *Table) RowExtentAt(row int32, column int32) int32 {
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // RowHeader gets the row header of a specified row in an accessible table.
-func (table *Table) RowHeader(row int32) *ObjectClass {
+func (table *Table) RowHeader(row int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -543,7 +543,7 @@ func (table *Table) RowHeader(row int32) *ObjectClass {
 // SelectedColumns gets the selected columns of the table by initializing
 // **selected with the selected column numbers. This array should be freed by
 // the caller.
-func (table *Table) SelectedColumns(selected **int32) int32 {
+func (table *Table) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
@@ -555,16 +555,16 @@ func (table *Table) SelectedColumns(selected **int32) int32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // SelectedRows gets the selected rows of the table by initializing **selected
 // with the selected row numbers. This array should be freed by the caller.
-func (table *Table) SelectedRows(selected **int32) int32 {
+func (table *Table) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
@@ -576,9 +576,9 @@ func (table *Table) SelectedRows(selected **int32) int32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -602,7 +602,7 @@ func (table *Table) Summary() *ObjectClass {
 
 // IsColumnSelected gets a boolean value indicating whether the specified column
 // is selected
-func (table *Table) IsColumnSelected(column int32) bool {
+func (table *Table) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -625,7 +625,7 @@ func (table *Table) IsColumnSelected(column int32) bool {
 
 // IsRowSelected gets a boolean value indicating whether the specified row is
 // selected
-func (table *Table) IsRowSelected(row int32) bool {
+func (table *Table) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -648,7 +648,7 @@ func (table *Table) IsRowSelected(row int32) bool {
 
 // IsSelected gets a boolean value indicating whether the accessible object at
 // the specified row and column is selected
-func (table *Table) IsSelected(row int32, column int32) bool {
+func (table *Table) IsSelected(row int, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -674,7 +674,7 @@ func (table *Table) IsSelected(row int32, column int32) bool {
 
 // RefAt: get a reference to the table cell at row, column. This cell should
 // implement the interface TableCell
-func (table *Table) RefAt(row int32, column int32) *ObjectClass {
+func (table *Table) RefAt(row int, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -697,7 +697,7 @@ func (table *Table) RefAt(row int32, column int32) *ObjectClass {
 }
 
 // RemoveColumnSelection adds the specified column to the selection.
-func (table *Table) RemoveColumnSelection(column int32) bool {
+func (table *Table) RemoveColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -719,7 +719,7 @@ func (table *Table) RemoveColumnSelection(column int32) bool {
 }
 
 // RemoveRowSelection removes the specified row from the selection.
-func (table *Table) RemoveRowSelection(row int32) bool {
+func (table *Table) RemoveRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
@@ -755,7 +755,7 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 
 // SetColumnDescription sets the description text for the specified column of
 // the table.
-func (table *Table) SetColumnDescription(column int32, description string) {
+func (table *Table) SetColumnDescription(column int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
@@ -772,7 +772,7 @@ func (table *Table) SetColumnDescription(column int32, description string) {
 }
 
 // SetColumnHeader sets the specified column header to header.
-func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
+func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
@@ -788,7 +788,7 @@ func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 }
 
 // SetRowDescription sets the description text for the specified row of table.
-func (table *Table) SetRowDescription(row int32, description string) {
+func (table *Table) SetRowDescription(row int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
@@ -805,7 +805,7 @@ func (table *Table) SetRowDescription(row int32, description string) {
 }
 
 // SetRowHeader sets the specified row header to header.
-func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
+func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out

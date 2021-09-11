@@ -145,7 +145,7 @@ type MultiFilterer interface {
 	Append(filter *Filter)
 	// Remove removes the filter at the given position from the list of filters
 	// used by self.
-	Remove(position uint32)
+	Remove(position uint)
 }
 
 var _ MultiFilterer = (*MultiFilter)(nil)
@@ -190,7 +190,7 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 // If position is larger than the number of filters, nothing happens and the
 // function returns.
-func (self *MultiFilter) Remove(position uint32) {
+func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 

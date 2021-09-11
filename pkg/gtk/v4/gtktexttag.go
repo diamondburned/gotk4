@@ -94,7 +94,7 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 }
 
 // Priority: get the tag priority.
-func (tag *TextTag) Priority() int32 {
+func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
 	var _cret C.int         // in
 
@@ -103,9 +103,9 @@ func (tag *TextTag) Priority() int32 {
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 	runtime.KeepAlive(tag)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -123,7 +123,7 @@ func (tag *TextTag) Priority() int32 {
 // which they were added to the table, or created with
 // gtk.TextBuffer.CreateTag(), which adds the tag to the buffer’s table
 // automatically.
-func (tag *TextTag) SetPriority(priority int32) {
+func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.int         // out
 

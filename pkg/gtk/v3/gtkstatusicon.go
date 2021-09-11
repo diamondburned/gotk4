@@ -35,10 +35,10 @@ type StatusIconOverrider interface {
 	Activate()
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
-	PopupMenu(button uint32, activateTime uint32)
-	QueryTooltip(x int32, y int32, keyboardMode bool, tooltip *Tooltip) bool
+	PopupMenu(button uint, activateTime uint32)
+	QueryTooltip(x int, y int, keyboardMode bool, tooltip *Tooltip) bool
 	ScrollEvent(event *gdk.EventScroll) bool
-	SizeChanged(size int32) bool
+	SizeChanged(size int) bool
 }
 
 // StatusIcon: “system tray” or notification area is normally used for transient
@@ -418,7 +418,7 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as the
 // representation of a notification is left to the platform.
-func (statusIcon *StatusIcon) Size() int32 {
+func (statusIcon *StatusIcon) Size() int {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret C.gint           // in
 
@@ -427,9 +427,9 @@ func (statusIcon *StatusIcon) Size() int32 {
 	_cret = C.gtk_status_icon_get_size(_arg0)
 	runtime.KeepAlive(statusIcon)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

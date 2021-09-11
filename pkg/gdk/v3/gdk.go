@@ -365,7 +365,7 @@ func (context *DragContext) SetDevice(device Devicer) {
 // SetHotspot sets the position of the drag window that will be kept under the
 // cursor hotspot. Initially, the hotspot is at the top left corner of the drag
 // window.
-func (context *DragContext) SetHotspot(hotX int32, hotY int32) {
+func (context *DragContext) SetHotspot(hotX int, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out

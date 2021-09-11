@@ -118,7 +118,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
-func (section *CSSSection) EndLine() uint32 {
+func (section *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -127,9 +127,9 @@ func (section *CSSSection) EndLine() uint32 {
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -140,7 +140,7 @@ func (section *CSSSection) EndLine() uint32 {
 // will for example happen in the GtkCssProvider::parsing-error signal. The end
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
-func (section *CSSSection) EndPosition() uint32 {
+func (section *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -149,9 +149,9 @@ func (section *CSSSection) EndPosition() uint32 {
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -225,7 +225,7 @@ func (section *CSSSection) SectionType() CSSSectionType {
 
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
-func (section *CSSSection) StartLine() uint32 {
+func (section *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -234,16 +234,16 @@ func (section *CSSSection) StartLine() uint32 {
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // StartPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_start_line().
-func (section *CSSSection) StartPosition() uint32 {
+func (section *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -252,9 +252,9 @@ func (section *CSSSection) StartPosition() uint32 {
 	_cret = C.gtk_css_section_get_start_position(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

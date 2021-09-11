@@ -33,7 +33,7 @@ import "C"
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int32, sourceType int32, bufferScale int32, x int32, y int32, width int32, height int32) {
+func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var _arg1 *C.cairo_t    // out
 	var _arg2 *C.GdkSurface // out
 	var _arg3 C.int         // out

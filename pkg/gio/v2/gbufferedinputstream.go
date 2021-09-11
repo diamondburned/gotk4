@@ -71,7 +71,7 @@ type BufferedInputStreamOverrider interface {
 	//
 	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
-	FillAsync(ctx context.Context, count int, ioPriority int32, callback AsyncReadyCallback)
+	FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
 }
@@ -215,7 +215,7 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //
 // If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
-func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg3 *C.GCancellable         // out
 	var _arg1 C.gssize                // out
@@ -365,7 +365,7 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 // be returned, without an error.
 //
 // On error -1 is returned and error is set accordingly.
-func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) {
+func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
@@ -382,10 +382,10 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

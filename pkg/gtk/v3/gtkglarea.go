@@ -32,7 +32,7 @@ func init() {
 // yet, so the interface currently has no use.
 type GLAreaOverrider interface {
 	Render(context gdk.GLContexter) bool
-	Resize(width int32, height int32)
+	Resize(width int, height int)
 }
 
 // GLArea is a widget that allows drawing with OpenGL.
@@ -259,7 +259,7 @@ func (area *GLArea) HasStencilBuffer() bool {
 
 // RequiredVersion retrieves the required version of OpenGL set using
 // gtk_gl_area_set_required_version().
-func (area *GLArea) RequiredVersion() (major int32, minor int32) {
+func (area *GLArea) RequiredVersion() (major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -269,11 +269,11 @@ func (area *GLArea) RequiredVersion() (major int32, minor int32) {
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(area)
 
-	var _major int32 // out
-	var _minor int32 // out
+	var _major int // out
+	var _minor int // out
 
-	_major = int32(_arg1)
-	_minor = int32(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -423,7 +423,7 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 // creating the context for the widget.
 //
 // This function must be called before the area has been realized.
-func (area *GLArea) SetRequiredVersion(major int32, minor int32) {
+func (area *GLArea) SetRequiredVersion(major int, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

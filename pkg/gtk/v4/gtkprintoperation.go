@@ -309,11 +309,11 @@ type PrintOperationOverrider interface {
 	BeginPrint(context *PrintContext)
 	CustomWidgetApply(widget Widgetter)
 	Done(result PrintOperationResult)
-	DrawPage(context *PrintContext, pageNr int32)
+	DrawPage(context *PrintContext, pageNr int)
 	EndPrint(context *PrintContext)
 	Paginate(context *PrintContext) bool
 	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
-	RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
+	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	StatusChanged()
 	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 }
@@ -530,7 +530,7 @@ func (op *PrintOperation) HasSelection() bool {
 // GTK_PRINT_STATUS_GENERATING_DATA.
 //
 // This is typically used to track the progress of print operation.
-func (op *PrintOperation) NPagesToPrint() int32 {
+func (op *PrintOperation) NPagesToPrint() int {
 	var _arg0 *C.GtkPrintOperation // out
 	var _cret C.int                // in
 
@@ -539,9 +539,9 @@ func (op *PrintOperation) NPagesToPrint() int32 {
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 	runtime.KeepAlive(op)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -762,7 +762,7 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 // select to print only the current page.
 //
 // Note that this only makes sense for pre-paginated documents.
-func (op *PrintOperation) SetCurrentPage(currentPage int32) {
+func (op *PrintOperation) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
 
@@ -912,7 +912,7 @@ func (op *PrintOperation) SetJobName(jobName string) {
 // gtk.PrintOperation::request-page-setup and gtk.PrintOperation::draw-page
 // signals are 0-based, i.e. if the user chooses to print all pages, the last
 // ::draw-page signal will be for page n_pages - 1.
-func (op *PrintOperation) SetNPages(nPages int32) {
+func (op *PrintOperation) SetNPages(nPages int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
 

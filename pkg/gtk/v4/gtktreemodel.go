@@ -129,7 +129,7 @@ func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 // yet, so the interface currently has no use.
 type TreeModelOverrider interface {
 	// ColumnType returns the type of the column.
-	ColumnType(index_ int32) externglib.Type
+	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
 	//
 	// The flags are a bitwise combination of TreeModelFlags. The flags
@@ -139,7 +139,7 @@ type TreeModelOverrider interface {
 	// exist, iter is set to an invalid iterator and FALSE is returned.
 	Iter(path *TreePath) (TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
-	NColumns() int32
+	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	//
 	// This path should be freed with gtk_tree_path_free().
@@ -148,7 +148,7 @@ type TreeModelOverrider interface {
 	//
 	// When done with value, g_value_unset() needs to be called to free any
 	// allocated memory.
-	Value(iter *TreeIter, column int32) externglib.Value
+	Value(iter *TreeIter, column int) externglib.Value
 	// IterChildren sets iter to point to the first child of parent.
 	//
 	// If parent has no children, FALSE is returned and iter is set to be
@@ -164,7 +164,7 @@ type TreeModelOverrider interface {
 	//
 	// As a special case, if iter is NULL, then the number of toplevel nodes is
 	// returned.
-	IterNChildren(iter *TreeIter) int32
+	IterNChildren(iter *TreeIter) int
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	//
@@ -177,7 +177,7 @@ type TreeModelOverrider interface {
 	// set to an invalid iterator and FALSE is returned. parent will remain a
 	// valid node after this function has been called. As a special case, if
 	// parent is NULL, then the n-th root node is set.
-	IterNthChild(parent *TreeIter, n int32) (TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	//
 	// If child is at the toplevel, and doesn’t have a parent, then iter is set
@@ -435,7 +435,7 @@ type TreeModeller interface {
 	// Foreach calls func on each node in model in a depth-first fashion.
 	Foreach(fn TreeModelForeachFunc)
 	// ColumnType returns the type of the column.
-	ColumnType(index_ int32) externglib.Type
+	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
 	Flags() TreeModelFlags
 	// Iter sets iter to a valid iterator pointing to path.
@@ -447,24 +447,24 @@ type TreeModeller interface {
 	// it exists.
 	IterFromString(pathString string) (TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
-	NColumns() int32
+	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
 	StringFromIter(iter *TreeIter) string
 	// Value initializes and sets value to that at column.
-	Value(iter *TreeIter, column int32) externglib.Value
+	Value(iter *TreeIter, column int) externglib.Value
 	// IterChildren sets iter to point to the first child of parent.
 	IterChildren(parent *TreeIter) (TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
-	IterNChildren(iter *TreeIter) int32
+	IterNChildren(iter *TreeIter) int
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	IterNext(iter *TreeIter) bool
 	// IterNthChild sets iter to be the child of parent, using the given index.
-	IterNthChild(parent *TreeIter, n int32) (TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	IterParent(child *TreeIter) (TreeIter, bool)
 	// IterPrevious sets iter to point to the previous node at the current
@@ -482,7 +482,7 @@ type TreeModeller interface {
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
 	// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
-	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32)
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 }
@@ -544,7 +544,7 @@ func (model *TreeModel) Foreach(fn TreeModelForeachFunc) {
 }
 
 // ColumnType returns the type of the column.
-func (treeModel *TreeModel) ColumnType(index_ int32) externglib.Type {
+func (treeModel *TreeModel) ColumnType(index_ int) externglib.Type {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.int           // out
 	var _cret C.GType         // in
@@ -660,7 +660,7 @@ func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
 }
 
 // NColumns returns the number of columns supported by tree_model.
-func (treeModel *TreeModel) NColumns() int32 {
+func (treeModel *TreeModel) NColumns() int {
 	var _arg0 *C.GtkTreeModel // out
 	var _cret C.int           // in
 
@@ -669,9 +669,9 @@ func (treeModel *TreeModel) NColumns() int32 {
 	_cret = C.gtk_tree_model_get_n_columns(_arg0)
 	runtime.KeepAlive(treeModel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -734,7 +734,7 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 //
 // When done with value, g_value_unset() needs to be called to free any
 // allocated memory.
-func (treeModel *TreeModel) Value(iter *TreeIter, column int32) externglib.Value {
+func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -815,7 +815,7 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 //
 // As a special case, if iter is NULL, then the number of toplevel nodes is
 // returned.
-func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
+func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.int           // in
@@ -829,9 +829,9 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -866,7 +866,7 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 // to an invalid iterator and FALSE is returned. parent will remain a valid node
 // after this function has been called. As a special case, if parent is NULL,
 // then the n-th root node is set.
-func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (TreeIter, bool) {
+func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -1052,7 +1052,7 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 // RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
 //
 // This should be called by models when their rows have been reordered.
-func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32) {
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -1065,8 +1065,13 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 	_arg4 = (C.int)(len(newOrder))
-	if len(newOrder) > 0 {
-		_arg3 = (*C.int)(unsafe.Pointer(&newOrder[0]))
+	_arg3 = (*C.int)(C.malloc(C.ulong(len(newOrder)) * C.ulong(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.int)(_arg3), len(newOrder))
+		for i := range newOrder {
+			out[i] = C.int(newOrder[i])
+		}
 	}
 
 	C.gtk_tree_model_rows_reordered_with_length(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1115,9 +1120,9 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 }
 
 // Stamp: unique stamp to catch invalid iterators
-func (t *TreeIter) Stamp() int32 {
-	var v int32 // out
-	v = int32(t.native.stamp)
+func (t *TreeIter) Stamp() int {
+	var v int // out
+	v = int(t.native.stamp)
 	return v
 }
 
@@ -1225,14 +1230,19 @@ func NewTreePathFirst() *TreePath {
 }
 
 // NewTreePathFromIndices constructs a struct TreePath.
-func NewTreePathFromIndices(indices []int32) *TreePath {
+func NewTreePathFromIndices(indices []int) *TreePath {
 	var _arg1 *C.int // out
 	var _arg2 C.gsize
 	var _cret *C.GtkTreePath // in
 
 	_arg2 = (C.gsize)(len(indices))
-	if len(indices) > 0 {
-		_arg1 = (*C.int)(unsafe.Pointer(&indices[0]))
+	_arg1 = (*C.int)(C.malloc(C.ulong(len(indices)) * C.ulong(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.int)(_arg1), len(indices))
+		for i := range indices {
+			out[i] = C.int(indices[i])
+		}
 	}
 
 	_cret = C.gtk_tree_path_new_from_indicesv(_arg1, _arg2)
@@ -1280,7 +1290,7 @@ func NewTreePathFromString(path string) *TreePath {
 // AppendIndex appends a new index to a path.
 //
 // As a result, the depth of the path is increased.
-func (path *TreePath) AppendIndex(index_ int32) {
+func (path *TreePath) AppendIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.int          // out
 
@@ -1296,7 +1306,7 @@ func (path *TreePath) AppendIndex(index_ int32) {
 //
 // If a appears before b in a tree, then -1 is returned. If b appears before a,
 // then 1 is returned. If the two nodes are equal, then 0 is returned.
-func (a *TreePath) Compare(b *TreePath) int32 {
+func (a *TreePath) Compare(b *TreePath) int {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.int          // in
@@ -1308,9 +1318,9 @@ func (a *TreePath) Compare(b *TreePath) int32 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1349,7 +1359,7 @@ func (path *TreePath) Down() {
 }
 
 // Depth returns the current depth of path.
-func (path *TreePath) Depth() int32 {
+func (path *TreePath) Depth() int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret C.int          // in
 
@@ -1358,9 +1368,9 @@ func (path *TreePath) Depth() int32 {
 	_cret = C.gtk_tree_path_get_depth(_arg0)
 	runtime.KeepAlive(path)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1369,7 +1379,7 @@ func (path *TreePath) Depth() int32 {
 //
 // This is an array of integers, each representing a node in a tree. It also
 // returns the number of elements in the array. The array should not be freed.
-func (path *TreePath) Indices() []int32 {
+func (path *TreePath) Indices() []int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret *C.int         // in
 	var _arg1 C.int          // in
@@ -1379,10 +1389,15 @@ func (path *TreePath) Indices() []int32 {
 	_cret = C.gtk_tree_path_get_indices_with_depth(_arg0, &_arg1)
 	runtime.KeepAlive(path)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
-	_gints = make([]int32, _arg1)
-	copy(_gints, unsafe.Slice((*int32)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_gints = make([]int, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = int(src[i])
+		}
+	}
 
 	return _gints
 }
@@ -1444,7 +1459,7 @@ func (path *TreePath) Next() {
 // PrependIndex prepends a new index to a path.
 //
 // As a result, the depth of the path is increased.
-func (path *TreePath) PrependIndex(index_ int32) {
+func (path *TreePath) PrependIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.int          // out
 

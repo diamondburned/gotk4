@@ -39,7 +39,7 @@ func (queue *Queue) Clear() {
 }
 
 // Length returns the number of items in queue.
-func (queue *Queue) Length() uint32 {
+func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
 
@@ -48,15 +48,15 @@ func (queue *Queue) Length() uint32 {
 	_cret = C.g_queue_get_length(_arg0)
 	runtime.KeepAlive(queue)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // Index returns the position of the first element in queue which contains data.
-func (queue *Queue) Index(data cgo.Handle) int32 {
+func (queue *Queue) Index(data cgo.Handle) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -68,9 +68,9 @@ func (queue *Queue) Index(data cgo.Handle) int32 {
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -124,7 +124,7 @@ func (queue *Queue) PeekHead() cgo.Handle {
 }
 
 // PeekNth returns the n'th element of queue.
-func (queue *Queue) PeekNth(n uint32) cgo.Handle {
+func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -178,7 +178,7 @@ func (queue *Queue) PopHead() cgo.Handle {
 }
 
 // PopNth removes the n'th element of queue and returns its data.
-func (queue *Queue) PopNth(n uint32) cgo.Handle {
+func (queue *Queue) PopNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -228,7 +228,7 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 }
 
 // PushNth inserts a new element into queue at the given position.
-func (queue *Queue) PushNth(data cgo.Handle, n int32) {
+func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gint     // out
@@ -279,7 +279,7 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 }
 
 // RemoveAll: remove all elements whose data equals data from queue.
-func (queue *Queue) RemoveAll(data cgo.Handle) uint32 {
+func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -291,9 +291,9 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint32 {
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

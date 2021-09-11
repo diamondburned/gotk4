@@ -172,7 +172,7 @@ func (n *Node) Children() *Node {
 
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
-func (node *Node) ChildIndex(data cgo.Handle) int32 {
+func (node *Node) ChildIndex(data cgo.Handle) int {
 	var _arg0 *C.GNode   // out
 	var _arg1 C.gpointer // out
 	var _cret C.gint     // in
@@ -184,9 +184,9 @@ func (node *Node) ChildIndex(data cgo.Handle) int32 {
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(data)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -194,7 +194,7 @@ func (node *Node) ChildIndex(data cgo.Handle) int32 {
 // ChildPosition gets the position of a #GNode with respect to its siblings.
 // child must be a child of node. The first child is numbered 0, the second 1,
 // and so on.
-func (node *Node) ChildPosition(child *Node) int32 {
+func (node *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
 	var _cret C.gint   // in
@@ -206,9 +206,9 @@ func (node *Node) ChildPosition(child *Node) int32 {
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -217,7 +217,7 @@ func (node *Node) ChildPosition(child *Node) int32 {
 //
 // If node is NULL the depth is 0. The root node has a depth of 1. For the
 // children of the root node the depth is 2. And so on.
-func (node *Node) Depth() uint32 {
+func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -226,9 +226,9 @@ func (node *Node) Depth() uint32 {
 	_cret = C.g_node_depth(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -273,7 +273,7 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 //
 // If root is NULL, 0 is returned. If root has no children, 1 is returned. If
 // root has children, 2 is returned. And so on.
-func (root *Node) MaxHeight() uint32 {
+func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -282,15 +282,15 @@ func (root *Node) MaxHeight() uint32 {
 	_cret = C.g_node_max_height(_arg0)
 	runtime.KeepAlive(root)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // NChildren gets the number of children of a #GNode.
-func (node *Node) NChildren() uint32 {
+func (node *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -299,15 +299,15 @@ func (node *Node) NChildren() uint32 {
 	_cret = C.g_node_n_children(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // NNodes gets the number of nodes in a tree.
-func (root *Node) NNodes(flags TraverseFlags) uint32 {
+func (root *Node) NNodes(flags TraverseFlags) uint {
 	var _arg0 *C.GNode         // out
 	var _arg1 C.GTraverseFlags // out
 	var _cret C.guint          // in
@@ -319,9 +319,9 @@ func (root *Node) NNodes(flags TraverseFlags) uint32 {
 	runtime.KeepAlive(root)
 	runtime.KeepAlive(flags)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

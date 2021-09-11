@@ -16,7 +16,7 @@ import "C"
 // category instead of always using LC_MESSAGES. See g_dgettext() for more
 // information about how this functions differs from calling dcgettext()
 // directly.
-func Dcgettext(domain string, msgid string, category int32) string {
+func Dcgettext(domain string, msgid string, category int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gint   // out

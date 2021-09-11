@@ -463,7 +463,7 @@ func (typ *VariantType) StringLength() uint {
 //
 // The argument type of type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
-func (typ *VariantType) Hash() uint32 {
+func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -472,9 +472,9 @@ func (typ *VariantType) Hash() uint32 {
 	_cret = C.g_variant_type_hash(_arg0)
 	runtime.KeepAlive(typ)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

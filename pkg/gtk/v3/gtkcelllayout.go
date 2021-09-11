@@ -69,7 +69,7 @@ type CellLayoutOverrider interface {
 	// attribute is the parameter on cell to be set from the value. So for
 	// example if column 2 of the model contains strings, you could have the
 	// “text” attribute of a CellRendererText get its values from column 2.
-	AddAttribute(cell CellRendererer, attribute string, column int32)
+	AddAttribute(cell CellRendererer, attribute string, column int)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -97,7 +97,7 @@ type CellLayoutOverrider interface {
 	//
 	// Note that cell has already to be packed into cell_layout for this to
 	// function properly.
-	Reorder(cell CellRendererer, position int32)
+	Reorder(cell CellRendererer, position int)
 	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
 	//
 	// This function is used instead of the standard attributes mapping for
@@ -203,7 +203,7 @@ type CellLayouter interface {
 	externglib.Objector
 
 	// AddAttribute adds an attribute mapping to the list in cell_layout.
-	AddAttribute(cell CellRendererer, attribute string, column int32)
+	AddAttribute(cell CellRendererer, attribute string, column int)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -220,7 +220,7 @@ type CellLayouter interface {
 	// PackStart packs the cell into the beginning of cell_layout.
 	PackStart(cell CellRendererer, expand bool)
 	// Reorder re-inserts cell at position.
-	Reorder(cell CellRendererer, position int32)
+	Reorder(cell CellRendererer, position int)
 	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
 	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
@@ -245,7 +245,7 @@ func marshalCellLayouter(p uintptr) (interface{}, error) {
 // is the parameter on cell to be set from the value. So for example if column 2
 // of the model contains strings, you could have the “text” attribute of a
 // CellRendererText get its values from column 2.
-func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int32) {
+func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
@@ -380,7 +380,7 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //
 // Note that cell has already to be packed into cell_layout for this to function
 // properly.
-func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
+func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gint             // out

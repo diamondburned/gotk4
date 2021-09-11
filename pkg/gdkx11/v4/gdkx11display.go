@@ -64,7 +64,7 @@ func marshalX11Displayer(p uintptr) (interface{}, error) {
 //
 // If you don’t need to use the return value,
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
-func (display *X11Display) ErrorTrapPop() int32 {
+func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
@@ -73,9 +73,9 @@ func (display *X11Display) ErrorTrapPop() int32 {
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -127,7 +127,7 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 }
 
 // GLXVersion retrieves the version of the GLX implementation.
-func (display *X11Display) GLXVersion() (major int32, minor int32, ok bool) {
+func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // in
 	var _arg2 C.int         // in
@@ -138,12 +138,12 @@ func (display *X11Display) GLXVersion() (major int32, minor int32, ok bool) {
 	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
 
-	var _major int32 // out
-	var _minor int32 // out
-	var _ok bool     // out
+	var _major int // out
+	var _minor int // out
+	var _ok bool   // out
 
-	_major = int32(_arg1)
-	_minor = int32(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -255,7 +255,7 @@ func (display *X11Display) Grab() {
 // cursors constructed with gdk_cursor_new_from_texture() will have to be
 // handled by the application (GTK applications can learn about cursor theme
 // changes by listening for change notification for the corresponding Setting).
-func (display *X11Display) SetCursorTheme(theme string, size int32) {
+func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -306,7 +306,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
-func (display *X11Display) SetSurfaceScale(scale int32) {
+func (display *X11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 
@@ -320,7 +320,7 @@ func (display *X11Display) SetSurfaceScale(scale int32) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
-func (display *X11Display) StringToCompoundText(str string) (encoding string, format int32, ctext []byte, gint int32) {
+func (display *X11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
@@ -338,16 +338,16 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	runtime.KeepAlive(str)
 
 	var _encoding string // out
-	var _format int32    // out
+	var _format int      // out
 	var _ctext []byte    // out
-	var _gint int32      // out
+	var _gint int        // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int32(_arg3)
+	_format = int(_arg3)
 	defer C.free(unsafe.Pointer(_arg4))
 	_ctext = make([]byte, _arg5)
 	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _encoding, _format, _ctext, _gint
 }
@@ -363,7 +363,7 @@ func (display *X11Display) Ungrab() {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
-func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte, bool) {
+func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
@@ -381,12 +381,12 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte
 	runtime.KeepAlive(str)
 
 	var _encoding string // out
-	var _format int32    // out
+	var _format int      // out
 	var _ctext []byte    // out
 	var _ok bool         // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int32(_arg3)
+	_format = int(_arg3)
 	defer C.free(unsafe.Pointer(_arg4))
 	_ctext = make([]byte, _arg5)
 	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))

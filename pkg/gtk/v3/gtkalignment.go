@@ -104,7 +104,7 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 // gtk_alignment_set_padding ().
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (alignment *Alignment) Padding() (paddingTop uint32, paddingBottom uint32, paddingLeft uint32, paddingRight uint32) {
+func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // in
 	var _arg2 C.guint         // in
@@ -116,15 +116,15 @@ func (alignment *Alignment) Padding() (paddingTop uint32, paddingBottom uint32, 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(alignment)
 
-	var _paddingTop uint32    // out
-	var _paddingBottom uint32 // out
-	var _paddingLeft uint32   // out
-	var _paddingRight uint32  // out
+	var _paddingTop uint    // out
+	var _paddingBottom uint // out
+	var _paddingLeft uint   // out
+	var _paddingRight uint  // out
 
-	_paddingTop = uint32(_arg1)
-	_paddingBottom = uint32(_arg2)
-	_paddingLeft = uint32(_arg3)
-	_paddingRight = uint32(_arg4)
+	_paddingTop = uint(_arg1)
+	_paddingBottom = uint(_arg2)
+	_paddingLeft = uint(_arg3)
+	_paddingRight = uint(_arg4)
 
 	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
 }
@@ -158,7 +158,7 @@ func (alignment *Alignment) Set(xalign float32, yalign float32, xscale float32, 
 // to indent the child widget towards the right by adding padding on the left.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (alignment *Alignment) SetPadding(paddingTop uint32, paddingBottom uint32, paddingLeft uint32, paddingRight uint32) {
+func (alignment *Alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out

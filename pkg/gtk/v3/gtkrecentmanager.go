@@ -360,7 +360,7 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 }
 
 // PurgeItems purges every item from the recently used resources list.
-func (manager *RecentManager) PurgeItems() (int32, error) {
+func (manager *RecentManager) PurgeItems() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.gint              // in
 	var _cerr *C.GError           // in
@@ -370,10 +370,10 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 	runtime.KeepAlive(manager)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -592,7 +592,7 @@ func (info *RecentInfo) Added() int32 {
 
 // Age gets the number of days elapsed since the last update of the resource
 // pointed by info.
-func (info *RecentInfo) Age() int32 {
+func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.gint           // in
 
@@ -601,9 +601,9 @@ func (info *RecentInfo) Age() int32 {
 	_cret = C.gtk_recent_info_get_age(_arg0)
 	runtime.KeepAlive(info)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -613,7 +613,7 @@ func (info *RecentInfo) Age() int32 {
 //
 // If the command line contains any escape characters defined inside the storage
 // specification, they will be expanded.
-func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, bool) {
+func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // in
@@ -630,12 +630,12 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, 
 	runtime.KeepAlive(appName)
 
 	var _appExec string // out
-	var _count uint32   // out
+	var _count uint     // out
 	var _time_ int32    // out
 	var _ok bool        // out
 
 	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_count = uint32(_arg3)
+	_count = uint(_arg3)
 	_time_ = int32(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -754,7 +754,7 @@ func (info *RecentInfo) Groups() []string {
 }
 
 // Icon retrieves the icon of size size associated to the resource MIME type.
-func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
+func (info *RecentInfo) Icon(size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 C.gint           // out
 	var _cret *C.GdkPixbuf     // in

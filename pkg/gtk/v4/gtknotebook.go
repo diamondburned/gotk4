@@ -185,7 +185,7 @@ func NewNotebook() *Notebook {
 }
 
 // AppendPage appends a page to notebook.
-func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int32 {
+func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -202,16 +202,16 @@ func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int32 
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(tabLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // AppendPageMenu appends a page to notebook, specifying the widget to use as
 // the label in the popup menu.
-func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int32 {
+func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -233,9 +233,9 @@ func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, me
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(menuLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -282,7 +282,7 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 }
 
 // CurrentPage returns the page number of the current page.
-func (notebook *Notebook) CurrentPage() int32 {
+func (notebook *Notebook) CurrentPage() int {
 	var _arg0 *C.GtkNotebook // out
 	var _cret C.int          // in
 
@@ -291,9 +291,9 @@ func (notebook *Notebook) CurrentPage() int32 {
 	_cret = C.gtk_notebook_get_current_page(_arg0)
 	runtime.KeepAlive(notebook)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -363,7 +363,7 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 }
 
 // NPages gets the number of pages in a notebook.
-func (notebook *Notebook) NPages() int32 {
+func (notebook *Notebook) NPages() int {
 	var _arg0 *C.GtkNotebook // out
 	var _cret C.int          // in
 
@@ -372,15 +372,15 @@ func (notebook *Notebook) NPages() int32 {
 	_cret = C.gtk_notebook_get_n_pages(_arg0)
 	runtime.KeepAlive(notebook)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NthPage returns the child widget contained in page number page_num.
-func (notebook *Notebook) NthPage(pageNum int32) Widgetter {
+func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 	var _cret *C.GtkWidget   // in
@@ -609,7 +609,7 @@ func (notebook *Notebook) TabReorderable(child Widgetter) bool {
 }
 
 // InsertPage: insert a page into notebook at the given position.
-func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, position int32) int32 {
+func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -629,16 +629,16 @@ func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, positi
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // InsertPageMenu: insert a page into notebook at the given position, specifying
 // the widget to use as the label in the popup menu.
-func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter, position int32) int32 {
+func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -663,9 +663,9 @@ func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, me
 	runtime.KeepAlive(menuLabel)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -683,7 +683,7 @@ func (notebook *Notebook) NextPage() {
 }
 
 // PageNum finds the index of the page which contains the given child widget.
-func (notebook *Notebook) PageNum(child Widgetter) int32 {
+func (notebook *Notebook) PageNum(child Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret C.int          // in
@@ -695,9 +695,9 @@ func (notebook *Notebook) PageNum(child Widgetter) int32 {
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -726,7 +726,7 @@ func (notebook *Notebook) PopupEnable() {
 }
 
 // PrependPage prepends a page to notebook.
-func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int32 {
+func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -743,16 +743,16 @@ func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int32
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(tabLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // PrependPageMenu prepends a page to notebook, specifying the widget to use as
 // the label in the popup menu.
-func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int32 {
+func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -774,9 +774,9 @@ func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, m
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(menuLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -794,7 +794,7 @@ func (notebook *Notebook) PrevPage() {
 }
 
 // RemovePage removes a page from the notebook given its index in the notebook.
-func (notebook *Notebook) RemovePage(pageNum int32) {
+func (notebook *Notebook) RemovePage(pageNum int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 
@@ -811,7 +811,7 @@ func (notebook *Notebook) RemovePage(pageNum int32) {
 //
 // If position is greater than or equal to the number of children in the list or
 // negative, child will be moved to the end of the list.
-func (notebook *Notebook) ReorderChild(child Widgetter, position int32) {
+func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -851,7 +851,7 @@ func (notebook *Notebook) SetActionWidget(widget Widgetter, packType PackType) {
 // Note that due to historical reasons, GtkNotebook refuses to switch to a page
 // unless the child widget is visible. Therefore, it is recommended to show
 // child widgets before adding them to a notebook.
-func (notebook *Notebook) SetCurrentPage(pageNum int32) {
+func (notebook *Notebook) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 

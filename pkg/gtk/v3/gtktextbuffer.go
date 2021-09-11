@@ -113,7 +113,7 @@ type TextBufferOverrider interface {
 	// pixbufs, but the “text” variants do not. e.g. see
 	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
 	InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
-	InsertText(pos *TextIter, newText string, newTextLength int32)
+	InsertText(pos *TextIter, newText string, newTextLength int)
 	MarkDeleted(mark *TextMark)
 	MarkSet(location *TextIter, mark *TextMark)
 	ModifiedChanged()
@@ -563,7 +563,7 @@ func (buffer *TextBuffer) Bounds() (start TextIter, end TextIter) {
 // and bytes are not the same, you can’t e.g. expect the contents of the buffer
 // in string form to be this many bytes long. The character count is cached, so
 // this function is very fast.
-func (buffer *TextBuffer) CharCount() int32 {
+func (buffer *TextBuffer) CharCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
@@ -572,9 +572,9 @@ func (buffer *TextBuffer) CharCount() int32 {
 	_cret = C.gtk_text_buffer_get_char_count(_arg0)
 	runtime.KeepAlive(buffer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -689,7 +689,7 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) TextIter {
 
 // IterAtLine initializes iter to the start of the given line. If line_number is
 // greater than the number of lines in the buffer, the end iterator is returned.
-func (buffer *TextBuffer) IterAtLine(lineNumber int32) TextIter {
+func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -717,7 +717,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int32) TextIter {
 // Since the 3.20 version, if line_number is greater than the number of lines in
 // the buffer, the end iterator is returned. And if byte_index is off the end of
 // the line, the iterator at the end of the line is returned.
-func (buffer *TextBuffer) IterAtLineIndex(lineNumber int32, byteIndex int32) TextIter {
+func (buffer *TextBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -748,7 +748,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber int32, byteIndex int32) Tex
 // Since the 3.20 version, if line_number is greater than the number of lines in
 // the buffer, the end iterator is returned. And if char_offset is off the end
 // of the line, the iterator at the end of the line is returned.
-func (buffer *TextBuffer) IterAtLineOffset(lineNumber int32, charOffset int32) TextIter {
+func (buffer *TextBuffer) IterAtLineOffset(lineNumber int, charOffset int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -794,7 +794,7 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) TextIter {
 // of the entire buffer. If char_offset is -1 or greater than the number of
 // characters in the buffer, iter is initialized to the end iterator, the
 // iterator one past the last valid character in the buffer.
-func (buffer *TextBuffer) IterAtOffset(charOffset int32) TextIter {
+func (buffer *TextBuffer) IterAtOffset(charOffset int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -815,7 +815,7 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int32) TextIter {
 
 // LineCount obtains the number of lines in the buffer. This value is cached, so
 // the function is very fast.
-func (buffer *TextBuffer) LineCount() int32 {
+func (buffer *TextBuffer) LineCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
@@ -824,9 +824,9 @@ func (buffer *TextBuffer) LineCount() int32 {
 	_cret = C.gtk_text_buffer_get_line_count(_arg0)
 	runtime.KeepAlive(buffer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1072,7 +1072,7 @@ func (buffer *TextBuffer) Text(start *TextIter, end *TextIter, includeHiddenChar
 // is invalidated when insertion occurs (because the buffer contents change),
 // but the default signal handler revalidates it to point to the end of the
 // inserted text.
-func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int32) {
+func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.gchar         // out
@@ -1093,7 +1093,7 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int32) {
 
 // InsertAtCursor: simply calls gtk_text_buffer_insert(), using the current
 // cursor position as the insertion point.
-func (buffer *TextBuffer) InsertAtCursor(text string, len int32) {
+func (buffer *TextBuffer) InsertAtCursor(text string, len int) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
@@ -1142,7 +1142,7 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 // default_editable indicates the editability of text that doesn't have a tag
 // affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
-func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int32, defaultEditable bool) bool {
+func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.gchar         // out
@@ -1181,7 +1181,7 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int
 // default_editable indicates the editability of text that doesn't have a tag
 // affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
-func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int32, defaultEditable bool) bool {
+func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
@@ -1216,7 +1216,7 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int32, defa
 // the TextBuffer::insert-text signal, possibly multiple times; insertion
 // actually occurs in the default handler for the signal. iter will point to the
 // end of the inserted text on return.
-func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int32) {
+func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.gchar         // out
@@ -1519,7 +1519,7 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 
 // SetText deletes current contents of buffer, and inserts text instead. If len
 // is -1, text must be nul-terminated. text must be valid UTF-8.
-func (buffer *TextBuffer) SetText(text string, len int32) {
+func (buffer *TextBuffer) SetText(text string, len int) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out

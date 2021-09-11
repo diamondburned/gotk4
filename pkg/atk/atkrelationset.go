@@ -141,7 +141,7 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *Object
 }
 
 // NRelations determines the number of relations in a relation set.
-func (set *RelationSet) NRelations() int32 {
+func (set *RelationSet) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
 
@@ -150,16 +150,16 @@ func (set *RelationSet) NRelations() int32 {
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
 	runtime.KeepAlive(set)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // Relation determines the relation at the specified position in the relation
 // set.
-func (set *RelationSet) Relation(i int32) *Relation {
+func (set *RelationSet) Relation(i int) *Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
 	var _cret *C.AtkRelation    // in

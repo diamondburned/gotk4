@@ -189,7 +189,7 @@ type DialogOverrider interface {
 	// Used to indicate that the user has responded to the dialog in some way;
 	// typically either you or gtk_dialog_run() will be monitoring the
 	// ::response signal and take appropriate action.
-	Response(responseId int32)
+	Response(responseId int)
 }
 
 // Dialog boxes are a convenient way to prompt the user for a small amount of
@@ -357,7 +357,7 @@ func NewDialog() *Dialog {
 // dialog when the widget is activated. The widget is appended to the end of the
 // dialog’s action area. If you want to add a non-activatable widget, simply
 // pack it into the action_area field of the Dialog struct.
-func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -376,7 +376,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
 // clicking the button will emit the Dialog::response signal with the given
 // response_id. The button is appended to the end of the dialog’s action area.
 // The button widget is returned, but usually you don’t need it.
-func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
+func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -456,7 +456,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gint       // in
@@ -468,16 +468,16 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
+func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -502,7 +502,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 // to indicate that the user has responded to the dialog in some way; typically
 // either you or gtk_dialog_run() will be monitoring the ::response signal and
 // take appropriate action.
-func (dialog *Dialog) Response(responseId int32) {
+func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -556,7 +556,7 @@ func (dialog *Dialog) Response(responseId int32) {
 // dialog (it prevents the user from interacting with other windows in the same
 // window group while the dialog is run), callbacks such as timeouts, IO channel
 // watches, DND drops, etc, will be triggered during a gtk_dialog_run() call.
-func (dialog *Dialog) Run() int32 {
+func (dialog *Dialog) Run() int {
 	var _arg0 *C.GtkDialog // out
 	var _cret C.gint       // in
 
@@ -565,9 +565,9 @@ func (dialog *Dialog) Run() int32 {
 	_cret = C.gtk_dialog_run(_arg0)
 	runtime.KeepAlive(dialog)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -582,15 +582,20 @@ func (dialog *Dialog) Run() int32 {
 // This function is for use by language bindings.
 //
 // Deprecated: Deprecated.
-func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
+func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg2 *C.gint      // out
 	var _arg1 C.gint
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (C.gint)(len(newOrder))
-	if len(newOrder) > 0 {
-		_arg2 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
+	_arg2 = (*C.gint)(C.malloc(C.ulong(len(newOrder)) * C.ulong(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))
+		for i := range newOrder {
+			out[i] = C.gint(newOrder[i])
+		}
 	}
 
 	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
@@ -601,7 +606,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
 // given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
-func (dialog *Dialog) SetDefaultResponse(responseId int32) {
+func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -616,7 +621,7 @@ func (dialog *Dialog) SetDefaultResponse(responseId int32) {
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
 // each widget in the dialog’s action area with the given response_id. A
 // convenient way to sensitize/desensitize dialog buttons.
-func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
+func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gboolean   // out

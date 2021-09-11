@@ -113,7 +113,7 @@ func (self *BookmarkList) Filename() string {
 }
 
 // IOPriority gets the IO priority to use while loading file.
-func (self *BookmarkList) IOPriority() int32 {
+func (self *BookmarkList) IOPriority() int {
 	var _arg0 *C.GtkBookmarkList // out
 	var _cret C.int              // in
 
@@ -122,9 +122,9 @@ func (self *BookmarkList) IOPriority() int32 {
 	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -174,7 +174,7 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 // SetIOPriority sets the IO priority to use while loading files.
 //
 // The default IO priority is G_PRIORITY_DEFAULT.
-func (self *BookmarkList) SetIOPriority(ioPriority int32) {
+func (self *BookmarkList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 C.int              // out
 

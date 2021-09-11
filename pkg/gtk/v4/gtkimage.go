@@ -407,7 +407,7 @@ func (image *Image) Paintable() gdk.Paintabler {
 }
 
 // PixelSize gets the pixel size used for named icons.
-func (image *Image) PixelSize() int32 {
+func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.int       // in
 
@@ -416,9 +416,9 @@ func (image *Image) PixelSize() int32 {
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 	runtime.KeepAlive(image)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -566,7 +566,7 @@ func (image *Image) SetIconSize(iconSize IconSize) {
 //
 // If the pixel size is set to a value != -1, it is used instead of the icon
 // size set by gtk.Image.SetFromIconName().
-func (image *Image) SetPixelSize(pixelSize int32) {
+func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out
 

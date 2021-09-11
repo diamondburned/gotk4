@@ -73,7 +73,7 @@ func marshalThreadedSocketServicer(p uintptr) (interface{}, error) {
 
 // NewThreadedSocketService creates a new SocketService with no listeners.
 // Listeners must be added with one of the Listener "add" methods.
-func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
+func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
 

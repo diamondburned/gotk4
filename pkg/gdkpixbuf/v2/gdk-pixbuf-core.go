@@ -187,7 +187,7 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GErr
 //
 // This function is useful for front-ends and backends that want to check image
 // values without needing to create a GdkPixbuf.
-func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample int32, width int32, height int32) int32 {
+func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) int {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.int           // out
@@ -210,9 +210,9 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -258,7 +258,7 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
 // the operation.
-func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width int32, height int32, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
+func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
 	var _arg2 C.gint                // out

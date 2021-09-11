@@ -30,7 +30,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int32, height int32)
+type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
 func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -41,16 +41,16 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 
 	var drawingArea *DrawingArea // out
 	var cr *cairo.Context        // out
-	var width int32              // out
-	var height int32             // out
+	var width int                // out
+	var height int               // out
 
 	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
 	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
-	width = int32(arg2)
-	height = int32(arg3)
+	width = int(arg2)
+	height = int(arg3)
 
 	fn := v.(DrawingAreaDrawFunc)
 	fn(drawingArea, cr, width, height)
@@ -61,7 +61,7 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DrawingAreaOverrider interface {
-	Resize(width int32, height int32)
+	Resize(width int, height int)
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
@@ -185,7 +185,7 @@ func NewDrawingArea() *DrawingArea {
 }
 
 // ContentHeight retrieves the content height of the GtkDrawingArea.
-func (self *DrawingArea) ContentHeight() int32 {
+func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
@@ -194,15 +194,15 @@ func (self *DrawingArea) ContentHeight() int32 {
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // ContentWidth retrieves the content width of the GtkDrawingArea.
-func (self *DrawingArea) ContentWidth() int32 {
+func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
@@ -211,9 +211,9 @@ func (self *DrawingArea) ContentWidth() int32 {
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -225,7 +225,7 @@ func (self *DrawingArea) ContentWidth() int32 {
 // than the height set here. You can use gtk.Widget.SetVAlign() to avoid that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
-func (self *DrawingArea) SetContentHeight(height int32) {
+func (self *DrawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
@@ -244,7 +244,7 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 // than the width set here. You can use gtk.Widget.SetHAlign() to avoid that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
-func (self *DrawingArea) SetContentWidth(width int32) {
+func (self *DrawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 

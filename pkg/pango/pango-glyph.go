@@ -135,7 +135,7 @@ func ReorderItems(logicalItems []Item) []Item {
 // Note that the extra attributes in the analyis that is returned from itemize
 // have indices that are relative to the entire paragraph, so you need to
 // subtract the item offset from their indices before calling shape.
-func Shape(text string, length int32, analysis *Analysis, glyphs *GlyphString) {
+func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
 	var _arg3 *C.PangoAnalysis    // out
@@ -170,7 +170,7 @@ func Shape(text string, length int32, analysis *Analysis, glyphs *GlyphString) {
 // have indices that are relative to the entire paragraph, so you do not pass
 // the full paragraph text as paragraph_text, you need to subtract the item
 // offset from their indices before calling shape_full.
-func ShapeFull(itemText string, itemLength int32, paragraphText string, paragraphLength int32, analysis *Analysis, glyphs *GlyphString) {
+func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
 	var _arg3 *C.char             // out
@@ -211,7 +211,7 @@ func ShapeFull(itemText string, itemLength int32, paragraphText string, paragrap
 // have indices that are relative to the entire paragraph, so you do not pass
 // the full paragraph text as paragraph_text, you need to subtract the item
 // offset from their indices before calling shape_with_flags.
-func ShapeWithFlags(itemText string, itemLength int32, paragraphText string, paragraphLength int32, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
+func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
 	var _arg3 *C.char             // out
@@ -412,7 +412,7 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect 
 // The extents are relative to the start of the glyph string range (the origin
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
-func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
+func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out
@@ -446,7 +446,7 @@ func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (in
 // this only computes the width, it's much faster. This is in fact only a
 // convenience function that computes the sum of geometry.width for each glyph
 // in the glyphs.
-func (glyphs *GlyphString) Width() int32 {
+func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
 
@@ -455,9 +455,9 @@ func (glyphs *GlyphString) Width() int32 {
 	_cret = C.pango_glyph_string_get_width(_arg0)
 	runtime.KeepAlive(glyphs)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -466,7 +466,7 @@ func (glyphs *GlyphString) Width() int32 {
 //
 // The X position is measured from the left edge of the run. Character positions
 // are computed by dividing up each cluster into equal portions.
-func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysis, index_ int32, trailing bool) int32 {
+func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -493,15 +493,15 @@ func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysi
 	runtime.KeepAlive(index_)
 	runtime.KeepAlive(trailing)
 
-	var _xPos int32 // out
+	var _xPos int // out
 
-	_xPos = int32(_arg6)
+	_xPos = int(_arg6)
 
 	return _xPos
 }
 
 // SetSize: resize a glyph string to the given length.
-func (_string *GlyphString) SetSize(newLen int32) {
+func (_string *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
 
@@ -520,7 +520,7 @@ func (_string *GlyphString) SetSize(newLen int32) {
 // as Thai), the returned value may not be a valid cursor position; the caller
 // must combine the result with the logical attributes for the text to compute
 // the valid cursor position.
-func (glyphs *GlyphString) XToIndex(text string, length int32, analysis *Analysis, xPos int32) (index_ int32, trailing int32) {
+func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -543,11 +543,11 @@ func (glyphs *GlyphString) XToIndex(text string, length int32, analysis *Analysi
 	runtime.KeepAlive(analysis)
 	runtime.KeepAlive(xPos)
 
-	var _index_ int32   // out
-	var _trailing int32 // out
+	var _index_ int   // out
+	var _trailing int // out
 
-	_index_ = int32(_arg5)
-	_trailing = int32(_arg6)
+	_index_ = int(_arg5)
+	_trailing = int(_arg6)
 
 	return _index_, _trailing
 }

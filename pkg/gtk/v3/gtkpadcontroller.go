@@ -157,7 +157,7 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 // The given label should be considered user-visible, so internationalization
 // rules apply. Some windowing systems may be able to use those for user
 // feedback.
-func (controller *PadController) SetAction(typ PadActionType, index int32, mode int32, label string, actionName string) {
+func (controller *PadController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
 	var _arg2 C.gint              // out
@@ -228,16 +228,16 @@ func (p *PadActionEntry) Type() PadActionType {
 
 // Index: 0-indexed button/ring/strip number that will trigger this action
 // entry.
-func (p *PadActionEntry) Index() int32 {
-	var v int32 // out
-	v = int32(p.native.index)
+func (p *PadActionEntry) Index() int {
+	var v int // out
+	v = int(p.native.index)
 	return v
 }
 
 // Mode: mode that will trigger this action entry, or -1 for all modes.
-func (p *PadActionEntry) Mode() int32 {
-	var v int32 // out
-	v = int32(p.native.mode)
+func (p *PadActionEntry) Mode() int {
+	var v int // out
+	v = int(p.native.mode)
 	return v
 }
 

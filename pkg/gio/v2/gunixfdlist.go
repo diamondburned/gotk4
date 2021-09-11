@@ -76,14 +76,19 @@ func NewUnixFDList() *UnixFDList {
 // Each file descriptor in the array should be set to close-on-exec.
 //
 // If n_fds is -1 then fds must be terminated with -1.
-func NewUnixFDListFromArray(fds []int32) *UnixFDList {
+func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _arg1 *C.gint // out
 	var _arg2 C.gint
 	var _cret *C.GUnixFDList // in
 
 	_arg2 = (C.gint)(len(fds))
-	if len(fds) > 0 {
-		_arg1 = (*C.gint)(unsafe.Pointer(&fds[0]))
+	_arg1 = (*C.gint)(C.malloc(C.ulong(len(fds)) * C.ulong(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.gint)(_arg1), len(fds))
+		for i := range fds {
+			out[i] = C.gint(fds[i])
+		}
 	}
 
 	_cret = C.g_unix_fd_list_new_from_array(_arg1, _arg2)
@@ -108,7 +113,7 @@ func NewUnixFDListFromArray(fds []int32) *UnixFDList {
 // The index of the file descriptor in the list is returned. If you use this
 // index with g_unix_fd_list_get() then you will receive back a duplicated copy
 // of the same file descriptor.
-func (list *UnixFDList) Append(fd int32) (int32, error) {
+func (list *UnixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -121,10 +126,10 @@ func (list *UnixFDList) Append(fd int32) (int32, error) {
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(fd)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -142,7 +147,7 @@ func (list *UnixFDList) Append(fd int32) (int32, error) {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (list *UnixFDList) Get(index_ int32) (int32, error) {
+func (list *UnixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
 	var _cret C.gint         // in
@@ -155,10 +160,10 @@ func (list *UnixFDList) Get(index_ int32) (int32, error) {
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(index_)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -168,7 +173,7 @@ func (list *UnixFDList) Get(index_ int32) (int32, error) {
 
 // Length gets the length of list (ie: the number of file descriptors contained
 // within).
-func (list *UnixFDList) Length() int32 {
+func (list *UnixFDList) Length() int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret C.gint         // in
 
@@ -177,9 +182,9 @@ func (list *UnixFDList) Length() int32 {
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 	runtime.KeepAlive(list)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -196,7 +201,7 @@ func (list *UnixFDList) Length() int32 {
 //
 // This function never returns NULL. In case there are no file descriptors
 // contained in list, an empty array is returned.
-func (list *UnixFDList) PeekFds() []int32 {
+func (list *UnixFDList) PeekFds() []int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret *C.gint        // in
 	var _arg1 C.gint         // in
@@ -206,10 +211,15 @@ func (list *UnixFDList) PeekFds() []int32 {
 	_cret = C.g_unix_fd_list_peek_fds(_arg0, &_arg1)
 	runtime.KeepAlive(list)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
-	_gints = make([]int32, _arg1)
-	copy(_gints, unsafe.Slice((*int32)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_gints = make([]int, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = int(src[i])
+		}
+	}
 
 	return _gints
 }
@@ -229,7 +239,7 @@ func (list *UnixFDList) PeekFds() []int32 {
 //
 // This function never returns NULL. In case there are no file descriptors
 // contained in list, an empty array is returned.
-func (list *UnixFDList) StealFds() []int32 {
+func (list *UnixFDList) StealFds() []int {
 	var _arg0 *C.GUnixFDList // out
 	var _cret *C.gint        // in
 	var _arg1 C.gint         // in
@@ -239,11 +249,16 @@ func (list *UnixFDList) StealFds() []int32 {
 	_cret = C.g_unix_fd_list_steal_fds(_arg0, &_arg1)
 	runtime.KeepAlive(list)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
 	defer C.free(unsafe.Pointer(_cret))
-	_gints = make([]int32, _arg1)
-	copy(_gints, unsafe.Slice((*int32)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_gints = make([]int, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = int(src[i])
+		}
+	}
 
 	return _gints
 }

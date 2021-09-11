@@ -159,7 +159,7 @@ func (paned *Paned) EndChild() Widgetter {
 }
 
 // Position obtains the position of the divider between the two panes.
-func (paned *Paned) Position() int32 {
+func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.int       // in
 
@@ -168,9 +168,9 @@ func (paned *Paned) Position() int32 {
 	_cret = C.gtk_paned_get_position(_arg0)
 	runtime.KeepAlive(paned)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -305,7 +305,7 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 }
 
 // SetPosition sets the position of the divider between the two panes.
-func (paned *Paned) SetPosition(position int32) {
+func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.int       // out
 

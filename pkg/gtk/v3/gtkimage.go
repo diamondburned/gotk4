@@ -246,7 +246,7 @@ func NewImageFromFile(filename string) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconner, size int32) *Image {
+func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -269,7 +269,7 @@ func NewImageFromGIcon(icon gio.Iconner, size int32) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromIconName(iconName string, size int32) *Image {
+func NewImageFromIconName(iconName string, size int) *Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -303,7 +303,7 @@ func NewImageFromIconName(iconName string, size int32) *Image {
 // adopting yours.
 //
 // Deprecated: Use gtk_image_new_from_icon_name() instead.
-func NewImageFromIconSet(iconSet *IconSet, size int32) *Image {
+func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -385,7 +385,7 @@ func NewImageFromResource(resourcePath string) *Image {
 // see gtk_icon_factory_add_default() and gtk_icon_factory_add().
 //
 // Deprecated: Use gtk_image_new_from_icon_name() instead.
-func NewImageFromStock(stockId string, size int32) *Image {
+func NewImageFromStock(stockId string, size int) *Image {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -467,7 +467,7 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 // of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned #GIcon.
-func (image *Image) GIcon() (gio.Iconner, int32) {
+func (image *Image) GIcon() (gio.Iconner, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // in
 	var _arg2 C.GtkIconSize // in
@@ -478,12 +478,12 @@ func (image *Image) GIcon() (gio.Iconner, int32) {
 	runtime.KeepAlive(image)
 
 	var _gicon gio.Iconner // out
-	var _size int32        // out
+	var _size int          // out
 
 	if _arg1 != nil {
 		_gicon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(gio.Iconner)
 	}
-	_size = int32(_arg2)
+	_size = int(_arg2)
 
 	return _gicon, _size
 }
@@ -492,7 +492,7 @@ func (image *Image) GIcon() (gio.Iconner, int32) {
 // storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME (see
 // gtk_image_get_storage_type()). The returned string is owned by the Image and
 // should not be freed.
-func (image *Image) IconName() (string, int32) {
+func (image *Image) IconName() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
@@ -503,12 +503,12 @@ func (image *Image) IconName() (string, int32) {
 	runtime.KeepAlive(image)
 
 	var _iconName string // out
-	var _size int32      // out
+	var _size int        // out
 
 	if _arg1 != nil {
 		_iconName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	}
-	_size = int32(_arg2)
+	_size = int(_arg2)
 
 	return _iconName, _size
 }
@@ -518,7 +518,7 @@ func (image *Image) IconName() (string, int32) {
 // gtk_image_get_storage_type()).
 //
 // Deprecated: Use gtk_image_get_icon_name() instead.
-func (image *Image) IconSet() (*IconSet, int32) {
+func (image *Image) IconSet() (*IconSet, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // in
 	var _arg2 C.GtkIconSize // in
@@ -529,7 +529,7 @@ func (image *Image) IconSet() (*IconSet, int32) {
 	runtime.KeepAlive(image)
 
 	var _iconSet *IconSet // out
-	var _size int32       // out
+	var _size int         // out
 
 	if _arg1 != nil {
 		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
@@ -541,7 +541,7 @@ func (image *Image) IconSet() (*IconSet, int32) {
 			},
 		)
 	}
-	_size = int32(_arg2)
+	_size = int(_arg2)
 
 	return _iconSet, _size
 }
@@ -579,7 +579,7 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 }
 
 // PixelSize gets the pixel size used for named icons.
-func (image *Image) PixelSize() int32 {
+func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.gint      // in
 
@@ -588,9 +588,9 @@ func (image *Image) PixelSize() int32 {
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 	runtime.KeepAlive(image)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -601,7 +601,7 @@ func (image *Image) PixelSize() int32 {
 // should not be freed.
 //
 // Deprecated: Use gtk_image_get_icon_name() instead.
-func (image *Image) Stock() (string, int32) {
+func (image *Image) Stock() (string, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // in
 	var _arg2 C.GtkIconSize // in
@@ -612,12 +612,12 @@ func (image *Image) Stock() (string, int32) {
 	runtime.KeepAlive(image)
 
 	var _stockId string // out
-	var _size int32     // out
+	var _size int       // out
 
 	if _arg1 != nil {
 		_stockId = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	}
-	_size = int32(_arg2)
+	_size = int(_arg2)
 
 	return _stockId, _size
 }
@@ -672,7 +672,7 @@ func (image *Image) SetFromFile(filename string) {
 }
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
-func (image *Image) SetFromGIcon(icon gio.Iconner, size int32) {
+func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -688,7 +688,7 @@ func (image *Image) SetFromGIcon(icon gio.Iconner, size int32) {
 }
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.
-func (image *Image) SetFromIconName(iconName string, size int32) {
+func (image *Image) SetFromIconName(iconName string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -709,7 +709,7 @@ func (image *Image) SetFromIconName(iconName string, size int32) {
 // SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 //
 // Deprecated: Use gtk_image_set_from_icon_name() instead.
-func (image *Image) SetFromIconSet(iconSet *IconSet, size int32) {
+func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // out
 	var _arg2 C.GtkIconSize // out
@@ -758,7 +758,7 @@ func (image *Image) SetFromResource(resourcePath string) {
 // SetFromStock: see gtk_image_new_from_stock() for details.
 //
 // Deprecated: Use gtk_image_set_from_icon_name() instead.
-func (image *Image) SetFromStock(stockId string, size int32) {
+func (image *Image) SetFromStock(stockId string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -792,7 +792,7 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 // SetPixelSize sets the pixel size to use for named icons. If the pixel size is
 // set to a value != -1, it is used instead of the icon size set by
 // gtk_image_set_from_icon_name().
-func (image *Image) SetPixelSize(pixelSize int32) {
+func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.gint      // out
 

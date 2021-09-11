@@ -147,7 +147,7 @@ type CellAreaOverrider interface {
 	// important to check the minimum_height and natural_height of this call but
 	// rather to consult gtk_cell_area_context_get_preferred_height() after a
 	// series of requests.
-	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int32, naturalHeight int32)
+	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified width.
 	//
@@ -162,7 +162,7 @@ type CellAreaOverrider interface {
 	// requested with gtk_cell_area_get_preferred_width() again and then the
 	// full width of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_width().
-	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32)
+	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// area will store some geometrical information in context along the way;
@@ -170,7 +170,7 @@ type CellAreaOverrider interface {
 	// important to check the minimum_width and natural_width of this call but
 	// rather to consult gtk_cell_area_context_get_preferred_width() after a
 	// series of requests.
-	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int32, naturalWidth int32)
+	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified height.
 	//
@@ -185,7 +185,7 @@ type CellAreaOverrider interface {
 	// requested with gtk_cell_area_get_preferred_height() again and then the
 	// full height of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_height().
-	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32)
+	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -349,13 +349,13 @@ type CellAreaer interface {
 	ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool)
 	// AttributeConnect connects an attribute to apply values from column for
 	// the TreeModel in use.
-	AttributeConnect(renderer CellRendererer, attribute string, column int32)
+	AttributeConnect(renderer CellRendererer, attribute string, column int)
 	// AttributeDisconnect disconnects attribute for the renderer in area so
 	// that attribute will no longer be updated with values from the model.
 	AttributeDisconnect(renderer CellRendererer, attribute string)
 	// AttributeGetColumn returns the model column that an attribute has been
 	// mapped to, or -1 if the attribute is not mapped.
-	AttributeGetColumn(renderer CellRendererer, attribute string) int32
+	AttributeGetColumn(renderer CellRendererer, attribute string) int
 	// CellGetProperty gets the value of a cell property for renderer in area.
 	CellGetProperty(renderer CellRendererer, propertyName string, value *externglib.Value)
 	// CellSetProperty sets a cell property for renderer in area.
@@ -381,7 +381,7 @@ type CellAreaer interface {
 	CellAllocation(context *CellAreaContext, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle
 	// CellAtPosition gets the CellRenderer at x and y coordinates inside area
 	// and optionally returns the full cell allocation for it inside cell_area.
-	CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x int32, y int32) (gdk.Rectangle, CellRendererer)
+	CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRendererer)
 	// CurrentPathString gets the current TreePath string for the currently
 	// applied TreeIter, this is implicitly updated when
 	// gtk_cell_area_apply_attributes() is called and can be used to interact
@@ -401,15 +401,15 @@ type CellAreaer interface {
 	FocusSiblings(renderer CellRendererer) []CellRendererer
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
-	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int32, naturalHeight int32)
+	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified width.
-	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32)
+	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
-	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int32, naturalWidth int32)
+	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified height.
-	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32)
+	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -435,7 +435,7 @@ type CellAreaer interface {
 	Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 	// RequestRenderer: this is a convenience function for CellArea
 	// implementations to request size for cell renderers.
-	RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int32) (minimumSize int32, naturalSize int32)
+	RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int) (minimumSize int, naturalSize int)
 	// SetFocusCell: explicitly sets the currently focused cell to renderer.
 	SetFocusCell(renderer CellRendererer)
 	// StopEditing: explicitly stops the editing of the currently edited cell.
@@ -566,7 +566,7 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 
 // AttributeConnect connects an attribute to apply values from column for the
 // TreeModel in use.
-func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int32) {
+func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
@@ -605,7 +605,7 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 
 // AttributeGetColumn returns the model column that an attribute has been mapped
 // to, or -1 if the attribute is not mapped.
-func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int32 {
+func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
@@ -621,9 +621,9 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -821,7 +821,7 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 
 // CellAtPosition gets the CellRenderer at x and y coordinates inside area and
 // optionally returns the full cell allocation for it inside cell_area.
-func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x int32, y int32) (gdk.Rectangle, CellRendererer) {
+func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRendererer) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -986,7 +986,7 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 // check the minimum_height and natural_height of this call but rather to
 // consult gtk_cell_area_context_get_preferred_height() after a series of
 // requests.
-func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int32, naturalHeight int32) {
+func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -1002,11 +1002,11 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg3)
-	_naturalHeight = int32(_arg4)
+	_minimumHeight = int(_arg3)
+	_naturalHeight = int(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1024,7 +1024,7 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 // with gtk_cell_area_get_preferred_width() again and then the full width of the
 // requested rows checked again with
 // gtk_cell_area_context_get_preferred_width().
-func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32) {
+func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -1043,11 +1043,11 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg4)
-	_naturalHeight = int32(_arg5)
+	_minimumHeight = int(_arg4)
+	_naturalHeight = int(_arg5)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1058,7 +1058,7 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 // requesting sizes over an arbitrary number of rows, it’s not important to
 // check the minimum_width and natural_width of this call but rather to consult
 // gtk_cell_area_context_get_preferred_width() after a series of requests.
-func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int32, naturalWidth int32) {
+func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -1074,11 +1074,11 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg3)
-	_naturalWidth = int32(_arg4)
+	_minimumWidth = int(_arg3)
+	_naturalWidth = int(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1096,7 +1096,7 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 // with gtk_cell_area_get_preferred_height() again and then the full height of
 // the requested rows checked again with
 // gtk_cell_area_context_get_preferred_height().
-func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32) {
+func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -1115,11 +1115,11 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(height)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg4)
-	_naturalWidth = int32(_arg5)
+	_minimumWidth = int(_arg4)
+	_naturalWidth = int(_arg5)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1303,7 +1303,7 @@ func (area *CellArea) Render(context *CellAreaContext, widget Widgetter, cr *cai
 // to request size for cell renderers. It’s important to use this function to
 // request size and then use gtk_cell_area_inner_cell_area() at render and event
 // time since this function will add padding around the cell for focus painting.
-func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int32) (minimumSize int32, naturalSize int32) {
+func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.GtkOrientation   // out
@@ -1325,11 +1325,11 @@ func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orien
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(forSize)
 
-	var _minimumSize int32 // out
-	var _naturalSize int32 // out
+	var _minimumSize int // out
+	var _naturalSize int // out
 
-	_minimumSize = int32(_arg5)
-	_naturalSize = int32(_arg6)
+	_minimumSize = int(_arg5)
+	_naturalSize = int(_arg6)
 
 	return _minimumSize, _naturalSize
 }

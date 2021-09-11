@@ -41,7 +41,7 @@ func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
-func NewPixbufSimpleAnim(width int32, height int32, rate float32) *PixbufSimpleAnim {
+func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
 	var _arg3 C.gfloat               // out

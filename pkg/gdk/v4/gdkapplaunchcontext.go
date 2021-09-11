@@ -85,7 +85,7 @@ func (context *AppLaunchContext) Display() *Display {
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
-func (context *AppLaunchContext) SetDesktop(desktop int32) {
+func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
 

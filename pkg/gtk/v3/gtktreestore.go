@@ -152,7 +152,7 @@ func (treeStore *TreeStore) Clear() {
 // changed to point to this new row. The row will be empty after this function
 // is called. To fill in values, you need to call gtk_tree_store_set() or
 // gtk_tree_store_set_value().
-func (treeStore *TreeStore) Insert(parent *TreeIter, position int32) TreeIter {
+func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -249,7 +249,7 @@ func (treeStore *TreeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tr
 // InsertWithValues: variant of gtk_tree_store_insert_with_values() which takes
 // the columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language bindings.
-func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, columns []int32, values []externglib.Value) TreeIter {
+func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -264,8 +264,13 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, c
 	}
 	_arg3 = C.gint(position)
 	_arg6 = (C.gint)(len(columns))
-	if len(columns) > 0 {
-		_arg4 = (*C.gint)(unsafe.Pointer(&columns[0]))
+	_arg4 = (*C.gint)(C.malloc(C.ulong(len(columns)) * C.ulong(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg4))
+	{
+		out := unsafe.Slice((*C.gint)(_arg4), len(columns))
+		for i := range columns {
+			out[i] = C.gint(columns[i])
+		}
 	}
 	_arg6 = (C.gint)(len(values))
 	_arg5 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
@@ -319,7 +324,7 @@ func (treeStore *TreeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) boo
 
 // IterDepth returns the depth of iter. This will be 0 for anything on the root
 // level, 1 for anything down a level, etc.
-func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
+func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gint          // in
@@ -331,9 +336,9 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -482,7 +487,7 @@ func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
-func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *externglib.Value) {
+func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.gint          // out
@@ -504,7 +509,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *extern
 // values as two arrays, instead of varargs. This function is mainly intended
 // for language bindings or in case the number of columns to change is not known
 // until run-time.
-func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []externglib.Value) {
+func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.gint         // out
@@ -514,8 +519,13 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []extern
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg4 = (C.gint)(len(columns))
-	if len(columns) > 0 {
-		_arg2 = (*C.gint)(unsafe.Pointer(&columns[0]))
+	_arg2 = (*C.gint)(C.malloc(C.ulong(len(columns)) * C.ulong(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.gint)(_arg2), len(columns))
+		for i := range columns {
+			out[i] = C.gint(columns[i])
+		}
 	}
 	_arg4 = (C.gint)(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))

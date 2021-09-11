@@ -109,7 +109,7 @@ func _gotk4_gtk3_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, a
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow) (gint int32)
+type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow) (gint int)
 
 //export _gotk4_gtk3_ListBoxSortFunc
 func _gotk4_gtk3_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
@@ -163,7 +163,7 @@ func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListB
 // yet, so the interface currently has no use.
 type ListBoxOverrider interface {
 	ActivateCursorRow()
-	MoveCursor(step MovementStep, count int32)
+	MoveCursor(step MovementStep, count int)
 	RowActivated(row *ListBoxRow)
 	RowSelected(row *ListBoxRow)
 	// SelectAll: select all children of box, if the selection mode allows it.
@@ -356,7 +356,7 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 // RowAtIndex gets the n-th child in the list (not counting headers). If _index
 // is negative or larger than the number of items in the list, NULL is returned.
-func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
+func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkListBoxRow // in
@@ -378,7 +378,7 @@ func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
 }
 
 // RowAtY gets the row at the y position.
-func (box *ListBox) RowAtY(y int32) *ListBoxRow {
+func (box *ListBox) RowAtY(y int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkListBoxRow // in
@@ -465,7 +465,7 @@ func (box *ListBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of items in the box, then
 // the child will be appended to the end.
-func (box *ListBox) Insert(child Widgetter, position int32) {
+func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -895,7 +895,7 @@ func (row *ListBoxRow) Header() Widgetter {
 }
 
 // Index gets the current index of the row in its ListBox container.
-func (row *ListBoxRow) Index() int32 {
+func (row *ListBoxRow) Index() int {
 	var _arg0 *C.GtkListBoxRow // out
 	var _cret C.gint           // in
 
@@ -904,9 +904,9 @@ func (row *ListBoxRow) Index() int32 {
 	_cret = C.gtk_list_box_row_get_index(_arg0)
 	runtime.KeepAlive(row)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

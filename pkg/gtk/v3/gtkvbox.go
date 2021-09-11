@@ -88,7 +88,7 @@ func marshalVBoxer(p uintptr) (interface{}, error) {
 // which is a quick and easy change. But the recommendation is to switch to
 // Grid, since Box is going to go away eventually. See [Migrating from other
 // containers to GtkGrid][gtk-migrating-GtkGrid].
-func NewVBox(homogeneous bool, spacing int32) *VBox {
+func NewVBox(homogeneous bool, spacing int) *VBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in

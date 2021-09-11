@@ -74,22 +74,22 @@ func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
 type HyperlinkOverrider interface {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
-	EndIndex() int32
+	EndIndex() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
-	NAnchors() int32
+	NAnchors() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
 	// hyperlink, Image if link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	GetObject(i int32) *ObjectClass
+	GetObject(i int) *ObjectClass
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
-	StartIndex() int32
+	StartIndex() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
-	URI(i int32) string
+	URI(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
@@ -100,7 +100,7 @@ type HyperlinkOverrider interface {
 	// to the document it references) and FALSE otherwise.
 	IsValid() bool
 	LinkActivated()
-	LinkState() uint32
+	LinkState() uint
 }
 
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
@@ -130,7 +130,7 @@ func marshalHyperlinker(p uintptr) (interface{}, error) {
 }
 
 // EndIndex gets the index with the hypertext document at which this link ends.
-func (link_ *Hyperlink) EndIndex() int32 {
+func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -139,15 +139,15 @@ func (link_ *Hyperlink) EndIndex() int32 {
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NAnchors gets the number of anchors associated with this hyperlink.
-func (link_ *Hyperlink) NAnchors() int32 {
+func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -156,9 +156,9 @@ func (link_ *Hyperlink) NAnchors() int32 {
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -168,7 +168,7 @@ func (link_ *Hyperlink) NAnchors() int32 {
 // hyperlink, Image if link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
+func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -189,7 +189,7 @@ func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 
 // StartIndex gets the index with the hypertext document at which this link
 // begins.
-func (link_ *Hyperlink) StartIndex() int32 {
+func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -198,9 +198,9 @@ func (link_ *Hyperlink) StartIndex() int32 {
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -208,7 +208,7 @@ func (link_ *Hyperlink) StartIndex() int32 {
 // URI: get a the URI associated with the anchor specified by i of link_.
 //
 // Multiple anchors are primarily used by client-side image maps.
-func (link_ *Hyperlink) URI(i int32) string {
+func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in

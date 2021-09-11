@@ -143,7 +143,7 @@ func NewInfoBar() *InfoBar {
 // This also connects a signal handler that will emit the gtk.InfoBar::response
 // signal on the message area when the widget is activated. The widget is
 // appended to the end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -163,7 +163,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 // Clicking the button will emit the gtk.InfoBar::response signal with the given
 // response_id. The button is appended to the end of the info bars's action
 // area. The button widget is returned, but usually you don't need it.
-func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
+func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -285,7 +285,7 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 }
 
 // Response emits the “response” signal with the given response_id.
-func (infoBar *InfoBar) Response(responseId int32) {
+func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -304,7 +304,7 @@ func (infoBar *InfoBar) Response(responseId int32) {
 //
 // Note that this function currently requires info_bar to be added to a widget
 // hierarchy.
-func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
+func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -336,7 +336,7 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 // Calls gtk_widget_set_sensitive (widget, setting) for each widget in the info
 // bars’s action area with the given response_id. A convenient way to
 // sensitize/desensitize buttons.
-func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
+func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 	var _arg2 C.gboolean    // out

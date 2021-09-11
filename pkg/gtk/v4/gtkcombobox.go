@@ -214,7 +214,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 // child of the root of the tree, this function returns
 // gtk_tree_path_get_indices (path)[0], where path is the gtk.TreePath of the
 // active item.
-func (comboBox *ComboBox) Active() int32 {
+func (comboBox *ComboBox) Active() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.int          // in
 
@@ -223,9 +223,9 @@ func (comboBox *ComboBox) Active() int32 {
 	_cret = C.gtk_combo_box_get_active(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -322,7 +322,7 @@ func (comboBox *ComboBox) Child() Widgetter {
 
 // EntryTextColumn returns the column which combo_box is using to get the
 // strings from to display in the internal entry.
-func (comboBox *ComboBox) EntryTextColumn() int32 {
+func (comboBox *ComboBox) EntryTextColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.int          // in
 
@@ -331,9 +331,9 @@ func (comboBox *ComboBox) EntryTextColumn() int32 {
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -359,7 +359,7 @@ func (comboBox *ComboBox) HasEntry() bool {
 
 // IDColumn returns the column which combo_box is using to get string IDs for
 // values from.
-func (comboBox *ComboBox) IDColumn() int32 {
+func (comboBox *ComboBox) IDColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.int          // in
 
@@ -368,9 +368,9 @@ func (comboBox *ComboBox) IDColumn() int32 {
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -459,7 +459,7 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 }
 
 // SetActive sets the active item of combo_box to be the item at index.
-func (comboBox *ComboBox) SetActive(index_ int32) {
+func (comboBox *ComboBox) SetActive(index_ int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.int          // out
 
@@ -557,7 +557,7 @@ func (comboBox *ComboBox) SetChild(child Widgetter) {
 //
 // This is only relevant if combo_box has been created with
 // gtk.ComboBox:has-entry as TRUE.
-func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
+func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.int          // out
 
@@ -573,7 +573,7 @@ func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
 // IDs for values from.
 //
 // The column id_column in the model of combo_box must be of type G_TYPE_STRING.
-func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
+func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.int          // out
 

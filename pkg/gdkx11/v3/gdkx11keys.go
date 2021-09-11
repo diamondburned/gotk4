@@ -43,7 +43,7 @@ func marshalX11Keymapper(p uintptr) (interface{}, error) {
 // GroupForState extracts the group from the state field sent in an X Key event.
 // This is only needed for code processing raw X events, since EventKey directly
 // includes an is_modifier field.
-func (keymap *X11Keymap) GroupForState(state uint32) int32 {
+func (keymap *X11Keymap) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gint       // in
@@ -55,9 +55,9 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(state)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -67,7 +67,7 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 // state and the behavior of other keys rather than producing a direct effect
 // itself. This is only needed for code processing raw X events, since EventKey
 // directly includes an is_modifier field.
-func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
+func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in

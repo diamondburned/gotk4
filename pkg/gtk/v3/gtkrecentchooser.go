@@ -96,7 +96,7 @@ func (r RecentSortType) String() string {
 	}
 }
 
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int32)
+type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
 
 //export _gotk4_gtk3_RecentSortFunc
 func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
@@ -208,7 +208,7 @@ type RecentChooserer interface {
 	Items() []*RecentInfo
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
-	Limit() int32
+	Limit() int
 	// LocalOnly gets whether only local resources should be shown in the
 	// recently used resources selector.
 	LocalOnly() bool
@@ -247,7 +247,7 @@ type RecentChooserer interface {
 	SetFilter(filter *RecentFilter)
 	// SetLimit sets the number of items that should be returned by
 	// gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
-	SetLimit(limit int32)
+	SetLimit(limit int)
 	// SetLocalOnly sets whether only local resources, that is resources using
 	// the file:// URI scheme, should be shown in the recently used resources
 	// selector.
@@ -401,7 +401,7 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 
 // Limit gets the number of items returned by gtk_recent_chooser_get_items() and
 // gtk_recent_chooser_get_uris().
-func (chooser *RecentChooser) Limit() int32 {
+func (chooser *RecentChooser) Limit() int {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gint              // in
 
@@ -410,9 +410,9 @@ func (chooser *RecentChooser) Limit() int32 {
 	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -695,7 +695,7 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 
 // SetLimit sets the number of items that should be returned by
 // gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
-func (chooser *RecentChooser) SetLimit(limit int32) {
+func (chooser *RecentChooser) SetLimit(limit int) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gint              // out
 

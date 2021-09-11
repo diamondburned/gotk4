@@ -117,7 +117,7 @@ func (group *ToolItemGroup) Collapsed() bool {
 }
 
 // DropItem gets the tool item at position (x, y).
-func (group *ToolItemGroup) DropItem(x int32, y int32) *ToolItem {
+func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gint              // out
 	var _arg2 C.gint              // out
@@ -174,7 +174,7 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 }
 
 // ItemPosition gets the position of item in group as index.
-func (group *ToolItemGroup) ItemPosition(item *ToolItem) int32 {
+func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _cret C.gint              // in
@@ -186,9 +186,9 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int32 {
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(item)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -229,7 +229,7 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 }
 
 // NItems gets the number of tool items in group.
-func (group *ToolItemGroup) NItems() uint32 {
+func (group *ToolItemGroup) NItems() uint {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.guint             // in
 
@@ -238,15 +238,15 @@ func (group *ToolItemGroup) NItems() uint32 {
 	_cret = C.gtk_tool_item_group_get_n_items(_arg0)
 	runtime.KeepAlive(group)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // NthItem gets the tool item at index in group.
-func (group *ToolItemGroup) NthItem(index uint32) *ToolItem {
+func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkToolItem      // in
@@ -266,7 +266,7 @@ func (group *ToolItemGroup) NthItem(index uint32) *ToolItem {
 }
 
 // Insert inserts item at position in the list of children of group.
-func (group *ToolItemGroup) Insert(item *ToolItem, position int32) {
+func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
@@ -325,7 +325,7 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 }
 
 // SetItemPosition sets the position of item in the list of children of group.
-func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int32) {
+func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out

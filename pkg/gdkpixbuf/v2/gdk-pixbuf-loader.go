@@ -30,9 +30,9 @@ func init() {
 // yet, so the interface currently has no use.
 type PixbufLoaderOverrider interface {
 	AreaPrepared()
-	AreaUpdated(x int32, y int32, width int32, height int32)
+	AreaUpdated(x int, y int, width int, height int)
 	Closed()
-	SizePrepared(width int32, height int32)
+	SizePrepared(width int, height int)
 }
 
 // PixbufLoader: incremental image loader.
@@ -299,7 +299,7 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 //
 // Attempts to set the desired image size are ignored after the emission of the
 // ::size-prepared signal.
-func (loader *PixbufLoader) SetSize(width int32, height int32) {
+func (loader *PixbufLoader) SetSize(width int, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out

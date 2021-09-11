@@ -152,7 +152,7 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
-func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
+func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
@@ -189,18 +189,18 @@ func (t *TargetEntry) Target() string {
 }
 
 // Flags for DND
-func (t *TargetEntry) Flags() uint32 {
-	var v uint32 // out
-	v = uint32(t.native.flags)
+func (t *TargetEntry) Flags() uint {
+	var v uint // out
+	v = uint(t.native.flags)
 	return v
 }
 
 // Info: application-assigned integer ID which will get passed as a parameter to
 // e.g the Widget::selection-get signal. It allows the application to identify
 // the target type without extensive string compares.
-func (t *TargetEntry) Info() uint32 {
-	var v uint32 // out
-	v = uint32(t.native.info)
+func (t *TargetEntry) Info() uint {
+	var v uint // out
+	v = uint(t.native.info)
 	return v
 }
 
@@ -279,7 +279,7 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 
 // AddImageTargets appends the image targets supported by SelectionData to the
 // target list. All targets are added with the same info.
-func (list *TargetList) AddImageTargets(info uint32, writable bool) {
+func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -300,7 +300,7 @@ func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same info.
-func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buffer *TextBuffer) {
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -344,7 +344,7 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 
 // AddTextTargets appends the text targets supported by SelectionData to the
 // target list. All targets are added with the same info.
-func (list *TargetList) AddTextTargets(info uint32) {
+func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
@@ -358,7 +358,7 @@ func (list *TargetList) AddTextTargets(info uint32) {
 
 // AddURITargets appends the URI targets supported by SelectionData to the
 // target list. All targets are added with the same info.
-func (list *TargetList) AddURITargets(info uint32) {
+func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 

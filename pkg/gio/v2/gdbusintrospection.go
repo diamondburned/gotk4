@@ -56,9 +56,9 @@ func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusAnnotationInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusAnnotationInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -159,9 +159,9 @@ func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusArgInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusArgInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -224,9 +224,9 @@ func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusInterfaceInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusInterfaceInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -492,9 +492,9 @@ func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusMethodInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusMethodInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -633,9 +633,9 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusNodeInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusNodeInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -778,9 +778,9 @@ func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusPropertyInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusPropertyInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 
@@ -850,9 +850,9 @@ func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 }
 
 // RefCount: reference count or -1 if statically allocated.
-func (d *DBusSignalInfo) RefCount() int32 {
-	var v int32 // out
-	v = int32(d.native.ref_count)
+func (d *DBusSignalInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
 	return v
 }
 

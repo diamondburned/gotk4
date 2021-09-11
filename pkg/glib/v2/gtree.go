@@ -61,7 +61,7 @@ func (tree *Tree) Destroy() {
 // If the #GTree contains no nodes, the height is 0. If the #GTree contains only
 // one root node the height is 1. If the root node has children the height is 2,
 // etc.
-func (tree *Tree) Height() int32 {
+func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
@@ -70,9 +70,9 @@ func (tree *Tree) Height() int32 {
 	_cret = C.g_tree_height(_arg0)
 	runtime.KeepAlive(tree)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -149,7 +149,7 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 }
 
 // Nnodes gets the number of nodes in a #GTree.
-func (tree *Tree) Nnodes() int32 {
+func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
@@ -158,9 +158,9 @@ func (tree *Tree) Nnodes() int32 {
 	_cret = C.g_tree_nnodes(_arg0)
 	runtime.KeepAlive(tree)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

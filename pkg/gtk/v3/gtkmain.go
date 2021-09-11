@@ -31,7 +31,7 @@ const PRIORITY_RESIZE = 110
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int32)
+type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int)
 
 //export _gotk4_gtk3_KeySnoopFunc
 func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
@@ -78,7 +78,7 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 // linked against an old version of GTK+ and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
-func CheckVersion(requiredMajor uint32, requiredMinor uint32, requiredMicro uint32) string {
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
 	var _arg3 C.guint  // out
@@ -195,14 +195,14 @@ func False() bool {
 // GetBinaryAge returns the binary age as passed to libtool when building the
 // GTK+ library the process is running against. If libtool means nothing to you,
 // don't worry about it.
-func GetBinaryAge() uint32 {
+func GetBinaryAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_binary_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -278,14 +278,14 @@ func GetDefaultLanguage() *pango.Language {
 // GetInterfaceAge returns the interface age as passed to libtool when building
 // the GTK+ library the process is running against. If libtool means nothing to
 // you, don't worry about it.
-func GetInterfaceAge() uint32 {
+func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_interface_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -327,14 +327,14 @@ func GetLocaleDirection() TextDirection {
 // is running against. Contrast with the K_MAJOR_VERSION macro, which represents
 // the major version of the GTK+ headers you have included when compiling your
 // code.
-func GetMajorVersion() uint32 {
+func GetMajorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_major_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -346,14 +346,14 @@ func GetMajorVersion() uint32 {
 // is are running against. Contrast with the K_MICRO_VERSION macro, which
 // represents the micro version of the GTK+ headers you have included when
 // compiling your code.
-func GetMicroVersion() uint32 {
+func GetMicroVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_micro_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -365,14 +365,14 @@ func GetMicroVersion() uint32 {
 // is are running against. Contrast with the K_MINOR_VERSION macro, which
 // represents the minor version of the GTK+ headers you have included when
 // compiling your code.
-func GetMinorVersion() uint32 {
+func GetMinorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_minor_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -426,7 +426,7 @@ func GrabGetCurrent() Widgetter {
 //
 // Deprecated: Key snooping should not be done. Events should be handled by
 // widgets.
-func KeySnooperRemove(snooperHandlerId uint32) {
+func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(snooperHandlerId)
@@ -485,14 +485,14 @@ func MainIterationDo(blocking bool) bool {
 }
 
 // MainLevel asks for the current nesting level of the main loop.
-func MainLevel() uint32 {
+func MainLevel() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_main_level()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

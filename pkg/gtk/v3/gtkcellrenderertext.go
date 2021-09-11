@@ -82,7 +82,7 @@ func NewCellRendererText() *CellRendererText {
 // should really only be used if calculating the size of a cell is too slow (ie,
 // a massive number of cells displayed). If number_of_rows is -1, then the fixed
 // height is unset, and the height is determined by the properties again.
-func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
+func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 

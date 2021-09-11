@@ -94,7 +94,7 @@ func (k KeyEventType) String() string {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct) (gint int32)
+type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 
 //export _gotk4_atk1_KeySnoopFunc
 func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
@@ -210,7 +210,7 @@ func GetVersion() string {
 // Deprecated: Focus tracking has been dropped as a feature to be implemented by
 // ATK itself. If you need focus tracking on your implementation, subscribe to
 // the Object::state-change "focused" signal.
-func RemoveFocusTracker(trackerId uint32) {
+func RemoveFocusTracker(trackerId uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(trackerId)
@@ -230,7 +230,7 @@ func RemoveFocusTracker(trackerId uint32) {
 // implementors but by ATK consumers.
 //
 // Removes the specified event listener
-func RemoveGlobalEventListener(listenerId uint32) {
+func RemoveGlobalEventListener(listenerId uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(listenerId)
@@ -243,7 +243,7 @@ func RemoveGlobalEventListener(listenerId uint32) {
 // #atk_add_key_event_listener when you registered that event listener.
 //
 // Removes the specified event listener.
-func RemoveKeyEventListener(listenerId uint32) {
+func RemoveKeyEventListener(listenerId uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(listenerId)
@@ -288,9 +288,9 @@ type keyEventStruct struct {
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
 // ATK_KEY_EVENT_RELEASE
-func (k *KeyEventStruct) Type() int32 {
-	var v int32 // out
-	v = int32(k.native._type)
+func (k *KeyEventStruct) Type() int {
+	var v int // out
+	v = int(k.native._type)
 	return v
 }
 
@@ -298,24 +298,24 @@ func (k *KeyEventStruct) Type() int32 {
 // the event takes place. The meaning of the bits is currently defined to match
 // the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey
-func (k *KeyEventStruct) State() uint32 {
-	var v uint32 // out
-	v = uint32(k.native.state)
+func (k *KeyEventStruct) State() uint {
+	var v uint // out
+	v = uint(k.native.state)
 	return v
 }
 
 // Keyval: guint representing a keysym value corresponding to those used by GDK
 // and X11: see /usr/X11/include/keysymdef.h.
-func (k *KeyEventStruct) Keyval() uint32 {
-	var v uint32 // out
-	v = uint32(k.native.keyval)
+func (k *KeyEventStruct) Keyval() uint {
+	var v uint // out
+	v = uint(k.native.keyval)
 	return v
 }
 
 // Length: length of member #string.
-func (k *KeyEventStruct) Length() int32 {
-	var v int32 // out
-	v = int32(k.native.length)
+func (k *KeyEventStruct) Length() int {
+	var v int // out
+	v = int(k.native.length)
 	return v
 }
 

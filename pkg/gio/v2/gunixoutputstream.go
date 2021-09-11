@@ -73,7 +73,7 @@ func marshalUnixOutputStreamer(p uintptr) (interface{}, error) {
 //
 // If close_fd, is TRUE, the file descriptor will be closed when the output
 // stream is destroyed.
-func NewUnixOutputStream(fd int32, closeFd bool) *UnixOutputStream {
+func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out
 	var _cret *C.GOutputStream // in
@@ -115,7 +115,7 @@ func (stream *UnixOutputStream) CloseFd() bool {
 }
 
 // Fd: return the UNIX file descriptor that the stream writes to.
-func (stream *UnixOutputStream) Fd() int32 {
+func (stream *UnixOutputStream) Fd() int {
 	var _arg0 *C.GUnixOutputStream // out
 	var _cret C.gint               // in
 
@@ -124,9 +124,9 @@ func (stream *UnixOutputStream) Fd() int32 {
 	_cret = C.g_unix_output_stream_get_fd(_arg0)
 	runtime.KeepAlive(stream)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

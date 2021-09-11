@@ -27,13 +27,13 @@ func init() {
 // yet, so the interface currently has no use.
 type HypertextOverrider interface {
 	// Link gets the link in this hypertext document at index link_index
-	Link(linkIndex int32) *Hyperlink
+	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
-	LinkIndex(charIndex int32) int32
+	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
-	NLinks() int32
-	LinkSelected(linkIndex int32)
+	NLinks() int
+	LinkSelected(linkIndex int)
 }
 
 // Hypertext: interface used for objects which implement linking between
@@ -52,12 +52,12 @@ type Hypertexter interface {
 	externglib.Objector
 
 	// Link gets the link in this hypertext document at index link_index
-	Link(linkIndex int32) *Hyperlink
+	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
-	LinkIndex(charIndex int32) int32
+	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
-	NLinks() int32
+	NLinks() int
 }
 
 var _ Hypertexter = (*Hypertext)(nil)
@@ -75,7 +75,7 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 }
 
 // Link gets the link in this hypertext document at index link_index
-func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
+func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
@@ -96,7 +96,7 @@ func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 
 // LinkIndex gets the index into the array of hyperlinks that is associated with
 // the character specified by char_index.
-func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
+func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
@@ -108,15 +108,15 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NLinks gets the number of links within this hypertext document.
-func (hypertext *Hypertext) NLinks() int32 {
+func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 
@@ -125,9 +125,9 @@ func (hypertext *Hypertext) NLinks() int32 {
 	_cret = C.atk_hypertext_get_n_links(_arg0)
 	runtime.KeepAlive(hypertext)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

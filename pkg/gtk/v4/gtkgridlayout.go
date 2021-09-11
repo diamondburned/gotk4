@@ -68,7 +68,7 @@ func NewGridLayout() *GridLayout {
 }
 
 // BaselineRow retrieves the row set with gtk_grid_layout_set_baseline_row().
-func (grid *GridLayout) BaselineRow() int32 {
+func (grid *GridLayout) BaselineRow() int {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.int            // in
 
@@ -77,9 +77,9 @@ func (grid *GridLayout) BaselineRow() int32 {
 	_cret = C.gtk_grid_layout_get_baseline_row(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -106,7 +106,7 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 
 // ColumnSpacing retrieves the spacing set with
 // gtk_grid_layout_set_column_spacing().
-func (grid *GridLayout) ColumnSpacing() uint32 {
+func (grid *GridLayout) ColumnSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
@@ -115,9 +115,9 @@ func (grid *GridLayout) ColumnSpacing() uint32 {
 	_cret = C.gtk_grid_layout_get_column_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -126,7 +126,7 @@ func (grid *GridLayout) ColumnSpacing() uint32 {
 //
 // If no value has been set with gtk.GridLayout.SetRowBaselinePosition(), the
 // default value of GTK_BASELINE_POSITION_CENTER is returned.
-func (grid *GridLayout) RowBaselinePosition(row int32) BaselinePosition {
+func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
 	var _cret C.GtkBaselinePosition // in
@@ -165,7 +165,7 @@ func (grid *GridLayout) RowHomogeneous() bool {
 }
 
 // RowSpacing retrieves the spacing set with gtk_grid_layout_set_row_spacing().
-func (grid *GridLayout) RowSpacing() uint32 {
+func (grid *GridLayout) RowSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
 	var _cret C.guint          // in
 
@@ -174,9 +174,9 @@ func (grid *GridLayout) RowSpacing() uint32 {
 	_cret = C.gtk_grid_layout_get_row_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -186,7 +186,7 @@ func (grid *GridLayout) RowSpacing() uint32 {
 //
 // Each row in the grid can have its own local baseline, but only one of those
 // is global, meaning it will be the baseline in the parent of the grid.
-func (grid *GridLayout) SetBaselineRow(row int32) {
+func (grid *GridLayout) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.int            // out
 
@@ -216,7 +216,7 @@ func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
 
 // SetColumnSpacing sets the amount of space to insert between consecutive
 // columns.
-func (grid *GridLayout) SetColumnSpacing(spacing uint32) {
+func (grid *GridLayout) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -230,7 +230,7 @@ func (grid *GridLayout) SetColumnSpacing(spacing uint32) {
 
 // SetRowBaselinePosition sets how the baseline should be positioned on row of
 // the grid, in case that row is assigned more space than is requested.
-func (grid *GridLayout) SetRowBaselinePosition(row int32, pos BaselinePosition) {
+func (grid *GridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	var _arg0 *C.GtkGridLayout      // out
 	var _arg1 C.int                 // out
 	var _arg2 C.GtkBaselinePosition // out
@@ -261,7 +261,7 @@ func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
 }
 
 // SetRowSpacing sets the amount of space to insert between consecutive rows.
-func (grid *GridLayout) SetRowSpacing(spacing uint32) {
+func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
 	var _arg1 C.guint          // out
 
@@ -293,7 +293,7 @@ func marshalGridLayoutChilder(p uintptr) (interface{}, error) {
 }
 
 // Column retrieves the column number to which child attaches its left side.
-func (child *GridLayoutChild) Column() int32 {
+func (child *GridLayoutChild) Column() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -302,15 +302,15 @@ func (child *GridLayoutChild) Column() int32 {
 	_cret = C.gtk_grid_layout_child_get_column(_arg0)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // ColumnSpan retrieves the number of columns that child spans to.
-func (child *GridLayoutChild) ColumnSpan() int32 {
+func (child *GridLayoutChild) ColumnSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -319,15 +319,15 @@ func (child *GridLayoutChild) ColumnSpan() int32 {
 	_cret = C.gtk_grid_layout_child_get_column_span(_arg0)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // Row retrieves the row number to which child attaches its top side.
-func (child *GridLayoutChild) Row() int32 {
+func (child *GridLayoutChild) Row() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -336,15 +336,15 @@ func (child *GridLayoutChild) Row() int32 {
 	_cret = C.gtk_grid_layout_child_get_row(_arg0)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // RowSpan retrieves the number of rows that child spans to.
-func (child *GridLayoutChild) RowSpan() int32 {
+func (child *GridLayoutChild) RowSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _cret C.int                 // in
 
@@ -353,15 +353,15 @@ func (child *GridLayoutChild) RowSpan() int32 {
 	_cret = C.gtk_grid_layout_child_get_row_span(_arg0)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // SetColumn sets the column number to attach the left side of child.
-func (child *GridLayoutChild) SetColumn(column int32) {
+func (child *GridLayoutChild) SetColumn(column int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -374,7 +374,7 @@ func (child *GridLayoutChild) SetColumn(column int32) {
 }
 
 // SetColumnSpan sets the number of columns child spans to.
-func (child *GridLayoutChild) SetColumnSpan(span int32) {
+func (child *GridLayoutChild) SetColumnSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -387,7 +387,7 @@ func (child *GridLayoutChild) SetColumnSpan(span int32) {
 }
 
 // SetRow sets the row to place child in.
-func (child *GridLayoutChild) SetRow(row int32) {
+func (child *GridLayoutChild) SetRow(row int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 
@@ -400,7 +400,7 @@ func (child *GridLayoutChild) SetRow(row int32) {
 }
 
 // SetRowSpan sets the number of rows child spans to.
-func (child *GridLayoutChild) SetRowSpan(span int32) {
+func (child *GridLayoutChild) SetRowSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
 	var _arg1 C.int                 // out
 

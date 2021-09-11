@@ -111,16 +111,21 @@ func ListVisuals() []Visual {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func QueryDepths() []int32 {
+func QueryDepths() []int {
 	var _arg1 *C.gint // in
 	var _arg2 C.gint  // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 
-	var _depths []int32 // out
+	var _depths []int // out
 
-	_depths = make([]int32, _arg2)
-	copy(_depths, unsafe.Slice((*int32)(unsafe.Pointer(_arg1)), _arg2))
+	{
+		src := unsafe.Slice(_arg1, _arg2)
+		_depths = make([]int, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_depths[i] = int(src[i])
+		}
+	}
 
 	return _depths
 }
@@ -176,7 +181,7 @@ func marshalVisualer(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to learn
 // about the pixel layout of TrueColor and DirectColor visuals.
-func (visual *Visual) BitsPerRGB() int32 {
+func (visual *Visual) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -185,9 +190,9 @@ func (visual *Visual) BitsPerRGB() int32 {
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -198,7 +203,7 @@ func (visual *Visual) BitsPerRGB() int32 {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -209,13 +214,13 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision in
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -248,7 +253,7 @@ func (visual *Visual) ByteOrder() ByteOrder {
 //
 // Deprecated: This information is not useful, since GDK does not provide APIs
 // to operate on colormaps.
-func (visual *Visual) ColormapSize() int32 {
+func (visual *Visual) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -257,15 +262,15 @@ func (visual *Visual) ColormapSize() int32 {
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // Depth returns the bit depth of this visual.
-func (visual *Visual) Depth() int32 {
+func (visual *Visual) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -274,9 +279,9 @@ func (visual *Visual) Depth() int32 {
 	_cret = C.gdk_visual_get_depth(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -287,7 +292,7 @@ func (visual *Visual) Depth() int32 {
 // primary for it to be in position (according to the "mask"). Finally,
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
-func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -298,13 +303,13 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision i
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -314,7 +319,7 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision i
 // pixel. The “shift” is the number of bits left we must shift a primary for it
 // to be in position (according to the "mask"). Finally, "precision" refers to
 // how much precision the pixel value contains for a particular primary.
-func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -325,13 +330,13 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -393,14 +398,14 @@ func VisualGetBest() *Visual {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualGetBestDepth() int32 {
+func VisualGetBestDepth() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_best_depth()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -427,7 +432,7 @@ func VisualGetBestType() VisualType {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualGetBestWithBoth(depth int32, visualType VisualType) *Visual {
+func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	var _arg1 C.gint          // out
 	var _arg2 C.GdkVisualType // out
 	var _cret *C.GdkVisual    // in
@@ -455,7 +460,7 @@ func VisualGetBestWithBoth(depth int32, visualType VisualType) *Visual {
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualGetBestWithDepth(depth int32) *Visual {
+func VisualGetBestWithDepth(depth int) *Visual {
 	var _arg1 C.gint       // out
 	var _cret *C.GdkVisual // in
 

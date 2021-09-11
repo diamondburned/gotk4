@@ -145,7 +145,7 @@ func (self *TreeListModel) Autoexpand() bool {
 // returned.
 //
 // Do not confuse this function with gtk.TreeListModel.GetRow().
-func (self *TreeListModel) ChildRow(position uint32) *TreeListRow {
+func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
@@ -224,7 +224,7 @@ func (self *TreeListModel) Passthrough() bool {
 // g_list_model_get_item().
 //
 // Do not confuse this function with gtk.TreeListModel.GetChildRow().
-func (self *TreeListModel) Row(position uint32) *TreeListRow {
+func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
@@ -293,7 +293,7 @@ func marshalTreeListRower(p uintptr) (interface{}, error) {
 
 // ChildRow: if self is not expanded or position is greater than the number of
 // children, NULL is returned.
-func (self *TreeListRow) ChildRow(position uint32) *TreeListRow {
+func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkTreeListRow // in
@@ -345,7 +345,7 @@ func (self *TreeListRow) Children() gio.ListModeller {
 // depth of 1 and so on.
 //
 // The depth of a row never changes until the row is destroyed.
-func (self *TreeListRow) Depth() uint32 {
+func (self *TreeListRow) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
@@ -354,9 +354,9 @@ func (self *TreeListRow) Depth() uint32 {
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -426,7 +426,7 @@ func (self *TreeListRow) Parent() *TreeListRow {
 
 // Position returns the position in the GtkTreeListModel that self occupies at
 // the moment.
-func (self *TreeListRow) Position() uint32 {
+func (self *TreeListRow) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
@@ -435,9 +435,9 @@ func (self *TreeListRow) Position() uint32 {
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

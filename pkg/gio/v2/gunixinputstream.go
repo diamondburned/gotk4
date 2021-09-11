@@ -73,7 +73,7 @@ func marshalUnixInputStreamer(p uintptr) (interface{}, error) {
 //
 // If close_fd is TRUE, the file descriptor will be closed when the stream is
 // closed.
-func NewUnixInputStream(fd int32, closeFd bool) *UnixInputStream {
+func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 	var _arg1 C.gint          // out
 	var _arg2 C.gboolean      // out
 	var _cret *C.GInputStream // in
@@ -115,7 +115,7 @@ func (stream *UnixInputStream) CloseFd() bool {
 }
 
 // Fd: return the UNIX file descriptor that the stream reads from.
-func (stream *UnixInputStream) Fd() int32 {
+func (stream *UnixInputStream) Fd() int {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gint              // in
 
@@ -124,9 +124,9 @@ func (stream *UnixInputStream) Fd() int32 {
 	_cret = C.g_unix_input_stream_get_fd(_arg0)
 	runtime.KeepAlive(stream)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

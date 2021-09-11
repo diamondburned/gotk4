@@ -308,15 +308,23 @@ func ReturnIsVoid(ret *gir.ReturnValue) bool {
 	return ret == nil || (ret != nil && AnyTypeIsVoid(ret.AnyType))
 }
 
+// noCasting contains types that must not be casted, usually because its
+// equivalent type in Go has a different size and/or structure altogether.
+var noCasting = map[string]struct{}{
+	// C.uint and C.int have different sizes in Go.
+	"gint":     {},
+	"guint":    {},
+	"utf8":     {},
+	"filename": {},
+}
+
 // girToBuiltin maps the given GIR primitive type to a Go builtin type.
 var girToBuiltin = map[string]string{
 	"none":     "",
 	"gboolean": "bool",
 	"gfloat":   "float32",
 	"gdouble":  "float64",
-	// C.uint and C.int have different sizes in Go. We must rely on the
-	// guarantee that sizeof(int) == 4.
-	"gint":     "int32",
+	"gint":     "int",
 	"gssize":   "int",
 	"gint8":    "int8",
 	"gint16":   "int16",
@@ -325,7 +333,7 @@ var girToBuiltin = map[string]string{
 	"glong":    "int32",
 	"int32":    "int32",
 	"gint64":   "int64",
-	"guint":    "uint32",
+	"guint":    "uint",
 	"gsize":    "uint",
 	"guchar":   "byte",
 	"gchar":    "byte",

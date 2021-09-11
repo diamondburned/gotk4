@@ -41,15 +41,15 @@ type Popupper interface {
 	// Parent returns the parent surface of a popup.
 	Parent() Surfacer
 	// PositionX obtains the position of the popup relative to its parent.
-	PositionX() int32
+	PositionX() int
 	// PositionY obtains the position of the popup relative to its parent.
-	PositionY() int32
+	PositionY() int
 	// RectAnchor gets the current popup rectangle anchor.
 	RectAnchor() Gravity
 	// SurfaceAnchor gets the current popup surface anchor.
 	SurfaceAnchor() Gravity
 	// Present popup after having processed the PopupLayout rules.
-	Present(width int32, height int32, layout *PopupLayout) bool
+	Present(width int, height int, layout *PopupLayout) bool
 }
 
 var _ Popupper = (*Popup)(nil)
@@ -105,7 +105,7 @@ func (popup *Popup) Parent() Surfacer {
 }
 
 // PositionX obtains the position of the popup relative to its parent.
-func (popup *Popup) PositionX() int32 {
+func (popup *Popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -114,15 +114,15 @@ func (popup *Popup) PositionX() int32 {
 	_cret = C.gdk_popup_get_position_x(_arg0)
 	runtime.KeepAlive(popup)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // PositionY obtains the position of the popup relative to its parent.
-func (popup *Popup) PositionY() int32 {
+func (popup *Popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -131,9 +131,9 @@ func (popup *Popup) PositionY() int32 {
 	_cret = C.gdk_popup_get_position_y(_arg0)
 	runtime.KeepAlive(popup)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -193,7 +193,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 // Presenting may fail, for example if the popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
 // gdk.Surface::layout signal will not me emitted.
-func (popup *Popup) Present(width int32, height int32, layout *PopupLayout) bool {
+func (popup *Popup) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

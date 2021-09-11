@@ -429,20 +429,20 @@ type MenuModelOverrider interface {
 	//
 	// If the attribute does not exist, or does not match the expected type then
 	// NULL is returned.
-	ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
-	ItemAttributes(itemIndex int32) map[string]glib.Variant
+	ItemAttributes(itemIndex int) map[string]glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//
 	// If the link exists, the linked Model is returned. If the link does not
 	// exist, NULL is returned.
-	ItemLink(itemIndex int32, link string) MenuModeller
+	ItemLink(itemIndex int, link string) MenuModeller
 	// ItemLinks gets all the links associated with the item in the menu model.
-	ItemLinks(itemIndex int32) map[string]MenuModeller
+	ItemLinks(itemIndex int) map[string]MenuModeller
 	// NItems: query the number of items in model.
-	NItems() int32
+	NItems() int
 	// IsMutable queries if model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
@@ -452,12 +452,12 @@ type MenuModelOverrider interface {
 	// attributes of the item at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
-	IterateItemAttributes(itemIndex int32) MenuAttributeIterer
+	IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
 	// at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
-	IterateItemLinks(itemIndex int32) MenuLinkIterer
+	IterateItemLinks(itemIndex int) MenuLinkIterer
 }
 
 // MenuModel represents the contents of a menu -- an ordered list of menu items.
@@ -593,23 +593,23 @@ type MenuModeller interface {
 
 	// ItemAttributeValue queries the item at position item_index in model for
 	// the attribute specified by attribute.
-	ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
-	ItemLink(itemIndex int32, link string) MenuModeller
+	ItemLink(itemIndex int, link string) MenuModeller
 	// NItems: query the number of items in model.
-	NItems() int32
+	NItems() int
 	// IsMutable queries if model is mutable.
 	IsMutable() bool
 	// ItemsChanged requests emission of the Model::items-changed signal on
 	// model.
-	ItemsChanged(position int32, removed int32, added int32)
+	ItemsChanged(position int, removed int, added int)
 	// IterateItemAttributes creates a AttributeIter to iterate over the
 	// attributes of the item at position item_index in model.
-	IterateItemAttributes(itemIndex int32) MenuAttributeIterer
+	IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
 	// at position item_index in model.
-	IterateItemLinks(itemIndex int32) MenuLinkIterer
+	IterateItemLinks(itemIndex int) MenuLinkIterer
 }
 
 var _ MenuModeller = (*MenuModel)(nil)
@@ -637,7 +637,7 @@ func marshalMenuModeller(p uintptr) (interface{}, error) {
 //
 // If the attribute does not exist, or does not match the expected type then
 // NULL is returned.
-func (model *MenuModel) ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant {
+func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
 	var _arg2 *C.gchar        // out
@@ -678,7 +678,7 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int32, attribute string, ex
 //
 // If the link exists, the linked Model is returned. If the link does not exist,
 // NULL is returned.
-func (model *MenuModel) ItemLink(itemIndex int32, link string) MenuModeller {
+func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -704,7 +704,7 @@ func (model *MenuModel) ItemLink(itemIndex int32, link string) MenuModeller {
 }
 
 // NItems: query the number of items in model.
-func (model *MenuModel) NItems() int32 {
+func (model *MenuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
 
@@ -713,9 +713,9 @@ func (model *MenuModel) NItems() int32 {
 	_cret = C.g_menu_model_get_n_items(_arg0)
 	runtime.KeepAlive(model)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -757,7 +757,7 @@ func (model *MenuModel) IsMutable() bool {
 // not in response to calls -- particularly those from the Model API. Said
 // another way: the menu must not change while user code is running without
 // returning to the mainloop.
-func (model *MenuModel) ItemsChanged(position int32, removed int32, added int32) {
+func (model *MenuModel) ItemsChanged(position int, removed int, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
@@ -779,7 +779,7 @@ func (model *MenuModel) ItemsChanged(position int32, removed int32, added int32)
 // of the item at position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
-func (model *MenuModel) IterateItemAttributes(itemIndex int32) MenuAttributeIterer {
+func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
 	var _cret *C.GMenuAttributeIter // in
@@ -802,7 +802,7 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int32) MenuAttributeIter
 // position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
-func (model *MenuModel) IterateItemLinks(itemIndex int32) MenuLinkIterer {
+func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GMenuLinkIter // in

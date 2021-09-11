@@ -132,7 +132,7 @@ func (self *SingleSelection) Model() gio.ListModeller {
 // Selected gets the position of the selected item.
 //
 // If no item is selected, GTK_INVALID_LIST_POSITION is returned.
-func (self *SingleSelection) Selected() uint32 {
+func (self *SingleSelection) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
 
@@ -141,9 +141,9 @@ func (self *SingleSelection) Selected() uint32 {
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -230,7 +230,7 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 // gtk.SingleSelection:autoselect property: If it is set, no change will occur
 // and the old item will stay selected. If it is unset, the selection will be
 // unset and no item will be selected.
-func (self *SingleSelection) SetSelected(position uint32) {
+func (self *SingleSelection) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
 

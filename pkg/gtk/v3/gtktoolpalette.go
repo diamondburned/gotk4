@@ -223,7 +223,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 }
 
 // DropGroup gets the group at position (x, y).
-func (palette *ToolPalette) DropGroup(x int32, y int32) *ToolItemGroup {
+func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 C.gint              // out
 	var _arg2 C.gint              // out
@@ -249,7 +249,7 @@ func (palette *ToolPalette) DropGroup(x int32, y int32) *ToolItemGroup {
 
 // DropItem gets the item at position (x, y). See
 // gtk_tool_palette_get_drop_group().
-func (palette *ToolPalette) DropItem(x int32, y int32) *ToolItem {
+func (palette *ToolPalette) DropItem(x int, y int) *ToolItem {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out
@@ -321,7 +321,7 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 
 // GroupPosition gets the position of group in palette as index. See
 // gtk_tool_palette_set_group_position().
-func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int32 {
+func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
 	var _cret C.gint              // in
@@ -333,9 +333,9 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int32 {
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -361,7 +361,7 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 // IconSize gets the size of icons in the tool palette. See
 // gtk_tool_palette_set_icon_size().
-func (palette *ToolPalette) IconSize() int32 {
+func (palette *ToolPalette) IconSize() int {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret C.GtkIconSize     // in
 
@@ -370,9 +370,9 @@ func (palette *ToolPalette) IconSize() int32 {
 	_cret = C.gtk_tool_palette_get_icon_size(_arg0)
 	runtime.KeepAlive(palette)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -468,7 +468,7 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 // SetGroupPosition sets the position of the group as an index of the tool
 // palette. If position is 0 the group will become the first child, if position
 // is -1 it will become the last child.
-func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int32) {
+func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
 	var _arg2 C.gint              // out
@@ -484,7 +484,7 @@ func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int3
 }
 
 // SetIconSize sets the size of icons in the tool palette.
-func (palette *ToolPalette) SetIconSize(iconSize int32) {
+func (palette *ToolPalette) SetIconSize(iconSize int) {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.GtkIconSize     // out
 

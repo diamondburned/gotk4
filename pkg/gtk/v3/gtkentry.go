@@ -68,12 +68,12 @@ type EntryOverrider interface {
 	Backspace()
 	CopyClipboard()
 	CutClipboard()
-	DeleteFromCursor(typ DeleteType, count int32)
-	FrameSize(x *int32, y *int32, width *int32, height *int32)
-	TextAreaSize(x *int32, y *int32, width *int32, height *int32)
+	DeleteFromCursor(typ DeleteType, count int)
+	FrameSize(x *int, y *int, width *int, height *int)
+	TextAreaSize(x *int, y *int, width *int, height *int)
 	InsertAtCursor(str string)
 	InsertEmoji()
-	MoveCursor(step MovementStep, count int32, extendSelection bool)
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
 	PopulatePopup(popup Widgetter)
 	ToggleOverwrite()
@@ -327,7 +327,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 // the current DND operation, or -1.
 //
 // This function is meant to be used in a Widget::drag-data-get callback.
-func (entry *Entry) CurrentIconDragSource() int32 {
+func (entry *Entry) CurrentIconDragSource() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -336,9 +336,9 @@ func (entry *Entry) CurrentIconDragSource() int32 {
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -435,7 +435,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 // position’s coordinates are relative to the entry’s top left corner. If x, y
 // doesn’t lie inside an icon, -1 is returned. This function is intended for use
 // in a Widget::query-tooltip signal handler.
-func (entry *Entry) IconAtPos(x int32, y int32) int32 {
+func (entry *Entry) IconAtPos(x int, y int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -450,9 +450,9 @@ func (entry *Entry) IconAtPos(x int32, y int32) int32 {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -781,7 +781,7 @@ func (entry *Entry) Layout() *pango.Layout {
 // gtk_entry_layout_index_to_text_index() and
 // gtk_entry_text_index_to_layout_index() are needed to convert byte indices in
 // the layout to byte indices in the entry contents.
-func (entry *Entry) LayoutOffsets() (x int32, y int32) {
+func (entry *Entry) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -791,11 +791,11 @@ func (entry *Entry) LayoutOffsets() (x int32, y int32) {
 	C.gtk_entry_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(entry)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -805,7 +805,7 @@ func (entry *Entry) LayoutOffsets() (x int32, y int32) {
 //
 // This is equivalent to getting entry's EntryBuffer and calling
 // gtk_entry_buffer_get_max_length() on it.
-func (entry *Entry) MaxLength() int32 {
+func (entry *Entry) MaxLength() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -814,16 +814,16 @@ func (entry *Entry) MaxLength() int32 {
 	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MaxWidthChars retrieves the desired maximum width of entry, in characters.
 // See gtk_entry_set_max_width_chars().
-func (entry *Entry) MaxWidthChars() int32 {
+func (entry *Entry) MaxWidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -832,9 +832,9 @@ func (entry *Entry) MaxWidthChars() int32 {
 	_cret = C.gtk_entry_get_max_width_chars(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1016,7 +1016,7 @@ func (entry *Entry) Visibility() bool {
 }
 
 // WidthChars gets the value set by gtk_entry_set_width_chars().
-func (entry *Entry) WidthChars() int32 {
+func (entry *Entry) WidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -1025,9 +1025,9 @@ func (entry *Entry) WidthChars() int32 {
 	_cret = C.gtk_entry_get_width_chars(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1081,7 +1081,7 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 // LayoutIndexToTextIndex converts from a position in the entry’s Layout
 // (returned by gtk_entry_get_layout()) to a position in the entry contents
 // (returned by gtk_entry_get_text()).
-func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
+func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -1093,9 +1093,9 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(layoutIndex)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1539,7 +1539,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //
 // This is equivalent to getting entry's EntryBuffer and calling
 // gtk_entry_buffer_set_max_length() on it. ]|
-func (entry *Entry) SetMaxLength(max int32) {
+func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -1552,7 +1552,7 @@ func (entry *Entry) SetMaxLength(max int32) {
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of entry.
-func (entry *Entry) SetMaxWidthChars(nChars int32) {
+func (entry *Entry) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -1692,7 +1692,7 @@ func (entry *Entry) SetVisibility(visible bool) {
 // size for n_chars characters. Note that it changes the size request, the size
 // can still be affected by how you pack the widget into containers. If n_chars
 // is -1, the size reverts to the default entry size.
-func (entry *Entry) SetWidthChars(nChars int32) {
+func (entry *Entry) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -1708,7 +1708,7 @@ func (entry *Entry) SetWidthChars(nChars int32) {
 // (returned by gtk_entry_get_text()) to a position in the entry’s Layout
 // (returned by gtk_entry_get_layout(), with text retrieved via
 // pango_layout_get_text()).
-func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
+func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -1720,9 +1720,9 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(textIndex)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

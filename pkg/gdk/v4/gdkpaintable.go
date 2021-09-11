@@ -124,7 +124,7 @@ type PaintableOverrider interface {
 	//
 	// If the paintable does not have a preferred height, it returns 0. Negative
 	// values are never returned.
-	IntrinsicHeight() int32
+	IntrinsicHeight() int
 	// IntrinsicWidth gets the preferred width the paintable would like to be
 	// displayed at.
 	//
@@ -136,7 +136,7 @@ type PaintableOverrider interface {
 	//
 	// If the paintable does not have a preferred width, it returns 0. Negative
 	// values are never returned.
-	IntrinsicWidth() int32
+	IntrinsicWidth() int
 	// Snapshot snapshots the given paintable with the given width and height.
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
@@ -208,10 +208,10 @@ type Paintabler interface {
 	IntrinsicAspectRatio() float64
 	// IntrinsicHeight gets the preferred height the paintable would like to be
 	// displayed at.
-	IntrinsicHeight() int32
+	IntrinsicHeight() int
 	// IntrinsicWidth gets the preferred width the paintable would like to be
 	// displayed at.
-	IntrinsicWidth() int32
+	IntrinsicWidth() int
 	// InvalidateContents: called by implementations of GdkPaintable to
 	// invalidate their contents.
 	InvalidateContents()
@@ -365,7 +365,7 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 //
 // If the paintable does not have a preferred height, it returns 0. Negative
 // values are never returned.
-func (paintable *Paintable) IntrinsicHeight() int32 {
+func (paintable *Paintable) IntrinsicHeight() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
 
@@ -374,9 +374,9 @@ func (paintable *Paintable) IntrinsicHeight() int32 {
 	_cret = C.gdk_paintable_get_intrinsic_height(_arg0)
 	runtime.KeepAlive(paintable)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -392,7 +392,7 @@ func (paintable *Paintable) IntrinsicHeight() int32 {
 //
 // If the paintable does not have a preferred width, it returns 0. Negative
 // values are never returned.
-func (paintable *Paintable) IntrinsicWidth() int32 {
+func (paintable *Paintable) IntrinsicWidth() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
 
@@ -401,9 +401,9 @@ func (paintable *Paintable) IntrinsicWidth() int32 {
 	_cret = C.gdk_paintable_get_intrinsic_width(_arg0)
 	runtime.KeepAlive(paintable)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -475,7 +475,7 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 // PaintableInterface.get_current_image() virtual function when the paintable is
 // in an incomplete state (like a gtk.MediaStream before receiving the first
 // frame).
-func NewPaintableEmpty(intrinsicWidth int32, intrinsicHeight int32) Paintabler {
+func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret *C.GdkPaintable // in

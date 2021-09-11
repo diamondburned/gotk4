@@ -34,7 +34,7 @@ func init() {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int32) (value externglib.Value)
+type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int) (value externglib.Value)
 
 //export _gotk4_gtk3_TreeModelFilterModifyFunc
 func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
@@ -45,7 +45,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 
 	var model TreeModeller // out
 	var iter *TreeIter     // out
-	var column int32       // out
+	var column int         // out
 
 	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
@@ -55,7 +55,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
 		},
 	)
-	column = int32(arg3)
+	column = int(arg3)
 
 	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column)
@@ -101,7 +101,7 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
-	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int32)
+	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
 	Visible(childModel TreeModeller, iter *TreeIter) bool
 }
 
@@ -390,7 +390,7 @@ func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeMod
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
-func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
+func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.gint                // out
 

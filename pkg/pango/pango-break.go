@@ -20,7 +20,7 @@ import "C"
 // For most purposes you may want to use pango_get_log_attrs().
 //
 // Deprecated: Use pango_default_break() and pango_tailor_break().
-func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
@@ -54,7 +54,7 @@ func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
 // analyis argument is unused and can be NULL.
 //
 // See pango_tailor_break() for language-specific breaks.
-func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr, attrsLen int32) {
+func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
@@ -89,7 +89,7 @@ func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr,
 // If no delimiters are found, both paragraph_delimiter_index and
 // next_paragraph_start are filled with the length of text (an index one off the
 // end).
-func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex int32, nextParagraphStart int32) {
+func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _arg3 C.gint   // in
@@ -103,11 +103,11 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex i
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
-	var _paragraphDelimiterIndex int32 // out
-	var _nextParagraphStart int32      // out
+	var _paragraphDelimiterIndex int // out
+	var _nextParagraphStart int      // out
 
-	_paragraphDelimiterIndex = int32(_arg3)
-	_nextParagraphStart = int32(_arg4)
+	_paragraphDelimiterIndex = int(_arg3)
+	_nextParagraphStart = int(_arg4)
 
 	return _paragraphDelimiterIndex, _nextParagraphStart
 }
@@ -119,7 +119,7 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex i
 // at the end of the text. text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
-func GetLogAttrs(text string, length int32, level int32, language *Language, logAttrs []LogAttr) {
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
@@ -156,7 +156,7 @@ func GetLogAttrs(text string, length int32, level int32, language *Language, log
 //
 // If offset is not -1, it is used to apply attributes from analysis that are
 // relevant to line breaking.
-func TailorBreak(text string, length int32, analysis *Analysis, offset int32, logAttrs []LogAttr) {
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out

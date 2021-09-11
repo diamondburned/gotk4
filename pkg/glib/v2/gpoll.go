@@ -36,7 +36,7 @@ func init() {
 // descriptor, but the situation is much more complicated on Windows. If you
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
-func Poll(fds *PollFD, nfds uint32, timeout int32) int32 {
+func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var _arg1 *C.GPollFD // out
 	var _arg2 C.guint    // out
 	var _arg3 C.gint     // out
@@ -51,9 +51,9 @@ func Poll(fds *PollFD, nfds uint32, timeout int32) int32 {
 	runtime.KeepAlive(nfds)
 	runtime.KeepAlive(timeout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -78,7 +78,7 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 
 // NewPollFD creates a new PollFD instance from the given
 // fields.
-func NewPollFD(fd int32, events, revents uint16) PollFD {
+func NewPollFD(fd int, events, revents uint16) PollFD {
 	var f0 C.gint // out
 	f0 = C.gint(fd)
 	var f1 C.gushort // out
@@ -96,9 +96,9 @@ func NewPollFD(fd int32, events, revents uint16) PollFD {
 }
 
 // Fd: file descriptor to poll (or a HANDLE on Win32)
-func (p *PollFD) Fd() int32 {
-	var v int32 // out
-	v = int32(p.native.fd)
+func (p *PollFD) Fd() int {
+	var v int // out
+	v = int(p.native.fd)
 	return v
 }
 

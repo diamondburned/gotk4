@@ -142,7 +142,7 @@ func (layout *Layout) HAdjustment() *Adjustment {
 
 // Size gets the size that has been set on the layout, and that determines the
 // total extents of the layout’s scrollbar area. See gtk_layout_set_size ().
-func (layout *Layout) Size() (width uint32, height uint32) {
+func (layout *Layout) Size() (width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
@@ -152,11 +152,11 @@ func (layout *Layout) Size() (width uint32, height uint32) {
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _width uint32  // out
-	var _height uint32 // out
+	var _width uint  // out
+	var _height uint // out
 
-	_width = uint32(_arg1)
-	_height = uint32(_arg2)
+	_width = uint(_arg1)
+	_height = uint(_arg2)
 
 	return _width, _height
 }
@@ -186,7 +186,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of layout to a new position.
-func (layout *Layout) Move(childWidget Widgetter, x int32, y int32) {
+func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -206,7 +206,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int32, y int32) {
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
 // parent container of child_widget.
-func (layout *Layout) Put(childWidget Widgetter, x int32, y int32) {
+func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -244,7 +244,7 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 }
 
 // SetSize sets the size of the scrollable area of the layout.
-func (layout *Layout) SetSize(width uint32, height uint32) {
+func (layout *Layout) SetSize(width uint, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

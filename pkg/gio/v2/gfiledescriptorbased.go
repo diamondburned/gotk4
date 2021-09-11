@@ -36,7 +36,7 @@ func init() {
 // yet, so the interface currently has no use.
 type FileDescriptorBasedOverrider interface {
 	// Fd gets the underlying file descriptor.
-	Fd() int32
+	Fd() int
 }
 
 // FileDescriptorBased is implemented by streams (implementations of Stream or
@@ -54,7 +54,7 @@ type FileDescriptorBasedder interface {
 	externglib.Objector
 
 	// Fd gets the underlying file descriptor.
-	Fd() int32
+	Fd() int
 }
 
 var _ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
@@ -72,7 +72,7 @@ func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
 }
 
 // Fd gets the underlying file descriptor.
-func (fdBased *FileDescriptorBased) Fd() int32 {
+func (fdBased *FileDescriptorBased) Fd() int {
 	var _arg0 *C.GFileDescriptorBased // out
 	var _cret C.int                   // in
 
@@ -81,9 +81,9 @@ func (fdBased *FileDescriptorBased) Fd() int32 {
 	_cret = C.g_file_descriptor_based_get_fd(_arg0)
 	runtime.KeepAlive(fdBased)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

@@ -67,7 +67,7 @@ func CairoCreate(window Windower) *cairo.Context {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr *cairo.Context, window Windower, source int32, sourceType int32, bufferScale int32, x int32, y int32, width int32, height int32) {
+func CairoDrawFromGL(cr *cairo.Context, window Windower, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.int        // out
@@ -275,7 +275,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x float64, y float
 
 // CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
 // as the pixbuf.
-func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWindow Windower) *cairo.Surface {
+func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out
 	var _arg2 C.int              // out
 	var _arg3 *C.GdkWindow       // out

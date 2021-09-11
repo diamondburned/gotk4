@@ -560,7 +560,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int32, y int32) *Cursor {
+func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out

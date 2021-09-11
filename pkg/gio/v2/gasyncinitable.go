@@ -76,7 +76,7 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
 	InitFinish(res AsyncResulter) error
@@ -189,7 +189,7 @@ type AsyncInitabler interface {
 
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface.
-	InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
@@ -247,7 +247,7 @@ func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 // thread, so if you want to support asynchronous initialization via threads,
 // just implement the Initable interface without overriding any interface
 // methods.
-func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

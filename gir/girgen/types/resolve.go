@@ -341,8 +341,15 @@ func (typ *Resolved) IsContainerBuiltin() bool {
 // CanCast returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
 func (typ *Resolved) CanCast(gen FileGenerator) bool {
+	if typ.IsPrimitive() {
+		// Only allow casting if the type has the same size as the Go or C
+		// equivalent.
+		_, ok := noCasting[typ.GType]
+		return !ok
+	}
+
 	// We can only directly cast the struct if it only contains primitives.
-	return typ.IsPrimitive() || (typ.IsRecord() && !typ.HasPointer(gen))
+	return typ.IsRecord() && !typ.HasPointer(gen)
 }
 
 // IsBuiltin is a convenient function to compare the builtin type.

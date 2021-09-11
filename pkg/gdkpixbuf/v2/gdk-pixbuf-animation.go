@@ -68,7 +68,7 @@ type PixbufAnimationOverrider interface {
 	//
 	// A delay time of -1 is possible, indicating "infinite".
 	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
-	Size(width *int32, height *int32)
+	Size(width *int, height *int)
 	// StaticImage retrieves a static image for the animation.
 	//
 	// If an animation is really just a plain image (has only one frame), this
@@ -248,7 +248,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 }
 
 // Height queries the height of the bounding box of a pixbuf animation.
-func (animation *PixbufAnimation) Height() int32 {
+func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
@@ -257,9 +257,9 @@ func (animation *PixbufAnimation) Height() int32 {
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 	runtime.KeepAlive(animation)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -342,7 +342,7 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 }
 
 // Width queries the width of the bounding box of a pixbuf animation.
-func (animation *PixbufAnimation) Width() int32 {
+func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
@@ -351,9 +351,9 @@ func (animation *PixbufAnimation) Width() int32 {
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 	runtime.KeepAlive(animation)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -448,7 +448,7 @@ type PixbufAnimationIterOverrider interface {
 	// Note that some formats, like GIF, might clamp the timeout values in the
 	// image file to avoid updates that are just too quick. The minimum timeout
 	// for GIF images is currently 20 milliseconds.
-	DelayTime() int32
+	DelayTime() int
 	// Pixbuf gets the current pixbuf which should be displayed.
 	//
 	// The pixbuf might not be the same size as the animation itself
@@ -543,7 +543,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // Note that some formats, like GIF, might clamp the timeout values in the image
 // file to avoid updates that are just too quick. The minimum timeout for GIF
 // images is currently 20 milliseconds.
-func (iter *PixbufAnimationIter) DelayTime() int32 {
+func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
 
@@ -552,9 +552,9 @@ func (iter *PixbufAnimationIter) DelayTime() int32 {
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

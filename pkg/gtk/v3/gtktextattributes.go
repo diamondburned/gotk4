@@ -51,9 +51,9 @@ func (t *TextAppearance) FgColor() gdk.Color {
 }
 
 // Rise: super/subscript rise, can be negative.
-func (t *TextAppearance) Rise() int32 {
-	var v int32 // out
-	v = int32(t.native.rise)
+func (t *TextAppearance) Rise() int {
+	var v int // out
+	v = int(t.native.rise)
 	return v
 }
 
@@ -132,44 +132,44 @@ func (t *TextAttributes) FontScale() float64 {
 }
 
 // LeftMargin: width of the left margin in pixels.
-func (t *TextAttributes) LeftMargin() int32 {
-	var v int32 // out
-	v = int32(t.native.left_margin)
+func (t *TextAttributes) LeftMargin() int {
+	var v int // out
+	v = int(t.native.left_margin)
 	return v
 }
 
 // RightMargin: width of the right margin in pixels.
-func (t *TextAttributes) RightMargin() int32 {
-	var v int32 // out
-	v = int32(t.native.right_margin)
+func (t *TextAttributes) RightMargin() int {
+	var v int // out
+	v = int(t.native.right_margin)
 	return v
 }
 
 // Indent: amount to indent the paragraph, in pixels.
-func (t *TextAttributes) Indent() int32 {
-	var v int32 // out
-	v = int32(t.native.indent)
+func (t *TextAttributes) Indent() int {
+	var v int // out
+	v = int(t.native.indent)
 	return v
 }
 
 // PixelsAboveLines pixels of blank space above paragraphs.
-func (t *TextAttributes) PixelsAboveLines() int32 {
-	var v int32 // out
-	v = int32(t.native.pixels_above_lines)
+func (t *TextAttributes) PixelsAboveLines() int {
+	var v int // out
+	v = int(t.native.pixels_above_lines)
 	return v
 }
 
 // PixelsBelowLines pixels of blank space below paragraphs.
-func (t *TextAttributes) PixelsBelowLines() int32 {
-	var v int32 // out
-	v = int32(t.native.pixels_below_lines)
+func (t *TextAttributes) PixelsBelowLines() int {
+	var v int // out
+	v = int(t.native.pixels_below_lines)
 	return v
 }
 
 // PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
-func (t *TextAttributes) PixelsInsideWrap() int32 {
-	var v int32 // out
-	v = int32(t.native.pixels_inside_wrap)
+func (t *TextAttributes) PixelsInsideWrap() int {
+	var v int // out
+	v = int(t.native.pixels_inside_wrap)
 	return v
 }
 
@@ -195,9 +195,9 @@ func (t *TextAttributes) Language() *pango.Language {
 }
 
 // LetterSpacing: extra space to insert between graphemes, in Pango units
-func (t *TextAttributes) LetterSpacing() int32 {
-	var v int32 // out
-	v = int32(t.native.letter_spacing)
+func (t *TextAttributes) LetterSpacing() int {
+	var v int // out
+	v = int(t.native.letter_spacing)
 	return v
 }
 

@@ -270,7 +270,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 
 // ExitStatus gets the exit status of cmdline. See
 // g_application_command_line_set_exit_status() for more information.
-func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
+func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
 
@@ -279,9 +279,9 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 	runtime.KeepAlive(cmdline)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -449,7 +449,7 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 // non-zero value) then the application is considered to have been 'successful'
 // in a certain sense, and the exit status is always zero. If the application
 // use count is zero, though, the exit status of the local CommandLine is used.
-func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int32) {
+func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 

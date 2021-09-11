@@ -52,7 +52,7 @@ func marshalSliceListModeller(p uintptr) (interface{}, error) {
 // NewSliceListModel creates a new slice model.
 //
 // It presents the slice from offset to offset + size of the given model.
-func NewSliceListModel(model gio.ListModeller, offset uint32, size uint32) *SliceListModel {
+func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out
@@ -97,7 +97,7 @@ func (self *SliceListModel) Model() gio.ListModeller {
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
-func (self *SliceListModel) Offset() uint32 {
+func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -106,15 +106,15 @@ func (self *SliceListModel) Offset() uint32 {
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
-func (self *SliceListModel) Size() uint32 {
+func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -123,9 +123,9 @@ func (self *SliceListModel) Size() uint32 {
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -150,7 +150,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 // SetOffset sets the offset into the original model for this slice.
 //
 // If the offset is too large for the sliced model, self will end up empty.
-func (self *SliceListModel) SetOffset(offset uint32) {
+func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
@@ -166,7 +166,7 @@ func (self *SliceListModel) SetOffset(offset uint32) {
 //
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.
-func (self *SliceListModel) SetSize(size uint32) {
+func (self *SliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 

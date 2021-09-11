@@ -145,7 +145,7 @@ func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 }
 
 // CountSelectedRows returns the number of rows that have been selected in tree.
-func (selection *TreeSelection) CountSelectedRows() int32 {
+func (selection *TreeSelection) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.int               // in
 
@@ -154,9 +154,9 @@ func (selection *TreeSelection) CountSelectedRows() int32 {
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 	runtime.KeepAlive(selection)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

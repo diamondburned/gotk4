@@ -228,9 +228,9 @@ type Topleveller interface {
 	externglib.Objector
 
 	// BeginMove begins an interactive move operation.
-	BeginMove(device Devicer, button int32, x float64, y float64, timestamp uint32)
+	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
-	BeginResize(edge SurfaceEdge, device Devicer, button int32, x float64, y float64, timestamp uint32)
+	BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32)
 	// Focus sets keyboard focus to surface.
 	Focus(timestamp uint32)
 	// State gets the bitwise or of the currently active surface state flags,
@@ -288,7 +288,7 @@ func marshalTopleveller(p uintptr) (interface{}, error) {
 // BeginMove begins an interactive move operation.
 //
 // You might use this function to implement draggable titlebars.
-func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x float64, y float64, timestamp uint32) {
+func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkDevice   // out
 	var _arg2 C.int          // out
@@ -315,7 +315,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x float64, y f
 // BeginResize begins an interactive resize operation.
 //
 // You might use this function to implement a “window resize grip.”
-func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int32, x float64, y float64, timestamp uint32) {
+func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel   // out
 	var _arg1 C.GdkSurfaceEdge // out
 	var _arg2 *C.GdkDevice     // out

@@ -290,7 +290,7 @@ func (window *Window) Decorated() bool {
 // A value of 0 for the width or height indicates that a default size has not
 // been explicitly set for that dimension, so the “natural” size of the window
 // will be used.
-func (window *Window) DefaultSize() (width int32, height int32) {
+func (window *Window) DefaultSize() (width int, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
@@ -300,11 +300,11 @@ func (window *Window) DefaultSize() (width int32, height int32) {
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -878,7 +878,7 @@ func (window *Window) SetDecorated(setting bool) {
 // that the appropriate size to save is the one returned by
 // gtk.Window.GetDefaultSize(). Using the window allocation directly will not
 // work in all circumstances and can lead to growing or shrinking windows.
-func (window *Window) SetDefaultSize(width int32, height int32) {
+func (window *Window) SetDefaultSize(width int, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

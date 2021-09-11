@@ -451,7 +451,7 @@ func (self *Label) Layout() *pango.Layout {
 // the pango.Layout, e.g. to take some action if some part of the label is
 // clicked. Remember when using the pango.Layout functions you need to convert
 // to and from pixels using PANGO_PIXELS() or pango.SCALE.
-func (self *Label) LayoutOffsets() (x int32, y int32) {
+func (self *Label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
@@ -461,11 +461,11 @@ func (self *Label) LayoutOffsets() (x int32, y int32) {
 	C.gtk_label_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(self)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -474,7 +474,7 @@ func (self *Label) LayoutOffsets() (x int32, y int32) {
 // be limited.
 //
 // See gtk.Label.SetLines().
-func (self *Label) Lines() int32 {
+func (self *Label) Lines() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
 
@@ -483,9 +483,9 @@ func (self *Label) Lines() int32 {
 	_cret = C.gtk_label_get_lines(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -493,7 +493,7 @@ func (self *Label) Lines() int32 {
 // MaxWidthChars retrieves the desired maximum width of label, in characters.
 //
 // See gtk.Label.SetWidthChars().
-func (self *Label) MaxWidthChars() int32 {
+func (self *Label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
 
@@ -502,9 +502,9 @@ func (self *Label) MaxWidthChars() int32 {
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -514,7 +514,7 @@ func (self *Label) MaxWidthChars() int32 {
 // If the label has been set so that it has a mnemonic key this function returns
 // the keyval used for the mnemonic accelerator. If there is no mnemonic set up
 // it returns GDK_KEY_VoidSymbol.
-func (self *Label) MnemonicKeyval() uint32 {
+func (self *Label) MnemonicKeyval() uint {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.guint     // in
 
@@ -523,9 +523,9 @@ func (self *Label) MnemonicKeyval() uint32 {
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -572,7 +572,7 @@ func (self *Label) Selectable() bool {
 }
 
 // SelectionBounds gets the selected range of characters in the label.
-func (self *Label) SelectionBounds() (start int32, end int32, ok bool) {
+func (self *Label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
@@ -583,12 +583,12 @@ func (self *Label) SelectionBounds() (start int32, end int32, ok bool) {
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(self)
 
-	var _start int32 // out
-	var _end int32   // out
-	var _ok bool     // out
+	var _start int // out
+	var _end int   // out
+	var _ok bool   // out
 
-	_start = int32(_arg1)
-	_end = int32(_arg2)
+	_start = int(_arg1)
+	_end = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -682,7 +682,7 @@ func (self *Label) UseUnderline() bool {
 // WidthChars retrieves the desired width of label, in characters.
 //
 // See gtk.Label.SetWidthChars().
-func (self *Label) WidthChars() int32 {
+func (self *Label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.int       // in
 
@@ -691,9 +691,9 @@ func (self *Label) WidthChars() int32 {
 	_cret = C.gtk_label_get_width_chars(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -782,7 +782,7 @@ func (self *Label) YAlign() float32 {
 // See gtk.Label.SetSelectable(). If the label is not selectable, this function
 // has no effect. If start_offset or end_offset are -1, then the end of the
 // label will be substituted.
-func (self *Label) SelectRegion(startOffset int32, endOffset int32) {
+func (self *Label) SelectRegion(startOffset int, endOffset int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // out
 	var _arg2 C.int       // out
@@ -892,7 +892,7 @@ func (self *Label) SetLabel(str string) {
 //
 // This has no effect if the label is not wrapping or ellipsized. Set this to -1
 // if you don’t want to limit the number of lines.
-func (self *Label) SetLines(lines int32) {
+func (self *Label) SetLines(lines int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // out
 
@@ -966,7 +966,7 @@ func (self *Label) SetMarkupWithMnemonic(str string) {
 
 // SetMaxWidthChars sets the desired maximum width in characters of label to
 // n_chars.
-func (self *Label) SetMaxWidthChars(nChars int32) {
+func (self *Label) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // out
 
@@ -1116,7 +1116,7 @@ func (self *Label) SetUseUnderline(setting bool) {
 }
 
 // SetWidthChars sets the desired width in characters of label to n_chars.
-func (self *Label) SetWidthChars(nChars int32) {
+func (self *Label) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // out
 

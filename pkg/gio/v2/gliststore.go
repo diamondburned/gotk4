@@ -101,7 +101,7 @@ func (store *ListStore) Append(item *externglib.Object) {
 //
 // If you need to compare the two items with a custom comparison function, use
 // g_list_store_find_with_equal_func() with a custom Func instead.
-func (store *ListStore) Find(item *externglib.Object) (uint32, bool) {
+func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.guint       // in
@@ -114,10 +114,10 @@ func (store *ListStore) Find(item *externglib.Object) (uint32, bool) {
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
 
-	var _position uint32 // out
-	var _ok bool         // out
+	var _position uint // out
+	var _ok bool       // out
 
-	_position = uint32(_arg2)
+	_position = uint(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -133,7 +133,7 @@ func (store *ListStore) Find(item *externglib.Object) (uint32, bool) {
 //
 // Use g_list_store_splice() to insert multiple items at the same time
 // efficiently.
-func (store *ListStore) Insert(position uint32, item *externglib.Object) {
+func (store *ListStore) Insert(position uint, item *externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
@@ -156,7 +156,7 @@ func (store *ListStore) Insert(position uint32, item *externglib.Object) {
 // way of this function.
 //
 // This function takes a ref on item.
-func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.CompareDataFunc) uint32 {
+func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
 	var _arg2 C.GCompareDataFunc // out
@@ -174,9 +174,9 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(compareFunc)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -186,7 +186,7 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 //
 // Use g_list_store_splice() to remove multiple items at the same time
 // efficiently.
-func (store *ListStore) Remove(position uint32) {
+func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
@@ -237,7 +237,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 // The parameters position and n_removals must be correct (ie: position +
 // n_removals must be less than or equal to the length of the list at the time
 // this function is called).
-func (store *ListStore) Splice(position uint32, nRemovals uint32, additions []*externglib.Object) {
+func (store *ListStore) Splice(position uint, nRemovals uint, additions []*externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

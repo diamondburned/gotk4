@@ -54,7 +54,7 @@ import "C"
 //         g_source_remove (self->idle_id);
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
+func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.GSourceFunc // out
 	var _arg3 C.gpointer
@@ -70,9 +70,9 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -118,7 +118,7 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 //
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc) uint32 {
+func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.guint       // out
 	var _arg3 C.GSourceFunc // out
@@ -137,9 +137,9 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -147,7 +147,7 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 // ThreadsAddTimeoutSeconds: variant of gdk_threads_add_timeout_full() with
 // second-granularity. See g_timeout_add_seconds_full() for a discussion of why
 // it is a good idea to use this function if you don’t need finer granularity.
-func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.SourceFunc) uint32 {
+func ThreadsAddTimeoutSeconds(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.guint       // out
 	var _arg3 C.GSourceFunc // out
@@ -166,9 +166,9 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

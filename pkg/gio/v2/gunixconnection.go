@@ -176,7 +176,7 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 //
 // As well as reading the fd this also reads a single byte from the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int32, error) {
+func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret C.gint             // in
@@ -193,10 +193,10 @@ func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int32, error) 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -312,7 +312,7 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 //
 // As well as sending the fd this also writes a single byte to the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) SendFd(ctx context.Context, fd int32) error {
+func (connection *UnixConnection) SendFd(ctx context.Context, fd int) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg2 *C.GCancellable    // out
 	var _arg1 C.gint             // out

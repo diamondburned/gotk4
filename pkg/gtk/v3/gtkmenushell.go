@@ -37,12 +37,12 @@ type MenuShellOverrider interface {
 	//
 	// Typically this results in the menu shell being erased from the screen.
 	Deactivate()
-	PopupDelay() int32
+	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
-	Insert(child Widgetter, position int32)
+	Insert(child Widgetter, position int)
 	MoveCurrent(direction MenuDirectionType)
-	MoveSelected(distance int32) bool
+	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
 	SelectItem(menuItem Widgetter)
 	SelectionDone()
@@ -102,7 +102,7 @@ type MenuSheller interface {
 	TakeFocus() bool
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
-	Insert(child Widgetter, position int32)
+	Insert(child Widgetter, position int)
 	// Prepend adds a new MenuItem to the beginning of the menu shell's item
 	// list.
 	Prepend(child Widgetter)
@@ -319,7 +319,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position
 // indicated by position.
-func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
+func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out

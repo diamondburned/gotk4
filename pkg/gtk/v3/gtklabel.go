@@ -33,7 +33,7 @@ func init() {
 type LabelOverrider interface {
 	ActivateLink(uri string) bool
 	CopyClipboard()
-	MoveCursor(step MovementStep, count int32, extendSelection bool)
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PopulatePopup(menu *Menu)
 }
 
@@ -290,7 +290,7 @@ func (label *Label) Layout() *pango.Layout {
 // return FALSE from gtk_widget_get_has_window()). Remember when using the
 // Layout functions you need to convert to and from pixels using PANGO_PIXELS()
 // or NGO_SCALE.
-func (label *Label) LayoutOffsets() (x int32, y int32) {
+func (label *Label) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -300,11 +300,11 @@ func (label *Label) LayoutOffsets() (x int32, y int32) {
 	C.gtk_label_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(label)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -349,7 +349,7 @@ func (label *Label) LineWrapMode() pango.WrapMode {
 
 // Lines gets the number of lines to which an ellipsized, wrapping label should
 // be limited. See gtk_label_set_lines().
-func (label *Label) Lines() int32 {
+func (label *Label) Lines() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -358,16 +358,16 @@ func (label *Label) Lines() int32 {
 	_cret = C.gtk_label_get_lines(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MaxWidthChars retrieves the desired maximum width of label, in characters.
 // See gtk_label_set_width_chars().
-func (label *Label) MaxWidthChars() int32 {
+func (label *Label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -376,9 +376,9 @@ func (label *Label) MaxWidthChars() int32 {
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -386,7 +386,7 @@ func (label *Label) MaxWidthChars() int32 {
 // MnemonicKeyval: if the label has been set so that it has an mnemonic key this
 // function returns the keyval used for the mnemonic accelerator. If there is no
 // mnemonic set up it returns K_KEY_VoidSymbol.
-func (label *Label) MnemonicKeyval() uint32 {
+func (label *Label) MnemonicKeyval() uint {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.guint     // in
 
@@ -395,9 +395,9 @@ func (label *Label) MnemonicKeyval() uint32 {
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 	runtime.KeepAlive(label)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -443,7 +443,7 @@ func (label *Label) Selectable() bool {
 
 // SelectionBounds gets the selected range of characters in the label, returning
 // TRUE if there’s a selection.
-func (label *Label) SelectionBounds() (start int32, end int32, ok bool) {
+func (label *Label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -454,12 +454,12 @@ func (label *Label) SelectionBounds() (start int32, end int32, ok bool) {
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(label)
 
-	var _start int32 // out
-	var _end int32   // out
-	var _ok bool     // out
+	var _start int // out
+	var _end int   // out
+	var _ok bool   // out
 
-	_start = int32(_arg1)
-	_end = int32(_arg2)
+	_start = int(_arg1)
+	_end = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -568,7 +568,7 @@ func (label *Label) UseUnderline() bool {
 
 // WidthChars retrieves the desired width of label, in characters. See
 // gtk_label_set_width_chars().
-func (label *Label) WidthChars() int32 {
+func (label *Label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -577,9 +577,9 @@ func (label *Label) WidthChars() int32 {
 	_cret = C.gtk_label_get_width_chars(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -622,7 +622,7 @@ func (label *Label) YAlign() float32 {
 // selectable. See gtk_label_set_selectable(). If the label is not selectable,
 // this function has no effect. If start_offset or end_offset are -1, then the
 // end of the label will be substituted.
-func (label *Label) SelectRegion(startOffset int32, endOffset int32) {
+func (label *Label) SelectRegion(startOffset int, endOffset int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -763,7 +763,7 @@ func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
 // SetLines sets the number of lines to which an ellipsized, wrapping label
 // should be limited. This has no effect if the label is not wrapping or
 // ellipsized. Set this to -1 if you don’t want to limit the number of lines.
-func (label *Label) SetLines(lines int32) {
+func (label *Label) SetLines(lines int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 
@@ -834,7 +834,7 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 
 // SetMaxWidthChars sets the desired maximum width in characters of label to
 // n_chars.
-func (label *Label) SetMaxWidthChars(nChars int32) {
+func (label *Label) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 
@@ -1010,7 +1010,7 @@ func (label *Label) SetUseUnderline(setting bool) {
 }
 
 // SetWidthChars sets the desired width in characters of label to n_chars.
-func (label *Label) SetWidthChars(nChars int32) {
+func (label *Label) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 

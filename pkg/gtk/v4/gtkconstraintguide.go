@@ -67,7 +67,7 @@ func NewConstraintGuide() *ConstraintGuide {
 }
 
 // MaxSize gets the maximum size of guide.
-func (guide *ConstraintGuide) MaxSize(width *int32, height *int32) {
+func (guide *ConstraintGuide) MaxSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -87,7 +87,7 @@ func (guide *ConstraintGuide) MaxSize(width *int32, height *int32) {
 }
 
 // MinSize gets the minimum size of guide.
-func (guide *ConstraintGuide) MinSize(width *int32, height *int32) {
+func (guide *ConstraintGuide) MinSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -126,7 +126,7 @@ func (guide *ConstraintGuide) Name() string {
 }
 
 // NatSize gets the natural size of guide.
-func (guide *ConstraintGuide) NatSize(width *int32, height *int32) {
+func (guide *ConstraintGuide) NatSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -167,7 +167,7 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 //
 // If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
-func (guide *ConstraintGuide) SetMaxSize(width int32, height int32) {
+func (guide *ConstraintGuide) SetMaxSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -186,7 +186,7 @@ func (guide *ConstraintGuide) SetMaxSize(width int32, height int32) {
 //
 // If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
-func (guide *ConstraintGuide) SetMinSize(width int32, height int32) {
+func (guide *ConstraintGuide) SetMinSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -223,7 +223,7 @@ func (guide *ConstraintGuide) SetName(name string) {
 //
 // If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
-func (guide *ConstraintGuide) SetNatSize(width int32, height int32) {
+func (guide *ConstraintGuide) SetNatSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out

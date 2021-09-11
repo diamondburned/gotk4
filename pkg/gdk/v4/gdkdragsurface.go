@@ -31,7 +31,7 @@ type DragSurfacer interface {
 	externglib.Objector
 
 	// Present drag_surface.
-	Present(width int32, height int32) bool
+	Present(width int, height int) bool
 }
 
 var _ DragSurfacer = (*DragSurface)(nil)
@@ -51,7 +51,7 @@ func marshalDragSurfacer(p uintptr) (interface{}, error) {
 }
 
 // Present drag_surface.
-func (dragSurface *DragSurface) Present(width int32, height int32) bool {
+func (dragSurface *DragSurface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

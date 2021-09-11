@@ -150,7 +150,7 @@ func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) err
 //
 // This is typically done in the routine that returns the #GQuark for an error
 // domain.
-func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
+func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
 	var _arg3 *C.gchar   // out
@@ -231,7 +231,7 @@ func DBusErrorStripRemoteError(err error) bool {
 
 // DBusErrorUnregisterError destroys an association previously set up with
 // g_dbus_error_register_error().
-func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
+func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
 	var _arg3 *C.gchar   // out
@@ -269,9 +269,9 @@ type dBusErrorEntry struct {
 }
 
 // ErrorCode: error code.
-func (d *DBusErrorEntry) ErrorCode() int32 {
-	var v int32 // out
-	v = int32(d.native.error_code)
+func (d *DBusErrorEntry) ErrorCode() int {
+	var v int // out
+	v = int(d.native.error_code)
 	return v
 }
 

@@ -28,7 +28,7 @@ func init() {
 type SelectionOverrider interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
-	AddSelection(i int32) bool
+	AddSelection(i int) bool
 	// ClearSelection clears the selection in the object so that no children in
 	// the object are selected.
 	ClearSelection() bool
@@ -37,22 +37,22 @@ type SelectionOverrider interface {
 	// of whether AtkSelectionIface is implemented, they should use type
 	// checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
-	SelectionCount() int32
+	SelectionCount() int
 	// IsChildSelected determines if the current child of this object is
 	// selected Note: callers should not rely on NULL or on a zero value for
 	// indication of whether AtkSelectionIface is implemented, they should use
 	// type checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
-	IsChildSelected(i int32) bool
+	IsChildSelected(i int) bool
 	// RefSelection gets a reference to the accessible object representing the
 	// specified selected child of the object. Note: callers should not rely on
 	// NULL or on a zero value for indication of whether AtkSelectionIface is
 	// implemented, they should use type checking/interface checking macros or
 	// the atk_get_accessible_value() convenience method.
-	RefSelection(i int32) *ObjectClass
+	RefSelection(i int) *ObjectClass
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
-	RemoveSelection(i int32) bool
+	RemoveSelection(i int) bool
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
 	SelectAllSelection() bool
@@ -78,24 +78,24 @@ type Selectioner interface {
 
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
-	AddSelection(i int32) bool
+	AddSelection(i int) bool
 	// ClearSelection clears the selection in the object so that no children in
 	// the object are selected.
 	ClearSelection() bool
 	// SelectionCount gets the number of accessible children currently selected.
-	SelectionCount() int32
+	SelectionCount() int
 	// IsChildSelected determines if the current child of this object is
 	// selected Note: callers should not rely on NULL or on a zero value for
 	// indication of whether AtkSelectionIface is implemented, they should use
 	// type checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
-	IsChildSelected(i int32) bool
+	IsChildSelected(i int) bool
 	// RefSelection gets a reference to the accessible object representing the
 	// specified selected child of the object.
-	RefSelection(i int32) *ObjectClass
+	RefSelection(i int) *ObjectClass
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
-	RemoveSelection(i int32) bool
+	RemoveSelection(i int) bool
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
 	SelectAllSelection() bool
@@ -117,7 +117,7 @@ func marshalSelectioner(p uintptr) (interface{}, error) {
 
 // AddSelection adds the specified accessible child of the object to the
 // object's selection.
-func (selection *Selection) AddSelection(i int32) bool {
+func (selection *Selection) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -163,7 +163,7 @@ func (selection *Selection) ClearSelection() bool {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (selection *Selection) SelectionCount() int32 {
+func (selection *Selection) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
@@ -172,9 +172,9 @@ func (selection *Selection) SelectionCount() int32 {
 	_cret = C.atk_selection_get_selection_count(_arg0)
 	runtime.KeepAlive(selection)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -184,7 +184,7 @@ func (selection *Selection) SelectionCount() int32 {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
-func (selection *Selection) IsChildSelected(i int32) bool {
+func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
@@ -210,7 +210,7 @@ func (selection *Selection) IsChildSelected(i int32) bool {
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.
-func (selection *Selection) RefSelection(i int32) *ObjectClass {
+func (selection *Selection) RefSelection(i int) *ObjectClass {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -233,7 +233,7 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 
 // RemoveSelection removes the specified child of the object from the object's
 // selection.
-func (selection *Selection) RemoveSelection(i int32) bool {
+func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in

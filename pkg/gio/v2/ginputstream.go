@@ -52,7 +52,7 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
@@ -98,7 +98,7 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one, you must override all.
-	SkipAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback)
+	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	SkipFinish(result AsyncResulter) (int, error)
 }
@@ -128,7 +128,7 @@ type InputStreamer interface {
 	Close(ctx context.Context) error
 	// CloseAsync requests an asynchronous closes of the stream, releasing
 	// resources related to it.
-	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
@@ -144,19 +144,19 @@ type InputStreamer interface {
 	ReadAll(ctx context.Context, buffer []byte) (uint, error)
 	// ReadAllAsync: request an asynchronous read of count bytes from the stream
 	// into the buffer starting at buffer.
-	ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback)
+	ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// ReadAllFinish finishes an asynchronous stream read operation started with
 	// g_input_stream_read_all_async().
 	ReadAllFinish(result AsyncResulter) (uint, error)
 	// ReadAsync: request an asynchronous read of count bytes from the stream
 	// into the buffer starting at buffer.
-	ReadAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback)
+	ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// ReadBytes: like g_input_stream_read(), this tries to read count bytes
 	// from the stream in a blocking fashion.
 	ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error)
 	// ReadBytesAsync: request an asynchronous read of count bytes from the
 	// stream into a new #GBytes.
-	ReadBytesAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback)
+	ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
 	// operation.
 	ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error)
@@ -167,7 +167,7 @@ type InputStreamer interface {
 	// Skip tries to skip count bytes from the stream.
 	Skip(ctx context.Context, count uint) (int, error)
 	// SkipAsync: request an asynchronous skip of count bytes from the stream.
-	SkipAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback)
+	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	SkipFinish(result AsyncResulter) (int, error)
 }
@@ -254,7 +254,7 @@ func (stream *InputStream) Close(ctx context.Context) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -461,7 +461,7 @@ func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, er
 // Any outstanding I/O request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.void         // out
@@ -551,7 +551,7 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.void         // out
@@ -660,7 +660,7 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 // Any outstanding I/O request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out
@@ -834,7 +834,7 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one, you must override all.
-func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out

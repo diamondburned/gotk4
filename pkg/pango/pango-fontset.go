@@ -64,7 +64,7 @@ type FontsetOverrider interface {
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
-	Font(wc uint32) Fonter
+	Font(wc uint) Fonter
 	Language() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
@@ -90,7 +90,7 @@ type Fontsetter interface {
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
-	Font(wc uint32) Fonter
+	Font(wc uint) Fonter
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
 }
@@ -130,7 +130,7 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
-func (fontset *Fontset) Font(wc uint32) Fonter {
+func (fontset *Fontset) Font(wc uint) Fonter {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
@@ -226,7 +226,7 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 }
 
 // Size returns the number of fonts in the fontset.
-func (fontset *FontsetSimple) Size() int32 {
+func (fontset *FontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 
@@ -235,9 +235,9 @@ func (fontset *FontsetSimple) Size() int32 {
 	_cret = C.pango_fontset_simple_size(_arg0)
 	runtime.KeepAlive(fontset)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

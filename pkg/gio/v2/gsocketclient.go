@@ -696,7 +696,7 @@ func (client *SocketClient) SocketType() SocketType {
 // Timeout gets the I/O timeout time for sockets created by client.
 //
 // See g_socket_client_set_timeout() for details.
-func (client *SocketClient) Timeout() uint32 {
+func (client *SocketClient) Timeout() uint {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.guint          // in
 
@@ -705,9 +705,9 @@ func (client *SocketClient) Timeout() uint32 {
 	_cret = C.g_socket_client_get_timeout(_arg0)
 	runtime.KeepAlive(client)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -870,7 +870,7 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 // The timeout value affects the initial connection attempt as well, so setting
 // this may cause calls to g_socket_client_connect(), etc, to fail with
 // G_IO_ERROR_TIMED_OUT.
-func (client *SocketClient) SetTimeout(timeout uint32) {
+func (client *SocketClient) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
 

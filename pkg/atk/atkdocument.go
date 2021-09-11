@@ -28,7 +28,7 @@ func init() {
 // yet, so the interface currently has no use.
 type DocumentOverrider interface {
 	// CurrentPageNumber retrieves the current page number inside document.
-	CurrentPageNumber() int32
+	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM. It is up
 	// to the caller to check atk_document_get_type to determine how to cast
 	// this pointer.
@@ -53,7 +53,7 @@ type DocumentOverrider interface {
 	// for the document type if it applies.
 	DocumentType() string
 	// PageCount retrieves the total number of pages inside document.
-	PageCount() int32
+	PageCount() int
 	// SetDocumentAttribute sets the value for the given attribute_name inside
 	// document.
 	SetDocumentAttribute(attributeName string, attributeValue string) bool
@@ -77,7 +77,7 @@ type Documenter interface {
 	// document.
 	AttributeValue(attributeName string) string
 	// CurrentPageNumber retrieves the current page number inside document.
-	CurrentPageNumber() int32
+	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM.
 	Document() cgo.Handle
 	// DocumentType gets a string indicating the document type.
@@ -86,7 +86,7 @@ type Documenter interface {
 	// of the content of this document instance.
 	Locale() string
 	// PageCount retrieves the total number of pages inside document.
-	PageCount() int32
+	PageCount() int
 	// SetAttributeValue sets the value for the given attribute_name inside
 	// document.
 	SetAttributeValue(attributeName string, attributeValue string) bool
@@ -131,7 +131,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 }
 
 // CurrentPageNumber retrieves the current page number inside document.
-func (document *Document) CurrentPageNumber() int32 {
+func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -140,9 +140,9 @@ func (document *Document) CurrentPageNumber() int32 {
 	_cret = C.atk_document_get_current_page_number(_arg0)
 	runtime.KeepAlive(document)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -212,7 +212,7 @@ func (document *Document) Locale() string {
 }
 
 // PageCount retrieves the total number of pages inside document.
-func (document *Document) PageCount() int32 {
+func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
@@ -221,9 +221,9 @@ func (document *Document) PageCount() int32 {
 	_cret = C.atk_document_get_page_count(_arg0)
 	runtime.KeepAlive(document)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

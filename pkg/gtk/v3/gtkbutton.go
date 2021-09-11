@@ -149,7 +149,7 @@ func NewButton() *Button {
 //
 // This function is a convenience wrapper around gtk_button_new() and
 // gtk_button_set_image().
-func NewButtonFromIconName(iconName string, size int32) *Button {
+func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in

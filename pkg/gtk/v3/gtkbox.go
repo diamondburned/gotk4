@@ -106,7 +106,7 @@ func marshalBoxer(p uintptr) (interface{}, error) {
 }
 
 // NewBox creates a new Box.
-func NewBox(orientation Orientation, spacing int32) *Box {
+func NewBox(orientation Orientation, spacing int) *Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gint           // out
 	var _cret *C.GtkWidget     // in
@@ -182,7 +182,7 @@ func (box *Box) Homogeneous() bool {
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
-func (box *Box) Spacing() int32 {
+func (box *Box) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.gint    // in
 
@@ -191,9 +191,9 @@ func (box *Box) Spacing() int32 {
 	_cret = C.gtk_box_get_spacing(_arg0)
 	runtime.KeepAlive(box)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -201,7 +201,7 @@ func (box *Box) Spacing() int32 {
 // PackEnd adds child to box, packed with reference to the end of box. The child
 // is packed after (away from end of) any other child packed with reference to
 // the end of box.
-func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint32) {
+func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -229,7 +229,7 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint32)
 // PackStart adds child to box, packed with reference to the start of box. The
 // child is packed after any other child packed with reference to the start of
 // box.
-func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint32) {
+func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -255,7 +255,7 @@ func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint3
 }
 
 // QueryChildPacking obtains information about how child is packed into box.
-func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint32, packType PackType) {
+func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // in
@@ -272,7 +272,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 
 	var _expand bool       // out
 	var _fill bool         // out
-	var _padding uint32    // out
+	var _padding uint      // out
 	var _packType PackType // out
 
 	if _arg2 != 0 {
@@ -281,7 +281,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 	if _arg3 != 0 {
 		_fill = true
 	}
-	_padding = uint32(_arg4)
+	_padding = uint(_arg4)
 	_packType = PackType(_arg5)
 
 	return _expand, _fill, _padding, _packType
@@ -295,7 +295,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 // packed into box. A child widget at some position in the list will be packed
 // just after all other widgets of the same packing type that appear earlier in
 // the list.
-func (box *Box) ReorderChild(child Widgetter, position int32) {
+func (box *Box) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -345,7 +345,7 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 }
 
 // SetChildPacking sets the way child is packed into box.
-func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding uint32, packType PackType) {
+func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
@@ -391,7 +391,7 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 
 // SetSpacing sets the Box:spacing property of box, which is the number of
 // pixels to place between children of box.
-func (box *Box) SetSpacing(spacing int32) {
+func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.gint    // out
 

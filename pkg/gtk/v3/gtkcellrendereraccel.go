@@ -60,7 +60,7 @@ func (c CellRendererAccelMode) String() string {
 // yet, so the interface currently has no use.
 type CellRendererAccelOverrider interface {
 	AccelCleared(pathString string)
-	AccelEdited(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination

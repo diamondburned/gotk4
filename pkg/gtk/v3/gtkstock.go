@@ -798,9 +798,9 @@ func (s *StockItem) Modifier() gdk.ModifierType {
 }
 
 // Keyval: keyboard accelerator
-func (s *StockItem) Keyval() uint32 {
-	var v uint32 // out
-	v = uint32(s.native.keyval)
+func (s *StockItem) Keyval() uint {
+	var v uint // out
+	v = uint(s.native.keyval)
 	return v
 }
 

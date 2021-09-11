@@ -323,7 +323,7 @@ func (stack *Stack) InterpolateSize() bool {
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions between pages in stack will take.
-func (stack *Stack) TransitionDuration() uint32 {
+func (stack *Stack) TransitionDuration() uint {
 	var _arg0 *C.GtkStack // out
 	var _cret C.guint     // in
 
@@ -332,9 +332,9 @@ func (stack *Stack) TransitionDuration() uint32 {
 	_cret = C.gtk_stack_get_transition_duration(_arg0)
 	runtime.KeepAlive(stack)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -496,7 +496,7 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 
 // SetTransitionDuration sets the duration that transitions between pages in
 // stack will take.
-func (stack *Stack) SetTransitionDuration(duration uint32) {
+func (stack *Stack) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.guint     // out
 

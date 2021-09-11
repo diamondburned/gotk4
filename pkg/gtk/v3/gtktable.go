@@ -139,7 +139,7 @@ func marshalTabler(p uintptr) (interface{}, error) {
 // silently interpreted as 1.
 //
 // Deprecated: Use gtk_grid_new().
-func NewTable(rows uint32, columns uint32, homogeneous bool) *Table {
+func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _arg3 C.gboolean   // out
@@ -182,7 +182,7 @@ func NewTable(rows uint32, columns uint32, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) Attach(child Widgetter, leftAttach uint32, rightAttach uint32, topAttach uint32, bottomAttach uint32, xoptions AttachOptions, yoptions AttachOptions, xpadding uint32, ypadding uint32) {
+func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -226,7 +226,7 @@ func (table *Table) Attach(child Widgetter, leftAttach uint32, rightAttach uint3
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint32, rightAttach uint32, topAttach uint32, bottomAttach uint32) {
+func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -254,7 +254,7 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint32, rightAtt
 // See gtk_table_set_col_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
-func (table *Table) ColSpacing(column uint32) uint32 {
+func (table *Table) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -266,9 +266,9 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -278,7 +278,7 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 // gtk_table_set_col_spacings())
 //
 // Deprecated: Use gtk_grid_get_column_spacing() with Grid.
-func (table *Table) DefaultColSpacing() uint32 {
+func (table *Table) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
@@ -287,9 +287,9 @@ func (table *Table) DefaultColSpacing() uint32 {
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 	runtime.KeepAlive(table)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -299,7 +299,7 @@ func (table *Table) DefaultColSpacing() uint32 {
 // gtk_table_set_row_spacings())
 //
 // Deprecated: Use gtk_grid_get_row_spacing() with Grid.
-func (table *Table) DefaultRowSpacing() uint32 {
+func (table *Table) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
@@ -308,9 +308,9 @@ func (table *Table) DefaultRowSpacing() uint32 {
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 	runtime.KeepAlive(table)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -342,7 +342,7 @@ func (table *Table) Homogeneous() bool {
 // gtk_table_set_row_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
-func (table *Table) RowSpacing(row uint32) uint32 {
+func (table *Table) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -354,9 +354,9 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -364,7 +364,7 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 // Size gets the number of rows and columns in the table.
 //
 // Deprecated: Grid does not expose the number of columns and rows.
-func (table *Table) Size() (rows uint32, columns uint32) {
+func (table *Table) Size() (rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -374,11 +374,11 @@ func (table *Table) Size() (rows uint32, columns uint32) {
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(table)
 
-	var _rows uint32    // out
-	var _columns uint32 // out
+	var _rows uint    // out
+	var _columns uint // out
 
-	_rows = uint32(_arg1)
-	_columns = uint32(_arg2)
+	_rows = uint(_arg1)
+	_columns = uint(_arg2)
 
 	return _rows, _columns
 }
@@ -387,7 +387,7 @@ func (table *Table) Size() (rows uint32, columns uint32) {
 // function allows you to do so.
 //
 // Deprecated: Grid resizes automatically.
-func (table *Table) Resize(rows uint32, columns uint32) {
+func (table *Table) Resize(rows uint, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -408,7 +408,7 @@ func (table *Table) Resize(rows uint32, columns uint32) {
 // Deprecated: Use gtk_widget_set_margin_start() and gtk_widget_set_margin_end()
 // on the widgets contained in the row if you need this functionality. Grid does
 // not support per-row spacing.
-func (table *Table) SetColSpacing(column uint32, spacing uint32) {
+func (table *Table) SetColSpacing(column uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -426,7 +426,7 @@ func (table *Table) SetColSpacing(column uint32, spacing uint32) {
 // SetColSpacings sets the space between every column in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_column_spacing() with Grid.
-func (table *Table) SetColSpacings(spacing uint32) {
+func (table *Table) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
@@ -463,7 +463,7 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 // Deprecated: Use gtk_widget_set_margin_top() and
 // gtk_widget_set_margin_bottom() on the widgets contained in the row if you
 // need this functionality. Grid does not support per-row spacing.
-func (table *Table) SetRowSpacing(row uint32, spacing uint32) {
+func (table *Table) SetRowSpacing(row uint, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -481,7 +481,7 @@ func (table *Table) SetRowSpacing(row uint32, spacing uint32) {
 // SetRowSpacings sets the space between every row in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_row_spacing() with Grid.
-func (table *Table) SetRowSpacings(spacing uint32) {
+func (table *Table) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 

@@ -62,7 +62,7 @@ func marshalRadioActioner(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRadioAction(name string, label string, tooltip string, stockId string, value int32) *RadioAction {
+func NewRadioAction(name string, label string, tooltip string, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.gchar          // out
@@ -104,7 +104,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 // group to which action belongs.
 //
 // Deprecated: since version 3.10.
-func (action *RadioAction) CurrentValue() int32 {
+func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
@@ -113,9 +113,9 @@ func (action *RadioAction) CurrentValue() int32 {
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 	runtime.KeepAlive(action)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -197,7 +197,7 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 // value property current_value.
 //
 // Deprecated: since version 3.10.
-func (action *RadioAction) SetCurrentValue(currentValue int32) {
+func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 

@@ -171,10 +171,10 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WidgetOverrider interface {
-	AdjustBaselineAllocation(baseline *int32)
-	AdjustBaselineRequest(minimumBaseline *int32, naturalBaseline *int32)
-	AdjustSizeAllocation(orientation Orientation, minimumSize *int32, naturalSize *int32, allocatedPos *int32, allocatedSize *int32)
-	AdjustSizeRequest(orientation Orientation, minimumSize *int32, naturalSize *int32)
+	AdjustBaselineAllocation(baseline *int)
+	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
+	AdjustSizeAllocation(orientation Orientation, minimumSize *int, naturalSize *int, allocatedPos *int, allocatedSize *int)
+	AdjustSizeRequest(orientation Orientation, minimumSize *int, naturalSize *int)
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
@@ -183,7 +183,7 @@ type WidgetOverrider interface {
 	// signal isn’t overridden by a handler or in a derived widget, then the
 	// default check is that the widget must be sensitive, and the widget and
 	// all its ancestors mapped.
-	CanActivateAccel(signalId uint32) bool
+	CanActivateAccel(signalId uint) bool
 	CompositedChanged()
 	ConfigureEvent(event *gdk.EventConfigure) bool
 	DamageEvent(event *gdk.EventExpose) bool
@@ -224,13 +224,13 @@ type WidgetOverrider interface {
 	DirectionChanged(previousDirection TextDirection)
 	DragBegin(context *gdk.DragContext)
 	DragDataDelete(context *gdk.DragContext)
-	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info uint32, time_ uint32)
-	DragDataReceived(context *gdk.DragContext, x int32, y int32, selectionData *SelectionData, info uint32, time_ uint32)
-	DragDrop(context *gdk.DragContext, x int32, y int32, time_ uint32) bool
+	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info uint, time_ uint)
+	DragDataReceived(context *gdk.DragContext, x int, y int, selectionData *SelectionData, info uint, time_ uint)
+	DragDrop(context *gdk.DragContext, x int, y int, time_ uint) bool
 	DragEnd(context *gdk.DragContext)
 	DragFailed(context *gdk.DragContext, result DragResult) bool
-	DragLeave(context *gdk.DragContext, time_ uint32)
-	DragMotion(context *gdk.DragContext, x int32, y int32, time_ uint32) bool
+	DragLeave(context *gdk.DragContext, time_ uint)
+	DragMotion(context *gdk.DragContext, x int, y int, time_ uint) bool
 	Draw(cr *cairo.Context) bool
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
 	Focus(direction DirectionType) bool
@@ -258,7 +258,7 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
-	PreferredHeight() (minimumHeight int32, naturalHeight int32)
+	PreferredHeight() (minimumHeight int, naturalHeight int)
 	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
 	// natural height and the corresponding baselines if it would be given the
 	// specified width, or the default height if width is -1. The baselines may
@@ -270,7 +270,7 @@ type WidgetOverrider interface {
 	// SizeGroups that have been applied. That is, the returned request is the
 	// one that should be used for layout, not necessarily the one returned by
 	// the widget itself.
-	PreferredHeightAndBaselineForWidth(width int32) (minimumHeight int32, naturalHeight int32, minimumBaseline int32, naturalBaseline int32)
+	PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
 	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
 	// if it would be given the specified width.
 	//
@@ -279,7 +279,7 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
-	PreferredHeightForWidth(width int32) (minimumHeight int32, naturalHeight int32)
+	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a widget’s initial minimum and natural width.
 	//
 	// This call is specific to height-for-width requests.
@@ -289,7 +289,7 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
-	PreferredWidth() (minimumWidth int32, naturalWidth int32)
+	PreferredWidth() (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
 	// it would be given the specified height.
 	//
@@ -298,7 +298,7 @@ type WidgetOverrider interface {
 	// that have been applied. That is, the returned request is the one that
 	// should be used for layout, not necessarily the one returned by the widget
 	// itself.
-	PreferredWidthForHeight(height int32) (minimumWidth int32, naturalWidth int32)
+	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
 	//
@@ -366,7 +366,7 @@ type WidgetOverrider interface {
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
 	ProximityInEvent(event *gdk.EventProximity) bool
 	ProximityOutEvent(event *gdk.EventProximity) bool
-	QueryTooltip(x int32, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows. Once the main loop becomes idle (after the current batch
@@ -397,9 +397,9 @@ type WidgetOverrider interface {
 	ScreenChanged(previousScreen *gdk.Screen)
 	ScrollEvent(event *gdk.EventScroll) bool
 	SelectionClearEvent(event *gdk.EventSelection) bool
-	SelectionGet(selectionData *SelectionData, info uint32, time_ uint32)
+	SelectionGet(selectionData *SelectionData, info uint, time_ uint)
 	SelectionNotifyEvent(event *gdk.EventSelection) bool
-	SelectionReceived(selectionData *SelectionData, time_ uint32)
+	SelectionReceived(selectionData *SelectionData, time_ uint)
 	SelectionRequestEvent(event *gdk.EventSelection) bool
 	// Show flags a widget to be displayed. Any widget that isn’t shown will not
 	// appear on the screen. If you want to show all the widgets in a container,
@@ -561,22 +561,22 @@ type Widgetter interface {
 	Activate() bool
 	// AddAccelerator installs an accelerator for this widget in accel_group
 	// that causes accel_signal to be emitted if the accelerator is activated.
-	AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType, accelFlags AccelFlags)
+	AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags)
 	// AddDeviceEvents adds the device events in the bitfield events to the
 	// event mask for widget.
 	AddDeviceEvents(device gdk.Devicer, events gdk.EventMask)
 	// AddEvents adds the events in the bitfield events to the event mask for
 	// widget.
-	AddEvents(events int32)
+	AddEvents(events int)
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
 	AddMnemonicLabel(label Widgetter)
 	// AddTickCallback queues an animation frame update and adds a callback to
 	// be called before each frame.
-	AddTickCallback(callback TickCallback) uint32
+	AddTickCallback(callback TickCallback) uint
 	// CanActivateAccel determines whether an accelerator that activates the
 	// signal identified by signal_id can currently be activated.
-	CanActivateAccel(signalId uint32) bool
+	CanActivateAccel(signalId uint) bool
 	// ChildFocus: this function is used by custom widget implementations; if
 	// you're writing an app, you’d use gtk_widget_grab_focus() to move the
 	// focus to a particular widget, and gtk_container_set_focus_chain() to
@@ -587,7 +587,7 @@ type Widgetter interface {
 	ChildNotify(childProperty string)
 	// ClassPath: same as gtk_widget_path(), but always uses the name of a
 	// widget’s type, never uses a custom name set with gtk_widget_set_name().
-	ClassPath() (pathLength uint32, path string, pathReversed string)
+	ClassPath() (pathLength uint, path string, pathReversed string)
 	// ComputeExpand computes whether a container should give this widget extra
 	// space when possible.
 	ComputeExpand(orientation Orientation) bool
@@ -607,7 +607,7 @@ type Widgetter interface {
 	// start_y) and ending at (current_x, current_y) has passed the GTK+ drag
 	// threshold, and thus should trigger the beginning of a drag-and-drop
 	// operation.
-	DragCheckThreshold(startX int32, startY int32, currentX int32, currentY int32) bool
+	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
 	// DragDestAddImageTargets: add the image targets supported by SelectionData
 	// to the target list of the drag destination.
 	DragDestAddImageTargets()
@@ -691,15 +691,15 @@ type Widgetter interface {
 	ActionGroup(prefix string) gio.ActionGrouper
 	// AllocatedBaseline returns the baseline that has currently been allocated
 	// to widget.
-	AllocatedBaseline() int32
+	AllocatedBaseline() int
 	// AllocatedHeight returns the height that has currently been allocated to
 	// widget.
-	AllocatedHeight() int32
+	AllocatedHeight() int
 	// AllocatedSize retrieves the widget’s allocated size.
-	AllocatedSize() (Allocation, int32)
+	AllocatedSize() (Allocation, int)
 	// AllocatedWidth returns the width that has currently been allocated to
 	// widget.
-	AllocatedWidth() int32
+	AllocatedWidth() int
 	// Allocation retrieves the widget’s allocation.
 	Allocation() Allocation
 	// Ancestor gets the first ancestor of widget with type widget_type.
@@ -734,7 +734,7 @@ type Widgetter interface {
 	// DoubleBuffered determines whether the widget is double buffered.
 	DoubleBuffered() bool
 	// Events returns the event mask (see EventMask) for the widget.
-	Events() int32
+	Events() int
 	// FocusOnClick returns whether the widget should grab focus when it is
 	// clicked with the mouse.
 	FocusOnClick() bool
@@ -760,17 +760,17 @@ type Widgetter interface {
 	// Mapped: whether the widget is mapped.
 	Mapped() bool
 	// MarginBottom gets the value of the Widget:margin-bottom property.
-	MarginBottom() int32
+	MarginBottom() int
 	// MarginEnd gets the value of the Widget:margin-end property.
-	MarginEnd() int32
+	MarginEnd() int
 	// MarginLeft gets the value of the Widget:margin-left property.
-	MarginLeft() int32
+	MarginLeft() int
 	// MarginRight gets the value of the Widget:margin-right property.
-	MarginRight() int32
+	MarginRight() int
 	// MarginStart gets the value of the Widget:margin-start property.
-	MarginStart() int32
+	MarginStart() int
 	// MarginTop gets the value of the Widget:margin-top property.
-	MarginTop() int32
+	MarginTop() int
 	// ModifierMask returns the modifier mask the widget’s windowing system
 	// backend uses for a particular purpose.
 	ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType
@@ -796,24 +796,24 @@ type Widgetter interface {
 	// connected to a toplevel widget, a partial path will be created.
 	GetPath() *WidgetPath
 	// Pointer obtains the location of the mouse pointer in widget coordinates.
-	Pointer() (x int32, y int32)
+	Pointer() (x int, y int)
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
-	PreferredHeight() (minimumHeight int32, naturalHeight int32)
+	PreferredHeight() (minimumHeight int, naturalHeight int)
 	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
 	// natural height and the corresponding baselines if it would be given the
 	// specified width, or the default height if width is -1.
-	PreferredHeightAndBaselineForWidth(width int32) (minimumHeight int32, naturalHeight int32, minimumBaseline int32, naturalBaseline int32)
+	PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int)
 	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
 	// if it would be given the specified width.
-	PreferredHeightForWidth(width int32) (minimumHeight int32, naturalHeight int32)
+	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredSize retrieves the minimum and natural size of a widget, taking
 	// into account the widget’s preference for height-for-width management.
 	PreferredSize() (minimumSize Requisition, naturalSize Requisition)
 	// PreferredWidth retrieves a widget’s initial minimum and natural width.
-	PreferredWidth() (minimumWidth int32, naturalWidth int32)
+	PreferredWidth() (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
 	// it would be given the specified height.
-	PreferredWidthForHeight(height int32) (minimumWidth int32, naturalWidth int32)
+	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// Realized determines whether widget is realized.
 	Realized() bool
 	// ReceivesDefault determines whether widget is always treated as the
@@ -829,7 +829,7 @@ type Widgetter interface {
 	RootWindow() gdk.Windower
 	// ScaleFactor retrieves the internal scale factor that maps from window
 	// coordinates to the actual device pixels.
-	ScaleFactor() int32
+	ScaleFactor() int
 	// Screen: get the Screen from the toplevel window associated with this
 	// widget.
 	Screen() *gdk.Screen
@@ -841,7 +841,7 @@ type Widgetter interface {
 	Settings() *Settings
 	// GetSizeRequest gets the size request that was explicitly set for the
 	// widget using gtk_widget_set_size_request().
-	GetSizeRequest() (width int32, height int32)
+	GetSizeRequest() (width int, height int)
 	// State returns the widget’s state.
 	State() StateType
 	// StateFlags returns the widget state as a flag set.
@@ -984,7 +984,7 @@ type Widgetter interface {
 	// OverrideSymbolicColor sets a symbolic color for a widget.
 	OverrideSymbolicColor(name string, color *gdk.RGBA)
 	// Path obtains the full path to widget.
-	Path() (pathLength uint32, path string, pathReversed string)
+	Path() (pathLength uint, path string, pathReversed string)
 	// QueueAllocate: this function is only for use in widget implementations.
 	QueueAllocate()
 	// QueueComputeExpand: mark widget as needing to recompute its expand flags.
@@ -995,7 +995,7 @@ type Widgetter interface {
 	// QueueDrawArea: convenience function that calls
 	// gtk_widget_queue_draw_region() on the region created from the given
 	// coordinates.
-	QueueDrawArea(x int32, y int32, width int32, height int32)
+	QueueDrawArea(x int, y int, width int, height int)
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows.
@@ -1016,19 +1016,19 @@ type Widgetter interface {
 	RegisterWindow(window gdk.Windower)
 	// RemoveAccelerator removes an accelerator from widget, previously
 	// installed with gtk_widget_add_accelerator().
-	RemoveAccelerator(accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType) bool
+	RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget.
 	RemoveMnemonicLabel(label Widgetter)
 	// RemoveTickCallback removes a tick callback previously registered with
 	// gtk_widget_add_tick_callback().
-	RemoveTickCallback(id uint32)
+	RemoveTickCallback(id uint)
 	// RenderIcon: convenience function that uses the theme settings for widget
 	// to look up stock_id and render it to a pixbuf.
-	RenderIcon(stockId string, size int32, detail string) *gdkpixbuf.Pixbuf
+	RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf
 	// RenderIconPixbuf: convenience function that uses the theme engine and
 	// style settings for widget to look up stock_id and render it to a pixbuf.
-	RenderIconPixbuf(stockId string, size int32) *gdkpixbuf.Pixbuf
+	RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf
 	// Reparent moves a widget from one Container to another, handling reference
 	// count issues to avoid destroying the widget.
 	Reparent(newParent Widgetter)
@@ -1071,7 +1071,7 @@ type Widgetter interface {
 	// this function to turn off the buffering.
 	SetDoubleBuffered(doubleBuffered bool)
 	// SetEvents sets the event mask (see EventMask) for a widget.
-	SetEvents(events int32)
+	SetEvents(events int)
 	// SetFocusOnClick sets whether the widget should grab focus when it is
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
@@ -1095,17 +1095,17 @@ type Widgetter interface {
 	// SetMapped marks the widget as being mapped.
 	SetMapped(mapped bool)
 	// SetMarginBottom sets the bottom margin of widget.
-	SetMarginBottom(margin int32)
+	SetMarginBottom(margin int)
 	// SetMarginEnd sets the end margin of widget.
-	SetMarginEnd(margin int32)
+	SetMarginEnd(margin int)
 	// SetMarginLeft sets the left margin of widget.
-	SetMarginLeft(margin int32)
+	SetMarginLeft(margin int)
 	// SetMarginRight sets the right margin of widget.
-	SetMarginRight(margin int32)
+	SetMarginRight(margin int)
 	// SetMarginStart sets the start margin of widget.
-	SetMarginStart(margin int32)
+	SetMarginStart(margin int)
 	// SetMarginTop sets the top margin of widget.
-	SetMarginTop(margin int32)
+	SetMarginTop(margin int)
 	// SetName widgets can be named, which allows you to refer to them from a
 	// CSS file.
 	SetName(name string)
@@ -1133,7 +1133,7 @@ type Widgetter interface {
 	SetSensitive(sensitive bool)
 	// SetSizeRequest sets the minimum size of a widget; that is, the widget’s
 	// size request will be at least width by height.
-	SetSizeRequest(width int32, height int32)
+	SetSizeRequest(width int, height int)
 	// SetState: this function is for use in widget implementations.
 	SetState(state StateType)
 	// SetStateFlags: this function is for use in widget implementations.
@@ -1180,7 +1180,7 @@ type Widgetter interface {
 	// SizeAllocateWithBaseline: this function is only used by Container
 	// subclasses, to assign a size, position and (optionally) baseline to their
 	// child widgets.
-	SizeAllocateWithBaseline(allocation *Allocation, baseline int32)
+	SizeAllocateWithBaseline(allocation *Allocation, baseline int)
 	// SizeRequest: this function is typically used when implementing a
 	// Container subclass.
 	SizeRequest() Requisition
@@ -1194,7 +1194,7 @@ type Widgetter interface {
 	ThawChildNotify()
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgetter, srcX int32, srcY int32) (destX int32, destY int32, ok bool)
+	TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -1264,7 +1264,7 @@ func (widget *Widget) Activate() bool {
 // runtime. If you want to support accelerators that can be changed by the user,
 // use gtk_accel_map_add_entry() and gtk_widget_set_accel_path() or
 // gtk_menu_item_set_accel_path() instead.
-func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType, accelFlags AccelFlags) {
+func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkAccelGroup  // out
@@ -1309,7 +1309,7 @@ func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) 
 // AddEvents adds the events in the bitfield events to the event mask for
 // widget. See gtk_widget_set_events() and the [input handling
 // overview][event-masks] for details.
-func (widget *Widget) AddEvents(events int32) {
+func (widget *Widget) AddEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -1356,7 +1356,7 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 // This is a more convenient alternative to connecting directly to the
 // FrameClock::update signal of FrameClock, since you don't have to worry about
 // when a FrameClock is assigned to a widget.
-func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
+func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkTickCallback // out
 	var _arg2 C.gpointer
@@ -1372,9 +1372,9 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(callback)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1385,7 +1385,7 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 // overridden by a handler or in a derived widget, then the default check is
 // that the widget must be sensitive, and the widget and all its ancestors
 // mapped.
-func (widget *Widget) CanActivateAccel(signalId uint32) bool {
+func (widget *Widget) CanActivateAccel(signalId uint) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
@@ -1468,7 +1468,7 @@ func (widget *Widget) ChildNotify(childProperty string) {
 // type, never uses a custom name set with gtk_widget_set_name().
 //
 // Deprecated: Use gtk_widget_get_path() instead.
-func (widget *Widget) ClassPath() (pathLength uint32, path string, pathReversed string) {
+func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // in
 	var _arg2 *C.gchar     // in
@@ -1479,11 +1479,11 @@ func (widget *Widget) ClassPath() (pathLength uint32, path string, pathReversed 
 	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(widget)
 
-	var _pathLength uint32   // out
+	var _pathLength uint     // out
 	var _path string         // out
 	var _pathReversed string // out
 
-	_pathLength = uint32(_arg1)
+	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -1651,7 +1651,7 @@ func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
 // start_y) and ending at (current_x, current_y) has passed the GTK+ drag
 // threshold, and thus should trigger the beginning of a drag-and-drop
 // operation.
-func (widget *Widget) DragCheckThreshold(startX int32, startY int32, currentX int32, currentY int32) bool {
+func (widget *Widget) DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2246,7 +2246,7 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 // widget. This function is intended to be used when implementing handlers for
 // the Widget::draw function, and when allocating child widgets in
 // Widget::size_allocate.
-func (widget *Widget) AllocatedBaseline() int32 {
+func (widget *Widget) AllocatedBaseline() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2255,9 +2255,9 @@ func (widget *Widget) AllocatedBaseline() int32 {
 	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2265,7 +2265,7 @@ func (widget *Widget) AllocatedBaseline() int32 {
 // AllocatedHeight returns the height that has currently been allocated to
 // widget. This function is intended to be used when implementing handlers for
 // the Widget::draw function.
-func (widget *Widget) AllocatedHeight() int32 {
+func (widget *Widget) AllocatedHeight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2274,9 +2274,9 @@ func (widget *Widget) AllocatedHeight() int32 {
 	_cret = C.gtk_widget_get_allocated_height(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2290,7 +2290,7 @@ func (widget *Widget) AllocatedHeight() int32 {
 // by this function.
 //
 // If a widget is not visible, its allocated size is 0.
-func (widget *Widget) AllocatedSize() (Allocation, int32) {
+func (widget *Widget) AllocatedSize() (Allocation, int) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 	var _arg2 C.int           // in
@@ -2301,10 +2301,10 @@ func (widget *Widget) AllocatedSize() (Allocation, int32) {
 	runtime.KeepAlive(widget)
 
 	var _allocation Allocation // out
-	var _baseline int32        // out
+	var _baseline int          // out
 
 	_allocation = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_baseline = int32(_arg2)
+	_baseline = int(_arg2)
 
 	return _allocation, _baseline
 }
@@ -2312,7 +2312,7 @@ func (widget *Widget) AllocatedSize() (Allocation, int32) {
 // AllocatedWidth returns the width that has currently been allocated to widget.
 // This function is intended to be used when implementing handlers for the
 // Widget::draw function.
-func (widget *Widget) AllocatedWidth() int32 {
+func (widget *Widget) AllocatedWidth() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2321,9 +2321,9 @@ func (widget *Widget) AllocatedWidth() int32 {
 	_cret = C.gtk_widget_get_allocated_width(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2669,7 +2669,7 @@ func (widget *Widget) DoubleBuffered() bool {
 // mask set through gtk_widget_set_events() or gtk_widget_add_events(), and the
 // event mask necessary to cater for every EventController created for the
 // widget.
-func (widget *Widget) Events() int32 {
+func (widget *Widget) Events() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -2678,9 +2678,9 @@ func (widget *Widget) Events() int32 {
 	_cret = C.gtk_widget_get_events(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2919,7 +2919,7 @@ func (widget *Widget) Mapped() bool {
 }
 
 // MarginBottom gets the value of the Widget:margin-bottom property.
-func (widget *Widget) MarginBottom() int32 {
+func (widget *Widget) MarginBottom() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -2928,15 +2928,15 @@ func (widget *Widget) MarginBottom() int32 {
 	_cret = C.gtk_widget_get_margin_bottom(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MarginEnd gets the value of the Widget:margin-end property.
-func (widget *Widget) MarginEnd() int32 {
+func (widget *Widget) MarginEnd() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -2945,9 +2945,9 @@ func (widget *Widget) MarginEnd() int32 {
 	_cret = C.gtk_widget_get_margin_end(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2955,7 +2955,7 @@ func (widget *Widget) MarginEnd() int32 {
 // MarginLeft gets the value of the Widget:margin-left property.
 //
 // Deprecated: Use gtk_widget_get_margin_start() instead.
-func (widget *Widget) MarginLeft() int32 {
+func (widget *Widget) MarginLeft() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -2964,9 +2964,9 @@ func (widget *Widget) MarginLeft() int32 {
 	_cret = C.gtk_widget_get_margin_left(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2974,7 +2974,7 @@ func (widget *Widget) MarginLeft() int32 {
 // MarginRight gets the value of the Widget:margin-right property.
 //
 // Deprecated: Use gtk_widget_get_margin_end() instead.
-func (widget *Widget) MarginRight() int32 {
+func (widget *Widget) MarginRight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -2983,15 +2983,15 @@ func (widget *Widget) MarginRight() int32 {
 	_cret = C.gtk_widget_get_margin_right(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MarginStart gets the value of the Widget:margin-start property.
-func (widget *Widget) MarginStart() int32 {
+func (widget *Widget) MarginStart() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -3000,15 +3000,15 @@ func (widget *Widget) MarginStart() int32 {
 	_cret = C.gtk_widget_get_margin_start(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MarginTop gets the value of the Widget:margin-top property.
-func (widget *Widget) MarginTop() int32 {
+func (widget *Widget) MarginTop() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -3017,9 +3017,9 @@ func (widget *Widget) MarginTop() int32 {
 	_cret = C.gtk_widget_get_margin_top(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3231,7 +3231,7 @@ func (widget *Widget) GetPath() *WidgetPath {
 // widget->allocation.y otherwise.
 //
 // Deprecated: Use gdk_window_get_device_position() instead.
-func (widget *Widget) Pointer() (x int32, y int32) {
+func (widget *Widget) Pointer() (x int, y int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -3241,11 +3241,11 @@ func (widget *Widget) Pointer() (x int32, y int32) {
 	C.gtk_widget_get_pointer(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -3258,7 +3258,7 @@ func (widget *Widget) Pointer() (x int32, y int32) {
 // GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
 // have been applied. That is, the returned request is the one that should be
 // used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredHeight() (minimumHeight int32, naturalHeight int32) {
+func (widget *Widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -3268,11 +3268,11 @@ func (widget *Widget) PreferredHeight() (minimumHeight int32, naturalHeight int3
 	C.gtk_widget_get_preferred_height(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg1)
-	_naturalHeight = int32(_arg2)
+	_minimumHeight = int(_arg1)
+	_naturalHeight = int(_arg2)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -3287,7 +3287,7 @@ func (widget *Widget) PreferredHeight() (minimumHeight int32, naturalHeight int3
 // GtkWidgetClass::adjust_baseline_request virtual methods and by any SizeGroups
 // that have been applied. That is, the returned request is the one that should
 // be used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHeight int32, naturalHeight int32, minimumBaseline int32, naturalBaseline int32) {
+func (widget *Widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int, naturalHeight int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -3302,15 +3302,15 @@ func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHe
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32   // out
-	var _naturalHeight int32   // out
-	var _minimumBaseline int32 // out
-	var _naturalBaseline int32 // out
+	var _minimumHeight int   // out
+	var _naturalHeight int   // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
 
-	_minimumHeight = int32(_arg2)
-	_naturalHeight = int32(_arg3)
-	_minimumBaseline = int32(_arg4)
-	_naturalBaseline = int32(_arg5)
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
+	_minimumBaseline = int(_arg4)
+	_naturalBaseline = int(_arg5)
 
 	return _minimumHeight, _naturalHeight, _minimumBaseline, _naturalBaseline
 }
@@ -3322,7 +3322,7 @@ func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHe
 // GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
 // have been applied. That is, the returned request is the one that should be
 // used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredHeightForWidth(width int32) (minimumHeight int32, naturalHeight int32) {
+func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -3335,11 +3335,11 @@ func (widget *Widget) PreferredHeightForWidth(width int32) (minimumHeight int32,
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg2)
-	_naturalHeight = int32(_arg3)
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -3386,7 +3386,7 @@ func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requ
 // GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
 // have been applied. That is, the returned request is the one that should be
 // used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredWidth() (minimumWidth int32, naturalWidth int32) {
+func (widget *Widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -3396,11 +3396,11 @@ func (widget *Widget) PreferredWidth() (minimumWidth int32, naturalWidth int32) 
 	C.gtk_widget_get_preferred_width(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg1)
-	_naturalWidth = int32(_arg2)
+	_minimumWidth = int(_arg1)
+	_naturalWidth = int(_arg2)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -3412,7 +3412,7 @@ func (widget *Widget) PreferredWidth() (minimumWidth int32, naturalWidth int32) 
 // GtkWidgetClass::adjust_size_request virtual method and by any SizeGroups that
 // have been applied. That is, the returned request is the one that should be
 // used for layout, not necessarily the one returned by the widget itself.
-func (widget *Widget) PreferredWidthForHeight(height int32) (minimumWidth int32, naturalWidth int32) {
+func (widget *Widget) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -3425,11 +3425,11 @@ func (widget *Widget) PreferredWidthForHeight(height int32) (minimumWidth int32,
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(height)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg2)
-	_naturalWidth = int32(_arg3)
+	_minimumWidth = int(_arg2)
+	_naturalWidth = int(_arg3)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -3557,7 +3557,7 @@ func (widget *Widget) RootWindow() gdk.Windower {
 // high density outputs, it can be a higher value (typically 2).
 //
 // See gdk_window_get_scale_factor().
-func (widget *Widget) ScaleFactor() int32 {
+func (widget *Widget) ScaleFactor() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -3566,9 +3566,9 @@ func (widget *Widget) ScaleFactor() int32 {
 	_cret = C.gtk_widget_get_scale_factor(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3650,7 +3650,7 @@ func (widget *Widget) Settings() *Settings {
 // requisition of the widget will be used instead. See
 // gtk_widget_set_size_request(). To get the size a widget will actually
 // request, call gtk_widget_get_preferred_size() instead of this function.
-func (widget *Widget) GetSizeRequest() (width int32, height int32) {
+func (widget *Widget) GetSizeRequest() (width int, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -3660,11 +3660,11 @@ func (widget *Widget) GetSizeRequest() (width int32, height int32) {
 	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -5037,7 +5037,7 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 // widget’s outermost ancestor.
 //
 // Deprecated: Use gtk_widget_get_path() instead.
-func (widget *Widget) Path() (pathLength uint32, path string, pathReversed string) {
+func (widget *Widget) Path() (pathLength uint, path string, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // in
 	var _arg2 *C.gchar     // in
@@ -5048,11 +5048,11 @@ func (widget *Widget) Path() (pathLength uint32, path string, pathReversed strin
 	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(widget)
 
-	var _pathLength uint32   // out
+	var _pathLength uint     // out
 	var _path string         // out
 	var _pathReversed string // out
 
-	_pathLength = uint32(_arg1)
+	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -5116,7 +5116,7 @@ func (widget *Widget) QueueDraw() {
 //
 // width or height may be 0, in this case this function does nothing. Negative
 // values for width and height are not allowed.
-func (widget *Widget) QueueDrawArea(x int32, y int32, width int32, height int32) {
+func (widget *Widget) QueueDrawArea(x int, y int, width int, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -5265,7 +5265,7 @@ func (widget *Widget) RegisterWindow(window gdk.Windower) {
 
 // RemoveAccelerator removes an accelerator from widget, previously installed
 // with gtk_widget_add_accelerator().
-func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType) bool {
+func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkAccelGroup  // out
 	var _arg2 C.guint           // out
@@ -5309,7 +5309,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 
 // RemoveTickCallback removes a tick callback previously registered with
 // gtk_widget_add_tick_callback().
-func (widget *Widget) RemoveTickCallback(id uint32) {
+func (widget *Widget) RemoveTickCallback(id uint) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 
@@ -5333,7 +5333,7 @@ func (widget *Widget) RemoveTickCallback(id uint32) {
 // g_object_unref().
 //
 // Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
-func (widget *Widget) RenderIcon(stockId string, size int32, detail string) *gdkpixbuf.Pixbuf {
+func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -5384,7 +5384,7 @@ func (widget *Widget) RenderIcon(stockId string, size int32, detail string) *gdk
 // g_object_unref().
 //
 // Deprecated: Use gtk_icon_theme_load_icon() instead.
-func (widget *Widget) RenderIconPixbuf(stockId string, size int32) *gdkpixbuf.Pixbuf {
+func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -5769,7 +5769,7 @@ func (widget *Widget) SetDoubleBuffered(doubleBuffered bool) {
 // event mask. This function can’t be used with widgets that have no window.
 // (See gtk_widget_get_has_window()). To get events on those widgets, place them
 // inside a EventBox and receive events on the event box.
-func (widget *Widget) SetEvents(events int32) {
+func (widget *Widget) SetEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -5968,7 +5968,7 @@ func (widget *Widget) SetMapped(mapped bool) {
 
 // SetMarginBottom sets the bottom margin of widget. See the
 // Widget:margin-bottom property.
-func (widget *Widget) SetMarginBottom(margin int32) {
+func (widget *Widget) SetMarginBottom(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -5982,7 +5982,7 @@ func (widget *Widget) SetMarginBottom(margin int32) {
 
 // SetMarginEnd sets the end margin of widget. See the Widget:margin-end
 // property.
-func (widget *Widget) SetMarginEnd(margin int32) {
+func (widget *Widget) SetMarginEnd(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -5998,7 +5998,7 @@ func (widget *Widget) SetMarginEnd(margin int32) {
 // property.
 //
 // Deprecated: Use gtk_widget_set_margin_start() instead.
-func (widget *Widget) SetMarginLeft(margin int32) {
+func (widget *Widget) SetMarginLeft(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -6014,7 +6014,7 @@ func (widget *Widget) SetMarginLeft(margin int32) {
 // property.
 //
 // Deprecated: Use gtk_widget_set_margin_end() instead.
-func (widget *Widget) SetMarginRight(margin int32) {
+func (widget *Widget) SetMarginRight(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -6028,7 +6028,7 @@ func (widget *Widget) SetMarginRight(margin int32) {
 
 // SetMarginStart sets the start margin of widget. See the Widget:margin-start
 // property.
-func (widget *Widget) SetMarginStart(margin int32) {
+func (widget *Widget) SetMarginStart(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -6042,7 +6042,7 @@ func (widget *Widget) SetMarginStart(margin int32) {
 
 // SetMarginTop sets the top margin of widget. See the Widget:margin-top
 // property.
-func (widget *Widget) SetMarginTop(margin int32) {
+func (widget *Widget) SetMarginTop(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -6265,7 +6265,7 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 // properties margin-left, margin-right, margin-top, and margin-bottom, but it
 // does include pretty much all other padding or border properties set by any
 // subclass of Widget.
-func (widget *Widget) SetSizeRequest(width int32, height int32) {
+func (widget *Widget) SetSizeRequest(width int, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -6633,7 +6633,7 @@ func (widget *Widget) SizeAllocate(allocation *Allocation) {
 //
 // If the child widget does not have a valign of GTK_ALIGN_BASELINE the baseline
 // argument is ignored and -1 is used instead.
-func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int32) {
+func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkAllocation // out
 	var _arg2 C.gint           // out
@@ -6731,7 +6731,7 @@ func (widget *Widget) ThawChildNotify() {
 // allocation to coordinates relative to dest_widget’s allocations. In order to
 // perform this operation, both widgets must be realized, and must share a
 // common toplevel.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int32, srcY int32) (destX int32, destY int32, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -6751,12 +6751,12 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int32, 
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
 
-	var _destX int32 // out
-	var _destY int32 // out
-	var _ok bool     // out
+	var _destX int // out
+	var _destY int // out
+	var _ok bool   // out
 
-	_destX = int32(_arg4)
-	_destY = int32(_arg5)
+	_destX = int(_arg4)
+	_destY = int(_arg5)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -6930,16 +6930,16 @@ func NewRequisition() *Requisition {
 }
 
 // Width widget’s desired width
-func (r *Requisition) Width() int32 {
-	var v int32 // out
-	v = int32(r.native.width)
+func (r *Requisition) Width() int {
+	var v int // out
+	v = int(r.native.width)
 	return v
 }
 
 // Height widget’s desired height
-func (r *Requisition) Height() int32 {
-	var v int32 // out
-	v = int32(r.native.height)
+func (r *Requisition) Height() int {
+	var v int // out
+	v = int(r.native.height)
 	return v
 }
 

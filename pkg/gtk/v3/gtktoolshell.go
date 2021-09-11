@@ -82,7 +82,7 @@ type ToolSheller interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	EllipsizeMode() pango.EllipsizeMode
 	// IconSize retrieves the icon size for the tool shell.
-	IconSize() int32
+	IconSize() int
 	// Orientation retrieves the current orientation for the tool shell.
 	Orientation() Orientation
 	// ReliefStyle returns the relief style of buttons on shell.
@@ -147,7 +147,7 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not call
 // this function directly, but rely on gtk_tool_item_get_icon_size() instead.
-func (shell *ToolShell) IconSize() int32 {
+func (shell *ToolShell) IconSize() int {
 	var _arg0 *C.GtkToolShell // out
 	var _cret C.GtkIconSize   // in
 
@@ -156,9 +156,9 @@ func (shell *ToolShell) IconSize() int32 {
 	_cret = C.gtk_tool_shell_get_icon_size(_arg0)
 	runtime.KeepAlive(shell)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

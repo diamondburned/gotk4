@@ -1145,7 +1145,7 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 
 // UnicharCombiningClass determines the canonical combining class of a Unicode
 // character.
-func UnicharCombiningClass(uc uint32) int32 {
+func UnicharCombiningClass(uc uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
@@ -1154,9 +1154,9 @@ func UnicharCombiningClass(uc uint32) int32 {
 	_cret = C.g_unichar_combining_class(_arg1)
 	runtime.KeepAlive(uc)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1240,7 +1240,7 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 // UnicharDigitValue determines the numeric value of a character as a decimal
 // digit.
-func UnicharDigitValue(c uint32) int32 {
+func UnicharDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
@@ -1249,9 +1249,9 @@ func UnicharDigitValue(c uint32) int32 {
 	_cret = C.g_unichar_digit_value(_arg1)
 	runtime.KeepAlive(c)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1808,7 +1808,7 @@ func UnicharValidate(ch uint32) bool {
 
 // UnicharXDigitValue determines the numeric value of a character as a
 // hexadecimal digit.
-func UnicharXDigitValue(c uint32) int32 {
+func UnicharXDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 
@@ -1817,9 +1817,9 @@ func UnicharXDigitValue(c uint32) int32 {
 	_cret = C.g_unichar_xdigit_value(_arg1)
 	runtime.KeepAlive(c)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2020,7 +2020,7 @@ func UTF8Casefold(str string, len int) string {
 // number of strings, it will be significantly faster to obtain collation keys
 // with g_utf8_collate_key() and compare the keys with strcmp() when sorting
 // instead of sorting the original strings.
-func UTF8Collate(str1 string, str2 string) int32 {
+func UTF8Collate(str1 string, str2 string) int {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret C.gint   // in
@@ -2034,9 +2034,9 @@ func UTF8Collate(str1 string, str2 string) int32 {
 	runtime.KeepAlive(str1)
 	runtime.KeepAlive(str2)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

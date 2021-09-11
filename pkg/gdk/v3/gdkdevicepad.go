@@ -79,13 +79,13 @@ type DevicePadder interface {
 
 	// FeatureGroup returns the group the given feature and idx belong to, or -1
 	// if feature/index do not exist in pad.
-	FeatureGroup(feature DevicePadFeature, featureIdx int32) int32
+	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that group may have.
-	GroupNModes(groupIdx int32) int32
+	GroupNModes(groupIdx int) int
 	// NFeatures returns the number of features a tablet pad has.
-	NFeatures(feature DevicePadFeature) int32
+	NFeatures(feature DevicePadFeature) int
 	// NGroups returns the number of groups this pad device has.
-	NGroups() int32
+	NGroups() int
 }
 
 var _ DevicePadder = (*DevicePad)(nil)
@@ -106,7 +106,7 @@ func marshalDevicePadder(p uintptr) (interface{}, error) {
 
 // FeatureGroup returns the group the given feature and idx belong to, or -1 if
 // feature/index do not exist in pad.
-func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int32) int32 {
+func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
 	var _arg2 C.gint                // out
@@ -121,15 +121,15 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int32) i
 	runtime.KeepAlive(feature)
 	runtime.KeepAlive(featureIdx)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // GroupNModes returns the number of modes that group may have.
-func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
+func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
@@ -141,15 +141,15 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 	runtime.KeepAlive(pad)
 	runtime.KeepAlive(groupIdx)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // NFeatures returns the number of features a tablet pad has.
-func (pad *DevicePad) NFeatures(feature DevicePadFeature) int32 {
+func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
 	var _cret C.gint                // in
@@ -161,9 +161,9 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int32 {
 	runtime.KeepAlive(pad)
 	runtime.KeepAlive(feature)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -171,7 +171,7 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int32 {
 // NGroups returns the number of groups this pad device has. Pads have at least
 // one group. A pad group is a subcollection of buttons/strip/rings that is
 // affected collectively by a same current mode.
-func (pad *DevicePad) NGroups() int32 {
+func (pad *DevicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.gint          // in
 
@@ -180,9 +180,9 @@ func (pad *DevicePad) NGroups() int32 {
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 	runtime.KeepAlive(pad)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

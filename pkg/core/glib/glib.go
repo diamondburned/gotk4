@@ -22,21 +22,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
-func init() {
-	if C.sizeof_int != 4 {
-		panic("sizeof(C.int) != 4")
-	}
-	if C.sizeof_uint != 4 {
-		panic("sizeof(C.uint) != 4")
-	}
-	if C.sizeof_gint != 4 {
-		panic("sizeof(C.gint) != 4")
-	}
-	if C.sizeof_guint != 4 {
-		panic("sizeof(C.guint) != 4")
-	}
-}
-
 func gbool(b bool) C.gboolean {
 	if b {
 		return C.gboolean(1)

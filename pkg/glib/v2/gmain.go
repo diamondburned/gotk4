@@ -66,7 +66,7 @@ const SOURCE_REMOVE = false
 // ChildWatchFunc: prototype of a WatchSource callback, called when a child
 // process has exited. To interpret status, see the documentation for
 // g_spawn_check_exit_status().
-type ChildWatchFunc func(pid Pid, status int32)
+type ChildWatchFunc func(pid Pid, status int)
 
 //export _gotk4_glib2_ChildWatchFunc
 func _gotk4_glib2_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
@@ -75,11 +75,11 @@ func _gotk4_glib2_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var pid Pid      // out
-	var status int32 // out
+	var pid Pid    // out
+	var status int // out
 
-	pid = int32(arg0)
-	status = int32(arg1)
+	pid = int(arg0)
+	status = int(arg1)
 
 	fn := v.(ChildWatchFunc)
 	fn(pid, status)
@@ -337,14 +337,14 @@ func MainCurrentSource() *Source {
 // 2. Avoid main loop recursion in situations where you can't handle arbitrary
 // callbacks. Instead, structure your code so that you simply return to the main
 // loop and then get called again when there is more work to do.
-func MainDepth() int32 {
+func MainDepth() int {
 	var _cret C.gint // in
 
 	_cret = C.g_main_depth()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -356,7 +356,7 @@ func MainDepth() int32 {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
-func NewTimeoutSource(interval uint32) *Source {
+func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -388,7 +388,7 @@ func NewTimeoutSource(interval uint32) *Source {
 //
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
-func TimeoutSourceNewSeconds(interval uint32) *Source {
+func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -477,7 +477,7 @@ func (context *MainContext) Acquire() bool {
 // AddPoll adds a file descriptor to the set of file descriptors polled for this
 // context. This will very seldom be used directly. Instead a typical event
 // source will use g_source_add_unix_fd() instead.
-func (context *MainContext) AddPoll(fd *PollFD, priority int32) {
+func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GPollFD      // out
 	var _arg2 C.gint          // out
@@ -501,7 +501,7 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int32) {
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
-func (context *MainContext) Check(maxPriority int32, fds []PollFD) bool {
+func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // out
 	var _arg2 *C.GPollFD      // out
@@ -587,7 +587,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
-func (context *MainContext) FindSourceByID(sourceId uint32) *Source {
+func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
 	var _cret *C.GSource      // in
@@ -740,7 +740,7 @@ func (context *MainContext) PopThreadDefault() {
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
-func (context *MainContext) Prepare() (int32, bool) {
+func (context *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // in
 	var _cret C.gboolean      // in
@@ -750,10 +750,10 @@ func (context *MainContext) Prepare() (int32, bool) {
 	_cret = C.g_main_context_prepare(_arg0, &_arg1)
 	runtime.KeepAlive(context)
 
-	var _priority int32 // out
-	var _ok bool        // out
+	var _priority int // out
+	var _ok bool      // out
 
-	_priority = int32(_arg1)
+	_priority = int(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -811,7 +811,7 @@ func (context *MainContext) PushThreadDefault() {
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
-func (context *MainContext) Query(maxPriority int32, fds []PollFD) (timeout_ int32, gint int32) {
+func (context *MainContext) Query(maxPriority int, fds []PollFD) (timeout_ int, gint int) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // in
@@ -831,11 +831,11 @@ func (context *MainContext) Query(maxPriority int32, fds []PollFD) (timeout_ int
 	runtime.KeepAlive(maxPriority)
 	runtime.KeepAlive(fds)
 
-	var _timeout_ int32 // out
-	var _gint int32     // out
+	var _timeout_ int // out
+	var _gint int     // out
 
-	_timeout_ = int32(_arg2)
-	_gint = int32(_cret)
+	_timeout_ = int(_arg2)
+	_gint = int(_cret)
 
 	return _timeout_, _gint
 }
@@ -1105,7 +1105,7 @@ func marshalSource(p uintptr) (interface{}, error) {
 }
 
 // NewSource constructs a struct Source.
-func NewSource(sourceFuncs *SourceFuncs, structSize uint32) *Source {
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.guint         // out
 	var _cret *C.GSource      // in
@@ -1194,7 +1194,7 @@ func (source *Source) AddPoll(fd *PollFD) {
 // call this API on a #GSource that you did not create.
 //
 // As the name suggests, this function is not available on Windows.
-func (source *Source) AddUnixFd(fd int32, events IOCondition) cgo.Handle {
+func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
 	var _arg0 *C.GSource     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.GIOCondition // out
@@ -1221,7 +1221,7 @@ func (source *Source) AddUnixFd(fd int32, events IOCondition) cgo.Handle {
 //
 // This function is safe to call from any thread, regardless of which thread the
 // context is running in.
-func (source *Source) Attach(context *MainContext) uint32 {
+func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
 	var _cret C.guint         // in
@@ -1235,9 +1235,9 @@ func (source *Source) Attach(context *MainContext) uint32 {
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(context)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1337,7 +1337,7 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 // instance; calling this function before g_source_attach() or after
 // g_source_destroy() yields undefined behavior. The ID returned is unique
 // within the Context instance passed to g_source_attach().
-func (source *Source) ID() uint32 {
+func (source *Source) ID() uint {
 	var _arg0 *C.GSource // out
 	var _cret C.guint    // in
 
@@ -1346,9 +1346,9 @@ func (source *Source) ID() uint32 {
 	_cret = C.g_source_get_id(_arg0)
 	runtime.KeepAlive(source)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1374,7 +1374,7 @@ func (source *Source) Name() string {
 }
 
 // Priority gets the priority of a source.
-func (source *Source) Priority() int32 {
+func (source *Source) Priority() int {
 	var _arg0 *C.GSource // out
 	var _cret C.gint     // in
 
@@ -1383,9 +1383,9 @@ func (source *Source) Priority() int32 {
 	_cret = C.g_source_get_priority(_arg0)
 	runtime.KeepAlive(source)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1680,7 +1680,7 @@ func (source *Source) SetName(name string) {
 // A child source always has the same priority as its parent. It is not
 // permitted to change the priority of a source once it has been added as a
 // child of another source.
-func (source *Source) SetPriority(priority int32) {
+func (source *Source) SetPriority(priority int) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint     // out
 
@@ -1743,7 +1743,7 @@ func (source *Source) SetReadyTime(readyTime int64) {
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
-func SourceRemove(tag uint32) bool {
+func SourceRemove(tag uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
@@ -1820,7 +1820,7 @@ func SourceRemoveByUserData(userData cgo.Handle) bool {
 // been removed by the time this function is called on its (now invalid) source
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
-func SourceSetNameByID(tag uint32, name string) {
+func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out
 	var _arg2 *C.char // out
 

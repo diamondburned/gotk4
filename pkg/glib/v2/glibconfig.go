@@ -174,4 +174,4 @@ const VA_COPY_AS_ARRAY = 1
 //
 // GPid is used in GLib only for descendant processes spawned with the g_spawn
 // functions.
-type Pid = int32
+type Pid = int

@@ -104,7 +104,7 @@ func NewStatusbar() *Statusbar {
 // context.
 //
 // Note that the description is not shown in the UI.
-func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
+func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 *C.char         // out
 	var _cret C.guint         // in
@@ -117,9 +117,9 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextDescription)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -129,7 +129,7 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 //
 // Note that this may not change the displayed message, if the message at the
 // top of the stack has a different context id.
-func (statusbar *Statusbar) Pop(contextId uint32) {
+func (statusbar *Statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -142,7 +142,7 @@ func (statusbar *Statusbar) Pop(contextId uint32) {
 }
 
 // Push pushes a new message onto a statusbar’s stack.
-func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
+func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.char         // out
@@ -158,16 +158,16 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	runtime.KeepAlive(contextId)
 	runtime.KeepAlive(text)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
 // context_id and message_id must be specified.
-func (statusbar *Statusbar) Remove(contextId uint32, messageId uint32) {
+func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -184,7 +184,7 @@ func (statusbar *Statusbar) Remove(contextId uint32, messageId uint32) {
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
 // the exact context_id.
-func (statusbar *Statusbar) RemoveAll(contextId uint32) {
+func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 

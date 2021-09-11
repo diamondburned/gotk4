@@ -12,7 +12,7 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-func TestAccessibleAssertionMessageRole(domain string, file string, line int32, fn string, expr string, accessible Accessibler, expectedRole AccessibleRole, actualRole AccessibleRole) {
+func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn string, expr string, accessible Accessibler, expectedRole AccessibleRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
 	var _arg3 C.int               // out

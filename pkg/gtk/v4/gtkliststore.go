@@ -156,7 +156,7 @@ func (listStore *ListStore) Clear() {
 // then the new row will be appended to the list. The row will be empty after
 // this function is called. To fill in values, you need to call
 // gtk_list_store_set() or gtk_list_store_set_value().
-func (listStore *ListStore) Insert(position int32) TreeIter {
+func (listStore *ListStore) Insert(position int) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.int           // out
@@ -230,7 +230,7 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) TreeIter {
 // the columns and values as two arrays, instead of varargs.
 //
 // This function is mainly intended for language-bindings.
-func (listStore *ListStore) InsertWithValues(position int32, columns []int32, values []externglib.Value) TreeIter {
+func (listStore *ListStore) InsertWithValues(position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.int           // out
@@ -241,8 +241,13 @@ func (listStore *ListStore) InsertWithValues(position int32, columns []int32, va
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg2 = C.int(position)
 	_arg5 = (C.int)(len(columns))
-	if len(columns) > 0 {
-		_arg3 = (*C.int)(unsafe.Pointer(&columns[0]))
+	_arg3 = (*C.int)(C.malloc(C.ulong(len(columns)) * C.ulong(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.int)(_arg3), len(columns))
+		for i := range columns {
+			out[i] = C.int(columns[i])
+		}
 	}
 	_arg5 = (C.int)(len(values))
 	_arg4 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
@@ -377,15 +382,22 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 
 // Reorder reorders store to follow the order indicated by new_order. Note that
 // this function only works with unsorted stores.
-func (store *ListStore) Reorder(newOrder []int32) {
+func (store *ListStore) Reorder(newOrder []int) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.int          // out
 
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(store.Native()))
 	{
-		var zero int32
-		newOrder = append(newOrder, zero)
-		_arg1 = (*C.int)(unsafe.Pointer(&newOrder[0]))
+		_arg1 = (*C.int)(C.malloc(C.ulong(len(newOrder)+1) * C.ulong(C.sizeof_int)))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(newOrder)+1)
+			var zero C.int
+			out[len(newOrder)] = zero
+			for i := range newOrder {
+				out[i] = C.int(newOrder[i])
+			}
+		}
 	}
 
 	C.gtk_list_store_reorder(_arg0, _arg1)
@@ -420,7 +432,7 @@ func (listStore *ListStore) SetColumnTypes(types []externglib.Type) {
 
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
-func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *externglib.Value) {
+func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -442,7 +454,7 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *extern
 // values as two arrays, instead of varargs. This function is mainly intended
 // for language-bindings and in case the number of columns to change is not
 // known until run-time.
-func (listStore *ListStore) Set(iter *TreeIter, columns []int32, values []externglib.Value) {
+func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.int          // out
@@ -452,8 +464,13 @@ func (listStore *ListStore) Set(iter *TreeIter, columns []int32, values []extern
 	_arg0 = (*C.GtkListStore)(unsafe.Pointer(listStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg4 = (C.int)(len(columns))
-	if len(columns) > 0 {
-		_arg2 = (*C.int)(unsafe.Pointer(&columns[0]))
+	_arg2 = (*C.int)(C.malloc(C.ulong(len(columns)) * C.ulong(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.int)(_arg2), len(columns))
+		for i := range columns {
+			out[i] = C.int(columns[i])
+		}
 	}
 	_arg4 = (C.int)(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))

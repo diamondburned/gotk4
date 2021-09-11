@@ -103,7 +103,7 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 
 // NewScaleButton creates a ScaleButton, with a range between min and max, with
 // a stepping of step.
-func NewScaleButton(size int32, min float64, max float64, step float64, icons []string) *ScaleButton {
+func NewScaleButton(size int, min float64, max float64, step float64, icons []string) *ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
 	var _arg3 C.gdouble     // out

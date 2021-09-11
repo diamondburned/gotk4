@@ -50,10 +50,10 @@ type ApplicationOverrider interface {
 	AddPlatformData(builder *glib.VariantBuilder)
 	AfterEmit(platformData *glib.Variant)
 	BeforeEmit(platformData *glib.Variant)
-	CommandLine(commandLine *ApplicationCommandLine) int32
+	CommandLine(commandLine *ApplicationCommandLine) int
 	DBusRegister(connection *DBusConnection, objectPath string) error
 	DBusUnregister(connection *DBusConnection, objectPath string)
-	HandleLocalOptions(options *glib.VariantDict) int32
+	HandleLocalOptions(options *glib.VariantDict) int
 	NameLost() bool
 	// Open opens the given files.
 	//
@@ -541,7 +541,7 @@ func (application *Application) Flags() ApplicationFlags {
 //
 // This is the amount of time (in milliseconds) after the last call to
 // g_application_release() before the application stops running.
-func (application *Application) InactivityTimeout() uint32 {
+func (application *Application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
 
@@ -550,9 +550,9 @@ func (application *Application) InactivityTimeout() uint32 {
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
 	runtime.KeepAlive(application)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -879,7 +879,7 @@ func (application *Application) Release() {
 // suitable for use by most graphical applications but should not be used from
 // applications like editors that need precise control over when processes
 // invoked via the commandline will exit and what their exit status will be.
-func (application *Application) Run(argv []string) int32 {
+func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char        // out
 	var _arg1 C.int
@@ -901,9 +901,9 @@ func (application *Application) Run(argv []string) int32 {
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(argv)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1034,7 +1034,7 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 // This call has no side effects of its own. The value set here is only used for
 // next time g_application_release() drops the use count to zero. Any timeouts
 // currently in progress are not impacted.
-func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
+func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
 

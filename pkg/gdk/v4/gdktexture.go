@@ -48,9 +48,9 @@ type Texturer interface {
 	externglib.Objector
 
 	// Height returns the height of the texture, in pixels.
-	Height() int32
+	Height() int
 	// Width returns the width of texture, in pixels.
-	Width() int32
+	Width() int
 	// SaveToPng: store the given texture to the filename as a PNG file.
 	SaveToPng(filename string) bool
 }
@@ -143,7 +143,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 }
 
 // Height returns the height of the texture, in pixels.
-func (texture *Texture) Height() int32 {
+func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
@@ -152,15 +152,15 @@ func (texture *Texture) Height() int32 {
 	_cret = C.gdk_texture_get_height(_arg0)
 	runtime.KeepAlive(texture)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // Width returns the width of texture, in pixels.
-func (texture *Texture) Width() int32 {
+func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
@@ -169,9 +169,9 @@ func (texture *Texture) Width() int32 {
 	_cret = C.gdk_texture_get_width(_arg0)
 	runtime.KeepAlive(texture)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

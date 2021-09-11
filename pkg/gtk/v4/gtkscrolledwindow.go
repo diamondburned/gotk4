@@ -327,7 +327,7 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 }
 
 // MaxContentHeight returns the maximum content height set.
-func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
+func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
 
@@ -336,15 +336,15 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
 	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MaxContentWidth returns the maximum content width set.
-func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
+func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
 
@@ -353,15 +353,15 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
 	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MinContentHeight gets the minimal content height of scrolled_window.
-func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
+func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
 
@@ -370,15 +370,15 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
 	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
 
 // MinContentWidth gets the minimum content width of scrolled_window.
-func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
+func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.int                // in
 
@@ -387,9 +387,9 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
 	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -603,7 +603,7 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 //
 // It is a programming error to set the maximum content height to a value
 // smaller than gtk.ScrolledWindow:min-content-height.
-func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -623,7 +623,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
 //
 // It is a programming error to set the maximum content width to a value smaller
 // than gtk.ScrolledWindow:min-content-width.
-func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -643,7 +643,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
 //
 // It is a programming error to set the minimum content height to a value
 // greater than gtk.ScrolledWindow:max-content-height.
-func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
+func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 
@@ -663,7 +663,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
 //
 // It is a programming error to set the minimum content width to a value greater
 // than gtk.ScrolledWindow:max-content-width.
-func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
+func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.int                // out
 

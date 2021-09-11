@@ -148,7 +148,7 @@ func (colora *Color) Equal(colorb *Color) bool {
 // Hash: hash function suitable for using for a hash table that stores Colors.
 //
 // Deprecated: Use RGBA.
-func (color *Color) Hash() uint32 {
+func (color *Color) Hash() uint {
 	var _arg0 *C.GdkColor // out
 	var _cret C.guint     // in
 
@@ -157,9 +157,9 @@ func (color *Color) Hash() uint32 {
 	_cret = C.gdk_color_hash(_arg0)
 	runtime.KeepAlive(color)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

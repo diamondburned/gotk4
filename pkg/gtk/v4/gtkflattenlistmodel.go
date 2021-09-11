@@ -88,7 +88,7 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 }
 
 // ModelForItem returns the model containing the item at the given position.
-func (self *FlattenListModel) ModelForItem(position uint32) gio.ListModeller {
+func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
 	var _cret *C.GListModel          // in

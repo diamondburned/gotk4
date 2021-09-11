@@ -723,7 +723,7 @@ func (snapshot *Snapshot) RenderFrame(context *StyleContext, x float64, y float6
 
 // RenderInsertionCursor draws a text caret using snapshot at the specified
 // index of layout.
-func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x float64, y float64, layout *pango.Layout, index int32, direction pango.Direction) {
+func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x float64, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out

@@ -106,7 +106,7 @@ func _gotk4_gtk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild,
 
 // FlowBoxSortFunc: function to compare two children to determine which should
 // come first.
-type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild) (gint int32)
+type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild) (gint int)
 
 //export _gotk4_gtk4_FlowBoxSortFunc
 func _gotk4_gtk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.int) {
@@ -277,7 +277,7 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 }
 
 // ChildAtIndex gets the nth child in the box.
-func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
+func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.int              // out
 	var _cret *C.GtkFlowBoxChild // in
@@ -301,7 +301,7 @@ func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 // ChildAtPos gets the child in the (x, y) position.
 //
 // Both x and y are assumed to be relative to the origin of box.
-func (box *FlowBox) ChildAtPos(x int32, y int32) *FlowBoxChild {
+func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -326,7 +326,7 @@ func (box *FlowBox) ChildAtPos(x int32, y int32) *FlowBoxChild {
 }
 
 // ColumnSpacing gets the horizontal spacing.
-func (box *FlowBox) ColumnSpacing() uint32 {
+func (box *FlowBox) ColumnSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
 
@@ -335,9 +335,9 @@ func (box *FlowBox) ColumnSpacing() uint32 {
 	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
 	runtime.KeepAlive(box)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -362,7 +362,7 @@ func (box *FlowBox) Homogeneous() bool {
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
-func (box *FlowBox) MaxChildrenPerLine() uint32 {
+func (box *FlowBox) MaxChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
 
@@ -371,15 +371,15 @@ func (box *FlowBox) MaxChildrenPerLine() uint32 {
 	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
 	runtime.KeepAlive(box)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
-func (box *FlowBox) MinChildrenPerLine() uint32 {
+func (box *FlowBox) MinChildrenPerLine() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
 
@@ -388,15 +388,15 @@ func (box *FlowBox) MinChildrenPerLine() uint32 {
 	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
 	runtime.KeepAlive(box)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
 
 // RowSpacing gets the vertical spacing.
-func (box *FlowBox) RowSpacing() uint32 {
+func (box *FlowBox) RowSpacing() uint {
 	var _arg0 *C.GtkFlowBox // out
 	var _cret C.guint       // in
 
@@ -405,9 +405,9 @@ func (box *FlowBox) RowSpacing() uint32 {
 	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
 	runtime.KeepAlive(box)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -459,7 +459,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgetter, position int32) {
+func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -573,7 +573,7 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 }
 
 // SetColumnSpacing sets the horizontal space to add between children.
-func (box *FlowBox) SetColumnSpacing(spacing uint32) {
+func (box *FlowBox) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
 
@@ -658,7 +658,7 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 // Setting the maximum number of children per line limits the overall natural
 // size request to be no more than n_children children long in the given
 // orientation.
-func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
+func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
 
@@ -672,7 +672,7 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
 
 // SetMinChildrenPerLine sets the minimum number of children to line up in box’s
 // orientation before flowing.
-func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
+func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
 
@@ -685,7 +685,7 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
 }
 
 // SetRowSpacing sets the vertical space to add between children.
-func (box *FlowBox) SetRowSpacing(spacing uint32) {
+func (box *FlowBox) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
 
@@ -884,7 +884,7 @@ func (self *FlowBoxChild) Child() Widgetter {
 }
 
 // Index gets the current index of the child in its GtkFlowBox container.
-func (child *FlowBoxChild) Index() int32 {
+func (child *FlowBoxChild) Index() int {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _cret C.int              // in
 
@@ -893,9 +893,9 @@ func (child *FlowBoxChild) Index() int32 {
 	_cret = C.gtk_flow_box_child_get_index(_arg0)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

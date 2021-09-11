@@ -1748,7 +1748,7 @@ func (o Ordering) String() string {
 
 // OrderingFromCmpfunc converts the result of a GCompareFunc like strcmp() to a
 // GtkOrdering value.
-func OrderingFromCmpfunc(cmpfuncResult int32) Ordering {
+func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	var _arg1 C.int         // out
 	var _cret C.GtkOrdering // in
 

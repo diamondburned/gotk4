@@ -99,7 +99,7 @@ func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
-func (message *UnixFDMessage) AppendFd(fd int32) error {
+func (message *UnixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out
 	var _cerr *C.GError         // in
@@ -153,7 +153,7 @@ func (message *UnixFDMessage) FdList() *UnixFDList {
 //
 // This function never returns NULL. In case there are no file descriptors
 // contained in message, an empty array is returned.
-func (message *UnixFDMessage) StealFds() []int32 {
+func (message *UnixFDMessage) StealFds() []int {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.gint           // in
 	var _arg1 C.gint            // in
@@ -163,11 +163,16 @@ func (message *UnixFDMessage) StealFds() []int32 {
 	_cret = C.g_unix_fd_message_steal_fds(_arg0, &_arg1)
 	runtime.KeepAlive(message)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
 	defer C.free(unsafe.Pointer(_cret))
-	_gints = make([]int32, _arg1)
-	copy(_gints, unsafe.Slice((*int32)(unsafe.Pointer(_cret)), _arg1))
+	{
+		src := unsafe.Slice(_cret, _arg1)
+		_gints = make([]int, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gints[i] = int(src[i])
+		}
+	}
 
 	return _gints
 }

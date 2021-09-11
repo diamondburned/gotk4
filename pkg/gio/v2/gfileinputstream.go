@@ -60,7 +60,7 @@ type FileInputStreamOverrider interface {
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
-	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback)
+	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
@@ -147,7 +147,7 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set
-func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out

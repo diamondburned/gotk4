@@ -117,7 +117,7 @@ func (op *MountOperation) Anonymous() bool {
 }
 
 // Choice gets a choice from the mount operation.
-func (op *MountOperation) Choice() int32 {
+func (op *MountOperation) Choice() int {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.int              // in
 
@@ -126,9 +126,9 @@ func (op *MountOperation) Choice() int32 {
 	_cret = C.g_mount_operation_get_choice(_arg0)
 	runtime.KeepAlive(op)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -229,7 +229,7 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 }
 
 // Pim gets a PIM from the mount operation.
-func (op *MountOperation) Pim() uint32 {
+func (op *MountOperation) Pim() uint {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.guint            // in
 
@@ -238,9 +238,9 @@ func (op *MountOperation) Pim() uint32 {
 	_cret = C.g_mount_operation_get_pim(_arg0)
 	runtime.KeepAlive(op)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -294,7 +294,7 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 }
 
 // SetChoice sets a default choice for the mount operation.
-func (op *MountOperation) SetChoice(choice int32) {
+func (op *MountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
 
@@ -384,7 +384,7 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 }
 
 // SetPim sets the mount operation's PIM to pim.
-func (op *MountOperation) SetPim(pim uint32) {
+func (op *MountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
 

@@ -602,7 +602,7 @@ func RCParse(filename string) {
 // support symbolic colors.
 //
 // Deprecated: Use CssProvider instead.
-func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint32) {
+func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
 	var _arg2 C.GdkColor  // in
 	var _cret C.guint     // in
@@ -613,10 +613,10 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint32) {
 	runtime.KeepAlive(scanner)
 
 	var _color gdk.Color // out
-	var _guint uint32    // out
+	var _guint uint      // out
 
 	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _color, _guint
 }
@@ -625,7 +625,7 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint32) {
 // is not NULL, it will be consulted to resolve references to symbolic colors.
 //
 // Deprecated: Use CssProvider instead.
-func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint32) {
+func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
 	var _arg3 C.GdkColor    // in
@@ -641,10 +641,10 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint32)
 	runtime.KeepAlive(style)
 
 	var _color gdk.Color // out
-	var _guint uint32    // out
+	var _guint uint      // out
 
 	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _color, _guint
 }
@@ -653,7 +653,7 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint32)
 // file.
 //
 // Deprecated: Use CssProvider instead.
-func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
+func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg1 *C.GScanner    // out
 	var _arg2 C.GtkStateType // in
 	var _cret C.guint        // in
@@ -664,10 +664,10 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
 	runtime.KeepAlive(scanner)
 
 	var _state StateType // out
-	var _guint uint32    // out
+	var _guint uint      // out
 
 	_state = StateType(_arg2)
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _state, _guint
 }
@@ -782,7 +782,7 @@ func RCSetDefaultFiles(filenames []string) {
 // yet, so the interface currently has no use.
 type RCStyleOverrider interface {
 	Merge(src *RCStyle)
-	Parse(settings *Settings, scanner *glib.Scanner) uint32
+	Parse(settings *Settings, scanner *glib.Scanner) uint
 }
 
 // RCStyle is used to represent a set of information about the appearance of a

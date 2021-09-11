@@ -42,11 +42,11 @@ func init() {
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
-	Load(ctx context.Context, size int32) (string, InputStreamer, error)
+	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
-	LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback)
+	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
@@ -63,9 +63,9 @@ type LoadableIconner interface {
 	externglib.Objector
 
 	// Load loads a loadable icon.
-	Load(ctx context.Context, size int32) (string, InputStreamer, error)
+	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously.
-	LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback)
+	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
@@ -89,7 +89,7 @@ func marshalLoadableIconner(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this function,
 // see g_loadable_icon_load_async().
-func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputStreamer, error) {
+func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg3 *C.GCancellable  // out
 	var _arg1 C.int            // out
@@ -129,7 +129,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of this
 // function, see g_loadable_icon_load().
-func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback) {
+func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

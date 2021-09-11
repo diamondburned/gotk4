@@ -100,7 +100,7 @@ const SQRT2 = 1.414214
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a cgo.Handle, b cgo.Handle) (gint int32)
+type CompareDataFunc func(a cgo.Handle, b cgo.Handle) (gint int)
 
 //export _gotk4_glib2_CompareDataFunc
 func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {

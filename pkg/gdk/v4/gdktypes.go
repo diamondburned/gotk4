@@ -915,7 +915,7 @@ type keymapKey struct {
 
 // NewKeymapKey creates a new KeymapKey instance from the given
 // fields.
-func NewKeymapKey(keycode uint32, group, level int32) KeymapKey {
+func NewKeymapKey(keycode uint, group, level int) KeymapKey {
 	var f0 C.guint // out
 	f0 = C.guint(keycode)
 	var f1 C.int // out
@@ -933,9 +933,9 @@ func NewKeymapKey(keycode uint32, group, level int32) KeymapKey {
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
-func (k *KeymapKey) Keycode() uint32 {
-	var v uint32 // out
-	v = uint32(k.native.keycode)
+func (k *KeymapKey) Keycode() uint {
+	var v uint // out
+	v = uint(k.native.keycode)
 	return v
 }
 
@@ -943,9 +943,9 @@ func (k *KeymapKey) Keycode() uint32 {
 // for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
-func (k *KeymapKey) Group() int32 {
-	var v int32 // out
-	v = int32(k.native.group)
+func (k *KeymapKey) Group() int {
+	var v int // out
+	v = int(k.native.group)
 	return v
 }
 
@@ -955,9 +955,9 @@ func (k *KeymapKey) Group() int32 {
 // whether to use the “1” or the “!” symbol. The letter keys are considered to
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
-func (k *KeymapKey) Level() int32 {
-	var v int32 // out
-	v = int32(k.native.level)
+func (k *KeymapKey) Level() int {
+	var v int // out
+	v = int(k.native.level)
 	return v
 }
 
@@ -994,7 +994,7 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // NewRectangle creates a new Rectangle instance from the given
 // fields.
-func NewRectangle(x, y, width, height int32) Rectangle {
+func NewRectangle(x, y, width, height int) Rectangle {
 	var f0 C.int // out
 	f0 = C.int(x)
 	var f1 C.int // out
@@ -1015,35 +1015,35 @@ func NewRectangle(x, y, width, height int32) Rectangle {
 }
 
 // X: x coordinate of the top left corner
-func (r *Rectangle) X() int32 {
-	var v int32 // out
-	v = int32(r.native.x)
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.native.x)
 	return v
 }
 
 // Y: y coordinate of the top left corner
-func (r *Rectangle) Y() int32 {
-	var v int32 // out
-	v = int32(r.native.y)
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.native.y)
 	return v
 }
 
 // Width: width of the rectangle
-func (r *Rectangle) Width() int32 {
-	var v int32 // out
-	v = int32(r.native.width)
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.native.width)
 	return v
 }
 
 // Height: height of the rectangle
-func (r *Rectangle) Height() int32 {
-	var v int32 // out
-	v = int32(r.native.height)
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.native.height)
 	return v
 }
 
 // ContainsPoint returns UE if rect contains the point described by x and y.
-func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
+func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

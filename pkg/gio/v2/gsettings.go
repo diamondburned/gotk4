@@ -228,7 +228,7 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SettingsOverrider interface {
-	ChangeEvent(keys *glib.Quark, nKeys int32) bool
+	ChangeEvent(keys *glib.Quark, nKeys int) bool
 	Changed(key string)
 	WritableChangeEvent(key glib.Quark) bool
 	WritableChanged(key string)
@@ -861,7 +861,7 @@ func (settings *Settings) Double(key string) float64 {
 //
 // If the value stored in the configuration database is not a valid value for
 // the enumerated type then this function will return the default value.
-func (settings *Settings) Enum(key string) int32 {
+func (settings *Settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
@@ -874,9 +874,9 @@ func (settings *Settings) Enum(key string) int32 {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -892,7 +892,7 @@ func (settings *Settings) Enum(key string) int32 {
 //
 // If the value stored in the configuration database is not a valid value for
 // the flags type then this function will return the default value.
-func (settings *Settings) Flags(key string) uint32 {
+func (settings *Settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
@@ -905,9 +905,9 @@ func (settings *Settings) Flags(key string) uint32 {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -938,7 +938,7 @@ func (settings *Settings) HasUnapplied() bool {
 //
 // It is a programmer error to give a key that isn't specified as having a int32
 // type in the schema for settings.
-func (settings *Settings) Int(key string) int32 {
+func (settings *Settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.gint       // in
@@ -951,9 +951,9 @@ func (settings *Settings) Int(key string) int32 {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1136,7 +1136,7 @@ func (settings *Settings) Strv(key string) []string {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint32 type in the schema for settings.
-func (settings *Settings) Uint(key string) uint32 {
+func (settings *Settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret C.guint      // in
@@ -1149,9 +1149,9 @@ func (settings *Settings) Uint(key string) uint32 {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1493,7 +1493,7 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //
 // After performing the write, accessing key directly with
 // g_settings_get_string() will return the 'nick' associated with value.
-func (settings *Settings) SetEnum(key string, value int32) bool {
+func (settings *Settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -1527,7 +1527,7 @@ func (settings *Settings) SetEnum(key string, value int32) bool {
 //
 // After performing the write, accessing key directly with g_settings_get_strv()
 // will return an array of 'nicks'; one for each bit in value.
-func (settings *Settings) SetFlags(key string, value uint32) bool {
+func (settings *Settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out
@@ -1558,7 +1558,7 @@ func (settings *Settings) SetFlags(key string, value uint32) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a int32
 // type in the schema for settings.
-func (settings *Settings) SetInt(key string, value int32) bool {
+func (settings *Settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -1696,7 +1696,7 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint32 type in the schema for settings.
-func (settings *Settings) SetUint(key string, value uint32) bool {
+func (settings *Settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.guint      // out

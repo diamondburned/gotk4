@@ -36,7 +36,7 @@ func init() {
 //
 // When the operation is finished, callback will be called. You must then call
 // content_serialize_finish to get the result of the operation.
-func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *externglib.Value, ioPriority int32, callback gio.AsyncReadyCallback) {
+func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *externglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GOutputStream      // out
 	var _arg2 *C.char               // out
@@ -201,7 +201,7 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 // Priority gets the I/O priority for the current operation.
 //
 // This is the priority that was passed to content_serialize_async.
-func (serializer *ContentSerializer) Priority() int32 {
+func (serializer *ContentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
 
@@ -210,9 +210,9 @@ func (serializer *ContentSerializer) Priority() int32 {
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
 	runtime.KeepAlive(serializer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

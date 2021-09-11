@@ -653,7 +653,7 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 
 // RenderInsertionCursor draws a text caret on cr at the specified index of
 // layout.
-func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout, index int32, direction pango.Direction) {
+func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -810,7 +810,7 @@ func (context *StyleContext) AddClass(className string) {
 // Note: If both priorities are the same, a StyleProvider added through this
 // function takes precedence over another added through
 // gtk_style_context_add_provider_for_screen().
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -1185,7 +1185,7 @@ func (context *StyleContext) Property(property string, state StateFlags) externg
 }
 
 // Scale returns the scale used for assets.
-func (context *StyleContext) Scale() int32 {
+func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.gint             // in
 
@@ -1194,9 +1194,9 @@ func (context *StyleContext) Scale() int32 {
 	_cret = C.gtk_style_context_get_scale(_arg0)
 	runtime.KeepAlive(context)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1644,7 +1644,7 @@ func (context *StyleContext) Save() {
 // animation are scrolled together with it.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int32, dy int32) {
+func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gint             // out
@@ -1775,7 +1775,7 @@ func (context *StyleContext) SetPath(path *WidgetPath) {
 }
 
 // SetScale sets the scale to use when getting image assets for the style.
-func (context *StyleContext) SetScale(scale int32) {
+func (context *StyleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.gint             // out
 
@@ -1889,7 +1889,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 // Note: If both priorities are the same, A StyleProvider added through
 // gtk_style_context_add_provider() takes precedence over another added through
 // this function.
-func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint32) {
+func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkScreen        // out
 	var _arg2 *C.GtkStyleProvider // out
 	var _arg3 C.guint             // out

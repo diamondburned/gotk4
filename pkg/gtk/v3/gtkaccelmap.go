@@ -109,7 +109,7 @@ func (*AccelMap) privateAccelMap() {}
 // Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
-func AccelMapAddEntry(accelPath string, accelKey uint32, accelMods gdk.ModifierType) {
+func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType) {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -152,7 +152,7 @@ func AccelMapAddFilter(filterPattern string) {
 // Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
-func AccelMapChangeEntry(accelPath string, accelKey uint32, accelMods gdk.ModifierType, replace bool) bool {
+func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType, replace bool) bool {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -212,7 +212,7 @@ func AccelMapLoad(fileName string) {
 // AccelMapLoadFd: filedescriptor variant of gtk_accel_map_load().
 //
 // Note that the file descriptor will not be closed by this function.
-func AccelMapLoadFd(fd int32) {
+func AccelMapLoadFd(fd int) {
 	var _arg1 C.gint // out
 
 	_arg1 = C.gint(fd)
@@ -295,7 +295,7 @@ func AccelMapSave(fileName string) {
 // AccelMapSaveFd: filedescriptor variant of gtk_accel_map_save().
 //
 // Note that the file descriptor will not be closed by this function.
-func AccelMapSaveFd(fd int32) {
+func AccelMapSaveFd(fd int) {
 	var _arg1 C.gint // out
 
 	_arg1 = C.gint(fd)

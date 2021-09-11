@@ -827,7 +827,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 }
 
 // Child gets one of the children of container.
-func (node *ContainerNode) Child(idx uint32) RenderNoder {
+func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -847,7 +847,7 @@ func (node *ContainerNode) Child(idx uint32) RenderNoder {
 }
 
 // NChildren retrieves the number of direct children of node.
-func (node *ContainerNode) NChildren() uint32 {
+func (node *ContainerNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -856,9 +856,9 @@ func (node *ContainerNode) NChildren() uint32 {
 	_cret = C.gsk_container_node_get_n_children(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1130,7 +1130,7 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 }
 
 // Child gets one of the children.
-func (node *GLShaderNode) Child(idx uint32) RenderNoder {
+func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -1150,7 +1150,7 @@ func (node *GLShaderNode) Child(idx uint32) RenderNoder {
 }
 
 // NChildren returns the number of children
-func (node *GLShaderNode) NChildren() uint32 {
+func (node *GLShaderNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -1159,9 +1159,9 @@ func (node *GLShaderNode) NChildren() uint32 {
 	_cret = C.gsk_gl_shader_node_get_n_children(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2348,7 +2348,7 @@ func (node *TextNode) Glyphs() []pango.GlyphInfo {
 }
 
 // NumGlyphs retrieves the number of glyphs in the text node.
-func (node *TextNode) NumGlyphs() uint32 {
+func (node *TextNode) NumGlyphs() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
 
@@ -2357,9 +2357,9 @@ func (node *TextNode) NumGlyphs() uint32 {
 	_cret = C.gsk_text_node_get_num_glyphs(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

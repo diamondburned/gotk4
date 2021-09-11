@@ -551,7 +551,7 @@ func (uri *URI) Path() string {
 }
 
 // Port gets uri's port.
-func (uri *URI) Port() int32 {
+func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
@@ -560,9 +560,9 @@ func (uri *URI) Port() int32 {
 	_cret = C.g_uri_get_port(_arg0)
 	runtime.KeepAlive(uri)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -743,7 +743,7 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 //
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
-func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int32, path string, query string, fragment string) *URI {
+func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -808,7 +808,7 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 // In contrast to g_uri_build(), this allows specifying the components of the
 // ‘userinfo’ field separately. Note that user must be non-NULL if either
 // password or auth_params is non-NULL.
-func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int32, path string, query string, fragment string) *URI {
+func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -993,7 +993,7 @@ func URIIsValid(uriString string, flags URIFlags) error {
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in flags.
-func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int32, path string, query string, fragment string) string {
+func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1056,7 +1056,7 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in flags.
-func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int32, path string, query string, fragment string) string {
+func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1329,7 +1329,7 @@ func URIResolveRelative(baseUriString string, uriRef string, flags URIFlags) (st
 // Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS flags
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
-func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int32, path string, query string, fragment string, goerr error) {
+func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1352,7 +1352,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var _scheme string   // out
 	var _userinfo string // out
 	var _host string     // out
-	var _port int32      // out
+	var _port int        // out
 	var _path string     // out
 	var _query string    // out
 	var _fragment string // out
@@ -1370,7 +1370,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
 		defer C.free(unsafe.Pointer(_arg5))
 	}
-	_port = int32(_arg6)
+	_port = int(_arg6)
 	if _arg7 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
 		defer C.free(unsafe.Pointer(_arg7))
@@ -1396,7 +1396,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 // more details; this is mostly a wrapper around that function with simpler
 // arguments. However, it will return an error if uri_string is a relative URI,
 // or does not contain a hostname component.
-func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int32, goerr error) {
+func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1414,7 +1414,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 
 	var _scheme string // out
 	var _host string   // out
-	var _port int32    // out
+	var _port int      // out
 	var _goerr error   // out
 
 	if _arg3 != nil {
@@ -1425,7 +1425,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 		defer C.free(unsafe.Pointer(_arg4))
 	}
-	_port = int32(_arg5)
+	_port = int(_arg5)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1443,7 +1443,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 // effect of flags. Note that password will only be parsed out if flags contains
 // G_URI_FLAGS_HAS_PASSWORD, and auth_params will only be parsed out if flags
 // contains G_URI_FLAGS_HAS_AUTH_PARAMS.
-func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int32, path string, query string, fragment string, goerr error) {
+func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1470,7 +1470,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var _password string   // out
 	var _authParams string // out
 	var _host string       // out
-	var _port int32        // out
+	var _port int          // out
 	var _path string       // out
 	var _query string      // out
 	var _fragment string   // out
@@ -1496,7 +1496,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
 		defer C.free(unsafe.Pointer(_arg7))
 	}
-	_port = int32(_arg8)
+	_port = int(_arg8)
 	if _arg9 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg9)))
 		defer C.free(unsafe.Pointer(_arg9))

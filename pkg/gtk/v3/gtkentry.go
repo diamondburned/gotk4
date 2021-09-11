@@ -1047,7 +1047,7 @@ func (entry *Entry) GrabFocusWithoutSelecting() {
 	runtime.KeepAlive(entry)
 }
 
-// ImContextFilterKeypress: allow the Entry input method to internally handle
+// IMContextFilterKeypress: allow the Entry input method to internally handle
 // key press and release events. If this function returns TRUE, then no further
 // processing should be done for this key event. See
 // gtk_im_context_filter_keypress().
@@ -1057,7 +1057,7 @@ func (entry *Entry) GrabFocusWithoutSelecting() {
 // insert your own key handling between the input method and the default key
 // event handling of the Entry. See gtk_text_view_reset_im_context() for an
 // example of use.
-func (entry *Entry) ImContextFilterKeypress(event *gdk.EventKey) bool {
+func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkEntry    // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -1114,11 +1114,11 @@ func (entry *Entry) ProgressPulse() {
 	runtime.KeepAlive(entry)
 }
 
-// ResetImContext: reset the input method context of the entry if needed.
+// ResetIMContext: reset the input method context of the entry if needed.
 //
 // This can be necessary in the case where modifying the buffer would confuse
 // on-going input method behavior.
-func (entry *Entry) ResetImContext() {
+func (entry *Entry) ResetIMContext() {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))

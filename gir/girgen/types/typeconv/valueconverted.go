@@ -219,7 +219,6 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// The inner type inside a container must always be a pointer, so if
 		// it's not, then make it one.
 		cgoType = "*" + cgoType
-		value.log(logger.Unusual, "guessed container go type", value.GoType)
 	}
 
 	if value.ParameterIsOutput() {

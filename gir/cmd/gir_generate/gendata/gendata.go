@@ -5,6 +5,7 @@ package gendata
 import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
 	. "github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
@@ -243,6 +244,22 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
 }
 
+// ImportGError ensures that gerror is imported.
+func ImportGError(nsgen *girgen.NamespaceGenerator) error {
+	core := file.ImportCore("gerror")
+
+	for _, f := range nsgen.Files {
+		if f.Header().HasImport(core) {
+			return nil
+		}
+	}
+
+	f := nsgen.MakeFile("")
+	f.Header().DashImport(core)
+
+	return nil
+}
+
 // GioArrayUseBytes is the postprocessor that adds gio/v2.UseBytes.
 func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["garray.go"]
@@ -295,6 +312,9 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
 	"GLib-2": {GioArrayUseBytes},
+	"Gio-2":  {ImportGError},
+	"Gtk-3":  {ImportGError},
+	"Gtk-4":  {ImportGError}, // for the marshaler
 }
 
 // Appends contains the contents of files that are appended into generated

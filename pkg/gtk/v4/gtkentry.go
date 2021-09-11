@@ -897,11 +897,11 @@ func (entry *Entry) ProgressPulse() {
 	runtime.KeepAlive(entry)
 }
 
-// ResetImContext: reset the input method context of the entry if needed.
+// ResetIMContext: reset the input method context of the entry if needed.
 //
 // This can be necessary in the case where modifying the buffer would confuse
 // on-going input method behavior.
-func (entry *Entry) ResetImContext() {
+func (entry *Entry) ResetIMContext() {
 	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))

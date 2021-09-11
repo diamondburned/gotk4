@@ -1158,7 +1158,7 @@ func (textView *TextView) WrapMode() WrapMode {
 	return _wrapMode
 }
 
-// ImContextFilterKeypress: allow the TextView input method to internally handle
+// IMContextFilterKeypress: allow the TextView input method to internally handle
 // key press and release events. If this function returns TRUE, then no further
 // processing should be done for this key event. See
 // gtk_im_context_filter_keypress().
@@ -1186,7 +1186,7 @@ func (textView *TextView) WrapMode() WrapMode {
 //
 //      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 //    }
-func (textView *TextView) ImContextFilterKeypress(event *gdk.EventKey) bool {
+func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -1318,11 +1318,11 @@ func (textView *TextView) ResetCursorBlink() {
 	runtime.KeepAlive(textView)
 }
 
-// ResetImContext: reset the input method context of the text view if needed.
+// ResetIMContext: reset the input method context of the text view if needed.
 //
 // This can be necessary in the case where modifying the buffer would confuse
 // on-going input method behavior.
-func (textView *TextView) ResetImContext() {
+func (textView *TextView) ResetIMContext() {
 	var _arg0 *C.GtkTextView // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))

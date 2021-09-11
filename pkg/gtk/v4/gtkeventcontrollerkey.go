@@ -100,8 +100,8 @@ func (controller *EventControllerKey) Group() uint32 {
 	return _guint
 }
 
-// ImContext gets the input method context of the key controller.
-func (controller *EventControllerKey) ImContext() IMContexter {
+// IMContext gets the input method context of the key controller.
+func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
@@ -117,8 +117,8 @@ func (controller *EventControllerKey) ImContext() IMContexter {
 	return _imContext
 }
 
-// SetImContext sets the input method context of the key controller.
-func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
+// SetIMContext sets the input method context of the key controller.
+func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 

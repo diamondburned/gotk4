@@ -146,7 +146,7 @@ func (n *NamespaceGenerator) Pkgconfig() []string {
 // FileWriter returns the respective file writer from the given InfoFields.
 func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWriter {
 	if info.Elements == nil {
-		return n.makeFile("")
+		return n.MakeFile("")
 	}
 
 	var filename string
@@ -157,14 +157,14 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWrit
 	case info.Elements.Doc != nil:
 		filename = info.Elements.Doc.Filename
 	default:
-		return n.makeFile("")
+		return n.MakeFile("")
 	}
 
 	if info.Attrs != nil && info.Attrs.Version != "" {
 		filename += info.Attrs.Version // ex: gtk3.2.go
 	}
 
-	return n.makeFile(swapFileExt(filename, ".go"))
+	return n.MakeFile(swapFileExt(filename, ".go"))
 }
 
 // extension replaced. The given file extension should contain a dot if it's not
@@ -174,7 +174,9 @@ func swapFileExt(filepath, ext string) string {
 	return strings.Split(filename, ".")[0] + ext
 }
 
-func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
+// MakeFile makes a new FileGenerator for the given filename or returns an
+// existing one.
+func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
 	var isRoot bool
 	if filename == "" {
 		filename = n.PkgName + ".go"
@@ -263,7 +265,7 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	}
 
 	// Put the dash import into the root package.
-	n.makeFile("").header.DashImport("runtime/cgo")
+	n.MakeFile("").header.DashImport("runtime/cgo")
 
 importedCgo:
 	for _, postproc := range n.postprocs {

@@ -26,7 +26,7 @@ func NewInputReader(r io.Reader) (gio.InputStreamer, error) {
 	}
 
 	// Allow GIO to close the pipe using the syscall.
-	istream := gio.NewUnixInputStream(int(rp.Fd()), true)
+	istream := gio.NewUnixInputStream(int32(rp.Fd()), true)
 
 	go func() {
 		io.Copy(wp, r)

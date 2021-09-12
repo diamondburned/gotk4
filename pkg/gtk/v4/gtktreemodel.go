@@ -16,9 +16,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// gboolean _gotk4_gtk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// #include "gtk.h"
 import "C"
 
 func init() {

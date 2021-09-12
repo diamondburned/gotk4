@@ -12,7 +12,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gsk/gsk.h>
+// #include "gsk.h"
 import "C"
 
 // RoundedRect: rectangular region with rounded corners.

@@ -4,7 +4,7 @@ package gdkpixbuf
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk-pixbuf/gdk-pixbuf.h>
+// #include "gdkpixbuf.h"
 import "C"
 
 // PIXBUF_MAJOR: major version of gdk-pixbuf library, that is the "0" in "0.8.2"

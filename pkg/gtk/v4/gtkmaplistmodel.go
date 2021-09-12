@@ -13,10 +13,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void callbackDelete(gpointer);
-// gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
+// #include "gtk.h"
 import "C"
 
 func init() {

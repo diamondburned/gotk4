@@ -3,7 +3,6 @@
 package gdkpixbuf
 
 import (
-	_ "runtime/cgo"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,8 +11,7 @@ import (
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk-pixbuf/gdk-pixbuf.h>
-// #include <glib-object.h>
+// #include "gdkpixbuf.h"
 import "C"
 
 func init() {

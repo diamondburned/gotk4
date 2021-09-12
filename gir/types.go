@@ -182,6 +182,13 @@ type Function struct {
 	CallableAttrs
 }
 
+type FunctionMacro struct {
+	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function-macro"`
+	Name           string   `xml:"name,attr"`
+	CIdentifier    string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
+	Introspectable bool     `xml:"introspectable,attr"` // usually false
+}
+
 type Implements struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
 	Name    string   `xml:"name,attr"`
@@ -263,18 +270,19 @@ type Namespace struct {
 	Prefix              string `xml:"http://www.gtk.org/introspection/c/1.0 prefix,attr"`
 	SharedLibrary       string `xml:"shared-library,attr"`
 
-	Aliases     []Alias      `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
-	Classes     []Class      `xml:"http://www.gtk.org/introspection/core/1.0 class"`
-	Interfaces  []Interface  `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
-	Records     []Record     `xml:"http://www.gtk.org/introspection/core/1.0 record"`
-	Enums       []Enum       `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
-	Functions   []Function   `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	Unions      []Union      `xml:"http://www.gtk.org/introspection/core/1.0 union"`
-	Bitfields   []Bitfield   `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`
-	Callbacks   []Callback   `xml:"http://www.gtk.org/introspection/core/1.0 callback"`
-	Constants   []Constant   `xml:"http://www.gtk.org/introspection/core/1.0 constant"`
-	Annotations []Annotation `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
-	Boxeds      []Boxed      `xml:"http://www.gtk.org/introspection/core/1.0 boxed"`
+	Aliases        []Alias         `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
+	Classes        []Class         `xml:"http://www.gtk.org/introspection/core/1.0 class"`
+	Interfaces     []Interface     `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
+	Records        []Record        `xml:"http://www.gtk.org/introspection/core/1.0 record"`
+	Enums          []Enum          `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
+	Functions      []Function      `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+	FunctionMacros []FunctionMacro `xml:"http://www.gtk.org/introspection/core/1.0 function-macro"`
+	Unions         []Union         `xml:"http://www.gtk.org/introspection/core/1.0 union"`
+	Bitfields      []Bitfield      `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`
+	Callbacks      []Callback      `xml:"http://www.gtk.org/introspection/core/1.0 callback"`
+	Constants      []Constant      `xml:"http://www.gtk.org/introspection/core/1.0 constant"`
+	Annotations    []Annotation    `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
+	Boxeds         []Boxed         `xml:"http://www.gtk.org/introspection/core/1.0 boxed"`
 }
 
 type Package struct {

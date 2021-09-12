@@ -95,4 +95,5 @@ func (p *Pen) WriteTmpl(tmpl *template.Template, args interface{}) {
 // LineTmpl writes an inline template with the delimiter "{" and "}".
 func (p *Pen) LineTmpl(v interface{}, tmpl string) {
 	gotmpl.Render(p.PenWriter, tmpl, v)
+	p.EmptyLine()
 }

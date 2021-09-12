@@ -19,9 +19,7 @@ import (
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk-pixbuf/gdk-pixbuf.h>
-// #include <glib-object.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// #include "gdkpixbuf.h"
 import "C"
 
 func init() {

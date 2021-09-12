@@ -9,7 +9,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gtk/gtk.h>
+// #include "gtk.h"
 import "C"
 
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at

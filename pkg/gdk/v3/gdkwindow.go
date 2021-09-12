@@ -19,9 +19,7 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
-// gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
+// #include "gdk.h"
 import "C"
 
 func init() {

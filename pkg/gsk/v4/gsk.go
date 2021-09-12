@@ -3,14 +3,12 @@
 package gsk
 
 import (
-	_ "runtime/cgo"
-
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gsk/gsk.h>
+// #include "gsk.h"
 import "C"
 
 func SerializationErrorQuark() glib.Quark {

@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdkx.h>
+// #include "gdkx11.h"
 import "C"
 
 // X11GetParentRelativePattern: used with gdk_window_set_background_pattern() to

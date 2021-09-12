@@ -10,13 +10,12 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <glib.h>
-// void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
+// #include "glib.h"
 import "C"
 
 // SpawnError: error codes returned by spawning processes.

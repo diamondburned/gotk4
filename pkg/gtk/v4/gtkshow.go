@@ -15,8 +15,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gtk/gtk.h>
-// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// #include "gtk.h"
 import "C"
 
 // ShowURI: this function launches the default application for showing a given

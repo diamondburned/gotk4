@@ -271,7 +271,7 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 	h.Import("runtime")
 	h.ImportCore("gbox")
 	h.ImportCore("gextras")
-	h.CallbackDelete = true
+	h.NeedsCallbackDelete()
 
 	// We can use the gbox.Assign API for this. The type doesn't matter much,
 	// since we're not actually going to access the data through it.

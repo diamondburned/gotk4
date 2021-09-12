@@ -136,6 +136,8 @@ func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 		return false
 	}
 
+	g.hdr.StubFn(typ.NamespaceFindResult, call)
+
 	return true
 }
 

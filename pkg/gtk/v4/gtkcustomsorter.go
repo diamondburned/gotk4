@@ -13,10 +13,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void callbackDelete(gpointer);
-// gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// #include "gtk.h"
 import "C"
 
 func init() {

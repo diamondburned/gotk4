@@ -46,7 +46,7 @@ type M = map[string]interface{}
 
 // Render renders the given template string with the given key-value pair.
 func Render(w io.Writer, tmpl string, v interface{}) {
-	tmpl = strings.TrimSpace(tmpl) + "\n"
+	tmpl = strings.TrimSpace(tmpl)
 
 	tmplMutex.Lock()
 	renderTmpl, ok := renderTmpls[tmpl]

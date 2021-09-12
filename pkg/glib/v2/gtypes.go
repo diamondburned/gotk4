@@ -9,11 +9,12 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib.h>
+// #include "glib.h"
 import "C"
 
 // BIG_ENDIAN specifies one of the possible types of byte order. See BYTE_ORDER.

@@ -5,11 +5,13 @@ package glib
 import (
 	"runtime"
 	"unsafe"
+
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib.h>
+// #include "glib.h"
 import "C"
 
 // EnvironGetenv returns the value of the environment variable variable in the

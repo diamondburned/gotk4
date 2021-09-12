@@ -14,7 +14,7 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdk.h>
+// #include "gdk.h"
 import "C"
 
 // CairoCreate creates a Cairo context for drawing to window.

@@ -8,16 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern void callbackDelete(gpointer);
-// gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
+// #include "gtk.h"
 import "C"
 
 // STOCK_ABOUT: “About” item. ! (help-about.png)

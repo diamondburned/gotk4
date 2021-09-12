@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <pango/pango.h>
+// #include "pango.h"
 import "C"
 
 // Break determines possible line, word, and character breaks for a string of

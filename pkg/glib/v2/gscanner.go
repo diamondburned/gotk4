@@ -13,7 +13,7 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib.h>
+// #include "glib.h"
 import "C"
 
 // CSET_A_2_Z: set of uppercase ASCII alphabet characters. Used for specifying

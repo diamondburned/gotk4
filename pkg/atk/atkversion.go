@@ -2,9 +2,13 @@
 
 package atk
 
+import (
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
+)
+
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <atk/atk.h>
+// #include "atk.h"
 import "C"
 
 // BINARY_AGE: like atk_get_binary_age(), but from the headers used at

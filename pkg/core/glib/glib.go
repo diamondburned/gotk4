@@ -33,6 +33,11 @@ func gobool(b C.gboolean) bool {
 	return b != 0
 }
 
+//export goPanic
+func goPanic(why *C.char) {
+	panic(C.GoString(why))
+}
+
 // InitI18n initializes the i18n subsystem. It runs the following C code:
 //
 //    setlocale(LC_ALL, "");

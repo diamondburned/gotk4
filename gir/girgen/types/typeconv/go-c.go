@@ -645,7 +645,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 			// Mark this as done.
 			if destroy.finalize() {
-				value.header.CallbackDelete = true
+				value.header.NeedsCallbackDelete()
 				value.outDecl.Linef("var %s C.GDestroyNotify", destroy.OutName)
 			}
 

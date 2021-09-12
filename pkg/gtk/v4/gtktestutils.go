@@ -11,8 +11,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include "gtk.h"
 import "C"
 
 // TestListAllTypes: return the type ids that have been registered after calling

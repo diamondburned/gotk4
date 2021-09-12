@@ -7,9 +7,11 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/iface"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 	"github.com/pkg/errors"
 )
@@ -17,6 +19,15 @@ import (
 // Postprocessor describes a processor function that modifies a namespace. It is
 // called right before files are finalized within the namespace generator.
 type Postprocessor func(n *NamespaceGenerator) error
+
+// File is a union type that can either be a *FileGenerator or a *RawFile. See
+// the original declaration in file.go.
+type File interface {
+	Pen() *pen.Pen
+	Header() *file.Header
+	IsEmpty() bool
+	Generate() ([]byte, error)
+}
 
 // NamespaceGenerator manages generation of a namespace. A namespace contains
 // various files, which are created using the FileWriter method.
@@ -26,7 +37,7 @@ type NamespaceGenerator struct {
 	PkgName    string
 	PkgVersion string
 
-	Files map[string]*FileGenerator
+	Files map[string]File
 
 	postprocs  []Postprocessor
 	current    *gir.NamespaceFindResult
@@ -47,7 +58,7 @@ func NewNamespaceGenerator(g *Generator, n *gir.NamespaceFindResult) *NamespaceG
 		PkgPath:    g.ModPath(n.Namespace),
 		PkgName:    gir.GoNamespace(n.Namespace),
 		PkgVersion: gir.MajorVersion(n.Namespace.Version),
-		Files:      map[string]*FileGenerator{},
+		Files:      map[string]File{},
 		current:    n,
 		canResolve: map[string]bool{},
 	}
@@ -185,12 +196,29 @@ func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
 
 	f, ok := n.Files[filename]
 	if ok {
-		return f
+		return f.(*FileGenerator)
 	}
 
-	f = NewFileGenerator(n, filename, isRoot)
-	n.Files[filename] = f
-	return f
+	fgen := NewFileGenerator(n, filename, isRoot)
+	n.Files[filename] = fgen
+	return fgen
+}
+
+// MakeRawFile makes a raw file with the given filename. If filename is empty,
+// then the function panics. This is usually used to generate C stubs.
+func (n *NamespaceGenerator) MakeRawFile(filename string) *RawFile {
+	if filename == "" {
+		panic("MakeRawFile: empty filename")
+	}
+
+	f, ok := n.Files[filename]
+	if ok {
+		return f.(*RawFile)
+	}
+
+	raw := NewRawFile(filename)
+	n.Files[filename] = raw
+	return raw
 }
 
 // Generate generates everything in the current namespace into files. The
@@ -255,23 +283,30 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		generateFunctions(v.Name, v.Functions)
 	}
 
-	// Ensure that all files explicitly import runtime/cgo to not trigger an
-	// error in a compiler complaining about implicitly importing runtime/cgo.
-	// https://sourcegraph.com/github.com/golang/go/-/blob/src/cmd/link/internal/ld/lib.go?L563:3.
-	for _, file := range n.Files {
-		if file.header.HasImport("runtime/cgo") {
-			goto importedCgo
-		}
-	}
-
-	// Put the dash import into the root package.
-	n.MakeFile("").header.DashImport("runtime/cgo")
-
-importedCgo:
 	for _, postproc := range n.postprocs {
 		if err := postproc(n); err != nil {
 			return nil, err
 		}
+	}
+
+	// Move all C headers to a separate file and instead only import 1 file.
+	c := n.MakeRawFile(n.PkgName + ".h")
+	h := file.Header{}
+
+	// Assure that all C includes are added properly.
+	for _, incl := range n.current.Repository.CIncludes {
+		h.IncludeC(incl.Name)
+	}
+
+	for _, file := range n.Files {
+		fheader := file.Header()
+		h.ApplyFrom(fheader)
+		// Override the header and only import the header file.
+		fheader.CgoHeader = nil
+		fheader.IncludeLocalC(n.PkgName + ".h")
+	}
+	for _, header := range h.SortedCgoHeaders() {
+		c.pen.Line(header)
 	}
 
 	files := make(map[string][]byte, len(n.Files))

@@ -4,7 +4,6 @@ package pangocairo
 
 import (
 	"runtime"
-	_ "runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -16,10 +15,7 @@ import (
 
 // #cgo pkg-config: pangocairo pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <pango/pangocairo.h>
-// extern void callbackDelete(gpointer);
-// void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
+// #include "pangocairo.h"
 import "C"
 
 func init() {

@@ -13,7 +13,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdk.h>
+// #include "gdk.h"
 import "C"
 
 // CairoDrawFromGL: main way to draw GL content in GTK.

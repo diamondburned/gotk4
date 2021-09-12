@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gsk/gsk.h>
+// #include "gsk.h"
 import "C"
 
 // TransformParse parses the given string into a transform and puts it in

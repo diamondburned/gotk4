@@ -12,7 +12,7 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdk.h>
+// #include "gdk.h"
 import "C"
 
 // AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option

@@ -13,10 +13,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
-// extern void callbackDelete(gpointer);
+// #include "gtk.h"
 import "C"
 
 func init() {

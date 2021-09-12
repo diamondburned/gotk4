@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
@@ -32,15 +33,22 @@ func ApplyHeader(dst Headerer, srcs ...Headerer) {
 // things or modifying the CGo preamble. A zero-value instance is a valid
 // instance.
 type Header struct {
-	Marshalers     []string
-	Imports        map[string]string
-	CIncludes      map[string]struct{}
-	Packages       map[string]struct{} // for pkg-config
-	Callbacks      map[string]struct{}
-	CallbackDelete bool
+	Marshalers []string
+	Imports    map[string]string
+	Packages   map[string]struct{}       // for pkg-config
+	CgoHeader  map[string]cgoHeaderOrder // TODO: rename to CgoHeader
 
 	stop bool
 }
+
+type cgoHeaderOrder uint8
+
+const (
+	cgoImports cgoHeaderOrder = iota
+	cgoExterns
+	cgoStubs
+	cgoExtras
+)
 
 // NoopHeader is a header instance where its methods do nothing. This instance
 // is useful for functions that both validate and generate, but generation is
@@ -175,7 +183,12 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 }
 
 func (h *Header) AddCallback(source *gir.NamespaceFindResult, callback *gir.Callback) {
-	h.AddCallbackHeader(CallbackCHeader(source, callback))
+	h.addCgoHeader(CallbackCHeader(source, callback), cgoExterns)
+}
+
+func (h *Header) NeedsCallbackDelete() {
+	h.addCgoHeader("extern void callbackDelete(gpointer);", cgoExterns)
+	h.DashImport(ImportCore("gbox"))
 }
 
 const callbackPrefix = "_gotk4"
@@ -215,27 +228,41 @@ func CallbackCHeader(source *gir.NamespaceFindResult, callback *gir.Callback) st
 	)
 }
 
-// AddCallbackHeader adds a callback header raw.
-func (h *Header) AddCallbackHeader(header string) {
+// AddCgoExtras adds extra Cgo header raw.
+func (h *Header) AddCgoExtras(header string) {
+	h.addCgoHeader(header, cgoExtras)
+}
+
+func (h *Header) addCgoHeader(header string, ord cgoHeaderOrder) {
 	if h.stop {
 		return
 	}
 
-	if h.Callbacks == nil {
-		h.Callbacks = map[string]struct{}{}
+	if h.CgoHeader == nil {
+		h.CgoHeader = map[string]cgoHeaderOrder{}
 	}
 
-	h.Callbacks[header] = struct{}{}
+	h.CgoHeader[header] = ord
 }
 
-// SortedCallbackHeaders returns the sorted C callback headers.
-func (h *Header) SortedCallbackHeaders() []string {
-	headers := make([]string, 0, len(h.Callbacks))
-	for callback := range h.Callbacks {
+// SortedCgoHeaders returns the sorted Cgo headers.
+func (h *Header) SortedCgoHeaders() []string {
+	headers := make([]string, 0, len(h.CgoHeader))
+	for callback := range h.CgoHeader {
 		headers = append(headers, callback)
 	}
 
-	sort.Strings(headers)
+	sort.Slice(headers, func(i, j int) bool {
+		iord := h.CgoHeader[headers[i]]
+		jord := h.CgoHeader[headers[j]]
+
+		if iord == jord {
+			return headers[i] < headers[j]
+		}
+
+		return iord < jord
+	})
+
 	return headers
 }
 
@@ -254,31 +281,12 @@ func (h *Header) AddPackage(pkg string) {
 
 // IncludeC adds a C header file into the cgo preamble.
 func (h *Header) IncludeC(include string) {
-	if h.stop {
-		return
-	}
-
-	if h.CIncludes == nil {
-		h.CIncludes = map[string]struct{}{}
-	}
-
-	h.CIncludes[include] = struct{}{}
+	h.addCgoHeader(fmt.Sprintf("#include <%s>", include), cgoImports)
 }
 
-// SortedCIncludes returns the list of C includes sorted.
-func (h *Header) SortedCIncludes() []string {
-	includes := make([]string, 0, len(h.CIncludes))
-	for incl := range h.CIncludes {
-		includes = append(includes, incl)
-	}
-
-	sort.Strings(includes)
-	return includes
-}
-
-// needsCbool adds the C stdbool.h include.
-func (h *Header) needsCbool() {
-	h.IncludeC("stdbool.h")
+// IncludeLocalC is like IncludeC, but the given include string is a local file.
+func (h *Header) IncludeLocalC(include string) {
+	h.addCgoHeader(fmt.Sprintf(`#include "%s"`, include), cgoImports)
 }
 
 // NeedsGLibObject adds the glib-object.h include and the glib-2.0 package.
@@ -287,6 +295,108 @@ func (h *Header) NeedsGLibObject() {
 	h.IncludeC("glib-object.h")
 	// Need this for the above header.
 	h.AddPackage("glib-2.0")
+}
+
+// StubCFuncHeader generates a stub C function signature for use in generating
+// stub panic calls.
+func StubCFuncHeader(cattrs *gir.CallableAttrs) string {
+	ret := "void"
+	if cattrs.ReturnValue != nil {
+		// You don't actually need to write a return statement for the C
+		// function. Funny!
+		ret = rawCType(cattrs.ReturnValue.AnyType)
+	}
+
+	args := "void"
+	if cattrs.Parameters != nil {
+		joints := pen.NewJoints(", ", len(cattrs.Parameters.Parameters)+1)
+		if cattrs.Parameters.InstanceParameter != nil {
+			joints.Addf("%s v", rawCType(cattrs.Parameters.InstanceParameter.AnyType))
+		}
+		for i, param := range cattrs.Parameters.Parameters {
+			joints.Addf("%s _%d", rawCType(param.AnyType), i)
+		}
+		args = joints.Join()
+	}
+
+	return fmt.Sprintf("%s %s(%s)", ret, cattrs.CIdentifier, args)
+}
+
+func rawCType(any gir.AnyType) string {
+	switch {
+	case any.Array != nil:
+		return any.Array.CType
+	case any.Type != nil:
+		return any.Type.CType
+	default:
+		return "..." // possibly variadic?
+	}
+}
+
+// StubFn generates a stub C version that is available if the C library's
+// version is older than a certain version. This is a crude way to allow users
+// with older libraries to compile an application that was developed on a newer
+// library but doesn't use any of the new features.
+//
+// True is returned if the stub is successfully generated. The result of this is
+// usually constant within the same namespace.
+func (h *Header) StubFn(source *gir.NamespaceFindResult, cattrs *gir.CallableAttrs) bool {
+	if cattrs.Version == "" {
+		return true
+	}
+
+	if h.checkVersion(source, cattrs) {
+		h.DashImport(ImportCore("glib"))
+		h.addCgoHeader("extern void goPanic(char*);", cgoExterns)
+		return true
+	}
+
+	return false
+}
+
+const checkVersionTmpl = `
+#if !(<.checkVersion>(<.major>, <.minor>, 0))
+<.stub> {
+	goPanic("<.function>: library too old: needs at least <.major>.<.minor>");
+}
+#endif
+`
+
+func (h *Header) checkVersion(source *gir.NamespaceFindResult, cattrs *gir.CallableAttrs) bool {
+	checkVersion := checkVersion(source)
+	if checkVersion == "" {
+		return false
+	}
+
+	parts := strings.Split(cattrs.Version, ".")
+	if len(parts) < 2 {
+		return false
+	}
+
+	m := gotmpl.M{
+		"checkVersion": checkVersion,
+		"stub":         StubCFuncHeader(cattrs),
+		"major":        parts[0],
+		"minor":        parts[1],
+		"function":     cattrs.CIdentifier,
+	}
+
+	var out strings.Builder
+	gotmpl.Render(&out, checkVersionTmpl, m)
+	h.addCgoHeader(out.String(), cgoStubs)
+
+	return true
+}
+
+// checkVersion checks if we have a _CHECK_VERSION macro. If yes, it returns the
+// C identifier of that macro.
+func checkVersion(source *gir.NamespaceFindResult) string {
+	for _, macro := range source.Namespace.FunctionMacros {
+		if macro.Name == "CHECK_VERSION" {
+			return macro.CIdentifier
+		}
+	}
+	return ""
 }
 
 // ApplyFrom is ApplyTo but reversed.
@@ -301,17 +411,11 @@ func (h *Header) ApplyTo(dst *Header) {
 		return
 	}
 
-	if h.CallbackDelete {
-		dst.CallbackDelete = true
-	}
 	for path, alias := range h.Imports {
 		dst.ImportAlias(path, alias)
 	}
-	for callback := range h.Callbacks {
-		dst.AddCallbackHeader(callback)
-	}
-	for cIncl := range h.CIncludes {
-		dst.IncludeC(cIncl)
+	for header, order := range h.CgoHeader {
+		dst.addCgoHeader(header, order)
 	}
 	for pkg := range h.Packages {
 		dst.AddPackage(pkg)

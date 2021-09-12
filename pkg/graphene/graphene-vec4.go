@@ -12,8 +12,7 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <graphene-gobject.h>
+// #include "graphene.h"
 import "C"
 
 func init() {

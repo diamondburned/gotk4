@@ -10,7 +10,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gtk/gtk.h>
+// #include "gtk.h"
 import "C"
 
 // CSSLocation represents a location in a file or other source of data parsed by

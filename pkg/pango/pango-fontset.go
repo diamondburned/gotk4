@@ -13,9 +13,7 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
-// #include <pango/pango.h>
-// gboolean _gotk4_pango1_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
+// #include "pango.h"
 import "C"
 
 func init() {

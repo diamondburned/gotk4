@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gtk/gtk.h>
+// #include "gtk.h"
 import "C"
 
 // PRIORITY_RESIZE: use this priority for functionality related to size

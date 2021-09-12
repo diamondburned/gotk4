@@ -4,7 +4,7 @@ package gdk
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <gdk/gdk.h>
+// #include "gdk.h"
 import "C"
 
 const KEY_0 = 48

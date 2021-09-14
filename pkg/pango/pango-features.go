@@ -4,7 +4,7 @@ package pango
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "pango.h"
+// #include <pango/pango.h>
 import "C"
 
 // VERSION_MAJOR: major component of the version of Pango available at

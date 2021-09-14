@@ -11,7 +11,8 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib.h>
 import "C"
 
 // Dcgettext: this is a variant of g_dgettext() that allows specifying a locale

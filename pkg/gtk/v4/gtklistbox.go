@@ -14,7 +14,15 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk.h>
+// GtkWidget* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
+// int _gotk4_gtk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// void _gotk4_gtk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// void _gotk4_gtk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 import "C"
 
 func init() {

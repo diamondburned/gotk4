@@ -289,25 +289,21 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		}
 	}
 
-	// Move all C headers to a separate file and instead only import 1 file.
-	c := n.MakeRawFile(n.PkgName + ".h")
-	h := file.Header{}
-
-	// Assure that all C includes are added properly.
-	for _, incl := range n.current.Repository.CIncludes {
-		h.IncludeC(incl.Name)
-	}
-
+	// Add the required imports into the file.
 	for _, file := range n.Files {
-		fheader := file.Header()
-		h.ApplyFrom(fheader)
-		// Override the header and only import the header file.
-		fheader.CgoHeader = nil
-		fheader.IncludeLocalC(n.PkgName + ".h")
+		for _, incl := range n.current.Repository.CIncludes {
+			file.Header().IncludeC(incl.Name)
+		}
 	}
-	for _, header := range h.SortedCgoHeaders() {
-		c.pen.Line(header)
+
+	// Move all C headers to a separate file and import that 1 file.
+	headerers := make([]file.Headerer, 0, len(n.Files))
+	for _, file := range n.Files {
+		headerers = append(headerers, file)
 	}
+
+	c := n.MakeRawFile("stubs.h")
+	c.pen.WriteString(file.AggregateCgoStubs(headerers...))
 
 	files := make(map[string][]byte, len(n.Files))
 
@@ -316,6 +312,11 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	for name, file := range n.Files {
 		if file.IsEmpty() {
 			continue
+		}
+
+		if file != c && !c.IsEmpty() {
+			// Include the pkgname.h file in all Go files.
+			file.Header().IncludeLocalC("stubs.h")
 		}
 
 		b, err := file.Generate()

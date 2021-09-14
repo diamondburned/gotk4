@@ -38,7 +38,7 @@ func NewGoTemplate(block string) *template.Template {
 
 var (
 	renderTmpls = map[string]*template.Template{}
-	tmplMutex   sync.Mutex
+	tmplMutex   sync.RWMutex
 )
 
 // M describes a key-value map for a template render.
@@ -48,17 +48,37 @@ type M = map[string]interface{}
 func Render(w io.Writer, tmpl string, v interface{}) {
 	tmpl = strings.TrimSpace(tmpl)
 
-	tmplMutex.Lock()
+	tmplMutex.RLock()
 	renderTmpl, ok := renderTmpls[tmpl]
-	if !ok {
-		renderTmpl = template.New("(anonymous)")
-		renderTmpl = renderTmpl.Delims("<", ">")
-		renderTmpl = template.Must(renderTmpl.Parse(tmpl))
-		renderTmpls[tmpl] = renderTmpl
+	tmplMutex.RUnlock()
+
+	if ok {
+		render(w, renderTmpl, v)
+		return
 	}
+
+	tmplMutex.Lock()
+
+	renderTmpl, ok = renderTmpls[tmpl]
+	if ok {
+		tmplMutex.Unlock()
+
+		render(w, renderTmpl, v)
+		return
+	}
+
+	renderTmpl = template.New("(anonymous)")
+	renderTmpl = renderTmpl.Delims("<", ">")
+	renderTmpl = template.Must(renderTmpl.Parse(tmpl))
+	renderTmpls[tmpl] = renderTmpl
+
 	tmplMutex.Unlock()
 
-	if err := renderTmpl.ExecuteTemplate(w, "(anonymous)", v); err != nil {
+	render(w, renderTmpl, v)
+}
+
+func render(w io.Writer, tmpl *template.Template, v interface{}) {
+	if err := tmpl.ExecuteTemplate(w, "(anonymous)", v); err != nil {
 		log.Panicln("inline render fail:", err)
 	}
 }

@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "pango.h"
+// #include <pango/pango.h>
 import "C"
 
 // SCALE: scale between dimensions used for Pango distances and device units.

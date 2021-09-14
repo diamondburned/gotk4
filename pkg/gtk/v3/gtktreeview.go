@@ -17,7 +17,19 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// gboolean _gotk4_gtk3_TreeViewSearchEqualFunc(GtkTreeModel*, gint, gchar*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeDestroyCountFunc(GtkTreeView*, GtkTreePath*, gint, gpointer);
+// void _gotk4_gtk3_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk3_TreeViewSearchPositionFunc(GtkTreeView*, GtkWidget*, gpointer);
 import "C"
 
 func init() {

@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdkx11.h"
+// #include <gdk/gdkx.h>
 import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.

@@ -29,14 +29,74 @@ func ApplyHeader(dst Headerer, srcs ...Headerer) {
 	}
 }
 
+// EachHeader applies f on all of headerers' headers.
+func EachHeader(headerers []Headerer, f func(*Header)) {
+	for _, h := range headerers {
+		f(h.Header())
+	}
+}
+
+// AggregateCgoStubs aggregates all the given headerers' CgoStubs maps as well
+// as CgoHeader imports and sort them appropriatetly.
+func AggregateCgoStubs(headerers ...Headerer) string {
+	cgoStubs := map[string]cgoHeaderOrder{}
+	var hasStubs bool
+
+	for _, headerer := range headerers {
+		h := headerer.Header()
+
+		for header, ord := range h.CgoHeader {
+			if ord == cgoImports {
+				cgoStubs[header] = ord
+			}
+		}
+		for stub, ord := range h.CgoStubs {
+			hasStubs = true
+			cgoStubs[stub] = ord
+		}
+
+		h.CgoStubs = nil
+	}
+
+	if !hasStubs {
+		return ""
+	}
+
+	stubParts := [cgoHeaderLen][]string{}
+	for ord := range stubParts {
+		// Preallocate.
+		stubParts[ord] = make([]string, 0, len(cgoStubs))
+	}
+	for stub, ord := range cgoStubs {
+		if strings.Count(stub, "\n") > 1 {
+			stub += "\n"
+		}
+		stubParts[ord] = append(stubParts[ord], stub)
+	}
+
+	var stubs strings.Builder
+
+	for _, part := range stubParts {
+		if len(part) == 0 {
+			continue
+		}
+		sort.Strings(part)
+		stubs.WriteString(strings.Join(part, "\n"))
+		stubs.WriteString("\n\n")
+	}
+
+	return strings.TrimSuffix(stubs.String(), "\n")
+}
+
 // Header describes the side effects of the conversion, such as importing new
 // things or modifying the CGo preamble. A zero-value instance is a valid
 // instance.
 type Header struct {
 	Marshalers []string
 	Imports    map[string]string
-	Packages   map[string]struct{}       // for pkg-config
-	CgoHeader  map[string]cgoHeaderOrder // TODO: rename to CgoHeader
+	Packages   map[string]struct{} // for pkg-config
+	CgoStubs   map[string]cgoHeaderOrder
+	CgoHeader  map[string]cgoHeaderOrder
 
 	stop bool
 }
@@ -46,8 +106,8 @@ type cgoHeaderOrder uint8
 const (
 	cgoImports cgoHeaderOrder = iota
 	cgoExterns
-	cgoStubs
 	cgoExtras
+	cgoHeaderLen // internal
 )
 
 // NoopHeader is a header instance where its methods do nothing. This instance
@@ -347,15 +407,26 @@ func (h *Header) StubFn(source *gir.NamespaceFindResult, cattrs *gir.CallableAtt
 
 	if h.checkVersion(source, cattrs) {
 		h.DashImport(ImportCore("glib"))
-		h.addCgoHeader("extern void goPanic(char*);", cgoExterns)
 		return true
 	}
 
 	return false
 }
 
+func (h *Header) addCgoStub(stub string, ord cgoHeaderOrder) {
+	if h.stop {
+		return
+	}
+
+	if h.CgoStubs == nil {
+		h.CgoStubs = map[string]cgoHeaderOrder{}
+	}
+
+	h.CgoStubs[stub] = ord
+}
+
 const checkVersionTmpl = `
-#if !(<.checkVersion>(<.major>, <.minor>, 0))
+#if (<.has_major> <"<"> <.major> || (<.has_major> == <.major> && <.has_minor> <"<"> <.minor>))
 <.stub> {
 	goPanic("<.function>: library too old: needs at least <.major>.<.minor>");
 }
@@ -363,8 +434,9 @@ const checkVersionTmpl = `
 `
 
 func (h *Header) checkVersion(source *gir.NamespaceFindResult, cattrs *gir.CallableAttrs) bool {
-	checkVersion := checkVersion(source)
-	if checkVersion == "" {
+	major := constMacro(source, "MAJOR_VERSION")
+	minor := constMacro(source, "MINOR_VERSION")
+	if major == "" || minor == "" {
 		return false
 	}
 
@@ -374,26 +446,27 @@ func (h *Header) checkVersion(source *gir.NamespaceFindResult, cattrs *gir.Calla
 	}
 
 	m := gotmpl.M{
-		"checkVersion": checkVersion,
-		"stub":         StubCFuncHeader(cattrs),
-		"major":        parts[0],
-		"minor":        parts[1],
-		"function":     cattrs.CIdentifier,
+		"has_major": major,
+		"has_minor": minor,
+		"stub":      StubCFuncHeader(cattrs),
+		"major":     parts[0],
+		"minor":     parts[1],
+		"function":  cattrs.CIdentifier,
 	}
 
 	var out strings.Builder
 	gotmpl.Render(&out, checkVersionTmpl, m)
-	h.addCgoHeader(out.String(), cgoStubs)
+
+	h.addCgoStub("extern void goPanic(const char*);", cgoExterns)
+	h.addCgoStub(out.String(), cgoExtras)
 
 	return true
 }
 
-// checkVersion checks if we have a _CHECK_VERSION macro. If yes, it returns the
-// C identifier of that macro.
-func checkVersion(source *gir.NamespaceFindResult) string {
-	for _, macro := range source.Namespace.FunctionMacros {
-		if macro.Name == "CHECK_VERSION" {
-			return macro.CIdentifier
+func constMacro(source *gir.NamespaceFindResult, name string) string {
+	for _, macro := range source.Namespace.Constants {
+		if macro.Name == name {
+			return macro.CType
 		}
 	}
 	return ""
@@ -413,6 +486,9 @@ func (h *Header) ApplyTo(dst *Header) {
 
 	for path, alias := range h.Imports {
 		dst.ImportAlias(path, alias)
+	}
+	for header, order := range h.CgoStubs {
+		dst.addCgoStub(header, order)
 	}
 	for header, order := range h.CgoHeader {
 		dst.addCgoHeader(header, order)

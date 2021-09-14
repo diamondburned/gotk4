@@ -13,7 +13,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <gtk/gtk.h>
 import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state

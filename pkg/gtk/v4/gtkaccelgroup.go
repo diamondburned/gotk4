@@ -11,7 +11,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <gtk/gtk.h>
 import "C"
 
 // AcceleratorGetDefaultModMask gets the modifier mask.

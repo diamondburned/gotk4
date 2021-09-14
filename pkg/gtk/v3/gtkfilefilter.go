@@ -16,7 +16,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_FileFilterFunc(GtkFileFilterInfo*, gpointer);
 import "C"
 
 func init() {

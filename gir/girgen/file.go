@@ -18,14 +18,14 @@ import (
 
 // RawFile describes a raw file.
 type RawFile struct {
-	pen  pen.PaperBuffer
+	pen  *pen.PaperBuffer
 	name string
 }
 
 // NewRawFile creates a new raw file.
 func NewRawFile(name string) *RawFile {
 	return &RawFile{
-		pen:  *pen.NewPaperBuffer(),
+		pen:  pen.NewPaperBuffer(),
 		name: name,
 	}
 }

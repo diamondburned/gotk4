@@ -8,7 +8,8 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib.h>
 import "C"
 
 // BookmarkFileError: error codes returned by bookmark file parsing.

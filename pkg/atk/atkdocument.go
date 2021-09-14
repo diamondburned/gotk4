@@ -12,7 +12,9 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "atk.h"
+// #include "stubs.h"
+// #include <atk/atk.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {

@@ -9,7 +9,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <gtk/gtk.h>
 import "C"
 
 func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn string, expr string, accessible Accessibler, expectedRole AccessibleRole, actualRole AccessibleRole) {

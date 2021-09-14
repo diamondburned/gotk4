@@ -12,7 +12,8 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib.h>
 import "C"
 
 // USEC_PER_SEC: number of microseconds in one second (1 million). This macro is

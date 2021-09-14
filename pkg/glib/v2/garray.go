@@ -14,7 +14,10 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <glib.h>
+// extern void callbackDelete(gpointer);
 import "C"
 
 // Array contains the public fields of a GArray.

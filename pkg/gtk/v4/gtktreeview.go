@@ -15,7 +15,15 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// gboolean _gotk4_gtk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, char*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {

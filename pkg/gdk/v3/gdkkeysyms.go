@@ -4,7 +4,8 @@ package gdk
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdk.h"
+// #include "stubs.h"
+// #include <gdk/gdk.h>
 import "C"
 
 const KEY_0 = 48

@@ -8,7 +8,8 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "atk.h"
+// #include "stubs.h"
+// #include <atk/atk.h>
 import "C"
 
 // BINARY_AGE: like atk_get_binary_age(), but from the headers used at

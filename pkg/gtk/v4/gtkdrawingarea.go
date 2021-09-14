@@ -13,7 +13,11 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 import "C"
 
 func init() {

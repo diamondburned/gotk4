@@ -15,7 +15,16 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// GtkWidget* _gotk4_gtk3_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// gint _gotk4_gtk3_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
+// void _gotk4_gtk3_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {

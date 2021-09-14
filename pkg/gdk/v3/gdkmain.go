@@ -7,12 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdk.h"
+// #include "stubs.h"
+// #include <gdk/gdk.h>
 import "C"
 
 // AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option

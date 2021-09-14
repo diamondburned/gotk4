@@ -4,7 +4,8 @@ package glib
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib.h>
 import "C"
 
 // DATE_BAD_DAY represents an invalid Day.

@@ -17,7 +17,12 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gtk.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// void _gotk4_gtk3_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {

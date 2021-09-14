@@ -5,11 +5,14 @@ package gdk
 import (
 	"runtime"
 	"unsafe"
+
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdk.h"
+// #include "stubs.h"
+// #include <gdk/gdk.h>
 import "C"
 
 // TestRenderSync retrieves a pixel from window to force the windowing system to

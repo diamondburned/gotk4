@@ -15,7 +15,10 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "glib.h"
+// #include "stubs.h"
+// #include <glib-object.h>
+// #include <glib.h>
+// void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.

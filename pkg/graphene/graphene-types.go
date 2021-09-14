@@ -4,7 +4,7 @@ package graphene
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "graphene.h"
+// #include <graphene-gobject.h>
 import "C"
 
 // VEC2_LEN evaluates to the number of components of a #graphene_vec2_t.

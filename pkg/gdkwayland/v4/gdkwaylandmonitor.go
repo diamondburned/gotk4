@@ -11,7 +11,8 @@ import (
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdkwayland.h"
+// #include <gdk/wayland/gdkwayland.h>
+// #include <glib-object.h>
 import "C"
 
 func init() {

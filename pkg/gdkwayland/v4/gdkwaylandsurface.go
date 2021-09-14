@@ -11,7 +11,7 @@ import (
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdkwayland.h"
+// #include <gdk/wayland/gdkwayland.h>
 import "C"
 
 // WaylandToplevelExported: callback that gets called when the handle for a

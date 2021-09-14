@@ -14,7 +14,7 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdk.h"
+// #include <gdk/gdk.h>
 import "C"
 
 // PixbufGetFromSurface transfers image data from a cairo_surface_t and converts

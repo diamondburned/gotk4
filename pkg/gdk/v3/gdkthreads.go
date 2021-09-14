@@ -6,12 +6,16 @@ import (
 	"runtime"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	_ "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include "gdk.h"
+// #include "stubs.h"
+// #include <gdk/gdk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_glib2_SourceFunc(gpointer);
 import "C"
 
 // ThreadsAddIdle adds a function to be called whenever there are no higher

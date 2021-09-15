@@ -631,6 +631,10 @@ func (v *value) isValue() bool {
 
 func marshalValue(p uintptr) (interface{}, error) {
 	c := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	if c == nil {
+		return nil, nil
+	}
+
 	v := &value{(*C.GValue)(unsafe.Pointer(c))}
 	runtime.SetFinalizer(v, (*value).unset)
 

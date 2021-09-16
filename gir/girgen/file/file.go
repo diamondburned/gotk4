@@ -276,11 +276,6 @@ func (h *Header) SortedCIncludes() []string {
 	return includes
 }
 
-// needsCbool adds the C stdbool.h include.
-func (h *Header) needsCbool() {
-	h.IncludeC("stdbool.h")
-}
-
 // NeedsGLibObject adds the glib-object.h include and the glib-2.0 package.
 func (h *Header) NeedsGLibObject() {
 	// Need this for g_value_get_boxed.

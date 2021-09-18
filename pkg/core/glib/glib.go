@@ -205,21 +205,22 @@ func goMarshal(
 	}
 
 	// Create a slice of reflect.Values as arguments to call the function.
-	gValues := unsafe.Slice(params, nCbParams)
+	gValues := unsafe.Slice(params, nGLibParams)
 	args := make([]reflect.Value, 0, nCbParams)
+
+	var skip int
 
 	// Fill beginning of args, up to the minimum of the total number of callback
 	// parameters and parameters from the glib runtime.
-	for i := 0; i < nCbParams && i < nGLibParams; i++ {
-		v := &Value{&value{&gValues[i]}}
-		val := v.GoValue()
+	for i := 0; (i-skip) < nCbParams && i < nGLibParams; i++ {
+		val := goGValue(&gValues[i])
 
 		// Parameters that are descendants of GObject come wrapped in another
 		// GObject. For C applications, the default marshaller
-		// (g_cclosure_marshal_VOID__VOID in gmarshal.c in the GTK glib library)
-		// 'peeks' into the enclosing object and passes the wrapped object to
-		// the handler. Use the Object.Cast() function to emulate that for Go
-		// signal handlers.
+		// (g_cclosure_marshal_VOID__VOID in gmarshal.c in the GTK glib
+		// library) 'peeks' into the enclosing object and passes the wrapped
+		// object to the handler. Use the Object.Cast() function
+		// to emulate that for Go signal handlers.
 		switch v := val.(type) {
 		case *Object:
 			val = v.Cast()
@@ -229,7 +230,24 @@ func goMarshal(
 			}
 		}
 
-		args = append(args, reflect.ValueOf(val).Convert(fsType.In(i)))
+		// Allow callbacks to omit the first type.
+		paramType := fsType.In(i - skip)
+		if i == 0 && !reflect.TypeOf(val).ConvertibleTo(paramType) {
+			// The first type does not match. Allow skipping this first
+			// parameter and try plugging again into the second one.
+			skip++
+			// Ideally, we would have a function to check if the next type
+			// actually matches as well instead of this, but whatever.
+			continue
+		}
+
+		rval := reflect.ValueOf(val)
+		rtyp := rval.Type()
+		if rtyp != paramType {
+			rval = rval.Convert(paramType)
+		}
+
+		args = append(args, rval)
 	}
 
 	// Call closure with args. If the callback returns one or more values, save
@@ -791,6 +809,12 @@ func newValuePrimitive(v interface{}) *Value {
 		runtime.KeepAlive(e)
 	}
 	return val
+}
+
+// goGValue is a convenient function that creates a Go value from the given
+// GValue pointer.
+func goGValue(cgvalue *C.GValue) interface{} {
+	return (&Value{&value{cgvalue}}).GoValue()
 }
 
 func (v *Value) native() *C.GValue {

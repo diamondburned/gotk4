@@ -427,7 +427,7 @@ func (h *Header) addCgoStub(stub string, ord cgoHeaderOrder) {
 
 const checkVersionTmpl = `
 #if (<.has_major> <"<"> <.major> || (<.has_major> == <.major> && <.has_minor> <"<"> <.minor>))
-<.stub> {
+<.stub> __attribute__((weak)) {
 	goPanic("<.function>: library too old: needs at least <.major>.<.minor>");
 }
 #endif

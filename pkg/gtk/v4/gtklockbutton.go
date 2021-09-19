@@ -138,7 +138,14 @@ func (button *LockButton) Permission() gio.Permissioner {
 
 	var _permission gio.Permissioner // out
 
-	_permission = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Permissioner)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.Permissioner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Permissioner")
+		}
+		_permission = rv
+	}
 
 	return _permission
 }

@@ -118,7 +118,14 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -179,7 +186,14 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

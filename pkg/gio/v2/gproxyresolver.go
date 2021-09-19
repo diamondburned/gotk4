@@ -268,7 +268,14 @@ func ProxyResolverGetDefault() ProxyResolverer {
 
 	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(ProxyResolverer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ProxyResolverer")
+		}
+		_proxyResolver = rv
+	}
 
 	return _proxyResolver
 }

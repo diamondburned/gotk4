@@ -168,7 +168,14 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	var _builderScope BuilderScoper // out
 
 	if _cret != nil {
-		_builderScope = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(BuilderScoper)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.BuilderScoper")
+			}
+			_builderScope = rv
+		}
 	}
 
 	return _builderScope

@@ -179,7 +179,14 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 
 	var _cairoContext CairoContexter // out
 
-	_cairoContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(CairoContexter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.CairoContexter")
+		}
+		_cairoContext = rv
+	}
 
 	return _cairoContext
 }
@@ -203,7 +210,14 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(GLContexter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+		}
+		_glContext = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -269,7 +283,14 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _vulkanContext VulkanContexter // out
 	var _goerr error                   // out
 
-	_vulkanContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(VulkanContexter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.VulkanContexter")
+		}
+		_vulkanContext = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -409,7 +430,14 @@ func (surface *Surface) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FrameClocker)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+		}
+		_frameClock = rv
+	}
 
 	return _frameClock
 }

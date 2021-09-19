@@ -191,7 +191,14 @@ func (context *DragContext) DestWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }
@@ -208,7 +215,14 @@ func (context *DragContext) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		_device = rv
+	}
 
 	return _device
 }
@@ -230,7 +244,14 @@ func (context *DragContext) DragWindow() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _window
@@ -282,7 +303,14 @@ func (context *DragContext) SourceWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }

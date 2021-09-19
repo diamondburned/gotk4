@@ -95,7 +95,14 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	var widget Widgetter   // out
 	var args *glib.Variant // out
 
-	widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		widget = rv
+	}
 	if arg1 != nil {
 		args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 		runtime.SetFinalizer(

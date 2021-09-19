@@ -289,7 +289,14 @@ func (stream *IOStream) InputStream() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
 
 	return _inputStream
 }
@@ -307,7 +314,14 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 
 	var _outputStream OutputStreamer // out
 
-	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(OutputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
+		}
+		_outputStream = rv
+	}
 
 	return _outputStream
 }

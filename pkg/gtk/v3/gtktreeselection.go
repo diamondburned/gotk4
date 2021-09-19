@@ -44,7 +44,14 @@ func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 	var path *TreePath     // out
 	var iter *TreeIter     // out
 
-	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		model = rv
+	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(path)),
@@ -83,7 +90,14 @@ func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 	var pathCurrentlySelected bool // out
 
 	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
-	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(arg1))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		model = rv
+	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(path)),
@@ -206,7 +220,14 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 	var _ok bool            // out
 
 	if _arg1 != nil {
-		_model = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg1))
+			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			}
+			_model = rv
+		}
 	}
 	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
@@ -238,7 +259,14 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	var _list []*TreePath   // out
 
 	if _arg1 != nil {
-		_model = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg1))
+			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			}
+			_model = rv
+		}
 	}
 	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {

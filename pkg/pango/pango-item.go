@@ -66,7 +66,14 @@ func (a *Analysis) LangEngine() cgo.Handle {
 // Font: font for this segment.
 func (a *Analysis) Font() Fonter {
 	var v Fonter // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(a.native.font)))).(Fonter)
+	{
+		object := externglib.Take(unsafe.Pointer(a.native.font))
+		rv, ok := (externglib.CastObject(object)).(Fonter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+		}
+		v = rv
+	}
 	return v
 }
 

@@ -460,7 +460,14 @@ func (font *Font) Face() FontFacer {
 
 	var _fontFace FontFacer // out
 
-	_fontFace = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FontFacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+		}
+		_fontFace = rv
+	}
 
 	return _fontFace
 }
@@ -489,7 +496,14 @@ func (font *Font) FontMap() FontMapper {
 	var _fontMap FontMapper // out
 
 	if _cret != nil {
-		_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(FontMapper)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+			}
+			_fontMap = rv
+		}
 	}
 
 	return _fontMap
@@ -715,7 +729,14 @@ func (face *FontFace) Family() FontFamilier {
 
 	var _fontFamily FontFamilier // out
 
-	_fontFamily = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FontFamilier)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
 
 	return _fontFamily
 }
@@ -869,7 +890,14 @@ func (family *FontFamily) Face(name string) FontFacer {
 	var _fontFace FontFacer // out
 
 	if _cret != nil {
-		_fontFace = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(FontFacer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+			}
+			_fontFace = rv
+		}
 	}
 
 	return _fontFace
@@ -968,7 +996,14 @@ func (family *FontFamily) ListFaces() []FontFacer {
 			src := unsafe.Slice(_arg1, _arg2)
 			_faces = make([]FontFacer, _arg2)
 			for i := 0; i < int(_arg2); i++ {
-				_faces[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
+				{
+					object := externglib.Take(unsafe.Pointer(src[i]))
+					rv, ok := (externglib.CastObject(object)).(FontFacer)
+					if !ok {
+						panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+					}
+					_faces[i] = rv
+				}
 			}
 		}
 	}

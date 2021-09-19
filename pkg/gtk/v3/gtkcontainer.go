@@ -558,7 +558,14 @@ func (container *Container) Children() []Widgetter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -589,7 +596,14 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			dst = rv
+		}
 		_focusableWidgets = append(_focusableWidgets, dst)
 	})
 	if _cret != 0 {
@@ -614,7 +628,14 @@ func (container *Container) FocusChild() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget

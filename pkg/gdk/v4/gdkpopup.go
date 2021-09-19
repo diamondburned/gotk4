@@ -99,7 +99,14 @@ func (popup *Popup) Parent() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+		}
+		_surface = rv
+	}
 
 	return _surface
 }

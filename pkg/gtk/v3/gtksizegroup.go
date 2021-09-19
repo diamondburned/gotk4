@@ -204,7 +204,14 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			dst = rv
+		}
 		_sList = append(_sList, dst)
 	})
 

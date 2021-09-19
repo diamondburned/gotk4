@@ -892,7 +892,14 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 
 	var _renderNode gsk.RenderNoder // out
 
-	_renderNode = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gsk.RenderNoder)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
 
 	return _renderNode
 }
@@ -919,7 +926,14 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+		}
+		_paintable = rv
+	}
 
 	return _paintable
 }

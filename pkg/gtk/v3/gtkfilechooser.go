@@ -655,7 +655,14 @@ func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -748,7 +755,14 @@ func (chooser *FileChooser) ExtraWidget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget
@@ -770,7 +784,14 @@ func (chooser *FileChooser) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -844,7 +865,14 @@ func (chooser *FileChooser) Files() []gio.Filer {
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
 		var dst gio.Filer // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			dst = rv
+		}
 		_sList = append(_sList, dst)
 	})
 
@@ -904,7 +932,14 @@ func (chooser *FileChooser) PreviewFile() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -966,7 +1001,14 @@ func (chooser *FileChooser) PreviewWidget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget

@@ -96,7 +96,14 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _appInfo gio.AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			_appInfo = rv
+		}
 	}
 
 	return _appInfo

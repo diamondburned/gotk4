@@ -221,7 +221,14 @@ func (context *GLContext) SharedContext() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+			}
+			_glContext = rv
+		}
 	}
 
 	return _glContext
@@ -281,7 +288,14 @@ func (context *GLContext) Window() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _window
@@ -456,7 +470,14 @@ func GLContextGetCurrent() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+			}
+			_glContext = rv
+		}
 	}
 
 	return _glContext

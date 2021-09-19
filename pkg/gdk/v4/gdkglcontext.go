@@ -230,7 +230,14 @@ func (context *GLContext) SharedContext() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+			}
+			_glContext = rv
+		}
 	}
 
 	return _glContext
@@ -249,7 +256,14 @@ func (context *GLContext) Surface() Surfacer {
 	var _surface Surfacer // out
 
 	if _cret != nil {
-		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Surfacer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			}
+			_surface = rv
+		}
 	}
 
 	return _surface
@@ -469,7 +483,14 @@ func GLContextGetCurrent() GLContexter {
 	var _glContext GLContexter // out
 
 	if _cret != nil {
-		_glContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(GLContexter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+			}
+			_glContext = rv
+		}
 	}
 
 	return _glContext

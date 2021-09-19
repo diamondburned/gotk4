@@ -870,7 +870,14 @@ func (e *EventAny) Type() EventType {
 // Window: window which received the event.
 func (e *EventAny) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -947,7 +954,14 @@ func (e *EventButton) Type() EventType {
 // Window: window which received the event.
 func (e *EventButton) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1008,7 +1022,14 @@ func (e *EventButton) Button() uint {
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventButton) Device() Devicer {
 	var v Devicer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.device))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1048,7 +1069,14 @@ func (e *EventConfigure) Type() EventType {
 // Window: window which received the event.
 func (e *EventConfigure) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1109,7 +1137,14 @@ func (e *EventCrossing) Type() EventType {
 // Window: window which received the event.
 func (e *EventCrossing) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1123,7 +1158,14 @@ func (e *EventCrossing) SendEvent() int8 {
 // Subwindow: window that was entered or left.
 func (e *EventCrossing) Subwindow() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.subwindow)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.subwindow))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1222,7 +1264,14 @@ func (e *EventDND) Type() EventType {
 // Window: window which received the event.
 func (e *EventDND) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1286,7 +1335,14 @@ func (e *EventExpose) Type() EventType {
 // Window: window which received the event.
 func (e *EventExpose) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1350,7 +1406,14 @@ func (e *EventFocus) Type() EventType {
 // Window: window which received the event.
 func (e *EventFocus) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1396,7 +1459,14 @@ func (e *EventGrabBroken) Type() EventType {
 // owned the grab
 func (e *EventGrabBroken) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1430,7 +1500,14 @@ func (e *EventGrabBroken) Implicit() bool {
 // grab_window contains the new grab window. Otherwise grab_window is NULL.
 func (e *EventGrabBroken) GrabWindow() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.grab_window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.grab_window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1456,7 +1533,14 @@ func (e *EventKey) Type() EventType {
 // Window: window which received the event.
 func (e *EventKey) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1548,7 +1632,14 @@ func (e *EventMotion) Type() EventType {
 // Window: window which received the event.
 func (e *EventMotion) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1607,7 +1698,14 @@ func (e *EventMotion) IsHint() int16 {
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventMotion) Device() Devicer {
 	var v Devicer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.device))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1662,7 +1760,14 @@ func (e *EventPadAxis) Type() EventType {
 // Window: window which received the event.
 func (e *EventPadAxis) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1733,7 +1838,14 @@ func (e *EventPadButton) Type() EventType {
 // Window: window which received the event.
 func (e *EventPadButton) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1797,7 +1909,14 @@ func (e *EventPadGroupMode) Type() EventType {
 // Window: window which received the event.
 func (e *EventPadGroupMode) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1873,7 +1992,14 @@ func (e *EventProximity) Type() EventType {
 // Window: window which received the event.
 func (e *EventProximity) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1895,7 +2021,14 @@ func (e *EventProximity) Time() uint32 {
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventProximity) Device() Devicer {
 	var v Devicer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.device))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1927,7 +2060,14 @@ func (e *EventScroll) Type() EventType {
 // Window: window which received the event.
 func (e *EventScroll) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -1979,7 +2119,14 @@ func (e *EventScroll) Direction() ScrollDirection {
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventScroll) Device() Devicer {
 	var v Devicer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.device))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2061,7 +2208,14 @@ func (e *EventSetting) Type() EventType {
 // Window: window which received the event.
 func (e *EventSetting) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2118,7 +2272,14 @@ func (e *EventTouch) Type() EventType {
 // Window: window which received the event
 func (e *EventTouch) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2186,7 +2347,14 @@ func (e *EventTouch) EmulatingPointer() bool {
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventTouch) Device() Devicer {
 	var v Devicer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.device))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2226,7 +2394,14 @@ func (e *EventTouchpadPinch) Type() EventType {
 // Window: window which received the event
 func (e *EventTouchpadPinch) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2346,7 +2521,14 @@ func (e *EventTouchpadSwipe) Type() EventType {
 // Window: window which received the event
 func (e *EventTouchpadSwipe) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2454,7 +2636,14 @@ func (e *EventVisibility) Type() EventType {
 // Window: window which received the event.
 func (e *EventVisibility) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 
@@ -2495,7 +2684,14 @@ func (e *EventWindowState) Type() EventType {
 // Window: window which received the event.
 func (e *EventWindowState) Window() Windower {
 	var v Windower // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(e.native.window))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		v = rv
+	}
 	return v
 }
 

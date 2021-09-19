@@ -89,7 +89,14 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 	var _mediaStream MediaStreamer // out
 
 	if _cret != nil {
-		_mediaStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(MediaStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.MediaStreamer")
+			}
+			_mediaStream = rv
+		}
 	}
 
 	return _mediaStream

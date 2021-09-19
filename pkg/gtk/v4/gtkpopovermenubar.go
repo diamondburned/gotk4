@@ -139,7 +139,14 @@ func (bar *PopoverMenuBar) MenuModel() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+		}
+		_menuModel = rv
+	}
 
 	return _menuModel
 }

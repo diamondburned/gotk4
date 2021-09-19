@@ -254,7 +254,14 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -279,7 +286,14 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -461,7 +475,14 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
 		var dst gio.Filer // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			dst = rv
+		}
 		_sList = append(_sList, dst)
 	})
 

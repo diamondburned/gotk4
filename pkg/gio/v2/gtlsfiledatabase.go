@@ -81,7 +81,14 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	var _tlsFileDatabase TLSFileDatabaser // out
 	var _goerr error                      // out
 
-	_tlsFileDatabase = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSFileDatabaser)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TLSFileDatabaser)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSFileDatabaser")
+		}
+		_tlsFileDatabase = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

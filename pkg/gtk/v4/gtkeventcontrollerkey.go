@@ -112,7 +112,14 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 
 	var _imContext IMContexter // out
 
-	_imContext = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IMContexter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(IMContexter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.IMContexter")
+		}
+		_imContext = rv
+	}
 
 	return _imContext
 }

@@ -1036,7 +1036,14 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	var _frameClock gdk.FrameClocker // out
 
 	if _cret != nil {
-		_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.FrameClocker)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+			}
+			_frameClock = rv
+		}
 	}
 
 	return _frameClock

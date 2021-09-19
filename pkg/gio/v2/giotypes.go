@@ -54,7 +54,14 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 
 	var res AsyncResulter // out
 
-	res = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
+	{
+		object := externglib.Take(unsafe.Pointer(arg1))
+		rv, ok := (externglib.CastObject(object)).(AsyncResulter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AsyncResulter")
+		}
+		res = rv
+	}
 
 	fn := v.(AsyncReadyCallback)
 	fn(res)
@@ -136,7 +143,14 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 	var datagramBased DatagramBasedder // out
 	var condition glib.IOCondition     // out
 
-	datagramBased = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBasedder)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(DatagramBasedder)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DatagramBasedder")
+		}
+		datagramBased = rv
+	}
 	condition = glib.IOCondition(arg1)
 
 	fn := v.(DatagramBasedSourceFunc)
@@ -954,7 +968,14 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(InputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

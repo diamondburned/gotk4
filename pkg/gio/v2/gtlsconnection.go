@@ -209,7 +209,14 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			}
+			_tlsCertificate = rv
+		}
 	}
 
 	return _tlsCertificate
@@ -267,7 +274,14 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 	var _tlsDatabase TLSDatabaser // out
 
 	if _cret != nil {
-		_tlsDatabase = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(TLSDatabaser)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSDatabaser")
+			}
+			_tlsDatabase = rv
+		}
 	}
 
 	return _tlsDatabase
@@ -334,7 +348,14 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			}
+			_tlsCertificate = rv
+		}
 	}
 
 	return _tlsCertificate

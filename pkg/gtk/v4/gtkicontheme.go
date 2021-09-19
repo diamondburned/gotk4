@@ -174,7 +174,14 @@ func (self *IconPaintable) File() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file

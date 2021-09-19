@@ -630,7 +630,14 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 	var _socketAddress SocketAddresser // out
 
 	if _cret != nil {
-		_socketAddress = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			}
+			_socketAddress = rv
+		}
 	}
 
 	return _socketAddress
@@ -669,7 +676,14 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 
 	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(ProxyResolverer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ProxyResolverer")
+		}
+		_proxyResolver = rv
+	}
 
 	return _proxyResolver
 }

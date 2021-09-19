@@ -43,7 +43,14 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 	var grabWidget Widgetter // out
 	var event *gdk.EventKey  // out
 
-	grabWidget = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		grabWidget = rv
+	}
 	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(event)),
@@ -217,7 +224,14 @@ func GetCurrentEventDevice() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -416,7 +430,14 @@ func GrabGetCurrent() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget

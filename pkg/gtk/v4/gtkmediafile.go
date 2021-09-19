@@ -202,7 +202,14 @@ func (self *MediaFile) File() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -223,7 +230,14 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 	var _inputStream gio.InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			}
+			_inputStream = rv
+		}
 	}
 
 	return _inputStream

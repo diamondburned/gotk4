@@ -111,7 +111,14 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 
 	var _dBusInterface DBusInterfacer // out
 
-	_dBusInterface = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(DBusInterfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusInterfacer")
+		}
+		_dBusInterface = rv
+	}
 
 	return _dBusInterface
 }
@@ -132,7 +139,14 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 
 	var _dBusObject DBusObjector // out
 
-	_dBusObject = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(DBusObjector)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")
+		}
+		_dBusObject = rv
+	}
 
 	return _dBusObject
 }
@@ -170,7 +184,14 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusObject)(v)
 		var dst DBusObjector // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusObjector)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(DBusObjector)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

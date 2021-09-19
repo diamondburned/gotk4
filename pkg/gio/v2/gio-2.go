@@ -1530,7 +1530,14 @@ func (connection *DBusConnection) Stream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+		}
+		_ioStream = rv
+	}
 
 	return _ioStream
 }
@@ -4184,7 +4191,14 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _menuModel MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(MenuModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			}
+			_menuModel = rv
+		}
 	}
 
 	return _menuModel
@@ -5525,7 +5539,14 @@ func (subprocess *Subprocess) StderrPipe() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(InputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			}
+			_inputStream = rv
+		}
 	}
 
 	return _inputStream
@@ -5548,7 +5569,14 @@ func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 	var _outputStream OutputStreamer // out
 
 	if _cret != nil {
-		_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(OutputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
+			}
+			_outputStream = rv
+		}
 	}
 
 	return _outputStream
@@ -5571,7 +5599,14 @@ func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(InputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			}
+			_inputStream = rv
+		}
 	}
 
 	return _inputStream

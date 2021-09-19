@@ -203,7 +203,14 @@ func (drag *Drag) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		_device = rv
+	}
 
 	return _device
 }
@@ -244,7 +251,14 @@ func (drag *Drag) DragSurface() Surfacer {
 	var _surface Surfacer // out
 
 	if _cret != nil {
-		_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Surfacer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+			}
+			_surface = rv
+		}
 	}
 
 	return _surface
@@ -303,7 +317,14 @@ func (drag *Drag) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+		}
+		_surface = rv
+	}
 
 	return _surface
 }
@@ -366,7 +387,14 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 	var _drag Dragger // out
 
 	if _cret != nil {
-		_drag = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Dragger)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Dragger)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dragger")
+			}
+			_drag = rv
+		}
 	}
 
 	return _drag

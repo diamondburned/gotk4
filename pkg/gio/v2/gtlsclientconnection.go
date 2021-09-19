@@ -166,7 +166,14 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _socketConnectable SocketConnectabler // out
 
 	if _cret != nil {
-		_socketConnectable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(SocketConnectabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketConnectabler")
+			}
+			_socketConnectable = rv
+		}
 	}
 
 	return _socketConnectable
@@ -292,7 +299,14 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _tlsClientConnection TLSClientConnectioner // out
 	var _goerr error                               // out
 
-	_tlsClientConnection = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TLSClientConnectioner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSClientConnectioner")
+		}
+		_tlsClientConnection = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

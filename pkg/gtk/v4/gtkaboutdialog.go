@@ -437,7 +437,14 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			}
+			_paintable = rv
+		}
 	}
 
 	return _paintable

@@ -253,7 +253,14 @@ func (cursor *Cursor) Texture() Texturer {
 	var _texture Texturer // out
 
 	if _cret != nil {
-		_texture = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Texturer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+			}
+			_texture = rv
+		}
 	}
 
 	return _texture

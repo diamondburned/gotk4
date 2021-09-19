@@ -337,7 +337,14 @@ func (image *Image) GIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon
@@ -400,7 +407,14 @@ func (image *Image) Paintable() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			}
+			_paintable = rv
+		}
 	}
 
 	return _paintable

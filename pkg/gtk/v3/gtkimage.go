@@ -481,7 +481,14 @@ func (image *Image) GIcon() (gio.Iconner, int) {
 	var _size int          // out
 
 	if _arg1 != nil {
-		_gicon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(gio.Iconner)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg1))
+			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_gicon = rv
+		}
 	}
 	_size = int(_arg2)
 

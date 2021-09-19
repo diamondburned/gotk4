@@ -505,7 +505,14 @@ type tableChild struct {
 
 func (t *TableChild) Widget() Widgetter {
 	var v Widgetter // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(t.native.widget)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(t.native.widget))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		v = rv
+	}
 	return v
 }
 

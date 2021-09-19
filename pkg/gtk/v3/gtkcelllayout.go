@@ -43,9 +43,30 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 	var treeModel TreeModeller  // out
 	var iter *TreeIter          // out
 
-	cellLayout = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
-	cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
-	treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(CellLayouter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellLayouter")
+		}
+		cellLayout = rv
+	}
+	{
+		object := externglib.Take(unsafe.Pointer(arg1))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		cell = rv
+	}
+	{
+		object := externglib.Take(unsafe.Pointer(arg2))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		treeModel = rv
+	}
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(iter)),
@@ -303,7 +324,14 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 	var _cellArea CellAreaer // out
 
 	if _cret != nil {
-		_cellArea = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(CellAreaer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellAreaer")
+			}
+			_cellArea = rv
+		}
 	}
 
 	return _cellArea
@@ -325,7 +353,14 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

@@ -140,7 +140,14 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Actioner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Actioner")
+		}
+		_action = rv
+	}
 
 	return _action
 }

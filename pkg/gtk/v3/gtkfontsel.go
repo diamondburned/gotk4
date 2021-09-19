@@ -91,7 +91,14 @@ func (fontsel *FontSelection) Face() pango.FontFacer {
 
 	var _fontFace pango.FontFacer // out
 
-	_fontFace = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(pango.FontFacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
+		}
+		_fontFace = rv
+	}
 
 	return _fontFace
 }
@@ -111,7 +118,14 @@ func (fontsel *FontSelection) FaceList() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -130,7 +144,14 @@ func (fontsel *FontSelection) Family() pango.FontFamilier {
 
 	var _fontFamily pango.FontFamilier // out
 
-	_fontFamily = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(pango.FontFamilier)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
 
 	return _fontFamily
 }
@@ -150,7 +171,14 @@ func (fontsel *FontSelection) FamilyList() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -196,7 +224,14 @@ func (fontsel *FontSelection) PreviewEntry() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -254,7 +289,14 @@ func (fontsel *FontSelection) SizeEntry() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -273,7 +315,14 @@ func (fontsel *FontSelection) SizeList() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -393,7 +442,14 @@ func (fsd *FontSelectionDialog) CancelButton() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -439,7 +495,14 @@ func (fsd *FontSelectionDialog) FontSelection() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }
@@ -458,7 +521,14 @@ func (fsd *FontSelectionDialog) OKButton() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }

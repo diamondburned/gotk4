@@ -266,7 +266,14 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _tlsCertificate TLSCertificater // out
 
 	if _cret != nil {
-		_tlsCertificate = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			}
+			_tlsCertificate = rv
+		}
 	}
 
 	return _tlsCertificate
@@ -362,7 +369,14 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

@@ -260,7 +260,14 @@ func (gesture *Gesture) Device() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -282,7 +289,14 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Gesturer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Gesturer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -310,7 +324,14 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
-		_event = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")
+			}
+			_event = rv
+		}
 	}
 
 	return _event

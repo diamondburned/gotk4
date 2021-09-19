@@ -119,7 +119,14 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDrive)(v)
 		var dst Driver // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Driver)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -143,7 +150,14 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	var _mount Mounter // out
 
 	if _cret != nil {
-		_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Mounter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+			}
+			_mount = rv
+		}
 	}
 
 	return _mount
@@ -168,7 +182,14 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GMount)(v)
 		var dst Mounter // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Mounter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -192,7 +213,14 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	var _volume Volumer // out
 
 	if _cret != nil {
-		_volume = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Volumer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+			}
+			_volume = rv
+		}
 	}
 
 	return _volume
@@ -217,7 +245,14 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Volumer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -268,7 +303,14 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Volumer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+		}
+		_volume = rv
+	}
 
 	return _volume
 }

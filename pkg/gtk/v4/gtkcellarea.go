@@ -42,7 +42,14 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 	var cellArea *gdk.Rectangle       // out
 	var cellBackground *gdk.Rectangle // out
 
-	renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		renderer = rv
+	}
 	cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(cellArea)),
@@ -81,7 +88,14 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 
 	var renderer CellRendererer // out
 
-	renderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellRendererer)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		renderer = rv
+	}
 
 	fn := v.(CellCallback)
 	ok := fn(renderer)
@@ -924,7 +938,14 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	var _cellRenderer CellRendererer // out
 
 	_allocArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
-	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		_cellRenderer = rv
+	}
 
 	return _allocArea, _cellRenderer
 }
@@ -961,7 +982,14 @@ func (area *CellArea) EditWidget() CellEditabler {
 
 	var _cellEditable CellEditabler // out
 
-	_cellEditable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(CellEditabler)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
+		}
+		_cellEditable = rv
+	}
 
 	return _cellEditable
 }
@@ -978,7 +1006,14 @@ func (area *CellArea) EditedCell() CellRendererer {
 
 	var _cellRenderer CellRendererer // out
 
-	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		_cellRenderer = rv
+	}
 
 	return _cellRenderer
 }
@@ -995,7 +1030,14 @@ func (area *CellArea) FocusCell() CellRendererer {
 
 	var _cellRenderer CellRendererer // out
 
-	_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(CellRendererer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+		}
+		_cellRenderer = rv
+	}
 
 	return _cellRenderer
 }
@@ -1021,7 +1063,14 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	if _cret != nil {
-		_cellRenderer = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellRendererer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			}
+			_cellRenderer = rv
+		}
 	}
 
 	return _cellRenderer
@@ -1046,7 +1095,14 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

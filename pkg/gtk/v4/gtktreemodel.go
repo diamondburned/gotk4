@@ -97,7 +97,14 @@ func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 	var path *TreePath     // out
 	var iter *TreeIter     // out
 
-	model = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		model = rv
+	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(path)),
@@ -519,7 +526,14 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TreeModeller)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		_treeModel = rv
+	}
 
 	return _treeModel
 }
@@ -1647,7 +1661,14 @@ func (reference *TreeRowReference) Model() TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		_treeModel = rv
+	}
 
 	return _treeModel
 }

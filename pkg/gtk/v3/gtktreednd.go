@@ -49,7 +49,14 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, 
 	var _ok bool                // out
 
 	if _arg2 != nil {
-		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg2))
+			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			}
+			_treeModel = rv
+		}
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))

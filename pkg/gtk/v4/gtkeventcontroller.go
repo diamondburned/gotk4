@@ -103,7 +103,14 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _event gdk.Eventer // out
 
 	if _cret != nil {
-		_event = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")
+			}
+			_event = rv
+		}
 	}
 
 	return _event
@@ -123,7 +130,14 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -229,7 +243,14 @@ func (controller *EventController) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		_widget = rv
+	}
 
 	return _widget
 }

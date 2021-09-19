@@ -178,7 +178,14 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 
 	var _device Devicer // out
 
-	_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Devicer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+		}
+		_device = rv
+	}
 
 	return _device
 }
@@ -225,7 +232,14 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

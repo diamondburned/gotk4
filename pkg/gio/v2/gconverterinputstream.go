@@ -96,7 +96,14 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 
 	var _converter Converterer // out
 
-	_converter = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Converterer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Converterer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Converterer")
+		}
+		_converter = rv
+	}
 
 	return _converter
 }

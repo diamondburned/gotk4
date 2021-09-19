@@ -111,7 +111,14 @@ func (context *DrawingContext) Window() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }

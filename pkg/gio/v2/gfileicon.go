@@ -83,7 +83,14 @@ func (icon *FileIcon) File() Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }

@@ -404,7 +404,14 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -448,7 +455,14 @@ func (chooser *FileChooser) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -466,7 +480,14 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+		}
+		_listModel = rv
+	}
 
 	return _listModel
 }
@@ -508,7 +529,14 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+		}
+		_listModel = rv
+	}
 
 	return _listModel
 }
@@ -548,7 +576,14 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+		}
+		_listModel = rv
+	}
 
 	return _listModel
 }

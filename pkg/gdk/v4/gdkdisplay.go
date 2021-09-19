@@ -170,7 +170,14 @@ func (display *Display) DefaultSeat() Seater {
 	var _seat Seater // out
 
 	if _cret != nil {
-		_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Seater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			}
+			_seat = rv
+		}
 	}
 
 	return _seat
@@ -217,7 +224,14 @@ func (self *Display) Monitors() gio.ListModeller {
 
 	var _listModel gio.ListModeller // out
 
-	_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+		}
+		_listModel = rv
+	}
 
 	return _listModel
 }
@@ -396,7 +410,14 @@ func (display *Display) ListSeats() []Seater {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkSeat)(v)
 		var dst Seater // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Seater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

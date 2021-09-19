@@ -338,7 +338,14 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _goerr error                      // out
 
 	if _arg5 != nil {
-		_effectiveAddress = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_arg5))
+			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
+			}
+			_effectiveAddress = rv
+		}
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

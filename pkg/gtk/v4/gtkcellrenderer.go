@@ -866,7 +866,14 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 	var _cellEditable CellEditabler // out
 
 	if _cret != nil {
-		_cellEditable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellEditabler)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(CellEditabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
+			}
+			_cellEditable = rv
+		}
 	}
 
 	return _cellEditable

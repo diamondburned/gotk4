@@ -102,7 +102,14 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 		src := unsafe.Slice(_cret, _arg1)
 		_widgets = make([]Widgetter, _arg1)
 		for i := 0; i < int(_arg1); i++ {
-			_widgets[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(Widgetter)
+			{
+				object := externglib.Take(unsafe.Pointer(src[i]))
+				rv, ok := (externglib.CastObject(object)).(Widgetter)
+				if !ok {
+					panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+				}
+				_widgets[i] = rv
+			}
 		}
 	}
 

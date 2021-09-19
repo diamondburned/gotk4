@@ -1976,7 +1976,14 @@ func (file *File) Dup() Filer {
 
 	var _ret Filer // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2282,7 +2289,14 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	var _mount Mounter // out
 	var _goerr error   // out
 
-	_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Mounter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+		}
+		_mount = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -2341,7 +2355,14 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _mount Mounter // out
 	var _goerr error   // out
 
-	_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Mounter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+		}
+		_mount = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -2404,7 +2425,14 @@ func (file *File) Child(name string) Filer {
 
 	var _ret Filer // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2433,7 +2461,14 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -2457,7 +2492,14 @@ func (file *File) Parent() Filer {
 	var _ret Filer // out
 
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_ret = rv
+		}
 	}
 
 	return _ret
@@ -3232,7 +3274,14 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
 
-	_fileMonitor = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FileMonitorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3275,7 +3324,14 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
 
-	_fileMonitor = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FileMonitorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3319,7 +3375,14 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	var _fileMonitor FileMonitorrer // out
 	var _goerr error                // out
 
-	_fileMonitor = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FileMonitorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3453,7 +3516,14 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3740,7 +3810,14 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+		}
+		_appInfo = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3793,7 +3870,14 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+		}
+		_appInfo = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -4816,7 +4900,14 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 
 	var _ret Filer // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -5263,7 +5354,14 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -5326,7 +5424,14 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_ret = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -5727,7 +5832,14 @@ func NewFileForCommandlineArg(arg string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -5759,7 +5871,14 @@ func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -5779,7 +5898,14 @@ func NewFileForPath(path string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -5799,7 +5925,14 @@ func NewFileForURI(uri string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -5833,7 +5966,14 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	var _goerr error            // out
 
 	_iostream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -5857,7 +5997,14 @@ func FileParseName(parseName string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }

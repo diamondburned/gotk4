@@ -396,7 +396,14 @@ func (appinfo *AppInfo) Dup() AppInfor {
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+		}
+		_appInfo = rv
+	}
 
 	return _appInfo
 }
@@ -513,7 +520,14 @@ func (appinfo *AppInfo) Icon() Iconner {
 	var _icon Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon
@@ -953,7 +967,14 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(AppInfor)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+		}
+		_appInfo = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -979,7 +1000,14 @@ func AppInfoGetAll() []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -1005,7 +1033,14 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -1031,7 +1066,14 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			_appInfo = rv
+		}
 	}
 
 	return _appInfo
@@ -1053,7 +1095,14 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	var _appInfo AppInfor // out
 
 	if _cret != nil {
-		_appInfo = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			_appInfo = rv
+		}
 	}
 
 	return _appInfo
@@ -1078,7 +1127,14 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -1106,7 +1162,14 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
 		var dst AppInfor // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(AppInfor)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

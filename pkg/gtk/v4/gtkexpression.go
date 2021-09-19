@@ -60,7 +60,14 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 	var _expression Expressioner // out
 
 	if _cret != nil {
-		_expression = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+			}
+			_expression = rv
+		}
 	}
 
 	return _expression
@@ -79,7 +86,14 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 	var _expression Expressioner // out
 
 	if _cret != nil {
-		_expression = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+			}
+			_expression = rv
+		}
 	}
 
 	return _expression
@@ -661,7 +675,14 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 
 	var _ret Expressioner // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Expressioner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }

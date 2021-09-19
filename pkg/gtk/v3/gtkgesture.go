@@ -269,7 +269,14 @@ func (gesture *Gesture) Device() gdk.Devicer {
 	var _device gdk.Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -291,7 +298,14 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Gesturer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Gesturer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -408,7 +422,14 @@ func (gesture *Gesture) Window() gdk.Windower {
 	var _window gdk.Windower // out
 
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _window

@@ -160,7 +160,14 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 
 	var _fontFamily FontFamilier // out
 
-	_fontFamily = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FontFamilier)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
 
 	return _fontFamily
 }
@@ -211,7 +218,14 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = (externglib.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
+			{
+				object := externglib.Take(unsafe.Pointer(src[i]))
+				rv, ok := (externglib.CastObject(object)).(FontFamilier)
+				if !ok {
+					panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
+				}
+				_families[i] = rv
+			}
 		}
 	}
 
@@ -237,7 +251,14 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 	var _font Fonter // out
 
 	if _cret != nil {
-		_font = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Fonter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
+			}
+			_font = rv
+		}
 	}
 
 	return _font
@@ -266,7 +287,14 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	var _fontset Fontsetter // out
 
 	if _cret != nil {
-		_fontset = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontsetter)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Fontsetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")
+			}
+			_fontset = rv
+		}
 	}
 
 	return _fontset

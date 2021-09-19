@@ -165,7 +165,14 @@ func (display *Display) DefaultGroup() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }
@@ -199,7 +206,14 @@ func (display *Display) DefaultSeat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Seater)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+		}
+		_seat = rv
+	}
 
 	return _seat
 }
@@ -219,7 +233,14 @@ func (display *Display) DeviceManager() DeviceManagerer {
 	var _deviceManager DeviceManagerer // out
 
 	if _cret != nil {
-		_deviceManager = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(DeviceManagerer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.DeviceManagerer")
+			}
+			_deviceManager = rv
+		}
 	}
 
 	return _deviceManager
@@ -470,7 +491,14 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _winX, _winY, _window
@@ -549,7 +577,14 @@ func (display *Display) ListDevices() []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -572,7 +607,14 @@ func (display *Display) ListSeats() []Seater {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkSeat)(v)
 		var dst Seater // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Seater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

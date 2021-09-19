@@ -224,7 +224,14 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+		}
+		_paintable = rv
+	}
 
 	return _paintable
 }
@@ -383,7 +390,14 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 		)
 	}
 	if _arg2 != nil {
-		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg2))
+			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			}
+			_cell = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -492,7 +506,14 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 		)
 	}
 	if _arg4 != nil {
-		_cell = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg4))
+			rv, ok := (externglib.CastObject(object)).(CellRendererer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
+			}
+			_cell = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -643,7 +664,14 @@ func (iconView *IconView) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	if _cret != nil {
-		_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			}
+			_treeModel = rv
+		}
 	}
 
 	return _treeModel
@@ -878,7 +906,14 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 	var _ok bool            // out
 
 	if _arg4 != nil {
-		_model = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_arg4))
+			rv, ok := (externglib.CastObject(object)).(TreeModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+			}
+			_model = rv
+		}
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))

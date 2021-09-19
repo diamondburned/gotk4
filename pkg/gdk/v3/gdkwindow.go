@@ -657,7 +657,14 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 
 	var window Windower // out
 
-	window = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		window = rv
+	}
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window)
@@ -678,7 +685,14 @@ func GetDefaultRootWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }
@@ -696,7 +710,14 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _ret Windower // out
 
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_ret = rv
+		}
 	}
 
 	return _ret
@@ -1573,7 +1594,14 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(GLContexter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
+		}
+		_glContext = rv
+	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1954,7 +1982,14 @@ func (window *Window) Children() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -1986,7 +2021,14 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -2059,7 +2101,14 @@ func (window *Window) Cursor() Cursorrer {
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
-		_cursor = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Cursorrer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Cursorrer")
+			}
+			_cursor = rv
+		}
 	}
 
 	return _cursor
@@ -2107,7 +2156,14 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _cursor Cursorrer // out
 
 	if _cret != nil {
-		_cursor = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Cursorrer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Cursorrer")
+			}
+			_cursor = rv
+		}
 	}
 
 	return _cursor
@@ -2162,7 +2218,14 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_ret = rv
+		}
 	}
 
 	return _x, _y, _mask, _ret
@@ -2195,7 +2258,14 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_ret = rv
+		}
 	}
 
 	return _x, _y, _mask, _ret
@@ -2233,7 +2303,14 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _dragProtocol DragProtocol // out
 
 	if _arg1 != nil {
-		_target = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_arg1))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_target = rv
+		}
 	}
 	_dragProtocol = DragProtocol(_cret)
 
@@ -2256,7 +2333,14 @@ func (window *Window) EffectiveParent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2278,7 +2362,14 @@ func (window *Window) EffectiveToplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2353,7 +2444,14 @@ func (window *Window) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(FrameClocker)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")
+		}
+		_frameClock = rv
+	}
 
 	return _frameClock
 }
@@ -2451,7 +2549,14 @@ func (window *Window) Group() Windower {
 
 	var _ret Windower // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2543,7 +2648,14 @@ func (window *Window) Parent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -2595,7 +2707,14 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_ret = rv
+		}
 	}
 
 	return _x, _y, _mask, _ret
@@ -2798,7 +2917,14 @@ func (window *Window) Toplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_ret = rv
+	}
 
 	return _ret
 }
@@ -3429,7 +3555,14 @@ func (window *Window) PeekChildren() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -4662,7 +4795,14 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _winX, _winY, _window
 }
@@ -4960,7 +5100,14 @@ func (w *WindowAttr) WindowType() WindowType {
 // Cursor: cursor for the window (see gdk_window_set_cursor())
 func (w *WindowAttr) Cursor() Cursorrer {
 	var v Cursorrer // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorrer)
+	{
+		object := externglib.Take(unsafe.Pointer(w.native.cursor))
+		rv, ok := (externglib.CastObject(object)).(Cursorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Cursorrer")
+		}
+		v = rv
+	}
 	return v
 }
 

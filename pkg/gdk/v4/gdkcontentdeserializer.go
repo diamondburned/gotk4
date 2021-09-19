@@ -178,7 +178,14 @@ func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 
 	var _inputStream gio.InputStreamer // out
 
-	_inputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
 
 	return _inputStream
 }

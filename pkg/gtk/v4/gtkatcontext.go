@@ -97,7 +97,14 @@ func (self *ATContext) Accessible() Accessibler {
 
 	var _accessible Accessibler // out
 
-	_accessible = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Accessibler)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Accessibler")
+		}
+		_accessible = rv
+	}
 
 	return _accessible
 }

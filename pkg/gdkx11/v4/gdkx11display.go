@@ -121,7 +121,14 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gdk.Surfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+		}
+		_surface = rv
+	}
 
 	return _surface
 }

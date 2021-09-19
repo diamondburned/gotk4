@@ -159,7 +159,14 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 
 	var _file Filer // out
 
-	_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Filer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+		}
+		_file = rv
+	}
 
 	return _file
 }
@@ -391,7 +398,14 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	if _cret != nil {
-		_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(InputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			}
+			_inputStream = rv
+		}
 	}
 
 	return _inputStream

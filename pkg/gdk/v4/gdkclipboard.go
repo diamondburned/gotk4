@@ -221,7 +221,14 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 		_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	}
 	if _cret != nil {
-		_inputStream = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
+			}
+			_inputStream = rv
+		}
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -344,7 +351,14 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _goerr error      // out
 
 	if _cret != nil {
-		_texture = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Texturer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
+			}
+			_texture = rv
+		}
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

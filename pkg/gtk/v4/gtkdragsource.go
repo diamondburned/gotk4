@@ -191,7 +191,14 @@ func (source *DragSource) Drag() gdk.Dragger {
 	var _drag gdk.Dragger // out
 
 	if _cret != nil {
-		_drag = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Dragger)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dragger")
+			}
+			_drag = rv
+		}
 	}
 
 	return _drag

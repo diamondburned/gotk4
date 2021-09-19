@@ -464,7 +464,14 @@ func (volume *Volume) ActivationRoot() Filer {
 	var _file Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -483,7 +490,14 @@ func (volume *Volume) Drive() Driver {
 	var _drive Driver // out
 
 	if _cret != nil {
-		_drive = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Driver)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
+			}
+			_drive = rv
+		}
 	}
 
 	return _drive
@@ -501,7 +515,14 @@ func (volume *Volume) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Iconner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+		}
+		_icon = rv
+	}
 
 	return _icon
 }
@@ -545,7 +566,14 @@ func (volume *Volume) GetMount() Mounter {
 	var _mount Mounter // out
 
 	if _cret != nil {
-		_mount = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Mounter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
+			}
+			_mount = rv
+		}
 	}
 
 	return _mount
@@ -600,7 +628,14 @@ func (volume *Volume) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Iconner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+		}
+		_icon = rv
+	}
 
 	return _icon
 }

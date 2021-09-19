@@ -276,7 +276,14 @@ func (device *Device) AssociatedDevice() Devicer {
 	var _ret Devicer // out
 
 	if _cret != nil {
-		_ret = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_ret = rv
+		}
 	}
 
 	return _ret
@@ -419,7 +426,14 @@ func (device *Device) LastEventWindow() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _window
@@ -582,7 +596,14 @@ func (device *Device) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Seater)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+		}
+		_seat = rv
+	}
 
 	return _seat
 }
@@ -671,7 +692,14 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	_winX = int(_arg1)
 	_winY = int(_arg2)
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _winX, _winY, _window
@@ -703,7 +731,14 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _winX, _winY, _window
@@ -789,7 +824,14 @@ func (device *Device) ListSlaveDevices() []Devicer {
 		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 			src := (*C.GdkDevice)(v)
 			var dst Devicer // out
-			dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+			{
+				object := externglib.Take(unsafe.Pointer(src))
+				rv, ok := (externglib.CastObject(object)).(Devicer)
+				if !ok {
+					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+				}
+				dst = rv
+			}
 			_list = append(_list, dst)
 		})
 	}
@@ -924,7 +966,14 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _ownerEvents bool    // out
 	var _ok bool             // out
 
-	_grabWindow = (externglib.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_arg3))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_grabWindow = rv
+	}
 	if _arg4 != 0 {
 		_ownerEvents = true
 	}

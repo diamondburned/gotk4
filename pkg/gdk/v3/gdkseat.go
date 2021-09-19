@@ -108,8 +108,22 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 	var seat Seater     // out
 	var window Windower // out
 
-	seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
-	window = (externglib.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(arg0))
+		rv, ok := (externglib.CastObject(object)).(Seater)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+		}
+		seat = rv
+	}
+	{
+		object := externglib.Take(unsafe.Pointer(arg1))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		window = rv
+	}
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window)
@@ -199,7 +213,14 @@ func (seat *Seat) Keyboard() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -218,7 +239,14 @@ func (seat *Seat) Pointer() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -243,7 +271,14 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

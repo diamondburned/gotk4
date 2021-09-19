@@ -89,7 +89,14 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(IOStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
+		}
+		_ioStream = rv
+	}
 
 	return _ioStream
 }

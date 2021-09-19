@@ -89,7 +89,14 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")
+		}
+		_shortcutTrigger = rv
+	}
 
 	return _shortcutTrigger
 }
@@ -108,7 +115,14 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")
+		}
+		_shortcutTrigger = rv
+	}
 
 	return _shortcutTrigger
 }

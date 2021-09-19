@@ -165,7 +165,14 @@ func (self *DropTarget) Drop() gdk.Dropper {
 	var _drop gdk.Dropper // out
 
 	if _cret != nil {
-		_drop = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Dropper)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dropper")
+			}
+			_drop = rv
+		}
 	}
 
 	return _drop

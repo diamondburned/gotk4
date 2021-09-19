@@ -361,7 +361,14 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 		_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	}
 	if _arg2 != nil {
-		_value = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(MenuModeller)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_arg2))
+			rv, ok := (externglib.CastObject(object)).(MenuModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			}
+			_value = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -384,7 +391,14 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 
 	var _menuModel MenuModeller // out
 
-	_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(MenuModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+		}
+		_menuModel = rv
+	}
 
 	return _menuModel
 }
@@ -697,7 +711,14 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _menuModel MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(MenuModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			}
+			_menuModel = rv
+		}
 	}
 
 	return _menuModel
@@ -793,7 +814,14 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 
 	var _menuAttributeIter MenuAttributeIterer // out
 
-	_menuAttributeIter = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuAttributeIterer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(MenuAttributeIterer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuAttributeIterer")
+		}
+		_menuAttributeIter = rv
+	}
 
 	return _menuAttributeIter
 }
@@ -816,7 +844,14 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 
 	var _menuLinkIter MenuLinkIterer // out
 
-	_menuLinkIter = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuLinkIterer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(MenuLinkIterer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuLinkIterer")
+		}
+		_menuLinkIter = rv
+	}
 
 	return _menuLinkIter
 }

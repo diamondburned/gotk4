@@ -152,7 +152,14 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
-	_socketAddressEnumerator = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(SocketAddressEnumeratorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddressEnumeratorrer")
+		}
+		_socketAddressEnumerator = rv
+	}
 
 	return _socketAddressEnumerator
 }
@@ -173,7 +180,14 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
-	_socketAddressEnumerator = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddressEnumeratorrer)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(SocketAddressEnumeratorrer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddressEnumeratorrer")
+		}
+		_socketAddressEnumerator = rv
+	}
 
 	return _socketAddressEnumerator
 }

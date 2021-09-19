@@ -227,7 +227,14 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 	var _constraintTarget ConstraintTargetter // out
 
 	if _cret != nil {
-		_constraintTarget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(ConstraintTargetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ConstraintTargetter")
+			}
+			_constraintTarget = rv
+		}
 	}
 
 	return _constraintTarget
@@ -285,7 +292,14 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 	var _constraintTarget ConstraintTargetter // out
 
 	if _cret != nil {
-		_constraintTarget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(ConstraintTargetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ConstraintTargetter")
+			}
+			_constraintTarget = rv
+		}
 	}
 
 	return _constraintTarget

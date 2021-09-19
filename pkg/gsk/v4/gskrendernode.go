@@ -253,7 +253,14 @@ func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNo
 	var _renderNode RenderNoder // out
 
 	if _cret != nil {
-		_renderNode = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(RenderNoder)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
+			}
+			_renderNode = rv
+		}
 	}
 
 	return _renderNode

@@ -193,7 +193,14 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 
 	var _outputStream gio.OutputStreamer // out
 
-	_outputStream = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(gio.OutputStreamer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
+		}
+		_outputStream = rv
+	}
 
 	return _outputStream
 }

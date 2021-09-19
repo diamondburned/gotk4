@@ -93,7 +93,14 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 	var _dBusObject DBusObjector // out
 
 	if _cret != nil {
-		_dBusObject = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(DBusObjector)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")
+			}
+			_dBusObject = rv
+		}
 	}
 
 	return _dBusObject

@@ -176,7 +176,14 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	if _cret != nil {
-		_menuModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
+			}
+			_menuModel = rv
+		}
 	}
 
 	return _menuModel

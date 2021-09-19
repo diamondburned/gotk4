@@ -262,7 +262,14 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 
 	var _treeModel TreeModeller // out
 
-	_treeModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TreeModeller)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
+		}
+		_treeModel = rv
+	}
 
 	return _treeModel
 }

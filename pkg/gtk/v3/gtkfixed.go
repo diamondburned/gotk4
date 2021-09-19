@@ -153,7 +153,14 @@ type fixedChild struct {
 
 func (f *FixedChild) Widget() Widgetter {
 	var v Widgetter // out
-	v = (externglib.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(Widgetter)
+	{
+		object := externglib.Take(unsafe.Pointer(f.native.widget))
+		rv, ok := (externglib.CastObject(object)).(Widgetter)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+		}
+		v = rv
+	}
 	return v
 }
 

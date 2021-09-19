@@ -671,7 +671,14 @@ func (event *DNDEvent) Drop() Dropper {
 	var _drop Dropper // out
 
 	if _cret != nil {
-		_drop = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Dropper)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dropper")
+			}
+			_drop = rv
+		}
 	}
 
 	return _drop
@@ -827,7 +834,14 @@ func (event *Event) Device() Devicer {
 	var _device Devicer // out
 
 	if _cret != nil {
-		_device = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Devicer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
+			}
+			_device = rv
+		}
 	}
 
 	return _device
@@ -1026,7 +1040,14 @@ func (event *Event) Seat() Seater {
 	var _seat Seater // out
 
 	if _cret != nil {
-		_seat = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Seater)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
+			}
+			_seat = rv
+		}
 	}
 
 	return _seat
@@ -1044,7 +1065,14 @@ func (event *Event) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+		}
+		_surface = rv
+	}
 
 	return _surface
 }
@@ -1164,7 +1192,14 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Surfacer)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
+		}
+		_surface = rv
+	}
 
 	return _surface
 }

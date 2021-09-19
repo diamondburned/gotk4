@@ -500,7 +500,14 @@ func (drive *Drive) Icon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Iconner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+		}
+		_icon = rv
+	}
 
 	return _icon
 }
@@ -596,7 +603,14 @@ func (drive *Drive) SymbolicIcon() Iconner {
 
 	var _icon Iconner // out
 
-	_icon = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Iconner)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+		}
+		_icon = rv
+	}
 
 	return _icon
 }
@@ -620,7 +634,14 @@ func (drive *Drive) Volumes() []Volumer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Volumer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

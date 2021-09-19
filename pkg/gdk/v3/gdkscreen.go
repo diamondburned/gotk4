@@ -76,7 +76,14 @@ func (screen *Screen) ActiveWindow() Windower {
 	var _window Windower // out
 
 	if _cret != nil {
-		_window = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
 	return _window
@@ -503,7 +510,14 @@ func (screen *Screen) RootWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(Windower)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+		}
+		_window = rv
+	}
 
 	return _window
 }
@@ -576,7 +590,14 @@ func (screen *Screen) ToplevelWindows() []Windower {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
-		dst = (externglib.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		{
+			object := externglib.Take(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(Windower)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 
@@ -657,7 +678,14 @@ func (screen *Screen) WindowStack() []Windower {
 		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 			src := (*C.GdkWindow)(v)
 			var dst Windower // out
-			dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
+			{
+				object := externglib.AssumeOwnership(unsafe.Pointer(src))
+				rv, ok := (externglib.CastObject(object)).(Windower)
+				if !ok {
+					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
+				}
+				dst = rv
+			}
 			_list = append(_list, dst)
 		})
 	}

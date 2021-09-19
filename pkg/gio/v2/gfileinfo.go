@@ -1056,7 +1056,14 @@ func (info *FileInfo) Icon() Iconner {
 	var _icon Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon
@@ -1207,7 +1214,14 @@ func (info *FileInfo) SymbolicIcon() Iconner {
 	var _icon Iconner // out
 
 	if _cret != nil {
-		_icon = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Iconner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
+			}
+			_icon = rv
+		}
 	}
 
 	return _icon

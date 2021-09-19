@@ -289,7 +289,14 @@ func (self *Picture) File() gio.Filer {
 	var _file gio.Filer // out
 
 	if _cret != nil {
-		_file = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.Filer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
+			}
+			_file = rv
+		}
 	}
 
 	return _file
@@ -328,7 +335,14 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
-		_paintable = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
+			}
+			_paintable = rv
+		}
 	}
 
 	return _paintable

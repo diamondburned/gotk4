@@ -78,7 +78,14 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
-		_selectionModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(SelectionModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.SelectionModeller")
+			}
+			_selectionModel = rv
+		}
 	}
 
 	return _selectionModel

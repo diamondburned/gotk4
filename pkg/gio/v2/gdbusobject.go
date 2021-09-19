@@ -99,7 +99,14 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _dBusInterface DBusInterfacer // out
 
 	if _cret != nil {
-		_dBusInterface = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(DBusInterfacer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusInterfacer")
+			}
+			_dBusInterface = rv
+		}
 	}
 
 	return _dBusInterface
@@ -121,7 +128,14 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusInterface)(v)
 		var dst DBusInterfacer // out
-		dst = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusInterfacer)
+		{
+			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			rv, ok := (externglib.CastObject(object)).(DBusInterfacer)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusInterfacer")
+			}
+			dst = rv
+		}
 		_list = append(_list, dst)
 	})
 

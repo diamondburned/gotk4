@@ -149,7 +149,14 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = (externglib.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	{
+		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TLSDatabaser)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSDatabaser")
+		}
+		_tlsDatabase = rv
+	}
 
 	return _tlsDatabase
 }
@@ -295,7 +302,14 @@ func TLSBackendGetDefault() TLSBackender {
 
 	var _tlsBackend TLSBackender // out
 
-	_tlsBackend = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(TLSBackender)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSBackender")
+		}
+		_tlsBackend = rv
+	}
 
 	return _tlsBackend
 }

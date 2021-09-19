@@ -176,7 +176,14 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 
 	var _layoutChild LayoutChilder // out
 
-	_layoutChild = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutChilder)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(LayoutChilder)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.LayoutChilder")
+		}
+		_layoutChild = rv
+	}
 
 	return _layoutChild
 }
@@ -211,7 +218,14 @@ func (manager *LayoutManager) Widget() Widgetter {
 	var _widget Widgetter // out
 
 	if _cret != nil {
-		_widget = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Widgetter)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
+			}
+			_widget = rv
+		}
 	}
 
 	return _widget

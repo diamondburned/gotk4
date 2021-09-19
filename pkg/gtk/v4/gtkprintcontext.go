@@ -287,7 +287,14 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	_fontMap = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
+	{
+		object := externglib.Take(unsafe.Pointer(_cret))
+		rv, ok := (externglib.CastObject(object)).(pango.FontMapper)
+		if !ok {
+			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
+		}
+		_fontMap = rv
+	}
 
 	return _fontMap
 }

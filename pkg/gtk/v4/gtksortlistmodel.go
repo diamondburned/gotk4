@@ -114,7 +114,14 @@ func (self *SortListModel) Model() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
-		_listModel = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
+			}
+			_listModel = rv
+		}
 	}
 
 	return _listModel

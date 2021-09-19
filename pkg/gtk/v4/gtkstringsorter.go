@@ -84,7 +84,14 @@ func (self *StringSorter) Expression() Expressioner {
 	var _expression Expressioner // out
 
 	if _cret != nil {
-		_expression = (externglib.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+		{
+			object := externglib.Take(unsafe.Pointer(_cret))
+			rv, ok := (externglib.CastObject(object)).(Expressioner)
+			if !ok {
+				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
+			}
+			_expression = rv
+		}
 	}
 
 	return _expression

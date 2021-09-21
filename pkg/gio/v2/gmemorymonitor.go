@@ -131,7 +131,12 @@ func MemoryMonitorDupDefault() MemoryMonitorrer {
 	var _memoryMonitor MemoryMonitorrer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.MemoryMonitorrer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(MemoryMonitorrer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MemoryMonitorrer")

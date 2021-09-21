@@ -707,7 +707,12 @@ func (settings *Settings) CreateAction(key string) Actioner {
 	var _action Actioner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Actioner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Actioner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Actioner")

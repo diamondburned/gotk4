@@ -168,7 +168,12 @@ func (context *CellAreaContext) Area() CellAreaer {
 	var _cellArea CellAreaer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.CellAreaer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellAreaer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellAreaer")

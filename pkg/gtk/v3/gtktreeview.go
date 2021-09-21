@@ -180,7 +180,12 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 	var iter *TreeIter     // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -224,7 +229,12 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 	var iter *TreeIter     // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -266,7 +276,12 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidg
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -869,7 +884,9 @@ func (treeView *TreeView) BinWindow() gdk.Windower {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Windower)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1290,7 +1307,9 @@ func (treeView *TreeView) Model() TreeModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")

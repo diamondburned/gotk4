@@ -250,7 +250,9 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -315,7 +317,9 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -384,7 +388,9 @@ func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -516,7 +522,9 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")

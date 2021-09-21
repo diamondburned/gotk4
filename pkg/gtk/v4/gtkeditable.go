@@ -395,7 +395,9 @@ func (editable *Editable) Delegate() Editabler {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Editabler)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Editabler")

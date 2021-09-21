@@ -415,7 +415,13 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		value.header.NeedsExternGLib()
 		value.p.Descend()
 		value.p.LineTmpl(m, `
-			object := externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			objptr := unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)
+			<if not (or .Value.Optional .Value.Nullable) ->
+			if objptr == nil {
+				panic("object of type <.GoType> is nil")
+			}
+			<end>
+			object := externglib.<.Func>(objptr)
 			rv, ok := (<.Value.OutPtr 0>externglib.CastObject(object)).(<.Value.Out.Type>)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not <.GoType>")

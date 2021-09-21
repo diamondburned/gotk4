@@ -202,7 +202,12 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketCont
 	var _socketControlMessage SocketControlMessager // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketControlMessager is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketControlMessager)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketControlMessager")

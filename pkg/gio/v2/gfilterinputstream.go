@@ -81,7 +81,12 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 	var _inputStream InputStreamer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(InputStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")

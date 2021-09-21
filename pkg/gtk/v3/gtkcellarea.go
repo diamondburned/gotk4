@@ -46,7 +46,12 @@ func _gotk4_gtk3_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 	var cellBackground *gdk.Rectangle // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -92,7 +97,12 @@ func _gotk4_gtk3_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 	var renderer CellRendererer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -865,7 +875,12 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 
 	_allocArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -909,7 +924,12 @@ func (area *CellArea) EditWidget() CellEditabler {
 	var _cellEditable CellEditabler // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.CellEditabler is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellEditabler)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellEditabler")
@@ -933,7 +953,12 @@ func (area *CellArea) EditedCell() CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -957,7 +982,12 @@ func (area *CellArea) FocusCell() CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -990,7 +1020,9 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellRendererer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -1022,7 +1054,12 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.CellRendererer is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellRendererer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")

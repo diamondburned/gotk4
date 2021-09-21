@@ -405,7 +405,12 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 	var _file gio.Filer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.Filer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
@@ -456,7 +461,12 @@ func (chooser *FileChooser) File() gio.Filer {
 	var _file gio.Filer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.Filer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
@@ -481,7 +491,12 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.ListModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
@@ -530,7 +545,12 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.ListModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
@@ -577,7 +597,12 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.ListModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")

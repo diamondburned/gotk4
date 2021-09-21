@@ -465,7 +465,9 @@ func (volume *Volume) ActivationRoot() Filer {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Filer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
@@ -491,7 +493,9 @@ func (volume *Volume) Drive() Driver {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Driver)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
@@ -516,7 +520,12 @@ func (volume *Volume) Icon() Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -567,7 +576,9 @@ func (volume *Volume) GetMount() Mounter {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Mounter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
@@ -629,7 +640,12 @@ func (volume *Volume) SymbolicIcon() Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")

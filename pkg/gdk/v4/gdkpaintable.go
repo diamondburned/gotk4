@@ -296,7 +296,12 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 	var _ret Paintabler // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Paintabler is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Paintabler)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
@@ -497,7 +502,12 @@ func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 	var _paintable Paintabler // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Paintabler is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Paintabler)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")

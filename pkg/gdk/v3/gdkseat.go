@@ -109,7 +109,12 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 	var window Windower // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gdk.Seater is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Seater)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
@@ -117,7 +122,12 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		seat = rv
 	}
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -214,7 +224,9 @@ func (seat *Seat) Keyboard() Devicer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Devicer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -240,7 +252,9 @@ func (seat *Seat) Pointer() Devicer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Devicer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -272,7 +286,12 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 		src := (*C.GdkDevice)(v)
 		var dst Devicer // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gdk.Devicer is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Devicer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")

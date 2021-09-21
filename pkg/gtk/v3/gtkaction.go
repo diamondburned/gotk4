@@ -238,7 +238,12 @@ func (action *Action) CreateIcon(iconSize int) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -267,7 +272,12 @@ func (action *Action) CreateMenu() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -293,7 +303,12 @@ func (action *Action) CreateMenuItem() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -321,7 +336,12 @@ func (action *Action) CreateToolItem() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -404,7 +424,12 @@ func (action *Action) GIcon() gio.Iconner {
 	var _icon gio.Iconner // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -517,7 +542,12 @@ func (action *Action) Proxies() []Widgetter {
 		src := (*C.GtkWidget)(v)
 		var dst Widgetter // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.Widgetter is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")

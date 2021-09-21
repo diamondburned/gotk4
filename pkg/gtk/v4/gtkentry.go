@@ -380,7 +380,9 @@ func (entry *Entry) ExtraMenu() gio.MenuModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.MenuModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
@@ -507,7 +509,9 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -563,7 +567,9 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")

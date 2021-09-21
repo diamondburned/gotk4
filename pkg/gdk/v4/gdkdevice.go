@@ -375,7 +375,12 @@ func (device *Device) Seat() Seater {
 	var _seat Seater // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Seater is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Seater)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Seater")
@@ -427,7 +432,9 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 	_winY = float64(_arg2)
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Surfacer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")

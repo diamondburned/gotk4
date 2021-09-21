@@ -94,7 +94,9 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(DBusObjector)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")

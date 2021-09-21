@@ -871,7 +871,12 @@ func (e *EventAny) Type() EventType {
 func (e *EventAny) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -955,7 +960,12 @@ func (e *EventButton) Type() EventType {
 func (e *EventButton) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1023,7 +1033,12 @@ func (e *EventButton) Button() uint {
 func (e *EventButton) Device() Devicer {
 	var v Devicer // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.device))
+		objptr := unsafe.Pointer(e.native.device)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -1070,7 +1085,12 @@ func (e *EventConfigure) Type() EventType {
 func (e *EventConfigure) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1138,7 +1158,12 @@ func (e *EventCrossing) Type() EventType {
 func (e *EventCrossing) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1159,7 +1184,12 @@ func (e *EventCrossing) SendEvent() int8 {
 func (e *EventCrossing) Subwindow() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.subwindow))
+		objptr := unsafe.Pointer(e.native.subwindow)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1265,7 +1295,12 @@ func (e *EventDND) Type() EventType {
 func (e *EventDND) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1336,7 +1371,12 @@ func (e *EventExpose) Type() EventType {
 func (e *EventExpose) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1407,7 +1447,12 @@ func (e *EventFocus) Type() EventType {
 func (e *EventFocus) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1460,7 +1505,12 @@ func (e *EventGrabBroken) Type() EventType {
 func (e *EventGrabBroken) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1501,7 +1551,12 @@ func (e *EventGrabBroken) Implicit() bool {
 func (e *EventGrabBroken) GrabWindow() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.grab_window))
+		objptr := unsafe.Pointer(e.native.grab_window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1534,7 +1589,12 @@ func (e *EventKey) Type() EventType {
 func (e *EventKey) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1633,7 +1693,12 @@ func (e *EventMotion) Type() EventType {
 func (e *EventMotion) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1699,7 +1764,12 @@ func (e *EventMotion) IsHint() int16 {
 func (e *EventMotion) Device() Devicer {
 	var v Devicer // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.device))
+		objptr := unsafe.Pointer(e.native.device)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -1761,7 +1831,12 @@ func (e *EventPadAxis) Type() EventType {
 func (e *EventPadAxis) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1839,7 +1914,12 @@ func (e *EventPadButton) Type() EventType {
 func (e *EventPadButton) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1910,7 +1990,12 @@ func (e *EventPadGroupMode) Type() EventType {
 func (e *EventPadGroupMode) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -1993,7 +2078,12 @@ func (e *EventProximity) Type() EventType {
 func (e *EventProximity) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2022,7 +2112,12 @@ func (e *EventProximity) Time() uint32 {
 func (e *EventProximity) Device() Devicer {
 	var v Devicer // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.device))
+		objptr := unsafe.Pointer(e.native.device)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -2061,7 +2156,12 @@ func (e *EventScroll) Type() EventType {
 func (e *EventScroll) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2120,7 +2220,12 @@ func (e *EventScroll) Direction() ScrollDirection {
 func (e *EventScroll) Device() Devicer {
 	var v Devicer // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.device))
+		objptr := unsafe.Pointer(e.native.device)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -2209,7 +2314,12 @@ func (e *EventSetting) Type() EventType {
 func (e *EventSetting) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2273,7 +2383,12 @@ func (e *EventTouch) Type() EventType {
 func (e *EventTouch) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2348,7 +2463,12 @@ func (e *EventTouch) EmulatingPointer() bool {
 func (e *EventTouch) Device() Devicer {
 	var v Devicer // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.device))
+		objptr := unsafe.Pointer(e.native.device)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -2395,7 +2515,12 @@ func (e *EventTouchpadPinch) Type() EventType {
 func (e *EventTouchpadPinch) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2522,7 +2647,12 @@ func (e *EventTouchpadSwipe) Type() EventType {
 func (e *EventTouchpadSwipe) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2637,7 +2767,12 @@ func (e *EventVisibility) Type() EventType {
 func (e *EventVisibility) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -2685,7 +2820,12 @@ func (e *EventWindowState) Type() EventType {
 func (e *EventWindowState) Window() Windower {
 	var v Windower // out
 	{
-		object := externglib.Take(unsafe.Pointer(e.native.window))
+		objptr := unsafe.Pointer(e.native.window)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")

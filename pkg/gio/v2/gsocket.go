@@ -711,7 +711,12 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddresser is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
@@ -837,7 +842,12 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddresser is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
@@ -1237,7 +1247,9 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 
 	if _arg1 != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_arg1))
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")

@@ -321,7 +321,9 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -397,7 +399,12 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _goerr error                    // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.TLSCertificater is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -450,7 +457,12 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 	var _goerr error                    // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.TLSCertificater is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -521,7 +533,12 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	var _goerr error                    // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.TLSCertificater is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -581,7 +598,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.TLSCertificater is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -666,7 +688,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.TLSCertificater is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")

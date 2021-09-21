@@ -180,7 +180,12 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 	var _cairoContext CairoContexter // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.CairoContexter is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(CairoContexter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.CairoContexter")
@@ -211,7 +216,12 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _goerr error           // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(GLContexter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")
@@ -284,7 +294,12 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _goerr error                   // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.VulkanContexter is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(VulkanContexter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.VulkanContexter")
@@ -431,7 +446,12 @@ func (surface *Surface) FrameClock() FrameClocker {
 	var _frameClock FrameClocker // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.FrameClocker is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(FrameClocker)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.FrameClocker")

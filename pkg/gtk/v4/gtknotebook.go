@@ -276,7 +276,9 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -341,7 +343,9 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -410,7 +414,9 @@ func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -458,7 +464,12 @@ func (notebook *Notebook) Pages() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.ListModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")
@@ -568,7 +579,9 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -1160,7 +1173,12 @@ func (page *NotebookPage) Child() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")

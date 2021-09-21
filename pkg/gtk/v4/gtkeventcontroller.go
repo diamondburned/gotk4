@@ -104,7 +104,9 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")
@@ -131,7 +133,9 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -244,7 +248,12 @@ func (controller *EventController) Widget() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Widgetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")

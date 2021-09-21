@@ -84,7 +84,12 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _goerr error                                 // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.DTLSServerConnectioner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(DTLSServerConnectioner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DTLSServerConnectioner")

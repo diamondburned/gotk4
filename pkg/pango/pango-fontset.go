@@ -40,7 +40,12 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 	var font Fonter        // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type pango.Fontsetter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Fontsetter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")
@@ -48,7 +53,12 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		fontset = rv
 	}
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Fonter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
@@ -159,7 +169,12 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 	var _font Fonter // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Fonter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")

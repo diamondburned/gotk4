@@ -455,6 +455,11 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
 func (v *Object) Cast() Objector {
+	if v == nil {
+		// nil-typed interface != non-nil-typed nil-value interface
+		return nil
+	}
+
 	var gvalue C.GValue
 
 	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))

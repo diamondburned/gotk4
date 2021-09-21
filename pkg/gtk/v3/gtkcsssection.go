@@ -171,7 +171,12 @@ func (section *CSSSection) File() gio.Filer {
 	var _file gio.Filer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.Filer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")

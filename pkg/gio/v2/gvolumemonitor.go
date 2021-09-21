@@ -120,7 +120,12 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 		src := (*C.GDrive)(v)
 		var dst Driver // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.Driver is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Driver)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Driver")
@@ -151,7 +156,9 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Mounter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
@@ -183,7 +190,12 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 		src := (*C.GMount)(v)
 		var dst Mounter // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.Mounter is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Mounter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Mounter")
@@ -214,7 +226,9 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Volumer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
@@ -246,7 +260,12 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.Volumer is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Volumer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")
@@ -304,7 +323,12 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	var _volume Volumer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Volumer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Volumer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")

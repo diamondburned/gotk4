@@ -125,7 +125,12 @@ func (node *BlendNode) BottomChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -149,7 +154,12 @@ func (node *BlendNode) TopChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -212,7 +222,12 @@ func (node *BlurNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -473,7 +488,12 @@ func (node *ClipNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -565,7 +585,12 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -877,7 +902,12 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -961,7 +991,12 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -1003,7 +1038,12 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -1070,7 +1110,12 @@ func (node *DebugNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -1208,7 +1253,12 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -1581,7 +1631,12 @@ func (node *OpacityNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -2004,7 +2059,12 @@ func (node *RepeatNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -2204,7 +2264,12 @@ func (node *RoundedClipNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -2290,7 +2355,12 @@ func (node *ShadowNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")
@@ -2417,7 +2487,12 @@ func (node *TextNode) Font() pango.Fonter {
 	var _font pango.Fonter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(pango.Fonter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
@@ -2558,7 +2633,12 @@ func (node *TextureNode) Texture() gdk.Texturer {
 	var _texture gdk.Texturer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gdk.Texturer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Texturer")
@@ -2622,7 +2702,12 @@ func (node *TransformNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(RenderNoder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gsk.RenderNoder")

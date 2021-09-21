@@ -112,7 +112,12 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 	var _dBusInterface DBusInterfacer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.DBusInterfacer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(DBusInterfacer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusInterfacer")
@@ -140,7 +145,12 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	var _dBusObject DBusObjector // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.DBusObjector is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(DBusObjector)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")
@@ -185,7 +195,12 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 		src := (*C.GDBusObject)(v)
 		var dst DBusObjector // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.DBusObjector is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(DBusObjector)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.DBusObjector")

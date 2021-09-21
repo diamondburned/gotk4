@@ -172,7 +172,9 @@ func (paned *Paned) Child1() Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -198,7 +200,9 @@ func (paned *Paned) Child2() Widgetter {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Widgetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")
@@ -225,7 +229,12 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gdk.Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")

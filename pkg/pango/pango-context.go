@@ -263,7 +263,12 @@ func (context *Context) FontMap() FontMapper {
 	var _fontMap FontMapper // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontMapper is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(FontMapper)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")
@@ -468,7 +473,12 @@ func (context *Context) ListFamilies() []FontFamilier {
 		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			{
-				object := externglib.Take(unsafe.Pointer(src[i]))
+				objptr := unsafe.Pointer(src[i])
+				if objptr == nil {
+					panic("object of type pango.FontFamilier is nil")
+				}
+
+				object := externglib.Take(objptr)
 				rv, ok := (externglib.CastObject(object)).(FontFamilier)
 				if !ok {
 					panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
@@ -499,7 +509,9 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Fonter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")
@@ -532,7 +544,9 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Fontsetter)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fontsetter")

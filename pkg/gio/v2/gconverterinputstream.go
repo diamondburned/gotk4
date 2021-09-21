@@ -97,7 +97,12 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 	var _converter Converterer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Converterer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Converterer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Converterer")

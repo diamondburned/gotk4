@@ -42,7 +42,12 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 	var iter *TreeIter          // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.CellLayouter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellLayouter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellLayouter")
@@ -50,7 +55,12 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		cellLayout = rv
 	}
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(CellRendererer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -58,7 +68,12 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		cell = rv
 	}
 	{
-		object := externglib.Take(unsafe.Pointer(arg2))
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -325,7 +340,9 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellAreaer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellAreaer")
@@ -354,7 +371,12 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.CellRendererer is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellRendererer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")

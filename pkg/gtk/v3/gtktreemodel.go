@@ -100,7 +100,12 @@ func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 	var iter *TreeIter     // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -492,7 +497,12 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 	var _treeModel TreeModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -1614,7 +1624,12 @@ func (reference *TreeRowReference) Model() TreeModeller {
 	var _treeModel TreeModeller // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")

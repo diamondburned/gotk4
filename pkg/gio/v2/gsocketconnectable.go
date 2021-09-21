@@ -153,7 +153,12 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddressEnumeratorrer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddressEnumeratorrer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddressEnumeratorrer")
@@ -181,7 +186,12 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddressEnumeratorrer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddressEnumeratorrer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddressEnumeratorrer")

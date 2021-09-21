@@ -1531,7 +1531,12 @@ func (connection *DBusConnection) Stream() IOStreamer {
 	var _ioStream IOStreamer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(IOStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
@@ -4192,7 +4197,9 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(MenuModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
@@ -5540,7 +5547,9 @@ func (subprocess *Subprocess) StderrPipe() InputStreamer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(InputStreamer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
@@ -5570,7 +5579,9 @@ func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(OutputStreamer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.OutputStreamer")
@@ -5600,7 +5611,9 @@ func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(InputStreamer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")

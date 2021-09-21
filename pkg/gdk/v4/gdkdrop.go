@@ -153,7 +153,12 @@ func (self *Drop) Device() Devicer {
 	var _device Devicer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Devicer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -198,7 +203,9 @@ func (self *Drop) Drag() Dragger {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Dragger)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Dragger")
@@ -248,7 +255,12 @@ func (self *Drop) Surface() Surfacer {
 	var _surface Surfacer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Surfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Surfacer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")
@@ -332,7 +344,9 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	defer C.free(unsafe.Pointer(_arg2))
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.InputStreamer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")

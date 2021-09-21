@@ -362,7 +362,9 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	}
 	if _arg2 != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_arg2))
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(MenuModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
@@ -392,7 +394,12 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 	var _menuModel MenuModeller // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.MenuModeller is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(MenuModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
@@ -712,7 +719,9 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(MenuModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuModeller")
@@ -815,7 +824,12 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	var _menuAttributeIter MenuAttributeIterer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.MenuAttributeIterer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(MenuAttributeIterer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuAttributeIterer")
@@ -845,7 +859,12 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _menuLinkIter MenuLinkIterer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.MenuLinkIterer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(MenuLinkIterer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.MenuLinkIterer")

@@ -286,7 +286,12 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	var _protocol DragProtocol // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_arg6))
+		objptr := unsafe.Pointer(_arg6)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")

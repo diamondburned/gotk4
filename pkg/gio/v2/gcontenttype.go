@@ -151,7 +151,12 @@ func ContentTypeGetIcon(typ string) Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -224,7 +229,12 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")

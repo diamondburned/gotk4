@@ -45,7 +45,12 @@ func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 	var iter *TreeIter     // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -91,7 +96,12 @@ func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 
 	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(TreeModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -221,7 +231,9 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 
 	if _arg1 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg1))
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -260,7 +272,9 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 
 	if _arg1 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg1))
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")

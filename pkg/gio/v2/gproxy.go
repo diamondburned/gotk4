@@ -135,7 +135,12 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	var _goerr error         // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(IOStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
@@ -197,7 +202,12 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _goerr error         // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(IOStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.IOStreamer")
@@ -251,7 +261,9 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Proxier)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Proxier")

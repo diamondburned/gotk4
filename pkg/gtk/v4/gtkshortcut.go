@@ -94,7 +94,9 @@ func (self *Shortcut) Action() ShortcutActioner {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(ShortcutActioner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutActioner")
@@ -146,7 +148,9 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(ShortcutTriggerer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.ShortcutTriggerer")

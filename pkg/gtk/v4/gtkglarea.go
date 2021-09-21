@@ -224,7 +224,12 @@ func (area *GLArea) Context() gdk.GLContexter {
 	var _glContext gdk.GLContexter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gdk.GLContexter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.GLContexter")

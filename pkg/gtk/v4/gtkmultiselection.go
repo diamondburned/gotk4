@@ -80,7 +80,12 @@ func (self *MultiSelection) Model() gio.ListModeller {
 	var _listModel gio.ListModeller // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.ListModeller is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")

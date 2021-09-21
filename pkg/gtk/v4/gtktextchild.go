@@ -103,7 +103,12 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 		_widgets = make([]Widgetter, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			{
-				object := externglib.Take(unsafe.Pointer(src[i]))
+				objptr := unsafe.Pointer(src[i])
+				if objptr == nil {
+					panic("object of type gtk.Widgetter is nil")
+				}
+
+				object := externglib.Take(objptr)
 				rv, ok := (externglib.CastObject(object)).(Widgetter)
 				if !ok {
 					panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Widgetter")

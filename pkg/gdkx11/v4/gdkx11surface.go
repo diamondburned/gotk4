@@ -87,7 +87,12 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 	var _ret gdk.Surfacer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Surfacer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(gdk.Surfacer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Surfacer")

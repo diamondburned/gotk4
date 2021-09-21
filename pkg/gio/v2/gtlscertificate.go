@@ -267,7 +267,9 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")
@@ -370,7 +372,12 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.TLSCertificater is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(TLSCertificater)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.TLSCertificater")

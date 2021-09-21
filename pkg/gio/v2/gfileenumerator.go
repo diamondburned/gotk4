@@ -256,7 +256,12 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	var _file Filer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Filer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
@@ -280,7 +285,12 @@ func (enumerator *FileEnumerator) Container() Filer {
 	var _file Filer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Filer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Filer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")
@@ -389,7 +399,9 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 	}
 	if _arg2 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg2))
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Filer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Filer")

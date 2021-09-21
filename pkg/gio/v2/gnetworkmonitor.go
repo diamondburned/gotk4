@@ -309,7 +309,12 @@ func NetworkMonitorGetDefault() NetworkMonitorrer {
 	var _networkMonitor NetworkMonitorrer // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.NetworkMonitorrer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(NetworkMonitorrer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.NetworkMonitorrer")

@@ -55,7 +55,12 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 	var res AsyncResulter // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(AsyncResulter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.AsyncResulter")
@@ -144,7 +149,12 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 	var condition glib.IOCondition     // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type gio.DatagramBasedder is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(DatagramBasedder)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DatagramBasedder")
@@ -969,7 +979,12 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _goerr error               // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(InputStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")

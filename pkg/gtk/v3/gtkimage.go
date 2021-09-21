@@ -482,7 +482,9 @@ func (image *Image) GIcon() (gio.Iconner, int) {
 
 	if _arg1 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg1))
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")

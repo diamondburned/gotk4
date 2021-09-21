@@ -108,7 +108,12 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 	var face pango.FontFacer      // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(arg0))
+		objptr := unsafe.Pointer(arg0)
+		if objptr == nil {
+			panic("object of type pango.FontFamilier is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(pango.FontFamilier)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
@@ -116,7 +121,12 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 		family = rv
 	}
 	{
-		object := externglib.Take(unsafe.Pointer(arg1))
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type pango.FontFacer is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(pango.FontFacer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
@@ -328,7 +338,9 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(pango.FontFacer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFacer")
@@ -357,7 +369,9 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(pango.FontFamilier)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontFamilier")
@@ -402,7 +416,9 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(pango.FontMapper)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not pango.FontMapper")

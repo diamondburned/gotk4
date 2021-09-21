@@ -261,7 +261,9 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Devicer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Devicer")
@@ -290,7 +292,12 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.Gesturer is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Gesturer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Gesturer")
@@ -325,7 +332,9 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gdk.Eventer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Eventer")

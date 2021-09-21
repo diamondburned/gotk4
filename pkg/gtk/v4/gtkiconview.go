@@ -225,7 +225,12 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 	var _paintable gdk.Paintabler // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Paintabler is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(gdk.Paintabler)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Paintabler")
@@ -391,7 +396,9 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	}
 	if _arg2 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg2))
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellRendererer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -507,7 +514,9 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 	}
 	if _arg4 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg4))
+			objptr := unsafe.Pointer(_arg4)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(CellRendererer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.CellRendererer")
@@ -665,7 +674,9 @@ func (iconView *IconView) Model() TreeModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")
@@ -907,7 +918,9 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 
 	if _arg4 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg4))
+			objptr := unsafe.Pointer(_arg4)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")

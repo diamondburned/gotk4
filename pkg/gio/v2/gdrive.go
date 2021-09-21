@@ -501,7 +501,12 @@ func (drive *Drive) Icon() Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -604,7 +609,12 @@ func (drive *Drive) SymbolicIcon() Iconner {
 	var _icon Iconner // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -635,7 +645,12 @@ func (drive *Drive) Volumes() []Volumer {
 		src := (*C.GVolume)(v)
 		var dst Volumer // out
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gio.Volumer is nil")
+			}
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Volumer)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Volumer")

@@ -119,7 +119,12 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 		defer C.free(unsafe.Pointer(_arg2))
 	}
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(InputStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")
@@ -187,7 +192,12 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		defer C.free(unsafe.Pointer(_arg2))
 	}
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(InputStreamer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.InputStreamer")

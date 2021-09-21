@@ -77,7 +77,9 @@ func (screen *Screen) ActiveWindow() Windower {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Windower)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -511,7 +513,12 @@ func (screen *Screen) RootWindow() Windower {
 	var _window Windower // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Windower)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -591,7 +598,12 @@ func (screen *Screen) ToplevelWindows() []Windower {
 		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		{
-			object := externglib.Take(unsafe.Pointer(src))
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gdk.Windower is nil")
+			}
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Windower)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")
@@ -679,7 +691,12 @@ func (screen *Screen) WindowStack() []Windower {
 			src := (*C.GdkWindow)(v)
 			var dst Windower // out
 			{
-				object := externglib.AssumeOwnership(unsafe.Pointer(src))
+				objptr := unsafe.Pointer(src)
+				if objptr == nil {
+					panic("object of type gdk.Windower is nil")
+				}
+
+				object := externglib.AssumeOwnership(objptr)
 				rv, ok := (externglib.CastObject(object)).(Windower)
 				if !ok {
 					panic("object of type " + object.TypeFromInstance().String() + " is not gdk.Windower")

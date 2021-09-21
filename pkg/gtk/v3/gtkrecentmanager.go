@@ -544,7 +544,9 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.AppInfor)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.AppInfor")
@@ -727,7 +729,9 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.Iconner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")

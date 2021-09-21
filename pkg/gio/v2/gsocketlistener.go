@@ -339,7 +339,9 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 
 	if _arg5 != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_arg5))
+			objptr := unsafe.Pointer(_arg5)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")

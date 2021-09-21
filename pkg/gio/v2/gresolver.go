@@ -941,7 +941,12 @@ func ResolverGetDefault() Resolverer {
 	var _resolver Resolverer // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Resolverer is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Resolverer)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Resolverer")

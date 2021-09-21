@@ -167,7 +167,12 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddresser is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")
@@ -202,7 +207,12 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketAddresser is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketAddresser)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketAddresser")

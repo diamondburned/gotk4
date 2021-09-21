@@ -86,7 +86,12 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _socketConnectable SocketConnectabler // out
 
 	{
-		object := externglib.Take(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(SocketConnectabler)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.SocketConnectabler")
@@ -167,7 +172,12 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _goerr error                                 // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.DTLSClientConnectioner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(DTLSClientConnectioner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.DTLSClientConnectioner")

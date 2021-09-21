@@ -67,7 +67,12 @@ func (a *Analysis) LangEngine() cgo.Handle {
 func (a *Analysis) Font() Fonter {
 	var v Fonter // out
 	{
-		object := externglib.Take(unsafe.Pointer(a.native.font))
+		objptr := unsafe.Pointer(a.native.font)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := externglib.Take(objptr)
 		rv, ok := (externglib.CastObject(object)).(Fonter)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not pango.Fonter")

@@ -213,7 +213,9 @@ func IconDeserialize(value *glib.Variant) Iconner {
 
 	if _cret != nil {
 		{
-			object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.AssumeOwnership(objptr)
 			rv, ok := (externglib.CastObject(object)).(Iconner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")
@@ -263,7 +265,12 @@ func NewIconForString(str string) (Iconner, error) {
 	var _goerr error  // out
 
 	{
-		object := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.Iconner is nil")
+		}
+
+		object := externglib.AssumeOwnership(objptr)
 		rv, ok := (externglib.CastObject(object)).(Iconner)
 		if !ok {
 			panic("object of type " + object.TypeFromInstance().String() + " is not gio.Iconner")

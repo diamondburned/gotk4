@@ -175,7 +175,9 @@ func (self *DropDown) Expression() Expressioner {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(Expressioner)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.Expressioner")
@@ -244,7 +246,9 @@ func (self *DropDown) Model() gio.ListModeller {
 
 	if _cret != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_cret))
+			objptr := unsafe.Pointer(_cret)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(gio.ListModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gio.ListModeller")

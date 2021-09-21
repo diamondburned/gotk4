@@ -71,7 +71,9 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 
 	if _arg2 != nil {
 		{
-			object := externglib.Take(unsafe.Pointer(_arg2))
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.Take(objptr)
 			rv, ok := (externglib.CastObject(object)).(TreeModeller)
 			if !ok {
 				panic("object of type " + object.TypeFromInstance().String() + " is not gtk.TreeModeller")

@@ -957,7 +957,7 @@ func (m marshalMap) lookup(v *Value) GValueMarshaler {
 		return f
 	}
 
-	log.Printf("gotk4: missing marshaler for type %s (i.e. %s)", v.Type(), fundamental)
+	log.Printf("gotk4: missing marshaler for type %q (i.e. %q)", v.Type(), fundamental)
 	return nil
 }
 

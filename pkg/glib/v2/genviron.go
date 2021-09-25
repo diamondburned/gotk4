@@ -86,7 +86,7 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -132,7 +132,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -168,7 +168,7 @@ func GetEnviron() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -225,7 +225,7 @@ func Listenv() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

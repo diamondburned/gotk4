@@ -132,7 +132,7 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 	{
 		var i int
 		var z *C.gchar
-		for p := arg1; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := arg1; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -481,7 +481,7 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 		{
 			var i int
 			var z *C.gchar
-			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 

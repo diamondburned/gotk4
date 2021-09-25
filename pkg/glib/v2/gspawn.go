@@ -888,7 +888,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		{
 			var i int
 			var z C.gchar
-			for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
@@ -904,7 +904,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		{
 			var i int
 			var z C.gchar
-			for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
@@ -1006,7 +1006,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		{
 			var i int
 			var z C.gchar
-			for p := _arg7; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _arg7; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
@@ -1022,7 +1022,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		{
 			var i int
 			var z C.gchar
-			for p := _arg8; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _arg8; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 

@@ -118,7 +118,7 @@ func GetLanguageNames() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -157,7 +157,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -201,7 +201,7 @@ func GetLocaleVariants(locale string) []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

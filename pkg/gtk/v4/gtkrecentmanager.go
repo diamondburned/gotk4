@@ -486,7 +486,7 @@ func (r *RecentData) Groups() []string {
 	{
 		var i int
 		var z *C.char
-		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

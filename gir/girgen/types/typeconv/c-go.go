@@ -200,7 +200,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		// Scan for the length.
 		value.p.Linef("var i int")
 		value.p.Linef("var z %s", inner.In.Type)
-		value.p.Linef("for p := %s; *p != z; p = &unsafe.Slice(p, i+1)[i] {", value.InName)
+		value.p.Linef("for p := %s; *p != z; p = &unsafe.Slice(p, 2)[1] {", value.InName)
 		value.p.Linef("  i++")
 		value.p.Linef("}")
 		value.p.EmptyLine()

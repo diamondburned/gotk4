@@ -326,7 +326,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -374,7 +374,7 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -649,7 +649,7 @@ func (application *Application) ListActionDescriptions() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

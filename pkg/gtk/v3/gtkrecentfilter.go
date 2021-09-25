@@ -462,7 +462,7 @@ func (r *RecentFilterInfo) Applications() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := r.native.applications; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.applications; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -481,7 +481,7 @@ func (r *RecentFilterInfo) Groups() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

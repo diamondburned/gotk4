@@ -1127,7 +1127,7 @@ func (settings *Settings) Strv(key string) []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -1317,7 +1317,7 @@ func (settings *Settings) ListChildren() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -1356,7 +1356,7 @@ func (settings *Settings) ListKeys() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -1808,7 +1808,7 @@ func SettingsListRelocatableSchemas() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -1837,7 +1837,7 @@ func SettingsListSchemas() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

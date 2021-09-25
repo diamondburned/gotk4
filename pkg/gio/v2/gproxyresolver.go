@@ -172,7 +172,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -242,7 +242,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

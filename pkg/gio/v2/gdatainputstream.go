@@ -284,7 +284,7 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 		{
 			var i int
 			var z C.char
-			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
@@ -360,7 +360,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 		{
 			var i int
 			var z C.char
-			for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 

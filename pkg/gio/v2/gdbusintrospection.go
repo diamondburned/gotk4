@@ -83,7 +83,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -186,7 +186,7 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -244,7 +244,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	{
 		var i int
 		var z *C.GDBusMethodInfo
-		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -271,7 +271,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	{
 		var i int
 		var z *C.GDBusSignalInfo
-		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -298,7 +298,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	{
 		var i int
 		var z *C.GDBusPropertyInfo
-		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -325,7 +325,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -512,7 +512,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -539,7 +539,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -566,7 +566,7 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -654,7 +654,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	{
 		var i int
 		var z *C.GDBusInterfaceInfo
-		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -681,7 +681,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	{
 		var i int
 		var z *C.GDBusNodeInfo
-		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -708,7 +708,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -812,7 +812,7 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -870,7 +870,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.GDBusArgInfo
-		for p := d.native.args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -897,7 +897,7 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

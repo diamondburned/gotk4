@@ -194,7 +194,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -229,7 +229,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 	{
 		var i int
 		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -553,7 +553,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	{
 		var i int
 		var z *C.gchar
-		for p := _arg2; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
@@ -568,7 +568,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	{
 		var i int
 		var z *C.gchar
-		for p := _arg3; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+		for p := _arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 

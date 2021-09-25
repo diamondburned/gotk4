@@ -149,6 +149,37 @@ func (ren typeRenamer) Preprocess(repos gir.Repositories) {
 	}
 }
 
+// RemoveRecordFields removes the given fields from the record with the given
+// full GIR type. The fields must be cased as they appear in the GIR file.
+func RemoveRecordFields(girType string, fields ...string) Preprocessor {
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		res := repos.FindFullType(girType)
+		if res == nil {
+			log.Printf("GIR type %q not found", girType)
+			return
+		}
+
+		record, ok := res.Type.(*gir.Record)
+		if !ok {
+			log.Panicf("RemoveRecordFields: GIR type %q is not a record", girType)
+			return
+		}
+
+		fieldMap := make(map[string]struct{}, len(fields))
+		for _, field := range fields {
+			fieldMap[field] = struct{}{}
+		}
+
+		filtered := record.Fields[:0]
+		for _, field := range record.Fields {
+			if _, ok := fieldMap[field.Name]; !ok {
+				filtered = append(filtered, field)
+			}
+		}
+		record.Fields = filtered
+	})
+}
+
 type modifyCallable struct {
 	girType string
 	modFunc func(*gir.CallableAttrs)

@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"log"
 	"runtime"
 	"runtime/cgo"
 	"strings"
@@ -17,6 +18,9 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
+// GLogWriterOutput _gotk4_glib2_LogWriterFunc(GLogLevelFlags, GLogField*, gsize, gpointer);
+// extern void callbackDelete(gpointer);
+// void _gotk4_glib2_LogFunc(gchar*, GLogLevelFlags, gchar*, gpointer);
 import "C"
 
 // LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
@@ -775,16 +779,108 @@ func (l *LogField) Key() string {
 	return v
 }
 
-// Value: field value (arbitrary bytes)
-func (l *LogField) Value() cgo.Handle {
-	var v cgo.Handle // out
-	v = (cgo.Handle)(unsafe.Pointer(l.native.value))
-	return v
+// LogSetHandler sets the handler used for GLib logging and returns the
+// new handler ID. It is a wrapper around g_log_set_handler and
+// g_log_set_handler_full.
+//
+// To detach a log handler, use LogRemoveHandler.
+func LogSetHandler(domain string, level LogLevelFlags, f LogFunc) uint {
+	var log_domain *C.gchar
+	if domain != "" {
+		log_domain = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(log_domain))
+	}
+
+	data := gbox.Assign(f)
+
+	h := C.g_log_set_handler_full(
+		log_domain,
+		C.GLogLevelFlags(level),
+		C.GLogFunc((*[0]byte)(C._gotk4_glib2_LogFunc)),
+		C.gpointer(data),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+	)
+
+	return uint(h)
 }
 
-// Length: length of value, in bytes, or -1 if it is nul-terminated
-func (l *LogField) Length() int {
-	var v int // out
-	v = int(l.native.length)
-	return v
+// Value returns the field's value.
+func (l *LogField) Value() string {
+	if l.native.length == -1 {
+		return C.GoString((*C.gchar)(unsafe.Pointer(l.native.value)))
+	}
+	return C.GoStringN((*C.gchar)(unsafe.Pointer(l.native.value)), C.int(l.native.length))
+}
+
+// LogSetWriter sets the log writer to the given callback, which should
+// take in a list of pair of key-value strings and return true if the
+// log has been successfully written. It is a wrapper around
+// g_log_set_writer_func.
+//
+// Note that this function must ONLY be called ONCE. The GLib
+// documentation states that it is an error to call it more than once.
+func LogSetWriter(f LogWriterFunc) {
+	data := gbox.Assign(f)
+	C.g_log_set_writer_func(
+		C.GLogWriterFunc((*[0]byte)(C._gotk4_glib2_LogWriterFunc)),
+		C.gpointer(data),
+		C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
+	)
+}
+
+// LogUseDefaultLogger calls LogUseLogger with Go's default standard
+// logger. It is a convenient function for log.Default().
+func LogUseDefaultLogger() {
+	LogUseLogger(log.Default())
+}
+
+// LogUseLogger calls LogSetWriter with the given Go's standard logger.
+// Note that either this or LogSetWriter must only be called once.
+// The method will ignore all fields excet for "MESSAGE"; for more
+// sophisticated, structured log writing, use LogSetWriter.
+// The output format of the logs printed using this function is not
+// guaranteed to not change. Users who rely on the format are better off
+// using LogSetWriter.
+func LogUseLogger(l *log.Logger) {
+	// Treat Lshortfile and Llongfile the same, because we don't have
+	// the full path in codeFile anyway.
+	Lfile := l.Flags()&(log.Lshortfile|log.Llongfile) != 0
+
+	LogSetWriter(func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
+		var message, codeFile, codeLine, codeFunc string
+
+		for _, field := range fields {
+			if !Lfile {
+				if field.Key() == "MESSAGE" {
+					message = field.Value()
+				}
+				// Skip setting code* if we don't have to.
+				continue
+			}
+
+			switch field.Key() {
+			case "MESSAGE":
+				message = field.Value()
+			case "CODE_FILE":
+				codeFile = field.Value()
+			case "CODE_LINE":
+				codeLine = field.Value()
+			case "CODE_FUNC":
+				codeFunc = field.Value()
+			}
+		}
+
+		if !Lfile || (codeFile == "" && codeLine == "") {
+			l.Print(message)
+			return LogWriterHandled
+		}
+
+		if codeFunc == "" {
+			l.Printf("%s:%s: %s", codeFile, codeLine, message)
+			return LogWriterHandled
+		}
+
+		l.Printf("%s:%s (%s): %s", codeFile, codeLine, codeFunc, message)
+		return LogWriterHandled
+	})
 }

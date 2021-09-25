@@ -5,6 +5,7 @@ package glib
 import (
 	"fmt"
 	"log"
+	"os"
 	"runtime"
 	"runtime/cgo"
 	"strings"
@@ -837,13 +838,23 @@ func LogUseLogger(l *log.Logger) {
 	// the full path in codeFile anyway.
 	Lfile := l.Flags()&(log.Lshortfile|log.Llongfile) != 0
 
+	// Support $G_MESSAGES_DEBUG.
+	debugDomains := make(map[string]struct{})
+	for _, debugDomain := range strings.Fields(os.Getenv("G_MESSAGES_DEBUG")) {
+		debugDomains[debugDomain] = struct{}{}
+	}
+
 	LogSetWriter(func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
 		var message, codeFile, codeLine, codeFunc string
+		domain := "GLib (no domain)"
 
 		for _, field := range fields {
 			if !Lfile {
-				if field.Key() == "MESSAGE" {
+				switch field.Key() {
+				case "MESSAGE":
 					message = field.Value()
+				case "GLIB_DOMAIN":
+					domain = field.Value()
 				}
 				// Skip setting code* if we don't have to.
 				continue
@@ -858,20 +869,33 @@ func LogUseLogger(l *log.Logger) {
 				codeLine = field.Value()
 			case "CODE_FUNC":
 				codeFunc = field.Value()
+			case "GLIB_DOMAIN":
+				domain = field.Value()
 			}
 		}
 
+		if (lvl&LogLevelDebug != 0) && domain != "" {
+			if _, ok := debugDomains[domain]; !ok {
+				return LogWriterHandled
+			}
+		}
+
+		f := l.Printf
+		if lvl&LogFlagFatal != 0 {
+			f = l.Fatalf
+		}
+
 		if !Lfile || (codeFile == "" && codeLine == "") {
-			l.Print(message)
+			f("%s: %s: %s", lvl, domain, message)
 			return LogWriterHandled
 		}
 
 		if codeFunc == "" {
-			l.Printf("%s:%s: %s", codeFile, codeLine, message)
+			f("%s: %s: %s:%s: %s", lvl, domain, codeFile, codeLine, message)
 			return LogWriterHandled
 		}
 
-		l.Printf("%s:%s (%s): %s", codeFile, codeLine, codeFunc, message)
+		f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
 		return LogWriterHandled
 	})
 }

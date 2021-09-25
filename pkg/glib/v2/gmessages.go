@@ -844,6 +844,9 @@ func LogUseLogger(l *log.Logger) {
 		debugDomains[debugDomain] = struct{}{}
 	}
 
+	// Special case: G_MESSAGES_DEBUG=all.
+	_, debugAll := debugDomains["all"]
+
 	LogSetWriter(func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
 		var message, codeFile, codeLine, codeFunc string
 		domain := "GLib (no domain)"
@@ -874,7 +877,7 @@ func LogUseLogger(l *log.Logger) {
 			}
 		}
 
-		if (lvl&LogLevelDebug != 0) && domain != "" {
+		if !debugAll && (lvl&LogLevelDebug != 0) && domain != "" {
 			if _, ok := debugDomains[domain]; !ok {
 				return LogWriterHandled
 			}

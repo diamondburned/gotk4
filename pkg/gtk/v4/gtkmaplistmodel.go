@@ -47,6 +47,7 @@ func _gotk4_gtk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.g
 	object := fn(item)
 
 	cret = C.gpointer(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
 
 	return cret
 }

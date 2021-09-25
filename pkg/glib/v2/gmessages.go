@@ -182,10 +182,8 @@ func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, a
 	var message string         // out
 
 	logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	defer C.free(unsafe.Pointer(arg0))
 	logLevel = LogLevelFlags(arg1)
 	message = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 
 	fn := v.(LogFunc)
 	fn(logDomain, logLevel, message)
@@ -222,18 +220,11 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	var fields []LogField      // out
 
 	logLevel = LogLevelFlags(arg0)
-	defer C.free(unsafe.Pointer(arg1))
 	{
 		src := unsafe.Slice(arg1, arg2)
 		fields = make([]LogField, arg2)
 		for i := 0; i < int(arg2); i++ {
 			fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
-				gextras.StructIntern(unsafe.Pointer(&fields[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
-			)
 		}
 	}
 

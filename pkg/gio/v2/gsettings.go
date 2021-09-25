@@ -128,10 +128,8 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 	var variant *glib.Variant   // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	runtime.SetFinalizer(value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
-	})
 	variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -164,16 +162,7 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 	var expectedType *glib.VariantType // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
-	runtime.SetFinalizer(value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
-	})
 	expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(expectedType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
-	)
 
 	fn := v.(SettingsBindSetMapping)
 	variant := fn(value, expectedType)
@@ -205,6 +194,7 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 	var value *glib.Variant // out
 
 	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	C.g_variant_ref(arg0)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(value)),
 		func(intern *struct{ C unsafe.Pointer }) {

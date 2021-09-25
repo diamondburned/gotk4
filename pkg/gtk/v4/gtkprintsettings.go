@@ -86,9 +86,7 @@ func _gotk4_gtk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) 
 	var value string // out
 
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	defer C.free(unsafe.Pointer(arg0))
 	value = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 
 	fn := v.(PrintSettingsFunc)
 	fn(key, value)

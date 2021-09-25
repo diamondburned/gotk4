@@ -89,12 +89,6 @@ func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 
 	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
 
 	fn := v.(IconViewForeachFunc)
 	fn(iconView, path)

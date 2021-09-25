@@ -33,7 +33,7 @@ type ValueConverted struct {
 	ValueType
 	Inner []ValueType
 
-	log func(lvl logger.Level, v ...interface{})
+	conv *Converter
 
 	// output writers
 	p       *pen.PaperString
@@ -85,7 +85,7 @@ func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
 			Call: value.OutName,
 			Set:  value.OutName,
 		},
-		log:     conv.Logln,
+		conv:    conv,
 		p:       pen.NewPaperStringSize(1024), // 1KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
 		outDecl: pen.NewPaperStringSize(128),  // 0.1KB
@@ -127,7 +127,7 @@ func (value *ValueConverted) vtmpl(tmpl string) {
 }
 
 func (value *ValueConverted) Logln(lvl logger.Level, v ...interface{}) {
-	value.log(lvl, logger.Prefix(v, value.logPrefix())...)
+	value.conv.Logln(lvl, logger.Prefix(v, value.logPrefix())...)
 }
 
 // resolveType resolves the value type to the resolved field. If inputC is true,
@@ -636,4 +636,56 @@ func difference(i, j int) int {
 		return i - j
 	}
 	return j - i
+}
+
+// ShouldFree returns true if the C value must be freed once we're done.
+func (value *ValueConverted) ShouldFree() bool {
+	// goReceiving is true when we're receiving the C value.
+	goReceiving := value.ParameterIndex == ReturnValueIndex || value.ParameterIsOutput()
+	if value.conv.Callback {
+		goReceiving = !goReceiving
+	}
+	// If we're not converting C to Go, then we're probably in a callback, so
+	// the ownership is flipped.
+	// if value.Direction != ConvertCToGo {
+	// 	goReceiving = !goReceiving
+	// }
+
+	if goReceiving {
+		return value.ownershipIsTransferring()
+	}
+
+	return !value.ownershipIsTransferring()
+}
+
+// MustRealloc returns true if we need to malloc our values to give it to C.
+// Generally, if a conversion routine has a no-alloc path, it should check
+// MustRealloc first. If MustRealloc is true, then it must check ShouldFree.
+//
+//    if value.MustAlloc() {
+//        v = &oldValue
+//    } else {
+//        v = malloc()
+//        if value.ShouldFree() {
+//            defer free(v)
+//        }
+//    }
+//
+func (value *ValueConverted) MustRealloc() bool {
+	// goGiving is true when we're giving the C value.
+	goGiving := value.ParameterIndex > -1 && !value.ParameterIsOutput()
+	if value.conv.Callback {
+		goGiving = !goGiving
+	}
+	// If we're not converting Go to C, then we're probably in a callback, so
+	// the ownership is flipped.
+	// if value.Direction != ConvertGoToC {
+	// 	goGiving = !goGiving
+	// }
+
+	if goGiving {
+		return value.ownershipIsTransferring()
+	}
+
+	return !value.ownershipIsTransferring()
 }

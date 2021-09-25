@@ -57,12 +57,6 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 		grabWidget = rv
 	}
 	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(grabWidget, event)

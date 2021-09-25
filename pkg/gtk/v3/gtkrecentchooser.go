@@ -109,6 +109,7 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 	var b *RecentInfo // out
 
 	a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
+	C.gtk_recent_info_ref(arg0)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(a)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -116,6 +117,7 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 		},
 	)
 	b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.gtk_recent_info_ref(arg1)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(b)),
 		func(intern *struct{ C unsafe.Pointer }) {

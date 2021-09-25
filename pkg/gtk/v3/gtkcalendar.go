@@ -122,7 +122,6 @@ func _gotk4_gtk3_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.gu
 
 	if utf8 != "" {
 		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
 	}
 
 	return cret

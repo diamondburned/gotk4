@@ -110,6 +110,7 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	}
 	if arg1 != nil {
 		args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(args)),
 			func(intern *struct{ C unsafe.Pointer }) {

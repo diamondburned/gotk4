@@ -111,12 +111,6 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 	var filterInfo *RecentFilterInfo // out
 
 	filterInfo = (*RecentFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(filterInfo)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 
 	fn := v.(RecentFilterFunc)
 	ok := fn(filterInfo)

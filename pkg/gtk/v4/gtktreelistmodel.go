@@ -51,6 +51,7 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 
 	if listModel != nil {
 		cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
+		C.g_object_ref(C.gpointer(listModel.Native()))
 	}
 
 	return cret

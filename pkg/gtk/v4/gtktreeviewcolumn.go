@@ -111,12 +111,6 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 		treeModel = rv
 	}
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter)

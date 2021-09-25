@@ -120,10 +120,8 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 
 	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	if arg2 != nil {
 		interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-		defer C.free(unsafe.Pointer(arg2))
 	}
 
 	fn := v.(DBusProxyTypeFunc)
@@ -265,7 +263,6 @@ func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpoin
 	var fileSize int64      // out
 
 	fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	defer C.free(unsafe.Pointer(arg0))
 	fileSize = int64(arg1)
 
 	fn := v.(FileReadMoreCallback)

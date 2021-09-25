@@ -61,12 +61,6 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 		model = rv
 	}
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 	column = int(arg3)
 
 	fn := v.(TreeModelFilterModifyFunc)
@@ -103,12 +97,6 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 		model = rv
 	}
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeModelFilterVisibleFunc)
 	ok := fn(model, iter)

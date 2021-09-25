@@ -113,19 +113,7 @@ func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 		model = rv
 	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeModelForeachFunc)
 	ok := fn(model, path, iter)

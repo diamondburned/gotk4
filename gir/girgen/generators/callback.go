@@ -237,6 +237,7 @@ func (g *CallbackGenerator) renderBlock() bool {
 	}
 
 	convert := typeconv.NewConverter(g.gen, typ, callbackValues)
+	convert.Callback = true
 	convert.UseLogger(g)
 
 	results := convert.ConvertAll()

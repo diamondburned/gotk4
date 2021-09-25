@@ -607,13 +607,11 @@ func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 	var path string // out
 
 	path = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
-	defer C.free(unsafe.Pointer(arg0))
 
 	fn := v.(TranslateFunc)
 	utf8 := fn(path)
 
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-	defer C.free(unsafe.Pointer(cret))
 
 	return cret
 }

@@ -78,12 +78,6 @@ func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectio
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(selectionData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_selection_data_free((*C.GtkSelectionData)(intern.C))
-		},
-	)
 
 	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData)
@@ -106,7 +100,6 @@ func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	if arg1 != nil {
 		text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-		defer C.free(unsafe.Pointer(arg1))
 	}
 
 	fn := v.(ClipboardTextReceivedFunc)
@@ -128,7 +121,6 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 	var uris []string        // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
-	defer C.free(unsafe.Pointer(arg1))
 	{
 		var i int
 		var z *C.gchar
@@ -140,7 +132,6 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 		uris = make([]string, i)
 		for i := range src {
 			uris[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

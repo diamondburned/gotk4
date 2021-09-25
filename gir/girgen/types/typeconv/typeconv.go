@@ -16,8 +16,9 @@ import (
 // }
 
 type Converter struct {
-	Parent  *gir.TypeFindResult
-	Results []ValueConverted
+	Parent   *gir.TypeFindResult
+	Results  []ValueConverted
+	Callback bool
 
 	fgen   types.FileGenerator
 	logger logger.LineLogger

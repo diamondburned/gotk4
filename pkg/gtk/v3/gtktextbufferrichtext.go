@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -39,13 +38,6 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
 	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
-		},
-	)
-	defer C.free(unsafe.Pointer(arg3))
 	data = make([]byte, arg4)
 	copy(data, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
 	if arg5 != 0 {
@@ -81,19 +73,7 @@ func _gotk4_gtk3_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextB
 	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
 	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(start)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
-		},
-	)
 	end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(end)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
-		},
-	)
 
 	fn := v.(TextBufferSerializeFunc)
 	length, guint8 := fn(registerBuffer, contentBuffer, start, end)

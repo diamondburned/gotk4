@@ -119,12 +119,6 @@ func _gotk4_gtk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, a
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
 
 	fn := v.(TreeViewMappingFunc)
 	fn(treeView, path)
@@ -160,12 +154,6 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		model = rv
 	}
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeViewRowSeparatorFunc)
 	ok := fn(model, iter)
@@ -210,14 +198,7 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 	}
 	column = int(arg1)
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeViewSearchEqualFunc)
 	ok := fn(model, column, key, iter)

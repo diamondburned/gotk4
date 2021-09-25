@@ -50,13 +50,9 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.g
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	defer C.free(unsafe.Pointer(arg4))
 
 	fn := v.(DBusInterfaceGetPropertyFunc)
 	err, variant := fn(connection, sender, objectPath, interfaceName, propertyName)
@@ -88,14 +84,11 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gc
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 	methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -128,14 +121,11 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.g
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 	propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	defer C.free(unsafe.Pointer(arg4))
 	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(value)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -237,6 +227,7 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBu
 
 	if dBusMessage != nil {
 		cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
+		C.g_object_ref(C.gpointer(dBusMessage.Native()))
 	}
 
 	return cret
@@ -263,15 +254,12 @@ func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	if arg1 != nil {
 		senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-		defer C.free(unsafe.Pointer(arg1))
 	}
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 	signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	defer C.free(unsafe.Pointer(arg4))
 	parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	C.g_variant_ref(arg5)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -304,13 +292,9 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 	node = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	defer C.free(unsafe.Pointer(arg4))
 
 	fn := v.(DBusSubtreeDispatchFunc)
 	outUserData, dBusInterfaceVTable := fn(connection, sender, objectPath, interfaceName, node)
@@ -318,7 +302,6 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 	*arg5 = (C.gpointer)(unsafe.Pointer(outUserData))
 	if dBusInterfaceVTable != nil {
 		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
-		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(dBusInterfaceVTable)), nil)
 	}
 
 	return cret
@@ -350,23 +333,19 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 
 	fn := v.(DBusSubtreeEnumerateFunc)
 	utf8s := fn(connection, sender, objectPath)
 
 	{
 		cret = (**C.gchar)(C.malloc(C.ulong(len(utf8s)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(cret))
 		{
 			out := unsafe.Slice(cret, len(utf8s)+1)
 			var zero *C.gchar
 			out[len(utf8s)] = zero
 			for i := range utf8s {
 				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
-				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
@@ -408,11 +387,8 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	sender = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	defer C.free(unsafe.Pointer(arg2))
 	node = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	defer C.free(unsafe.Pointer(arg3))
 
 	fn := v.(DBusSubtreeIntrospectFunc)
 	dBusInterfaceInfos := fn(connection, sender, objectPath, node)
@@ -420,7 +396,6 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 	if dBusInterfaceInfos != nil {
 		{
 			cret = (**C.GDBusInterfaceInfo)(C.malloc(C.ulong(len(dBusInterfaceInfos)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-			defer C.free(unsafe.Pointer(cret))
 			{
 				out := unsafe.Slice(cret, len(dBusInterfaceInfos)+1)
 				var zero *C.GDBusInterfaceInfo

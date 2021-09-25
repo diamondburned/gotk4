@@ -45,16 +45,11 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	var doPath bool           // out
 
 	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg0)))
+	C.cairo_reference(arg0)
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 	attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(attr)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 	if arg2 != 0 {
 		doPath = true
 	}

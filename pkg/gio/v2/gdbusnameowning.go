@@ -40,7 +40,6 @@ func _gotk4_gio2_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 
 	fn := v.(BusAcquiredCallback)
 	fn(connection, name)
@@ -61,7 +60,6 @@ func _gotk4_gio2_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 
 	fn := v.(BusNameAcquiredCallback)
 	fn(connection, name)
@@ -83,7 +81,6 @@ func _gotk4_gio2_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	defer C.free(unsafe.Pointer(arg1))
 
 	fn := v.(BusNameLostCallback)
 	fn(connection, name)

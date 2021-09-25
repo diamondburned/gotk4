@@ -422,12 +422,6 @@ func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret
 	var attribute *Attribute // out
 
 	attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
 
 	fn := v.(AttrFilterFunc)
 	ok := fn(attribute)

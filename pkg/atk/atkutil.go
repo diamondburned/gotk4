@@ -106,12 +106,6 @@ func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret 
 	var event *KeyEventStruct // out
 
 	event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(event)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 
 	fn := v.(KeySnoopFunc)
 	gint := fn(event)

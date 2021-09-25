@@ -45,19 +45,7 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 	var err error            // out
 
 	start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(start)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 	end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(end)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 	err = gerror.Take(unsafe.Pointer(arg2))
 
 	fn := v.(ParseErrorFunc)

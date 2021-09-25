@@ -56,19 +56,7 @@ func _gotk4_gtk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 		model = rv
 	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(iter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
-	)
 
 	fn := v.(TreeSelectionForeachFunc)
 	fn(model, path, iter)
@@ -109,12 +97,6 @@ func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 		model = rv
 	}
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}

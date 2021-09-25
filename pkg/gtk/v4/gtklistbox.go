@@ -50,6 +50,7 @@ func _gotk4_gtk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret
 	widget := fn(item)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	C.g_object_ref(C.gpointer(widget.Native()))
 
 	return cret
 }

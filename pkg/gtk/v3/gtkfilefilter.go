@@ -102,12 +102,6 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 	var filterInfo *FileFilterInfo // out
 
 	filterInfo = (*FileFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(filterInfo)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
-	)
 
 	fn := v.(FileFilterFunc)
 	ok := fn(filterInfo)

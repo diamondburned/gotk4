@@ -46,6 +46,7 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 
 	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
 	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})

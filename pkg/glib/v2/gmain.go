@@ -1725,42 +1725,6 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	runtime.KeepAlive(readyTime)
 }
 
-// SourceRemove removes the source with the given ID from the default main
-// context. You must use g_source_destroy() for sources added to a non-default
-// main context.
-//
-// The ID of a #GSource is given by g_source_get_id(), or will be returned by
-// the functions g_source_attach(), g_idle_add(), g_idle_add_full(),
-// g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
-// g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().
-//
-// It is a programmer error to attempt to remove a non-existent source.
-//
-// More specifically: source IDs can be reissued after a source has been
-// destroyed and therefore it is never valid to use this function with a source
-// ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
-func SourceRemove(tag uint) bool {
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.guint(tag)
-
-	_cret = C.g_source_remove(_arg1)
-	runtime.KeepAlive(tag)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // SourceRemoveByFuncsUserData removes a source from the default main loop
 // context given the source functions and user data. If multiple sources exist
 // with the same source functions and user data, only one will be destroyed.

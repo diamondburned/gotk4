@@ -628,6 +628,8 @@ var BuiltinHandledTypes = []FilterMatcher{
 	// Ignore all of ByteArray's methods and functions. Use the C namespace,
 	// because record methods aren't filtered properly.
 	RegexFilter(`C.g_byte_array_.*`),
+	// Already covered by externglib.
+	AbsoluteFilter("GLib.Type"),
 }
 
 // Resolve resolves the given type from the GIR type field. It returns nil if

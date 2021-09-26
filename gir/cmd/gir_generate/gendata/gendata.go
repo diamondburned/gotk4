@@ -4,6 +4,7 @@ package gendata
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
@@ -247,6 +248,9 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gdk_pixbuf_non_anim_get_type"),
 	AbsoluteFilter("C.gdk_window_destroy_notify"),
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
+
+	// Already handled in GLibAliases.
+	AbsoluteFilter("C.g_source_remove"),
 }
 
 // ImportGError ensures that gerror is imported.
@@ -309,6 +313,73 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 			return _bytes
 		}
 	`)
+
+	return nil
+}
+
+// GLibAliases generates aliases in the glib/v2 package to the core/glib
+// package. It is generated so that users don't have to import both glib
+// packages.
+func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
+	fg := nsgen.MakeFile("externglib.go")
+
+	h := fg.Header()
+	h.NeedsExternGLib()
+
+	type fn struct {
+		Name   string
+		Params []string
+		Return string
+	}
+
+	fns := []fn{
+		{"IdleAdd", []string{"f interface{}"}, "SourceHandle"},
+		{"IdleAddPriority", []string{"p Priority", "f interface{}"}, "SourceHandle"},
+		{"TimeoutAdd", []string{"ms uint", "f interface{}"}, "SourceHandle"},
+		{"TimeoutAddPriority", []string{"ms uint", "p Priority", "f interface{}"}, "SourceHandle"},
+		{"TimeoutSecondsAdd", []string{"s uint", "f interface{}"}, "SourceHandle"},
+		{"TimeoutSecondsAddPriority", []string{"s uint", "p Priority", "f interface{}"}, "SourceHandle"},
+		{"TypeFromName", []string{"typeName string"}, "Type"},
+		{"NewValue", []string{"v interface{}"}, "*Value"},
+		{"SourceRemove", []string{"src SourceHandle"}, "bool"},
+	}
+
+	p := fg.Pen()
+
+	for _, fn := range fns {
+		names := make([]string, len(fn.Params))
+		for i := range fn.Params {
+			names[i] = strings.Split(fn.Params[i], " ")[0]
+		}
+
+		p.Linef("// %s is an alias for pkg/core/glib.%[1]s.", fn.Name)
+		p.Linef("func %s(%s) %s {", fn.Name, strings.Join(fn.Params, ", "), fn.Return)
+		p.Linef("  return externglib.%s(%s)", fn.Name, strings.Join(names, ", "))
+		p.Linef("}")
+	}
+
+	// TODO: right now, we have both externglib.Variant and glib.Variant.
+	// externglib's implementation is more idiomatic and clean, but glib's
+	// generated implementation is more faithful.
+	//
+	// For now, we'll keep the generated implementation, since it appears more
+	// complete, but in the future, if there are too many incorrect methods that
+	// users may fall for, then it's better to switch to externglib.
+
+	types := []string{
+		"Object",
+		"Objector",
+		"Type",
+		"Value",
+		"Priority",
+		"SourceHandle",
+		"SignalHandle",
+	}
+
+	for _, t := range types {
+		p.Linef("// %s is an alias for pkg/core/glib.%[1]s.", t)
+		p.Linef("type %s = externglib.%[1]s", t)
+	}
 
 	return nil
 }
@@ -473,7 +544,7 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2": {GioArrayUseBytes, GLibLogs},
+	"GLib-2": {GioArrayUseBytes, GLibAliases, GLibLogs},
 	"Gio-2":  {ImportGError},
 	"Gtk-3":  {ImportGError},
 	"Gtk-4":  {ImportGError}, // for the marshaler

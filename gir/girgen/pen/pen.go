@@ -56,6 +56,15 @@ func (p *Pen) Words(words ...interface{}) {
 	p.EmptyLine()
 }
 
+// Printf writes a Sprintf-formatted string.
+func (p *Pen) Printf(f string, v ...interface{}) {
+	if len(v) == 0 {
+		p.WriteString(f)
+	} else {
+		fmt.Fprintf(p.PenWriter, f, v...)
+	}
+}
+
 // Lines writes multiple lines.
 func (p *Pen) Lines(lines []string) {
 	for _, line := range lines {
@@ -68,11 +77,7 @@ func (p *Pen) Line(line string) { p.Linef(line) }
 
 // Linef writes a Sprintf-formatted line.
 func (p *Pen) Linef(f string, v ...interface{}) {
-	if len(v) == 0 {
-		p.WriteString(f)
-	} else {
-		fmt.Fprintf(p.PenWriter, f, v...)
-	}
+	p.Printf(f, v...)
 	p.EmptyLine()
 }
 

@@ -12,8 +12,6 @@ import (
 // #include <glib.h>
 import "C"
 
-type Type = uint
-
 func StrvGetType() externglib.Type {
 	var _cret C.GType // in
 

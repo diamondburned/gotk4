@@ -822,9 +822,7 @@ func LogSetWriter(f LogWriterFunc) {
 
 // LogUseDefaultLogger calls LogUseLogger with Go's default standard
 // logger. It is a convenient function for log.Default().
-func LogUseDefaultLogger() {
-	LogUseLogger(log.Default())
-}
+func LogUseDefaultLogger() { LogUseLogger(log.Default()) }
 
 // LogUseLogger calls LogSetWriter with the given Go's standard logger.
 // Note that either this or LogSetWriter must only be called once.
@@ -833,7 +831,11 @@ func LogUseDefaultLogger() {
 // The output format of the logs printed using this function is not
 // guaranteed to not change. Users who rely on the format are better off
 // using LogSetWriter.
-func LogUseLogger(l *log.Logger) {
+func LogUseLogger(l *log.Logger) { LogSetWriter(LoggerHandler(l)) }
+
+// LoggerHandler creates a new LogWriterFunc that LogUseLogger uses. For
+// more information, see LogUseLogger's documentation.
+func LoggerHandler(l *log.Logger) LogWriterFunc {
 	// Treat Lshortfile and Llongfile the same, because we don't have
 	// the full path in codeFile anyway.
 	Lfile := l.Flags()&(log.Lshortfile|log.Llongfile) != 0
@@ -847,7 +849,7 @@ func LogUseLogger(l *log.Logger) {
 	// Special case: G_MESSAGES_DEBUG=all.
 	_, debugAll := debugDomains["all"]
 
-	LogSetWriter(func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
+	return func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
 		var message, codeFile, codeLine, codeFunc string
 		domain := "GLib (no domain)"
 
@@ -900,5 +902,5 @@ func LogUseLogger(l *log.Logger) {
 
 		f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
 		return LogWriterHandled
-	})
+	}
 }

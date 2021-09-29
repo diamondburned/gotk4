@@ -4,6 +4,8 @@ import (
 	"encoding/xml"
 )
 
+// https://gitlab.gnome.org/GNOME/gobject-introspection/-/blob/master/docs/gir-1.2.rnc
+
 type Alias struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
 
@@ -108,6 +110,7 @@ type Class struct {
 	Methods        []Method        `xml:"http://www.gtk.org/introspection/core/1.0 method"`
 	VirtualMethods []VirtualMethod `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
 	Fields         []Field         `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	Signals        []Signal        `xml:"http://www.gtk.org/introspection/glib/1.0 signal"`
 }
 
 type Constant struct {
@@ -232,6 +235,7 @@ type Interface struct {
 	Methods        []Method        `xml:"http://www.gtk.org/introspection/core/1.0 method"`
 	VirtualMethods []VirtualMethod `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
 	Prerequisites  []Prerequisite  `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
+	Signals        []Signal        `xml:"http://www.gtk.org/introspection/glib/1.0 signal"`
 
 	InfoAttrs
 	InfoElements
@@ -351,6 +355,27 @@ type ReturnValue struct {
 	DocElements
 	AnyType
 }
+
+type Signal struct {
+	XMLName   xml.Name   `xml:"http://www.gtk.org/introspection/glib/1.0 signal"`
+	Name      string     `xml:"name,attr"`
+	Detailed  bool       `xml:"detailed,attr"`
+	When      SignalWhen `xml:"when,attr"`
+	Action    bool       `xml:"action,attr"`
+	NoHooks   bool       `xml:"no-hooks,attr"`
+	NoRecurse bool       `xml:"no-recurse,attr"`
+	InfoElements
+	Parameters  *Parameters  `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
+	ReturnValue *ReturnValue `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
+}
+
+type SignalWhen string
+
+const (
+	SignalWhenFirst   = "first"
+	SignalWhenLast    = "last"
+	SignalWhenCleanup = "cleanup"
+)
 
 type SourcePosition struct {
 	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 source-position"`

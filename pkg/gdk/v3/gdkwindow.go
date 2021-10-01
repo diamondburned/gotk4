@@ -184,23 +184,23 @@ func (w WindowEdge) String() string {
 type WindowType int
 
 const (
-	// WindowRoot window; this window has no parent, covers the entire screen,
-	// and is created by the window system
+	// WindowRoot: root window; this window has no parent, covers the entire
+	// screen, and is created by the window system.
 	WindowRoot WindowType = iota
-	// WindowToplevel window (used to implement Window)
+	// WindowToplevel: toplevel window (used to implement Window).
 	WindowToplevel
-	// WindowChild window (used to implement e.g. Entry)
+	// WindowChild: child window (used to implement e.g. Entry).
 	WindowChild
-	// WindowTemp: override redirect temporary window (used to implement Menu)
+	// WindowTemp: override redirect temporary window (used to implement Menu).
 	WindowTemp
-	// WindowForeign window (see gdk_window_foreign_new())
+	// WindowForeign: foreign window (see gdk_window_foreign_new()).
 	WindowForeign
-	// WindowOffscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]).
-	// Since 2.18
+	// WindowOffscreen: offscreen window (see [Offscreen
+	// Windows][OFFSCREEN-WINDOWS]). Since 2.18.
 	WindowOffscreen
 	// WindowSubsurface: subsurface-based window; This window is visually tied
 	// to a toplevel, and is moved/stacked with it. Currently this window type
-	// is only implemented in Wayland. Since 3.14
+	// is only implemented in Wayland. Since 3.14.
 	WindowSubsurface
 )
 
@@ -238,9 +238,9 @@ func (w WindowType) String() string {
 type WindowWindowClass int
 
 const (
-	// InputOutput: window for graphics and events
+	// InputOutput: window for graphics and events.
 	InputOutput WindowWindowClass = iota
-	// InputOnly: window for events only
+	// InputOnly: window for events only.
 	InputOnly
 )
 
@@ -278,23 +278,23 @@ func (w WindowWindowClass) String() string {
 type AnchorHints int
 
 const (
-	// AnchorFlipX: allow flipping anchors horizontally
+	// AnchorFlipX: allow flipping anchors horizontally.
 	AnchorFlipX AnchorHints = 0b1
-	// AnchorFlipY: allow flipping anchors vertically
+	// AnchorFlipY: allow flipping anchors vertically.
 	AnchorFlipY AnchorHints = 0b10
-	// AnchorSlideX: allow sliding window horizontally
+	// AnchorSlideX: allow sliding window horizontally.
 	AnchorSlideX AnchorHints = 0b100
-	// AnchorSlideY: allow sliding window vertically
+	// AnchorSlideY: allow sliding window vertically.
 	AnchorSlideY AnchorHints = 0b1000
-	// AnchorResizeX: allow resizing window horizontally
+	// AnchorResizeX: allow resizing window horizontally.
 	AnchorResizeX AnchorHints = 0b10000
-	// AnchorResizeY: allow resizing window vertically
+	// AnchorResizeY: allow resizing window vertically.
 	AnchorResizeY AnchorHints = 0b100000
-	// AnchorFlip: allow flipping anchors on both axes
+	// AnchorFlip: allow flipping anchors on both axes.
 	AnchorFlip AnchorHints = 0b11
-	// AnchorSlide: allow sliding window on both axes
+	// AnchorSlide: allow sliding window on both axes.
 	AnchorSlide AnchorHints = 0b1100
-	// AnchorResize: allow resizing window on both axes
+	// AnchorResize: allow resizing window on both axes.
 	AnchorResize AnchorHints = 0b110000
 )
 
@@ -355,7 +355,7 @@ func (a AnchorHints) Has(other AnchorHints) bool {
 type WMDecoration int
 
 const (
-	// DecorAll decorations should be applied.
+	// DecorAll: all decorations should be applied.
 	DecorAll WMDecoration = 0b1
 	// DecorBorder: frame should be drawn around the window.
 	DecorBorder WMDecoration = 0b10
@@ -365,9 +365,9 @@ const (
 	DecorTitle WMDecoration = 0b1000
 	// DecorMenu: button for opening a menu should be included.
 	DecorMenu WMDecoration = 0b10000
-	// DecorMinimize button should be included.
+	// DecorMinimize: minimize button should be included.
 	DecorMinimize WMDecoration = 0b100000
-	// DecorMaximize button should be included.
+	// DecorMaximize: maximize button should be included.
 	DecorMaximize WMDecoration = 0b1000000
 )
 
@@ -424,7 +424,7 @@ func (w WMDecoration) Has(other WMDecoration) bool {
 type WMFunction int
 
 const (
-	// FuncAll functions should be offered.
+	// FuncAll: all functions should be offered.
 	FuncAll WMFunction = 0b1
 	// FuncResize: window should be resizable.
 	FuncResize WMFunction = 0b10
@@ -492,21 +492,21 @@ func (w WMFunction) Has(other WMFunction) bool {
 type WindowAttributesType int
 
 const (
-	// WaTitle: honor the title field
+	// WaTitle: honor the title field.
 	WaTitle WindowAttributesType = 0b10
-	// WaX: honor the X coordinate field
+	// WaX: honor the X coordinate field.
 	WaX WindowAttributesType = 0b100
-	// WaY: honor the Y coordinate field
+	// WaY: honor the Y coordinate field.
 	WaY WindowAttributesType = 0b1000
-	// WaCursor: honor the cursor field
+	// WaCursor: honor the cursor field.
 	WaCursor WindowAttributesType = 0b10000
-	// WaVisual: honor the visual field
+	// WaVisual: honor the visual field.
 	WaVisual WindowAttributesType = 0b100000
-	// WaWmclass: honor the wmclass_class and wmclass_name fields
+	// WaWmclass: honor the wmclass_class and wmclass_name fields.
 	WaWmclass WindowAttributesType = 0b1000000
-	// WaNoredir: honor the override_redirect field
+	// WaNoredir: honor the override_redirect field.
 	WaNoredir WindowAttributesType = 0b10000000
-	// WaTypeHint: honor the type_hint field
+	// WaTypeHint: honor the type_hint field.
 	WaTypeHint WindowAttributesType = 0b100000000
 )
 
@@ -570,25 +570,25 @@ func (w WindowAttributesType) Has(other WindowAttributesType) bool {
 type WindowHints int
 
 const (
-	// HintPos indicates that the program has positioned the window
+	// HintPos indicates that the program has positioned the window.
 	HintPos WindowHints = 0b1
-	// HintMinSize: min size fields are set
+	// HintMinSize: min size fields are set.
 	HintMinSize WindowHints = 0b10
-	// HintMaxSize: max size fields are set
+	// HintMaxSize: max size fields are set.
 	HintMaxSize WindowHints = 0b100
-	// HintBaseSize: base size fields are set
+	// HintBaseSize: base size fields are set.
 	HintBaseSize WindowHints = 0b1000
-	// HintAspect ratio fields are set
+	// HintAspect: aspect ratio fields are set.
 	HintAspect WindowHints = 0b10000
-	// HintResizeInc: resize increment fields are set
+	// HintResizeInc: resize increment fields are set.
 	HintResizeInc WindowHints = 0b100000
-	// HintWinGravity: window gravity field is set
+	// HintWinGravity: window gravity field is set.
 	HintWinGravity WindowHints = 0b1000000
 	// HintUserPos indicates that the window’s position was explicitly set by
-	// the user
+	// the user.
 	HintUserPos WindowHints = 0b10000000
 	// HintUserSize indicates that the window’s size was explicitly set by the
-	// user
+	// user.
 	HintUserSize WindowHints = 0b100000000
 )
 
@@ -1520,7 +1520,7 @@ func (window *Window) ConfigureFinished() {
 // You should always use this function when writing generic code that walks down
 // a window hierarchy.
 //
-// See also: gdk_window_coords_to_parent()
+// See also: gdk_window_coords_to_parent().
 func (window *Window) CoordsFromParent(parentX float64, parentY float64) (x float64, y float64) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
@@ -1559,7 +1559,7 @@ func (window *Window) CoordsFromParent(parentX float64, parentY float64) (x floa
 // You should always use this function when writing generic code that walks up a
 // window hierarchy.
 //
-// See also: gdk_window_coords_from_parent()
+// See also: gdk_window_coords_from_parent().
 func (window *Window) CoordsToParent(x float64, y float64) (parentX float64, parentY float64) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gdouble    // out
@@ -1691,7 +1691,7 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, 
 // cairo_surface_get_type().
 //
 // Initially the surface contents are all 0 (transparent if contents have
-// transparency, black otherwise.)
+// transparency, black otherwise.).
 func (window *Window) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
 	var _arg1 C.cairo_content_t  // out
@@ -2358,7 +2358,7 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 // gdk_window_get_parent() for normal windows, but returns the window’s embedder
 // for offscreen windows.
 //
-// See also: gdk_offscreen_window_get_embedder()
+// See also: gdk_offscreen_window_get_embedder().
 func (window *Window) EffectiveParent() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2392,7 +2392,7 @@ func (window *Window) EffectiveParent() Windower {
 // Works like gdk_window_get_toplevel(), but treats an offscreen window's
 // embedder as its parent, using gdk_window_get_effective_parent().
 //
-// See also: gdk_offscreen_window_get_embedder()
+// See also: gdk_offscreen_window_get_embedder().
 func (window *Window) EffectiveToplevel() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
@@ -2661,7 +2661,7 @@ func (window *Window) ModalHint() bool {
 
 // Origin obtains the position of a window in root window coordinates. (Compare
 // with gdk_window_get_position() and gdk_window_get_geometry() which return the
-// position of a window relative to its parent window.)
+// position of a window relative to its parent window.).
 func (window *Window) Origin() (x int, y int, gint int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // in
@@ -2725,7 +2725,7 @@ func (window *Window) Parent() Windower {
 // PassThrough returns whether input to the window is passed through to the
 // window below.
 //
-// See gdk_window_set_pass_through() for details
+// See gdk_window_set_pass_through() for details.
 func (window *Window) PassThrough() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3366,7 +3366,7 @@ func (window *Window) IsShaped() bool {
 
 // IsViewable: check if the window and all ancestors of the window are mapped.
 // (This is not necessarily "viewable" in the X sense, since we only check as
-// far as we have GDK window parents, not to the root window.)
+// far as we have GDK window parents, not to the root window.).
 func (window *Window) IsViewable() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -3414,7 +3414,7 @@ func (window *Window) IsVisible() bool {
 // does not guarantee it.
 //
 // Note that gdk_window_show() raises the window again, so don’t call this
-// function before gdk_window_show(). (Try gdk_window_show_unraised().)
+// function before gdk_window_show(). (Try gdk_window_show_unraised().).
 func (window *Window) Lower() {
 	var _arg0 *C.GdkWindow // out
 
@@ -3543,7 +3543,7 @@ func (window *Window) MoveRegion(region *cairo.Region, dx int, dy int) {
 // MoveResize: equivalent to calling gdk_window_move() and gdk_window_resize(),
 // except that both operations are performed at once, avoiding strange visual
 // effects. (i.e. the user may be able to see the window first move, then
-// resize, if you don’t use gdk_window_move_resize().)
+// resize, if you don’t use gdk_window_move_resize().).
 func (window *Window) MoveResize(x int, y int, width int, height int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gint       // out
@@ -4292,7 +4292,7 @@ func (window *Window) SetKeepBelow(setting bool) {
 // information to handle modal windows in a special way.
 //
 // You should only use this on windows for which you have previously called
-// gdk_window_set_transient_for()
+// gdk_window_set_transient_for().
 func (window *Window) SetModalHint(modal bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -5018,7 +5018,7 @@ type geometry struct {
 }
 
 // MinWidth: minimum width of window (or -1 to use requisition, with Window
-// only)
+// only).
 func (g *Geometry) MinWidth() int {
 	var v int // out
 	v = int(g.native.min_width)
@@ -5026,7 +5026,7 @@ func (g *Geometry) MinWidth() int {
 }
 
 // MinHeight: minimum height of window (or -1 to use requisition, with Window
-// only)
+// only).
 func (g *Geometry) MinHeight() int {
 	var v int // out
 	v = int(g.native.min_height)
@@ -5034,7 +5034,7 @@ func (g *Geometry) MinHeight() int {
 }
 
 // MaxWidth: maximum width of window (or -1 to use requisition, with Window
-// only)
+// only).
 func (g *Geometry) MaxWidth() int {
 	var v int // out
 	v = int(g.native.max_width)
@@ -5042,7 +5042,7 @@ func (g *Geometry) MaxWidth() int {
 }
 
 // MaxHeight: maximum height of window (or -1 to use requisition, with Window
-// only)
+// only).
 func (g *Geometry) MaxHeight() int {
 	var v int // out
 	v = int(g.native.max_height)
@@ -5050,7 +5050,7 @@ func (g *Geometry) MaxHeight() int {
 }
 
 // BaseWidth: allowed window widths are base_width + width_inc * N where N is
-// any integer (-1 allowed with Window)
+// any integer (-1 allowed with Window).
 func (g *Geometry) BaseWidth() int {
 	var v int // out
 	v = int(g.native.base_width)
@@ -5058,42 +5058,42 @@ func (g *Geometry) BaseWidth() int {
 }
 
 // BaseHeight: allowed window widths are base_height + height_inc * N where N is
-// any integer (-1 allowed with Window)
+// any integer (-1 allowed with Window).
 func (g *Geometry) BaseHeight() int {
 	var v int // out
 	v = int(g.native.base_height)
 	return v
 }
 
-// WidthInc: width resize increment
+// WidthInc: width resize increment.
 func (g *Geometry) WidthInc() int {
 	var v int // out
 	v = int(g.native.width_inc)
 	return v
 }
 
-// HeightInc: height resize increment
+// HeightInc: height resize increment.
 func (g *Geometry) HeightInc() int {
 	var v int // out
 	v = int(g.native.height_inc)
 	return v
 }
 
-// MinAspect: minimum width/height ratio
+// MinAspect: minimum width/height ratio.
 func (g *Geometry) MinAspect() float64 {
 	var v float64 // out
 	v = float64(g.native.min_aspect)
 	return v
 }
 
-// MaxAspect: maximum width/height ratio
+// MaxAspect: maximum width/height ratio.
 func (g *Geometry) MaxAspect() float64 {
 	var v float64 // out
 	v = float64(g.native.max_aspect)
 	return v
 }
 
-// WinGravity: window gravity, see gtk_window_set_gravity()
+// WinGravity: window gravity, see gtk_window_set_gravity().
 func (g *Geometry) WinGravity() Gravity {
 	var v Gravity // out
 	v = Gravity(g.native.win_gravity)
@@ -5112,42 +5112,42 @@ type windowAttr struct {
 	native *C.GdkWindowAttr
 }
 
-// Title: title of the window (for toplevel windows)
+// Title: title of the window (for toplevel windows).
 func (w *WindowAttr) Title() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.title)))
 	return v
 }
 
-// EventMask: event mask (see gdk_window_set_events())
+// EventMask: event mask (see gdk_window_set_events()).
 func (w *WindowAttr) EventMask() int {
 	var v int // out
 	v = int(w.native.event_mask)
 	return v
 }
 
-// X coordinate relative to parent window (see gdk_window_move())
+// X coordinate relative to parent window (see gdk_window_move()).
 func (w *WindowAttr) X() int {
 	var v int // out
 	v = int(w.native.x)
 	return v
 }
 
-// Y coordinate relative to parent window (see gdk_window_move())
+// Y coordinate relative to parent window (see gdk_window_move()).
 func (w *WindowAttr) Y() int {
 	var v int // out
 	v = int(w.native.y)
 	return v
 }
 
-// Width: width of window
+// Width: width of window.
 func (w *WindowAttr) Width() int {
 	var v int // out
 	v = int(w.native.width)
 	return v
 }
 
-// Height: height of window
+// Height: height of window.
 func (w *WindowAttr) Height() int {
 	var v int // out
 	v = int(w.native.height)
@@ -5155,28 +5155,28 @@ func (w *WindowAttr) Height() int {
 }
 
 // Wclass (normal window) or K_INPUT_ONLY (invisible window that receives
-// events)
+// events).
 func (w *WindowAttr) Wclass() WindowWindowClass {
 	var v WindowWindowClass // out
 	v = WindowWindowClass(w.native.wclass)
 	return v
 }
 
-// Visual for window
+// Visual for window.
 func (w *WindowAttr) Visual() *Visual {
 	var v *Visual // out
 	v = wrapVisual(externglib.Take(unsafe.Pointer(w.native.visual)))
 	return v
 }
 
-// WindowType: type of window
+// WindowType: type of window.
 func (w *WindowAttr) WindowType() WindowType {
 	var v WindowType // out
 	v = WindowType(w.native.window_type)
 	return v
 }
 
-// Cursor: cursor for the window (see gdk_window_set_cursor())
+// Cursor: cursor for the window (see gdk_window_set_cursor()).
 func (w *WindowAttr) Cursor() Cursorrer {
 	var v Cursorrer // out
 	{
@@ -5195,21 +5195,21 @@ func (w *WindowAttr) Cursor() Cursorrer {
 	return v
 }
 
-// WmclassName: don’t use (see gtk_window_set_wmclass())
+// WmclassName: don’t use (see gtk_window_set_wmclass()).
 func (w *WindowAttr) WmclassName() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.wmclass_name)))
 	return v
 }
 
-// WmclassClass: don’t use (see gtk_window_set_wmclass())
+// WmclassClass: don’t use (see gtk_window_set_wmclass()).
 func (w *WindowAttr) WmclassClass() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.wmclass_class)))
 	return v
 }
 
-// OverrideRedirect: TRUE to bypass the window manager
+// OverrideRedirect: TRUE to bypass the window manager.
 func (w *WindowAttr) OverrideRedirect() bool {
 	var v bool // out
 	if w.native.override_redirect != 0 {
@@ -5218,7 +5218,7 @@ func (w *WindowAttr) OverrideRedirect() bool {
 	return v
 }
 
-// TypeHint: hint of the function of the window
+// TypeHint: hint of the function of the window.
 func (w *WindowAttr) TypeHint() WindowTypeHint {
 	var v WindowTypeHint // out
 	v = WindowTypeHint(w.native.type_hint)

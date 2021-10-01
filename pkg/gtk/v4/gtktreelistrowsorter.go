@@ -31,7 +31,7 @@ func init() {
 //    sorter = gtk_tree_list_row_sorter_new (g_object_ref (column_sorter));
 //    sort_model = gtk_sort_list_model_new (tree_model, sorter);
 //    selection = gtk_single_selection_new (sort_model);
-//    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
+//    gtk_column_view_set_model (view, G_LIST_MODEL (selection));.
 type TreeListRowSorter struct {
 	Sorter
 }

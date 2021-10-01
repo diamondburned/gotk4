@@ -32,7 +32,7 @@ type DragCancelReason int
 const (
 	// DragCancelNoTarget: there is no suitable drop target.
 	DragCancelNoTarget DragCancelReason = iota
-	// DragCancelUserCancelled: drag cancelled by the user
+	// DragCancelUserCancelled: drag cancelled by the user.
 	DragCancelUserCancelled
 	// DragCancelError: unspecified error.
 	DragCancelError
@@ -63,7 +63,7 @@ type DragProtocol int
 const (
 	// DragProtoNone: no protocol.
 	DragProtoNone DragProtocol = iota
-	// DragProtoMotif: motif DND protocol. No longer supported
+	// DragProtoMotif: motif DND protocol. No longer supported.
 	DragProtoMotif
 	// DragProtoXdnd: xdnd protocol.
 	DragProtoXdnd

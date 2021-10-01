@@ -232,7 +232,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 //
 // To free the return value, use:
 //
-//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
 func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
@@ -315,7 +315,7 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 }
 
 // PathIsSelected returns TRUE if the row pointed to by path is currently
-// selected. If path does not point to a valid location, FALSE is returned
+// selected. If path does not point to a valid location, FALSE is returned.
 func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out

@@ -66,11 +66,11 @@ const (
 	// AxisWheel axis is used for wheel information.
 	AxisWheel
 	// AxisDistance axis is used for pen/tablet distance information. (Since:
-	// 3.22)
+	// 3.22).
 	AxisDistance
-	// AxisRotation axis is used for pen rotation information. (Since: 3.22)
+	// AxisRotation axis is used for pen rotation information. (Since: 3.22).
 	AxisRotation
-	// AxisSlider axis is used for pen slider information. (Since: 3.22)
+	// AxisSlider axis is used for pen slider information. (Since: 3.22).
 	AxisSlider
 	// AxisLast: constant equal to the numerically highest axis value.
 	AxisLast
@@ -145,11 +145,11 @@ func (b ByteOrder) String() string {
 type GLError int
 
 const (
-	// GLErrorNotAvailable: openGL support is not available
+	// GLErrorNotAvailable: openGL support is not available.
 	GLErrorNotAvailable GLError = iota
-	// GLErrorUnsupportedFormat: requested visual format is not supported
+	// GLErrorUnsupportedFormat: requested visual format is not supported.
 	GLErrorUnsupportedFormat
-	// GLErrorUnsupportedProfile: requested profile is not supported
+	// GLErrorUnsupportedProfile: requested profile is not supported.
 	GLErrorUnsupportedProfile
 )
 
@@ -219,7 +219,7 @@ const (
 	GrabNotViewable
 	// GrabFrozen: resource is frozen by an active grab of another client.
 	GrabFrozen
-	// GrabFailed: grab failed for some other reason. Since 3.16
+	// GrabFailed: grab failed for some other reason. Since 3.16.
 	GrabFailed
 )
 
@@ -265,7 +265,7 @@ const (
 	// 1.
 	ModifierIntentContextMenu
 	// ModifierIntentExtendSelection: modifier used to extend selections using
-	// modifier-click or modifier-cursor-key
+	// modifier-click or modifier-cursor-key.
 	ModifierIntentExtendSelection
 	// ModifierIntentModifySelection: modifier used to modify selections, which
 	// in most cases means toggling the clicked item into or out of the
@@ -349,8 +349,8 @@ const (
 	WindowTypeHintPopupMenu
 	// WindowTypeHintTooltip: tooltip.
 	WindowTypeHintTooltip
-	// WindowTypeHintNotification - typically a “bubble” that belongs to a
-	// status icon.
+	// WindowTypeHintNotification: notification - typically a “bubble” that
+	// belongs to a status icon.
 	WindowTypeHintNotification
 	// WindowTypeHintCombo: popup from a combo box.
 	WindowTypeHintCombo
@@ -402,23 +402,23 @@ func (w WindowTypeHint) String() string {
 type AxisFlags int
 
 const (
-	// AxisFlagX: x axis is present
+	// AxisFlagX: x axis is present.
 	AxisFlagX AxisFlags = 0b10
-	// AxisFlagY: y axis is present
+	// AxisFlagY: y axis is present.
 	AxisFlagY AxisFlags = 0b100
-	// AxisFlagPressure: pressure axis is present
+	// AxisFlagPressure: pressure axis is present.
 	AxisFlagPressure AxisFlags = 0b1000
-	// AxisFlagXtilt: x tilt axis is present
+	// AxisFlagXtilt: x tilt axis is present.
 	AxisFlagXtilt AxisFlags = 0b10000
-	// AxisFlagYtilt: y tilt axis is present
+	// AxisFlagYtilt: y tilt axis is present.
 	AxisFlagYtilt AxisFlags = 0b100000
-	// AxisFlagWheel: wheel axis is present
+	// AxisFlagWheel: wheel axis is present.
 	AxisFlagWheel AxisFlags = 0b1000000
-	// AxisFlagDistance: distance axis is present
+	// AxisFlagDistance: distance axis is present.
 	AxisFlagDistance AxisFlags = 0b10000000
-	// AxisFlagRotation z-axis rotation is present
+	// AxisFlagRotation z-axis rotation is present.
 	AxisFlagRotation AxisFlags = 0b100000000
-	// AxisFlagSlider: slider axis is present
+	// AxisFlagSlider: slider axis is present.
 	AxisFlagSlider AxisFlags = 0b1000000000
 )
 
@@ -500,60 +500,60 @@ func (a AxisFlags) Has(other AxisFlags) bool {
 type EventMask int
 
 const (
-	// ExposureMask: receive expose events
+	// ExposureMask: receive expose events.
 	ExposureMask EventMask = 0b10
-	// PointerMotionMask: receive all pointer motion events
+	// PointerMotionMask: receive all pointer motion events.
 	PointerMotionMask EventMask = 0b100
-	// PointerMotionHintMask: deprecated. see the explanation above
+	// PointerMotionHintMask: deprecated. see the explanation above.
 	PointerMotionHintMask EventMask = 0b1000
 	// ButtonMotionMask: receive pointer motion events while any button is
-	// pressed
+	// pressed.
 	ButtonMotionMask EventMask = 0b10000
 	// Button1MotionMask: receive pointer motion events while 1 button is
-	// pressed
+	// pressed.
 	Button1MotionMask EventMask = 0b100000
 	// Button2MotionMask: receive pointer motion events while 2 button is
-	// pressed
+	// pressed.
 	Button2MotionMask EventMask = 0b1000000
 	// Button3MotionMask: receive pointer motion events while 3 button is
-	// pressed
+	// pressed.
 	Button3MotionMask EventMask = 0b10000000
-	// ButtonPressMask: receive button press events
+	// ButtonPressMask: receive button press events.
 	ButtonPressMask EventMask = 0b100000000
-	// ButtonReleaseMask: receive button release events
+	// ButtonReleaseMask: receive button release events.
 	ButtonReleaseMask EventMask = 0b1000000000
-	// KeyPressMask: receive key press events
+	// KeyPressMask: receive key press events.
 	KeyPressMask EventMask = 0b10000000000
-	// KeyReleaseMask: receive key release events
+	// KeyReleaseMask: receive key release events.
 	KeyReleaseMask EventMask = 0b100000000000
-	// EnterNotifyMask: receive window enter events
+	// EnterNotifyMask: receive window enter events.
 	EnterNotifyMask EventMask = 0b1000000000000
-	// LeaveNotifyMask: receive window leave events
+	// LeaveNotifyMask: receive window leave events.
 	LeaveNotifyMask EventMask = 0b10000000000000
-	// FocusChangeMask: receive focus change events
+	// FocusChangeMask: receive focus change events.
 	FocusChangeMask EventMask = 0b100000000000000
-	// StructureMask: receive events about window configuration change
+	// StructureMask: receive events about window configuration change.
 	StructureMask EventMask = 0b1000000000000000
-	// PropertyChangeMask: receive property change events
+	// PropertyChangeMask: receive property change events.
 	PropertyChangeMask EventMask = 0b10000000000000000
-	// VisibilityNotifyMask: receive visibility change events
+	// VisibilityNotifyMask: receive visibility change events.
 	VisibilityNotifyMask EventMask = 0b100000000000000000
-	// ProximityInMask: receive proximity in events
+	// ProximityInMask: receive proximity in events.
 	ProximityInMask EventMask = 0b1000000000000000000
-	// ProximityOutMask: receive proximity out events
+	// ProximityOutMask: receive proximity out events.
 	ProximityOutMask EventMask = 0b10000000000000000000
 	// SubstructureMask: receive events about window configuration changes of
-	// child windows
+	// child windows.
 	SubstructureMask EventMask = 0b100000000000000000000
-	// ScrollMask: receive scroll events
+	// ScrollMask: receive scroll events.
 	ScrollMask EventMask = 0b1000000000000000000000
-	// TouchMask: receive touch events. Since 3.4
+	// TouchMask: receive touch events. Since 3.4.
 	TouchMask EventMask = 0b10000000000000000000000
-	// SmoothScrollMask: receive smooth scrolling events. Since 3.4
+	// SmoothScrollMask: receive smooth scrolling events. Since 3.4.
 	SmoothScrollMask EventMask = 0b100000000000000000000000
-	// TouchpadGestureMask: receive touchpad gesture events. Since 3.18
+	// TouchpadGestureMask: receive touchpad gesture events. Since 3.18.
 	TouchpadGestureMask EventMask = 0b1000000000000000000000000
-	// TabletPadMask: receive tablet pad events. Since 3.22
+	// TabletPadMask: receive tablet pad events. Since 3.22.
 	TabletPadMask EventMask = 0b10000000000000000000000000
 	// AllEventsMask: combination of all the above event masks.
 	AllEventsMask EventMask = 0b11111111111111111111111110
@@ -697,39 +697,39 @@ const (
 	Button4Mask ModifierType = 0b100000000000
 	// Button5Mask: fifth mouse button.
 	Button5Mask ModifierType = 0b1000000000000
-	// ModifierReserved13Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved13Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved13Mask ModifierType = 0b10000000000000
-	// ModifierReserved14Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved14Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved14Mask ModifierType = 0b100000000000000
-	// ModifierReserved15Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved15Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved15Mask ModifierType = 0b1000000000000000
-	// ModifierReserved16Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved16Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved16Mask ModifierType = 0b10000000000000000
-	// ModifierReserved17Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved17Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved17Mask ModifierType = 0b100000000000000000
-	// ModifierReserved18Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved18Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved18Mask ModifierType = 0b1000000000000000000
-	// ModifierReserved19Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved19Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved19Mask ModifierType = 0b10000000000000000000
-	// ModifierReserved20Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved20Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved20Mask ModifierType = 0b100000000000000000000
-	// ModifierReserved21Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved21Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved21Mask ModifierType = 0b1000000000000000000000
-	// ModifierReserved22Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved22Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved22Mask ModifierType = 0b10000000000000000000000
-	// ModifierReserved23Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved23Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved23Mask ModifierType = 0b100000000000000000000000
-	// ModifierReserved24Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved24Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved24Mask ModifierType = 0b1000000000000000000000000
-	// ModifierReserved25Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved25Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved25Mask ModifierType = 0b10000000000000000000000000
-	// SuperMask: super modifier. Since 2.10
+	// SuperMask: super modifier. Since 2.10.
 	SuperMask ModifierType = 0b100000000000000000000000000
-	// HyperMask: hyper modifier. Since 2.10
+	// HyperMask: hyper modifier. Since 2.10.
 	HyperMask ModifierType = 0b1000000000000000000000000000
-	// MetaMask: meta modifier. Since 2.10
+	// MetaMask: meta modifier. Since 2.10.
 	MetaMask ModifierType = 0b10000000000000000000000000000
-	// ModifierReserved29Mask: reserved bit flag; do not use in your own code
+	// ModifierReserved29Mask: reserved bit flag; do not use in your own code.
 	ModifierReserved29Mask ModifierType = 0b100000000000000000000000000000
 	// ReleaseMask: not used in GDK itself. GTK+ uses it to differentiate
 	// between (keyval, modifiers) pairs from key press and release events.

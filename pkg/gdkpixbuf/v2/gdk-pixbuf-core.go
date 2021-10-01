@@ -73,9 +73,10 @@ func (c Colorspace) String() string {
 type PixbufAlphaMode int
 
 const (
-	// PixbufAlphaBilevel clipping mask (black and white) will be created and
-	// used to draw the image. Pixels below 0.5 opacity will be considered fully
-	// transparent, and all others will be considered fully opaque.
+	// PixbufAlphaBilevel: bilevel clipping mask (black and white) will be
+	// created and used to draw the image. Pixels below 0.5 opacity will be
+	// considered fully transparent, and all others will be considered fully
+	// opaque.
 	PixbufAlphaBilevel PixbufAlphaMode = iota
 	// PixbufAlphaFull: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the
 	// future it will do full alpha compositing.

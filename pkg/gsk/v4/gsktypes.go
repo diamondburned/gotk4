@@ -234,7 +234,7 @@ func (next *Transform) Rotate(angle float32) *Transform {
 
 // Rotate3D rotates next angle degrees around axis.
 //
-// For a rotation in 2D space, use gsk.Transform.Rotate()
+// For a rotation in 2D space, use gsk.Transform.Rotate().
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 C.float            // out

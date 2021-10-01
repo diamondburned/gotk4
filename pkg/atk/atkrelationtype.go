@@ -21,7 +21,7 @@ func init() {
 	})
 }
 
-// RelationType describes the type of the relation
+// RelationType describes the type of the relation.
 type RelationType int
 
 const (

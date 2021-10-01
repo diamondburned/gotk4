@@ -410,7 +410,7 @@ type CellAreaer interface {
 	EditWidget() CellEditabler
 	// EditedCell gets the CellRenderer in area that is currently being edited.
 	EditedCell() CellRendererer
-	// FocusCell retrieves the currently focused cell for area
+	// FocusCell retrieves the currently focused cell for area.
 	FocusCell() CellRendererer
 	// FocusFromSibling gets the CellRenderer which is expected to be focusable
 	// for which renderer is, or may be a sibling.
@@ -1031,7 +1031,7 @@ func (area *CellArea) EditedCell() CellRendererer {
 	return _cellRenderer
 }
 
-// FocusCell retrieves the currently focused cell for area
+// FocusCell retrieves the currently focused cell for area.
 func (area *CellArea) FocusCell() CellRendererer {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellRenderer // in

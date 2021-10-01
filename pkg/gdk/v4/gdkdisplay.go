@@ -55,7 +55,7 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 	return wrapDisplay(obj), nil
 }
 
-// Beep emits a short beep on display
+// Beep emits a short beep on display.
 func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
 

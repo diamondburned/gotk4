@@ -140,7 +140,7 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	return _ok
 }
 
-// Family gets address's family
+// Family gets address's family.
 func (address *InetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in

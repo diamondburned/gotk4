@@ -1531,7 +1531,7 @@ func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 // SetAttributeStringv sets the attribute to contain the given attr_value, if
 // possible.
 //
-// Sinze: 2.22
+// Sinze: 2.22.
 func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out

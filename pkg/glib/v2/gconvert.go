@@ -34,10 +34,10 @@ const (
 	ConvertErrorBadURI
 	// ConvertErrorNotAbsolutePath: pathname is not an absolute path.
 	ConvertErrorNotAbsolutePath
-	// ConvertErrorNoMemory: no memory available. Since: 2.40
+	// ConvertErrorNoMemory: no memory available. Since: 2.40.
 	ConvertErrorNoMemory
 	// ConvertErrorEmbeddedNUL: embedded NUL character is present in conversion
-	// output where a NUL-terminated string is expected. Since: 2.56
+	// output where a NUL-terminated string is expected. Since: 2.56.
 	ConvertErrorEmbeddedNUL
 )
 
@@ -131,7 +131,7 @@ func Convert(str []byte, toCodeset string, fromCodeset string) (uint, []byte, er
 // across successive calls to g_convert(), g_convert_with_iconv() or
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
-// character is not a mark that could combine with the base character.)
+// character is not a mark that could combine with the base character.).
 func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize

@@ -29,9 +29,9 @@ func init() {
 type NotebookTab int
 
 const (
-	// NotebookTabFirst tab in the notebook
+	// NotebookTabFirst: first tab in the notebook.
 	NotebookTabFirst NotebookTab = iota
-	// NotebookTabLast tab in the notebook
+	// NotebookTabLast: last tab in the notebook.
 	NotebookTabLast
 )
 
@@ -140,7 +140,7 @@ func (n NotebookTab) String() string {
 //    - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget
 //    - GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs
 //    - GTK_ACCESSIBLE_ROLE_TAB role for each tab
-//    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
+//    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page.
 type Notebook struct {
 	Widget
 }

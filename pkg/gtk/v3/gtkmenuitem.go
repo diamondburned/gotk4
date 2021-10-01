@@ -29,16 +29,16 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MenuItemOverrider interface {
-	// Activate emits the MenuItem::activate signal on the given item
+	// Activate emits the MenuItem::activate signal on the given item.
 	Activate()
 	ActivateItem()
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
-	// Label sets text on the menu_item label
+	// Label sets text on the menu_item label.
 	Label() string
 	// Select emits the MenuItem::select signal on the given item.
 	Select()
-	// SetLabel sets text on the menu_item label
+	// SetLabel sets text on the menu_item label.
 	SetLabel(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
@@ -170,7 +170,7 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	return _menuItem
 }
 
-// Activate emits the MenuItem::activate signal on the given item
+// Activate emits the MenuItem::activate signal on the given item.
 func (menuItem *MenuItem) Activate() {
 	var _arg0 *C.GtkMenuItem // out
 
@@ -212,7 +212,7 @@ func (menuItem *MenuItem) AccelPath() string {
 	return _utf8
 }
 
-// Label sets text on the menu_item label
+// Label sets text on the menu_item label.
 func (menuItem *MenuItem) Label() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
@@ -363,7 +363,7 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	runtime.KeepAlive(accelPath)
 }
 
-// SetLabel sets text on the menu_item label
+// SetLabel sets text on the menu_item label.
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out

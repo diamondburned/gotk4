@@ -28,23 +28,23 @@ func init() {
 	})
 }
 
-// TextAttribute describes the text attributes supported
+// TextAttribute describes the text attributes supported.
 type TextAttribute int
 
 const (
 	// TextAttrInvalid: invalid attribute, like bad spelling or grammar.
 	TextAttrInvalid TextAttribute = iota
-	// TextAttrLeftMargin: pixel width of the left margin
+	// TextAttrLeftMargin: pixel width of the left margin.
 	TextAttrLeftMargin
-	// TextAttrRightMargin: pixel width of the right margin
+	// TextAttrRightMargin: pixel width of the right margin.
 	TextAttrRightMargin
-	// TextAttrIndent: number of pixels that the text is indented
+	// TextAttrIndent: number of pixels that the text is indented.
 	TextAttrIndent
 	// TextAttrInvisible: either "true" or "false" indicating whether text is
-	// visible or not
+	// visible or not.
 	TextAttrInvisible
 	// TextAttrEditable: either "true" or "false" indicating whether text is
-	// editable or not
+	// editable or not.
 	TextAttrEditable
 	// TextAttrPixelsAboveLines pixels of blank space to leave above each
 	// newline-terminated line.
@@ -62,27 +62,27 @@ const (
 	// TextAttrRise: number of pixels that the characters are risen above the
 	// baseline. See also ATK_TEXT_ATTR_TEXT_POSITION.
 	TextAttrRise
-	// TextAttrUnderline: "none", "single", "double", "low", or "error"
+	// TextAttrUnderline: "none", "single", "double", "low", or "error".
 	TextAttrUnderline
 	// TextAttrStrikethrough: "true" or "false" whether the text is
-	// strikethrough
+	// strikethrough.
 	TextAttrStrikethrough
-	// TextAttrSize of the characters in points. eg: 10
+	// TextAttrSize: size of the characters in points. eg: 10.
 	TextAttrSize
-	// TextAttrScale of the characters. The value is a string representation of
-	// a double
+	// TextAttrScale: scale of the characters. The value is a string
+	// representation of a double.
 	TextAttrScale
-	// TextAttrWeight of the characters.
+	// TextAttrWeight: weight of the characters.
 	TextAttrWeight
-	// TextAttrLanguage used
+	// TextAttrLanguage: language used.
 	TextAttrLanguage
-	// TextAttrFamilyName: font family name
+	// TextAttrFamilyName: font family name.
 	TextAttrFamilyName
 	// TextAttrBgColor: background color. The value is an RGB value of the
-	// format "u,u,u"
+	// format "u,u,u".
 	TextAttrBgColor
 	// TextAttrFgColor: foreground color. The value is an RGB value of the
-	// format "u,u,u"
+	// format "u,u,u".
 	TextAttrFgColor
 	// TextAttrBgStipple: "true" if a Bitmap is set for stippling the background
 	// color.
@@ -93,20 +93,22 @@ const (
 	// TextAttrWrapMode: wrap mode of the text, if any. Values are "none",
 	// "char", "word", or "word_char".
 	TextAttrWrapMode
-	// TextAttrDirection of the text, if set. Values are "none", "ltr" or "rtl"
+	// TextAttrDirection: direction of the text, if set. Values are "none",
+	// "ltr" or "rtl".
 	TextAttrDirection
-	// TextAttrJustification of the text, if set. Values are "left", "right",
-	// "center" or "fill"
+	// TextAttrJustification: justification of the text, if set. Values are
+	// "left", "right", "center" or "fill".
 	TextAttrJustification
-	// TextAttrStretch of the text, if set. Values are "ultra_condensed",
-	// "extra_condensed", "condensed", "semi_condensed", "normal",
-	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
+	// TextAttrStretch: stretch of the text, if set. Values are
+	// "ultra_condensed", "extra_condensed", "condensed", "semi_condensed",
+	// "normal", "semi_expanded", "expanded", "extra_expanded" or
+	// "ultra_expanded".
 	TextAttrStretch
 	// TextAttrVariant: capitalization variant of the text, if set. Values are
-	// "normal" or "small_caps"
+	// "normal" or "small_caps".
 	TextAttrVariant
 	// TextAttrStyle: slant style of the text, if set. Values are "normal",
-	// "oblique" or "italic"
+	// "oblique" or "italic".
 	TextAttrStyle
 	// TextAttrTextPosition: vertical position with respect to the baseline.
 	// Values are "baseline", "super", or "sub". Note that a super or sub text
@@ -114,7 +116,7 @@ const (
 	// character.
 	TextAttrTextPosition
 	// TextAttrLastDefined: not a valid text attribute, used for finding end of
-	// enumeration
+	// enumeration.
 	TextAttrLastDefined
 )
 
@@ -209,7 +211,7 @@ func TextAttributeForName(name string) TextAttribute {
 	return _textAttribute
 }
 
-// TextAttributeGetName gets the name corresponding to the TextAttribute
+// TextAttributeGetName gets the name corresponding to the TextAttribute.
 func TextAttributeGetName(attr TextAttribute) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _cret *C.gchar           // in
@@ -226,7 +228,7 @@ func TextAttributeGetName(attr TextAttribute) string {
 	return _utf8
 }
 
-// TextAttributeGetValue gets the value for the index of the TextAttribute
+// TextAttributeGetValue gets the value for the index of the TextAttribute.
 func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _arg2 C.gint             // out
@@ -248,7 +250,7 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	return _utf8
 }
 
-// TextAttributeRegister: associate name with a new TextAttribute
+// TextAttributeRegister: associate name with a new TextAttribute.
 func TextAttributeRegister(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in
@@ -273,7 +275,7 @@ type TextBoundary int
 
 const (
 	// TextBoundaryChar: boundary is the boundary between characters (including
-	// non-printing characters)
+	// non-printing characters).
 	TextBoundaryChar TextBoundary = iota
 	// TextBoundaryWordStart: boundary is the start (i.e. first character) of a
 	// word.
@@ -325,13 +327,13 @@ func (t TextBoundary) String() string {
 type TextClipType int
 
 const (
-	// TextClipNone: no clipping to be done
+	// TextClipNone: no clipping to be done.
 	TextClipNone TextClipType = iota
-	// TextClipMin: text clipped by min coordinate is omitted
+	// TextClipMin: text clipped by min coordinate is omitted.
 	TextClipMin
-	// TextClipMax: text clipped by max coordinate is omitted
+	// TextClipMax: text clipped by max coordinate is omitted.
 	TextClipMax
-	// TextClipBoth: only text fully within mix/max bound is retained
+	// TextClipBoth: only text fully within mix/max bound is retained.
 	TextClipBoth
 )
 
@@ -361,7 +363,7 @@ type TextGranularity int
 
 const (
 	// TextGranularityChar: granularity is defined by the boundaries between
-	// characters (including non-printing characters)
+	// characters (including non-printing characters).
 	TextGranularityChar TextGranularity = iota
 	// TextGranularityWord: granularity is defined by the boundaries of a word,
 	// starting at the beginning of the current word and finishing at the
@@ -1263,28 +1265,28 @@ func marshalTextRange(p uintptr) (interface{}, error) {
 	return &TextRange{&textRange{(*C.AtkTextRange)(unsafe.Pointer(b))}}, nil
 }
 
-// Bounds: rectangle giving the bounds of the text range
+// Bounds: rectangle giving the bounds of the text range.
 func (t *TextRange) Bounds() TextRectangle {
 	var v TextRectangle // out
 	v = *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&t.native.bounds))))
 	return v
 }
 
-// StartOffset: start offset of a AtkTextRange
+// StartOffset: start offset of a AtkTextRange.
 func (t *TextRange) StartOffset() int {
 	var v int // out
 	v = int(t.native.start_offset)
 	return v
 }
 
-// EndOffset: end offset of a AtkTextRange
+// EndOffset: end offset of a AtkTextRange.
 func (t *TextRange) EndOffset() int {
 	var v int // out
 	v = int(t.native.end_offset)
 	return v
 }
 
-// Content: text in the text range
+// Content: text in the text range.
 func (t *TextRange) Content() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.content)))
@@ -1325,28 +1327,28 @@ func NewTextRectangle(x, y, width, height int) TextRectangle {
 	return *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// X: horizontal coordinate of a rectangle
+// X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int {
 	var v int // out
 	v = int(t.native.x)
 	return v
 }
 
-// Y: vertical coordinate of a rectangle
+// Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) Y() int {
 	var v int // out
 	v = int(t.native.y)
 	return v
 }
 
-// Width: width of a rectangle
+// Width: width of a rectangle.
 func (t *TextRectangle) Width() int {
 	var v int // out
 	v = int(t.native.width)
 	return v
 }
 
-// Height: height of a rectangle
+// Height: height of a rectangle.
 func (t *TextRectangle) Height() int {
 	var v int // out
 	v = int(t.native.height)

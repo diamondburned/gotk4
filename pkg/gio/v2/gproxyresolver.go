@@ -46,7 +46,7 @@ const PROXY_RESOLVER_EXTENSION_POINT_NAME = "gio-proxy-resolver"
 type ProxyResolverOverrider interface {
 	// IsSupported checks if resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
-	// resolver that returns TRUE for this method.)
+	// resolver that returns TRUE for this method.).
 	IsSupported() bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
 	// if any, to use to connect to uri. The returned proxy URIs are of the form
@@ -113,7 +113,7 @@ func marshalProxyResolverer(p uintptr) (interface{}, error) {
 
 // IsSupported checks if resolver can be used on this system. (This is used
 // internally; g_proxy_resolver_get_default() will only return a proxy resolver
-// that returns TRUE for this method.)
+// that returns TRUE for this method.).
 func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in

@@ -30,7 +30,7 @@ func init() {
 	})
 }
 
-// ZlibDecompressor: zlib decompression
+// ZlibDecompressor: zlib decompression.
 type ZlibDecompressor struct {
 	*externglib.Object
 

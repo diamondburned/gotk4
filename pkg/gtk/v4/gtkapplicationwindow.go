@@ -87,7 +87,7 @@ func init() {
 //
 //    // ...
 //
-//    GtkWidget *window = gtk_application_window_new (app);
+//    GtkWidget *window = gtk_application_window_new (app);.
 type ApplicationWindow struct {
 	Window
 

@@ -256,7 +256,7 @@ type ContainerOverrider interface {
 //        <widget name="entry1"/>
 //        <widget name="entry2"/>
 //      </focus-chain>
-//    </object>
+//    </object>.
 type Container struct {
 	Widget
 }

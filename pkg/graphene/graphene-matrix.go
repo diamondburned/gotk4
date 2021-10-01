@@ -160,7 +160,7 @@ func (a *Matrix) Equal(b *Matrix) bool {
 //          // matrices contain the same values within an epsilon of 0.0001
 //        else
 //          // matrices are not equal
-//      }
+//      }.
 func (a *Matrix) EqualFast(b *Matrix) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -447,7 +447,7 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 // InitFrustum initializes a #graphene_matrix_t compatible with
 // #graphene_frustum_t.
 //
-// See also: graphene_frustum_init_from_matrix()
+// See also: graphene_frustum_init_from_matrix().
 func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -830,7 +830,7 @@ func (m *Matrix) IsSingular() bool {
 // Multiply multiplies two #graphene_matrix_t.
 //
 // Matrix multiplication is not commutative in general; the order of the factors
-// matters. The product of this multiplication is (a × b)
+// matters. The product of this multiplication is (a × b).
 func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -949,7 +949,7 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 // ProjectRect projects all corners of a #graphene_rect_t using the given
 // matrix.
 //
-// See also: graphene_matrix_project_point()
+// See also: graphene_matrix_project_point().
 func (m *Matrix) ProjectRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -1046,7 +1046,7 @@ func (m *Matrix) RotateQuaternion(q *Quaternion) {
 // RotateX adds a rotation transformation around the X axis to m, using the
 // given angle.
 //
-// See also: graphene_matrix_rotate()
+// See also: graphene_matrix_rotate().
 func (m *Matrix) RotateX(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -1062,7 +1062,7 @@ func (m *Matrix) RotateX(angle float32) {
 // RotateY adds a rotation transformation around the Y axis to m, using the
 // given angle.
 //
-// See also: graphene_matrix_rotate()
+// See also: graphene_matrix_rotate().
 func (m *Matrix) RotateY(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -1078,7 +1078,7 @@ func (m *Matrix) RotateY(angle float32) {
 // RotateZ adds a rotation transformation around the Z axis to m, using the
 // given angle.
 //
-// See also: graphene_matrix_rotate()
+// See also: graphene_matrix_rotate().
 func (m *Matrix) RotateZ(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -1222,7 +1222,7 @@ func (m *Matrix) ToFloat() [16]float32 {
 // The result is the axis aligned bounding rectangle containing the coplanar
 // quadrilateral.
 //
-// See also: graphene_matrix_transform_point()
+// See also: graphene_matrix_transform_point().
 func (m *Matrix) TransformBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -1272,7 +1272,7 @@ func (m *Matrix) TransformBox(b *Box) Box {
 // the fourth row vector of the #graphene_matrix_t when computing the dot
 // product of each row vector of the matrix.
 //
-// See also: graphene_simd4x4f_point3_mul()
+// See also: graphene_simd4x4f_point3_mul().
 func (m *Matrix) TransformPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
@@ -1298,7 +1298,7 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 // the fourth row vector of the #graphene_matrix_t when computing the dot
 // product of each row vector of the matrix.
 //
-// See also: graphene_simd4x4f_point3_mul()
+// See also: graphene_simd4x4f_point3_mul().
 func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -1343,7 +1343,7 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 //
 // The result is a coplanar quadrilateral.
 //
-// See also: graphene_matrix_transform_point()
+// See also: graphene_matrix_transform_point().
 func (m *Matrix) TransformRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -1390,7 +1390,7 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 // the corresponding components of the vector v. The W row vector will be
 // ignored.
 //
-// See also: graphene_simd4x4f_vec3_mul()
+// See also: graphene_simd4x4f_vec3_mul().
 func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
@@ -1412,7 +1412,7 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 
 // TransformVec4 transforms the given #graphene_vec4_t using the matrix m.
 //
-// See also: graphene_simd4x4f_vec4_mul()
+// See also: graphene_simd4x4f_vec4_mul().
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out

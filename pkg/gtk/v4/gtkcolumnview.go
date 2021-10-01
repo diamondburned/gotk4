@@ -85,7 +85,7 @@ func init() {
 // GtkColumnView uses the GTK_ACCESSIBLE_ROLE_TREE_GRID role, header title
 // widgets are using the GTK_ACCESSIBLE_ROLE_COLUMN_HEADER role. The row widgets
 // are using the GTK_ACCESSIBLE_ROLE_ROW role, and individual cells are using
-// the GTK_ACCESSIBLE_ROLE_GRID_CELL role
+// the GTK_ACCESSIBLE_ROLE_GRID_CELL role.
 type ColumnView struct {
 	Widget
 
@@ -334,7 +334,7 @@ func (self *ColumnView) SingleClickActivate() bool {
 //    sorter = g_object_ref (gtk_column_view_get_sorter (view)));
 //    model = gtk_sort_list_model_new (store, sorter);
 //    selection = gtk_no_selection_new (model);
-//    gtk_column_view_set_model (view, selection);
+//    gtk_column_view_set_model (view, selection);.
 func (self *ColumnView) Sorter() *Sorter {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GtkSorter     // in

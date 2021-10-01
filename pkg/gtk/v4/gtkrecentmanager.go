@@ -27,7 +27,7 @@ func init() {
 	})
 }
 
-// RecentManagerError: error codes for RecentManager operations
+// RecentManagerError: error codes for RecentManager operations.
 type RecentManagerError int
 
 const (
@@ -441,7 +441,7 @@ type recentData struct {
 }
 
 // DisplayName: UTF-8 encoded string, containing the name of the recently used
-// resource to be displayed, or NULL;
+// resource to be displayed, or NULL;.
 func (r *RecentData) DisplayName() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.display_name)))
@@ -449,14 +449,14 @@ func (r *RecentData) DisplayName() string {
 }
 
 // Description: UTF-8 encoded string, containing a short description of the
-// resource, or NULL;
+// resource, or NULL;.
 func (r *RecentData) Description() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.description)))
 	return v
 }
 
-// MIMEType: MIME type of the resource;
+// MIMEType: MIME type of the resource;.
 func (r *RecentData) MIMEType() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.mime_type)))
@@ -464,7 +464,7 @@ func (r *RecentData) MIMEType() string {
 }
 
 // AppName: name of the application that is registering this recently used
-// resource;
+// resource;.
 func (r *RecentData) AppName() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_name)))
@@ -473,14 +473,14 @@ func (r *RecentData) AppName() string {
 
 // AppExec: command line used to launch this resource; may contain the “\f” and
 // “\u” escape characters which will be expanded to the resource file path and
-// URI respectively when the command line is retrieved;
+// URI respectively when the command line is retrieved;.
 func (r *RecentData) AppExec() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_exec)))
 	return v
 }
 
-// Groups: vector of strings containing groups names;
+// Groups: vector of strings containing groups names;.
 func (r *RecentData) Groups() []string {
 	var v []string // out
 	{
@@ -527,7 +527,7 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(unsafe.Pointer(b))}}, nil
 }
 
-// CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo
+// CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo.
 func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out

@@ -75,7 +75,7 @@ func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 	return wrapSeparatorToolItem(obj), nil
 }
 
-// NewSeparatorToolItem: create a new SeparatorToolItem
+// NewSeparatorToolItem: create a new SeparatorToolItem.
 func NewSeparatorToolItem() *SeparatorToolItem {
 	var _cret *C.GtkToolItem // in
 

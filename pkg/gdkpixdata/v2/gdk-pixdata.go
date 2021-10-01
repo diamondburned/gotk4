@@ -63,10 +63,10 @@ const (
 	PixdataDumpStatic PixdataDumpType = 0b1000000000
 	// PixdataDumpConst: generate const symbols.
 	PixdataDumpConst PixdataDumpType = 0b10000000000
-	// PixdataDumpRleDecoder: provide a <function>*_RUN_LENGTH_DECODE(image_buf,
+	// PixdataDumpRLEDecoder: provide a <function>*_RUN_LENGTH_DECODE(image_buf,
 	// rle_data, size, bpp)</function> macro definition to decode run-length
 	// encoded image data.
-	PixdataDumpRleDecoder PixdataDumpType = 0b10000000000000000
+	PixdataDumpRLEDecoder PixdataDumpType = 0b10000000000000000
 )
 
 // String returns the names in string for PixdataDumpType.
@@ -95,8 +95,8 @@ func (p PixdataDumpType) String() string {
 			builder.WriteString("Static|")
 		case PixdataDumpConst:
 			builder.WriteString("Const|")
-		case PixdataDumpRleDecoder:
-			builder.WriteString("RleDecoder|")
+		case PixdataDumpRLEDecoder:
+			builder.WriteString("RLEDecoder|")
 		default:
 			builder.WriteString(fmt.Sprintf("PixdataDumpType(0b%b)|", bit))
 		}
@@ -133,12 +133,12 @@ const (
 	PixdataSampleWidthMask PixdataType = 0b11110000000000000000
 	// PixdataEncodingRaw: pixel data is in raw form.
 	PixdataEncodingRaw PixdataType = 0b1000000000000000000000000
-	// PixdataEncodingRle: pixel data is run-length encoded. Runs may be up to
+	// PixdataEncodingRLE: pixel data is run-length encoded. Runs may be up to
 	// 127 bytes long; their length is stored in a single byte preceding the
 	// pixel data for the run. If a run is constant, its length byte has the
 	// high bit set and the pixel data consists of a single pixel which must be
 	// repeated.
-	PixdataEncodingRle PixdataType = 0b10000000000000000000000000
+	PixdataEncodingRLE PixdataType = 0b10000000000000000000000000
 	// PixdataEncodingMask: mask for the encoding flags of the enum.
 	PixdataEncodingMask PixdataType = 0b1111000000000000000000000000
 )
@@ -169,8 +169,8 @@ func (p PixdataType) String() string {
 			builder.WriteString("SampleWidthMask|")
 		case PixdataEncodingRaw:
 			builder.WriteString("EncodingRaw|")
-		case PixdataEncodingRle:
-			builder.WriteString("EncodingRle|")
+		case PixdataEncodingRLE:
+			builder.WriteString("EncodingRLE|")
 		case PixdataEncodingMask:
 			builder.WriteString("EncodingMask|")
 		default:

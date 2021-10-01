@@ -36,50 +36,51 @@ func init() {
 type BlendMode int
 
 const (
-	// BlendModeDefault blend mode, which specifies no blending
+	// BlendModeDefault: default blend mode, which specifies no blending.
 	BlendModeDefault BlendMode = iota
 	// BlendModeMultiply: source color is multiplied by the destination and
-	// replaces the destination
+	// replaces the destination.
 	BlendModeMultiply
 	// BlendModeScreen multiplies the complements of the destination and source
 	// color values, then complements the result.
 	BlendModeScreen
 	// BlendModeOverlay multiplies or screens the colors, depending on the
-	// destination color value. This is the inverse of hard-list
+	// destination color value. This is the inverse of hard-list.
 	BlendModeOverlay
-	// BlendModeDarken selects the darker of the destination and source colors
+	// BlendModeDarken selects the darker of the destination and source colors.
 	BlendModeDarken
-	// BlendModeLighten selects the lighter of the destination and source colors
+	// BlendModeLighten selects the lighter of the destination and source
+	// colors.
 	BlendModeLighten
 	// BlendModeColorDodge brightens the destination color to reflect the source
-	// color
+	// color.
 	BlendModeColorDodge
 	// BlendModeColorBurn darkens the destination color to reflect the source
-	// color
+	// color.
 	BlendModeColorBurn
 	// BlendModeHardLight multiplies or screens the colors, depending on the
-	// source color value
+	// source color value.
 	BlendModeHardLight
 	// BlendModeSoftLight darkens or lightens the colors, depending on the
-	// source color value
+	// source color value.
 	BlendModeSoftLight
 	// BlendModeDifference subtracts the darker of the two constituent colors
-	// from the lighter color
+	// from the lighter color.
 	BlendModeDifference
 	// BlendModeExclusion produces an effect similar to that of the difference
-	// mode but lower in contrast
+	// mode but lower in contrast.
 	BlendModeExclusion
 	// BlendModeColor creates a color with the hue and saturation of the source
-	// color and the luminosity of the destination color
+	// color and the luminosity of the destination color.
 	BlendModeColor
 	// BlendModeHue creates a color with the hue of the source color and the
-	// saturation and luminosity of the destination color
+	// saturation and luminosity of the destination color.
 	BlendModeHue
 	// BlendModeSaturation creates a color with the saturation of the source
-	// color and the hue and luminosity of the destination color
+	// color and the hue and luminosity of the destination color.
 	BlendModeSaturation
 	// BlendModeLuminosity creates a color with the luminosity of the source
-	// color and the hue and saturation of the destination color
+	// color and the hue and saturation of the destination color.
 	BlendModeLuminosity
 )
 
@@ -131,13 +132,13 @@ func (b BlendMode) String() string {
 type Corner int
 
 const (
-	// CornerTopLeft: top left corner
+	// CornerTopLeft: top left corner.
 	CornerTopLeft Corner = iota
-	// CornerTopRight: top right corner
+	// CornerTopRight: top right corner.
 	CornerTopRight
-	// CornerBottomRight: bottom right corner
+	// CornerBottomRight: bottom right corner.
 	CornerBottomRight
-	// CornerBottomLeft: bottom left corner
+	// CornerBottomLeft: bottom left corner.
 	CornerBottomLeft
 )
 
@@ -171,19 +172,19 @@ type GLUniformType int
 const (
 	// GLUniformTypeNone: no type, used for uninitialized or unspecified values.
 	GLUniformTypeNone GLUniformType = iota
-	// GLUniformTypeFloat uniform
+	// GLUniformTypeFloat: float uniform.
 	GLUniformTypeFloat
-	// GLUniformTypeInt: GLSL int / gint32 uniform
+	// GLUniformTypeInt: GLSL int / gint32 uniform.
 	GLUniformTypeInt
-	// GLUniformTypeUint: GLSL uint / guint32 uniform
+	// GLUniformTypeUint: GLSL uint / guint32 uniform.
 	GLUniformTypeUint
-	// GLUniformTypeBool: GLSL bool / gboolean uniform
+	// GLUniformTypeBool: GLSL bool / gboolean uniform.
 	GLUniformTypeBool
-	// GLUniformTypeVec2: GLSL vec2 / graphene_vec2_t uniform
+	// GLUniformTypeVec2: GLSL vec2 / graphene_vec2_t uniform.
 	GLUniformTypeVec2
-	// GLUniformTypeVec3: GLSL vec3 / graphene_vec3_t uniform
+	// GLUniformTypeVec3: GLSL vec3 / graphene_vec3_t uniform.
 	GLUniformTypeVec3
-	// GLUniformTypeVec4: GLSL vec4 / graphene_vec4_t uniform
+	// GLUniformTypeVec4: GLSL vec4 / graphene_vec4_t uniform.
 	GLUniformTypeVec4
 )
 
@@ -221,56 +222,58 @@ type RenderNodeType int
 const (
 	// NotARenderNodeType: error type. No node will ever have this type.
 	NotARenderNodeType RenderNodeType = iota
-	// ContainerNodeType: node containing a stack of children
+	// ContainerNodeType: node containing a stack of children.
 	ContainerNodeType
-	// CairoNodeType: node drawing a #cairo_surface_t
+	// CairoNodeType: node drawing a #cairo_surface_t.
 	CairoNodeType
-	// ColorNodeType: node drawing a single color rectangle
+	// ColorNodeType: node drawing a single color rectangle.
 	ColorNodeType
-	// LinearGradientNodeType: node drawing a linear gradient
+	// LinearGradientNodeType: node drawing a linear gradient.
 	LinearGradientNodeType
-	// RepeatingLinearGradientNodeType: node drawing a repeating linear gradient
+	// RepeatingLinearGradientNodeType: node drawing a repeating linear
+	// gradient.
 	RepeatingLinearGradientNodeType
-	// RadialGradientNodeType: node drawing a radial gradient
+	// RadialGradientNodeType: node drawing a radial gradient.
 	RadialGradientNodeType
-	// RepeatingRadialGradientNodeType: node drawing a repeating radial gradient
+	// RepeatingRadialGradientNodeType: node drawing a repeating radial
+	// gradient.
 	RepeatingRadialGradientNodeType
-	// ConicGradientNodeType: node drawing a conic gradient
+	// ConicGradientNodeType: node drawing a conic gradient.
 	ConicGradientNodeType
-	// BorderNodeType: node stroking a border around an area
+	// BorderNodeType: node stroking a border around an area.
 	BorderNodeType
-	// TextureNodeType: node drawing a Texture
+	// TextureNodeType: node drawing a Texture.
 	TextureNodeType
-	// InsetShadowNodeType: node drawing an inset shadow
+	// InsetShadowNodeType: node drawing an inset shadow.
 	InsetShadowNodeType
-	// OutsetShadowNodeType: node drawing an outset shadow
+	// OutsetShadowNodeType: node drawing an outset shadow.
 	OutsetShadowNodeType
 	// TransformNodeType: node that renders its child after applying a matrix
-	// transform
+	// transform.
 	TransformNodeType
-	// OpacityNodeType: node that changes the opacity of its child
+	// OpacityNodeType: node that changes the opacity of its child.
 	OpacityNodeType
-	// ColorMatrixNodeType: node that applies a color matrix to every pixel
+	// ColorMatrixNodeType: node that applies a color matrix to every pixel.
 	ColorMatrixNodeType
-	// RepeatNodeType: node that repeats the child's contents
+	// RepeatNodeType: node that repeats the child's contents.
 	RepeatNodeType
-	// ClipNodeType: node that clips its child to a rectangular area
+	// ClipNodeType: node that clips its child to a rectangular area.
 	ClipNodeType
-	// RoundedClipNodeType: node that clips its child to a rounded rectangle
+	// RoundedClipNodeType: node that clips its child to a rounded rectangle.
 	RoundedClipNodeType
-	// ShadowNodeType: node that draws a shadow below its child
+	// ShadowNodeType: node that draws a shadow below its child.
 	ShadowNodeType
-	// BlendNodeType: node that blends two children together
+	// BlendNodeType: node that blends two children together.
 	BlendNodeType
-	// CrossFadeNodeType: node that cross-fades between two children
+	// CrossFadeNodeType: node that cross-fades between two children.
 	CrossFadeNodeType
-	// TextNodeType: node containing a glyph string
+	// TextNodeType: node containing a glyph string.
 	TextNodeType
-	// BlurNodeType: node that applies a blur
+	// BlurNodeType: node that applies a blur.
 	BlurNodeType
-	// DebugNodeType: debug information that does not affect the rendering
+	// DebugNodeType: debug information that does not affect the rendering.
 	DebugNodeType
-	// GLShaderNodeType: node that uses OpenGL fragment shaders to render
+	// GLShaderNodeType: node that uses OpenGL fragment shaders to render.
 	GLShaderNodeType
 )
 
@@ -345,12 +348,12 @@ func (r RenderNodeType) String() string {
 type ScalingFilter int
 
 const (
-	// ScalingFilterLinear interpolation filter
+	// ScalingFilterLinear: linear interpolation filter.
 	ScalingFilterLinear ScalingFilter = iota
-	// ScalingFilterNearest neighbor interpolation filter
+	// ScalingFilterNearest: nearest neighbor interpolation filter.
 	ScalingFilterNearest
 	// ScalingFilterTrilinear: linear interpolation along each axis, plus mipmap
-	// generation, with linear interpolation along the mipmap levels
+	// generation, with linear interpolation along the mipmap levels.
 	ScalingFilterTrilinear
 )
 
@@ -376,12 +379,12 @@ func (s ScalingFilter) String() string {
 type SerializationError int
 
 const (
-	// SerializationUnsupportedFormat: format can not be identified
+	// SerializationUnsupportedFormat: format can not be identified.
 	SerializationUnsupportedFormat SerializationError = iota
-	// SerializationUnsupportedVersion: version of the data is not understood
+	// SerializationUnsupportedVersion: version of the data is not understood.
 	SerializationUnsupportedVersion
 	// SerializationInvalidData: given data may not exist in a proper
-	// serialization
+	// serialization.
 	SerializationInvalidData
 )
 

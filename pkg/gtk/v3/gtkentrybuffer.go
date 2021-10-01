@@ -135,7 +135,7 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 	return _guint
 }
 
-// EmitDeletedText: used when subclassing EntryBuffer
+// EmitDeletedText: used when subclassing EntryBuffer.
 func (buffer *EntryBuffer) EmitDeletedText(position uint, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
@@ -151,7 +151,7 @@ func (buffer *EntryBuffer) EmitDeletedText(position uint, nChars uint) {
 	runtime.KeepAlive(nChars)
 }
 
-// EmitInsertedText: used when subclassing EntryBuffer
+// EmitInsertedText: used when subclassing EntryBuffer.
 func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out

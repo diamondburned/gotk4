@@ -53,7 +53,7 @@ type TLSCertificateOverrider interface {
 	// set in the return value.
 	//
 	// (All other CertificateFlags values will always be set or unset as
-	// appropriate.)
+	// appropriate.).
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
@@ -69,7 +69,7 @@ type TLSCertificate struct {
 type TLSCertificater interface {
 	externglib.Objector
 
-	// Issuer gets the Certificate representing cert's issuer, if known
+	// Issuer gets the Certificate representing cert's issuer, if known.
 	Issuer() TLSCertificater
 	// IsSame: check if two Certificate objects represent the same certificate.
 	IsSame(certTwo TLSCertificater) bool
@@ -253,7 +253,7 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri string, privateKeyPkcs11Uri strin
 	return _tlsCertificate, _goerr
 }
 
-// Issuer gets the Certificate representing cert's issuer, if known
+// Issuer gets the Certificate representing cert's issuer, if known.
 func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
@@ -322,7 +322,7 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 // return value.
 //
 // (All other CertificateFlags values will always be set or unset as
-// appropriate.)
+// appropriate.).
 func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out

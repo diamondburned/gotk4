@@ -76,7 +76,7 @@ type PanedOverrider interface {
 //    gtk_widget_set_size_request (frame1, 50, -1);
 //
 //    gtk_paned_pack2 (GTK_PANED (hpaned), frame2, FALSE, FALSE);
-//    gtk_widget_set_size_request (frame2, 50, -1);
+//    gtk_widget_set_size_request (frame2, 50, -1);.
 type Paned struct {
 	Container
 

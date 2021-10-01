@@ -29,7 +29,7 @@ import "C"
 // - Post order: A, C, E, D, B, H, I, G, F ! (Sorted_binary_tree_postorder.svg)
 //
 // - Level order: F, B, G, A, D, I, C, E, H !
-// (Sorted_binary_tree_breadth-first_traversal.svg)
+// (Sorted_binary_tree_breadth-first_traversal.svg).
 type TraverseType int
 
 const (
@@ -75,9 +75,9 @@ const (
 	// TraverseNonLeaves: only non-leaf nodes should be visited. This name has
 	// been introduced in 2.6, for older version use G_TRAVERSE_NON_LEAFS.
 	TraverseNonLeaves TraverseFlags = 0b10
-	// TraverseAll nodes should be visited.
+	// TraverseAll: all nodes should be visited.
 	TraverseAll TraverseFlags = 0b11
-	// TraverseMask of all traverse flags.
+	// TraverseMask: mask of all traverse flags.
 	TraverseMask TraverseFlags = 0b11
 	// TraverseLeafs: identical to G_TRAVERSE_LEAVES.
 	TraverseLeafs TraverseFlags = 0b1
@@ -327,7 +327,7 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 }
 
 // ReverseChildren reverses the order of the children of a #GNode. (It doesn't
-// change the order of the grandchildren.)
+// change the order of the grandchildren.).
 func (node *Node) ReverseChildren() {
 	var _arg0 *C.GNode // out
 

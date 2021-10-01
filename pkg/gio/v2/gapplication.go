@@ -356,7 +356,7 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 //
 // - for G_OPTION_ARG_STRING_ARRAY, use ^a&s
 //
-// - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay
+// - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay.
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry // out

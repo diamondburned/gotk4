@@ -375,7 +375,7 @@ func (self *Text) OverwriteMode() bool {
 }
 
 // PlaceholderText retrieves the text that will be displayed when self is empty
-// and unfocused
+// and unfocused.
 func (self *Text) PlaceholderText() string {
 	var _arg0 *C.GtkText // out
 	var _cret *C.char    // in
@@ -455,7 +455,7 @@ func (self *Text) TextLength() uint16 {
 }
 
 // TruncateMultiline returns whether the GtkText will truncate multi-line text
-// that is pasted into the widget
+// that is pasted into the widget.
 func (self *Text) TruncateMultiline() bool {
 	var _arg0 *C.GtkText // out
 	var _cret C.gboolean // in

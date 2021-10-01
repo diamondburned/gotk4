@@ -810,7 +810,7 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //          // the user edited an existing document
 //          gtk_file_chooser_set_file (chooser, existing_file, NULL);
 //        }
-//    }
+//    }.
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out

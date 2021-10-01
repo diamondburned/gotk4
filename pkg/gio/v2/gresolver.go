@@ -44,12 +44,12 @@ func init() {
 type ResolverNameLookupFlags int
 
 const (
-	// ResolverNameLookupFlagsDefault behavior (same as
-	// g_resolver_lookup_by_name())
+	// ResolverNameLookupFlagsDefault: default behavior (same as
+	// g_resolver_lookup_by_name()).
 	ResolverNameLookupFlagsDefault ResolverNameLookupFlags = 0b0
-	// ResolverNameLookupFlagsIPv4Only: only resolve ipv4 addresses
+	// ResolverNameLookupFlagsIPv4Only: only resolve ipv4 addresses.
 	ResolverNameLookupFlagsIPv4Only ResolverNameLookupFlags = 0b1
-	// ResolverNameLookupFlagsIPv6Only: only resolve ipv6 addresses
+	// ResolverNameLookupFlagsIPv6Only: only resolve ipv6 addresses.
 	ResolverNameLookupFlagsIPv6Only ResolverNameLookupFlags = 0b10
 )
 

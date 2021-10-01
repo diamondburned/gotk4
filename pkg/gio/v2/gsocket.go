@@ -158,7 +158,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 // caller must close fd themselves.
 //
 // Since GLib 2.46, it is no longer a fatal error to call this on a non-socket
-// descriptor. Instead, a GError will be set with code G_IO_ERROR_FAILED
+// descriptor. Instead, a GError will be set with code G_IO_ERROR_FAILED.
 func NewSocketFromFd(fd int) (*Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in
@@ -239,7 +239,7 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 // you can have several UDP sockets bound to the same address, and they will all
 // receive all of the multicast and broadcast packets sent to that address. (The
 // behavior of unicast UDP packets to an address with multiple listeners is not
-// defined.)
+// defined.).
 func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -312,7 +312,7 @@ func (socket *Socket) CheckConnectResult() error {
 // after which the server can safely call g_socket_close(). (This is what
 // Connection does if you call g_tcp_connection_set_graceful_disconnect(). But
 // of course, this only works if the client will close its connection after the
-// server does.)
+// server does.).
 func (socket *Socket) Close() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in

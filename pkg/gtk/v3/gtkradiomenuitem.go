@@ -309,7 +309,7 @@ func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
 //
 //          gtk_radio_menu_item_join_group (radio_item, last_item);
 //          last_item = radio_item;
-//        }
+//        }.
 func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out

@@ -133,13 +133,13 @@ func (a AccessibleAutocomplete) String() string {
 type AccessibleInvalidState int
 
 const (
-	// AccessibleInvalidFalse: there are no detected errors in the value
+	// AccessibleInvalidFalse: there are no detected errors in the value.
 	AccessibleInvalidFalse AccessibleInvalidState = iota
-	// AccessibleInvalidTrue: value entered by the user has failed validation
+	// AccessibleInvalidTrue: value entered by the user has failed validation.
 	AccessibleInvalidTrue
-	// AccessibleInvalidGrammar: grammatical error was detected
+	// AccessibleInvalidGrammar: grammatical error was detected.
 	AccessibleInvalidGrammar
-	// AccessibleInvalidSpelling error was detected
+	// AccessibleInvalidSpelling: spelling error was detected.
 	AccessibleInvalidSpelling
 )
 
@@ -170,10 +170,10 @@ const (
 	// AccessiblePropertyAutocomplete indicates whether inputting text could
 	// trigger display of one or more predictions of the user's intended value
 	// for a combobox, searchbox, or textbox and specifies how predictions would
-	// be presented if they were made. Value type: AccessibleAutocomplete
+	// be presented if they were made. Value type: AccessibleAutocomplete.
 	AccessiblePropertyAutocomplete AccessibleProperty = iota
 	// AccessiblePropertyDescription defines a string value that describes or
-	// annotates the current element. Value type: string
+	// annotates the current element. Value type: string.
 	AccessiblePropertyDescription
 	// AccessiblePropertyHasPopup indicates the availability and type of
 	// interactive popup element, such as menu or dialog, that can be triggered
@@ -181,57 +181,57 @@ const (
 	AccessiblePropertyHasPopup
 	// AccessiblePropertyKeyShortcuts indicates keyboard shortcuts that an
 	// author has implemented to activate or give focus to an element. Value
-	// type: string
+	// type: string.
 	AccessiblePropertyKeyShortcuts
 	// AccessiblePropertyLabel defines a string value that labels the current
-	// element. Value type: string
+	// element. Value type: string.
 	AccessiblePropertyLabel
 	// AccessiblePropertyLevel defines the hierarchical level of an element
-	// within a structure. Value type: integer
+	// within a structure. Value type: integer.
 	AccessiblePropertyLevel
 	// AccessiblePropertyModal indicates whether an element is modal when
-	// displayed. Value type: boolean
+	// displayed. Value type: boolean.
 	AccessiblePropertyModal
 	// AccessiblePropertyMultiLine indicates whether a text box accepts multiple
-	// lines of input or only a single line. Value type: boolean
+	// lines of input or only a single line. Value type: boolean.
 	AccessiblePropertyMultiLine
 	// AccessiblePropertyMultiSelectable indicates that the user may select more
 	// than one item from the current selectable descendants. Value type:
-	// boolean
+	// boolean.
 	AccessiblePropertyMultiSelectable
 	// AccessiblePropertyOrientation indicates whether the element's orientation
-	// is horizontal, vertical, or unknown/ambiguous. Value type: Orientation
+	// is horizontal, vertical, or unknown/ambiguous. Value type: Orientation.
 	AccessiblePropertyOrientation
 	// AccessiblePropertyPlaceholder defines a short hint (a word or short
 	// phrase) intended to aid the user with data entry when the control has no
 	// value. A hint could be a sample value or a brief description of the
-	// expected format. Value type: string
+	// expected format. Value type: string.
 	AccessiblePropertyPlaceholder
 	// AccessiblePropertyReadOnly indicates that the element is not editable,
-	// but is otherwise operable. Value type: boolean
+	// but is otherwise operable. Value type: boolean.
 	AccessiblePropertyReadOnly
 	// AccessiblePropertyRequired indicates that user input is required on the
-	// element before a form may be submitted. Value type: boolean
+	// element before a form may be submitted. Value type: boolean.
 	AccessiblePropertyRequired
 	// AccessiblePropertyRoleDescription defines a human-readable,
 	// author-localized description for the role of an element. Value type:
-	// string
+	// string.
 	AccessiblePropertyRoleDescription
 	// AccessiblePropertySort indicates if items in a table or grid are sorted
 	// in ascending or descending order. Possible property values are in the
-	// AccessibleSort enumeration. Value type: AccessibleSort
+	// AccessibleSort enumeration. Value type: AccessibleSort.
 	AccessiblePropertySort
 	// AccessiblePropertyValueMax defines the maximum allowed value for a range
-	// widget. Value type: double
+	// widget. Value type: double.
 	AccessiblePropertyValueMax
 	// AccessiblePropertyValueMin defines the minimum allowed value for a range
-	// widget. Value type: double
+	// widget. Value type: double.
 	AccessiblePropertyValueMin
 	// AccessiblePropertyValueNow defines the current value for a range widget.
-	// Value type: double
+	// Value type: double.
 	AccessiblePropertyValueNow
 	// AccessiblePropertyValueText defines the human readable text alternative
-	// of aria-valuenow for a range widget. Value type: string
+	// of aria-valuenow for a range widget. Value type: string.
 	AccessiblePropertyValueText
 )
 
@@ -293,66 +293,66 @@ type AccessibleRelation int
 const (
 	// AccessibleRelationActiveDescendant identifies the currently active
 	// element when focus is on a composite widget, combobox, textbox, group, or
-	// application. Value type: reference
+	// application. Value type: reference.
 	AccessibleRelationActiveDescendant AccessibleRelation = iota
 	// AccessibleRelationColCount defines the total number of columns in a
-	// table, grid, or treegrid. Value type: integer
+	// table, grid, or treegrid. Value type: integer.
 	AccessibleRelationColCount
 	// AccessibleRelationColIndex defines an element's column index or position
 	// with respect to the total number of columns within a table, grid, or
-	// treegrid. Value type: integer
+	// treegrid. Value type: integer.
 	AccessibleRelationColIndex
 	// AccessibleRelationColIndexText defines a human readable text alternative
-	// of GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string
+	// of GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string.
 	AccessibleRelationColIndexText
 	// AccessibleRelationColSpan defines the number of columns spanned by a cell
-	// or gridcell within a table, grid, or treegrid. Value type: integer
+	// or gridcell within a table, grid, or treegrid. Value type: integer.
 	AccessibleRelationColSpan
 	// AccessibleRelationControls identifies the element (or elements) whose
 	// contents or presence are controlled by the current element. Value type:
-	// reference
+	// reference.
 	AccessibleRelationControls
 	// AccessibleRelationDescribedBy identifies the element (or elements) that
-	// describes the object. Value type: reference
+	// describes the object. Value type: reference.
 	AccessibleRelationDescribedBy
 	// AccessibleRelationDetails identifies the element (or elements) that
 	// provide additional information related to the object. Value type:
-	// reference
+	// reference.
 	AccessibleRelationDetails
 	// AccessibleRelationErrorMessage identifies the element that provides an
-	// error message for an object. Value type: reference
+	// error message for an object. Value type: reference.
 	AccessibleRelationErrorMessage
 	// AccessibleRelationFlowTo identifies the next element (or elements) in an
 	// alternate reading order of content which, at the user's discretion,
 	// allows assistive technology to override the general default of reading in
-	// document source order. Value type: reference
+	// document source order. Value type: reference.
 	AccessibleRelationFlowTo
 	// AccessibleRelationLabelledBy identifies the element (or elements) that
-	// labels the current element. Value type: reference
+	// labels the current element. Value type: reference.
 	AccessibleRelationLabelledBy
 	// AccessibleRelationOwns identifies an element (or elements) in order to
 	// define a visual, functional, or contextual parent/child relationship
 	// between elements where the widget hierarchy cannot be used to represent
-	// the relationship. Value type: reference
+	// the relationship. Value type: reference.
 	AccessibleRelationOwns
 	// AccessibleRelationPosInSet defines an element's number or position in the
-	// current set of listitems or treeitems. Value type: integer
+	// current set of listitems or treeitems. Value type: integer.
 	AccessibleRelationPosInSet
 	// AccessibleRelationRowCount defines the total number of rows in a table,
-	// grid, or treegrid. Value type: integer
+	// grid, or treegrid. Value type: integer.
 	AccessibleRelationRowCount
 	// AccessibleRelationRowIndex defines an element's row index or position
 	// with respect to the total number of rows within a table, grid, or
-	// treegrid. Value type: integer
+	// treegrid. Value type: integer.
 	AccessibleRelationRowIndex
 	// AccessibleRelationRowIndexText defines a human readable text alternative
-	// of aria-rowindex. Value type: string
+	// of aria-rowindex. Value type: string.
 	AccessibleRelationRowIndexText
 	// AccessibleRelationRowSpan defines the number of rows spanned by a cell or
-	// gridcell within a table, grid, or treegrid. Value type: integer
+	// gridcell within a table, grid, or treegrid. Value type: integer.
 	AccessibleRelationRowSpan
 	// AccessibleRelationSetSize defines the number of items in the current set
-	// of listitems or treeitems. Value type: integer
+	// of listitems or treeitems. Value type: integer.
 	AccessibleRelationSetSize
 )
 
@@ -412,52 +412,52 @@ type AccessibleRole int
 
 const (
 	// AccessibleRoleAlert: element with important, and usually time-sensitive,
-	// information
+	// information.
 	AccessibleRoleAlert AccessibleRole = iota
-	// AccessibleRoleAlertDialog: type of dialog that contains an alert message
+	// AccessibleRoleAlertDialog: type of dialog that contains an alert message.
 	AccessibleRoleAlertDialog
-	// AccessibleRoleBanner: unused
+	// AccessibleRoleBanner: unused.
 	AccessibleRoleBanner
 	// AccessibleRoleButton: input element that allows for user-triggered
-	// actions when clicked or pressed
+	// actions when clicked or pressed.
 	AccessibleRoleButton
-	// AccessibleRoleCaption: unused
+	// AccessibleRoleCaption: unused.
 	AccessibleRoleCaption
-	// AccessibleRoleCell: unused
+	// AccessibleRoleCell: unused.
 	AccessibleRoleCell
 	// AccessibleRoleCheckbox: checkable input element that has three possible
-	// values: true, false, or mixed
+	// values: true, false, or mixed.
 	AccessibleRoleCheckbox
 	// AccessibleRoleColumnHeader: header in a columned list.
 	AccessibleRoleColumnHeader
 	// AccessibleRoleComboBox: input that controls another element, such as a
 	// list or a grid, that can dynamically pop up to help the user set the
-	// value of the input
+	// value of the input.
 	AccessibleRoleComboBox
 	// AccessibleRoleCommand: abstract role.
 	AccessibleRoleCommand
 	// AccessibleRoleComposite: abstract role.
 	AccessibleRoleComposite
-	// AccessibleRoleDialog is a window that is designed to interrupt the
-	// current processing of an application in order to prompt the user to enter
-	// information or require a response.
+	// AccessibleRoleDialog: dialog is a window that is designed to interrupt
+	// the current processing of an application in order to prompt the user to
+	// enter information or require a response.
 	AccessibleRoleDialog
-	// AccessibleRoleDocument: unused
+	// AccessibleRoleDocument: unused.
 	AccessibleRoleDocument
-	// AccessibleRoleFeed: unused
+	// AccessibleRoleFeed: unused.
 	AccessibleRoleFeed
-	// AccessibleRoleForm: unused
+	// AccessibleRoleForm: unused.
 	AccessibleRoleForm
-	// AccessibleRoleGeneric: unused
+	// AccessibleRoleGeneric: unused.
 	AccessibleRoleGeneric
-	// AccessibleRoleGrid of items.
+	// AccessibleRoleGrid: grid of items.
 	AccessibleRoleGrid
 	// AccessibleRoleGridCell: item in a grid or tree grid.
 	AccessibleRoleGridCell
 	// AccessibleRoleGroup: element that groups multiple widgets. GTK uses this
 	// role for various containers, like Box, Viewport, and HeaderBar.
 	AccessibleRoleGroup
-	// AccessibleRoleHeading: unused
+	// AccessibleRoleHeading: unused.
 	AccessibleRoleHeading
 	// AccessibleRoleImg: image.
 	AccessibleRoleImg
@@ -468,23 +468,23 @@ const (
 	AccessibleRoleLabel
 	// AccessibleRoleLandmark: abstract role.
 	AccessibleRoleLandmark
-	// AccessibleRoleLegend: unused
+	// AccessibleRoleLegend: unused.
 	AccessibleRoleLegend
 	// AccessibleRoleLink: clickable link.
 	AccessibleRoleLink
-	// AccessibleRoleList of items.
+	// AccessibleRoleList: list of items.
 	AccessibleRoleList
 	// AccessibleRoleListBox: unused.
 	AccessibleRoleListBox
 	// AccessibleRoleListItem: item in a list.
 	AccessibleRoleListItem
-	// AccessibleRoleLog: unused
+	// AccessibleRoleLog: unused.
 	AccessibleRoleLog
-	// AccessibleRoleMain: unused
+	// AccessibleRoleMain: unused.
 	AccessibleRoleMain
-	// AccessibleRoleMarquee: unused
+	// AccessibleRoleMarquee: unused.
 	AccessibleRoleMarquee
-	// AccessibleRoleMath: unused
+	// AccessibleRoleMath: unused.
 	AccessibleRoleMath
 	// AccessibleRoleMeter: element that represents a value within a known
 	// range.
@@ -499,14 +499,14 @@ const (
 	AccessibleRoleMenuItemCheckbox
 	// AccessibleRoleMenuItemRadio: radio item in a menu.
 	AccessibleRoleMenuItemRadio
-	// AccessibleRoleNavigation: unused
+	// AccessibleRoleNavigation: unused.
 	AccessibleRoleNavigation
 	// AccessibleRoleNone: element that is not represented to accessibility
 	// technologies.
 	AccessibleRoleNone
-	// AccessibleRoleNote: unused
+	// AccessibleRoleNote: unused.
 	AccessibleRoleNote
-	// AccessibleRoleOption: unused
+	// AccessibleRoleOption: unused.
 	AccessibleRoleOption
 	// AccessibleRolePresentation: element that is not represented to
 	// accessibility technologies.
@@ -517,23 +517,23 @@ const (
 	// AccessibleRoleRadio: checkable input in a group of radio roles, only one
 	// of which can be checked at a time.
 	AccessibleRoleRadio
-	// AccessibleRoleRadioGroup: unused
+	// AccessibleRoleRadioGroup: unused.
 	AccessibleRoleRadioGroup
 	// AccessibleRoleRange: abstract role.
 	AccessibleRoleRange
-	// AccessibleRoleRegion: unused
+	// AccessibleRoleRegion: unused.
 	AccessibleRoleRegion
-	// AccessibleRoleRow in a columned list.
+	// AccessibleRoleRow: row in a columned list.
 	AccessibleRoleRow
-	// AccessibleRoleRowGroup: unused
+	// AccessibleRoleRowGroup: unused.
 	AccessibleRoleRowGroup
-	// AccessibleRoleRowHeader: unused
+	// AccessibleRoleRowHeader: unused.
 	AccessibleRoleRowHeader
 	// AccessibleRoleScrollbar: graphical object that controls the scrolling of
 	// content within a viewing area, regardless of whether the content is fully
 	// displayed within the viewing area.
 	AccessibleRoleScrollbar
-	// AccessibleRoleSearch: unused
+	// AccessibleRoleSearch: unused.
 	AccessibleRoleSearch
 	// AccessibleRoleSearchBox: type of textbox intended for specifying search
 	// criteria.
@@ -553,7 +553,7 @@ const (
 	// AccessibleRoleSpinButton: form of range that expects the user to select
 	// from among discrete choices.
 	AccessibleRoleSpinButton
-	// AccessibleRoleStatus: unused
+	// AccessibleRoleStatus: unused.
 	AccessibleRoleStatus
 	// AccessibleRoleStructure: abstract role.
 	AccessibleRoleStructure
@@ -562,7 +562,7 @@ const (
 	AccessibleRoleSwitch
 	// AccessibleRoleTab: item in a list of tab used for switching pages.
 	AccessibleRoleTab
-	// AccessibleRoleTable: unused
+	// AccessibleRoleTable: unused.
 	AccessibleRoleTable
 	// AccessibleRoleTabList: list of tabs for switching pages.
 	AccessibleRoleTabList
@@ -571,19 +571,19 @@ const (
 	// AccessibleRoleTextBox: type of input that allows free-form text as its
 	// value.
 	AccessibleRoleTextBox
-	// AccessibleRoleTime: unused
+	// AccessibleRoleTime: unused.
 	AccessibleRoleTime
-	// AccessibleRoleTimer: unused
+	// AccessibleRoleTimer: unused.
 	AccessibleRoleTimer
-	// AccessibleRoleToolbar: unused
+	// AccessibleRoleToolbar: unused.
 	AccessibleRoleToolbar
-	// AccessibleRoleTooltip: unused
+	// AccessibleRoleTooltip: unused.
 	AccessibleRoleTooltip
-	// AccessibleRoleTree: unused
+	// AccessibleRoleTree: unused.
 	AccessibleRoleTree
 	// AccessibleRoleTreeGrid: treeview-like, columned list.
 	AccessibleRoleTreeGrid
-	// AccessibleRoleTreeItem: unused
+	// AccessibleRoleTreeItem: unused.
 	AccessibleRoleTreeItem
 	// AccessibleRoleWidget: interactive component of a graphical user
 	// interface. This is the role that GTK uses by default for widgets.
@@ -802,31 +802,31 @@ func (a AccessibleSort) String() string {
 type AccessibleState int
 
 const (
-	// AccessibleStateBusy: “busy” state. This state has boolean values
+	// AccessibleStateBusy: “busy” state. This state has boolean values.
 	AccessibleStateBusy AccessibleState = iota
 	// AccessibleStateChecked: “checked” state; indicates the current state of a
-	// CheckButton. Value type: AccessibleTristate
+	// CheckButton. Value type: AccessibleTristate.
 	AccessibleStateChecked
 	// AccessibleStateDisabled: “disabled” state; corresponds to the
 	// Widget:sensitive property on Widget. It indicates a UI element that is
-	// perceivable, but not editable or operable. Value type: boolean
+	// perceivable, but not editable or operable. Value type: boolean.
 	AccessibleStateDisabled
 	// AccessibleStateExpanded: “expanded” state; corresponds to the
-	// Expander:expanded property on Expander. Value type: boolean or undefined
+	// Expander:expanded property on Expander. Value type: boolean or undefined.
 	AccessibleStateExpanded
 	// AccessibleStateHidden: “hidden” state; corresponds to the Widget:visible
 	// property on Widget. You can use this state explicitly on UI elements that
 	// should not be exposed to an assistive technology. Value type: boolean See
-	// also: GTK_ACCESSIBLE_STATE_DISABLED
+	// also: GTK_ACCESSIBLE_STATE_DISABLED.
 	AccessibleStateHidden
 	// AccessibleStateInvalid: “invalid” state; set when a widget is showing an
-	// error. Value type: AccessibleInvalidState
+	// error. Value type: AccessibleInvalidState.
 	AccessibleStateInvalid
 	// AccessibleStatePressed: “pressed” state; indicates the current state of a
-	// ToggleButton. Value type: AccessibleTristate enumeration
+	// ToggleButton. Value type: AccessibleTristate enumeration.
 	AccessibleStatePressed
 	// AccessibleStateSelected: “selected” state; set when a widget is selected.
-	// Value type: boolean or undefined
+	// Value type: boolean or undefined.
 	AccessibleStateSelected
 )
 
@@ -866,11 +866,11 @@ func (a AccessibleState) String() string {
 type AccessibleTristate int
 
 const (
-	// AccessibleTristateFalse: state is false
+	// AccessibleTristateFalse: state is false.
 	AccessibleTristateFalse AccessibleTristate = iota
-	// AccessibleTristateTrue: state is true
+	// AccessibleTristateTrue: state is true.
 	AccessibleTristateTrue
-	// AccessibleTristateMixed: state is mixed
+	// AccessibleTristateMixed: state is mixed.
 	AccessibleTristateMixed
 )
 
@@ -910,15 +910,15 @@ type Align int
 
 const (
 	// AlignFill: stretch to fill all space if possible, center if no meaningful
-	// way to stretch
+	// way to stretch.
 	AlignFill Align = iota
-	// AlignStart: snap to left or top side, leaving space on right or bottom
+	// AlignStart: snap to left or top side, leaving space on right or bottom.
 	AlignStart
-	// AlignEnd: snap to right or bottom side, leaving space on left or top
+	// AlignEnd: snap to right or bottom side, leaving space on left or top.
 	AlignEnd
-	// AlignCenter natural width of widget inside the allocation
+	// AlignCenter: center natural width of widget inside the allocation.
 	AlignCenter
-	// AlignBaseline: align the widget according to the baseline. See Widget
+	// AlignBaseline: align the widget according to the baseline. See Widget.
 	AlignBaseline
 )
 
@@ -992,11 +992,11 @@ func (a ArrowType) String() string {
 type BaselinePosition int
 
 const (
-	// BaselinePositionTop: align the baseline at the top
+	// BaselinePositionTop: align the baseline at the top.
 	BaselinePositionTop BaselinePosition = iota
-	// BaselinePositionCenter: center the baseline
+	// BaselinePositionCenter: center the baseline.
 	BaselinePositionCenter
-	// BaselinePositionBottom: align the baseline at the bottom
+	// BaselinePositionBottom: align the baseline at the bottom.
 	BaselinePositionBottom
 )
 
@@ -1022,25 +1022,25 @@ func (b BaselinePosition) String() string {
 type BorderStyle int
 
 const (
-	// BorderStyleNone: no visible border
+	// BorderStyleNone: no visible border.
 	BorderStyleNone BorderStyle = iota
-	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE
+	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE.
 	BorderStyleHidden
-	// BorderStyleSolid: single line segment
+	// BorderStyleSolid: single line segment.
 	BorderStyleSolid
-	// BorderStyleInset looks as if the content is sunken into the canvas
+	// BorderStyleInset looks as if the content is sunken into the canvas.
 	BorderStyleInset
-	// BorderStyleOutset looks as if the content is coming out of the canvas
+	// BorderStyleOutset looks as if the content is coming out of the canvas.
 	BorderStyleOutset
-	// BorderStyleDotted series of round dots
+	// BorderStyleDotted series of round dots.
 	BorderStyleDotted
-	// BorderStyleDashed series of square-ended dashes
+	// BorderStyleDashed series of square-ended dashes.
 	BorderStyleDashed
-	// BorderStyleDouble: two parallel lines with some space between them
+	// BorderStyleDouble: two parallel lines with some space between them.
 	BorderStyleDouble
-	// BorderStyleGroove looks as if it were carved in the canvas
+	// BorderStyleGroove looks as if it were carved in the canvas.
 	BorderStyleGroove
-	// BorderStyleRidge looks as if it were coming out of the canvas
+	// BorderStyleRidge looks as if it were coming out of the canvas.
 	BorderStyleRidge
 )
 
@@ -1081,33 +1081,35 @@ func (b BorderStyle) String() string {
 type ConstraintAttribute int
 
 const (
-	// ConstraintAttributeNone: no attribute, used for constant relations
+	// ConstraintAttributeNone: no attribute, used for constant relations.
 	ConstraintAttributeNone ConstraintAttribute = iota
-	// ConstraintAttributeLeft edge of a widget, regardless of text direction
+	// ConstraintAttributeLeft: left edge of a widget, regardless of text
+	// direction.
 	ConstraintAttributeLeft
-	// ConstraintAttributeRight edge of a widget, regardless of text direction
+	// ConstraintAttributeRight: right edge of a widget, regardless of text
+	// direction.
 	ConstraintAttributeRight
-	// ConstraintAttributeTop edge of a widget
+	// ConstraintAttributeTop: top edge of a widget.
 	ConstraintAttributeTop
-	// ConstraintAttributeBottom edge of a widget
+	// ConstraintAttributeBottom: bottom edge of a widget.
 	ConstraintAttributeBottom
 	// ConstraintAttributeStart: leading edge of a widget, depending on text
 	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages,
-	// and GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
+	// and GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones.
 	ConstraintAttributeStart
 	// ConstraintAttributeEnd: trailing edge of a widget, depending on text
 	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
-	// languages, and GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
+	// languages, and GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones.
 	ConstraintAttributeEnd
-	// ConstraintAttributeWidth of a widget
+	// ConstraintAttributeWidth: width of a widget.
 	ConstraintAttributeWidth
-	// ConstraintAttributeHeight of a widget
+	// ConstraintAttributeHeight: height of a widget.
 	ConstraintAttributeHeight
-	// ConstraintAttributeCenterX: center of a widget, on the horizontal axis
+	// ConstraintAttributeCenterX: center of a widget, on the horizontal axis.
 	ConstraintAttributeCenterX
-	// ConstraintAttributeCenterY: center of a widget, on the vertical axis
+	// ConstraintAttributeCenterY: center of a widget, on the vertical axis.
 	ConstraintAttributeCenterY
-	// ConstraintAttributeBaseline of a widget
+	// ConstraintAttributeBaseline: baseline of a widget.
 	ConstraintAttributeBaseline
 )
 
@@ -1151,11 +1153,11 @@ func (c ConstraintAttribute) String() string {
 type ConstraintRelation int
 
 const (
-	// ConstraintRelationLE less than, or equal
+	// ConstraintRelationLE less than, or equal.
 	ConstraintRelationLE ConstraintRelation = -1
-	// ConstraintRelationEq: equal
+	// ConstraintRelationEq: equal.
 	ConstraintRelationEq ConstraintRelation = 0
-	// ConstraintRelationGE: greater than, or equal
+	// ConstraintRelationGE: greater than, or equal.
 	ConstraintRelationGE ConstraintRelation = 1
 )
 
@@ -1186,13 +1188,13 @@ type ConstraintStrength int
 
 const (
 	// ConstraintStrengthRequired: constraint is required towards solving the
-	// layout
+	// layout.
 	ConstraintStrengthRequired ConstraintStrength = 1001001000
-	// ConstraintStrengthStrong constraint
+	// ConstraintStrengthStrong: strong constraint.
 	ConstraintStrengthStrong ConstraintStrength = 1000000000
-	// ConstraintStrengthMedium constraint
+	// ConstraintStrengthMedium: medium constraint.
 	ConstraintStrengthMedium ConstraintStrength = 1000
-	// ConstraintStrengthWeak constraint
+	// ConstraintStrengthWeak: weak constraint.
 	ConstraintStrengthWeak ConstraintStrength = 1
 )
 
@@ -1220,17 +1222,17 @@ func (c ConstraintStrength) String() string {
 type ConstraintVflParserError int
 
 const (
-	// ConstraintVflParserErrorInvalidSymbol: invalid or unknown symbol
+	// ConstraintVflParserErrorInvalidSymbol: invalid or unknown symbol.
 	ConstraintVflParserErrorInvalidSymbol ConstraintVflParserError = iota
-	// ConstraintVflParserErrorInvalidAttribute: invalid or unknown attribute
+	// ConstraintVflParserErrorInvalidAttribute: invalid or unknown attribute.
 	ConstraintVflParserErrorInvalidAttribute
-	// ConstraintVflParserErrorInvalidView: invalid or unknown view
+	// ConstraintVflParserErrorInvalidView: invalid or unknown view.
 	ConstraintVflParserErrorInvalidView
-	// ConstraintVflParserErrorInvalidMetric: invalid or unknown metric
+	// ConstraintVflParserErrorInvalidMetric: invalid or unknown metric.
 	ConstraintVflParserErrorInvalidMetric
-	// ConstraintVflParserErrorInvalidPriority: invalid or unknown priority
+	// ConstraintVflParserErrorInvalidPriority: invalid or unknown priority.
 	ConstraintVflParserErrorInvalidPriority
-	// ConstraintVflParserErrorInvalidRelation: invalid or unknown relation
+	// ConstraintVflParserErrorInvalidRelation: invalid or unknown relation.
 	ConstraintVflParserErrorInvalidRelation
 )
 
@@ -1396,11 +1398,11 @@ func (e EventSequenceState) String() string {
 type IconSize int
 
 const (
-	// IconSizeInherit: keep the size of the parent element
+	// IconSizeInherit: keep the size of the parent element.
 	IconSizeInherit IconSize = iota
-	// IconSizeNormal: size similar to text size
+	// IconSizeNormal: size similar to text size.
 	IconSizeNormal
-	// IconSizeLarge: large size, for example in an icon view
+	// IconSizeLarge: large size, for example in an icon view.
 	IconSizeLarge
 )
 
@@ -1442,28 +1444,29 @@ func (i IconSize) String() string {
 type InputPurpose int
 
 const (
-	// InputPurposeFreeForm: allow any character
+	// InputPurposeFreeForm: allow any character.
 	InputPurposeFreeForm InputPurpose = iota
-	// InputPurposeAlpha: allow only alphabetic characters
+	// InputPurposeAlpha: allow only alphabetic characters.
 	InputPurposeAlpha
-	// InputPurposeDigits: allow only digits
+	// InputPurposeDigits: allow only digits.
 	InputPurposeDigits
-	// InputPurposeNumber: edited field expects numbers
+	// InputPurposeNumber: edited field expects numbers.
 	InputPurposeNumber
-	// InputPurposePhone: edited field expects phone number
+	// InputPurposePhone: edited field expects phone number.
 	InputPurposePhone
-	// InputPurposeURL: edited field expects URL
+	// InputPurposeURL: edited field expects URL.
 	InputPurposeURL
-	// InputPurposeEmail: edited field expects email address
+	// InputPurposeEmail: edited field expects email address.
 	InputPurposeEmail
-	// InputPurposeName: edited field expects the name of a person
+	// InputPurposeName: edited field expects the name of a person.
 	InputPurposeName
 	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
-	// are hidden
+	// are hidden.
 	InputPurposePassword
-	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are
+	// hidden.
 	InputPurposePin
-	// InputPurposeTerminal: allow any character, in addition to control codes
+	// InputPurposeTerminal: allow any character, in addition to control codes.
 	InputPurposeTerminal
 )
 
@@ -1542,9 +1545,9 @@ func (j Justification) String() string {
 type LevelBarMode int
 
 const (
-	// LevelBarModeContinuous: bar has a continuous mode
+	// LevelBarModeContinuous: bar has a continuous mode.
 	LevelBarModeContinuous LevelBarMode = iota
-	// LevelBarModeDiscrete: bar has a discrete mode
+	// LevelBarModeDiscrete: bar has a discrete mode.
 	LevelBarModeDiscrete
 )
 
@@ -1568,15 +1571,15 @@ func (l LevelBarMode) String() string {
 type MessageType int
 
 const (
-	// MessageInfo: informational message
+	// MessageInfo: informational message.
 	MessageInfo MessageType = iota
-	// MessageWarning: non-fatal warning message
+	// MessageWarning: non-fatal warning message.
 	MessageWarning
-	// MessageQuestion: question requiring a choice
+	// MessageQuestion: question requiring a choice.
 	MessageQuestion
-	// MessageError: fatal error message
+	// MessageError: fatal error message.
 	MessageError
-	// MessageOther: none of the above
+	// MessageOther: none of the above.
 	MessageOther
 )
 
@@ -1607,25 +1610,25 @@ func (m MessageType) String() string {
 type MovementStep int
 
 const (
-	// MovementLogicalPositions: move forward or back by graphemes
+	// MovementLogicalPositions: move forward or back by graphemes.
 	MovementLogicalPositions MovementStep = iota
-	// MovementVisualPositions: move left or right by graphemes
+	// MovementVisualPositions: move left or right by graphemes.
 	MovementVisualPositions
-	// MovementWords: move forward or back by words
+	// MovementWords: move forward or back by words.
 	MovementWords
-	// MovementDisplayLines: move up or down lines (wrapped lines)
+	// MovementDisplayLines: move up or down lines (wrapped lines).
 	MovementDisplayLines
-	// MovementDisplayLineEnds: move to either end of a line
+	// MovementDisplayLineEnds: move to either end of a line.
 	MovementDisplayLineEnds
-	// MovementParagraphs: move up or down paragraphs (newline-ended lines)
+	// MovementParagraphs: move up or down paragraphs (newline-ended lines).
 	MovementParagraphs
-	// MovementParagraphEnds: move to either end of a paragraph
+	// MovementParagraphEnds: move to either end of a paragraph.
 	MovementParagraphEnds
-	// MovementPages: move by pages
+	// MovementPages: move by pages.
 	MovementPages
-	// MovementBufferEnds: move to ends of the buffer
+	// MovementBufferEnds: move to ends of the buffer.
 	MovementBufferEnds
-	// MovementHorizontalPages: move horizontally by pages
+	// MovementHorizontalPages: move horizontally by pages.
 	MovementHorizontalPages
 )
 
@@ -1666,21 +1669,21 @@ func (m MovementStep) String() string {
 type NumberUpLayout int
 
 const (
-	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png)
+	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png).
 	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
-	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png)
+	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png).
 	NumberUpLayoutLeftToRightBottomToTop
-	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png)
+	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png).
 	NumberUpLayoutRightToLeftTopToBottom
-	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png)
+	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png).
 	NumberUpLayoutRightToLeftBottomToTop
-	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png)
+	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png).
 	NumberUpLayoutTopToBottomLeftToRight
-	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png)
+	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png).
 	NumberUpLayoutTopToBottomRightToLeft
-	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png)
+	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png).
 	NumberUpLayoutBottomToTopLeftToRight
-	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png)
+	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png).
 	NumberUpLayoutBottomToTopRightToLeft
 )
 
@@ -1720,11 +1723,11 @@ func (n NumberUpLayout) String() string {
 type Ordering int
 
 const (
-	// OrderingSmaller: first value is smaller than the second
+	// OrderingSmaller: first value is smaller than the second.
 	OrderingSmaller Ordering = -1
-	// OrderingEqual: two values are equal
+	// OrderingEqual: two values are equal.
 	OrderingEqual Ordering = 0
-	// OrderingLarger: first value is larger than the second
+	// OrderingLarger: first value is larger than the second.
 	OrderingLarger Ordering = 1
 )
 
@@ -1829,9 +1832,9 @@ func (o Overflow) String() string {
 type PackType int
 
 const (
-	// PackStart: child is packed into the start of the widget
+	// PackStart: child is packed into the start of the widget.
 	PackStart PackType = iota
-	// PackEnd: child is packed into the end of the widget
+	// PackEnd: child is packed into the end of the widget.
 	PackEnd
 )
 
@@ -1915,17 +1918,17 @@ func (p PageSet) String() string {
 	}
 }
 
-// PanDirection describes the panning direction of a GtkGesturePan
+// PanDirection describes the panning direction of a GtkGesturePan.
 type PanDirection int
 
 const (
-	// PanDirectionLeft: panned towards the left
+	// PanDirectionLeft: panned towards the left.
 	PanDirectionLeft PanDirection = iota
-	// PanDirectionRight: panned towards the right
+	// PanDirectionRight: panned towards the right.
 	PanDirectionRight
-	// PanDirectionUp: panned upwards
+	// PanDirectionUp: panned upwards.
 	PanDirectionUp
-	// PanDirectionDown: panned downwards
+	// PanDirectionDown: panned downwards.
 	PanDirectionDown
 )
 
@@ -2016,7 +2019,7 @@ func (p PrintDuplex) String() string {
 	}
 }
 
-// PrintPages: see also gtk_print_job_set_pages()
+// PrintPages: see also gtk_print_job_set_pages().
 type PrintPages int
 
 const (
@@ -2284,9 +2287,9 @@ func (s ScrollType) String() string {
 type ScrollablePolicy int
 
 const (
-	// ScrollMinimum: scrollable adjustments are based on the minimum size
+	// ScrollMinimum: scrollable adjustments are based on the minimum size.
 	ScrollMinimum ScrollablePolicy = iota
-	// ScrollNatural: scrollable adjustments are based on the natural size
+	// ScrollNatural: scrollable adjustments are based on the natural size.
 	ScrollNatural
 )
 
@@ -2353,11 +2356,11 @@ type SensitivityType int
 
 const (
 	// SensitivityAuto: control is made insensitive if no action can be
-	// triggered
+	// triggered.
 	SensitivityAuto SensitivityType = iota
-	// SensitivityOn: control is always sensitive
+	// SensitivityOn: control is always sensitive.
 	SensitivityOn
-	// SensitivityOff: control is always insensitive
+	// SensitivityOff: control is always insensitive.
 	SensitivityOff
 )
 
@@ -2388,7 +2391,7 @@ const (
 	// belongs to.
 	ShortcutScopeLocal ShortcutScope = iota
 	// ShortcutScopeManaged shortcuts are handled by the first ancestor that is
-	// a ShortcutManager
+	// a ShortcutManager.
 	ShortcutScopeManaged
 	// ShortcutScopeGlobal shortcuts are handled by the root widget.
 	ShortcutScopeGlobal
@@ -2417,13 +2420,13 @@ func (s ShortcutScope) String() string {
 type SizeGroupMode int
 
 const (
-	// SizeGroupNone: group has no effect
+	// SizeGroupNone: group has no effect.
 	SizeGroupNone SizeGroupMode = iota
-	// SizeGroupHorizontal: group affects horizontal requisition
+	// SizeGroupHorizontal: group affects horizontal requisition.
 	SizeGroupHorizontal
-	// SizeGroupVertical: group affects vertical requisition
+	// SizeGroupVertical: group affects vertical requisition.
 	SizeGroupVertical
-	// SizeGroupBoth: group affects both horizontal and vertical requisition
+	// SizeGroupBoth: group affects both horizontal and vertical requisition.
 	SizeGroupBoth
 )
 
@@ -2452,11 +2455,12 @@ func (s SizeGroupMode) String() string {
 type SizeRequestMode int
 
 const (
-	// SizeRequestHeightForWidth: prefer height-for-width geometry management
+	// SizeRequestHeightForWidth: prefer height-for-width geometry management.
 	SizeRequestHeightForWidth SizeRequestMode = iota
-	// SizeRequestWidthForHeight: prefer width-for-height geometry management
+	// SizeRequestWidthForHeight: prefer width-for-height geometry management.
 	SizeRequestWidthForHeight
-	// SizeRequestConstantSize: don’t trade height-for-width or width-for-height
+	// SizeRequestConstantSize: don’t trade height-for-width or
+	// width-for-height.
 	SizeRequestConstantSize
 )
 
@@ -2516,20 +2520,20 @@ func (s SortType) String() string {
 type SystemSetting int
 
 const (
-	// SystemSettingDPI setting has changed
+	// SystemSettingDPI setting has changed.
 	SystemSettingDPI SystemSetting = iota
-	// SystemSettingFontName setting has changed
+	// SystemSettingFontName setting has changed.
 	SystemSettingFontName
 	// SystemSettingFontConfig: font configuration has changed in a way that
 	// requires text to be redrawn. This can be any of the
 	// Settings:gtk-xft-antialias, Settings:gtk-xft-hinting,
 	// Settings:gtk-xft-hintstyle, Settings:gtk-xft-rgba or
-	// Settings:gtk-fontconfig-timestamp settings
+	// Settings:gtk-fontconfig-timestamp settings.
 	SystemSettingFontConfig
-	// SystemSettingDisplay has changed
+	// SystemSettingDisplay: display has changed.
 	SystemSettingDisplay
 	// SystemSettingIconTheme: icon theme has changed in a way that requires
-	// icons to be looked up again
+	// icons to be looked up again.
 	SystemSettingIconTheme
 )
 
@@ -2629,7 +2633,7 @@ const (
 	UnitPoints
 	// UnitInch dimensions in inches.
 	UnitInch
-	// UnitMm dimensions in millimeters
+	// UnitMm dimensions in millimeters.
 	UnitMm
 )
 
@@ -2657,16 +2661,16 @@ func (u Unit) String() string {
 type WrapMode int
 
 const (
-	// WrapNone: do not wrap lines; just make the text area wider
+	// WrapNone: do not wrap lines; just make the text area wider.
 	WrapNone WrapMode = iota
 	// WrapChar: wrap text, breaking lines anywhere the cursor can appear
 	// (between characters, usually - if you want to be technical, between
-	// graphemes, see pango_get_log_attrs())
+	// graphemes, see pango_get_log_attrs()).
 	WrapChar
-	// WrapWord: wrap text, breaking lines in between words
+	// WrapWord: wrap text, breaking lines in between words.
 	WrapWord
 	// WrapWordChar: wrap text, breaking lines in between words, or if that is
-	// not enough, also between graphemes
+	// not enough, also between graphemes.
 	WrapWordChar
 )
 
@@ -2704,35 +2708,35 @@ func (w WrapMode) String() string {
 type InputHints int
 
 const (
-	// InputHintNone: no special behaviour suggested
+	// InputHintNone: no special behaviour suggested.
 	InputHintNone InputHints = 0b0
-	// InputHintSpellcheck: suggest checking for typos
+	// InputHintSpellcheck: suggest checking for typos.
 	InputHintSpellcheck InputHints = 0b1
-	// InputHintNoSpellcheck: suggest not checking for typos
+	// InputHintNoSpellcheck: suggest not checking for typos.
 	InputHintNoSpellcheck InputHints = 0b10
-	// InputHintWordCompletion: suggest word completion
+	// InputHintWordCompletion: suggest word completion.
 	InputHintWordCompletion InputHints = 0b100
-	// InputHintLowercase: suggest to convert all text to lowercase
+	// InputHintLowercase: suggest to convert all text to lowercase.
 	InputHintLowercase InputHints = 0b1000
-	// InputHintUppercaseChars: suggest to capitalize all text
+	// InputHintUppercaseChars: suggest to capitalize all text.
 	InputHintUppercaseChars InputHints = 0b10000
 	// InputHintUppercaseWords: suggest to capitalize the first character of
-	// each word
+	// each word.
 	InputHintUppercaseWords InputHints = 0b100000
 	// InputHintUppercaseSentences: suggest to capitalize the first word of each
-	// sentence
+	// sentence.
 	InputHintUppercaseSentences InputHints = 0b1000000
 	// InputHintInhibitOSK: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
 	InputHintInhibitOSK InputHints = 0b10000000
-	// InputHintVerticalWriting: text is vertical
+	// InputHintVerticalWriting: text is vertical.
 	InputHintVerticalWriting InputHints = 0b100000000
-	// InputHintEmoji: suggest offering Emoji support
+	// InputHintEmoji: suggest offering Emoji support.
 	InputHintEmoji InputHints = 0b1000000000
-	// InputHintNoEmoji: suggest not offering Emoji support
+	// InputHintNoEmoji: suggest not offering Emoji support.
 	InputHintNoEmoji InputHints = 0b10000000000
 	// InputHintPrivate: request that the input method should not update
-	// personalized data (like typing history)
+	// personalized data (like typing history).
 	InputHintPrivate InputHints = 0b100000000000
 )
 
@@ -2799,12 +2803,12 @@ func (i InputHints) Has(other InputHints) bool {
 type PickFlags int
 
 const (
-	// PickDefault behavior, include widgets that are receiving events
+	// PickDefault: default behavior, include widgets that are receiving events.
 	PickDefault PickFlags = 0b0
-	// PickInsensitive: include widgets that are insensitive
+	// PickInsensitive: include widgets that are insensitive.
 	PickInsensitive PickFlags = 0b1
 	// PickNonTargetable: include widgets that are marked as non-targetable. See
-	// Widget:can-target
+	// Widget:can-target.
 	PickNonTargetable PickFlags = 0b10
 )
 
@@ -2854,37 +2858,37 @@ func (p PickFlags) Has(other PickFlags) bool {
 type StateFlags int
 
 const (
-	// StateFlagNormal: state during normal operation
+	// StateFlagNormal: state during normal operation.
 	StateFlagNormal StateFlags = 0b0
-	// StateFlagActive: widget is active
+	// StateFlagActive: widget is active.
 	StateFlagActive StateFlags = 0b1
-	// StateFlagPrelight: widget has a mouse pointer over it
+	// StateFlagPrelight: widget has a mouse pointer over it.
 	StateFlagPrelight StateFlags = 0b10
-	// StateFlagSelected: widget is selected
+	// StateFlagSelected: widget is selected.
 	StateFlagSelected StateFlags = 0b100
-	// StateFlagInsensitive: widget is insensitive
+	// StateFlagInsensitive: widget is insensitive.
 	StateFlagInsensitive StateFlags = 0b1000
-	// StateFlagInconsistent: widget is inconsistent
+	// StateFlagInconsistent: widget is inconsistent.
 	StateFlagInconsistent StateFlags = 0b10000
-	// StateFlagFocused: widget has the keyboard focus
+	// StateFlagFocused: widget has the keyboard focus.
 	StateFlagFocused StateFlags = 0b100000
-	// StateFlagBackdrop: widget is in a background toplevel window
+	// StateFlagBackdrop: widget is in a background toplevel window.
 	StateFlagBackdrop StateFlags = 0b1000000
-	// StateFlagDirLTR: widget is in left-to-right text direction
+	// StateFlagDirLTR: widget is in left-to-right text direction.
 	StateFlagDirLTR StateFlags = 0b10000000
-	// StateFlagDirRTL: widget is in right-to-left text direction
+	// StateFlagDirRTL: widget is in right-to-left text direction.
 	StateFlagDirRTL StateFlags = 0b100000000
-	// StateFlagLink: widget is a link
+	// StateFlagLink: widget is a link.
 	StateFlagLink StateFlags = 0b1000000000
-	// StateFlagVisited: location the widget points to has already been visited
+	// StateFlagVisited: location the widget points to has already been visited.
 	StateFlagVisited StateFlags = 0b10000000000
-	// StateFlagChecked: widget is checked
+	// StateFlagChecked: widget is checked.
 	StateFlagChecked StateFlags = 0b100000000000
-	// StateFlagDropActive: widget is highlighted as a drop target for DND
+	// StateFlagDropActive: widget is highlighted as a drop target for DND.
 	StateFlagDropActive StateFlags = 0b1000000000000
-	// StateFlagFocusVisible: widget has the visible focus
+	// StateFlagFocusVisible: widget has the visible focus.
 	StateFlagFocusVisible StateFlags = 0b10000000000000
-	// StateFlagFocusWithin: widget contains the keyboard focus
+	// StateFlagFocusWithin: widget contains the keyboard focus.
 	StateFlagFocusWithin StateFlags = 0b100000000000000
 )
 

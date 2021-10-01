@@ -117,7 +117,7 @@ func marshalMenuer(p uintptr) (interface{}, error) {
 	return wrapMenu(obj), nil
 }
 
-// NewMenu creates a new Menu
+// NewMenu creates a new Menu.
 func NewMenu() *Menu {
 	var _cret *C.GtkWidget // in
 

@@ -69,14 +69,14 @@ func marshalByteArray(p uintptr) (interface{}, error) {
 }
 
 // Data: pointer to the element data. The data may be moved as elements are
-// added to the Array
+// added to the Array.
 func (b *ByteArray) Data() *byte {
 	var v *byte // out
 	v = (*byte)(unsafe.Pointer(b.native.data))
 	return v
 }
 
-// Len: number of elements in the Array
+// Len: number of elements in the Array.
 func (b *ByteArray) Len() uint {
 	var v uint // out
 	v = uint(b.native.len)
@@ -324,14 +324,14 @@ func marshalPtrArray(p uintptr) (interface{}, error) {
 }
 
 // Pdata points to the array of pointers, which may be moved when the array
-// grows
+// grows.
 func (p *PtrArray) Pdata() *cgo.Handle {
 	var v *cgo.Handle // out
 	v = (*cgo.Handle)(unsafe.Pointer(p.native.pdata))
 	return v
 }
 
-// Len: number of pointers in the array
+// Len: number of pointers in the array.
 func (p *PtrArray) Len() uint {
 	var v uint // out
 	v = uint(p.native.len)

@@ -18,7 +18,7 @@ import "C"
 //      graphene_vec2_to_float (&vec, v);
 //
 //      for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
-//        fprintf (stdout, "component d: g\n", i, v[i]);
+//        fprintf (stdout, "component d: g\n", i, v[i]);.
 const VEC2_LEN = 2
 
 // VEC3_LEN evaluates to the number of components of a #graphene_vec3_t.
@@ -32,7 +32,7 @@ const VEC2_LEN = 2
 //      graphene_vec3_to_float (&vec, v);
 //
 //      for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
-//        fprintf (stdout, "component d: g\n", i, v[i]);
+//        fprintf (stdout, "component d: g\n", i, v[i]);.
 const VEC3_LEN = 3
 
 // VEC4_LEN evaluates to the number of components of a #graphene_vec4_t.
@@ -46,5 +46,5 @@ const VEC3_LEN = 3
 //      graphene_vec4_to_float (&vec, v);
 //
 //      for (int i = 0; i < GRAPHENE_VEC4_LEN; i++)
-//        fprintf (stdout, "component d: g\n", i, v[i]);
+//        fprintf (stdout, "component d: g\n", i, v[i]);.
 const VEC4_LEN = 4

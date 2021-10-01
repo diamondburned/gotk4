@@ -36,14 +36,15 @@ func init() {
 type TreeViewDropPosition int
 
 const (
-	// TreeViewDropBefore: dropped row is inserted before
+	// TreeViewDropBefore: dropped row is inserted before.
 	TreeViewDropBefore TreeViewDropPosition = iota
-	// TreeViewDropAfter: dropped row is inserted after
+	// TreeViewDropAfter: dropped row is inserted after.
 	TreeViewDropAfter
 	// TreeViewDropIntoOrBefore: dropped row becomes a child or is inserted
-	// before
+	// before.
 	TreeViewDropIntoOrBefore
-	// TreeViewDropIntoOrAfter: dropped row becomes a child or is inserted after
+	// TreeViewDropIntoOrAfter: dropped row becomes a child or is inserted
+	// after.
 	TreeViewDropIntoOrAfter
 )
 

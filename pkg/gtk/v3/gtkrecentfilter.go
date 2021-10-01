@@ -35,20 +35,20 @@ func init() {
 type RecentFilterFlags int
 
 const (
-	// RecentFilterURI: URI of the file being tested
+	// RecentFilterURI: URI of the file being tested.
 	RecentFilterURI RecentFilterFlags = 0b1
 	// RecentFilterDisplayName: string that will be used to display the file in
-	// the recent chooser
+	// the recent chooser.
 	RecentFilterDisplayName RecentFilterFlags = 0b10
-	// RecentFilterMIMEType: mime type of the file
+	// RecentFilterMIMEType: mime type of the file.
 	RecentFilterMIMEType RecentFilterFlags = 0b100
 	// RecentFilterApplication: list of applications that have registered the
-	// file
+	// file.
 	RecentFilterApplication RecentFilterFlags = 0b1000
-	// RecentFilterGroup groups to which the file belongs to
+	// RecentFilterGroup groups to which the file belongs to.
 	RecentFilterGroup RecentFilterFlags = 0b10000
 	// RecentFilterAge: number of days elapsed since the file has been
-	// registered
+	// registered.
 	RecentFilterAge RecentFilterFlags = 0b100000
 )
 
@@ -167,7 +167,7 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 //        <application>gedit</application>
 //        <application>glade</application>
 //      </applications>
-//    </object>
+//    </object>.
 type RecentFilter struct {
 	externglib.InitiallyUnowned
 
@@ -201,7 +201,7 @@ func marshalRecentFilterer(p uintptr) (interface{}, error) {
 // used resource, use:
 //
 //    GtkRecentFilter *filter = gtk_recent_filter_new ();
-//    gtk_recent_filter_add_pattern (filter, "*");
+//    gtk_recent_filter_add_pattern (filter, "*");.
 func NewRecentFilter() *RecentFilter {
 	var _cret *C.GtkRecentFilter // in
 
@@ -268,7 +268,7 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 }
 
 // AddGroup adds a rule that allows resources based on the name of the group to
-// which they belong
+// which they belong.
 func (filter *RecentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out

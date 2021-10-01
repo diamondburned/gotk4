@@ -34,23 +34,23 @@ func init() {
 type License int
 
 const (
-	// LicenseUnknown: no license specified
+	// LicenseUnknown: no license specified.
 	LicenseUnknown License = iota
-	// LicenseCustom: license text is going to be specified by the developer
+	// LicenseCustom: license text is going to be specified by the developer.
 	LicenseCustom
-	// LicenseGPL20: GNU General Public License, version 2.0 or later
+	// LicenseGPL20: GNU General Public License, version 2.0 or later.
 	LicenseGPL20
-	// LicenseGPL30: GNU General Public License, version 3.0 or later
+	// LicenseGPL30: GNU General Public License, version 3.0 or later.
 	LicenseGPL30
-	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later
+	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later.
 	LicenseLGPL21
-	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later
+	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later.
 	LicenseLGPL30
-	// LicenseBSD: BSD standard license
+	// LicenseBSD: BSD standard license.
 	LicenseBSD
-	// LicenseMITX11: MIT/X11 standard license
+	// LicenseMITX11: MIT/X11 standard license.
 	LicenseMITX11
-	// LicenseArtistic: artistic License, version 2.0
+	// LicenseArtistic: artistic License, version 2.0.
 	LicenseArtistic
 	// LicenseGPL20_Only: GNU General Public License, version 2.0 only. Since
 	// 3.12.
@@ -388,7 +388,7 @@ func (about *AboutDialog) License() string {
 }
 
 // LicenseType retrieves the license set using
-// gtk_about_dialog_set_license_type()
+// gtk_about_dialog_set_license_type().
 func (about *AboutDialog) LicenseType() License {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret C.GtkLicense      // in

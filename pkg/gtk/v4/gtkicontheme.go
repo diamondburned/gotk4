@@ -32,7 +32,7 @@ func init() {
 type IconThemeError int
 
 const (
-	// IconThemeNotFound: icon specified does not exist in the theme
+	// IconThemeNotFound: icon specified does not exist in the theme.
 	IconThemeNotFound IconThemeError = iota
 	// IconThemeFailed: unspecified error occurred.
 	IconThemeFailed
@@ -59,10 +59,10 @@ type IconLookupFlags int
 
 const (
 	// IconLookupForceRegular: try to always load regular icons, even when
-	// symbolic icon names are given
+	// symbolic icon names are given.
 	IconLookupForceRegular IconLookupFlags = 0b1
 	// IconLookupForceSymbolic: try to always load symbolic icons, even when
-	// regular icon names are given
+	// regular icon names are given.
 	IconLookupForceSymbolic IconLookupFlags = 0b10
 	// IconLookupPreload starts loading the texture in the background so it is
 	// ready when later needed.
@@ -270,7 +270,7 @@ func (self *IconPaintable) IsSymbolic() bool {
 //                                       0,  // flags);
 //    paintable = GDK_PAINTABLE (icon);
 //    // Use the paintable
-//    g_object_unref (icon);
+//    g_object_unref (icon);.
 type IconTheme struct {
 	*externglib.Object
 }
@@ -505,7 +505,7 @@ func (self *IconTheme) SearchPath() []string {
 
 // ThemeName gets the current icon theme name.
 //
-// Returns (transfer full): the current icon theme name,
+// Returns (transfer full): the current icon theme name,.
 func (self *IconTheme) ThemeName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
@@ -680,7 +680,7 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int,
 // directly in one of the elements of path, then that image will be used for the
 // icon name. (This is legacy feature, and new icons should be put into the
 // fallback icon theme, which is called hicolor, rather than directly on the
-// icon path.)
+// icon path.).
 func (self *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char        // out

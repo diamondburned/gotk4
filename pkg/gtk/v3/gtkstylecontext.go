@@ -520,7 +520,8 @@ const STYLE_PROPERTY_BORDER_STYLE = "border-style"
 // of the padding/border/margin series.
 //
 // gtk_render_frame() uses this property to find out the frame line width, so
-// Widgets rendering frames may need to add up this padding when requesting size
+// Widgets rendering frames may need to add up this padding when requesting
+// size.
 const STYLE_PROPERTY_BORDER_WIDTH = "border-width"
 
 // STYLE_PROPERTY_COLOR: property holding the foreground color of rendered
@@ -572,10 +573,10 @@ type StyleContextPrintFlags int
 const (
 	StyleContextPrintNone StyleContextPrintFlags = 0b0
 	// StyleContextPrintRecurse: print the entire tree of CSS nodes starting at
-	// the style context's node
+	// the style context's node.
 	StyleContextPrintRecurse StyleContextPrintFlags = 0b1
 	// StyleContextPrintShowStyle: show the values of the CSS properties for
-	// each node
+	// each node.
 	StyleContextPrintShowStyle StyleContextPrintFlags = 0b10
 )
 
@@ -788,7 +789,7 @@ func NewStyleContext() *StyleContext {
 // |[ <!-- language="CSS" --> entry.search { ... } ]|
 //
 // While any widget defining a “search” class would be matched by: |[ <!--
-// language="CSS" --> .search { ... } ]|
+// language="CSS" --> .search { ... } ]|.
 func (context *StyleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.gchar           // out

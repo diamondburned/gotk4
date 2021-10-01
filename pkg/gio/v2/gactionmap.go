@@ -145,7 +145,7 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
 //
 //      return G_ACTION_GROUP (group);
-//    }
+//    }.
 func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GActionMap   // out
 	var _arg1 *C.GActionEntry // out
@@ -240,7 +240,7 @@ type actionEntry struct {
 	native *C.GActionEntry
 }
 
-// Name: name of the action
+// Name: name of the action.
 func (a *ActionEntry) Name() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
@@ -249,7 +249,7 @@ func (a *ActionEntry) Name() string {
 
 // ParameterType: type of the parameter that must be passed to the activate
 // function for this action, given as a single GVariant type string (or NULL for
-// no parameter)
+// no parameter).
 func (a *ActionEntry) ParameterType() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.parameter_type)))

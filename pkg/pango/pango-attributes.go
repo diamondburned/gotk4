@@ -53,73 +53,74 @@ const ATTR_INDEX_TO_TEXT_END = 4294967295
 type AttrType int
 
 const (
-	// AttrTypeInvalid does not happen
+	// AttrTypeInvalid does not happen.
 	AttrTypeInvalid AttrType = iota
-	// AttrTypeLanguage (pango.AttrLanguage)
+	// AttrTypeLanguage: language (pango.AttrLanguage).
 	AttrTypeLanguage
-	// AttrTypeFamily: font family name list (pango.AttrString)
+	// AttrTypeFamily: font family name list (pango.AttrString).
 	AttrTypeFamily
-	// AttrTypeStyle: font slant style (pango.AttrInt)
+	// AttrTypeStyle: font slant style (pango.AttrInt).
 	AttrTypeStyle
-	// AttrTypeWeight: font weight (pango.AttrInt)
+	// AttrTypeWeight: font weight (pango.AttrInt).
 	AttrTypeWeight
-	// AttrTypeVariant: font variant (normal or small caps) (pango.AttrInt)
+	// AttrTypeVariant: font variant (normal or small caps) (pango.AttrInt).
 	AttrTypeVariant
-	// AttrTypeStretch: font stretch (pango.AttrInt)
+	// AttrTypeStretch: font stretch (pango.AttrInt).
 	AttrTypeStretch
-	// AttrTypeSize: font size in points scaled by PANGO_SCALE (pango.AttrInt)
+	// AttrTypeSize: font size in points scaled by PANGO_SCALE (pango.AttrInt).
 	AttrTypeSize
-	// AttrTypeFontDesc: font description (pango.AttrFontDesc)
+	// AttrTypeFontDesc: font description (pango.AttrFontDesc).
 	AttrTypeFontDesc
-	// AttrTypeForeground color (pango.AttrColor)
+	// AttrTypeForeground: foreground color (pango.AttrColor).
 	AttrTypeForeground
-	// AttrTypeBackground color (pango.AttrColor)
+	// AttrTypeBackground: background color (pango.AttrColor).
 	AttrTypeBackground
-	// AttrTypeUnderline: whether the text has an underline (pango.AttrInt)
+	// AttrTypeUnderline: whether the text has an underline (pango.AttrInt).
 	AttrTypeUnderline
-	// AttrTypeStrikethrough: whether the text is struck-through (pango.AttrInt)
+	// AttrTypeStrikethrough: whether the text is struck-through
+	// (pango.AttrInt).
 	AttrTypeStrikethrough
-	// AttrTypeRise: baseline displacement (pango.AttrInt)
+	// AttrTypeRise: baseline displacement (pango.AttrInt).
 	AttrTypeRise
-	// AttrTypeShape (pango.AttrShape)
+	// AttrTypeShape: shape (pango.AttrShape).
 	AttrTypeShape
-	// AttrTypeScale: font size scale factor (pango.AttrFloat)
+	// AttrTypeScale: font size scale factor (pango.AttrFloat).
 	AttrTypeScale
-	// AttrTypeFallback: whether fallback is enabled (pango.AttrInt)
+	// AttrTypeFallback: whether fallback is enabled (pango.AttrInt).
 	AttrTypeFallback
-	// AttrTypeLetterSpacing: letter spacing (pangoattrint)
+	// AttrTypeLetterSpacing: letter spacing (pangoattrint).
 	AttrTypeLetterSpacing
-	// AttrTypeUnderlineColor: underline color (pango.AttrColor)
+	// AttrTypeUnderlineColor: underline color (pango.AttrColor).
 	AttrTypeUnderlineColor
-	// AttrTypeStrikethroughColor: strikethrough color (pango.AttrColor)
+	// AttrTypeStrikethroughColor: strikethrough color (pango.AttrColor).
 	AttrTypeStrikethroughColor
 	// AttrTypeAbsoluteSize: font size in pixels scaled by PANGO_SCALE
-	// (pango.AttrInt)
+	// (pango.AttrInt).
 	AttrTypeAbsoluteSize
-	// AttrTypeGravity: base text gravity (pango.AttrInt)
+	// AttrTypeGravity: base text gravity (pango.AttrInt).
 	AttrTypeGravity
-	// AttrTypeGravityHint: gravity hint (pango.AttrInt)
+	// AttrTypeGravityHint: gravity hint (pango.AttrInt).
 	AttrTypeGravityHint
 	// AttrTypeFontFeatures: openType font features (pango.AttrString). Since
-	// 1.38
+	// 1.38.
 	AttrTypeFontFeatures
-	// AttrTypeForegroundAlpha: foreground alpha (pango.AttrInt). Since 1.38
+	// AttrTypeForegroundAlpha: foreground alpha (pango.AttrInt). Since 1.38.
 	AttrTypeForegroundAlpha
-	// AttrTypeBackgroundAlpha: background alpha (pango.AttrInt). Since 1.38
+	// AttrTypeBackgroundAlpha: background alpha (pango.AttrInt). Since 1.38.
 	AttrTypeBackgroundAlpha
 	// AttrTypeAllowBreaks: whether breaks are allowed (pango.AttrInt). Since
-	// 1.44
+	// 1.44.
 	AttrTypeAllowBreaks
 	// AttrTypeShow: how to render invisible characters (pango.AttrInt). Since
-	// 1.44
+	// 1.44.
 	AttrTypeShow
 	// AttrTypeInsertHyphens: whether to insert hyphens at intra-word line
-	// breaks (pango.AttrInt). Since 1.44
+	// breaks (pango.AttrInt). Since 1.44.
 	AttrTypeInsertHyphens
 	// AttrTypeOverline: whether the text has an overline (pango.AttrInt). Since
-	// 1.46
+	// 1.46.
 	AttrTypeOverline
-	// AttrTypeOverlineColor: overline color (pango.AttrColor). Since 1.46
+	// AttrTypeOverlineColor: overline color (pango.AttrColor). Since 1.46.
 	AttrTypeOverlineColor
 )
 
@@ -248,7 +249,7 @@ func AttrTypeRegister(name string) AttrType {
 type Overline int
 
 const (
-	// OverlineNone: no overline should be drawn
+	// OverlineNone: no overline should be drawn.
 	OverlineNone Overline = iota
 	// OverlineSingle: draw a single line above the ink extents of the text
 	// being underlined.
@@ -276,11 +277,11 @@ func (o Overline) String() string {
 type Underline int
 
 const (
-	// UnderlineNone: no underline should be drawn
+	// UnderlineNone: no underline should be drawn.
 	UnderlineNone Underline = iota
-	// UnderlineSingle underline should be drawn
+	// UnderlineSingle: single underline should be drawn.
 	UnderlineSingle
-	// UnderlineDouble underline should be drawn
+	// UnderlineDouble: double underline should be drawn.
 	UnderlineDouble
 	// UnderlineLow: single underline should be drawn at a position beneath the
 	// ink extents of the text being underlined. This should be used only for
@@ -339,13 +340,13 @@ func (u Underline) String() string {
 type ShowFlags int
 
 const (
-	// ShowNone: no special treatment for invisible characters
+	// ShowNone: no special treatment for invisible characters.
 	ShowNone ShowFlags = 0b0
-	// ShowSpaces: render spaces, tabs and newlines visibly
+	// ShowSpaces: render spaces, tabs and newlines visibly.
 	ShowSpaces ShowFlags = 0b1
-	// ShowLineBreaks: render line breaks visibly
+	// ShowLineBreaks: render line breaks visibly.
 	ShowLineBreaks ShowFlags = 0b10
-	// ShowIgnorables: render default-ignorable Unicode characters visibly
+	// ShowIgnorables: render default-ignorable Unicode characters visibly.
 	ShowIgnorables ShowFlags = 0b100
 )
 
@@ -1211,14 +1212,14 @@ type attrColor struct {
 	native *C.PangoAttrColor
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrColor) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Color: PangoColor which is the value of the attribute
+// Color: PangoColor which is the value of the attribute.
 func (a *AttrColor) Color() Color {
 	var v Color // out
 	v = *(*Color)(gextras.NewStructNative(unsafe.Pointer((&a.native.color))))
@@ -1238,14 +1239,14 @@ type attrFloat struct {
 	native *C.PangoAttrFloat
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrFloat) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Value: value of the attribute
+// Value: value of the attribute.
 func (a *AttrFloat) Value() float64 {
 	var v float64 // out
 	v = float64(a.native.value)
@@ -1265,14 +1266,14 @@ type attrFontDesc struct {
 	native *C.PangoAttrFontDesc
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrFontDesc) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Desc: font description which is the value of this attribute
+// Desc: font description which is the value of this attribute.
 func (a *AttrFontDesc) Desc() *FontDescription {
 	var v *FontDescription // out
 	v = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(a.native.desc)))
@@ -1318,14 +1319,14 @@ type attrFontFeatures struct {
 	native *C.PangoAttrFontFeatures
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrFontFeatures) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Features: featues, as a string in CSS syntax
+// Features: featues, as a string in CSS syntax.
 func (a *AttrFontFeatures) Features() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.features)))
@@ -1369,14 +1370,14 @@ type attrInt struct {
 	native *C.PangoAttrInt
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrInt) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Value: value of the attribute
+// Value: value of the attribute.
 func (a *AttrInt) Value() int {
 	var v int // out
 	v = int(a.native.value)
@@ -1546,14 +1547,14 @@ type attrLanguage struct {
 	native *C.PangoAttrLanguage
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrLanguage) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Value: PangoLanguage which is the value of the attribute
+// Value: PangoLanguage which is the value of the attribute.
 func (a *AttrLanguage) Value() *Language {
 	var v *Language // out
 	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(a.native.value)))
@@ -1933,7 +1934,7 @@ type attrSize struct {
 	native *C.PangoAttrSize
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrSize) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
@@ -1941,7 +1942,7 @@ func (a *AttrSize) Attr() Attribute {
 }
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
-// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE)
+// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE).
 func (a *AttrSize) Size() int {
 	var v int // out
 	v = int(a.native.size)
@@ -2007,14 +2008,14 @@ type attrString struct {
 	native *C.PangoAttrString
 }
 
-// Attr: common portion of the attribute
+// Attr: common portion of the attribute.
 func (a *AttrString) Attr() Attribute {
 	var v Attribute // out
 	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
 	return v
 }
 
-// Value: string which is the value of the attribute
+// Value: string which is the value of the attribute.
 func (a *AttrString) Value() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.value)))
@@ -2138,21 +2139,21 @@ func NewColor(red, green, blue uint16) Color {
 	return *(*Color)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// Red: value of red component
+// Red: value of red component.
 func (c *Color) Red() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.red)
 	return v
 }
 
-// Green: value of green component
+// Green: value of green component.
 func (c *Color) Green() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.green)
 	return v
 }
 
-// Blue: value of blue component
+// Blue: value of blue component.
 func (c *Color) Blue() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.blue)
@@ -2197,7 +2198,7 @@ func (src *Color) Copy() *Color {
 // it can be a value in the form #rgb, #rrggbb, #rrrgggbbb or #rrrrggggbbbb,
 // where r, g and b are hex digits of the red, green, and blue components of the
 // color, respectively. (White in the four forms is #fff, #ffffff, #fffffffff
-// and #ffffffffffff.)
+// and #ffffffffffff.).
 func (color *Color) Parse(spec string) bool {
 	var _arg0 *C.PangoColor // out
 	var _arg1 *C.char       // out

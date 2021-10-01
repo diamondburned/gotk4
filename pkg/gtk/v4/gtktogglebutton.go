@@ -97,7 +97,7 @@ type ToggleButtonOverrider interface {
 //
 //      gtk_window_set_child (GTK_WINDOW (window), box);
 //      gtk_widget_show (window);
-//    }
+//    }.
 type ToggleButton struct {
 	Button
 }

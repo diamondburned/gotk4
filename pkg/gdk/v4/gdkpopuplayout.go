@@ -44,23 +44,23 @@ func init() {
 type AnchorHints int
 
 const (
-	// AnchorFlipX: allow flipping anchors horizontally
+	// AnchorFlipX: allow flipping anchors horizontally.
 	AnchorFlipX AnchorHints = 0b1
-	// AnchorFlipY: allow flipping anchors vertically
+	// AnchorFlipY: allow flipping anchors vertically.
 	AnchorFlipY AnchorHints = 0b10
-	// AnchorSlideX: allow sliding surface horizontally
+	// AnchorSlideX: allow sliding surface horizontally.
 	AnchorSlideX AnchorHints = 0b100
-	// AnchorSlideY: allow sliding surface vertically
+	// AnchorSlideY: allow sliding surface vertically.
 	AnchorSlideY AnchorHints = 0b1000
-	// AnchorResizeX: allow resizing surface horizontally
+	// AnchorResizeX: allow resizing surface horizontally.
 	AnchorResizeX AnchorHints = 0b10000
-	// AnchorResizeY: allow resizing surface vertically
+	// AnchorResizeY: allow resizing surface vertically.
 	AnchorResizeY AnchorHints = 0b100000
-	// AnchorFlip: allow flipping anchors on both axes
+	// AnchorFlip: allow flipping anchors on both axes.
 	AnchorFlip AnchorHints = 0b11
-	// AnchorSlide: allow sliding surface on both axes
+	// AnchorSlide: allow sliding surface on both axes.
 	AnchorSlide AnchorHints = 0b1100
-	// AnchorResize: allow resizing surface on both axes
+	// AnchorResize: allow resizing surface on both axes.
 	AnchorResize AnchorHints = 0b110000
 )
 

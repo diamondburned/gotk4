@@ -268,14 +268,14 @@ type colorStop struct {
 	native *C.GskColorStop
 }
 
-// Offset: offset of the color stop
+// Offset: offset of the color stop.
 func (c *ColorStop) Offset() float32 {
 	var v float32 // out
 	v = float32(c.native.offset)
 	return v
 }
 
-// Color: color at the given offset
+// Color: color at the given offset.
 func (c *ColorStop) Color() gdk.RGBA {
 	var v gdk.RGBA // out
 	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&c.native.color))))
@@ -319,35 +319,35 @@ func NewParseLocation(bytes, chars, lines, lineBytes, lineChars uint) ParseLocat
 	return *(*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// Bytes: offset of the location in the parse buffer, as bytes
+// Bytes: offset of the location in the parse buffer, as bytes.
 func (p *ParseLocation) Bytes() uint {
 	var v uint // out
 	v = uint(p.native.bytes)
 	return v
 }
 
-// Chars: offset of the location in the parse buffer, as characters
+// Chars: offset of the location in the parse buffer, as characters.
 func (p *ParseLocation) Chars() uint {
 	var v uint // out
 	v = uint(p.native.chars)
 	return v
 }
 
-// Lines: line of the location in the parse buffer
+// Lines: line of the location in the parse buffer.
 func (p *ParseLocation) Lines() uint {
 	var v uint // out
 	v = uint(p.native.lines)
 	return v
 }
 
-// LineBytes: position in the line, as bytes
+// LineBytes: position in the line, as bytes.
 func (p *ParseLocation) LineBytes() uint {
 	var v uint // out
 	v = uint(p.native.line_bytes)
 	return v
 }
 
-// LineChars: position in the line, as characters
+// LineChars: position in the line, as characters.
 func (p *ParseLocation) LineChars() uint {
 	var v uint // out
 	v = uint(p.native.line_chars)
@@ -366,28 +366,28 @@ type shadow struct {
 	native *C.GskShadow
 }
 
-// Color: color of the shadow
+// Color: color of the shadow.
 func (s *Shadow) Color() gdk.RGBA {
 	var v gdk.RGBA // out
 	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&s.native.color))))
 	return v
 }
 
-// Dx: horizontal offset of the shadow
+// Dx: horizontal offset of the shadow.
 func (s *Shadow) Dx() float32 {
 	var v float32 // out
 	v = float32(s.native.dx)
 	return v
 }
 
-// Dy: vertical offset of the shadow
+// Dy: vertical offset of the shadow.
 func (s *Shadow) Dy() float32 {
 	var v float32 // out
 	v = float32(s.native.dy)
 	return v
 }
 
-// Radius radius of the shadow
+// Radius radius of the shadow.
 func (s *Shadow) Radius() float32 {
 	var v float32 // out
 	v = float32(s.native.radius)

@@ -107,7 +107,7 @@ type TreeDragDestOverrider interface {
 	// tree so that inserting before it is impossible, FALSE will be returned.
 	// Also, FALSE may be returned if the new row is not created for some
 	// model-specific reason. Should robustly handle a dest no longer found in
-	// the model!
+	// the model!.
 	DragDataReceived(dest *TreePath, value *externglib.Value) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// dest_path, at the same depth as dest_path. i.e., can we drop the data in
@@ -152,7 +152,7 @@ func marshalTreeDragDester(p uintptr) (interface{}, error) {
 // deriving the contents of the row from value. If dest is outside the tree so
 // that inserting before it is impossible, FALSE will be returned. Also, FALSE
 // may be returned if the new row is not created for some model-specific reason.
-// Should robustly handle a dest no longer found in the model!
+// Should robustly handle a dest no longer found in the model!.
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *externglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
 	var _arg1 *C.GtkTreePath     // out
@@ -214,11 +214,11 @@ type TreeDragSourceOverrider interface {
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop. Returns FALSE if the
 	// deletion fails because path no longer exists, or for some model-specific
-	// reason. Should robustly handle a path no longer found in the model!
+	// reason. Should robustly handle a path no longer found in the model!.
 	DragDataDelete(path *TreePath) bool
 	// DragDataGet asks the TreeDragSource to return a ContentProvider
 	// representing the row at path. Should robustly handle a path no longer
-	// found in the model!
+	// found in the model!.
 	DragDataGet(path *TreePath) *gdk.ContentProvider
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation. If the source doesn’t implement this
@@ -263,7 +263,7 @@ func marshalTreeDragSourcer(p uintptr) (interface{}, error) {
 // DragDataDelete asks the TreeDragSource to delete the row at path, because it
 // was moved somewhere else via drag-and-drop. Returns FALSE if the deletion
 // fails because path no longer exists, or for some model-specific reason.
-// Should robustly handle a path no longer found in the model!
+// Should robustly handle a path no longer found in the model!.
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
@@ -286,7 +286,7 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 }
 
 // DragDataGet asks the TreeDragSource to return a ContentProvider representing
-// the row at path. Should robustly handle a path no longer found in the model!
+// the row at path. Should robustly handle a path no longer found in the model!.
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvider {
 	var _arg0 *C.GtkTreeDragSource  // out
 	var _arg1 *C.GtkTreePath        // out

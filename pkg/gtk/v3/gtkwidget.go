@@ -254,7 +254,7 @@ type WidgetOverrider interface {
 	// You should typically call this function on top level widgets, and rarely
 	// on child widgets.
 	//
-	// See also: gtk_container_remove()
+	// See also: gtk_container_remove().
 	Destroy()
 	DestroyEvent(event *gdk.EventAny) bool
 	DirectionChanged(previousDirection TextDirection)
@@ -579,7 +579,7 @@ type WidgetOverrider interface {
 //      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
 //                                                   "/com/example/ui/foowidget.ui");
 //      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
-//    }
+//    }.
 type Widget struct {
 	externglib.InitiallyUnowned
 
@@ -915,7 +915,7 @@ type Widgetter interface {
 	Visible() bool
 	// Visual gets the visual that will be used to render widget.
 	Visual() *gdk.Visual
-	// Window returns the widget’s window if it is realized, NULL otherwise
+	// Window returns the widget’s window if it is realized, NULL otherwise.
 	Window() gdk.Windower
 	// GrabAdd makes widget the current grabbed widget.
 	GrabAdd()
@@ -972,7 +972,7 @@ type Widgetter interface {
 	// IsFocus determines if the widget is the focus widget within its toplevel.
 	IsFocus() bool
 	// IsSensitive returns the widget’s effective sensitivity, which means it is
-	// sensitive itself and also its parent widget is sensitive
+	// sensitive itself and also its parent widget is sensitive.
 	IsSensitive() bool
 	// IsToplevel determines whether widget is a toplevel widget.
 	IsToplevel() bool
@@ -1648,7 +1648,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 // You should typically call this function on top level widgets, and rarely on
 // child widgets.
 //
-// See also: gtk_container_remove()
+// See also: gtk_container_remove().
 func (widget *Widget) Destroy() {
 	var _arg0 *C.GtkWidget // out
 
@@ -1841,7 +1841,7 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 //        gdk_drag_status (context, GDK_ACTION_COPY, time);
 //      else
 //        gdk_drag_status (context, GDK_ACTION_MOVE, time);
-//    }
+//    }.
 func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkDestDefaults // out
@@ -2444,7 +2444,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 // AppPaintable determines whether the application intends to draw on the widget
 // in an Widget::draw handler.
 //
-// See gtk_widget_set_app_paintable()
+// See gtk_widget_set_app_paintable().
 func (widget *Widget) AppPaintable() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -2697,7 +2697,7 @@ func (widget *Widget) Display() *gdk.Display {
 
 // DoubleBuffered determines whether the widget is double buffered.
 //
-// See gtk_widget_set_double_buffered()
+// See gtk_widget_set_double_buffered().
 func (widget *Widget) DoubleBuffered() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3986,7 +3986,7 @@ func (widget *Widget) TooltipWindow() *Window {
 //        }
 //
 //      return NULL;
-//    }
+//    }.
 func (widget *Widget) Toplevel() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -4147,7 +4147,7 @@ func (widget *Widget) Visual() *gdk.Visual {
 	return _visual
 }
 
-// Window returns the widget’s window if it is realized, NULL otherwise
+// Window returns the widget’s window if it is realized, NULL otherwise.
 func (widget *Widget) Window() gdk.Windower {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
@@ -4594,7 +4594,7 @@ func (widget *Widget) IsDrawable() bool {
 // IsFocus determines if the widget is the focus widget within its toplevel.
 // (This does not mean that the Widget:has-focus property is necessarily set;
 // Widget:has-focus will only be set if the toplevel widget additionally has the
-// global input focus.)
+// global input focus.).
 func (widget *Widget) IsFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4614,7 +4614,7 @@ func (widget *Widget) IsFocus() bool {
 }
 
 // IsSensitive returns the widget’s effective sensitivity, which means it is
-// sensitive itself and also its parent widget is sensitive
+// sensitive itself and also its parent widget is sensitive.
 func (widget *Widget) IsSensitive() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4660,7 +4660,7 @@ func (widget *Widget) IsToplevel() bool {
 //
 // This function does not check if the widget is obscured in any way.
 //
-// See also gtk_widget_get_visible() and gtk_widget_set_visible()
+// See also gtk_widget_get_visible() and gtk_widget_set_visible().
 func (widget *Widget) IsVisible() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -7064,14 +7064,14 @@ func NewRequisition() *Requisition {
 	return _requisition
 }
 
-// Width widget’s desired width
+// Width widget’s desired width.
 func (r *Requisition) Width() int {
 	var v int // out
 	v = int(r.native.width)
 	return v
 }
 
-// Height widget’s desired height
+// Height widget’s desired height.
 func (r *Requisition) Height() int {
 	var v int // out
 	v = int(r.native.height)

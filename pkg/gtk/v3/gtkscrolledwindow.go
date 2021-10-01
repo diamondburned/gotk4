@@ -83,7 +83,7 @@ const (
 	PolicyNever
 	// PolicyExternal: don't show a scrollbar, but don't force the size to
 	// follow the content. This can be used e.g. to make multiple scrolled
-	// windows share a scrollbar. Since: 3.16
+	// windows share a scrollbar. Since: 3.16.
 	PolicyExternal
 )
 

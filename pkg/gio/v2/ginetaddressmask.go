@@ -130,7 +130,7 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	return _ok
 }
 
-// Address gets mask's base address
+// Address gets mask's base address.
 func (mask *InetAddressMask) Address() *InetAddress {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.GInetAddress     // in
@@ -147,7 +147,7 @@ func (mask *InetAddressMask) Address() *InetAddress {
 	return _inetAddress
 }
 
-// Family gets the Family of mask's address
+// Family gets the Family of mask's address.
 func (mask *InetAddressMask) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.GSocketFamily     // in
@@ -164,7 +164,7 @@ func (mask *InetAddressMask) Family() SocketFamily {
 	return _socketFamily
 }
 
-// Length gets mask's length
+// Length gets mask's length.
 func (mask *InetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in

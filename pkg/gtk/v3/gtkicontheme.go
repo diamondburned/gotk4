@@ -42,7 +42,7 @@ func init() {
 type IconThemeError int
 
 const (
-	// IconThemeNotFound: icon specified does not exist in the theme
+	// IconThemeNotFound: icon specified does not exist in the theme.
 	IconThemeNotFound IconThemeError = iota
 	// IconThemeFailed: unspecified error occurred.
 	IconThemeFailed
@@ -64,7 +64,7 @@ func (i IconThemeError) String() string {
 	}
 }
 
-// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
+// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon().
 type IconLookupFlags int
 
 const (
@@ -955,7 +955,7 @@ type IconThemeOverrider interface {
 //      {
 //        // Use the pixbuf
 //        g_object_unref (pixbuf);
-//      }
+//      }.
 type IconTheme struct {
 	*externglib.Object
 }
@@ -1124,7 +1124,7 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size int, sca
 
 // ExampleIconName gets the name of an icon that is representative of the
 // current theme (for instance, to use when presenting a list of themes to the
-// user.)
+// user.).
 func (iconTheme *IconTheme) ExampleIconName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
@@ -1568,7 +1568,7 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLook
 // returns a IconInfo containing information such as the filename of the icon.
 // The icon can then be rendered into a pixbuf using gtk_icon_info_load_icon().
 // (gtk_icon_theme_load_icon() combines these two steps if all you need is the
-// pixbuf.)
+// pixbuf.).
 func (iconTheme *IconTheme) LookupIconForScale(iconName string, size int, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
@@ -1681,7 +1681,7 @@ func (iconTheme *IconTheme) SetScreen(screen *gdk.Screen) {
 // directly in one of the elements of path, then that image will be used for the
 // icon name. (This is legacy feature, and new icons should be put into the
 // fallback icon theme, which is called hicolor, rather than directly on the
-// icon path.)
+// icon path.).
 func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.gchar       // out

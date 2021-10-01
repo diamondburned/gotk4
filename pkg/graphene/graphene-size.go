@@ -58,14 +58,14 @@ func NewSizeAlloc() *Size {
 	return _size
 }
 
-// Width: width
+// Width: width.
 func (s *Size) Width() float32 {
 	var v float32 // out
 	v = float32(s.native.width)
 	return v
 }
 
-// Height: height
+// Height: height.
 func (s *Size) Height() float32 {
 	var v float32 // out
 	v = float32(s.native.height)

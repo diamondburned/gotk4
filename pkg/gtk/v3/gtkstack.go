@@ -33,58 +33,58 @@ func init() {
 type StackTransitionType int
 
 const (
-	// StackTransitionTypeNone: no transition
+	// StackTransitionTypeNone: no transition.
 	StackTransitionTypeNone StackTransitionType = iota
-	// StackTransitionTypeCrossfade: cross-fade
+	// StackTransitionTypeCrossfade: cross-fade.
 	StackTransitionTypeCrossfade
-	// StackTransitionTypeSlideRight: slide from left to right
+	// StackTransitionTypeSlideRight: slide from left to right.
 	StackTransitionTypeSlideRight
-	// StackTransitionTypeSlideLeft: slide from right to left
+	// StackTransitionTypeSlideLeft: slide from right to left.
 	StackTransitionTypeSlideLeft
-	// StackTransitionTypeSlideUp: slide from bottom up
+	// StackTransitionTypeSlideUp: slide from bottom up.
 	StackTransitionTypeSlideUp
-	// StackTransitionTypeSlideDown: slide from top down
+	// StackTransitionTypeSlideDown: slide from top down.
 	StackTransitionTypeSlideDown
 	// StackTransitionTypeSlideLeftRight: slide from left or right according to
-	// the children order
+	// the children order.
 	StackTransitionTypeSlideLeftRight
 	// StackTransitionTypeSlideUpDown: slide from top down or bottom up
-	// according to the order
+	// according to the order.
 	StackTransitionTypeSlideUpDown
-	// StackTransitionTypeOverUp: cover the old page by sliding up. Since 3.12
+	// StackTransitionTypeOverUp: cover the old page by sliding up. Since 3.12.
 	StackTransitionTypeOverUp
 	// StackTransitionTypeOverDown: cover the old page by sliding down. Since:
-	// 3.12
+	// 3.12.
 	StackTransitionTypeOverDown
 	// StackTransitionTypeOverLeft: cover the old page by sliding to the left.
-	// Since: 3.12
+	// Since: 3.12.
 	StackTransitionTypeOverLeft
 	// StackTransitionTypeOverRight: cover the old page by sliding to the right.
-	// Since: 3.12
+	// Since: 3.12.
 	StackTransitionTypeOverRight
 	// StackTransitionTypeUnderUp: uncover the new page by sliding up. Since
-	// 3.12
+	// 3.12.
 	StackTransitionTypeUnderUp
 	// StackTransitionTypeUnderDown: uncover the new page by sliding down.
-	// Since: 3.12
+	// Since: 3.12.
 	StackTransitionTypeUnderDown
 	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the
-	// left. Since: 3.12
+	// left. Since: 3.12.
 	StackTransitionTypeUnderLeft
 	// StackTransitionTypeUnderRight: uncover the new page by sliding to the
-	// right. Since: 3.12
+	// right. Since: 3.12.
 	StackTransitionTypeUnderRight
 	// StackTransitionTypeOverUpDown: cover the old page sliding up or uncover
-	// the new page sliding down, according to order. Since: 3.12
+	// the new page sliding down, according to order. Since: 3.12.
 	StackTransitionTypeOverUpDown
 	// StackTransitionTypeOverDownUp: cover the old page sliding down or uncover
-	// the new page sliding up, according to order. Since: 3.14
+	// the new page sliding up, according to order. Since: 3.14.
 	StackTransitionTypeOverDownUp
 	// StackTransitionTypeOverLeftRight: cover the old page sliding left or
-	// uncover the new page sliding right, according to order. Since: 3.14
+	// uncover the new page sliding right, according to order. Since: 3.14.
 	StackTransitionTypeOverLeftRight
 	// StackTransitionTypeOverRightLeft: cover the old page sliding right or
-	// uncover the new page sliding left, according to order. Since: 3.14
+	// uncover the new page sliding left, according to order. Since: 3.14.
 	StackTransitionTypeOverRightLeft
 )
 

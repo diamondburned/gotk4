@@ -47,7 +47,7 @@ func init() {
 // Creating a search bar
 //
 // A simple example
-// (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c)
+// (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c).
 type SearchBar struct {
 	Bin
 }

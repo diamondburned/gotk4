@@ -63,7 +63,7 @@ func init() {
 //        g_object_unref (page_setup);
 //
 //      page_setup = new_page_setup;
-//    }
+//    }.
 type PageSetup struct {
 	*externglib.Object
 }

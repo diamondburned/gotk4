@@ -90,7 +90,7 @@ func marshalTreeExpanderer(p uintptr) (interface{}, error) {
 	return wrapTreeExpander(obj), nil
 }
 
-// NewTreeExpander creates a new GtkTreeExpander
+// NewTreeExpander creates a new GtkTreeExpander.
 func NewTreeExpander() *TreeExpander {
 	var _cret *C.GtkWidget // in
 
@@ -135,7 +135,7 @@ func (self *TreeExpander) Child() Widgetter {
 //
 // This call is essentially equivalent to calling:
 //
-//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (self));
+//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (self));.
 func (self *TreeExpander) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret C.gpointer         // in

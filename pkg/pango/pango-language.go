@@ -58,7 +58,7 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 // pointer value to that returned for (non-existent) language code "xx". That
 // is, compare to:
 //
-//    pango_language_get_sample_string (pango_language_from_string ("xx"))
+//    pango_language_get_sample_string (pango_language_from_string ("xx")).
 func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in

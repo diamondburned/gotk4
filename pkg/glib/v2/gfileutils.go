@@ -65,7 +65,7 @@ const (
 	// FileErrorTxtbsy: text file busy.
 	FileErrorTxtbsy
 	// FileErrorFault: you passed in a pointer to bad memory. (GLib won't
-	// reliably return this, don't pass in pointers to bad memory.)
+	// reliably return this, don't pass in pointers to bad memory.).
 	FileErrorFault
 	// FileErrorLoop: too many levels of symbolic links were encountered in
 	// looking up a file name. This often indicates a cycle of symbolic links.

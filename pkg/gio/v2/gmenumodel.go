@@ -61,7 +61,7 @@ const MENU_ATTRIBUTE_LABEL = "label"
 // MENU_ATTRIBUTE_TARGET: menu item attribute which holds the target with which
 // the item's action will be activated.
 //
-// See also g_menu_item_set_action_and_target()
+// See also g_menu_item_set_action_and_target().
 const MENU_ATTRIBUTE_TARGET = "target"
 
 // MENU_LINK_SECTION: name of the link that associates a menu item with a

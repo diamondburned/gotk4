@@ -24,7 +24,7 @@ const DIR_SEPARATOR_S = "/"
 //    gint32 out;
 //    sscanf ("42", "%" G_GINT16_FORMAT, &in)
 //    out = in * 1000;
-//    g_print ("%" G_GINT32_FORMAT, out);
+//    g_print ("%" G_GINT32_FORMAT, out);.
 const GINT16_FORMAT = "hi"
 
 // GINT16_MODIFIER: platform dependent length modifier for conversion specifiers
@@ -36,7 +36,7 @@ const GINT16_FORMAT = "hi"
 // The following example prints "0x7b";
 //
 //    gint16 value = 123;
-//    g_print ("%#" G_GINT16_MODIFIER "x", value);
+//    g_print ("%#" G_GINT16_MODIFIER "x", value);.
 const GINT16_MODIFIER = "h"
 
 // GINT32_FORMAT: this is the platform dependent conversion specifier for
@@ -92,7 +92,7 @@ const GSSIZE_FORMAT = "li"
 const GSSIZE_MODIFIER = "l"
 
 // GUINT16_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #guint16. See also GINT16_FORMAT
+// scanning and printing values of type #guint16. See also GINT16_FORMAT.
 const GUINT16_FORMAT = "hu"
 
 // GUINT32_FORMAT: this is the platform dependent conversion specifier for

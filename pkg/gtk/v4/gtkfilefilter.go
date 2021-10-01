@@ -60,7 +60,7 @@ func init() {
 //        <pattern>*.txt</pattern>
 //        <pattern>*.png</pattern>
 //      </patterns>
-//    </object>
+//    </object>.
 type FileFilter struct {
 	Filter
 
@@ -95,7 +95,7 @@ func marshalFileFilterer(p uintptr) (interface{}, error) {
 // To create a filter that accepts any file, use:
 //
 //    GtkFileFilter *filter = gtk_file_filter_new ();
-//    gtk_file_filter_add_pattern (filter, "*");
+//    gtk_file_filter_add_pattern (filter, "*");.
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
 

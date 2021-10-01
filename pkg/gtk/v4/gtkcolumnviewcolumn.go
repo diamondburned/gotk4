@@ -59,7 +59,7 @@ func marshalColumnViewColumner(p uintptr) (interface{}, error) {
 // The function takes ownership of the argument, so you can write code like:
 //
 //    column = gtk_column_view_column_new (_("Name"),
-//      gtk_builder_list_item_factory_new_from_resource ("/name.ui"));
+//      gtk_builder_list_item_factory_new_from_resource ("/name.ui"));.
 func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColumn {
 	var _arg1 *C.char                // out
 	var _arg2 *C.GtkListItemFactory  // out

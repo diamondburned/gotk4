@@ -30,19 +30,19 @@ func init() {
 type SeatCapabilities int
 
 const (
-	// SeatCapabilityNone: no input capabilities
+	// SeatCapabilityNone: no input capabilities.
 	SeatCapabilityNone SeatCapabilities = 0b0
-	// SeatCapabilityPointer: seat has a pointer (e.g. mouse)
+	// SeatCapabilityPointer: seat has a pointer (e.g. mouse).
 	SeatCapabilityPointer SeatCapabilities = 0b1
-	// SeatCapabilityTouch: seat has touchscreen(s) attached
+	// SeatCapabilityTouch: seat has touchscreen(s) attached.
 	SeatCapabilityTouch SeatCapabilities = 0b10
-	// SeatCapabilityTabletStylus: seat has drawing tablet(s) attached
+	// SeatCapabilityTabletStylus: seat has drawing tablet(s) attached.
 	SeatCapabilityTabletStylus SeatCapabilities = 0b100
-	// SeatCapabilityKeyboard: seat has keyboard(s) attached
+	// SeatCapabilityKeyboard: seat has keyboard(s) attached.
 	SeatCapabilityKeyboard SeatCapabilities = 0b1000
-	// SeatCapabilityAllPointing: union of all pointing capabilities
+	// SeatCapabilityAllPointing: union of all pointing capabilities.
 	SeatCapabilityAllPointing SeatCapabilities = 0b111
-	// SeatCapabilityAll: union of all capabilities
+	// SeatCapabilityAll: union of all capabilities.
 	SeatCapabilityAll SeatCapabilities = 0b1111
 )
 

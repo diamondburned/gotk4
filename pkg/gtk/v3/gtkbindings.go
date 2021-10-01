@@ -82,7 +82,7 @@ type bindingArg struct {
 	native *C.GtkBindingArg
 }
 
-// ArgType: implementation detail
+// ArgType: implementation detail.
 func (b *BindingArg) ArgType() externglib.Type {
 	var v externglib.Type // out
 	v = externglib.Type(b.native.arg_type)
@@ -102,42 +102,42 @@ type bindingEntry struct {
 	native *C.GtkBindingEntry
 }
 
-// Keyval: key value to match
+// Keyval: key value to match.
 func (b *BindingEntry) Keyval() uint {
 	var v uint // out
 	v = uint(b.native.keyval)
 	return v
 }
 
-// Modifiers: key modifiers to match
+// Modifiers: key modifiers to match.
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
 	var v gdk.ModifierType // out
 	v = gdk.ModifierType(b.native.modifiers)
 	return v
 }
 
-// BindingSet: binding set this entry belongs to
+// BindingSet: binding set this entry belongs to.
 func (b *BindingEntry) BindingSet() *BindingSet {
 	var v *BindingSet // out
 	v = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(b.native.binding_set)))
 	return v
 }
 
-// SetNext: linked list of entries maintained by binding set
+// SetNext: linked list of entries maintained by binding set.
 func (b *BindingEntry) SetNext() *BindingEntry {
 	var v *BindingEntry // out
 	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.set_next)))
 	return v
 }
 
-// HashNext: implementation detail
+// HashNext: implementation detail.
 func (b *BindingEntry) HashNext() *BindingEntry {
 	var v *BindingEntry // out
 	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.hash_next)))
 	return v
 }
 
-// Signals: action signals of this entry
+// Signals: action signals of this entry.
 func (b *BindingEntry) Signals() *BindingSignal {
 	var v *BindingSignal // out
 	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(b.native.signals)))
@@ -260,28 +260,28 @@ type bindingSet struct {
 	native *C.GtkBindingSet
 }
 
-// SetName: unique name of this binding set
+// SetName: unique name of this binding set.
 func (b *BindingSet) SetName() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(b.native.set_name)))
 	return v
 }
 
-// Priority: unused
+// Priority: unused.
 func (b *BindingSet) Priority() int {
 	var v int // out
 	v = int(b.native.priority)
 	return v
 }
 
-// Entries: key binding entries in this binding set
+// Entries: key binding entries in this binding set.
 func (b *BindingSet) Entries() *BindingEntry {
 	var v *BindingEntry // out
 	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.entries)))
 	return v
 }
 
-// Current: implementation detail
+// Current: implementation detail.
 func (b *BindingSet) Current() *BindingEntry {
 	var v *BindingEntry // out
 	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.current)))

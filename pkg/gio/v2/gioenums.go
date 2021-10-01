@@ -150,11 +150,11 @@ type ConverterResult int
 const (
 	// ConverterError: there was an error during conversion.
 	ConverterError ConverterResult = iota
-	// ConverterConverted: some data was consumed or produced
+	// ConverterConverted: some data was consumed or produced.
 	ConverterConverted
-	// ConverterFinished: conversion is finished
+	// ConverterFinished: conversion is finished.
 	ConverterFinished
-	// ConverterFlushed: flushing is finished
+	// ConverterFlushed: flushing is finished.
 	ConverterFlushed
 )
 
@@ -349,16 +349,16 @@ const (
 	// object path.
 	DBusErrorObjectPathInUse
 	// DBusErrorUnknownObject: object you invoked a method on isn't known. Since
-	// 2.42
+	// 2.42.
 	DBusErrorUnknownObject
 	// DBusErrorUnknownInterface: interface you invoked a method on isn't known
-	// by the object. Since 2.42
+	// by the object. Since 2.42.
 	DBusErrorUnknownInterface
 	// DBusErrorUnknownProperty: property you tried to access isn't known by the
-	// object. Since 2.42
+	// object. Since 2.42.
 	DBusErrorUnknownProperty
 	// DBusErrorPropertyReadOnly: property you tried to set is read-only. Since
-	// 2.42
+	// 2.42.
 	DBusErrorPropertyReadOnly
 )
 
@@ -499,7 +499,7 @@ const (
 	DBusMessageHeaderFieldInvalid DBusMessageHeaderField = iota
 	// DBusMessageHeaderFieldPath: object path.
 	DBusMessageHeaderFieldPath
-	// DBusMessageHeaderFieldInterface name.
+	// DBusMessageHeaderFieldInterface: interface name.
 	DBusMessageHeaderFieldInterface
 	// DBusMessageHeaderFieldMember: method or signal name.
 	DBusMessageHeaderFieldMember
@@ -513,7 +513,7 @@ const (
 	// DBusMessageHeaderFieldSender: unique name of the sender of the message
 	// (filled in by the bus).
 	DBusMessageHeaderFieldSender
-	// DBusMessageHeaderFieldSignature of the message body.
+	// DBusMessageHeaderFieldSignature: signature of the message body.
 	DBusMessageHeaderFieldSignature
 	// DBusMessageHeaderFieldNumUnixFds: number of UNIX file descriptors that
 	// accompany the message.
@@ -677,7 +677,8 @@ const (
 	// a virtual drive from several physical drives.
 	DriveStartStopTypeMultidisk
 	// DriveStartStopTypePassword: start/stop methods will unlock/lock the disk
-	// (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote> command)
+	// (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote>
+	// command).
 	DriveStartStopTypePassword
 )
 
@@ -708,15 +709,15 @@ func (d DriveStartStopType) String() string {
 type EmblemOrigin int
 
 const (
-	// EmblemOriginUnknown: emblem of unknown origin
+	// EmblemOriginUnknown: emblem of unknown origin.
 	EmblemOriginUnknown EmblemOrigin = iota
-	// EmblemOriginDevice: emblem adds device-specific information
+	// EmblemOriginDevice: emblem adds device-specific information.
 	EmblemOriginDevice
 	// EmblemOriginLivemetadata: emblem depicts live metadata, such as
-	// "readonly"
+	// "readonly".
 	EmblemOriginLivemetadata
 	// EmblemOriginTag: emblem comes from a user-defined tag, e.g. set by
-	// nautilus (in the future)
+	// nautilus (in the future).
 	EmblemOriginTag
 )
 
@@ -781,7 +782,7 @@ const (
 	FileAttributeTypeString
 	// FileAttributeTypeByteString: zero terminated string of non-zero bytes.
 	FileAttributeTypeByteString
-	// FileAttributeTypeBoolean value.
+	// FileAttributeTypeBoolean: boolean value.
 	FileAttributeTypeBoolean
 	// FileAttributeTypeUint32: unsigned 4-byte/32-bit integer.
 	FileAttributeTypeUint32
@@ -793,7 +794,7 @@ const (
 	FileAttributeTypeInt64
 	// FileAttributeTypeObject: #GObject.
 	FileAttributeTypeObject
-	// FileAttributeTypeStringv: NULL terminated char **. Since 2.22
+	// FileAttributeTypeStringv: NULL terminated char **. Since 2.22.
 	FileAttributeTypeStringv
 )
 
@@ -849,7 +850,7 @@ const (
 	// FileMonitorEventUnmounted: file location was unmounted.
 	FileMonitorEventUnmounted
 	// FileMonitorEventMoved: file was moved -- only sent if the (deprecated)
-	// G_FILE_MONITOR_SEND_MOVED flag is set
+	// G_FILE_MONITOR_SEND_MOVED flag is set.
 	FileMonitorEventMoved
 	// FileMonitorEventRenamed: file was renamed within the current directory --
 	// only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set. Since: 2.46.
@@ -860,7 +861,7 @@ const (
 	FileMonitorEventMovedIn
 	// FileMonitorEventMovedOut: file was moved out of the monitored directory
 	// to another location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag
-	// is set. Since: 2.46
+	// is set. Since: 2.46.
 	FileMonitorEventMovedOut
 )
 
@@ -1042,7 +1043,7 @@ const (
 	IOErrorInvalidArgument IOErrorEnum = 13
 	// IOErrorPermissionDenied: permission denied.
 	IOErrorPermissionDenied IOErrorEnum = 14
-	// IOErrorNotSupported: operation (or one of its parameters) not supported
+	// IOErrorNotSupported: operation (or one of its parameters) not supported.
 	IOErrorNotSupported IOErrorEnum = 15
 	// IOErrorNotMounted: file isn't mounted.
 	IOErrorNotMounted IOErrorEnum = 16
@@ -1077,15 +1078,15 @@ const (
 	IOErrorFailedHandled IOErrorEnum = 30
 	// IOErrorTooManyOpenFiles: current process has too many files open and
 	// can't open any more. Duplicate descriptors do count toward this limit.
-	// Since 2.20
+	// Since 2.20.
 	IOErrorTooManyOpenFiles IOErrorEnum = 31
-	// IOErrorNotInitialized: object has not been initialized. Since 2.22
+	// IOErrorNotInitialized: object has not been initialized. Since 2.22.
 	IOErrorNotInitialized IOErrorEnum = 32
-	// IOErrorAddressInUse: requested address is already in use. Since 2.22
+	// IOErrorAddressInUse: requested address is already in use. Since 2.22.
 	IOErrorAddressInUse IOErrorEnum = 33
-	// IOErrorPartialInput: need more input to finish operation. Since 2.24
+	// IOErrorPartialInput: need more input to finish operation. Since 2.24.
 	IOErrorPartialInput IOErrorEnum = 34
-	// IOErrorInvalidData: input data was invalid. Since 2.24
+	// IOErrorInvalidData: input data was invalid. Since 2.24.
 	IOErrorInvalidData IOErrorEnum = 35
 	// IOErrorDBusError: remote object generated an error that doesn't
 	// correspond to a locally registered #GError error domain. Use
@@ -1093,22 +1094,22 @@ const (
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
 	IOErrorDBusError IOErrorEnum = 36
-	// IOErrorHostUnreachable: host unreachable. Since 2.26
+	// IOErrorHostUnreachable: host unreachable. Since 2.26.
 	IOErrorHostUnreachable IOErrorEnum = 37
-	// IOErrorNetworkUnreachable: network unreachable. Since 2.26
+	// IOErrorNetworkUnreachable: network unreachable. Since 2.26.
 	IOErrorNetworkUnreachable IOErrorEnum = 38
-	// IOErrorConnectionRefused: connection refused. Since 2.26
+	// IOErrorConnectionRefused: connection refused. Since 2.26.
 	IOErrorConnectionRefused IOErrorEnum = 39
-	// IOErrorProxyFailed: connection to proxy server failed. Since 2.26
+	// IOErrorProxyFailed: connection to proxy server failed. Since 2.26.
 	IOErrorProxyFailed IOErrorEnum = 40
-	// IOErrorProxyAuthFailed: proxy authentication failed. Since 2.26
+	// IOErrorProxyAuthFailed: proxy authentication failed. Since 2.26.
 	IOErrorProxyAuthFailed IOErrorEnum = 41
-	// IOErrorProxyNeedAuth: proxy server needs authentication. Since 2.26
+	// IOErrorProxyNeedAuth: proxy server needs authentication. Since 2.26.
 	IOErrorProxyNeedAuth IOErrorEnum = 42
 	// IOErrorProxyNotAllowed: proxy connection is not allowed by ruleset. Since
-	// 2.26
+	// 2.26.
 	IOErrorProxyNotAllowed IOErrorEnum = 43
-	// IOErrorBrokenPipe: broken pipe. Since 2.36
+	// IOErrorBrokenPipe: broken pipe. Since 2.36.
 	IOErrorBrokenPipe IOErrorEnum = 44
 	// IOErrorConnectionClosed: connection closed by peer. Note that this is the
 	// same code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
@@ -1116,7 +1117,7 @@ const (
 	// G_IO_ERROR_FAILED. Now they should all return the same value, which has
 	// this more logical name. Since 2.44.
 	IOErrorConnectionClosed IOErrorEnum = 44
-	// IOErrorNotConnected: transport endpoint is not connected. Since 2.44
+	// IOErrorNotConnected: transport endpoint is not connected. Since 2.44.
 	IOErrorNotConnected IOErrorEnum = 45
 	// IOErrorMessageTooLarge: message too large. Since 2.48.
 	IOErrorMessageTooLarge IOErrorEnum = 46
@@ -1232,7 +1233,7 @@ func (i IOErrorEnum) String() string {
 type IOModuleScopeFlags int
 
 const (
-	// IOModuleScopeNone: no module scan flags
+	// IOModuleScopeNone: no module scan flags.
 	IOModuleScopeNone IOModuleScopeFlags = iota
 	// IOModuleScopeBlockDuplicates: when using this scope to load or scan
 	// modules, automatically block a modules which has the same base basename
@@ -1262,7 +1263,7 @@ func (i IOModuleScopeFlags) String() string {
 // applications check MonitorWarningLevel as ranges, for example:
 //
 //    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
-//      drop_caches ();
+//      drop_caches ();.
 type MemoryMonitorWarningLevel int
 
 const (
@@ -1305,11 +1306,11 @@ type MountOperationResult int
 
 const (
 	// MountOperationHandled: request was fulfilled and the user specified data
-	// is now available
+	// is now available.
 	MountOperationHandled MountOperationResult = iota
-	// MountOperationAborted: user requested the mount operation to be aborted
+	// MountOperationAborted: user requested the mount operation to be aborted.
 	MountOperationAborted
-	// MountOperationUnhandled: request was unhandled (i.e. not implemented)
+	// MountOperationUnhandled: request was unhandled (i.e. not implemented).
 	MountOperationUnhandled
 )
 
@@ -1377,19 +1378,19 @@ type NotificationPriority int
 const (
 	// NotificationPriorityNormal: default priority, to be used for the majority
 	// of notifications (for example email messages, software updates, completed
-	// download/sync operations)
+	// download/sync operations).
 	NotificationPriorityNormal NotificationPriority = iota
 	// NotificationPriorityLow: for notifications that do not require immediate
 	// attention - typically used for contextual background information, such as
-	// contact birthdays or local weather
+	// contact birthdays or local weather.
 	NotificationPriorityLow
 	// NotificationPriorityHigh: for events that require more attention, usually
 	// because responses are time-sensitive (for example chat and SMS messages
-	// or alarms)
+	// or alarms).
 	NotificationPriorityHigh
 	// NotificationPriorityUrgent: for urgent notifications, or notifications
 	// that require a response in a short space of time (for example phone calls
-	// or emergency warnings)
+	// or emergency warnings).
 	NotificationPriorityUrgent
 )
 
@@ -1420,7 +1421,7 @@ func (n NotificationPriority) String() string {
 type PasswordSave int
 
 const (
-	// PasswordSaveNever save a password.
+	// PasswordSaveNever: never save a password.
 	PasswordSaveNever PasswordSave = iota
 	// PasswordSaveForSession: save a password for the session.
 	PasswordSaveForSession
@@ -1490,12 +1491,12 @@ func (p PollableReturn) String() string {
 type ResolverError int
 
 const (
-	// ResolverErrorNotFound: requested name/address/service was not found
+	// ResolverErrorNotFound: requested name/address/service was not found.
 	ResolverErrorNotFound ResolverError = iota
 	// ResolverErrorTemporaryFailure: requested information could not be looked
-	// up due to a network error or similar problem
+	// up due to a network error or similar problem.
 	ResolverErrorTemporaryFailure
-	// ResolverErrorInternal: unknown error
+	// ResolverErrorInternal: unknown error.
 	ResolverErrorInternal
 )
 
@@ -1550,15 +1551,15 @@ func (r ResolverError) String() string {
 type ResolverRecordType int
 
 const (
-	// ResolverRecordSrv: look up DNS SRV records for a domain
+	// ResolverRecordSrv: look up DNS SRV records for a domain.
 	ResolverRecordSrv ResolverRecordType = 1
-	// ResolverRecordMx: look up DNS MX records for a domain
+	// ResolverRecordMx: look up DNS MX records for a domain.
 	ResolverRecordMx ResolverRecordType = 2
-	// ResolverRecordTxt: look up DNS TXT records for a name
+	// ResolverRecordTxt: look up DNS TXT records for a name.
 	ResolverRecordTxt ResolverRecordType = 3
-	// ResolverRecordSoa: look up DNS SOA records for a zone
+	// ResolverRecordSoa: look up DNS SOA records for a zone.
 	ResolverRecordSoa ResolverRecordType = 4
-	// ResolverRecordNs: look up DNS NS records for a domain
+	// ResolverRecordNs: look up DNS NS records for a domain.
 	ResolverRecordNs ResolverRecordType = 5
 )
 
@@ -1589,9 +1590,9 @@ func (r ResolverRecordType) String() string {
 type ResourceError int
 
 const (
-	// ResourceErrorNotFound: no file was found at the requested path
+	// ResourceErrorNotFound: no file was found at the requested path.
 	ResourceErrorNotFound ResourceError = iota
-	// ResourceErrorInternal: unknown error
+	// ResourceErrorInternal: unknown error.
 	ResourceErrorInternal
 )
 
@@ -1671,17 +1672,17 @@ func (s SocketClientEvent) String() string {
 }
 
 // SocketFamily: protocol family of a Address. (These values are identical to
-// the system defines AF_INET, AF_INET6 and AF_UNIX, if available.)
+// the system defines AF_INET, AF_INET6 and AF_UNIX, if available.).
 type SocketFamily int
 
 const (
-	// SocketFamilyInvalid: no address family
+	// SocketFamilyInvalid: no address family.
 	SocketFamilyInvalid SocketFamily = 0
-	// SocketFamilyUnix: UNIX domain family
+	// SocketFamilyUnix: UNIX domain family.
 	SocketFamilyUnix SocketFamily = 1
-	// SocketFamilyIPv4: IPv4 family
+	// SocketFamilyIPv4: IPv4 family.
 	SocketFamilyIPv4 SocketFamily = 2
-	// SocketFamilyIPv6: IPv6 family
+	// SocketFamilyIPv6: IPv6 family.
 	SocketFamilyIPv6 SocketFamily = 10
 )
 
@@ -1753,15 +1754,15 @@ func (s SocketListenerEvent) String() string {
 type SocketProtocol int
 
 const (
-	// SocketProtocolUnknown: protocol type is unknown
+	// SocketProtocolUnknown: protocol type is unknown.
 	SocketProtocolUnknown SocketProtocol = -1
-	// SocketProtocolDefault protocol for the family/type
+	// SocketProtocolDefault: default protocol for the family/type.
 	SocketProtocolDefault SocketProtocol = 0
-	// SocketProtocolTCP: TCP over IP
+	// SocketProtocolTCP: TCP over IP.
 	SocketProtocolTCP SocketProtocol = 6
-	// SocketProtocolUDP: UDP over IP
+	// SocketProtocolUDP: UDP over IP.
 	SocketProtocolUDP SocketProtocol = 17
-	// SocketProtocolSCTP: SCTP over IP
+	// SocketProtocolSCTP: SCTP over IP.
 	SocketProtocolSCTP SocketProtocol = 132
 )
 
@@ -1792,12 +1793,12 @@ func (s SocketProtocol) String() string {
 type SocketType int
 
 const (
-	// SocketTypeInvalid: type unknown or wrong
+	// SocketTypeInvalid: type unknown or wrong.
 	SocketTypeInvalid SocketType = iota
 	// SocketTypeStream: reliable connection-based byte streams (e.g. TCP).
 	SocketTypeStream
 	// SocketTypeDatagram: connectionless, unreliable datagram passing. (e.g.
-	// UDP)
+	// UDP).
 	SocketTypeDatagram
 	// SocketTypeSeqpacket: reliable connection-based passing of datagrams of
 	// fixed maximum length (e.g. SCTP).
@@ -1828,11 +1829,11 @@ func (s SocketType) String() string {
 type TLSAuthenticationMode int
 
 const (
-	// TLSAuthenticationNone: client authentication not required
+	// TLSAuthenticationNone: client authentication not required.
 	TLSAuthenticationNone TLSAuthenticationMode = iota
-	// TLSAuthenticationRequested: client authentication is requested
+	// TLSAuthenticationRequested: client authentication is requested.
 	TLSAuthenticationRequested
-	// TLSAuthenticationRequired: client authentication is required
+	// TLSAuthenticationRequired: client authentication is required.
 	TLSAuthenticationRequired
 )
 
@@ -1860,7 +1861,7 @@ func (t TLSAuthenticationMode) String() string {
 type TLSCertificateRequestFlags int
 
 const (
-	// TLSCertificateRequestNone: no flags
+	// TLSCertificateRequestNone: no flags.
 	TLSCertificateRequestNone TLSCertificateRequestFlags = iota
 )
 
@@ -1934,10 +1935,10 @@ type TLSChannelBindingType int
 
 const (
 	// TLSChannelBindingTLSUnique: tls-unique
-	// (https://tools.ietf.org/html/rfc5929#section-3) binding type
+	// (https://tools.ietf.org/html/rfc5929#section-3) binding type.
 	TLSChannelBindingTLSUnique TLSChannelBindingType = iota
 	// TLSChannelBindingTLSServerEndPoint: tls-server-end-point
-	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
+	// (https://tools.ietf.org/html/rfc5929#section-4) binding type.
 	TLSChannelBindingTLSServerEndPoint
 )
 
@@ -1964,7 +1965,7 @@ func (t TLSChannelBindingType) String() string {
 type TLSDatabaseLookupFlags int
 
 const (
-	// TLSDatabaseLookupNone: no lookup flags
+	// TLSDatabaseLookupNone: no lookup flags.
 	TLSDatabaseLookupNone TLSDatabaseLookupFlags = iota
 	// TLSDatabaseLookupKeypair: restrict lookup to certificates that have a
 	// private key.
@@ -1992,9 +1993,9 @@ func (t TLSDatabaseLookupFlags) String() string {
 type TLSError int
 
 const (
-	// TLSErrorUnavailable: no TLS provider is available
+	// TLSErrorUnavailable: no TLS provider is available.
 	TLSErrorUnavailable TLSError = iota
-	// TLSErrorMisc miscellaneous TLS error
+	// TLSErrorMisc miscellaneous TLS error.
 	TLSErrorMisc
 	// TLSErrorBadCertificate: certificate presented could not be parsed or
 	// failed validation.
@@ -2014,7 +2015,7 @@ const (
 	TLSErrorEOF
 	// TLSErrorInappropriateFallback: TLS handshake failed because the client
 	// sent the fallback SCSV, indicating a protocol downgrade attack. Since:
-	// 2.60
+	// 2.60.
 	TLSErrorInappropriateFallback
 )
 
@@ -2089,11 +2090,11 @@ func (t TLSInteractionResult) String() string {
 type TLSRehandshakeMode int
 
 const (
-	// TLSRehandshakeNever: never allow rehandshaking
+	// TLSRehandshakeNever: never allow rehandshaking.
 	TLSRehandshakeNever TLSRehandshakeMode = iota
-	// TLSRehandshakeSafely: allow safe rehandshaking only
+	// TLSRehandshakeSafely: allow safe rehandshaking only.
 	TLSRehandshakeSafely
-	// TLSRehandshakeUnsafely: allow unsafe rehandshaking
+	// TLSRehandshakeUnsafely: allow unsafe rehandshaking.
 	TLSRehandshakeUnsafely
 )
 
@@ -2130,16 +2131,16 @@ func (t TLSRehandshakeMode) String() string {
 type UnixSocketAddressType int
 
 const (
-	// UnixSocketAddressInvalid: invalid
+	// UnixSocketAddressInvalid: invalid.
 	UnixSocketAddressInvalid UnixSocketAddressType = iota
-	// UnixSocketAddressAnonymous: anonymous
+	// UnixSocketAddressAnonymous: anonymous.
 	UnixSocketAddressAnonymous
-	// UnixSocketAddressPath: filesystem path
+	// UnixSocketAddressPath: filesystem path.
 	UnixSocketAddressPath
-	// UnixSocketAddressAbstract name
+	// UnixSocketAddressAbstract: abstract name.
 	UnixSocketAddressAbstract
 	// UnixSocketAddressAbstractPadded: abstract name, 0-padded to the full
-	// length of a unix socket name
+	// length of a unix socket name.
 	UnixSocketAddressAbstractPadded
 )
 
@@ -2170,11 +2171,11 @@ func (u UnixSocketAddressType) String() string {
 type ZlibCompressorFormat int
 
 const (
-	// ZlibCompressorFormatZlib: deflate compression with zlib header
+	// ZlibCompressorFormatZlib: deflate compression with zlib header.
 	ZlibCompressorFormatZlib ZlibCompressorFormat = iota
-	// ZlibCompressorFormatGzip file format
+	// ZlibCompressorFormatGzip: gzip file format.
 	ZlibCompressorFormatGzip
-	// ZlibCompressorFormatRaw: deflate compression with no header
+	// ZlibCompressorFormatRaw: deflate compression with no header.
 	ZlibCompressorFormatRaw
 )
 
@@ -2207,7 +2208,7 @@ const (
 	// AppInfoCreateSupportsURIs: application supports URI arguments.
 	AppInfoCreateSupportsURIs AppInfoCreateFlags = 0b10
 	// AppInfoCreateSupportsStartupNotification: application supports startup
-	// notification. Since 2.26
+	// notification. Since 2.26.
 	AppInfoCreateSupportsStartupNotification AppInfoCreateFlags = 0b100
 )
 
@@ -2256,7 +2257,7 @@ func (a AppInfoCreateFlags) Has(other AppInfoCreateFlags) bool {
 type ApplicationFlags int
 
 const (
-	// ApplicationFlagsNone: default
+	// ApplicationFlagsNone: default.
 	ApplicationFlagsNone ApplicationFlags = 0b0
 	// ApplicationIsService: run as a service. In this mode, registration fails
 	// if the service is already running, and the application will initially
@@ -2290,13 +2291,13 @@ const (
 	// Everything occurs in the local process. Since: 2.30.
 	ApplicationNonUnique ApplicationFlags = 0b100000
 	// ApplicationCanOverrideAppID: allow users to override the application ID
-	// from the command line with --gapplication-app-id. Since: 2.48
+	// from the command line with --gapplication-app-id. Since: 2.48.
 	ApplicationCanOverrideAppID ApplicationFlags = 0b1000000
 	// ApplicationAllowReplacement: allow another instance to take over the bus
-	// name. Since: 2.60
+	// name. Since: 2.60.
 	ApplicationAllowReplacement ApplicationFlags = 0b10000000
 	// ApplicationReplace: take over from another instance. This flag is usually
-	// set by passing --gapplication-replace on the commandline. Since: 2.60
+	// set by passing --gapplication-replace on the commandline. Since: 2.60.
 	ApplicationReplace ApplicationFlags = 0b100000000
 )
 
@@ -2368,7 +2369,7 @@ const (
 	AskPasswordSavingSupported AskPasswordFlags = 0b1000
 	// AskPasswordAnonymousSupported: operation supports anonymous users.
 	AskPasswordAnonymousSupported AskPasswordFlags = 0b10000
-	// AskPasswordTcrypt: operation takes TCRYPT parameters (Since: 2.58)
+	// AskPasswordTcrypt: operation takes TCRYPT parameters (Since: 2.58).
 	AskPasswordTcrypt AskPasswordFlags = 0b100000
 )
 
@@ -2432,7 +2433,7 @@ const (
 	BusNameOwnerFlagsReplace BusNameOwnerFlags = 0b10
 	// BusNameOwnerFlagsDoNotQueue: if another message bus connection owns the
 	// name, immediately return an error from g_bus_own_name() rather than
-	// entering the waiting queue for that name. (Since 2.54)
+	// entering the waiting queue for that name. (Since 2.54).
 	BusNameOwnerFlagsDoNotQueue BusNameOwnerFlags = 0b100
 )
 
@@ -2531,9 +2532,9 @@ type ConverterFlags int
 const (
 	// ConverterNoFlags: no flags.
 	ConverterNoFlags ConverterFlags = 0b0
-	// ConverterInputAtEnd: at end of input data
+	// ConverterInputAtEnd: at end of input data.
 	ConverterInputAtEnd ConverterFlags = 0b1
-	// ConverterFlush: flush data
+	// ConverterFlush: flush data.
 	ConverterFlush ConverterFlags = 0b10
 )
 
@@ -2702,7 +2703,7 @@ const (
 	DBusConnectionFlagsDelayMessageProcessing DBusConnectionFlags = 0b10000
 	// DBusConnectionFlagsAuthenticationRequireSameUser: when authenticating as
 	// a server, require the UID of the peer to be the same as the UID of the
-	// server. (Since: 2.68)
+	// server. (Since: 2.68).
 	DBusConnectionFlagsAuthenticationRequireSameUser DBusConnectionFlags = 0b100000
 )
 
@@ -3107,7 +3108,7 @@ const (
 	DBusServerFlagsAuthenticationAllowAnonymous DBusServerFlags = 0b10
 	// DBusServerFlagsAuthenticationRequireSameUser: require the UID of the peer
 	// to be the same as the UID of the server when authenticating. (Since:
-	// 2.68)
+	// 2.68).
 	DBusServerFlagsAuthenticationRequireSameUser DBusServerFlags = 0b100
 )
 
@@ -3364,7 +3365,7 @@ type FileCopyFlags int
 const (
 	// FileCopyNone: no flags set.
 	FileCopyNone FileCopyFlags = 0b0
-	// FileCopyOverwrite: overwrite any existing files
+	// FileCopyOverwrite: overwrite any existing files.
 	FileCopyOverwrite FileCopyFlags = 0b1
 	// FileCopyBackup: make a backup of any existing files.
 	FileCopyBackup FileCopyFlags = 0b10
@@ -3444,7 +3445,7 @@ const (
 	// it as "unlink destination" before writing to it, although the
 	// implementation may not be exactly like that. This flag can only be used
 	// with g_file_replace() and its variants, including
-	// g_file_replace_contents(). Since 2.20
+	// g_file_replace_contents(). Since 2.20.
 	FileCreateReplaceDestination FileCreateFlags = 0b10
 )
 
@@ -4161,9 +4162,9 @@ const (
 	// identity of the site that it was retrieved from.
 	TLSCertificateBadIdentity TLSCertificateFlags = 0b10
 	// TLSCertificateNotActivated certificate's activation time is still in the
-	// future
+	// future.
 	TLSCertificateNotActivated TLSCertificateFlags = 0b100
-	// TLSCertificateExpired: certificate has expired
+	// TLSCertificateExpired: certificate has expired.
 	TLSCertificateExpired TLSCertificateFlags = 0b1000
 	// TLSCertificateRevoked: certificate has been revoked according to the
 	// Connection's certificate revocation list.
@@ -4171,9 +4172,9 @@ const (
 	// TLSCertificateInsecure certificate's algorithm is considered insecure.
 	TLSCertificateInsecure TLSCertificateFlags = 0b100000
 	// TLSCertificateGenericError: some other error occurred validating the
-	// certificate
+	// certificate.
 	TLSCertificateGenericError TLSCertificateFlags = 0b1000000
-	// TLSCertificateValidateAll: combination of all of the above flags
+	// TLSCertificateValidateAll: combination of all of the above flags.
 	TLSCertificateValidateAll TLSCertificateFlags = 0b1111111
 )
 
@@ -4230,7 +4231,7 @@ func (t TLSCertificateFlags) Has(other TLSCertificateFlags) bool {
 type TLSDatabaseVerifyFlags int
 
 const (
-	// TLSDatabaseVerifyNone: no verification flags
+	// TLSDatabaseVerifyNone: no verification flags.
 	TLSDatabaseVerifyNone TLSDatabaseVerifyFlags = 0b0
 )
 
@@ -4273,7 +4274,7 @@ func (t TLSDatabaseVerifyFlags) Has(other TLSDatabaseVerifyFlags) bool {
 type TLSPasswordFlags int
 
 const (
-	// TLSPasswordNone: no flags
+	// TLSPasswordNone: no flags.
 	TLSPasswordNone TLSPasswordFlags = 0b0
 	// TLSPasswordRetry: password was wrong, and the user should retry.
 	TLSPasswordRetry TLSPasswordFlags = 0b10

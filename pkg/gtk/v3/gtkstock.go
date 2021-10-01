@@ -788,21 +788,21 @@ func (s *StockItem) Label() string {
 	return v
 }
 
-// Modifier type for keyboard accelerator
+// Modifier type for keyboard accelerator.
 func (s *StockItem) Modifier() gdk.ModifierType {
 	var v gdk.ModifierType // out
 	v = gdk.ModifierType(s.native.modifier)
 	return v
 }
 
-// Keyval: keyboard accelerator
+// Keyval: keyboard accelerator.
 func (s *StockItem) Keyval() uint {
 	var v uint // out
 	v = uint(s.native.keyval)
 	return v
 }
 
-// TranslationDomain: translation domain of the menu or toolbar item
+// TranslationDomain: translation domain of the menu or toolbar item.
 func (s *StockItem) TranslationDomain() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.translation_domain)))

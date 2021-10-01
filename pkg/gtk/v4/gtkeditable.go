@@ -216,7 +216,7 @@ type Editabler interface {
 	Delegate() Editabler
 	// Editable retrieves whether editable is editable.
 	Editable() bool
-	// EnableUndo gets if undo/redo actions are enabled for editable
+	// EnableUndo gets if undo/redo actions are enabled for editable.
 	EnableUndo() bool
 	// MaxWidthChars retrieves the desired maximum width of editable, in
 	// characters.
@@ -428,7 +428,7 @@ func (editable *Editable) Editable() bool {
 	return _ok
 }
 
-// EnableUndo gets if undo/redo actions are enabled for editable
+// EnableUndo gets if undo/redo actions are enabled for editable.
 func (editable *Editable) EnableUndo() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in

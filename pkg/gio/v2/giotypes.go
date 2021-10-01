@@ -1056,7 +1056,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	return _srvTarget
 }
 
-// Copy copies target
+// Copy copies target.
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
@@ -1082,7 +1082,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 // Hostname gets target's hostname (in ASCII form; if you are going to present
 // this to the user, you should use g_hostname_is_ascii_encoded() to check if it
 // contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
-// it if it does.)
+// it if it does.).
 func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
@@ -1099,7 +1099,7 @@ func (target *SrvTarget) Hostname() string {
 	return _utf8
 }
 
-// Port gets target's port
+// Port gets target's port.
 func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in

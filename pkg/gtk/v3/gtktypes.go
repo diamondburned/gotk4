@@ -1272,7 +1272,7 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 	return _gint
 }
 
-// Copy returns a copy of path
+// Copy returns a copy of path.
 func (path *WidgetPath) Copy() *WidgetPath {
 	var _arg0 *C.GtkWidgetPath // out
 	var _cret *C.GtkWidgetPath // in
@@ -1434,7 +1434,7 @@ func (path *WidgetPath) IterClearRegions(pos int) {
 }
 
 // IterGetName returns the name corresponding to the widget found at the
-// position pos in the widget hierarchy defined by path
+// position pos in the widget hierarchy defined by path.
 func (path *WidgetPath) IterGetName(pos int) string {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1552,7 +1552,7 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 }
 
 // IterGetState returns the state flags corresponding to the widget found at the
-// position pos in the widget hierarchy defined by path
+// position pos in the widget hierarchy defined by path.
 func (path *WidgetPath) IterGetState(pos int) StateFlags {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out
@@ -1900,7 +1900,7 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 //
 // Setting a flag
 //
-//    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);
+//    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);.
 func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 C.gint           // out

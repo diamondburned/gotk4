@@ -123,7 +123,7 @@ func (p PrintOperationAction) String() string {
 type PrintOperationResult int
 
 const (
-	// PrintOperationResultError has occurred.
+	// PrintOperationResultError: error has occurred.
 	PrintOperationResultError PrintOperationResult = iota
 	// PrintOperationResultApply: print settings should be stored.
 	PrintOperationResultApply

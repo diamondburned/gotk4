@@ -80,7 +80,7 @@ type DBusProxyOverrider interface {
 //
 // An example using a proxy for a well-known name can be found in
 // gdbus-example-watch-proxy.c
-// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c).
 type DBusProxy struct {
 	*externglib.Object
 

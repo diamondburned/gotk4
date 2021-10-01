@@ -29,11 +29,11 @@ func init() {
 type ButtonRole int
 
 const (
-	// ButtonRoleNormal: plain button
+	// ButtonRoleNormal: plain button.
 	ButtonRoleNormal ButtonRole = iota
-	// ButtonRoleCheck button
+	// ButtonRoleCheck: check button.
 	ButtonRoleCheck
-	// ButtonRoleRadio button
+	// ButtonRoleRadio: radio button.
 	ButtonRoleRadio
 )
 

@@ -37,7 +37,7 @@ type PixbufFormatFlags int
 const (
 	// PixbufFormatWritable: module can write out images in the format.
 	PixbufFormatWritable PixbufFormatFlags = 0b1
-	// PixbufFormatScalable: image format is scalable
+	// PixbufFormatScalable: image format is scalable.
 	PixbufFormatScalable PixbufFormatFlags = 0b10
 	// PixbufFormatThreadsafe: module is threadsafe. gdk-pixbuf ignores modules
 	// that are not marked as threadsafe. (Since 2.28).

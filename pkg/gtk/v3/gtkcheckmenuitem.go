@@ -171,7 +171,7 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	return _ok
 }
 
-// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem
+// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem.
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -225,7 +225,7 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	runtime.KeepAlive(isActive)
 }
 
-// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem
+// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem.
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out

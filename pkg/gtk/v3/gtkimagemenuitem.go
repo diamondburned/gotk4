@@ -47,7 +47,7 @@ func init() {
 //
 //      gtk_container_add (GTK_CONTAINER (menu_item), box);
 //
-//      gtk_widget_show_all (menu_item);
+//      gtk_widget_show_all (menu_item);.
 type ImageMenuItem struct {
 	MenuItem
 }

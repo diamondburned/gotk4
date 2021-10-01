@@ -286,7 +286,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 // not at the start of the line, iter is snapped to the start of the line and
 // the function returns TRUE. (Note that this implies that in a loop calling
 // this function, the line number may not change on every iteration, if your
-// first iteration is on line 0.)
+// first iteration is on line 0.).
 func (iter *TextIter) BackwardLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -507,7 +507,7 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 // at the start of the line, iter is snapped to the start of the line and the
 // function returns TRUE. (Note that this implies that in a loop calling this
 // function, the line number may not change on every iteration, if your first
-// iteration is on line 0.)
+// iteration is on line 0.).
 func (iter *TextIter) BackwardVisibleLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -610,7 +610,7 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 // that.
 //
 // Word breaks are determined by Pango and should be correct for nearly any
-// language
+// language.
 func (iter *TextIter) BackwardWordStart() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -1364,7 +1364,7 @@ func (iter *TextIter) ForwardVisibleLines(count int) bool {
 // If iter is currently on a word end, moves forward to the next one after that.
 //
 // Word breaks are determined by Pango and should be correct for nearly any
-// language
+// language.
 func (iter *TextIter) ForwardVisibleWordEnd() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -2305,7 +2305,7 @@ func (iter *TextIter) StartsWord() bool {
 // iter.
 //
 // This is equivalent to (gtk_text_iter_starts_tag() ||
-// gtk_text_iter_ends_tag())
+// gtk_text_iter_ends_tag()).
 func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out

@@ -39,9 +39,9 @@ func init() {
 type TreeModelFlags int
 
 const (
-	// TreeModelItersPersist iterators survive all signals emitted by the tree
+	// TreeModelItersPersist iterators survive all signals emitted by the tree.
 	TreeModelItersPersist TreeModelFlags = 0b1
-	// TreeModelListOnly: model is a list only, and never has children
+	// TreeModelListOnly: model is a list only, and never has children.
 	TreeModelListOnly TreeModelFlags = 0b10
 )
 
@@ -156,7 +156,7 @@ type TreeModelOverrider interface {
 	// called.
 	//
 	// If parent is NULL returns the first node, equivalent to
-	// gtk_tree_model_get_iter_first (tree_model, iter);
+	// gtk_tree_model_get_iter_first (tree_model, iter);.
 	IterChildren(parent *TreeIter) (TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
@@ -774,7 +774,7 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 // parent will remain a valid node after this function has been called.
 //
 // If parent is NULL returns the first node, equivalent to
-// gtk_tree_model_get_iter_first (tree_model, iter);
+// gtk_tree_model_get_iter_first (tree_model, iter);.
 func (treeModel *TreeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
@@ -1131,28 +1131,28 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 	return &TreeIter{&treeIter{(*C.GtkTreeIter)(unsafe.Pointer(b))}}, nil
 }
 
-// Stamp: unique stamp to catch invalid iterators
+// Stamp: unique stamp to catch invalid iterators.
 func (t *TreeIter) Stamp() int {
 	var v int // out
 	v = int(t.native.stamp)
 	return v
 }
 
-// UserData: model-specific data
+// UserData: model-specific data.
 func (t *TreeIter) UserData() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(t.native.user_data))
 	return v
 }
 
-// UserData2: model-specific data
+// UserData2: model-specific data.
 func (t *TreeIter) UserData2() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(t.native.user_data2))
 	return v
 }
 
-// UserData3: model-specific data
+// UserData3: model-specific data.
 func (t *TreeIter) UserData3() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(t.native.user_data3))

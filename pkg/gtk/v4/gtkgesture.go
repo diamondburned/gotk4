@@ -113,7 +113,7 @@ func init() {
 // to enable this support are:
 //
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
-// GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the GtkGesture
+// GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the GtkGesture.
 type Gesture struct {
 	EventController
 }
@@ -133,7 +133,7 @@ type Gesturer interface {
 	// Device returns the logical GdkDevice that is currently operating on
 	// gesture.
 	Device() gdk.Devicer
-	// GetGroup returns all gestures in the group of gesture
+	// GetGroup returns all gestures in the group of gesture.
 	GetGroup() []Gesturer
 	// LastEvent returns the last event that was processed for sequence.
 	LastEvent(sequence *gdk.EventSequence) gdk.Eventer
@@ -275,7 +275,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 	return _device
 }
 
-// GetGroup returns all gestures in the group of gesture
+// GetGroup returns all gestures in the group of gesture.
 func (gesture *Gesture) GetGroup() []Gesturer {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GList      // in

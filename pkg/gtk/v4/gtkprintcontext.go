@@ -86,7 +86,7 @@ func init() {
 //      cairo_fill (cr);
 //
 //      g_object_unref (layout);
-//    }
+//    }.
 type PrintContext struct {
 	*externglib.Object
 }

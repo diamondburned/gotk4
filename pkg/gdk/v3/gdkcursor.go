@@ -35,166 +35,166 @@ func init() {
 type CursorType int
 
 const (
-	// XCursor: ! (X_cursor.png)
+	// XCursor: ! (X_cursor.png).
 	XCursor CursorType = 0
-	// Arrow: ! (arrow.png)
+	// Arrow: ! (arrow.png).
 	Arrow CursorType = 2
-	// BasedArrowDown: ! (based_arrow_down.png)
+	// BasedArrowDown: ! (based_arrow_down.png).
 	BasedArrowDown CursorType = 4
-	// BasedArrowUp: ! (based_arrow_up.png)
+	// BasedArrowUp: ! (based_arrow_up.png).
 	BasedArrowUp CursorType = 6
-	// Boat: ! (boat.png)
+	// Boat: ! (boat.png).
 	Boat CursorType = 8
-	// Bogosity: ! (bogosity.png)
+	// Bogosity: ! (bogosity.png).
 	Bogosity CursorType = 10
-	// BottomLeftCorner: ! (bottom_left_corner.png)
+	// BottomLeftCorner: ! (bottom_left_corner.png).
 	BottomLeftCorner CursorType = 12
-	// BottomRightCorner: ! (bottom_right_corner.png)
+	// BottomRightCorner: ! (bottom_right_corner.png).
 	BottomRightCorner CursorType = 14
-	// BottomSide: ! (bottom_side.png)
+	// BottomSide: ! (bottom_side.png).
 	BottomSide CursorType = 16
-	// BottomTee: ! (bottom_tee.png)
+	// BottomTee: ! (bottom_tee.png).
 	BottomTee CursorType = 18
-	// BoxSpiral: ! (box_spiral.png)
+	// BoxSpiral: ! (box_spiral.png).
 	BoxSpiral CursorType = 20
-	// CenterPtr: ! (center_ptr.png)
+	// CenterPtr: ! (center_ptr.png).
 	CenterPtr CursorType = 22
-	// Circle: ! (circle.png)
+	// Circle: ! (circle.png).
 	Circle CursorType = 24
-	// Clock: ! (clock.png)
+	// Clock: ! (clock.png).
 	Clock CursorType = 26
-	// CoffeeMug: ! (coffee_mug.png)
+	// CoffeeMug: ! (coffee_mug.png).
 	CoffeeMug CursorType = 28
-	// Cross: ! (cross.png)
+	// Cross: ! (cross.png).
 	Cross CursorType = 30
-	// CrossReverse: ! (cross_reverse.png)
+	// CrossReverse: ! (cross_reverse.png).
 	CrossReverse CursorType = 32
-	// Crosshair: ! (crosshair.png)
+	// Crosshair: ! (crosshair.png).
 	Crosshair CursorType = 34
-	// DiamondCross: ! (diamond_cross.png)
+	// DiamondCross: ! (diamond_cross.png).
 	DiamondCross CursorType = 36
-	// Dot: ! (dot.png)
+	// Dot: ! (dot.png).
 	Dot CursorType = 38
-	// Dotbox: ! (dotbox.png)
+	// Dotbox: ! (dotbox.png).
 	Dotbox CursorType = 40
-	// DoubleArrow: ! (double_arrow.png)
+	// DoubleArrow: ! (double_arrow.png).
 	DoubleArrow CursorType = 42
-	// DraftLarge: ! (draft_large.png)
+	// DraftLarge: ! (draft_large.png).
 	DraftLarge CursorType = 44
-	// DraftSmall: ! (draft_small.png)
+	// DraftSmall: ! (draft_small.png).
 	DraftSmall CursorType = 46
-	// DrapedBox: ! (draped_box.png)
+	// DrapedBox: ! (draped_box.png).
 	DrapedBox CursorType = 48
-	// Exchange: ! (exchange.png)
+	// Exchange: ! (exchange.png).
 	Exchange CursorType = 50
-	// Fleur: ! (fleur.png)
+	// Fleur: ! (fleur.png).
 	Fleur CursorType = 52
-	// Gobbler: ! (gobbler.png)
+	// Gobbler: ! (gobbler.png).
 	Gobbler CursorType = 54
-	// Gumby: ! (gumby.png)
+	// Gumby: ! (gumby.png).
 	Gumby CursorType = 56
-	// Hand1: ! (hand1.png)
+	// Hand1: ! (hand1.png).
 	Hand1 CursorType = 58
-	// Hand2: ! (hand2.png)
+	// Hand2: ! (hand2.png).
 	Hand2 CursorType = 60
-	// Heart: ! (heart.png)
+	// Heart: ! (heart.png).
 	Heart CursorType = 62
-	// Icon: ! (icon.png)
+	// Icon: ! (icon.png).
 	Icon CursorType = 64
-	// IronCross: ! (iron_cross.png)
+	// IronCross: ! (iron_cross.png).
 	IronCross CursorType = 66
-	// LeftPtr: ! (left_ptr.png)
+	// LeftPtr: ! (left_ptr.png).
 	LeftPtr CursorType = 68
-	// LeftSide: ! (left_side.png)
+	// LeftSide: ! (left_side.png).
 	LeftSide CursorType = 70
-	// LeftTee: ! (left_tee.png)
+	// LeftTee: ! (left_tee.png).
 	LeftTee CursorType = 72
-	// Leftbutton: ! (leftbutton.png)
+	// Leftbutton: ! (leftbutton.png).
 	Leftbutton CursorType = 74
-	// LlAngle: ! (ll_angle.png)
+	// LlAngle: ! (ll_angle.png).
 	LlAngle CursorType = 76
-	// LrAngle: ! (lr_angle.png)
+	// LrAngle: ! (lr_angle.png).
 	LrAngle CursorType = 78
-	// Man: ! (man.png)
+	// Man: ! (man.png).
 	Man CursorType = 80
-	// Middlebutton: ! (middlebutton.png)
+	// Middlebutton: ! (middlebutton.png).
 	Middlebutton CursorType = 82
-	// Mouse: ! (mouse.png)
+	// Mouse: ! (mouse.png).
 	Mouse CursorType = 84
-	// Pencil: ! (pencil.png)
+	// Pencil: ! (pencil.png).
 	Pencil CursorType = 86
-	// Pirate: ! (pirate.png)
+	// Pirate: ! (pirate.png).
 	Pirate CursorType = 88
-	// Plus: ! (plus.png)
+	// Plus: ! (plus.png).
 	Plus CursorType = 90
-	// QuestionArrow: ! (question_arrow.png)
+	// QuestionArrow: ! (question_arrow.png).
 	QuestionArrow CursorType = 92
-	// RightPtr: ! (right_ptr.png)
+	// RightPtr: ! (right_ptr.png).
 	RightPtr CursorType = 94
-	// RightSide: ! (right_side.png)
+	// RightSide: ! (right_side.png).
 	RightSide CursorType = 96
-	// RightTee: ! (right_tee.png)
+	// RightTee: ! (right_tee.png).
 	RightTee CursorType = 98
-	// Rightbutton: ! (rightbutton.png)
+	// Rightbutton: ! (rightbutton.png).
 	Rightbutton CursorType = 100
-	// RTLLogo: ! (rtl_logo.png)
+	// RTLLogo: ! (rtl_logo.png).
 	RTLLogo CursorType = 102
-	// Sailboat: ! (sailboat.png)
+	// Sailboat: ! (sailboat.png).
 	Sailboat CursorType = 104
-	// SbDownArrow: ! (sb_down_arrow.png)
+	// SbDownArrow: ! (sb_down_arrow.png).
 	SbDownArrow CursorType = 106
-	// SbHDoubleArrow: ! (sb_h_double_arrow.png)
+	// SbHDoubleArrow: ! (sb_h_double_arrow.png).
 	SbHDoubleArrow CursorType = 108
-	// SbLeftArrow: ! (sb_left_arrow.png)
+	// SbLeftArrow: ! (sb_left_arrow.png).
 	SbLeftArrow CursorType = 110
-	// SbRightArrow: ! (sb_right_arrow.png)
+	// SbRightArrow: ! (sb_right_arrow.png).
 	SbRightArrow CursorType = 112
-	// SbUpArrow: ! (sb_up_arrow.png)
+	// SbUpArrow: ! (sb_up_arrow.png).
 	SbUpArrow CursorType = 114
-	// SbVDoubleArrow: ! (sb_v_double_arrow.png)
+	// SbVDoubleArrow: ! (sb_v_double_arrow.png).
 	SbVDoubleArrow CursorType = 116
-	// Shuttle: ! (shuttle.png)
+	// Shuttle: ! (shuttle.png).
 	Shuttle CursorType = 118
-	// Sizing: ! (sizing.png)
+	// Sizing: ! (sizing.png).
 	Sizing CursorType = 120
-	// Spider: ! (spider.png)
+	// Spider: ! (spider.png).
 	Spider CursorType = 122
-	// Spraycan: ! (spraycan.png)
+	// Spraycan: ! (spraycan.png).
 	Spraycan CursorType = 124
-	// Star: ! (star.png)
+	// Star: ! (star.png).
 	Star CursorType = 126
-	// Target: ! (target.png)
+	// Target: ! (target.png).
 	Target CursorType = 128
-	// Tcross: ! (tcross.png)
+	// Tcross: ! (tcross.png).
 	Tcross CursorType = 130
-	// TopLeftArrow: ! (top_left_arrow.png)
+	// TopLeftArrow: ! (top_left_arrow.png).
 	TopLeftArrow CursorType = 132
-	// TopLeftCorner: ! (top_left_corner.png)
+	// TopLeftCorner: ! (top_left_corner.png).
 	TopLeftCorner CursorType = 134
-	// TopRightCorner: ! (top_right_corner.png)
+	// TopRightCorner: ! (top_right_corner.png).
 	TopRightCorner CursorType = 136
-	// TopSide: ! (top_side.png)
+	// TopSide: ! (top_side.png).
 	TopSide CursorType = 138
-	// TopTee: ! (top_tee.png)
+	// TopTee: ! (top_tee.png).
 	TopTee CursorType = 140
-	// Trek: ! (trek.png)
+	// Trek: ! (trek.png).
 	Trek CursorType = 142
-	// UlAngle: ! (ul_angle.png)
+	// UlAngle: ! (ul_angle.png).
 	UlAngle CursorType = 144
-	// Umbrella: ! (umbrella.png)
+	// Umbrella: ! (umbrella.png).
 	Umbrella CursorType = 146
-	// UrAngle: ! (ur_angle.png)
+	// UrAngle: ! (ur_angle.png).
 	UrAngle CursorType = 148
-	// Watch: ! (watch.png)
+	// Watch: ! (watch.png).
 	Watch CursorType = 150
-	// Xterm: ! (xterm.png)
+	// Xterm: ! (xterm.png).
 	Xterm CursorType = 152
-	// LastCursor: last cursor type
+	// LastCursor: last cursor type.
 	LastCursor CursorType = 153
-	// BlankCursor: blank cursor. Since 2.16
+	// BlankCursor: blank cursor. Since 2.16.
 	BlankCursor CursorType = -2
 	// CursorIsPixmap: type of cursors constructed with
-	// gdk_cursor_new_from_pixbuf()
+	// gdk_cursor_new_from_pixbuf().
 	CursorIsPixmap CursorType = -1
 )
 
@@ -522,7 +522,7 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 //
 // - ! (zoom_in_cursor.png) "zoom-in"
 //
-// - ! (zoom_out_cursor.png) "zoom-out"
+// - ! (zoom_out_cursor.png) "zoom-out".
 func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out

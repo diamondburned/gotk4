@@ -46,7 +46,7 @@ func init() {
 //        <column type="gchararray"/>
 //        <column type="gint"/>
 //      </columns>
-//    </object>
+//    </object>.
 type TreeStore struct {
 	*externglib.Object
 
@@ -135,7 +135,7 @@ func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
 	return _iter
 }
 
-// Clear removes all rows from tree_store
+// Clear removes all rows from tree_store.
 func (treeStore *TreeStore) Clear() {
 	var _arg0 *C.GtkTreeStore // out
 

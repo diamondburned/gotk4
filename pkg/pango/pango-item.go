@@ -49,14 +49,14 @@ type analysis struct {
 	native *C.PangoAnalysis
 }
 
-// ShapeEngine: unused
+// ShapeEngine: unused.
 func (a *Analysis) ShapeEngine() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(a.native.shape_engine))
 	return v
 }
 
-// LangEngine: unused
+// LangEngine: unused.
 func (a *Analysis) LangEngine() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(a.native.lang_engine))

@@ -89,9 +89,9 @@ func (l LogWriterOutput) String() string {
 type LogLevelFlags int
 
 const (
-	// LogFlagRecursion: internal flag
+	// LogFlagRecursion: internal flag.
 	LogFlagRecursion LogLevelFlags = 0b1
-	// LogFlagFatal: internal flag
+	// LogFlagFatal: internal flag.
 	LogFlagFatal LogLevelFlags = 0b10
 	// LogLevelError: log level for errors, see g_error(). This level is also
 	// used for messages produced by g_assert().
@@ -100,15 +100,15 @@ const (
 	// g_critical(). This level is also used for messages produced by
 	// g_return_if_fail() and g_return_val_if_fail().
 	LogLevelCritical LogLevelFlags = 0b1000
-	// LogLevelWarning: log level for warnings, see g_warning()
+	// LogLevelWarning: log level for warnings, see g_warning().
 	LogLevelWarning LogLevelFlags = 0b10000
-	// LogLevelMessage: log level for messages, see g_message()
+	// LogLevelMessage: log level for messages, see g_message().
 	LogLevelMessage LogLevelFlags = 0b100000
-	// LogLevelInfo: log level for informational messages, see g_info()
+	// LogLevelInfo: log level for informational messages, see g_info().
 	LogLevelInfo LogLevelFlags = 0b1000000
-	// LogLevelDebug: log level for debug messages, see g_debug()
+	// LogLevelDebug: log level for debug messages, see g_debug().
 	LogLevelDebug LogLevelFlags = 0b10000000
-	// LogLevelMask: mask including all log levels
+	// LogLevelMask: mask including all log levels.
 	LogLevelMask LogLevelFlags = -4
 )
 
@@ -547,7 +547,7 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 //
 //          g_debug ("my_object result: s", result);
 //          g_free (result);
-//        }
+//        }.
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.char          // out
@@ -622,7 +622,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 // Invalid file descriptors are accepted and return FALSE, which allows for the
 // following construct without needing any additional error handling:
 //
-//    is_journald = g_log_writer_is_journald (fileno (stderr));
+//    is_journald = g_log_writer_is_journald (fileno (stderr));.
 func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -764,7 +764,7 @@ type logField struct {
 	native *C.GLogField
 }
 
-// Key: field name (UTF-8 string)
+// Key: field name (UTF-8 string).
 func (l *LogField) Key() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(l.native.key)))

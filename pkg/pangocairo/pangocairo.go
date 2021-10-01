@@ -82,7 +82,7 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 }
 
 // ContextGetResolution gets the resolution for the context. See
-// pangocairo.ContextSetResolution()
+// pangocairo.ContextSetResolution().
 func ContextGetResolution(context *pango.Context) float64 {
 	var _arg1 *C.PangoContext // out
 	var _cret C.double        // in

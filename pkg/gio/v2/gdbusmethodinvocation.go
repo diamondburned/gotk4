@@ -25,7 +25,7 @@ import "C"
 // instead, often written like this:
 //
 //    g_dbus_method_invocation_return_error (invocation, ...);
-//    return TRUE;    // handled
+//    return TRUE;    // handled.
 const DBUS_METHOD_INVOCATION_HANDLED = true
 
 // DBUS_METHOD_INVOCATION_UNHANDLED: value returned by handlers of the signals

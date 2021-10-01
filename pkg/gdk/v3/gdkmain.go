@@ -97,7 +97,7 @@ func ErrorTrapPopIgnored() {
 //    if (gdk_error_trap_pop ())
 //     {
 //       // ... Handle the error here ...
-//     }
+//     }.
 func ErrorTrapPush() {
 	C.gdk_error_trap_push()
 }

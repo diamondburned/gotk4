@@ -82,13 +82,13 @@ func (i IOChannelError) String() string {
 type IOError int
 
 const (
-	// IOErrorNone: no error
+	// IOErrorNone: no error.
 	IOErrorNone IOError = iota
-	// IOErrorAgain: EAGAIN error occurred
+	// IOErrorAgain: EAGAIN error occurred.
 	IOErrorAgain
-	// IOErrorInval: EINVAL error occurred
+	// IOErrorInval: EINVAL error occurred.
 	IOErrorInval
-	// IOErrorUnknown: another error occurred
+	// IOErrorUnknown: another error occurred.
 	IOErrorUnknown
 )
 
@@ -112,7 +112,7 @@ func (i IOError) String() string {
 type IOStatus int
 
 const (
-	// IOStatusError occurred.
+	// IOStatusError: error occurred.
 	IOStatusError IOStatus = iota
 	// IOStatusNormal: success.
 	IOStatusNormal
@@ -147,7 +147,7 @@ const (
 	SeekCur SeekType = iota
 	// SeekSet: start of the file.
 	SeekSet
-	// SeekEnd of the file.
+	// SeekEnd: end of the file.
 	SeekEnd
 )
 
@@ -172,10 +172,10 @@ type IOFlags int
 
 const (
 	// IOFlagAppend turns on append mode, corresponds to O_APPEND (see the
-	// documentation of the UNIX open() syscall)
+	// documentation of the UNIX open() syscall).
 	IOFlagAppend IOFlags = 0b1
 	// IOFlagNonblock turns on nonblocking mode, corresponds to
-	// O_NONBLOCK/O_NDELAY (see the documentation of the UNIX open() syscall)
+	// O_NONBLOCK/O_NDELAY (see the documentation of the UNIX open() syscall).
 	IOFlagNonblock IOFlags = 0b10
 	// IOFlagIsReadable indicates that the io channel is readable. This flag
 	// cannot be changed.
@@ -185,19 +185,19 @@ const (
 	IOFlagIsWritable IOFlags = 0b1000
 	// IOFlagIsWriteable: misspelled version of G_IO_FLAG_IS_WRITABLE that
 	// existed before the spelling was fixed in GLib 2.30. It is kept here for
-	// compatibility reasons. Deprecated since 2.30
+	// compatibility reasons. Deprecated since 2.30.
 	IOFlagIsWriteable IOFlags = 0b1000
 	// IOFlagIsSeekable indicates that the io channel is seekable, i.e. that
 	// g_io_channel_seek_position() can be used on it. This flag cannot be
 	// changed.
 	IOFlagIsSeekable IOFlags = 0b10000
-	// IOFlagMask that specifies all the valid flags.
+	// IOFlagMask: mask that specifies all the valid flags.
 	IOFlagMask IOFlags = 0b11111
 	// IOFlagGetMask: mask of the flags that are returned from
-	// g_io_channel_get_flags()
+	// g_io_channel_get_flags().
 	IOFlagGetMask IOFlags = 0b11111
 	// IOFlagSetMask: mask of the flags that the user can modify with
-	// g_io_channel_set_flags()
+	// g_io_channel_set_flags().
 	IOFlagSetMask IOFlags = 0b11
 )
 

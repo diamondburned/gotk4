@@ -42,11 +42,11 @@ type LayoutRun = GlyphItem
 type Alignment int
 
 const (
-	// AlignLeft: put all available space on the right
+	// AlignLeft: put all available space on the right.
 	AlignLeft Alignment = iota
-	// AlignCenter: center the line within the available space
+	// AlignCenter: center the line within the available space.
 	AlignCenter
-	// AlignRight: put all available space on the left
+	// AlignRight: put all available space on the left.
 	AlignRight
 )
 
@@ -76,13 +76,13 @@ func (a Alignment) String() string {
 type EllipsizeMode int
 
 const (
-	// EllipsizeNone: no ellipsization
+	// EllipsizeNone: no ellipsization.
 	EllipsizeNone EllipsizeMode = iota
-	// EllipsizeStart: omit characters at the start of the text
+	// EllipsizeStart: omit characters at the start of the text.
 	EllipsizeStart
-	// EllipsizeMiddle: omit characters in the middle of the text
+	// EllipsizeMiddle: omit characters in the middle of the text.
 	EllipsizeMiddle
-	// EllipsizeEnd: omit characters at the end of the text
+	// EllipsizeEnd: omit characters at the end of the text.
 	EllipsizeEnd
 )
 
@@ -2041,21 +2041,21 @@ func marshalLayoutLine(p uintptr) (interface{}, error) {
 	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(unsafe.Pointer(b))}}, nil
 }
 
-// Layout: layout this line belongs to, might be NULL
+// Layout: layout this line belongs to, might be NULL.
 func (l *LayoutLine) Layout() *Layout {
 	var v *Layout // out
 	v = wrapLayout(externglib.Take(unsafe.Pointer(l.native.layout)))
 	return v
 }
 
-// StartIndex: start of line as byte index into layout->text
+// StartIndex: start of line as byte index into layout->text.
 func (l *LayoutLine) StartIndex() int {
 	var v int // out
 	v = int(l.native.start_index)
 	return v
 }
 
-// Length: length of line in bytes
+// Length: length of line in bytes.
 func (l *LayoutLine) Length() int {
 	var v int // out
 	v = int(l.native.length)

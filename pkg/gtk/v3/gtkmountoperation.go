@@ -45,7 +45,7 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 	return wrapMountOperation(obj), nil
 }
 
-// NewMountOperation creates a new MountOperation
+// NewMountOperation creates a new MountOperation.
 func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
@@ -64,7 +64,7 @@ func NewMountOperation(parent *Window) *MountOperation {
 	return _mountOperation
 }
 
-// Parent gets the transient parent used by the MountOperation
+// Parent gets the transient parent used by the MountOperation.
 func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in

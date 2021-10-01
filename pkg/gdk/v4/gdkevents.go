@@ -163,7 +163,7 @@ const (
 	DragMotion
 	// DropStart: drop operation onto the surface has started.
 	DropStart
-	// Scroll wheel was turned
+	// Scroll: scroll wheel was turned.
 	Scroll
 	// GrabBroken: pointer or keyboard grab was broken.
 	GrabBroken
@@ -271,12 +271,12 @@ func (e EventType) String() string {
 type KeyMatch int
 
 const (
-	// KeyMatchNone: key event does not match
+	// KeyMatchNone: key event does not match.
 	KeyMatchNone KeyMatch = iota
 	// KeyMatchPartial: key event matches if keyboard state (specifically, the
-	// currently active group) is ignored
+	// currently active group) is ignored.
 	KeyMatchPartial
-	// KeyMatchExact: key event matches
+	// KeyMatchExact: key event matches.
 	KeyMatchExact
 )
 
@@ -321,7 +321,7 @@ const (
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
 	NotifyNonlinearVirtual
-	// NotifyUnknown type of enter/leave event occurred.
+	// NotifyUnknown: unknown type of enter/leave event occurred.
 	NotifyUnknown
 )
 
@@ -362,7 +362,7 @@ const (
 	// ScrollRight: surface is scrolled to the right.
 	ScrollRight
 	// ScrollSmooth: scrolling is determined by the delta values in scroll
-	// events. See gdk_scroll_event_get_deltas()
+	// events. See gdk_scroll_event_get_deltas().
 	ScrollSmooth
 )
 

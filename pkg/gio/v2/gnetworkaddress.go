@@ -132,7 +132,7 @@ func (addr *NetworkAddress) Hostname() string {
 	return _utf8
 }
 
-// Port gets addr's port number
+// Port gets addr's port number.
 func (addr *NetworkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
@@ -149,7 +149,7 @@ func (addr *NetworkAddress) Port() uint16 {
 	return _guint16
 }
 
-// Scheme gets addr's scheme
+// Scheme gets addr's scheme.
 func (addr *NetworkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -187,7 +187,7 @@ func (addr *NetworkAddress) Scheme() string {
 // (The port component of host_and_port can also be specified as a service name
 // rather than as a numeric port, but this functionality is deprecated, because
 // it depends on the contents of /etc/services, which is generally quite sparse
-// on platforms other than Linux.)
+// on platforms other than Linux.).
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out

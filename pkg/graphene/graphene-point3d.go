@@ -58,21 +58,21 @@ func NewPoint3DAlloc() *Point3D {
 	return _point3D
 }
 
-// X coordinate
+// X coordinate.
 func (p *Point3D) X() float32 {
 	var v float32 // out
 	v = float32(p.native.x)
 	return v
 }
 
-// Y coordinate
+// Y coordinate.
 func (p *Point3D) Y() float32 {
 	var v float32 // out
 	v = float32(p.native.y)
 	return v
 }
 
-// Z coordinate
+// Z coordinate.
 func (p *Point3D) Z() float32 {
 	var v float32 // out
 	v = float32(p.native.z)

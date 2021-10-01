@@ -53,7 +53,7 @@ import "C"
 //       if (self->idle_id)
 //         g_source_remove (self->idle_id);
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
-//    }
+//    }.
 func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.GSourceFunc // out
@@ -117,7 +117,7 @@ func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 //         g_source_remove (self->timeout_id);
 //
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
-//    }
+//    }.
 func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.guint       // out

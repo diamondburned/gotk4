@@ -36,17 +36,17 @@ func init() {
 type ButtonsType int
 
 const (
-	// ButtonsNone: no buttons at all
+	// ButtonsNone: no buttons at all.
 	ButtonsNone ButtonsType = iota
-	// ButtonsOK: OK button
+	// ButtonsOK: OK button.
 	ButtonsOK
-	// ButtonsClose: close button
+	// ButtonsClose: close button.
 	ButtonsClose
-	// ButtonsCancel: cancel button
+	// ButtonsCancel: cancel button.
 	ButtonsCancel
-	// ButtonsYesNo yes and No buttons
+	// ButtonsYesNo yes and No buttons.
 	ButtonsYesNo
-	// ButtonsOKCancel: OK and Cancel buttons
+	// ButtonsOKCancel: OK and Cancel buttons.
 	ButtonsOKCancel
 )
 

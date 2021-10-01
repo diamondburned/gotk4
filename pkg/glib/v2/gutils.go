@@ -27,23 +27,23 @@ import "C"
 type UserDirectory int
 
 const (
-	// UserDirectoryDesktop user's Desktop directory
+	// UserDirectoryDesktop user's Desktop directory.
 	UserDirectoryDesktop UserDirectory = iota
-	// UserDirectoryDocuments user's Documents directory
+	// UserDirectoryDocuments user's Documents directory.
 	UserDirectoryDocuments
-	// UserDirectoryDownload user's Downloads directory
+	// UserDirectoryDownload user's Downloads directory.
 	UserDirectoryDownload
-	// UserDirectoryMusic user's Music directory
+	// UserDirectoryMusic user's Music directory.
 	UserDirectoryMusic
-	// UserDirectoryPictures user's Pictures directory
+	// UserDirectoryPictures user's Pictures directory.
 	UserDirectoryPictures
-	// UserDirectoryPublicShare user's shared directory
+	// UserDirectoryPublicShare user's shared directory.
 	UserDirectoryPublicShare
-	// UserDirectoryTemplates user's Templates directory
+	// UserDirectoryTemplates user's Templates directory.
 	UserDirectoryTemplates
-	// UserDirectoryVideos user's Movies directory
+	// UserDirectoryVideos user's Movies directory.
 	UserDirectoryVideos
-	// UserNDirectories: number of enum values
+	// UserNDirectories: number of enum values.
 	UserNDirectories
 )
 
@@ -78,7 +78,7 @@ func (u UserDirectory) String() string {
 type FormatSizeFlags int
 
 const (
-	// FormatSizeDefault: behave the same as g_format_size()
+	// FormatSizeDefault: behave the same as g_format_size().
 	FormatSizeDefault FormatSizeFlags = 0b0
 	// FormatSizeLongFormat: include the exact number of bytes as part of the
 	// returned string. For example, "45.6 kB (45,612 bytes)".
@@ -830,14 +830,14 @@ type debugKey struct {
 	native *C.GDebugKey
 }
 
-// Key: string
+// Key: string.
 func (d *DebugKey) Key() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.key)))
 	return v
 }
 
-// Value: flag
+// Value: flag.
 func (d *DebugKey) Value() uint {
 	var v uint // out
 	v = uint(d.native.value)

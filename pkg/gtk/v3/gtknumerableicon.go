@@ -30,7 +30,7 @@ func init() {
 // It supports theming by taking font and color information from a provided
 // StyleContext; see gtk_numerable_icon_set_style_context().
 //
-// Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png)
+// Typical numerable icons: ! (numerableicon.png) ! (numerableicon2.png).
 type NumerableIcon struct {
 	gio.EmblemedIcon
 }

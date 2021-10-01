@@ -59,9 +59,9 @@ const (
 	AxisX
 	// AxisY axis is used as the y axis.
 	AxisY
-	// AxisDeltaX axis is used as the scroll x delta
+	// AxisDeltaX axis is used as the scroll x delta.
 	AxisDeltaX
-	// AxisDeltaY axis is used as the scroll y delta
+	// AxisDeltaY axis is used as the scroll y delta.
 	AxisDeltaY
 	// AxisPressure axis is used for pressure information.
 	AxisPressure
@@ -71,11 +71,11 @@ const (
 	AxisYtilt
 	// AxisWheel axis is used for wheel information.
 	AxisWheel
-	// AxisDistance axis is used for pen/tablet distance information
+	// AxisDistance axis is used for pen/tablet distance information.
 	AxisDistance
-	// AxisRotation axis is used for pen rotation information
+	// AxisRotation axis is used for pen rotation information.
 	AxisRotation
-	// AxisSlider axis is used for pen slider information
+	// AxisSlider axis is used for pen slider information.
 	AxisSlider
 	// AxisLast: constant equal to the numerically highest axis value.
 	AxisLast
@@ -123,15 +123,15 @@ func (a AxisUse) String() string {
 type GLError int
 
 const (
-	// GLErrorNotAvailable: openGL support is not available
+	// GLErrorNotAvailable: openGL support is not available.
 	GLErrorNotAvailable GLError = iota
-	// GLErrorUnsupportedFormat: requested visual format is not supported
+	// GLErrorUnsupportedFormat: requested visual format is not supported.
 	GLErrorUnsupportedFormat
-	// GLErrorUnsupportedProfile: requested profile is not supported
+	// GLErrorUnsupportedProfile: requested profile is not supported.
 	GLErrorUnsupportedProfile
-	// GLErrorCompilationFailed: shader compilation failed
+	// GLErrorCompilationFailed: shader compilation failed.
 	GLErrorCompilationFailed
-	// GLErrorLinkFailed: shader linking failed
+	// GLErrorLinkFailed: shader linking failed.
 	GLErrorLinkFailed
 )
 
@@ -223,7 +223,7 @@ const (
 	// VulkanErrorUnsupported: vulkan is not supported on this backend or has
 	// not been compiled in.
 	VulkanErrorUnsupported VulkanError = iota
-	// VulkanErrorNotAvailable: vulkan support is not available on this Surface
+	// VulkanErrorNotAvailable: vulkan support is not available on this Surface.
 	VulkanErrorNotAvailable
 )
 
@@ -247,27 +247,27 @@ func (v VulkanError) String() string {
 type AxisFlags int
 
 const (
-	// AxisFlagX: x axis is present
+	// AxisFlagX: x axis is present.
 	AxisFlagX AxisFlags = 0b10
-	// AxisFlagY: y axis is present
+	// AxisFlagY: y axis is present.
 	AxisFlagY AxisFlags = 0b100
-	// AxisFlagDeltaX: scroll X delta axis is present
+	// AxisFlagDeltaX: scroll X delta axis is present.
 	AxisFlagDeltaX AxisFlags = 0b1000
-	// AxisFlagDeltaY: scroll Y delta axis is present
+	// AxisFlagDeltaY: scroll Y delta axis is present.
 	AxisFlagDeltaY AxisFlags = 0b10000
-	// AxisFlagPressure: pressure axis is present
+	// AxisFlagPressure: pressure axis is present.
 	AxisFlagPressure AxisFlags = 0b100000
-	// AxisFlagXtilt: x tilt axis is present
+	// AxisFlagXtilt: x tilt axis is present.
 	AxisFlagXtilt AxisFlags = 0b1000000
-	// AxisFlagYtilt: y tilt axis is present
+	// AxisFlagYtilt: y tilt axis is present.
 	AxisFlagYtilt AxisFlags = 0b10000000
-	// AxisFlagWheel: wheel axis is present
+	// AxisFlagWheel: wheel axis is present.
 	AxisFlagWheel AxisFlags = 0b100000000
-	// AxisFlagDistance: distance axis is present
+	// AxisFlagDistance: distance axis is present.
 	AxisFlagDistance AxisFlags = 0b1000000000
-	// AxisFlagRotation z-axis rotation is present
+	// AxisFlagRotation z-axis rotation is present.
 	AxisFlagRotation AxisFlags = 0b10000000000
-	// AxisFlagSlider: slider axis is present
+	// AxisFlagSlider: slider axis is present.
 	AxisFlagSlider AxisFlags = 0b100000000000
 )
 
@@ -418,11 +418,11 @@ const (
 	Button4Mask ModifierType = 0b100000000000
 	// Button5Mask: fifth mouse button.
 	Button5Mask ModifierType = 0b1000000000000
-	// SuperMask: super modifier
+	// SuperMask: super modifier.
 	SuperMask ModifierType = 0b100000000000000000000000000
-	// HyperMask: hyper modifier
+	// HyperMask: hyper modifier.
 	HyperMask ModifierType = 0b1000000000000000000000000000
-	// MetaMask: meta modifier
+	// MetaMask: meta modifier.
 	MetaMask ModifierType = 0b10000000000000000000000000000
 )
 
@@ -1014,28 +1014,28 @@ func NewRectangle(x, y, width, height int) Rectangle {
 	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// X: x coordinate of the top left corner
+// X: x coordinate of the top left corner.
 func (r *Rectangle) X() int {
 	var v int // out
 	v = int(r.native.x)
 	return v
 }
 
-// Y: y coordinate of the top left corner
+// Y: y coordinate of the top left corner.
 func (r *Rectangle) Y() int {
 	var v int // out
 	v = int(r.native.y)
 	return v
 }
 
-// Width: width of the rectangle
+// Width: width of the rectangle.
 func (r *Rectangle) Width() int {
 	var v int // out
 	v = int(r.native.width)
 	return v
 }
 
-// Height: height of the rectangle
+// Height: height of the rectangle.
 func (r *Rectangle) Height() int {
 	var v int // out
 	v = int(r.native.height)

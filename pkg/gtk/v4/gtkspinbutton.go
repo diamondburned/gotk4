@@ -38,11 +38,11 @@ type SpinButtonUpdatePolicy int
 
 const (
 	// UpdateAlways: when refreshing your SpinButton, the value is always
-	// displayed
+	// displayed.
 	UpdateAlways SpinButtonUpdatePolicy = iota
 	// UpdateIfValid: when refreshing your SpinButton, the value is only
 	// displayed if it is valid within the bounds of the spin button's
-	// adjustment
+	// adjustment.
 	UpdateIfValid
 )
 

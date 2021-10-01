@@ -47,7 +47,7 @@ const PRIORITY_HIGH = -100
 // GTK+ uses PRIORITY_HIGH_IDLE + 10 for resizing operations, and
 // PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is done to ensure
 // that any pending resizes are processed before any pending redraws, so that
-// widgets are not redrawn twice unnecessarily.)
+// widgets are not redrawn twice unnecessarily.).
 const PRIORITY_HIGH_IDLE = 100
 
 // PRIORITY_LOW: use this for very low priority background tasks.
@@ -881,7 +881,7 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 //      perform_work();
 //
 //      if (g_atomic_int_dec_and_test (&tasks_remaining))
-//        g_main_context_wakeup (NULL);
+//        g_main_context_wakeup (NULL);.
 func (context *MainContext) Wakeup() {
 	var _arg0 *C.GMainContext // out
 

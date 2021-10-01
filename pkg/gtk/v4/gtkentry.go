@@ -267,7 +267,7 @@ func (entry *Entry) ActivatesDefault() bool {
 
 // Alignment gets the value set by gtk_entry_set_alignment().
 //
-// See also: gtk.Editable:xalign
+// See also: gtk.Editable:xalign.
 func (entry *Entry) Alignment() float32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.float     // in
@@ -765,7 +765,7 @@ func (entry *Entry) OverwriteMode() bool {
 }
 
 // PlaceholderText retrieves the text that will be displayed when entry is empty
-// and unfocused
+// and unfocused.
 func (entry *Entry) PlaceholderText() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.char     // in
@@ -961,7 +961,7 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 // This controls the horizontal positioning of the contents when the displayed
 // text is shorter than the width of the entry.
 //
-// See also: gtk.Editable:xalign
+// See also: gtk.Editable:xalign.
 func (entry *Entry) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.float     // out

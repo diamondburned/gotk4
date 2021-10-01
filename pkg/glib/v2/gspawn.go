@@ -29,40 +29,40 @@ const (
 	SpawnErrorRead SpawnError = 1
 	// SpawnErrorChdir: changing to working directory failed.
 	SpawnErrorChdir SpawnError = 2
-	// SpawnErrorAcces: execv() returned EACCES
+	// SpawnErrorAcces: execv() returned EACCES.
 	SpawnErrorAcces SpawnError = 3
-	// SpawnErrorPerm: execv() returned EPERM
+	// SpawnErrorPerm: execv() returned EPERM.
 	SpawnErrorPerm SpawnError = 4
-	// SpawnErrorTooBig: execv() returned E2BIG
+	// SpawnErrorTooBig: execv() returned E2BIG.
 	SpawnErrorTooBig SpawnError = 5
 	// SpawnError2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated
-	// since GLib 2.32)
+	// since GLib 2.32).
 	SpawnError2Big SpawnError = 5
-	// SpawnErrorNoexec: execv() returned ENOEXEC
+	// SpawnErrorNoexec: execv() returned ENOEXEC.
 	SpawnErrorNoexec SpawnError = 6
-	// SpawnErrorNametoolong: execv() returned ENAMETOOLONG
+	// SpawnErrorNametoolong: execv() returned ENAMETOOLONG.
 	SpawnErrorNametoolong SpawnError = 7
-	// SpawnErrorNoent: execv() returned ENOENT
+	// SpawnErrorNoent: execv() returned ENOENT.
 	SpawnErrorNoent SpawnError = 8
-	// SpawnErrorNOMEM: execv() returned ENOMEM
+	// SpawnErrorNOMEM: execv() returned ENOMEM.
 	SpawnErrorNOMEM SpawnError = 9
-	// SpawnErrorNotdir: execv() returned ENOTDIR
+	// SpawnErrorNotdir: execv() returned ENOTDIR.
 	SpawnErrorNotdir SpawnError = 10
-	// SpawnErrorLoop: execv() returned ELOOP
+	// SpawnErrorLoop: execv() returned ELOOP.
 	SpawnErrorLoop SpawnError = 11
-	// SpawnErrorTxtbusy: execv() returned ETXTBUSY
+	// SpawnErrorTxtbusy: execv() returned ETXTBUSY.
 	SpawnErrorTxtbusy SpawnError = 12
-	// SpawnErrorIO: execv() returned EIO
+	// SpawnErrorIO: execv() returned EIO.
 	SpawnErrorIO SpawnError = 13
-	// SpawnErrorNfile: execv() returned ENFILE
+	// SpawnErrorNfile: execv() returned ENFILE.
 	SpawnErrorNfile SpawnError = 14
-	// SpawnErrorMfile: execv() returned EMFILE
+	// SpawnErrorMfile: execv() returned EMFILE.
 	SpawnErrorMfile SpawnError = 15
-	// SpawnErrorInval: execv() returned EINVAL
+	// SpawnErrorInval: execv() returned EINVAL.
 	SpawnErrorInval SpawnError = 16
-	// SpawnErrorIsdir: execv() returned EISDIR
+	// SpawnErrorIsdir: execv() returned EISDIR.
 	SpawnErrorIsdir SpawnError = 17
-	// SpawnErrorLibbad: execv() returned ELIBBAD
+	// SpawnErrorLibbad: execv() returned ELIBBAD.
 	SpawnErrorLibbad SpawnError = 18
 	// SpawnErrorFailed: some other fatal failure, error->message should
 	// explain.
@@ -122,7 +122,7 @@ func (s SpawnError) String() string {
 type SpawnFlags int
 
 const (
-	// SpawnDefault: no flags, default behaviour
+	// SpawnDefault: no flags, default behaviour.
 	SpawnDefault SpawnFlags = 0b0
 	// SpawnLeaveDescriptorsOpen parent's open file descriptors will be
 	// inherited by the child; otherwise all descriptors except stdin, stdout
@@ -149,10 +149,10 @@ const (
 	// execute, and passes all of argv to the child.
 	SpawnFileAndArgvZero SpawnFlags = 0b1000000
 	// SpawnSearchPathFromEnvp: if argv[0] is not an absolute path, it will be
-	// looked for in the PATH from the passed child environment. Since: 2.34
+	// looked for in the PATH from the passed child environment. Since: 2.34.
 	SpawnSearchPathFromEnvp SpawnFlags = 0b10000000
 	// SpawnCloexecPipes: create all pipes with the O_CLOEXEC flag set. Since:
-	// 2.40
+	// 2.40.
 	SpawnCloexecPipes SpawnFlags = 0b100000000
 )
 

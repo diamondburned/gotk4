@@ -26,7 +26,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HypertextOverrider interface {
-	// Link gets the link in this hypertext document at index link_index
+	// Link gets the link in this hypertext document at index link_index.
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
@@ -51,7 +51,7 @@ type Hypertext struct {
 type Hypertexter interface {
 	externglib.Objector
 
-	// Link gets the link in this hypertext document at index link_index
+	// Link gets the link in this hypertext document at index link_index.
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
@@ -74,7 +74,7 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 	return wrapHypertext(obj), nil
 }
 
-// Link gets the link in this hypertext document at index link_index
+// Link gets the link in this hypertext document at index link_index.
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out

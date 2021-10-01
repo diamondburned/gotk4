@@ -88,7 +88,7 @@ func marshalCoverager(p uintptr) (interface{}, error) {
 	return wrapCoverage(obj), nil
 }
 
-// NewCoverage: create a new PangoCoverage
+// NewCoverage: create a new PangoCoverage.
 func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
 
@@ -155,7 +155,7 @@ func (coverage *Coverage) Max(other *Coverage) {
 	runtime.KeepAlive(other)
 }
 
-// Set: modify a particular index within coverage
+// Set: modify a particular index within coverage.
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out

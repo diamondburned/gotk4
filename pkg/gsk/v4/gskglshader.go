@@ -127,7 +127,7 @@ func init() {
 //      vec4 source2 = GskTexture(u_texture2, uv);
 //
 //      fragColor = position * source1 + (1.0 - position) * source2;
-//    }
+//    }.
 type GLShader struct {
 	*externglib.Object
 }

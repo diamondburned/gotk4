@@ -60,7 +60,7 @@ const (
 	// builder XML.
 	BuilderErrorObjectTypeRefused
 	// BuilderErrorTemplateMismatch: wrong type was specified in a composite
-	// class’s template XML
+	// class’s template XML.
 	BuilderErrorTemplateMismatch
 	// BuilderErrorInvalidProperty: specified property is unknown for the object
 	// class.
@@ -68,7 +68,7 @@ const (
 	// BuilderErrorInvalidSignal: specified signal is unknown for the object
 	// class.
 	BuilderErrorInvalidSignal
-	// BuilderErrorInvalidID: object id is unknown
+	// BuilderErrorInvalidID: object id is unknown.
 	BuilderErrorInvalidID
 )
 

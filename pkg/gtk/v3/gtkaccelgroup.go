@@ -33,11 +33,11 @@ func init() {
 type AccelFlags int
 
 const (
-	// AccelVisible: accelerator is visible
+	// AccelVisible: accelerator is visible.
 	AccelVisible AccelFlags = 0b1
-	// AccelLocked: accelerator not removable
+	// AccelLocked: accelerator not removable.
 	AccelLocked AccelFlags = 0b10
-	// AccelMask: mask
+	// AccelMask: mask.
 	AccelMask AccelFlags = 0b111
 )
 
@@ -619,14 +619,14 @@ type accelKey struct {
 	native *C.GtkAccelKey
 }
 
-// AccelKey: accelerator keyval
+// AccelKey: accelerator keyval.
 func (a *AccelKey) AccelKey() uint {
 	var v uint // out
 	v = uint(a.native.accel_key)
 	return v
 }
 
-// AccelMods: accelerator modifiers
+// AccelMods: accelerator modifiers.
 func (a *AccelKey) AccelMods() gdk.ModifierType {
 	var v gdk.ModifierType // out
 	v = gdk.ModifierType(a.native.accel_mods)

@@ -57,7 +57,7 @@ const (
 	// builder XML.
 	BuilderErrorObjectTypeRefused
 	// BuilderErrorTemplateMismatch: wrong type was specified in a composite
-	// class’s template XML
+	// class’s template XML.
 	BuilderErrorTemplateMismatch
 	// BuilderErrorInvalidProperty: specified property is unknown for the object
 	// class.

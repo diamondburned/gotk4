@@ -72,7 +72,7 @@ type FilterMatch int
 
 const (
 	// FilterMatchSome: filter matches some items, gtk_filter_match() may return
-	// TRUE or FALSE
+	// TRUE or FALSE.
 	FilterMatchSome FilterMatch = iota
 	// FilterMatchNone: filter does not match any item, gtk_filter_match() will
 	// always return FALSE.

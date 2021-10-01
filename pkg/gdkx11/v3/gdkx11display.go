@@ -54,7 +54,7 @@ func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents in
 // X11R6 ICCCM session management protocol.
 //
 // See the X Session Management Library documentation for more information on
-// session management and the Inter-Client Communication Conventions Manual
+// session management and the Inter-Client Communication Conventions Manual.
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out
 

@@ -121,7 +121,7 @@ type ApplicationCommandLineOverrider interface {
 // commandline.
 //
 // The complete example can be found here: gapplication-example-cmdline3.c
-// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c).
 type ApplicationCommandLine struct {
 	*externglib.Object
 }

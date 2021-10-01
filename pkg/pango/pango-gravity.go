@@ -36,19 +36,19 @@ func init() {
 // pango.Context.SetBaseGravity() and can only be returned by
 // pango.Context.GetBaseGravity().
 //
-// See also: pango.GravityHint
+// See also: pango.GravityHint.
 type Gravity int
 
 const (
-	// GravitySouth glyphs stand upright (default)
+	// GravitySouth glyphs stand upright (default).
 	GravitySouth Gravity = iota
-	// GravityEast glyphs are rotated 90 degrees clockwise
+	// GravityEast glyphs are rotated 90 degrees clockwise.
 	GravityEast
-	// GravityNorth glyphs are upside-down
+	// GravityNorth glyphs are upside-down.
 	GravityNorth
-	// GravityWest glyphs are rotated 90 degrees counter-clockwise
+	// GravityWest glyphs are rotated 90 degrees counter-clockwise.
 	GravityWest
-	// GravityAuto: gravity is resolved from the context matrix
+	// GravityAuto: gravity is resolved from the context matrix.
 	GravityAuto
 )
 
@@ -191,7 +191,7 @@ func GravityToRotation(gravity Gravity) float64 {
 //
 // That is, English excerpts in a vertical paragraph for example.
 //
-// See also pango.Gravity
+// See also pango.Gravity.
 type GravityHint int
 
 const (

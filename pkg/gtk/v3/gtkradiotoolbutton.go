@@ -152,7 +152,7 @@ func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioTool
 }
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
-// same group as gruup
+// same group as gruup.
 func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in

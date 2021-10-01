@@ -45,7 +45,7 @@ type SettingsBindFlags int
 
 const (
 	// SettingsBindDefault: equivalent to
-	// G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET
+	// G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET.
 	SettingsBindDefault SettingsBindFlags = 0b0
 	// SettingsBindGet: update the #GObject property when the setting changes.
 	// It is an error to use this flag if the property is not writable.
@@ -54,11 +54,11 @@ const (
 	// It is an error to use this flag if the property is not readable.
 	SettingsBindSet SettingsBindFlags = 0b10
 	// SettingsBindNoSensitivity: do not try to bind a "sensitivity" property to
-	// the writability of the setting
+	// the writability of the setting.
 	SettingsBindNoSensitivity SettingsBindFlags = 0b100
 	// SettingsBindGetNoChanges: when set in addition to SETTINGS_BIND_GET, set
 	// the #GObject property value initially from the setting, but do not listen
-	// for changes of the setting
+	// for changes of the setting.
 	SettingsBindGetNoChanges SettingsBindFlags = 0b1000
 	// SettingsBindInvertBoolean: when passed to g_settings_bind(), uses a pair
 	// of mapping functions that invert the boolean value when mapping between
@@ -1259,7 +1259,7 @@ func (settings *Settings) Value(key string) *glib.Variant {
 	return _variant
 }
 
-// IsWritable finds out if a key can be written or not
+// IsWritable finds out if a key can be written or not.
 func (settings *Settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out

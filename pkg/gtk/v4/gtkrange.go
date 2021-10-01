@@ -406,7 +406,7 @@ func (_range *Range) SetInverted(setting bool) {
 // SetRange sets the allowable values in the GtkRange.
 //
 // The range value is clamped to be between min and max. (If the range has a
-// non-zero page size, it is clamped between min and max - page-size.)
+// non-zero page size, it is clamped between min and max - page-size.).
 func (_range *Range) SetRange(min float64, max float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out

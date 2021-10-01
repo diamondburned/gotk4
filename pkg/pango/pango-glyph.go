@@ -384,7 +384,7 @@ func (_string *GlyphString) Copy() *GlyphString {
 //
 // Examples of logical (red) and ink (green) rects:
 //
-// ! (rects1.png) ! (rects2.png)
+// ! (rects1.png) ! (rects2.png).
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out

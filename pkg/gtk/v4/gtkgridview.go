@@ -100,7 +100,7 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 // The function takes ownership of the arguments, so you can write code like
 //
 //    grid_view = gtk_grid_view_new (create_model (),
-//      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
+//      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));.
 func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out

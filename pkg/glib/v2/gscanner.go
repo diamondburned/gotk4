@@ -33,21 +33,21 @@ const CSET_a_2_z = "abcdefghijklmnopqrstuvwxyz"
 type ErrorType int
 
 const (
-	// ErrUnknown error
+	// ErrUnknown: unknown error.
 	ErrUnknown ErrorType = iota
-	// ErrUnexpEOF: unexpected end of file
+	// ErrUnexpEOF: unexpected end of file.
 	ErrUnexpEOF
-	// ErrUnexpEOFInString: unterminated string constant
+	// ErrUnexpEOFInString: unterminated string constant.
 	ErrUnexpEOFInString
-	// ErrUnexpEOFInComment: unterminated comment
+	// ErrUnexpEOFInComment: unterminated comment.
 	ErrUnexpEOFInComment
-	// ErrNonDigitInConst: non-digit character in a number
+	// ErrNonDigitInConst: non-digit character in a number.
 	ErrNonDigitInConst
-	// ErrDigitRadix: digit beyond radix in a number
+	// ErrDigitRadix: digit beyond radix in a number.
 	ErrDigitRadix
-	// ErrFloatRadix: non-decimal floating point number
+	// ErrFloatRadix: non-decimal floating point number.
 	ErrFloatRadix
-	// ErrFloatMalformed: malformed floating point number
+	// ErrFloatMalformed: malformed floating point number.
 	ErrFloatMalformed
 )
 
@@ -80,51 +80,51 @@ func (e ErrorType) String() string {
 type TokenType int
 
 const (
-	// TokenEOF: end of the file
+	// TokenEOF: end of the file.
 	TokenEOF TokenType = 0
-	// TokenLeftParen: '(' character
+	// TokenLeftParen: '(' character.
 	TokenLeftParen TokenType = 40
-	// TokenRightParen: ')' character
+	// TokenRightParen: ')' character.
 	TokenRightParen TokenType = 41
-	// TokenLeftCurly: '{' character
+	// TokenLeftCurly: '{' character.
 	TokenLeftCurly TokenType = 123
-	// TokenRightCurly: '}' character
+	// TokenRightCurly: '}' character.
 	TokenRightCurly TokenType = 125
-	// TokenLeftBrace: '[' character
+	// TokenLeftBrace: '[' character.
 	TokenLeftBrace TokenType = 91
-	// TokenRightBrace: ']' character
+	// TokenRightBrace: ']' character.
 	TokenRightBrace TokenType = 93
-	// TokenEqualSign: '=' character
+	// TokenEqualSign: '=' character.
 	TokenEqualSign TokenType = 61
-	// TokenComma: ',' character
+	// TokenComma: ',' character.
 	TokenComma TokenType = 44
-	// TokenNone: not a token
+	// TokenNone: not a token.
 	TokenNone TokenType = 256
-	// TokenError occurred
+	// TokenError: error occurred.
 	TokenError TokenType = 257
-	// TokenChar: character
+	// TokenChar: character.
 	TokenChar TokenType = 258
-	// TokenBinary integer
+	// TokenBinary: binary integer.
 	TokenBinary TokenType = 259
-	// TokenOctal integer
+	// TokenOctal: octal integer.
 	TokenOctal TokenType = 260
-	// TokenInt: integer
+	// TokenInt: integer.
 	TokenInt TokenType = 261
-	// TokenHex integer
+	// TokenHex: hex integer.
 	TokenHex TokenType = 262
-	// TokenFloat: floating point number
+	// TokenFloat: floating point number.
 	TokenFloat TokenType = 263
-	// TokenString: string
+	// TokenString: string.
 	TokenString TokenType = 264
-	// TokenSymbol: symbol
+	// TokenSymbol: symbol.
 	TokenSymbol TokenType = 265
-	// TokenIdentifier: identifier
+	// TokenIdentifier: identifier.
 	TokenIdentifier TokenType = 266
-	// TokenIdentifierNull: null identifier
+	// TokenIdentifierNull: null identifier.
 	TokenIdentifierNull TokenType = 267
-	// TokenCommentSingle: one line comment
+	// TokenCommentSingle: one line comment.
 	TokenCommentSingle TokenType = 268
-	// TokenCommentMulti: multi line comment
+	// TokenCommentMulti: multi line comment.
 	TokenCommentMulti TokenType = 269
 )
 

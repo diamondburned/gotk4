@@ -92,7 +92,7 @@ type ToggleButtonOverrider interface {
 //
 //      gtk_container_add (GTK_CONTAINER (window), box);
 //      gtk_widget_show_all (window);
-//    }
+//    }.
 type ToggleButton struct {
 	Button
 }

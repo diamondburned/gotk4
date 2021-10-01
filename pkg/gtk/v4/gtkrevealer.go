@@ -28,25 +28,25 @@ func init() {
 type RevealerTransitionType int
 
 const (
-	// RevealerTransitionTypeNone: no transition
+	// RevealerTransitionTypeNone: no transition.
 	RevealerTransitionTypeNone RevealerTransitionType = iota
-	// RevealerTransitionTypeCrossfade: fade in
+	// RevealerTransitionTypeCrossfade: fade in.
 	RevealerTransitionTypeCrossfade
-	// RevealerTransitionTypeSlideRight: slide in from the left
+	// RevealerTransitionTypeSlideRight: slide in from the left.
 	RevealerTransitionTypeSlideRight
-	// RevealerTransitionTypeSlideLeft: slide in from the right
+	// RevealerTransitionTypeSlideLeft: slide in from the right.
 	RevealerTransitionTypeSlideLeft
-	// RevealerTransitionTypeSlideUp: slide in from the bottom
+	// RevealerTransitionTypeSlideUp: slide in from the bottom.
 	RevealerTransitionTypeSlideUp
-	// RevealerTransitionTypeSlideDown: slide in from the top
+	// RevealerTransitionTypeSlideDown: slide in from the top.
 	RevealerTransitionTypeSlideDown
-	// RevealerTransitionTypeSwingRight: floop in from the left
+	// RevealerTransitionTypeSwingRight: floop in from the left.
 	RevealerTransitionTypeSwingRight
-	// RevealerTransitionTypeSwingLeft: floop in from the right
+	// RevealerTransitionTypeSwingLeft: floop in from the right.
 	RevealerTransitionTypeSwingLeft
-	// RevealerTransitionTypeSwingUp: floop in from the bottom
+	// RevealerTransitionTypeSwingUp: floop in from the bottom.
 	RevealerTransitionTypeSwingUp
-	// RevealerTransitionTypeSwingDown: floop in from the top
+	// RevealerTransitionTypeSwingDown: floop in from the top.
 	RevealerTransitionTypeSwingDown
 )
 

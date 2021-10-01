@@ -222,6 +222,10 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		cmt = doc.Synopsis(cmt)
 	}
 
+	if cmt != "" && !strings.HasSuffix(cmt, ".") {
+		cmt += "."
+	}
+
 	return ReflowLinesIndent(indentLvl, cmt, opts...)
 }
 
@@ -426,6 +430,8 @@ func format(self, cmt string, opts []Option) string {
 			return str
 		}
 	})
+
+	cmt = strings.TrimSpace(cmt)
 
 	return cmt
 }

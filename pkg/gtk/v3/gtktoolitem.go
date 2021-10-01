@@ -84,7 +84,7 @@ func marshalToolItemmer(p uintptr) (interface{}, error) {
 	return wrapToolItem(obj), nil
 }
 
-// NewToolItem creates a new ToolItem
+// NewToolItem creates a new ToolItem.
 func NewToolItem() *ToolItem {
 	var _cret *C.GtkToolItem // in
 
@@ -176,7 +176,7 @@ func (toolItem *ToolItem) IconSize() int {
 }
 
 // IsImportant returns whether tool_item is considered important. See
-// gtk_tool_item_set_is_important()
+// gtk_tool_item_set_is_important().
 func (toolItem *ToolItem) IsImportant() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
@@ -344,7 +344,7 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 // - GTK_TOOLBAR_TEXT, meaning the tool item should only show text
 //
 // - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item should show both an icon and
-// a label, arranged horizontally
+// a label, arranged horizontally.
 func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 	var _arg0 *C.GtkToolItem    // out
 	var _cret C.GtkToolbarStyle // in
@@ -506,7 +506,7 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 // ToolButton class uses this property to determine whether to show or hide its
 // label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The result is that
 // only tool buttons with the “is_important” property set have labels, an effect
-// known as “priority text”
+// known as “priority text”.
 func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out

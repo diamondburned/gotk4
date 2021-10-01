@@ -242,7 +242,7 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 // (Note that prior to version 3.22.25, this function is only usable for actions
 // with a simple "s" target, and detailed_action_name must be of the form
 // "action::target" where action is the action name and target is the string to
-// use as the target.)
+// use as the target.).
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out

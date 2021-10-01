@@ -41,9 +41,9 @@ type DTLSClientConnection struct {
 type DTLSClientConnectioner interface {
 	externglib.Objector
 
-	// ServerIdentity gets conn's expected server identity
+	// ServerIdentity gets conn's expected server identity.
 	ServerIdentity() SocketConnectabler
-	// ValidationFlags gets conn's validation flags
+	// ValidationFlags gets conn's validation flags.
 	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
@@ -73,7 +73,7 @@ func marshalDTLSClientConnectioner(p uintptr) (interface{}, error) {
 	return wrapDTLSClientConnection(obj), nil
 }
 
-// ServerIdentity gets conn's expected server identity
+// ServerIdentity gets conn's expected server identity.
 func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
@@ -102,7 +102,7 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	return _socketConnectable
 }
 
-// ValidationFlags gets conn's validation flags
+// ValidationFlags gets conn's validation flags.
 func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in

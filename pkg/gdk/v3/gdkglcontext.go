@@ -79,7 +79,7 @@ type GLContexter interface {
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
 	DebugEnabled() bool
-	// Display retrieves the Display the context is created for
+	// Display retrieves the Display the context is created for.
 	Display() *Display
 	// ForwardCompatible retrieves the value set using
 	// gdk_gl_context_set_forward_compatible().
@@ -148,7 +148,7 @@ func (context *GLContext) DebugEnabled() bool {
 	return _ok
 }
 
-// Display retrieves the Display the context is created for
+// Display retrieves the Display the context is created for.
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in

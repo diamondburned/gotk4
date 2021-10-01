@@ -369,7 +369,7 @@ func NothingActionGet() *NothingAction {
 //      gtk_widget_activate()
 //    - gtk.NamedAction: a shortcut action that calls
 //      gtk_widget_activate_action()
-//    - gtk.NothingAction: a shortcut action that does nothing
+//    - gtk.NothingAction: a shortcut action that does nothing.
 type ShortcutAction struct {
 	*externglib.Object
 }
@@ -413,7 +413,7 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 //
 // - action(NAME), for a GtkNamedAction for the action named NAME
 //
-// - signal(NAME), for a GtkSignalAction for the signal NAME
+// - signal(NAME), for a GtkSignalAction for the signal NAME.
 func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in

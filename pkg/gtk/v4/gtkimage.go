@@ -38,13 +38,13 @@ func init() {
 type ImageType int
 
 const (
-	// ImageEmpty: there is no image displayed by the widget
+	// ImageEmpty: there is no image displayed by the widget.
 	ImageEmpty ImageType = iota
-	// ImageIconName: widget contains a named icon
+	// ImageIconName: widget contains a named icon.
 	ImageIconName
-	// ImageGIcon: widget contains a #GIcon
+	// ImageGIcon: widget contains a #GIcon.
 	ImageGIcon
-	// ImagePaintable: widget contains a Paintable
+	// ImagePaintable: widget contains a Paintable.
 	ImagePaintable
 )
 

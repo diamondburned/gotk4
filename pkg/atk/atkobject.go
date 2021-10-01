@@ -30,7 +30,7 @@ func init() {
 // AttributeSet: this is a singly-linked list (a List) of Attribute. It is used
 // by atk_text_get_run_attributes(), atk_text_get_default_attributes(),
 // atk_editable_text_set_run_attributes(), atk_document_get_attributes() and
-// atk_object_get_attributes()
+// atk_object_get_attributes().
 type AttributeSet = externglib.SList
 
 // Layer describes the layer of a component
@@ -41,17 +41,17 @@ type AttributeSet = externglib.SList
 type Layer int
 
 const (
-	// LayerInvalid: object does not have a layer
+	// LayerInvalid: object does not have a layer.
 	LayerInvalid Layer = iota
-	// LayerBackground: this layer is reserved for the desktop background
+	// LayerBackground: this layer is reserved for the desktop background.
 	LayerBackground
-	// LayerCanvas: this layer is used for Canvas components
+	// LayerCanvas: this layer is used for Canvas components.
 	LayerCanvas
-	// LayerWidget: this layer is normally used for components
+	// LayerWidget: this layer is normally used for components.
 	LayerWidget
-	// LayerMDI: this layer is used for layered components
+	// LayerMDI: this layer is used for layered components.
 	LayerMDI
-	// LayerPopup: this layer is used for popup components, such as menus
+	// LayerPopup: this layer is used for popup components, such as menus.
 	LayerPopup
 	// LayerOverlay: this layer is reserved for future use.
 	LayerOverlay
@@ -95,155 +95,158 @@ func (l Layer) String() string {
 type Role int
 
 const (
-	// RoleInvalid: invalid role
+	// RoleInvalid: invalid role.
 	RoleInvalid Role = iota
-	// RoleAccelLabel: label which represents an accelerator
+	// RoleAccelLabel: label which represents an accelerator.
 	RoleAccelLabel
 	// RoleAlert: object which is an alert to the user. Assistive Technologies
 	// typically respond to ATK_ROLE_ALERT by reading the entire onscreen
 	// contents of containers advertising this role. Should be used for warning
 	// dialogs, etc.
 	RoleAlert
-	// RoleAnimation: object which is an animated image
+	// RoleAnimation: object which is an animated image.
 	RoleAnimation
-	// RoleArrow in one of the four cardinal directions
+	// RoleArrow: arrow in one of the four cardinal directions.
 	RoleArrow
 	// RoleCalendar: object that displays a calendar and allows the user to
-	// select a date
+	// select a date.
 	RoleCalendar
-	// RoleCanvas: object that can be drawn into and is used to trap events
+	// RoleCanvas: object that can be drawn into and is used to trap events.
 	RoleCanvas
 	// RoleCheckBox: choice that can be checked or unchecked and provides a
-	// separate indicator for the current state
+	// separate indicator for the current state.
 	RoleCheckBox
-	// RoleCheckMenuItem: menu item with a check box
+	// RoleCheckMenuItem: menu item with a check box.
 	RoleCheckMenuItem
-	// RoleColorChooser: specialized dialog that lets the user choose a color
+	// RoleColorChooser: specialized dialog that lets the user choose a color.
 	RoleColorChooser
-	// RoleColumnHeader: header for a column of data
+	// RoleColumnHeader: header for a column of data.
 	RoleColumnHeader
-	// RoleComboBox: collapsible list of choices the user can select from
+	// RoleComboBox: collapsible list of choices the user can select from.
 	RoleComboBox
-	// RoleDateEditor: object whose purpose is to allow a user to edit a date
+	// RoleDateEditor: object whose purpose is to allow a user to edit a date.
 	RoleDateEditor
-	// RoleDesktopIcon: inconifed internal frame within a DESKTOP_PANE
+	// RoleDesktopIcon: inconifed internal frame within a DESKTOP_PANE.
 	RoleDesktopIcon
 	// RoleDesktopFrame: pane that supports internal frames and iconified
-	// versions of those internal frames
+	// versions of those internal frames.
 	RoleDesktopFrame
-	// RoleDial: object whose purpose is to allow a user to set a value
+	// RoleDial: object whose purpose is to allow a user to set a value.
 	RoleDial
-	// RoleDialog: top level window with title bar and a border
+	// RoleDialog: top level window with title bar and a border.
 	RoleDialog
 	// RoleDirectoryPane: pane that allows the user to navigate through and
-	// select the contents of a directory
+	// select the contents of a directory.
 	RoleDirectoryPane
-	// RoleDrawingArea: object used for drawing custom user interface elements
+	// RoleDrawingArea: object used for drawing custom user interface elements.
 	RoleDrawingArea
-	// RoleFileChooser: specialized dialog that lets the user choose a file
+	// RoleFileChooser: specialized dialog that lets the user choose a file.
 	RoleFileChooser
-	// RoleFiller: object that fills up space in a user interface
+	// RoleFiller: object that fills up space in a user interface.
 	RoleFiller
-	// RoleFontChooser: specialized dialog that lets the user choose a font
+	// RoleFontChooser: specialized dialog that lets the user choose a font.
 	RoleFontChooser
 	// RoleFrame: top level window with a title bar, border, menubar, etc.
 	RoleFrame
 	// RoleGlassPane: pane that is guaranteed to be painted on top of all panes
-	// beneath it
+	// beneath it.
 	RoleGlassPane
 	// RoleHtmlContainer: document container for HTML, whose children represent
-	// the document content
+	// the document content.
 	RoleHtmlContainer
-	// RoleIcon: small fixed size picture, typically used to decorate components
+	// RoleIcon: small fixed size picture, typically used to decorate
+	// components.
 	RoleIcon
-	// RoleImage: object whose primary purpose is to display an image
+	// RoleImage: object whose primary purpose is to display an image.
 	RoleImage
-	// RoleInternalFrame: frame-like object that is clipped by a desktop pane
+	// RoleInternalFrame: frame-like object that is clipped by a desktop pane.
 	RoleInternalFrame
-	// RoleLabel: object used to present an icon or short string in an interface
+	// RoleLabel: object used to present an icon or short string in an
+	// interface.
 	RoleLabel
 	// RoleLayeredPane: specialized pane that allows its children to be drawn in
-	// layers, providing a form of stacking order
+	// layers, providing a form of stacking order.
 	RoleLayeredPane
 	// RoleList: object that presents a list of objects to the user and allows
-	// the user to select one or more of them
+	// the user to select one or more of them.
 	RoleList
-	// RoleListItem: object that represents an element of a list
+	// RoleListItem: object that represents an element of a list.
 	RoleListItem
 	// RoleMenu: object usually found inside a menu bar that contains a list of
-	// actions the user can choose from
+	// actions the user can choose from.
 	RoleMenu
 	// RoleMenuBar: object usually drawn at the top of the primary dialog box of
-	// an application that contains a list of menus the user can choose from
+	// an application that contains a list of menus the user can choose from.
 	RoleMenuBar
 	// RoleMenuItem: object usually contained in a menu that presents an action
-	// the user can choose
+	// the user can choose.
 	RoleMenuItem
-	// RoleOptionPane: specialized pane whose primary use is inside a DIALOG
+	// RoleOptionPane: specialized pane whose primary use is inside a DIALOG.
 	RoleOptionPane
-	// RolePageTab: object that is a child of a page tab list
+	// RolePageTab: object that is a child of a page tab list.
 	RolePageTab
 	// RolePageTabList: object that presents a series of panels (or page tabs),
-	// one at a time, through some mechanism provided by the object
+	// one at a time, through some mechanism provided by the object.
 	RolePageTabList
-	// RolePanel: generic container that is often used to group objects
+	// RolePanel: generic container that is often used to group objects.
 	RolePanel
 	// RolePasswordText: text object uses for passwords, or other places where
-	// the text content is not shown visibly to the user
+	// the text content is not shown visibly to the user.
 	RolePasswordText
 	// RolePopupMenu: temporary window that is usually used to offer the user a
 	// list of choices, and then hides when the user selects one of those
-	// choices
+	// choices.
 	RolePopupMenu
 	// RoleProgressBar: object used to indicate how much of a task has been
-	// completed
+	// completed.
 	RoleProgressBar
 	// RolePushButton: object the user can manipulate to tell the application to
-	// do something
+	// do something.
 	RolePushButton
 	// RoleRadioButton: specialized check box that will cause other radio
-	// buttons in the same group to become unchecked when this one is checked
+	// buttons in the same group to become unchecked when this one is checked.
 	RoleRadioButton
 	// RoleRadioMenuItem: check menu item which belongs to a group. At each
-	// instant exactly one of the radio menu items from a group is selected
+	// instant exactly one of the radio menu items from a group is selected.
 	RoleRadioMenuItem
 	// RoleRootPane: specialized pane that has a glass pane and a layered pane
-	// as its children
+	// as its children.
 	RoleRootPane
-	// RoleRowHeader: header for a row of data
+	// RoleRowHeader: header for a row of data.
 	RoleRowHeader
 	// RoleScrollBar: object usually used to allow a user to incrementally view
 	// a large amount of data.
 	RoleScrollBar
 	// RoleScrollPane: object that allows a user to incrementally view a large
-	// amount of information
+	// amount of information.
 	RoleScrollPane
 	// RoleSeparator: object usually contained in a menu to provide a visible
-	// and logical separation of the contents in a menu
+	// and logical separation of the contents in a menu.
 	RoleSeparator
-	// RoleSlider: object that allows the user to select from a bounded range
+	// RoleSlider: object that allows the user to select from a bounded range.
 	RoleSlider
 	// RoleSplitPane: specialized panel that presents two other panels at the
-	// same time
+	// same time.
 	RoleSplitPane
 	// RoleSpinButton: object used to get an integer or floating point number
-	// from the user
+	// from the user.
 	RoleSpinButton
 	// RoleStatusbar: object which reports messages of minor importance to the
-	// user
+	// user.
 	RoleStatusbar
 	// RoleTable: object used to represent information in terms of rows and
-	// columns
+	// columns.
 	RoleTable
-	// RoleTableCell: cell in a table
+	// RoleTableCell: cell in a table.
 	RoleTableCell
-	// RoleTableColumnHeader: header for a column of a table
+	// RoleTableColumnHeader: header for a column of a table.
 	RoleTableColumnHeader
-	// RoleTableRowHeader: header for a row of a table
+	// RoleTableRowHeader: header for a row of a table.
 	RoleTableRowHeader
-	// RoleTearOffMenuItem: menu item used to tear off and reattach its menu
+	// RoleTearOffMenuItem: menu item used to tear off and reattach its menu.
 	RoleTearOffMenuItem
-	// RoleTerminal: object that represents an accessible terminal. (Since: 0.6)
+	// RoleTerminal: object that represents an accessible terminal. (Since:
+	// 0.6).
 	RoleTerminal
 	// RoleText: interactive widget that supports multiple lines of text and
 	// optionally accepts user input, but whose purpose is not to solicit user
@@ -255,72 +258,73 @@ const (
 	RoleText
 	// RoleToggleButton: specialized push button that can be checked or
 	// unchecked, but does not provide a separate indicator for the current
-	// state
+	// state.
 	RoleToggleButton
 	// RoleToolBar: bar or palette usually composed of push buttons or toggle
-	// buttons
+	// buttons.
 	RoleToolBar
-	// RoleToolTip: object that provides information about another object
+	// RoleToolTip: object that provides information about another object.
 	RoleToolTip
-	// RoleTree: object used to represent hierarchical information to the user
+	// RoleTree: object used to represent hierarchical information to the user.
 	RoleTree
 	// RoleTreeTable: object capable of expanding and collapsing rows as well as
-	// showing multiple columns of data. (Since: 0.7)
+	// showing multiple columns of data. (Since: 0.7).
 	RoleTreeTable
 	// RoleUnknown: object contains some Accessible information, but its role is
-	// not known
+	// not known.
 	RoleUnknown
-	// RoleViewport: object usually used in a scroll pane
+	// RoleViewport: object usually used in a scroll pane.
 	RoleViewport
 	// RoleWindow: top level window with no title or border.
 	RoleWindow
-	// RoleHeader: object that serves as a document header. (Since: 1.1.1)
+	// RoleHeader: object that serves as a document header. (Since: 1.1.1).
 	RoleHeader
-	// RoleFooter: object that serves as a document footer. (Since: 1.1.1)
+	// RoleFooter: object that serves as a document footer. (Since: 1.1.1).
 	RoleFooter
 	// RoleParagraph: object which is contains a paragraph of text content.
-	// (Since: 1.1.1)
+	// (Since: 1.1.1).
 	RoleParagraph
 	// RoleRuler: object which describes margins and tab stops, etc. for text
 	// objects which it controls (should have CONTROLLER_FOR relation to such).
-	// (Since: 1.1.1)
+	// (Since: 1.1.1).
 	RoleRuler
 	// RoleApplication: object is an application object, which may contain
 	// ATK_ROLE_FRAME objects or other types of accessibles. The root accessible
 	// of any application's ATK hierarchy should have ATK_ROLE_APPLICATION.
-	// (Since: 1.1.4)
+	// (Since: 1.1.4).
 	RoleApplication
 	// RoleAutocomplete: object is a dialog or list containing items for
 	// insertion into an entry widget, for instance a list of words for
-	// completion of a text entry. (Since: 1.3)
+	// completion of a text entry. (Since: 1.3).
 	RoleAutocomplete
-	// RoleEditbar: object is an editable text object in a toolbar. (Since: 1.5)
+	// RoleEditbar: object is an editable text object in a toolbar. (Since:
+	// 1.5).
 	RoleEditbar
 	// RoleEmbedded: object is an embedded container within a document or panel.
 	// This role is a grouping "hint" indicating that the contained objects
-	// share a context. (Since: 1.7.2)
+	// share a context. (Since: 1.7.2).
 	RoleEmbedded
 	// RoleEntry: object is a component whose textual content may be entered or
 	// modified by the user, provided ATK_STATE_EDITABLE is present. (Since:
-	// 1.11)
+	// 1.11).
 	RoleEntry
 	// RoleChart: object is a graphical depiction of quantitative data. It may
 	// contain multiple subelements whose attributes and/or description may be
 	// queried to obtain both the quantitative data and information about how
 	// the data is being presented. The LABELLED_BY relation is particularly
 	// important in interpreting objects of this type, as is the
-	// accessible-description property. (Since: 1.11)
+	// accessible-description property. (Since: 1.11).
 	RoleChart
 	// RoleCaption: object contains descriptive information, usually textual,
 	// about another user interface element such as a table, chart, or image.
-	// (Since: 1.11)
+	// (Since: 1.11).
 	RoleCaption
 	// RoleDocumentFrame: object is a visual frame or container which contains a
 	// view of document content. Document frames may occur within another
 	// Document instance, in which case the second document may be said to be
 	// embedded in the containing instance. HTML frames are often
 	// ROLE_DOCUMENT_FRAME. Either this object, or a singleton descendant,
-	// should implement the Document interface. (Since: 1.11)
+	// should implement the Document interface. (Since: 1.11).
 	RoleDocumentFrame
 	// RoleHeading: object serves as a heading for content which follows it in a
 	// document. The 'heading level' of the heading, if availabe, may be
@@ -328,131 +332,132 @@ const (
 	RoleHeading
 	// RolePage: object is a containing instance which encapsulates a page of
 	// information. ATK_ROLE_PAGE is used in documents and content which support
-	// a paginated navigation model. (Since: 1.11)
+	// a paginated navigation model. (Since: 1.11).
 	RolePage
 	// RoleSection: object is a containing instance of document content which
 	// constitutes a particular 'logical' section of the document. The type of
 	// content within a section, and the nature of the section division itself,
 	// may be obtained by querying the object's attributes. Sections may be
-	// nested. (Since: 1.11)
+	// nested. (Since: 1.11).
 	RoleSection
 	// RoleRedundantObject: object is redundant with another object in the
 	// hierarchy, and is exposed for purely technical reasons. Objects of this
-	// role should normally be ignored by clients. (Since: 1.11)
+	// role should normally be ignored by clients. (Since: 1.11).
 	RoleRedundantObject
 	// RoleForm: object is a container for form controls, for instance as part
 	// of a web form or user-input form within a document. This role is
 	// primarily a tag/convenience for clients when navigating complex
 	// documents, it is not expected that ordinary GUI containers will always
-	// have ATK_ROLE_FORM. (Since: 1.12.0)
+	// have ATK_ROLE_FORM. (Since: 1.12.0).
 	RoleForm
 	// RoleLink: object is a hypertext anchor, i.e. a "link" in a hypertext
 	// document. Such objects are distinct from 'inline' content which may also
 	// use the Hypertext/Hyperlink interfaces to indicate the range/location
 	// within a text object where an inline or embedded object lies. (Since:
-	// 1.12.1)
+	// 1.12.1).
 	RoleLink
 	// RoleInputMethodWindow: object is a window or similar viewport which is
 	// used to allow composition or input of a 'complex character', in other
-	// words it is an "input method window." (Since: 1.12.1)
+	// words it is an "input method window." (Since: 1.12.1).
 	RoleInputMethodWindow
-	// RoleTableRow: row in a table. (Since: 2.1.0)
+	// RoleTableRow: row in a table. (Since: 2.1.0).
 	RoleTableRow
-	// RoleTreeItem: object that represents an element of a tree. (Since: 2.1.0)
+	// RoleTreeItem: object that represents an element of a tree. (Since:
+	// 2.1.0).
 	RoleTreeItem
 	// RoleDocumentSpreadsheet: document frame which contains a spreadsheet.
-	// (Since: 2.1.0)
+	// (Since: 2.1.0).
 	RoleDocumentSpreadsheet
 	// RoleDocumentPresentation: document frame which contains a presentation or
-	// slide content. (Since: 2.1.0)
+	// slide content. (Since: 2.1.0).
 	RoleDocumentPresentation
 	// RoleDocumentText: document frame which contains textual content, such as
-	// found in a word processing application. (Since: 2.1.0)
+	// found in a word processing application. (Since: 2.1.0).
 	RoleDocumentText
 	// RoleDocumentWeb: document frame which contains HTML or other markup
-	// suitable for display in a web browser. (Since: 2.1.0)
+	// suitable for display in a web browser. (Since: 2.1.0).
 	RoleDocumentWeb
 	// RoleDocumentEmail: document frame which contains email content to be
-	// displayed or composed either in plain text or HTML. (Since: 2.1.0)
+	// displayed or composed either in plain text or HTML. (Since: 2.1.0).
 	RoleDocumentEmail
 	// RoleComment: object found within a document and designed to present a
 	// comment, note, or other annotation. In some cases, this object might not
-	// be visible until activated. (Since: 2.1.0)
+	// be visible until activated. (Since: 2.1.0).
 	RoleComment
 	// RoleListBox: non-collapsible list of choices the user can select from.
-	// (Since: 2.1.0)
+	// (Since: 2.1.0).
 	RoleListBox
 	// RoleGrouping: group of related widgets. This group typically has a label.
-	// (Since: 2.1.0)
+	// (Since: 2.1.0).
 	RoleGrouping
 	// RoleImageMap: image map object. Usually a graphic with multiple hotspots,
 	// where each hotspot can be activated resulting in the loading of another
-	// document or section of a document. (Since: 2.1.0)
+	// document or section of a document. (Since: 2.1.0).
 	RoleImageMap
 	// RoleNotification: transitory object designed to present a message to the
 	// user, typically at the desktop level rather than inside a particular
-	// application. (Since: 2.1.0)
+	// application. (Since: 2.1.0).
 	RoleNotification
 	// RoleInfoBar: object designed to present a message to the user within an
-	// existing window. (Since: 2.1.0)
+	// existing window. (Since: 2.1.0).
 	RoleInfoBar
 	// RoleLevelBar: bar that serves as a level indicator to, for instance, show
-	// the strength of a password or the state of a battery. (Since: 2.7.3)
+	// the strength of a password or the state of a battery. (Since: 2.7.3).
 	RoleLevelBar
 	// RoleTitleBar: bar that serves as the title of a window or a dialog.
-	// (Since: 2.12)
+	// (Since: 2.12).
 	RoleTitleBar
 	// RoleBlockQuote: object which contains a text section that is quoted from
-	// another source. (Since: 2.12)
+	// another source. (Since: 2.12).
 	RoleBlockQuote
-	// RoleAudio: object which represents an audio element. (Since: 2.12)
+	// RoleAudio: object which represents an audio element. (Since: 2.12).
 	RoleAudio
-	// RoleVideo: object which represents a video element. (Since: 2.12)
+	// RoleVideo: object which represents a video element. (Since: 2.12).
 	RoleVideo
-	// RoleDefinition of a term or concept. (Since: 2.12)
+	// RoleDefinition: definition of a term or concept. (Since: 2.12).
 	RoleDefinition
 	// RoleArticle: section of a page that consists of a composition that forms
 	// an independent part of a document, page, or site. Examples: A blog entry,
-	// a news story, a forum post. (Since: 2.12)
+	// a news story, a forum post. (Since: 2.12).
 	RoleArticle
 	// RoleLandmark: region of a web page intended as a navigational landmark.
 	// This is designed to allow Assistive Technologies to provide quick
-	// navigation among key regions within a document. (Since: 2.12)
+	// navigation among key regions within a document. (Since: 2.12).
 	RoleLandmark
 	// RoleLog: text widget or container holding log content, such as chat
 	// history and error logs. In this role there is a relationship between the
 	// arrival of new items in the log and the reading order. The log contains a
 	// meaningful sequence and new information is added only to the end of the
-	// log, not at arbitrary points. (Since: 2.12)
+	// log, not at arbitrary points. (Since: 2.12).
 	RoleLog
 	// RoleMarquee: container where non-essential information changes
 	// frequently. Common usages of marquee include stock tickers and ad
 	// banners. The primary difference between a marquee and a log is that logs
 	// usually have a meaningful order or sequence of important content changes.
-	// (Since: 2.12)
+	// (Since: 2.12).
 	RoleMarquee
 	// RoleMath: text widget or container that holds a mathematical expression.
-	// (Since: 2.12)
+	// (Since: 2.12).
 	RoleMath
 	// RoleRating: widget whose purpose is to display a rating, such as the
 	// number of stars associated with a song in a media player. Objects of this
-	// role should also implement AtkValue. (Since: 2.12)
+	// role should also implement AtkValue. (Since: 2.12).
 	RoleRating
 	// RoleTimer: object containing a numerical counter which indicates an
 	// amount of elapsed time from a start point, or the time remaining until an
-	// end point. (Since: 2.12)
+	// end point. (Since: 2.12).
 	RoleTimer
 	// RoleDescriptionList: object that represents a list of term-value groups.
 	// A term-value group represents a individual description and consist of one
 	// or more names (ATK_ROLE_DESCRIPTION_TERM) followed by one or more values
 	// (ATK_ROLE_DESCRIPTION_VALUE). For each list, there should not be more
-	// than one group with the same term name. (Since: 2.12)
+	// than one group with the same term name. (Since: 2.12).
 	RoleDescriptionList
 	// RoleDescriptionTerm: object that represents a term or phrase with a
-	// corresponding definition. (Since: 2.12)
+	// corresponding definition. (Since: 2.12).
 	RoleDescriptionTerm
 	// RoleDescriptionValue: object that represents the description, definition
-	// or value of a term. (Since: 2.12)
+	// or value of a term. (Since: 2.12).
 	RoleDescriptionValue
 	// RoleStatic: generic non-container object whose purpose is to display a
 	// brief amount of information to the user and whose role is known by the
@@ -467,29 +472,29 @@ const (
 	// indicate that a different role should be used. For labels which describe
 	// another widget, see ATK_ROLE_LABEL. For text views, see ATK_ROLE_TEXT.
 	// For generic containers, see ATK_ROLE_PANEL. For objects whose role is not
-	// known by the implementor, see ATK_ROLE_UNKNOWN. (Since: 2.16)
+	// known by the implementor, see ATK_ROLE_UNKNOWN. (Since: 2.16).
 	RoleStatic
 	// RoleMathFraction: object that represents a mathematical fraction. (Since:
-	// 2.16)
+	// 2.16).
 	RoleMathFraction
 	// RoleMathRoot: object that represents a mathematical expression displayed
-	// with a radical. (Since: 2.16)
+	// with a radical. (Since: 2.16).
 	RoleMathRoot
 	// RoleSubscript: object that contains text that is displayed as a
-	// subscript. (Since: 2.16)
+	// subscript. (Since: 2.16).
 	RoleSubscript
 	// RoleSuperscript: object that contains text that is displayed as a
-	// superscript. (Since: 2.16)
+	// superscript. (Since: 2.16).
 	RoleSuperscript
-	// RoleFootnote: object that contains the text of a footnote. (Since: 2.26)
+	// RoleFootnote: object that contains the text of a footnote. (Since: 2.26).
 	RoleFootnote
 	// RoleContentDeletion: content previously deleted or proposed to be
 	// deleted, e.g. in revision history or a content view providing suggestions
-	// from reviewers. (Since: 2.34)
+	// from reviewers. (Since: 2.34).
 	RoleContentDeletion
 	// RoleContentInsertion: content previously inserted or proposed to be
 	// inserted, e.g. in revision history or a content view providing
-	// suggestions from reviewers. (Since: 2.34)
+	// suggestions from reviewers. (Since: 2.34).
 	RoleContentInsertion
 	// RoleMark: run of content that is marked or highlighted, such as for
 	// reference purposes, or to call it out as having a special purpose. If the
@@ -497,16 +502,16 @@ const (
 	// the reason for the mark, then ATK_RELATION_DETAILS should be used on the
 	// mark to point to that associated section. In addition, the reciprocal
 	// relation ATK_RELATION_DETAILS_FOR should be used on the associated
-	// content section to point back to the mark. (Since: 2.36)
+	// content section to point back to the mark. (Since: 2.36).
 	RoleMark
 	// RoleSuggestion: container for content that is called out as a proposed
 	// change from the current version of the document, such as by a reviewer of
 	// the content. This role should include either ATK_ROLE_CONTENT_DELETION
 	// and/or ATK_ROLE_CONTENT_INSERTION children, in any order, to indicate
-	// what the actual change is. (Since: 2.36)
+	// what the actual change is. (Since: 2.36).
 	RoleSuggestion
 	// RoleLastDefined: not a valid role, used for finding end of the
-	// enumeration
+	// enumeration.
 	RoleLastDefined
 )
 
@@ -877,7 +882,7 @@ func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 
 // ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
-// iface->(ref_accessible)(implementor);
+// iface->(ref_accessible)(implementor);.
 type ImplementorIface struct {
 	*externglib.Object
 }
@@ -947,7 +952,7 @@ type ObjectClassOverrider interface {
 	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
-	// used to create an instance of a subclass of Object
+	// used to create an instance of a subclass of Object.
 	Initialize(data cgo.Handle)
 	PropertyChange(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
@@ -1223,7 +1228,7 @@ func (accessible *ObjectClass) Role() Role {
 // Initialize: this function is called when implementing subclasses of Object.
 // It does initialization required for the new object. It is intended that this
 // function should called only in the ..._new() functions used to create an
-// instance of a subclass of Object
+// instance of a subclass of Object.
 func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out

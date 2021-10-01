@@ -27,7 +27,7 @@ type Repository struct {
 func ParseRepository(file string) (*Repository, error) {
 	f, err := os.Open(file)
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to open file")
+		return nil, errors.Wrap(err, "failed to open file")
 	}
 	defer f.Close()
 
@@ -39,7 +39,7 @@ func ParseRepositoryFromReader(r io.Reader) (*Repository, error) {
 	var repo Repository
 
 	if err := xml.NewDecoder(r).Decode(&repo); err != nil {
-		return nil, errors.Wrap(err, "Failed to decode gir XML")
+		return nil, errors.Wrap(err, "failed to decode gir XML")
 	}
 
 	return &repo, nil

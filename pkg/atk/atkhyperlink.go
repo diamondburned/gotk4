@@ -24,11 +24,11 @@ func init() {
 	})
 }
 
-// HyperlinkStateFlags describes the type of link
+// HyperlinkStateFlags describes the type of link.
 type HyperlinkStateFlags int
 
 const (
-	// HyperlinkIsInline: link is inline
+	// HyperlinkIsInline: link is inline.
 	HyperlinkIsInline HyperlinkStateFlags = 0b1
 )
 

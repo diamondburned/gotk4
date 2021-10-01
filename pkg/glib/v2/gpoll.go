@@ -95,7 +95,7 @@ func NewPollFD(fd int, events, revents uint16) PollFD {
 	return *(*PollFD)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// Fd: file descriptor to poll (or a HANDLE on Win32)
+// Fd: file descriptor to poll (or a HANDLE on Win32).
 func (p *PollFD) Fd() int {
 	var v int // out
 	v = int(p.native.fd)

@@ -60,14 +60,14 @@ func NewCSSLocation(bytes, chars, lines, lineBytes, lineChars uint) CSSLocation 
 	return *(*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// Bytes: number of bytes parsed since the beginning
+// Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) Bytes() uint {
 	var v uint // out
 	v = uint(c.native.bytes)
 	return v
 }
 
-// Chars: number of characters parsed since the beginning
+// Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) Chars() uint {
 	var v uint // out
 	v = uint(c.native.chars)
@@ -82,14 +82,14 @@ func (c *CSSLocation) Lines() uint {
 	return v
 }
 
-// LineBytes: number of bytes parsed since the last line break
+// LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) LineBytes() uint {
 	var v uint // out
 	v = uint(c.native.line_bytes)
 	return v
 }
 
-// LineChars: number of characters parsed since the last line break
+// LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) LineChars() uint {
 	var v uint // out
 	v = uint(c.native.line_chars)

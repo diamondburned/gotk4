@@ -83,7 +83,7 @@ type GLContexter interface {
 	// DebugEnabled retrieves whether the context is doing extra validations and
 	// runtime checking.
 	DebugEnabled() bool
-	// Display retrieves the display the context is created for
+	// Display retrieves the display the context is created for.
 	Display() *Display
 	// ForwardCompatible retrieves whether the context is forward-compatible.
 	ForwardCompatible() bool
@@ -155,7 +155,7 @@ func (context *GLContext) DebugEnabled() bool {
 	return _ok
 }
 
-// Display retrieves the display the context is created for
+// Display retrieves the display the context is created for.
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in

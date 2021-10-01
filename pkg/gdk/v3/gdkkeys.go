@@ -485,7 +485,7 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 // any combination of modifiers will be returned in consumed_modifiers;
 // multi-modifier combinations are returned only when actually found in state.
 // When you store accelerators, you should always store them with consumed
-// modifiers removed. Store <Control>plus, not <Control><Shift>plus,
+// modifiers removed. Store <Control>plus, not <Control><Shift>plus,.
 func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out

@@ -60,11 +60,11 @@ const (
 	// uses of the option are collected into an array of strings.
 	OptionArgFilenameArray
 	// OptionArgDouble: option takes a double argument. The argument can be
-	// formatted either for the user's locale or for the "C" locale. Since 2.12
+	// formatted either for the user's locale or for the "C" locale. Since 2.12.
 	OptionArgDouble
 	// OptionArgInt64: option takes a 64-bit integer. Like G_OPTION_ARG_INT but
 	// for larger numbers. The number can be in decimal base, or in hexadecimal
-	// (when prefixed with 0x, for example, 0xffffffff). Since 2.12
+	// (when prefixed with 0x, for example, 0xffffffff). Since 2.12.
 	OptionArgInt64
 )
 
@@ -138,15 +138,15 @@ const (
 	OptionFlagReverse OptionFlags = 0b100
 	// OptionFlagNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this flag
 	// indicates that the callback does not take any argument (like a
-	// G_OPTION_ARG_NONE option). Since 2.8
+	// G_OPTION_ARG_NONE option). Since 2.8.
 	OptionFlagNoArg OptionFlags = 0b1000
 	// OptionFlagFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
 	// flag indicates that the argument should be passed to the callback in the
-	// GLib filename encoding rather than UTF-8. Since 2.8
+	// GLib filename encoding rather than UTF-8. Since 2.8.
 	OptionFlagFilename OptionFlags = 0b10000
 	// OptionFlagOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
 	// this flag indicates that the argument supply is optional. If no argument
-	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8
+	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8.
 	OptionFlagOptionalArg OptionFlags = 0b100000
 	// OptionFlagNoalias: this flag turns off the automatic conflict resolution
 	// which prefixes long option names with groupname- if there is a conflict.
@@ -235,14 +235,14 @@ func (o *OptionEntry) ShortName() byte {
 	return v
 }
 
-// Flags from Flags
+// Flags from Flags.
 func (o *OptionEntry) Flags() int {
 	var v int // out
 	v = int(o.native.flags)
 	return v
 }
 
-// Arg: type of the option, as a Arg
+// Arg: type of the option, as a Arg.
 func (o *OptionEntry) Arg() OptionArg {
 	var v OptionArg // out
 	v = OptionArg(o.native.arg)

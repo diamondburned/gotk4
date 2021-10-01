@@ -593,7 +593,7 @@ func (context *Context) SetBaseGravity(gravity Gravity) {
 	runtime.KeepAlive(gravity)
 }
 
-// SetFontDescription: set the default font description for the context
+// SetFontDescription: set the default font description for the context.
 func (context *Context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out

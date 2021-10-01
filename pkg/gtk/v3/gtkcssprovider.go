@@ -264,7 +264,7 @@ func CSSProviderGetDefault() *CSSProvider {
 	return _cssProvider
 }
 
-// CSSProviderGetNamed loads a theme from the usual theme paths
+// CSSProviderGetNamed loads a theme from the usual theme paths.
 func CSSProviderGetNamed(name string, variant string) *CSSProvider {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out

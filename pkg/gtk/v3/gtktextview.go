@@ -71,15 +71,15 @@ type TextViewLayer int
 
 const (
 	// TextViewLayerBelow: old deprecated layer, use
-	// GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
+	// GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead.
 	TextViewLayerBelow TextViewLayer = iota
 	// TextViewLayerAbove: old deprecated layer, use
-	// GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
+	// GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead.
 	TextViewLayerAbove
 	// TextViewLayerBelowText: layer rendered below the text (but above the
-	// background). Since: 3.20
+	// background). Since: 3.20.
 	TextViewLayerBelowText
-	// TextViewLayerAboveText: layer rendered above the text. Since: 3.20
+	// TextViewLayerAboveText: layer rendered above the text. Since: 3.20.
 	TextViewLayerAboveText
 )
 
@@ -107,7 +107,7 @@ func (t TextViewLayer) String() string {
 type TextWindowType int
 
 const (
-	// TextWindowPrivate: invalid value, used as a marker
+	// TextWindowPrivate: invalid value, used as a marker.
 	TextWindowPrivate TextWindowType = iota
 	// TextWindowWidget: window that floats over scrolling areas.
 	TextWindowWidget
@@ -1194,7 +1194,7 @@ func (textView *TextView) WrapMode() WrapMode {
 //      // Do some stuff
 //
 //      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
-//    }
+//    }.
 func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEventKey // out

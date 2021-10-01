@@ -141,7 +141,7 @@ func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
 //
 // - .sidebar-placeholder-row for a row that is a placeholder
 //
-// - .has-open-popup when a popup is open for a row
+// - .has-open-popup when a popup is open for a row.
 type PlacesSidebar struct {
 	ScrolledWindow
 }
@@ -344,7 +344,7 @@ func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
 }
 
 // ShowDesktop returns the value previously set with
-// gtk_places_sidebar_set_show_desktop()
+// gtk_places_sidebar_set_show_desktop().
 func (sidebar *PlacesSidebar) ShowDesktop() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
@@ -364,7 +364,7 @@ func (sidebar *PlacesSidebar) ShowDesktop() bool {
 }
 
 // ShowEnterLocation returns the value previously set with
-// gtk_places_sidebar_set_show_enter_location()
+// gtk_places_sidebar_set_show_enter_location().
 func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
@@ -384,7 +384,7 @@ func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 }
 
 // ShowOtherLocations returns the value previously set with
-// gtk_places_sidebar_set_show_other_locations()
+// gtk_places_sidebar_set_show_other_locations().
 func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
@@ -404,7 +404,7 @@ func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 }
 
 // ShowRecent returns the value previously set with
-// gtk_places_sidebar_set_show_recent()
+// gtk_places_sidebar_set_show_recent().
 func (sidebar *PlacesSidebar) ShowRecent() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
@@ -424,7 +424,7 @@ func (sidebar *PlacesSidebar) ShowRecent() bool {
 }
 
 // ShowStarredLocation returns the value previously set with
-// gtk_places_sidebar_set_show_starred_location()
+// gtk_places_sidebar_set_show_starred_location().
 func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in
@@ -444,7 +444,7 @@ func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 }
 
 // ShowTrash returns the value previously set with
-// gtk_places_sidebar_set_show_trash()
+// gtk_places_sidebar_set_show_trash().
 func (sidebar *PlacesSidebar) ShowTrash() bool {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret C.gboolean          // in

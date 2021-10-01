@@ -1167,7 +1167,7 @@ func (window *Window) SkipPagerHint() bool {
 	return _ok
 }
 
-// SkipTaskbarHint gets the value set by gtk_window_set_skip_taskbar_hint()
+// SkipTaskbarHint gets the value set by gtk_window_set_skip_taskbar_hint().
 func (window *Window) SkipTaskbarHint() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
@@ -1271,7 +1271,7 @@ func (window *Window) TypeHint() gdk.WindowTypeHint {
 	return _windowTypeHint
 }
 
-// UrgencyHint gets the value set by gtk_window_set_urgency_hint()
+// UrgencyHint gets the value set by gtk_window_set_urgency_hint().
 func (window *Window) UrgencyHint() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
@@ -1372,7 +1372,7 @@ func (window *Window) Iconify() {
 // if the window is active toplevel itself, but also if it is, say, a Plug
 // embedded in the active toplevel. You might use this function if you wanted to
 // draw a widget differently in an active window from a widget in an inactive
-// window. See gtk_window_has_toplevel_focus()
+// window. See gtk_window_has_toplevel_focus().
 func (window *Window) IsActive() bool {
 	var _arg0 *C.GtkWindow // out
 	var _cret C.gboolean   // in
@@ -2100,7 +2100,7 @@ func (window *Window) SetGeometryHints(geometryWidget Widgetter, geometry *gdk.G
 // gtk_window_move(). See gtk_window_move() and Gravity for more details.
 //
 // The default window gravity is K_GRAVITY_NORTH_WEST which will typically “do
-// what you mean.”
+// what you mean.”.
 func (window *Window) SetGravity(gravity gdk.Gravity) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.GdkGravity // out
@@ -2501,7 +2501,7 @@ func (window *Window) SetScreen(screen *gdk.Screen) {
 // SetSkipPagerHint windows may set a hint asking the desktop environment not to
 // display the window in the pager. This function sets this hint. (A "pager" is
 // any desktop navigation tool such as a workspace switcher that displays a
-// thumbnail representation of the windows on the screen.)
+// thumbnail representation of the windows on the screen.).
 func (window *Window) SetSkipPagerHint(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out

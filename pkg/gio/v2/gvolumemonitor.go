@@ -50,7 +50,7 @@ type VolumeMonitorOverrider interface {
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
 	ConnectedDrives() []Driver
-	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	MountForUUID(uuid string) Mounter
 	// Mounts gets a list of the mounts on the system.
 	//
@@ -58,7 +58,7 @@ type VolumeMonitorOverrider interface {
 	// have been unreffed with g_object_unref().
 	Mounts() []Mounter
 	// VolumeForUUID finds a #GVolume object by its UUID (see
-	// g_volume_get_uuid())
+	// g_volume_get_uuid()).
 	VolumeForUUID(uuid string) Volumer
 	// Volumes gets a list of the volumes on the system.
 	//
@@ -138,7 +138,7 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	return _list
 }
 
-// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
+// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
@@ -208,7 +208,7 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	return _list
 }
 
-// VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid())
+// VolumeForUUID finds a #GVolume object by its UUID (see g_volume_get_uuid()).
 func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out

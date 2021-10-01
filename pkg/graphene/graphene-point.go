@@ -58,14 +58,14 @@ func NewPointAlloc() *Point {
 	return _point
 }
 
-// X coordinate of the point
+// X coordinate of the point.
 func (p *Point) X() float32 {
 	var v float32 // out
 	v = float32(p.native.x)
 	return v
 }
 
-// Y coordinate of the point
+// Y coordinate of the point.
 func (p *Point) Y() float32 {
 	var v float32 // out
 	v = float32(p.native.y)

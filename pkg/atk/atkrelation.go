@@ -58,7 +58,7 @@ func RelationTypeGetName(typ RelationType) string {
 	return _utf8
 }
 
-// RelationTypeRegister: associate name with a new RelationType
+// RelationTypeRegister: associate name with a new RelationType.
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -139,7 +139,7 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 	runtime.KeepAlive(target)
 }
 
-// RelationType gets the type of relation
+// RelationType gets the type of relation.
 func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in

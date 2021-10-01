@@ -414,7 +414,7 @@ func ContentTypeIsUnknown(typ string) bool {
 //
 //      …
 //
-//      return g_test_run ();
+//      return g_test_run ();.
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar // out
 

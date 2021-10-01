@@ -94,7 +94,7 @@ func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	return wrapToggleToolButton(obj), nil
 }
 
-// NewToggleToolButton returns a new ToggleToolButton
+// NewToggleToolButton returns a new ToggleToolButton.
 func NewToggleToolButton() *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 

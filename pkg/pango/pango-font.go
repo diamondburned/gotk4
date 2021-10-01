@@ -38,23 +38,23 @@ func init() {
 type Stretch int
 
 const (
-	// StretchUltraCondensed: ultra condensed width
+	// StretchUltraCondensed: ultra condensed width.
 	StretchUltraCondensed Stretch = iota
-	// StretchExtraCondensed: extra condensed width
+	// StretchExtraCondensed: extra condensed width.
 	StretchExtraCondensed
-	// StretchCondensed width
+	// StretchCondensed: condensed width.
 	StretchCondensed
-	// StretchSemiCondensed: semi condensed width
+	// StretchSemiCondensed: semi condensed width.
 	StretchSemiCondensed
-	// StretchNormal width
+	// StretchNormal: normal width.
 	StretchNormal
-	// StretchSemiExpanded: semi expanded width
+	// StretchSemiExpanded: semi expanded width.
 	StretchSemiExpanded
-	// StretchExpanded width
+	// StretchExpanded: expanded width.
 	StretchExpanded
-	// StretchExtraExpanded: extra expanded width
+	// StretchExtraExpanded: extra expanded width.
 	StretchExtraExpanded
-	// StretchUltraExpanded: ultra expanded width
+	// StretchUltraExpanded: ultra expanded width.
 	StretchUltraExpanded
 )
 
@@ -122,7 +122,7 @@ func (s Style) String() string {
 type Variant int
 
 const (
-	// VariantNormal font.
+	// VariantNormal: normal font.
 	VariantNormal Variant = iota
 	// VariantSmallCaps: font with the lower case characters replaced by smaller
 	// variants of the capital characters.
@@ -152,29 +152,29 @@ func (v Variant) String() string {
 type Weight int
 
 const (
-	// WeightThin weight (= 100; Since: 1.24)
+	// WeightThin: thin weight (= 100; Since: 1.24).
 	WeightThin Weight = 100
-	// WeightUltralight weight (= 200)
+	// WeightUltralight: ultralight weight (= 200).
 	WeightUltralight Weight = 200
-	// WeightLight weight (= 300)
+	// WeightLight: light weight (= 300).
 	WeightLight Weight = 300
-	// WeightSemilight weight (= 350; Since: 1.36.7)
+	// WeightSemilight: semilight weight (= 350; Since: 1.36.7).
 	WeightSemilight Weight = 350
-	// WeightBook weight (= 380; Since: 1.24)
+	// WeightBook: book weight (= 380; Since: 1.24).
 	WeightBook Weight = 380
-	// WeightNormal: default weight (= 400)
+	// WeightNormal: default weight (= 400).
 	WeightNormal Weight = 400
-	// WeightMedium: normal weight (= 500; Since: 1.24)
+	// WeightMedium: normal weight (= 500; Since: 1.24).
 	WeightMedium Weight = 500
-	// WeightSemibold weight (= 600)
+	// WeightSemibold: semibold weight (= 600).
 	WeightSemibold Weight = 600
-	// WeightBold weight (= 700)
+	// WeightBold: bold weight (= 700).
 	WeightBold Weight = 700
-	// WeightUltrabold weight (= 800)
+	// WeightUltrabold: ultrabold weight (= 800).
 	WeightUltrabold Weight = 800
-	// WeightHeavy weight (= 900)
+	// WeightHeavy: heavy weight (= 900).
 	WeightHeavy Weight = 900
-	// WeightUltraheavy weight (= 1000; Since: 1.24)
+	// WeightUltraheavy: ultraheavy weight (= 1000; Since: 1.24).
 	WeightUltraheavy Weight = 1000
 )
 
@@ -231,9 +231,9 @@ const (
 	FontMaskStretch FontMask = 0b10000
 	// FontMaskSize: font size is specified.
 	FontMaskSize FontMask = 0b100000
-	// FontMaskGravity: font gravity is specified (Since: 1.16.)
+	// FontMaskGravity: font gravity is specified (Since: 1.16.).
 	FontMaskGravity FontMask = 0b1000000
-	// FontMaskVariations: openType font variations are specified (Since: 1.42)
+	// FontMaskVariations: openType font variations are specified (Since: 1.42).
 	FontMaskVariations FontMask = 0b10000000
 )
 
@@ -590,7 +590,7 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 
 // HasChar returns whether the font provides a glyph for this character.
 //
-// Returns TRUE if font can render wc
+// Returns TRUE if font can render wc.
 func (font *Font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -1173,7 +1173,7 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 // Two font descriptions are considered equal if the fonts they describe are
 // provably identical. This means that their masks do not have to match, as long
 // as other fields are all the same. (Two font descriptions may result in
-// identical fonts being loaded, but still compare FALSE.)
+// identical fonts being loaded, but still compare FALSE.).
 func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -1768,7 +1768,7 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // A typical example:
 //
-//    "Cantarell Italic Light 15 \wght=200"
+//    "Cantarell Italic Light 15 \wght=200".
 func FontDescriptionFromString(str string) *FontDescription {
 	var _arg1 *C.char                 // out
 	var _cret *C.PangoFontDescription // in
@@ -1864,7 +1864,7 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int {
 //
 // The ascent is the distance from the baseline to the logical top of a line of
 // text. (The logical top may be above or below the top of the actual drawn ink.
-// It is necessary to lay out the text to figure where the ink will be.)
+// It is necessary to lay out the text to figure where the ink will be.).
 func (metrics *FontMetrics) Ascent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -1886,7 +1886,7 @@ func (metrics *FontMetrics) Ascent() int {
 // The descent is the distance from the baseline to the logical bottom of a line
 // of text. (The logical bottom may be above or below the bottom of the actual
 // drawn ink. It is necessary to lay out the text to figure where the ink will
-// be.)
+// be.).
 func (metrics *FontMetrics) Descent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in

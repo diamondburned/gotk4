@@ -39,14 +39,15 @@ func init() {
 type FontChooserLevel int
 
 const (
-	// FontChooserLevelFamily: allow selecting a font family
+	// FontChooserLevelFamily: allow selecting a font family.
 	FontChooserLevelFamily FontChooserLevel = 0b0
-	// FontChooserLevelStyle: allow selecting a specific font face
+	// FontChooserLevelStyle: allow selecting a specific font face.
 	FontChooserLevelStyle FontChooserLevel = 0b1
-	// FontChooserLevelSize: allow selecting a specific font size
+	// FontChooserLevelSize: allow selecting a specific font size.
 	FontChooserLevelSize       FontChooserLevel = 0b10
 	FontChooserLevelVariations FontChooserLevel = 0b100
-	// FontChooserLevelFeatures: allow selecting specific OpenType font features
+	// FontChooserLevelFeatures: allow selecting specific OpenType font
+	// features.
 	FontChooserLevelFeatures FontChooserLevel = 0b1000
 )
 
@@ -187,7 +188,7 @@ type FontChooserOverrider interface {
 	// application-specific font if it is present in the font map they use:
 	//
 	//    context = gtk_widget_get_pango_context (label);
-	//    pango_context_set_font_map (context, fontmap);
+	//    pango_context_set_font_map (context, fontmap);.
 	SetFontMap(fontmap pango.FontMapper)
 }
 
@@ -585,7 +586,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 // application-specific font if it is present in the font map they use:
 //
 //    context = gtk_widget_get_pango_context (label);
-//    pango_context_set_font_map (context, fontmap);
+//    pango_context_set_font_map (context, fontmap);.
 func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out

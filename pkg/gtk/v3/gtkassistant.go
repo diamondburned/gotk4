@@ -264,7 +264,7 @@ func (assistant *Assistant) CurrentPage() int {
 	return _gint
 }
 
-// NPages returns the number of pages in the assistant
+// NPages returns the number of pages in the assistant.
 func (assistant *Assistant) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.gint          // in

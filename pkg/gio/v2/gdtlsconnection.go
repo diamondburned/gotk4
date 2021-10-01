@@ -490,7 +490,7 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 // PeerCertificate gets conn's peer's certificate after the handshake has
 // completed or failed. (It is not set during the emission of
-// Connection::accept-certificate.)
+// Connection::accept-certificate.).
 func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
@@ -520,7 +520,7 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 
 // PeerCertificateErrors gets the errors associated with validating conn's
 // peer's certificate, after the handshake has completed or failed. (It is not
-// set during the emission of Connection::accept-certificate.)
+// set during the emission of Connection::accept-certificate.).
 func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GDtlsConnection     // out
 	var _cret C.GTlsCertificateFlags // in
@@ -729,7 +729,7 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 // (It is also possible that a server will allow the connection with or without
 // a certificate; in that case, if you don't provide a certificate, you can tell
 // that the server requested one by the fact that
-// g_dtls_client_connection_get_accepted_cas() will return non-NULL.)
+// g_dtls_client_connection_get_accepted_cas() will return non-NULL.).
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out

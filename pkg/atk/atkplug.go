@@ -29,7 +29,7 @@ type PlugOverrider interface {
 	ObjectID() string
 }
 
-// Plug: see Socket
+// Plug: see Socket.
 type Plug struct {
 	ObjectClass
 

@@ -29,15 +29,15 @@ func init() {
 type RenderPart int
 
 const (
-	// RenderPartForeground: text itself
+	// RenderPartForeground: text itself.
 	RenderPartForeground RenderPart = iota
-	// RenderPartBackground: area behind the text
+	// RenderPartBackground: area behind the text.
 	RenderPartBackground
-	// RenderPartUnderline: underlines
+	// RenderPartUnderline: underlines.
 	RenderPartUnderline
-	// RenderPartStrikethrough lines
+	// RenderPartStrikethrough: strikethrough lines.
 	RenderPartStrikethrough
-	// RenderPartOverline: overlines
+	// RenderPartOverline: overlines.
 	RenderPartOverline
 )
 
@@ -122,7 +122,7 @@ type RendererOverrider interface {
 	//
 	// When the stipple changes or underlines with different stipples might be
 	// joined together. Pango automatically calls this for changes to colors.
-	// (See pango.Renderer.SetColor())
+	// (See pango.Renderer.SetColor()).
 	PartChanged(part RenderPart)
 	PrepareRun(run *LayoutRun)
 }
@@ -571,7 +571,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 //
 // When the stipple changes or underlines with different stipples might be
 // joined together. Pango automatically calls this for changes to colors. (See
-// pango.Renderer.SetColor())
+// pango.Renderer.SetColor()).
 func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out

@@ -13,6 +13,7 @@ Ps
 Pdf
 Ngl
 Iso
+Rle
 Xml
 Os2
 Drm
@@ -68,6 +69,8 @@ Vrgb
 Vbgr
 Cogl
 Guid
+Http
+Https
 Ascii
 Iso8601
 [LA]gpl

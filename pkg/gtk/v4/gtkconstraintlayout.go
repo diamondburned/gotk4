@@ -180,9 +180,9 @@ func init() {
 //
 // Finally, it's also possible to use simple arithmetic operators:
 //
-//      // width of button1 must be equal to width of button2
-//      // divided by 2 plus 12
-//      [button1(button2 / 2 + 12)]
+//    // width of button1 must be equal to width of button2
+//    // divided by 2 plus 12
+//    [button1(button2 / 2 + 12)].
 type ConstraintLayout struct {
 	LayoutManager
 
@@ -321,7 +321,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //      [button1(button2 / 3 + 50)]
 //
 //      // Named attributes
-//      [button1(==button2.height)]
+//      [button1(==button2.height)].
 func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing int, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out

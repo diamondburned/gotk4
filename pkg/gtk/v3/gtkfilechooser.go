@@ -836,7 +836,7 @@ func (chooser *FileChooser) Filename() string {
 // Filenames lists all the selected files and subfolders in the current folder
 // of chooser. The returned names are full absolute paths. If files in the
 // current folder cannot be represented as local filenames they will be ignored.
-// (See gtk_file_chooser_get_uris())
+// (See gtk_file_chooser_get_uris()).
 func (chooser *FileChooser) Filenames() []string {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
@@ -916,7 +916,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 }
 
 // LocalOnly gets whether only local files can be selected in the file selector.
-// See gtk_file_chooser_set_local_only()
+// See gtk_file_chooser_set_local_only().
 func (chooser *FileChooser) LocalOnly() bool {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret C.gboolean        // in
@@ -1630,7 +1630,7 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 //      {
 //        // the user edited an existing document
 //        gtk_file_chooser_set_file (chooser, existing_file);
-//      }
+//      }.
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -1876,7 +1876,7 @@ func (chooser *FileChooser) SetURI(uri string) bool {
 // Applications that want to draw the whole preview area themselves should set
 // this to FALSE and display the name themselves in their preview widget.
 //
-// See also: gtk_file_chooser_set_preview_widget()
+// See also: gtk_file_chooser_set_preview_widget().
 func (chooser *FileChooser) SetUsePreviewLabel(useLabel bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out

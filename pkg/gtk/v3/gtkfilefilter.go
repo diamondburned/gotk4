@@ -36,14 +36,14 @@ func init() {
 type FileFilterFlags int
 
 const (
-	// FileFilterFilename of the file being tested
+	// FileFilterFilename: filename of the file being tested.
 	FileFilterFilename FileFilterFlags = 0b1
-	// FileFilterURI: URI for the file being tested
+	// FileFilterURI: URI for the file being tested.
 	FileFilterURI FileFilterFlags = 0b10
 	// FileFilterDisplayName: string that will be used to display the file in
-	// the file chooser
+	// the file chooser.
 	FileFilterDisplayName FileFilterFlags = 0b100
-	// FileFilterMIMEType: mime type of the file
+	// FileFilterMIMEType: mime type of the file.
 	FileFilterMIMEType FileFilterFlags = 0b1000
 )
 
@@ -149,7 +149,7 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 //        <pattern>*.txt</pattern>
 //        <pattern>*.png</pattern>
 //      </patterns>
-//    </object>
+//    </object>.
 type FileFilter struct {
 	externglib.InitiallyUnowned
 
@@ -181,7 +181,7 @@ func marshalFileFilterer(p uintptr) (interface{}, error) {
 // gtk_file_filter_add_custom(). To create a filter that accepts any file, use:
 //
 //    GtkFileFilter *filter = gtk_file_filter_new ();
-//    gtk_file_filter_add_pattern (filter, "*");
+//    gtk_file_filter_add_pattern (filter, "*");.
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -397,35 +397,36 @@ type fileFilterInfo struct {
 	native *C.GtkFileFilterInfo
 }
 
-// Contains flags indicating which of the following fields need are filled
+// Contains flags indicating which of the following fields need are filled.
 func (f *FileFilterInfo) Contains() FileFilterFlags {
 	var v FileFilterFlags // out
 	v = FileFilterFlags(f.native.contains)
 	return v
 }
 
-// Filename: filename of the file being tested
+// Filename: filename of the file being tested.
 func (f *FileFilterInfo) Filename() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.filename)))
 	return v
 }
 
-// URI for the file being tested
+// URI for the file being tested.
 func (f *FileFilterInfo) URI() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.uri)))
 	return v
 }
 
-// DisplayName: string that will be used to display the file in the file chooser
+// DisplayName: string that will be used to display the file in the file
+// chooser.
 func (f *FileFilterInfo) DisplayName() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.display_name)))
 	return v
 }
 
-// MIMEType: mime type of the file
+// MIMEType: mime type of the file.
 func (f *FileFilterInfo) MIMEType() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.mime_type)))

@@ -62,7 +62,7 @@ func marshalCellRendererTexter(p uintptr) (interface{}, error) {
 // g_object_set()). Also, with TreeViewColumn, you can bind a property to a
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
-// string in each row of the TreeView
+// string in each row of the TreeView.
 func NewCellRendererText() *CellRendererText {
 	var _cret *C.GtkCellRenderer // in
 

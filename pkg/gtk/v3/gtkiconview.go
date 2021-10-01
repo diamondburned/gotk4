@@ -35,17 +35,17 @@ func init() {
 type IconViewDropPosition int
 
 const (
-	// IconViewNoDrop: no drop possible
+	// IconViewNoDrop: no drop possible.
 	IconViewNoDrop IconViewDropPosition = iota
-	// IconViewDropInto: dropped item replaces the item
+	// IconViewDropInto: dropped item replaces the item.
 	IconViewDropInto
-	// IconViewDropLeft: droppped item is inserted to the left
+	// IconViewDropLeft: droppped item is inserted to the left.
 	IconViewDropLeft
-	// IconViewDropRight: dropped item is inserted to the right
+	// IconViewDropRight: dropped item is inserted to the right.
 	IconViewDropRight
-	// IconViewDropAbove: dropped item is inserted above
+	// IconViewDropAbove: dropped item is inserted above.
 	IconViewDropAbove
-	// IconViewDropBelow: dropped item is inserted below
+	// IconViewDropBelow: dropped item is inserted below.
 	IconViewDropBelow
 )
 
@@ -171,7 +171,7 @@ func marshalIconViewer(p uintptr) (interface{}, error) {
 	return wrapIconView(obj), nil
 }
 
-// NewIconView creates a new IconView widget
+// NewIconView creates a new IconView widget.
 func NewIconView() *IconView {
 	var _cret *C.GtkWidget // in
 
@@ -836,7 +836,7 @@ func (iconView *IconView) RowSpacing() int {
 //
 // To free the return value, use:
 //
-//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
 func (iconView *IconView) SelectedItems() []*TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _cret *C.GList       // in
@@ -1276,7 +1276,7 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 }
 
 // SetPixbufColumn sets the column with pixbufs for icon_view to be column. The
-// pixbuf column must be of type K_TYPE_PIXBUF
+// pixbuf column must be of type K_TYPE_PIXBUF.
 func (iconView *IconView) SetPixbufColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out

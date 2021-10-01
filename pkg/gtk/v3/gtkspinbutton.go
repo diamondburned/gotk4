@@ -38,11 +38,11 @@ type SpinButtonUpdatePolicy int
 
 const (
 	// UpdateAlways: when refreshing your SpinButton, the value is always
-	// displayed
+	// displayed.
 	UpdateAlways SpinButtonUpdatePolicy = iota
 	// UpdateIfValid: when refreshing your SpinButton, the value is only
 	// displayed if it is valid within the bounds of the spin button's
-	// adjustment
+	// adjustment.
 	UpdateIfValid
 )
 
@@ -163,7 +163,7 @@ type SpinButtonOverrider interface {
 //      gtk_container_add (GTK_CONTAINER (window), button);
 //
 //      gtk_widget_show_all (window);
-//    }
+//    }.
 type SpinButton struct {
 	Entry
 
@@ -296,7 +296,7 @@ func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float6
 	runtime.KeepAlive(digits)
 }
 
-// Adjustment: get the adjustment associated with a SpinButton
+// Adjustment: get the adjustment associated with a SpinButton.
 func (spinButton *SpinButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret *C.GtkAdjustment // in

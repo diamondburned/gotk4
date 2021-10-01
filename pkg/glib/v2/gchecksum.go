@@ -31,15 +31,15 @@ func init() {
 type ChecksumType int
 
 const (
-	// ChecksumMD5: use the MD5 hashing algorithm
+	// ChecksumMD5: use the MD5 hashing algorithm.
 	ChecksumMD5 ChecksumType = iota
-	// ChecksumSHA1: use the SHA-1 hashing algorithm
+	// ChecksumSHA1: use the SHA-1 hashing algorithm.
 	ChecksumSHA1
-	// ChecksumSHA256: use the SHA-256 hashing algorithm
+	// ChecksumSHA256: use the SHA-256 hashing algorithm.
 	ChecksumSHA256
-	// ChecksumSHA512: use the SHA-512 hashing algorithm (Since: 2.36)
+	// ChecksumSHA512: use the SHA-512 hashing algorithm (Since: 2.36).
 	ChecksumSHA512
-	// ChecksumSHA384: use the SHA-384 hashing algorithm (Since: 2.51)
+	// ChecksumSHA384: use the SHA-384 hashing algorithm (Since: 2.51).
 	ChecksumSHA384
 )
 
@@ -269,7 +269,7 @@ func (checksum *Checksum) Update(data []byte) {
 }
 
 // ChecksumTypeGetLength gets the length in bytes of digests of type
-// checksum_type
+// checksum_type.
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out
 	var _cret C.gssize        // in

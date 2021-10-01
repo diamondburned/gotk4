@@ -27,11 +27,11 @@ func init() {
 type RayIntersectionKind int
 
 const (
-	// RayIntersectionKindNone: no intersection
+	// RayIntersectionKindNone: no intersection.
 	RayIntersectionKindNone RayIntersectionKind = iota
-	// RayIntersectionKindEnter: ray is entering the intersected object
+	// RayIntersectionKindEnter: ray is entering the intersected object.
 	RayIntersectionKindEnter
-	// RayIntersectionKindLeave: ray is leaving the intersected object
+	// RayIntersectionKindLeave: ray is leaving the intersected object.
 	RayIntersectionKindLeave
 )
 
@@ -384,7 +384,7 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 // IntersectsBox checks whether the given #graphene_ray_t r intersects the given
 // #graphene_box_t b.
 //
-// See also: graphene_ray_intersect_box()
+// See also: graphene_ray_intersect_box().
 func (r *Ray) IntersectsBox(b *Box) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -409,7 +409,7 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 // IntersectsSphere checks if the given #graphene_ray_t r intersects the given
 // #graphene_sphere_t s.
 //
-// See also: graphene_ray_intersect_sphere()
+// See also: graphene_ray_intersect_sphere().
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -434,7 +434,7 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 // IntersectsTriangle checks whether the given #graphene_ray_t r intersects the
 // given #graphene_triangle_t b.
 //
-// See also: graphene_ray_intersect_triangle()
+// See also: graphene_ray_intersect_triangle().
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 	var _arg0 *C.graphene_ray_t      // out
 	var _arg1 *C.graphene_triangle_t // out

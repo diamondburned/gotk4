@@ -102,7 +102,7 @@ type InputSource int
 
 const (
 	// SourceMouse: device is a mouse. (This will be reported for the core
-	// pointer, even if it is something else, such as a trackball.)
+	// pointer, even if it is something else, such as a trackball.).
 	SourceMouse InputSource = iota
 	// SourcePen: device is a stylus of a graphics tablet or similar device.
 	SourcePen
@@ -120,7 +120,7 @@ const (
 	// This device type has been added in 3.4.
 	SourceTouchpad
 	// SourceTrackpoint: device is a trackpoint. This device type has been added
-	// in 3.22
+	// in 3.22.
 	SourceTrackpoint
 	// SourceTabletPad: device is a "pad", a collection of buttons, rings and
 	// strips found in drawing tablets. This device type has been added in 3.22.
@@ -225,7 +225,7 @@ type Devicer interface {
 	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
 	// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
 	// will return the list of slave devices attached to it, otherwise it will
-	// return NULL
+	// return NULL.
 	ListSlaveDevices() []Devicer
 	// SetAxisUse specifies how an axis of a device is used.
 	SetAxisUse(index_ uint, use AxisUse)
@@ -657,7 +657,7 @@ func (device *Device) Source() InputSource {
 //       g_free (path);
 //
 //       return settings;
-//     }
+//     }.
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.gchar     // in
@@ -820,7 +820,7 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
 // return the list of slave devices attached to it, otherwise it will return
-// NULL
+// NULL.
 func (device *Device) ListSlaveDevices() []Devicer {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GList     // in

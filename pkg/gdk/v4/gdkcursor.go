@@ -93,7 +93,7 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // (ew_resize_cursor.png) "ew-resize" | ! (ns_resize_cursor.png) "ns-resize" | !
 // (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
-// "zoom-out" | |
+// "zoom-out" | |.
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out

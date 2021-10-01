@@ -368,7 +368,7 @@ type UIManagerOverrider interface {
 //      <child>
 //        <object class="GtkMenuBar" id="menubar1" constructor="uiman"/>
 //      </child>
-//    </object>
+//    </object>.
 type UIManager struct {
 	*externglib.Object
 

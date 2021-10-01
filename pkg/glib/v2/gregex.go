@@ -37,155 +37,157 @@ const (
 	// RegexErrorReplace: replacement failed due to an ill-formed replacement
 	// string.
 	RegexErrorReplace RegexError = 2
-	// RegexErrorMatch process failed.
+	// RegexErrorMatch: match process failed.
 	RegexErrorMatch RegexError = 3
 	// RegexErrorInternal: internal error of the regular expression engine.
-	// Since 2.16
+	// Since 2.16.
 	RegexErrorInternal RegexError = 4
-	// RegexErrorStrayBackslash: "\\" at end of pattern. Since 2.16
+	// RegexErrorStrayBackslash: "\\" at end of pattern. Since 2.16.
 	RegexErrorStrayBackslash RegexError = 101
-	// RegexErrorMissingControlChar: "\\c" at end of pattern. Since 2.16
+	// RegexErrorMissingControlChar: "\\c" at end of pattern. Since 2.16.
 	RegexErrorMissingControlChar RegexError = 102
 	// RegexErrorUnrecognizedEscape: unrecognized character follows "\\". Since
-	// 2.16
+	// 2.16.
 	RegexErrorUnrecognizedEscape RegexError = 103
 	// RegexErrorQuantifiersOutOfOrder numbers out of order in "{}" quantifier.
-	// Since 2.16
+	// Since 2.16.
 	RegexErrorQuantifiersOutOfOrder RegexError = 104
-	// RegexErrorQuantifierTooBig: number too big in "{}" quantifier. Since 2.16
+	// RegexErrorQuantifierTooBig: number too big in "{}" quantifier. Since
+	// 2.16.
 	RegexErrorQuantifierTooBig RegexError = 105
 	// RegexErrorUnterminatedCharacterClass: missing terminating "]" for
-	// character class. Since 2.16
+	// character class. Since 2.16.
 	RegexErrorUnterminatedCharacterClass RegexError = 106
 	// RegexErrorInvalidEscapeInCharacterClass: invalid escape sequence in
-	// character class. Since 2.16
+	// character class. Since 2.16.
 	RegexErrorInvalidEscapeInCharacterClass RegexError = 107
 	// RegexErrorRangeOutOfOrder: range out of order in character class. Since
-	// 2.16
+	// 2.16.
 	RegexErrorRangeOutOfOrder RegexError = 108
-	// RegexErrorNothingToRepeat: nothing to repeat. Since 2.16
+	// RegexErrorNothingToRepeat: nothing to repeat. Since 2.16.
 	RegexErrorNothingToRepeat RegexError = 109
 	// RegexErrorUnrecognizedCharacter: unrecognized character after "(?", "(?<"
-	// or "(?P". Since 2.16
+	// or "(?P". Since 2.16.
 	RegexErrorUnrecognizedCharacter RegexError = 112
 	// RegexErrorPosixNamedClassOutsideClass: POSIX named classes are supported
-	// only within a class. Since 2.16
+	// only within a class. Since 2.16.
 	RegexErrorPosixNamedClassOutsideClass RegexError = 113
 	// RegexErrorUnmatchedParenthesis: missing terminating ")" or ")" without
-	// opening "(". Since 2.16
+	// opening "(". Since 2.16.
 	RegexErrorUnmatchedParenthesis RegexError = 114
 	// RegexErrorInexistentSubpatternReference: reference to non-existent
-	// subpattern. Since 2.16
+	// subpattern. Since 2.16.
 	RegexErrorInexistentSubpatternReference RegexError = 115
 	// RegexErrorUnterminatedComment: missing terminating ")" after comment.
-	// Since 2.16
+	// Since 2.16.
 	RegexErrorUnterminatedComment RegexError = 118
-	// RegexErrorExpressionTooLarge: regular expression too large. Since 2.16
+	// RegexErrorExpressionTooLarge: regular expression too large. Since 2.16.
 	RegexErrorExpressionTooLarge RegexError = 120
-	// RegexErrorMemoryError: failed to get memory. Since 2.16
+	// RegexErrorMemoryError: failed to get memory. Since 2.16.
 	RegexErrorMemoryError RegexError = 121
 	// RegexErrorVariableLengthLookbehind: lookbehind assertion is not fixed
-	// length. Since 2.16
+	// length. Since 2.16.
 	RegexErrorVariableLengthLookbehind RegexError = 125
 	// RegexErrorMalformedCondition: malformed number or name after "(?(". Since
-	// 2.16
+	// 2.16.
 	RegexErrorMalformedCondition RegexError = 126
 	// RegexErrorTooManyConditionalBranches: conditional group contains more
-	// than two branches. Since 2.16
+	// than two branches. Since 2.16.
 	RegexErrorTooManyConditionalBranches RegexError = 127
-	// RegexErrorAssertionExpected: assertion expected after "(?(". Since 2.16
+	// RegexErrorAssertionExpected: assertion expected after "(?(". Since 2.16.
 	RegexErrorAssertionExpected RegexError = 128
-	// RegexErrorUnknownPosixClassName: unknown POSIX class name. Since 2.16
+	// RegexErrorUnknownPosixClassName: unknown POSIX class name. Since 2.16.
 	RegexErrorUnknownPosixClassName RegexError = 130
 	// RegexErrorPosixCollatingElementsNotSupported: POSIX collating elements
-	// are not supported. Since 2.16
+	// are not supported. Since 2.16.
 	RegexErrorPosixCollatingElementsNotSupported RegexError = 131
 	// RegexErrorHexCodeTooLarge: character value in "\\x{...}" sequence is too
-	// large. Since 2.16
+	// large. Since 2.16.
 	RegexErrorHexCodeTooLarge RegexError = 134
-	// RegexErrorInvalidCondition: invalid condition "(?(0)". Since 2.16
+	// RegexErrorInvalidCondition: invalid condition "(?(0)". Since 2.16.
 	RegexErrorInvalidCondition RegexError = 135
 	// RegexErrorSingleByteMatchInLookbehind: \\C not allowed in lookbehind
-	// assertion. Since 2.16
+	// assertion. Since 2.16.
 	RegexErrorSingleByteMatchInLookbehind RegexError = 136
 	// RegexErrorInfiniteLoop: recursive call could loop indefinitely. Since
-	// 2.16
+	// 2.16.
 	RegexErrorInfiniteLoop RegexError = 140
 	// RegexErrorMissingSubpatternNameTerminator: missing terminator in
-	// subpattern name. Since 2.16
+	// subpattern name. Since 2.16.
 	RegexErrorMissingSubpatternNameTerminator RegexError = 142
 	// RegexErrorDuplicateSubpatternName: two named subpatterns have the same
-	// name. Since 2.16
+	// name. Since 2.16.
 	RegexErrorDuplicateSubpatternName RegexError = 143
 	// RegexErrorMalformedProperty: malformed "\\P" or "\\p" sequence. Since
-	// 2.16
+	// 2.16.
 	RegexErrorMalformedProperty RegexError = 146
 	// RegexErrorUnknownProperty: unknown property name after "\\P" or "\\p".
-	// Since 2.16
+	// Since 2.16.
 	RegexErrorUnknownProperty RegexError = 147
 	// RegexErrorSubpatternNameTooLong: subpattern name is too long (maximum 32
-	// characters). Since 2.16
+	// characters). Since 2.16.
 	RegexErrorSubpatternNameTooLong RegexError = 148
 	// RegexErrorTooManySubpatterns: too many named subpatterns (maximum
-	// 10,000). Since 2.16
+	// 10,000). Since 2.16.
 	RegexErrorTooManySubpatterns RegexError = 149
 	// RegexErrorInvalidOctalValue: octal value is greater than "\\377". Since
-	// 2.16
+	// 2.16.
 	RegexErrorInvalidOctalValue RegexError = 151
 	// RegexErrorTooManyBranchesInDefine: "DEFINE" group contains more than one
-	// branch. Since 2.16
+	// branch. Since 2.16.
 	RegexErrorTooManyBranchesInDefine RegexError = 154
 	// RegexErrorDefineRepetion: repeating a "DEFINE" group is not allowed. This
-	// error is never raised. Since: 2.16 Deprecated: 2.34
+	// error is never raised. Since: 2.16 Deprecated: 2.34.
 	RegexErrorDefineRepetion RegexError = 155
 	// RegexErrorInconsistentNewlineOptions: inconsistent newline options. Since
-	// 2.16
+	// 2.16.
 	RegexErrorInconsistentNewlineOptions RegexError = 156
 	// RegexErrorMissingBackReference: "\\g" is not followed by a braced,
 	// angle-bracketed, or quoted name or number, or by a plain number. Since:
-	// 2.16
+	// 2.16.
 	RegexErrorMissingBackReference RegexError = 157
 	// RegexErrorInvalidRelativeReference: relative reference must not be zero.
-	// Since: 2.34
+	// Since: 2.34.
 	RegexErrorInvalidRelativeReference RegexError = 158
 	// RegexErrorBacktrackingControlVerbArgumentForbidden: backtracing control
-	// verb used does not allow an argument. Since: 2.34
+	// verb used does not allow an argument. Since: 2.34.
 	RegexErrorBacktrackingControlVerbArgumentForbidden RegexError = 159
 	// RegexErrorUnknownBacktrackingControlVerb: unknown backtracing control
-	// verb. Since: 2.34
+	// verb. Since: 2.34.
 	RegexErrorUnknownBacktrackingControlVerb RegexError = 160
-	// RegexErrorNumberTooBig: number is too big in escape sequence. Since: 2.34
+	// RegexErrorNumberTooBig: number is too big in escape sequence. Since:
+	// 2.34.
 	RegexErrorNumberTooBig RegexError = 161
-	// RegexErrorMissingSubpatternName: missing subpattern name. Since: 2.34
+	// RegexErrorMissingSubpatternName: missing subpattern name. Since: 2.34.
 	RegexErrorMissingSubpatternName RegexError = 162
-	// RegexErrorMissingDigit: missing digit. Since 2.34
+	// RegexErrorMissingDigit: missing digit. Since 2.34.
 	RegexErrorMissingDigit RegexError = 163
 	// RegexErrorInvalidDataCharacter: in JavaScript compatibility mode, "[" is
-	// an invalid data character. Since: 2.34
+	// an invalid data character. Since: 2.34.
 	RegexErrorInvalidDataCharacter RegexError = 164
 	// RegexErrorExtraSubpatternName: different names for subpatterns of the
-	// same number are not allowed. Since: 2.34
+	// same number are not allowed. Since: 2.34.
 	RegexErrorExtraSubpatternName RegexError = 165
 	// RegexErrorBacktrackingControlVerbArgumentRequired: backtracing control
-	// verb requires an argument. Since: 2.34
+	// verb requires an argument. Since: 2.34.
 	RegexErrorBacktrackingControlVerbArgumentRequired RegexError = 166
 	// RegexErrorInvalidControlChar: "\\c" must be followed by an ASCII
-	// character. Since: 2.34
+	// character. Since: 2.34.
 	RegexErrorInvalidControlChar RegexError = 168
 	// RegexErrorMissingName: "\\k" is not followed by a braced,
-	// angle-bracketed, or quoted name. Since: 2.34
+	// angle-bracketed, or quoted name. Since: 2.34.
 	RegexErrorMissingName RegexError = 169
 	// RegexErrorNotSupportedInClass: "\\N" is not supported in a class. Since:
-	// 2.34
+	// 2.34.
 	RegexErrorNotSupportedInClass RegexError = 171
 	// RegexErrorTooManyForwardReferences: too many forward references. Since:
-	// 2.34
+	// 2.34.
 	RegexErrorTooManyForwardReferences RegexError = 172
 	// RegexErrorNameTooLong: name is too long in "(*MARK)", "(*PRUNE)",
-	// "(*SKIP)", or "(*THEN)". Since: 2.34
+	// "(*SKIP)", or "(*THEN)". Since: 2.34.
 	RegexErrorNameTooLong RegexError = 175
 	// RegexErrorCharacterValueTooLarge: character value in the \\u sequence is
-	// too large. Since: 2.34
+	// too large. Since: 2.34.
 	RegexErrorCharacterValueTooLarge RegexError = 176
 )
 
@@ -368,7 +370,7 @@ const (
 	// improve the speed of matches.
 	RegexOptimize RegexCompileFlags = 0b10000000000000
 	// RegexFirstline limits an unanchored pattern to match before (or at) the
-	// first newline. Since: 2.34
+	// first newline. Since: 2.34.
 	RegexFirstline RegexCompileFlags = 0b1000000000000000000
 	// RegexDupnames names used to identify capturing subpatterns need not be
 	// unique. This can be helpful for certain types of pattern when it is known
@@ -388,14 +390,14 @@ const (
 	RegexNewlineCrlf RegexCompileFlags = 0b1100000000000000000000
 	// RegexNewlineAnycrlf: usually any newline character or character sequence
 	// is recognized. If this option is set, the only recognized newline
-	// character sequences are '\r', '\n', and '\r\n'. Since: 2.34
+	// character sequences are '\r', '\n', and '\r\n'. Since: 2.34.
 	RegexNewlineAnycrlf RegexCompileFlags = 0b10100000000000000000000
 	// RegexBsrAnycrlf: usually any newline character or character sequence is
 	// recognised. If this option is set, then "\R" only recognizes the newline
-	// characters '\r', '\n' and '\r\n'. Since: 2.34
+	// characters '\r', '\n' and '\r\n'. Since: 2.34.
 	RegexBsrAnycrlf RegexCompileFlags = 0b100000000000000000000000
 	// RegexJavascriptCompat changes behaviour so that it is compatible with
-	// JavaScript rather than PCRE. Since: 2.34
+	// JavaScript rather than PCRE. Since: 2.34.
 	RegexJavascriptCompat RegexCompileFlags = 0b10000000000000000000000000
 )
 
@@ -514,30 +516,30 @@ const (
 	RegexMatchNewlineAny RegexMatchFlags = 0b10000000000000000000000
 	// RegexMatchNewlineAnycrlf overrides the newline definition set when
 	// creating a new #GRegex; any '\r', '\n', or '\r\n' character sequence is
-	// recognized as a newline. Since: 2.34
+	// recognized as a newline. Since: 2.34.
 	RegexMatchNewlineAnycrlf RegexMatchFlags = 0b10100000000000000000000
 	// RegexMatchBsrAnycrlf overrides the newline definition for "\R" set when
 	// creating a new #GRegex; only '\r', '\n', or '\r\n' character sequences
-	// are recognized as a newline by "\R". Since: 2.34
+	// are recognized as a newline by "\R". Since: 2.34.
 	RegexMatchBsrAnycrlf RegexMatchFlags = 0b100000000000000000000000
 	// RegexMatchBsrAny overrides the newline definition for "\R" set when
 	// creating a new #GRegex; any Unicode newline character or character
 	// sequence are recognized as a newline by "\R". These are '\r', '\n' and
 	// '\rn', and the single characters U+000B LINE TABULATION, U+000C FORM FEED
 	// (FF), U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and U+2029 PARAGRAPH
-	// SEPARATOR. Since: 2.34
+	// SEPARATOR. Since: 2.34.
 	RegexMatchBsrAny RegexMatchFlags = 0b1000000000000000000000000
-	// RegexMatchPartialSoft alias for REGEX_MATCH_PARTIAL. Since: 2.34
+	// RegexMatchPartialSoft alias for REGEX_MATCH_PARTIAL. Since: 2.34.
 	RegexMatchPartialSoft RegexMatchFlags = 0b1000000000000000
 	// RegexMatchPartialHard turns on the partial matching feature. In contrast
 	// to to REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial
 	// match is found, without continuing to search for a possible complete
 	// match. See g_match_info_is_partial_match() for more information. Since:
-	// 2.34
+	// 2.34.
 	RegexMatchPartialHard RegexMatchFlags = 0b1000000000000000000000000000
 	// RegexMatchNotemptyAtstart: like REGEX_MATCH_NOTEMPTY, but only applied to
 	// the start of the matched string. For anchored patterns this can only
-	// happen for pattern containing "\K". Since: 2.34
+	// happen for pattern containing "\K". Since: 2.34.
 	RegexMatchNotemptyAtstart RegexMatchFlags = 0b10000000000000000000000000000
 )
 

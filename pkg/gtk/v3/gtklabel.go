@@ -497,7 +497,7 @@ func (label *Label) SingleLineMode() bool {
 
 // Text fetches the text from a label widget, as displayed on the screen. This
 // does not include any embedded underlines indicating mnemonics or Pango
-// markup. (See gtk_label_get_label())
+// markup. (See gtk_label_get_label()).
 func (label *Label) Text() string {
 	var _arg0 *C.GtkLabel // out
 	var _cret *C.gchar    // in
@@ -806,7 +806,7 @@ func (label *Label) SetLines(lines int) {
 // If you set the label contents using the Label:label property you should also
 // ensure that you set the Label:use-markup property accordingly.
 //
-// See also: gtk_label_set_text()
+// See also: gtk_label_set_text().
 func (label *Label) SetMarkup(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -938,7 +938,7 @@ func (label *Label) SetSingleLineMode(singleLineMode bool) {
 // This function will set the Label:use-markup property to FALSE as a side
 // effect.
 //
-// See also: gtk_label_set_markup()
+// See also: gtk_label_set_markup().
 func (label *Label) SetText(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out

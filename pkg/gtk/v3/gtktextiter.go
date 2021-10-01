@@ -276,7 +276,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 // of the line, iter is snapped to the start of the line and the function
 // returns TRUE. (Note that this implies that in a loop calling this function,
 // the line number may not change on every iteration, if your first iteration is
-// on line 0.)
+// on line 0.).
 func (iter *TextIter) BackwardLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in
@@ -486,7 +486,7 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 // at the start of the line, iter is snapped to the start of the line and the
 // function returns TRUE. (Note that this implies that in a loop calling this
 // function, the line number may not change on every iteration, if your first
-// iteration is on line 0.)
+// iteration is on line 0.).
 func (iter *TextIter) BackwardVisibleLine() bool {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gboolean     // in

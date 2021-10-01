@@ -45,7 +45,7 @@ type DrawContexter interface {
 	// EndFrame ends a drawing operation started with
 	// gdk_draw_context_begin_frame().
 	EndFrame()
-	// Display retrieves the GdkDisplay the context is created for
+	// Display retrieves the GdkDisplay the context is created for.
 	Display() *Display
 	// FrameRegion retrieves the region that is currently being repainted.
 	FrameRegion() *cairo.Region
@@ -122,7 +122,7 @@ func (context *DrawContext) EndFrame() {
 	runtime.KeepAlive(context)
 }
 
-// Display retrieves the GdkDisplay the context is created for
+// Display retrieves the GdkDisplay the context is created for.
 func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in

@@ -49,7 +49,7 @@ type EditableTextOverrider interface {
 // EditableText is a subclass of Text, and as such, an object which implements
 // EditableText is by definition an Text implementor as well.
 //
-// See also: Text
+// See also: Text.
 type EditableText struct {
 	*externglib.Object
 }

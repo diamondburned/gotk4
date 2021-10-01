@@ -124,7 +124,7 @@ func (p PrintOperationAction) String() string {
 type PrintOperationResult int
 
 const (
-	// PrintOperationResultError has occurred.
+	// PrintOperationResultError: error has occurred.
 	PrintOperationResultError PrintOperationResult = iota
 	// PrintOperationResultApply: print settings should be stored.
 	PrintOperationResultApply
@@ -457,7 +457,7 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 	return _pageSetup
 }
 
-// EmbedPageSetup gets whether page setup selection combos are embedded
+// EmbedPageSetup gets whether page setup selection combos are embedded.
 func (op *PrintOperation) EmbedPageSetup() bool {
 	var _arg0 *C.GtkPrintOperation // out
 	var _cret C.gboolean           // in
@@ -610,7 +610,7 @@ func (op *PrintOperation) StatusString() string {
 	return _utf8
 }
 
-// SupportSelection gets whether the application supports print of selection
+// SupportSelection gets whether the application supports print of selection.
 func (op *PrintOperation) SupportSelection() bool {
 	var _arg0 *C.GtkPrintOperation // out
 	var _cret C.gboolean           // in

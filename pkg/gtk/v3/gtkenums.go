@@ -90,13 +90,13 @@ type Align int
 
 const (
 	// AlignFill: stretch to fill all space if possible, center if no meaningful
-	// way to stretch
+	// way to stretch.
 	AlignFill Align = iota
-	// AlignStart: snap to left or top side, leaving space on right or bottom
+	// AlignStart: snap to left or top side, leaving space on right or bottom.
 	AlignStart
-	// AlignEnd: snap to right or bottom side, leaving space on left or top
+	// AlignEnd: snap to right or bottom side, leaving space on left or top.
 	AlignEnd
-	// AlignCenter natural width of widget inside the allocation
+	// AlignCenter: center natural width of widget inside the allocation.
 	AlignCenter
 	// AlignBaseline: align the widget according to the baseline. Since 3.10.
 	AlignBaseline
@@ -170,11 +170,11 @@ func (a ArrowType) String() string {
 type BaselinePosition int
 
 const (
-	// BaselinePositionTop: align the baseline at the top
+	// BaselinePositionTop: align the baseline at the top.
 	BaselinePositionTop BaselinePosition = iota
-	// BaselinePositionCenter: center the baseline
+	// BaselinePositionCenter: center the baseline.
 	BaselinePositionCenter
-	// BaselinePositionBottom: align the baseline at the bottom
+	// BaselinePositionBottom: align the baseline at the bottom.
 	BaselinePositionBottom
 )
 
@@ -200,25 +200,25 @@ func (b BaselinePosition) String() string {
 type BorderStyle int
 
 const (
-	// BorderStyleNone: no visible border
+	// BorderStyleNone: no visible border.
 	BorderStyleNone BorderStyle = iota
-	// BorderStyleSolid: single line segment
+	// BorderStyleSolid: single line segment.
 	BorderStyleSolid
-	// BorderStyleInset looks as if the content is sunken into the canvas
+	// BorderStyleInset looks as if the content is sunken into the canvas.
 	BorderStyleInset
-	// BorderStyleOutset looks as if the content is coming out of the canvas
+	// BorderStyleOutset looks as if the content is coming out of the canvas.
 	BorderStyleOutset
-	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE
+	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE.
 	BorderStyleHidden
-	// BorderStyleDotted series of round dots
+	// BorderStyleDotted series of round dots.
 	BorderStyleDotted
-	// BorderStyleDashed series of square-ended dashes
+	// BorderStyleDashed series of square-ended dashes.
 	BorderStyleDashed
-	// BorderStyleDouble: two parallel lines with some space between them
+	// BorderStyleDouble: two parallel lines with some space between them.
 	BorderStyleDouble
-	// BorderStyleGroove looks as if it were carved in the canvas
+	// BorderStyleGroove looks as if it were carved in the canvas.
 	BorderStyleGroove
-	// BorderStyleRidge looks as if it were coming out of the canvas
+	// BorderStyleRidge looks as if it were coming out of the canvas.
 	BorderStyleRidge
 )
 
@@ -432,11 +432,11 @@ func (e EventSequenceState) String() string {
 type IMPreeditStyle int
 
 const (
-	// ImPreeditNothing: deprecated
+	// ImPreeditNothing: deprecated.
 	ImPreeditNothing IMPreeditStyle = iota
-	// ImPreeditCallback: deprecated
+	// ImPreeditCallback: deprecated.
 	ImPreeditCallback
-	// ImPreeditNone: deprecated
+	// ImPreeditNone: deprecated.
 	ImPreeditNone
 )
 
@@ -465,11 +465,11 @@ func (i IMPreeditStyle) String() string {
 type IMStatusStyle int
 
 const (
-	// ImStatusNothing: deprecated
+	// ImStatusNothing: deprecated.
 	ImStatusNothing IMStatusStyle = iota
-	// ImStatusCallback: deprecated
+	// ImStatusCallback: deprecated.
 	ImStatusCallback
-	// ImStatusNone: deprecated
+	// ImStatusNone: deprecated.
 	ImStatusNone
 )
 
@@ -501,13 +501,13 @@ const (
 	IconSizeMenu
 	// IconSizeSmallToolbar: size appropriate for small toolbars (16px).
 	IconSizeSmallToolbar
-	// IconSizeLargeToolbar: size appropriate for large toolbars (24px)
+	// IconSizeLargeToolbar: size appropriate for large toolbars (24px).
 	IconSizeLargeToolbar
-	// IconSizeButton: size appropriate for buttons (16px)
+	// IconSizeButton: size appropriate for buttons (16px).
 	IconSizeButton
-	// IconSizeDnd: size appropriate for drag and drop (32px)
+	// IconSizeDnd: size appropriate for drag and drop (32px).
 	IconSizeDnd
-	// IconSizeDialog: size appropriate for dialogs (48px)
+	// IconSizeDialog: size appropriate for dialogs (48px).
 	IconSizeDialog
 )
 
@@ -556,28 +556,29 @@ func (i IconSize) String() string {
 type InputPurpose int
 
 const (
-	// InputPurposeFreeForm: allow any character
+	// InputPurposeFreeForm: allow any character.
 	InputPurposeFreeForm InputPurpose = iota
-	// InputPurposeAlpha: allow only alphabetic characters
+	// InputPurposeAlpha: allow only alphabetic characters.
 	InputPurposeAlpha
-	// InputPurposeDigits: allow only digits
+	// InputPurposeDigits: allow only digits.
 	InputPurposeDigits
-	// InputPurposeNumber: edited field expects numbers
+	// InputPurposeNumber: edited field expects numbers.
 	InputPurposeNumber
-	// InputPurposePhone: edited field expects phone number
+	// InputPurposePhone: edited field expects phone number.
 	InputPurposePhone
-	// InputPurposeURL: edited field expects URL
+	// InputPurposeURL: edited field expects URL.
 	InputPurposeURL
-	// InputPurposeEmail: edited field expects email address
+	// InputPurposeEmail: edited field expects email address.
 	InputPurposeEmail
-	// InputPurposeName: edited field expects the name of a person
+	// InputPurposeName: edited field expects the name of a person.
 	InputPurposeName
 	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
-	// are hidden
+	// are hidden.
 	InputPurposePassword
-	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are
+	// hidden.
 	InputPurposePin
-	// InputPurposeTerminal: allow any character, in addition to control codes
+	// InputPurposeTerminal: allow any character, in addition to control codes.
 	InputPurposeTerminal
 )
 
@@ -655,9 +656,9 @@ func (j Justification) String() string {
 type LevelBarMode int
 
 const (
-	// LevelBarModeContinuous: bar has a continuous mode
+	// LevelBarModeContinuous: bar has a continuous mode.
 	LevelBarModeContinuous LevelBarMode = iota
-	// LevelBarModeDiscrete: bar has a discrete mode
+	// LevelBarModeDiscrete: bar has a discrete mode.
 	LevelBarModeDiscrete
 )
 
@@ -682,13 +683,13 @@ func (l LevelBarMode) String() string {
 type MenuDirectionType int
 
 const (
-	// MenuDirParent: to the parent menu shell
+	// MenuDirParent: to the parent menu shell.
 	MenuDirParent MenuDirectionType = iota
-	// MenuDirChild: to the submenu, if any, associated with the item
+	// MenuDirChild: to the submenu, if any, associated with the item.
 	MenuDirChild
-	// MenuDirNext: to the next menu item
+	// MenuDirNext: to the next menu item.
 	MenuDirNext
-	// MenuDirPrev: to the previous menu item
+	// MenuDirPrev: to the previous menu item.
 	MenuDirPrev
 )
 
@@ -716,15 +717,15 @@ func (m MenuDirectionType) String() string {
 type MessageType int
 
 const (
-	// MessageInfo: informational message
+	// MessageInfo: informational message.
 	MessageInfo MessageType = iota
-	// MessageWarning: non-fatal warning message
+	// MessageWarning: non-fatal warning message.
 	MessageWarning
-	// MessageQuestion: question requiring a choice
+	// MessageQuestion: question requiring a choice.
 	MessageQuestion
-	// MessageError: fatal error message
+	// MessageError: fatal error message.
 	MessageError
-	// MessageOther: none of the above
+	// MessageOther: none of the above.
 	MessageOther
 )
 
@@ -755,21 +756,21 @@ func (m MessageType) String() string {
 type NumberUpLayout int
 
 const (
-	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png)
+	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png).
 	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
-	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png)
+	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png).
 	NumberUpLayoutLeftToRightBottomToTop
-	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png)
+	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png).
 	NumberUpLayoutRightToLeftTopToBottom
-	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png)
+	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png).
 	NumberUpLayoutRightToLeftBottomToTop
-	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png)
+	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png).
 	NumberUpLayoutTopToBottomLeftToRight
-	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png)
+	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png).
 	NumberUpLayoutTopToBottomRightToLeft
-	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png)
+	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png).
 	NumberUpLayoutBottomToTopLeftToRight
-	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png)
+	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png).
 	NumberUpLayoutBottomToTopRightToLeft
 )
 
@@ -834,13 +835,13 @@ func (o Orientation) String() string {
 type PackDirection int
 
 const (
-	// PackDirectionLTR widgets are packed left-to-right
+	// PackDirectionLTR widgets are packed left-to-right.
 	PackDirectionLTR PackDirection = iota
-	// PackDirectionRTL widgets are packed right-to-left
+	// PackDirectionRTL widgets are packed right-to-left.
 	PackDirectionRTL
-	// PackDirectionTtb widgets are packed top-to-bottom
+	// PackDirectionTtb widgets are packed top-to-bottom.
 	PackDirectionTtb
-	// PackDirectionBtt widgets are packed bottom-to-top
+	// PackDirectionBtt widgets are packed bottom-to-top.
 	PackDirectionBtt
 )
 
@@ -869,9 +870,9 @@ func (p PackDirection) String() string {
 type PackType int
 
 const (
-	// PackStart: child is packed into the start of the box
+	// PackStart: child is packed into the start of the box.
 	PackStart PackType = iota
-	// PackEnd: child is packed into the end of the box
+	// PackEnd: child is packed into the end of the box.
 	PackEnd
 )
 
@@ -955,17 +956,17 @@ func (p PageSet) String() string {
 	}
 }
 
-// PanDirection describes the panning direction of a GesturePan
+// PanDirection describes the panning direction of a GesturePan.
 type PanDirection int
 
 const (
-	// PanDirectionLeft: panned towards the left
+	// PanDirectionLeft: panned towards the left.
 	PanDirectionLeft PanDirection = iota
-	// PanDirectionRight: panned towards the right
+	// PanDirectionRight: panned towards the right.
 	PanDirectionRight
-	// PanDirectionUp: panned upwards
+	// PanDirectionUp: panned upwards.
 	PanDirectionUp
-	// PanDirectionDown: panned downwards
+	// PanDirectionDown: panned downwards.
 	PanDirectionDown
 )
 
@@ -995,10 +996,10 @@ type PopoverConstraint int
 
 const (
 	// PopoverConstraintNone: don't constrain the popover position beyond what
-	// is imposed by the implementation
+	// is imposed by the implementation.
 	PopoverConstraintNone PopoverConstraint = iota
 	// PopoverConstraintWindow: constrain the popover to the boundaries of the
-	// window that it is attached to
+	// window that it is attached to.
 	PopoverConstraintWindow
 )
 
@@ -1084,7 +1085,7 @@ func (p PrintDuplex) String() string {
 	}
 }
 
-// PrintPages: see also gtk_print_job_set_pages()
+// PrintPages: see also gtk_print_job_set_pages().
 type PrintPages int
 
 const (
@@ -1203,7 +1204,8 @@ type ReliefStyle int
 const (
 	// ReliefNormal: draw a normal relief.
 	ReliefNormal ReliefStyle = iota
-	// ReliefHalf relief. Deprecated in 3.14, does the same as GTK_RELIEF_NORMAL
+	// ReliefHalf: half relief. Deprecated in 3.14, does the same as
+	// GTK_RELIEF_NORMAL.
 	ReliefHalf
 	// ReliefNone: no relief.
 	ReliefNone
@@ -1314,9 +1316,9 @@ func (s ScrollType) String() string {
 type ScrollablePolicy int
 
 const (
-	// ScrollMinimum: scrollable adjustments are based on the minimum size
+	// ScrollMinimum: scrollable adjustments are based on the minimum size.
 	ScrollMinimum ScrollablePolicy = iota
-	// ScrollNatural: scrollable adjustments are based on the natural size
+	// ScrollNatural: scrollable adjustments are based on the natural size.
 	ScrollNatural
 )
 
@@ -1382,11 +1384,11 @@ func (s SelectionMode) String() string {
 type SensitivityType int
 
 const (
-	// SensitivityAuto: arrow is made insensitive if the thumb is at the end
+	// SensitivityAuto: arrow is made insensitive if the thumb is at the end.
 	SensitivityAuto SensitivityType = iota
-	// SensitivityOn: arrow is always sensitive
+	// SensitivityOn: arrow is always sensitive.
 	SensitivityOn
-	// SensitivityOff: arrow is always insensitive
+	// SensitivityOff: arrow is always insensitive.
 	SensitivityOff
 )
 
@@ -1456,13 +1458,13 @@ func (s ShadowType) String() string {
 type SizeGroupMode int
 
 const (
-	// SizeGroupNone: group has no effect
+	// SizeGroupNone: group has no effect.
 	SizeGroupNone SizeGroupMode = iota
-	// SizeGroupHorizontal: group affects horizontal requisition
+	// SizeGroupHorizontal: group affects horizontal requisition.
 	SizeGroupHorizontal
-	// SizeGroupVertical: group affects vertical requisition
+	// SizeGroupVertical: group affects vertical requisition.
 	SizeGroupVertical
-	// SizeGroupBoth: group affects both horizontal and vertical requisition
+	// SizeGroupBoth: group affects both horizontal and vertical requisition.
 	SizeGroupBoth
 )
 
@@ -1491,11 +1493,12 @@ func (s SizeGroupMode) String() string {
 type SizeRequestMode int
 
 const (
-	// SizeRequestHeightForWidth: prefer height-for-width geometry management
+	// SizeRequestHeightForWidth: prefer height-for-width geometry management.
 	SizeRequestHeightForWidth SizeRequestMode = iota
-	// SizeRequestWidthForHeight: prefer width-for-height geometry management
+	// SizeRequestWidthForHeight: prefer width-for-height geometry management.
 	SizeRequestWidthForHeight
-	// SizeRequestConstantSize: don’t trade height-for-width or width-for-height
+	// SizeRequestConstantSize: don’t trade height-for-width or
+	// width-for-height.
 	SizeRequestConstantSize
 )
 
@@ -1644,7 +1647,7 @@ const (
 	// ToolbarBoth buttons display text and icons in the toolbar.
 	ToolbarBoth
 	// ToolbarBothHoriz buttons display icons and text alongside each other,
-	// rather than vertically stacked
+	// rather than vertically stacked.
 	ToolbarBothHoriz
 )
 
@@ -1712,7 +1715,7 @@ const (
 	UnitPoints
 	// UnitInch dimensions in inches.
 	UnitInch
-	// UnitMm dimensions in millimeters
+	// UnitMm dimensions in millimeters.
 	UnitMm
 )
 
@@ -1740,16 +1743,16 @@ func (u Unit) String() string {
 type WrapMode int
 
 const (
-	// WrapNone: do not wrap lines; just make the text area wider
+	// WrapNone: do not wrap lines; just make the text area wider.
 	WrapNone WrapMode = iota
 	// WrapChar: wrap text, breaking lines anywhere the cursor can appear
 	// (between characters, usually - if you want to be technical, between
-	// graphemes, see pango_get_log_attrs())
+	// graphemes, see pango_get_log_attrs()).
 	WrapChar
-	// WrapWord: wrap text, breaking lines in between words
+	// WrapWord: wrap text, breaking lines in between words.
 	WrapWord
 	// WrapWordChar: wrap text, breaking lines in between words, or if that is
-	// not enough, also between graphemes
+	// not enough, also between graphemes.
 	WrapWordChar
 )
 
@@ -1785,32 +1788,32 @@ func (w WrapMode) String() string {
 type InputHints int
 
 const (
-	// InputHintNone: no special behaviour suggested
+	// InputHintNone: no special behaviour suggested.
 	InputHintNone InputHints = 0b0
-	// InputHintSpellcheck: suggest checking for typos
+	// InputHintSpellcheck: suggest checking for typos.
 	InputHintSpellcheck InputHints = 0b1
-	// InputHintNoSpellcheck: suggest not checking for typos
+	// InputHintNoSpellcheck: suggest not checking for typos.
 	InputHintNoSpellcheck InputHints = 0b10
-	// InputHintWordCompletion: suggest word completion
+	// InputHintWordCompletion: suggest word completion.
 	InputHintWordCompletion InputHints = 0b100
-	// InputHintLowercase: suggest to convert all text to lowercase
+	// InputHintLowercase: suggest to convert all text to lowercase.
 	InputHintLowercase InputHints = 0b1000
-	// InputHintUppercaseChars: suggest to capitalize all text
+	// InputHintUppercaseChars: suggest to capitalize all text.
 	InputHintUppercaseChars InputHints = 0b10000
 	// InputHintUppercaseWords: suggest to capitalize the first character of
-	// each word
+	// each word.
 	InputHintUppercaseWords InputHints = 0b100000
 	// InputHintUppercaseSentences: suggest to capitalize the first word of each
-	// sentence
+	// sentence.
 	InputHintUppercaseSentences InputHints = 0b1000000
 	// InputHintInhibitOSK: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
 	InputHintInhibitOSK InputHints = 0b10000000
-	// InputHintVerticalWriting: text is vertical. Since 3.18
+	// InputHintVerticalWriting: text is vertical. Since 3.18.
 	InputHintVerticalWriting InputHints = 0b100000000
-	// InputHintEmoji: suggest offering Emoji support. Since 3.22.20
+	// InputHintEmoji: suggest offering Emoji support. Since 3.22.20.
 	InputHintEmoji InputHints = 0b1000000000
-	// InputHintNoEmoji: suggest not offering Emoji support. Since 3.22.20
+	// InputHintNoEmoji: suggest not offering Emoji support. Since 3.22.20.
 	InputHintNoEmoji InputHints = 0b10000000000
 )
 
@@ -2031,19 +2034,19 @@ const (
 	StateFlagFocused StateFlags = 0b100000
 	// StateFlagBackdrop: widget is in a background toplevel window.
 	StateFlagBackdrop StateFlags = 0b1000000
-	// StateFlagDirLTR: widget is in left-to-right text direction. Since 3.8
+	// StateFlagDirLTR: widget is in left-to-right text direction. Since 3.8.
 	StateFlagDirLTR StateFlags = 0b10000000
-	// StateFlagDirRTL: widget is in right-to-left text direction. Since 3.8
+	// StateFlagDirRTL: widget is in right-to-left text direction. Since 3.8.
 	StateFlagDirRTL StateFlags = 0b100000000
-	// StateFlagLink: widget is a link. Since 3.12
+	// StateFlagLink: widget is a link. Since 3.12.
 	StateFlagLink StateFlags = 0b1000000000
 	// StateFlagVisited: location the widget points to has already been visited.
-	// Since 3.12
+	// Since 3.12.
 	StateFlagVisited StateFlags = 0b10000000000
-	// StateFlagChecked: widget is checked. Since 3.14
+	// StateFlagChecked: widget is checked. Since 3.14.
 	StateFlagChecked StateFlags = 0b100000000000
 	// StateFlagDropActive: widget is highlighted as a drop target for DND.
-	// Since 3.20
+	// Since 3.20.
 	StateFlagDropActive StateFlags = 0b1000000000000
 )
 

@@ -122,7 +122,7 @@ func init() {
 // - Enabling GDK_TOUCHPAD_GESTURE_MASK on their Windows
 //
 // - If the gesture has GTK_PHASE_NONE, ensuring events of type
-// GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the Gesture
+// GDK_TOUCHPAD_SWIPE and GDK_TOUCHPAD_PINCH are handled by the Gesture.
 type Gesture struct {
 	EventController
 }
@@ -142,7 +142,7 @@ type Gesturer interface {
 	// Device returns the master Device that is currently operating on gesture,
 	// or NULL if the gesture is not being interacted.
 	Device() gdk.Devicer
-	// GetGroup returns all gestures in the group of gesture
+	// GetGroup returns all gestures in the group of gesture.
 	GetGroup() []Gesturer
 	// LastUpdatedSequence returns the EventSequence that was last updated on
 	// gesture.
@@ -284,7 +284,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 	return _device
 }
 
-// GetGroup returns all gestures in the group of gesture
+// GetGroup returns all gestures in the group of gesture.
 func (gesture *Gesture) GetGroup() []Gesturer {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GList      // in

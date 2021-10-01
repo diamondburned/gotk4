@@ -36,13 +36,13 @@ const (
 	// StyleContextPrintNone: default value.
 	StyleContextPrintNone StyleContextPrintFlags = 0b0
 	// StyleContextPrintRecurse: print the entire tree of CSS nodes starting at
-	// the style context's node
+	// the style context's node.
 	StyleContextPrintRecurse StyleContextPrintFlags = 0b1
 	// StyleContextPrintShowStyle: show the values of the CSS properties for
-	// each node
+	// each node.
 	StyleContextPrintShowStyle StyleContextPrintFlags = 0b10
 	// StyleContextPrintShowChange: show information about what changes affect
-	// the styles
+	// the styles.
 	StyleContextPrintShowChange StyleContextPrintFlags = 0b100
 )
 
@@ -160,7 +160,7 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 //
 // While any widget defining a “search” class would be matched by:
 //
-//    .search { ... }
+//    .search { ... }.
 func (context *StyleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out

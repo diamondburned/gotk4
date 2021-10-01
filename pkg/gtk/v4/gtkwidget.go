@@ -563,7 +563,7 @@ type WidgetOverrider interface {
 //      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
 //                                                   "/com/example/ui/foowidget.ui");
 //      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
-//    }
+//    }.
 type Widget struct {
 	externglib.InitiallyUnowned
 
@@ -3359,7 +3359,7 @@ func (widget *Widget) IsDrawable() bool {
 //
 // This does not mean that the gtk.Widget:has-focus property is necessarily set;
 // gtk,widget:has-focus will only be set if the toplevel widget additionally has
-// the global input focus.)
+// the global input focus.).
 func (widget *Widget) IsFocus() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4846,14 +4846,14 @@ func NewRequisition() *Requisition {
 	return _requisition
 }
 
-// Width widget’s desired width
+// Width widget’s desired width.
 func (r *Requisition) Width() int {
 	var v int // out
 	v = int(r.native.width)
 	return v
 }
 
-// Height widget’s desired height
+// Height widget’s desired height.
 func (r *Requisition) Height() int {
 	var v int // out
 	v = int(r.native.height)

@@ -78,7 +78,7 @@ func init() {
 //                          COLUMN_1, &modified_data,
 //                          -1);
 //      g_free (modified_data);
-//    }
+//    }.
 type TreeModelSort struct {
 	*externglib.Object
 

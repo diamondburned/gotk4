@@ -86,7 +86,7 @@ func init() {
 //        <widget name="radio1"/>
 //        <widget name="radio2"/>
 //      </widgets>
-//    </object>
+//    </object>.
 type SizeGroup struct {
 	*externglib.Object
 

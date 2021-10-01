@@ -124,7 +124,7 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(obj), nil
 }
 
-// NewPopover creates a new popover to point to relative_to
+// NewPopover creates a new popover to point to relative_to.
 func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -321,7 +321,7 @@ func (popover *Popover) Position() PositionType {
 	return _positionType
 }
 
-// RelativeTo returns the widget popover is currently attached to
+// RelativeTo returns the widget popover is currently attached to.
 func (popover *Popover) RelativeTo() Widgetter {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
@@ -469,7 +469,7 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 //
 // This preference will be respected where possible, although on lack of space
 // (eg. if close to the window edges), the Popover may choose to appear on the
-// opposite side
+// opposite side.
 func (popover *Popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out
 	var _arg1 C.GtkPositionType // out

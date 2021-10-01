@@ -59,7 +59,7 @@ func init() {
 //          <col id="2">50</col>
 //        </row>
 //      </data>
-//    </object>
+//    </object>.
 type ListStore struct {
 	*externglib.Object
 

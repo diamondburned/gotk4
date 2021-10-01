@@ -62,21 +62,21 @@ func NewRGBA(red, green, blue, alpha float64) RGBA {
 	return *(*RGBA)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// Red: intensity of the red channel from 0.0 to 1.0 inclusive
+// Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float64 {
 	var v float64 // out
 	v = float64(r.native.red)
 	return v
 }
 
-// Green: intensity of the green channel from 0.0 to 1.0 inclusive
+// Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Green() float64 {
 	var v float64 // out
 	v = float64(r.native.green)
 	return v
 }
 
-// Blue: intensity of the blue channel from 0.0 to 1.0 inclusive
+// Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Blue() float64 {
 	var v float64 // out
 	v = float64(r.native.blue)
@@ -84,7 +84,7 @@ func (r *RGBA) Blue() float64 {
 }
 
 // Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
-// opaque
+// opaque.
 func (r *RGBA) Alpha() float64 {
 	var v float64 // out
 	v = float64(r.native.alpha)

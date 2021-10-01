@@ -79,11 +79,11 @@ type TLSClientConnectioner interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
-	// ServerIdentity gets conn's expected server identity
+	// ServerIdentity gets conn's expected server identity.
 	ServerIdentity() SocketConnectabler
 	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
-	// ValidationFlags gets conn's validation flags
+	// ValidationFlags gets conn's validation flags.
 	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
@@ -153,7 +153,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	runtime.KeepAlive(source)
 }
 
-// ServerIdentity gets conn's expected server identity
+// ServerIdentity gets conn's expected server identity.
 func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
@@ -203,7 +203,7 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 	return _ok
 }
 
-// ValidationFlags gets conn's validation flags
+// ValidationFlags gets conn's validation flags.
 func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in

@@ -27,11 +27,11 @@ func init() {
 type DevicePadFeature int
 
 const (
-	// DevicePadFeatureButton: button
+	// DevicePadFeatureButton: button.
 	DevicePadFeatureButton DevicePadFeature = iota
-	// DevicePadFeatureRing: ring-shaped interactive area
+	// DevicePadFeatureRing: ring-shaped interactive area.
 	DevicePadFeatureRing
-	// DevicePadFeatureStrip: straight interactive area
+	// DevicePadFeatureStrip: straight interactive area.
 	DevicePadFeatureStrip
 )
 

@@ -114,38 +114,38 @@ func (s SurfaceEdge) String() string {
 type ToplevelState int
 
 const (
-	// ToplevelStateMinimized: surface is minimized
+	// ToplevelStateMinimized: surface is minimized.
 	ToplevelStateMinimized ToplevelState = 0b1
-	// ToplevelStateMaximized: surface is maximized
+	// ToplevelStateMaximized: surface is maximized.
 	ToplevelStateMaximized ToplevelState = 0b10
-	// ToplevelStateSticky: surface is sticky
+	// ToplevelStateSticky: surface is sticky.
 	ToplevelStateSticky ToplevelState = 0b100
-	// ToplevelStateFullscreen: surface is maximized without decorations
+	// ToplevelStateFullscreen: surface is maximized without decorations.
 	ToplevelStateFullscreen ToplevelState = 0b1000
-	// ToplevelStateAbove: surface is kept above other surfaces
+	// ToplevelStateAbove: surface is kept above other surfaces.
 	ToplevelStateAbove ToplevelState = 0b10000
-	// ToplevelStateBelow: surface is kept below other surfaces
+	// ToplevelStateBelow: surface is kept below other surfaces.
 	ToplevelStateBelow ToplevelState = 0b100000
 	// ToplevelStateFocused: surface is presented as focused (with active
-	// decorations)
+	// decorations).
 	ToplevelStateFocused ToplevelState = 0b1000000
-	// ToplevelStateTiled: surface is in a tiled state
+	// ToplevelStateTiled: surface is in a tiled state.
 	ToplevelStateTiled ToplevelState = 0b10000000
-	// ToplevelStateTopTiled: whether the top edge is tiled
+	// ToplevelStateTopTiled: whether the top edge is tiled.
 	ToplevelStateTopTiled ToplevelState = 0b100000000
-	// ToplevelStateTopResizable: whether the top edge is resizable
+	// ToplevelStateTopResizable: whether the top edge is resizable.
 	ToplevelStateTopResizable ToplevelState = 0b1000000000
-	// ToplevelStateRightTiled: whether the right edge is tiled
+	// ToplevelStateRightTiled: whether the right edge is tiled.
 	ToplevelStateRightTiled ToplevelState = 0b10000000000
-	// ToplevelStateRightResizable: whether the right edge is resizable
+	// ToplevelStateRightResizable: whether the right edge is resizable.
 	ToplevelStateRightResizable ToplevelState = 0b100000000000
-	// ToplevelStateBottomTiled: whether the bottom edge is tiled
+	// ToplevelStateBottomTiled: whether the bottom edge is tiled.
 	ToplevelStateBottomTiled ToplevelState = 0b1000000000000
-	// ToplevelStateBottomResizable: whether the bottom edge is resizable
+	// ToplevelStateBottomResizable: whether the bottom edge is resizable.
 	ToplevelStateBottomResizable ToplevelState = 0b10000000000000
-	// ToplevelStateLeftTiled: whether the left edge is tiled
+	// ToplevelStateLeftTiled: whether the left edge is tiled.
 	ToplevelStateLeftTiled ToplevelState = 0b100000000000000
-	// ToplevelStateLeftResizable: whether the left edge is resizable
+	// ToplevelStateLeftResizable: whether the left edge is resizable.
 	ToplevelStateLeftResizable ToplevelState = 0b1000000000000000
 )
 
@@ -314,7 +314,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y flo
 
 // BeginResize begins an interactive resize operation.
 //
-// You might use this function to implement a “window resize grip.”
+// You might use this function to implement a “window resize grip.”.
 func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel   // out
 	var _arg1 C.GdkSurfaceEdge // out

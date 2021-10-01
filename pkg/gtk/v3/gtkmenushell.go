@@ -423,7 +423,7 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 // display mnemonics or accelerators, since it cannot be guaranteed that they
 // will work.
 //
-// See also gdk_keyboard_grab()
+// See also gdk_keyboard_grab().
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 C.gboolean      // out

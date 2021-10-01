@@ -30,41 +30,41 @@ func init() {
 type License int
 
 const (
-	// LicenseUnknown: no license specified
+	// LicenseUnknown: no license specified.
 	LicenseUnknown License = iota
-	// LicenseCustom: license text is going to be specified by the developer
+	// LicenseCustom: license text is going to be specified by the developer.
 	LicenseCustom
-	// LicenseGPL20: GNU General Public License, version 2.0 or later
+	// LicenseGPL20: GNU General Public License, version 2.0 or later.
 	LicenseGPL20
-	// LicenseGPL30: GNU General Public License, version 3.0 or later
+	// LicenseGPL30: GNU General Public License, version 3.0 or later.
 	LicenseGPL30
-	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later
+	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later.
 	LicenseLGPL21
-	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later
+	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later.
 	LicenseLGPL30
-	// LicenseBSD: BSD standard license
+	// LicenseBSD: BSD standard license.
 	LicenseBSD
-	// LicenseMITX11: MIT/X11 standard license
+	// LicenseMITX11: MIT/X11 standard license.
 	LicenseMITX11
-	// LicenseArtistic: artistic License, version 2.0
+	// LicenseArtistic: artistic License, version 2.0.
 	LicenseArtistic
-	// LicenseGPL20_Only: GNU General Public License, version 2.0 only
+	// LicenseGPL20_Only: GNU General Public License, version 2.0 only.
 	LicenseGPL20_Only
-	// LicenseGPL30_Only: GNU General Public License, version 3.0 only
+	// LicenseGPL30_Only: GNU General Public License, version 3.0 only.
 	LicenseGPL30_Only
-	// LicenseLGPL21_Only: GNU Lesser General Public License, version 2.1 only
+	// LicenseLGPL21_Only: GNU Lesser General Public License, version 2.1 only.
 	LicenseLGPL21_Only
-	// LicenseLGPL30_Only: GNU Lesser General Public License, version 3.0 only
+	// LicenseLGPL30_Only: GNU Lesser General Public License, version 3.0 only.
 	LicenseLGPL30_Only
-	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later
+	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later.
 	LicenseAGPL30
-	// LicenseAGPL30_Only: GNU Affero General Public License, version 3.0 only
+	// LicenseAGPL30_Only: GNU Affero General Public License, version 3.0 only.
 	LicenseAGPL30_Only
-	// LicenseBSD3: 3-clause BSD licence
+	// LicenseBSD3: 3-clause BSD licence.
 	LicenseBSD3
-	// LicenseApache20: apache License, version 2.0
+	// LicenseApache20: apache License, version 2.0.
 	LicenseApache20
-	// LicenseMPL20: mozilla Public License, version 2.0
+	// LicenseMPL20: mozilla Public License, version 2.0.
 	LicenseMPL20
 )
 

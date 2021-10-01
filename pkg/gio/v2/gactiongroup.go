@@ -84,7 +84,7 @@ type ActionGroupOverrider interface {
 	//
 	//    g_debug ("application has been terminated. exiting.");
 	//
-	//    exit (0);
+	//    exit (0);.
 	ActivateAction(actionName string, parameter *glib.Variant)
 	// ChangeActionState: request for the state of the named action within
 	// action_group to be changed to value.
@@ -404,7 +404,7 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //
 //    g_debug ("application has been terminated. exiting.");
 //
-//    exit (0);
+//    exit (0);.
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out

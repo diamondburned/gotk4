@@ -41,7 +41,7 @@ type TableOverrider interface {
 	// Deprecated: Since 2.12.
 	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified column in
-	// the table
+	// the table.
 	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
@@ -64,7 +64,7 @@ type TableOverrider interface {
 	// Deprecated: since 2.12.
 	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
-	// table
+	// table.
 	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
@@ -82,17 +82,17 @@ type TableOverrider interface {
 	// Summary gets the summary description of the table.
 	Summary() *ObjectClass
 	// IsColumnSelected gets a boolean value indicating whether the specified
-	// column is selected
+	// column is selected.
 	IsColumnSelected(column int) bool
 	// IsRowSelected gets a boolean value indicating whether the specified row
-	// is selected
+	// is selected.
 	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
-	// at the specified row and column is selected
+	// at the specified row and column is selected.
 	IsSelected(row int, column int) bool
 	ModelChanged()
 	// RefAt: get a reference to the table cell at row, column. This cell should
-	// implement the interface TableCell
+	// implement the interface TableCell.
 	RefAt(row int, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified column to the selection.
 	RemoveColumnSelection(column int) bool
@@ -159,7 +159,7 @@ type Tabler interface {
 	// index_.
 	ColumnAtIndex(index_ int) int
 	// ColumnDescription gets the description text of the specified column in
-	// the table
+	// the table.
 	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
@@ -177,7 +177,7 @@ type Tabler interface {
 	// RowAtIndex gets a #gint representing the row at the specified index_.
 	RowAtIndex(index_ int) int
 	// RowDescription gets the description text of the specified row in the
-	// table
+	// table.
 	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
@@ -193,13 +193,13 @@ type Tabler interface {
 	// Summary gets the summary description of the table.
 	Summary() *ObjectClass
 	// IsColumnSelected gets a boolean value indicating whether the specified
-	// column is selected
+	// column is selected.
 	IsColumnSelected(column int) bool
 	// IsRowSelected gets a boolean value indicating whether the specified row
-	// is selected
+	// is selected.
 	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
-	// at the specified row and column is selected
+	// at the specified row and column is selected.
 	IsSelected(row int, column int) bool
 	// RefAt: get a reference to the table cell at row, column.
 	RefAt(row int, column int) *ObjectClass
@@ -323,7 +323,7 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 }
 
 // ColumnDescription gets the description text of the specified column in the
-// table
+// table.
 func (table *Table) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -472,7 +472,7 @@ func (table *Table) RowAtIndex(index_ int) int {
 	return _gint
 }
 
-// RowDescription gets the description text of the specified row in the table
+// RowDescription gets the description text of the specified row in the table.
 func (table *Table) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -601,7 +601,7 @@ func (table *Table) Summary() *ObjectClass {
 }
 
 // IsColumnSelected gets a boolean value indicating whether the specified column
-// is selected
+// is selected.
 func (table *Table) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -624,7 +624,7 @@ func (table *Table) IsColumnSelected(column int) bool {
 }
 
 // IsRowSelected gets a boolean value indicating whether the specified row is
-// selected
+// selected.
 func (table *Table) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -647,7 +647,7 @@ func (table *Table) IsRowSelected(row int) bool {
 }
 
 // IsSelected gets a boolean value indicating whether the accessible object at
-// the specified row and column is selected
+// the specified row and column is selected.
 func (table *Table) IsSelected(row int, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -673,7 +673,7 @@ func (table *Table) IsSelected(row int, column int) bool {
 }
 
 // RefAt: get a reference to the table cell at row, column. This cell should
-// implement the interface TableCell
+// implement the interface TableCell.
 func (table *Table) RefAt(row int, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out

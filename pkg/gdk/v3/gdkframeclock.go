@@ -31,7 +31,7 @@ func init() {
 type FrameClockPhase int
 
 const (
-	// FrameClockPhaseNone: no phase
+	// FrameClockPhaseNone: no phase.
 	FrameClockPhaseNone FrameClockPhase = 0b0
 	// FrameClockPhaseFlushEvents corresponds to GdkFrameClock::flush-events.
 	// Should not be handled by applications.

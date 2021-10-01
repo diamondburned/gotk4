@@ -32,11 +32,11 @@ func init() {
 type PadActionType int
 
 const (
-	// PadActionButton: action is triggered by a pad button
+	// PadActionButton: action is triggered by a pad button.
 	PadActionButton PadActionType = iota
-	// PadActionRing: action is triggered by a pad ring
+	// PadActionRing: action is triggered by a pad ring.
 	PadActionRing
-	// PadActionStrip: action is triggered by a pad strip
+	// PadActionStrip: action is triggered by a pad strip.
 	PadActionStrip
 )
 

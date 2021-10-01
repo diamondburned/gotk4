@@ -31,43 +31,43 @@ func init() {
 type BidiType int
 
 const (
-	// BidiTypeL: left-to-Right
+	// BidiTypeL: left-to-Right.
 	BidiTypeL BidiType = iota
-	// BidiTypeLre: left-to-Right Embedding
+	// BidiTypeLre: left-to-Right Embedding.
 	BidiTypeLre
-	// BidiTypeLro: left-to-Right Override
+	// BidiTypeLro: left-to-Right Override.
 	BidiTypeLro
-	// BidiTypeR: right-to-Left
+	// BidiTypeR: right-to-Left.
 	BidiTypeR
-	// BidiTypeAl: right-to-Left Arabic
+	// BidiTypeAl: right-to-Left Arabic.
 	BidiTypeAl
-	// BidiTypeRle: right-to-Left Embedding
-	BidiTypeRle
-	// BidiTypeRlo: right-to-Left Override
+	// BidiTypeRLE: right-to-Left Embedding.
+	BidiTypeRLE
+	// BidiTypeRlo: right-to-Left Override.
 	BidiTypeRlo
-	// BidiTypePDF: pop Directional Format
+	// BidiTypePDF: pop Directional Format.
 	BidiTypePDF
-	// BidiTypeEn: european Number
+	// BidiTypeEn: european Number.
 	BidiTypeEn
-	// BidiTypeES: european Number Separator
+	// BidiTypeES: european Number Separator.
 	BidiTypeES
-	// BidiTypeEt: european Number Terminator
+	// BidiTypeEt: european Number Terminator.
 	BidiTypeEt
-	// BidiTypeAn: arabic Number
+	// BidiTypeAn: arabic Number.
 	BidiTypeAn
-	// BidiTypeCs: common Number Separator
+	// BidiTypeCs: common Number Separator.
 	BidiTypeCs
-	// BidiTypeNsm: nonspacing Mark
+	// BidiTypeNsm: nonspacing Mark.
 	BidiTypeNsm
-	// BidiTypeBn: boundary Neutral
+	// BidiTypeBn: boundary Neutral.
 	BidiTypeBn
-	// BidiTypeB: paragraph Separator
+	// BidiTypeB: paragraph Separator.
 	BidiTypeB
-	// BidiTypeS: segment Separator
+	// BidiTypeS: segment Separator.
 	BidiTypeS
-	// BidiTypeWs: whitespace
+	// BidiTypeWs: whitespace.
 	BidiTypeWs
-	// BidiTypeOn: other Neutrals
+	// BidiTypeOn: other Neutrals.
 	BidiTypeOn
 )
 
@@ -88,8 +88,8 @@ func (b BidiType) String() string {
 		return "R"
 	case BidiTypeAl:
 		return "Al"
-	case BidiTypeRle:
-		return "Rle"
+	case BidiTypeRLE:
+		return "RLE"
 	case BidiTypeRlo:
 		return "Rlo"
 	case BidiTypePDF:

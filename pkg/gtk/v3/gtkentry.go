@@ -411,7 +411,7 @@ func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 // is filled with zeros. Otherwise, icon_area will be filled with the icon’s
 // allocation, relative to entry’s allocation.
 //
-// See also gtk_entry_get_text_area()
+// See also gtk_entry_get_text_area().
 func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
@@ -868,7 +868,7 @@ func (entry *Entry) OverwriteMode() bool {
 }
 
 // PlaceholderText retrieves the text that will be displayed when entry is empty
-// and unfocused
+// and unfocused.
 func (entry *Entry) PlaceholderText() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.gchar    // in
@@ -1143,7 +1143,7 @@ func (entry *Entry) ResetIMContext() {
 //
 // (For experts: if setting is TRUE, the entry calls
 // gtk_window_activate_default() on the window containing the entry, in the
-// default handler for the Entry::activate signal.)
+// default handler for the Entry::activate signal.).
 func (entry *Entry) SetActivatesDefault(setting bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
@@ -1547,7 +1547,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 // truncated to fit.
 //
 // This is equivalent to getting entry's EntryBuffer and calling
-// gtk_entry_buffer_set_max_length() on it. ]|
+// gtk_entry_buffer_set_max_length() on it. ]|.
 func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out

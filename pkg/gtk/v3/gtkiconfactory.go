@@ -243,7 +243,7 @@ func IconSizeRegisterAlias(alias string, target int) {
 //          <property name="use-stock">True</property>
 //        </object>
 //      </child>
-//    </object>
+//    </object>.
 type IconFactory struct {
 	*externglib.Object
 

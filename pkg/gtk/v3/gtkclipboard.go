@@ -188,7 +188,7 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 // functions take care of determining which formats are advertised by the
 // clipboard provider, asking for the clipboard in the best available format and
 // converting the results into the UTF-8 encoding. (The standard form for
-// representing strings in GTK+.)
+// representing strings in GTK+.).
 type Clipboard struct {
 	*externglib.Object
 }
@@ -218,7 +218,7 @@ func (clipboard *Clipboard) Clear() {
 	runtime.KeepAlive(clipboard)
 }
 
-// Display gets the Display associated with clipboard
+// Display gets the Display associated with clipboard.
 func (clipboard *Clipboard) Display() *gdk.Display {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkDisplay   // in

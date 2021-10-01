@@ -15,23 +15,23 @@ import "C"
 type BookmarkFileError int
 
 const (
-	// BookmarkFileErrorInvalidURI: URI was ill-formed
+	// BookmarkFileErrorInvalidURI: URI was ill-formed.
 	BookmarkFileErrorInvalidURI BookmarkFileError = iota
-	// BookmarkFileErrorInvalidValue: requested field was not found
+	// BookmarkFileErrorInvalidValue: requested field was not found.
 	BookmarkFileErrorInvalidValue
 	// BookmarkFileErrorAppNotRegistered: requested application did not register
-	// a bookmark
+	// a bookmark.
 	BookmarkFileErrorAppNotRegistered
-	// BookmarkFileErrorURINotFound: requested URI was not found
+	// BookmarkFileErrorURINotFound: requested URI was not found.
 	BookmarkFileErrorURINotFound
-	// BookmarkFileErrorRead: document was ill formed
+	// BookmarkFileErrorRead: document was ill formed.
 	BookmarkFileErrorRead
 	// BookmarkFileErrorUnknownEncoding: text being parsed was in an unknown
-	// encoding
+	// encoding.
 	BookmarkFileErrorUnknownEncoding
-	// BookmarkFileErrorWrite: error occurred while writing
+	// BookmarkFileErrorWrite: error occurred while writing.
 	BookmarkFileErrorWrite
-	// BookmarkFileErrorFileNotFound: requested file was not found
+	// BookmarkFileErrorFileNotFound: requested file was not found.
 	BookmarkFileErrorFileNotFound
 )
 

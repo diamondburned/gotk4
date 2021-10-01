@@ -70,25 +70,25 @@ func IconThemeErrorQuark() glib.Quark {
 type MovementStep int
 
 const (
-	// MovementLogicalPositions: move forward or back by graphemes
+	// MovementLogicalPositions: move forward or back by graphemes.
 	MovementLogicalPositions MovementStep = iota
-	// MovementVisualPositions: move left or right by graphemes
+	// MovementVisualPositions: move left or right by graphemes.
 	MovementVisualPositions
-	// MovementWords: move forward or back by words
+	// MovementWords: move forward or back by words.
 	MovementWords
-	// MovementDisplayLines: move up or down lines (wrapped lines)
+	// MovementDisplayLines: move up or down lines (wrapped lines).
 	MovementDisplayLines
-	// MovementDisplayLineEnds: move to either end of a line
+	// MovementDisplayLineEnds: move to either end of a line.
 	MovementDisplayLineEnds
-	// MovementParagraphs: move up or down paragraphs (newline-ended lines)
+	// MovementParagraphs: move up or down paragraphs (newline-ended lines).
 	MovementParagraphs
-	// MovementParagraphEnds: move to either end of a paragraph
+	// MovementParagraphEnds: move to either end of a paragraph.
 	MovementParagraphEnds
-	// MovementPages: move by pages
+	// MovementPages: move by pages.
 	MovementPages
-	// MovementBufferEnds: move to ends of the buffer
+	// MovementBufferEnds: move to ends of the buffer.
 	MovementBufferEnds
-	// MovementHorizontalPages: move horizontally by pages
+	// MovementHorizontalPages: move horizontally by pages.
 	MovementHorizontalPages
 )
 
@@ -174,9 +174,9 @@ func RecentManagerErrorQuark() glib.Quark {
 type ResizeMode int
 
 const (
-	// ResizeParent pass resize request to the parent
+	// ResizeParent pass resize request to the parent.
 	ResizeParent ResizeMode = iota
-	// ResizeQueue: queue resizes on this widget
+	// ResizeQueue: queue resizes on this widget.
 	ResizeQueue
 	// ResizeImmediate: resize immediately. Deprecated.
 	ResizeImmediate

@@ -78,7 +78,7 @@ type DBusInterfaceSkeletonner interface {
 	// on.
 	Connections() []DBusConnection
 	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
-	// of interface_
+	// of interface_.
 	Flags() DBusInterfaceSkeletonFlags
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
@@ -205,7 +205,7 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 }
 
 // Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of
-// interface_
+// interface_.
 func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _cret C.GDBusInterfaceSkeletonFlags // in
@@ -327,7 +327,7 @@ func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFla
 // Unexport stops exporting interface_ on all connections it is exported on.
 //
 // To unexport interface_ from only a single connection, use
-// g_dbus_interface_skeleton_unexport_from_connection()
+// g_dbus_interface_skeleton_unexport_from_connection().
 func (interface_ *DBusInterfaceSkeleton) Unexport() {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 

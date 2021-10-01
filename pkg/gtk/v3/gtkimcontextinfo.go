@@ -39,14 +39,14 @@ func (i *IMContextInfo) ContextName() string {
 	return v
 }
 
-// Domain: translation domain to be used with dgettext()
+// Domain: translation domain to be used with dgettext().
 func (i *IMContextInfo) Domain() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain)))
 	return v
 }
 
-// DomainDirname: name of locale directory for use with bindtextdomain()
+// DomainDirname: name of locale directory for use with bindtextdomain().
 func (i *IMContextInfo) DomainDirname() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain_dirname)))

@@ -276,7 +276,7 @@ type ValueOverrider interface {
 // <refsect1 id="changes"> <title>On the subject of changes</title> <para> Note
 // that if there is a textual description associated with the new numeric value,
 // that description should be included regardless of whether or not it has also
-// changed. </para> </refsect1>
+// changed. </para> </refsect1>.
 type Value struct {
 	*externglib.Object
 }

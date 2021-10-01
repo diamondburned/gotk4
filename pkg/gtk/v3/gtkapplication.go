@@ -35,14 +35,14 @@ type ApplicationInhibitFlags int
 
 const (
 	// ApplicationInhibitLogout: inhibit ending the user session by logging out
-	// or by shutting down the computer
+	// or by shutting down the computer.
 	ApplicationInhibitLogout ApplicationInhibitFlags = 0b1
-	// ApplicationInhibitSwitch: inhibit user switching
+	// ApplicationInhibitSwitch: inhibit user switching.
 	ApplicationInhibitSwitch ApplicationInhibitFlags = 0b10
-	// ApplicationInhibitSuspend: inhibit suspending the session or computer
+	// ApplicationInhibitSuspend: inhibit suspending the session or computer.
 	ApplicationInhibitSuspend ApplicationInhibitFlags = 0b100
 	// ApplicationInhibitIdle: inhibit the session being marked as idle (and
-	// possibly locked)
+	// possibly locked).
 	ApplicationInhibitIdle ApplicationInhibitFlags = 0b1000
 )
 
@@ -172,7 +172,7 @@ type ApplicationOverrider interface {
 //
 // HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
 // Getting Started with GTK+: Basics
-// (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
+// (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3).
 type Application struct {
 	gio.Application
 }

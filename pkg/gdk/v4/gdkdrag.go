@@ -30,7 +30,7 @@ type DragCancelReason int
 const (
 	// DragCancelNoTarget: there is no suitable drop target.
 	DragCancelNoTarget DragCancelReason = iota
-	// DragCancelUserCancelled: drag cancelled by the user
+	// DragCancelUserCancelled: drag cancelled by the user.
 	DragCancelUserCancelled
 	// DragCancelError: unspecified error.
 	DragCancelError

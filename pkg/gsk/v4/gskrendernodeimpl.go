@@ -751,7 +751,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 // The angle is starting at the top and going clockwise, as expressed in the css
 // specification:
 //
-//    angle = 90 - gsk_conic_gradient_node_get_rotation()
+//    angle = 90 - gsk_conic_gradient_node_get_rotation().
 func (node *ConicGradientNode) Angle() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -1126,7 +1126,7 @@ func (node *DebugNode) Child() RenderNoder {
 	return _renderNode
 }
 
-// Message gets the debug message that was set on this node
+// Message gets the debug message that was set on this node.
 func (node *DebugNode) Message() string {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.char          // in
@@ -1269,7 +1269,7 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	return _renderNode
 }
 
-// NChildren returns the number of children
+// NChildren returns the number of children.
 func (node *GLShaderNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in

@@ -240,7 +240,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //
 //    gchar *name = g_file_info_get_name (info);
 //    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-//                                     name);
+//                                     name);.
 func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
@@ -371,7 +371,7 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //      }
 //
 //    out:
-//      g_object_unref (direnum); // Note: frees the last info
+//      g_object_unref (direnum); // Note: frees the last info.
 func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg3 *C.GCancellable    // out

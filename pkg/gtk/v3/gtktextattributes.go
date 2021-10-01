@@ -194,7 +194,7 @@ func (t *TextAttributes) Language() *pango.Language {
 	return v
 }
 
-// LetterSpacing: extra space to insert between graphemes, in Pango units
+// LetterSpacing: extra space to insert between graphemes, in Pango units.
 func (t *TextAttributes) LetterSpacing() int {
 	var v int // out
 	v = int(t.native.letter_spacing)

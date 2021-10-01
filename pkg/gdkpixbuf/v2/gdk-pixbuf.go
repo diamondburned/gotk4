@@ -782,7 +782,7 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 // When the destination rectangle contains parts not in the source image, the
 // data at the edges of the source image is replicated to infinity.
 //
-// ! (composite.png)
+// ! (composite.png).
 func (src *Pixbuf) Composite(dest *Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out

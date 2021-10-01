@@ -218,7 +218,7 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 //
 //      cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
 //      return g_object_ref (cake);
-//    }
+//    }.
 type SimpleAsyncResult struct {
 	*externglib.Object
 

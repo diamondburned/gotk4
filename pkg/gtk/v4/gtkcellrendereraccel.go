@@ -29,9 +29,9 @@ func init() {
 type CellRendererAccelMode int
 
 const (
-	// CellRendererAccelModeGTK: GTK accelerators mode
+	// CellRendererAccelModeGTK: GTK accelerators mode.
 	CellRendererAccelModeGTK CellRendererAccelMode = iota
-	// CellRendererAccelModeOther: other accelerator mode
+	// CellRendererAccelModeOther: other accelerator mode.
 	CellRendererAccelModeOther
 )
 

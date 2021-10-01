@@ -86,7 +86,7 @@ type ActionGroupOverrider interface {
 //          </object>
 //          <accelerator key="F1" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
 //      </child>
-//    </object>
+//    </object>.
 type ActionGroup struct {
 	*externglib.Object
 

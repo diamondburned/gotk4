@@ -777,7 +777,7 @@ type hashTableIter struct {
 //    while (g_hash_table_iter_next (&iter, &key, &value))
 //      {
 //        // do something with key and value
-//      }
+//      }.
 func (iter *HashTableIter) Init(hashTable map[cgo.Handle]cgo.Handle) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
@@ -840,7 +840,7 @@ func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 //      {
 //        if (condition)
 //          g_hash_table_iter_remove (&iter);
-//      }
+//      }.
 func (iter *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 

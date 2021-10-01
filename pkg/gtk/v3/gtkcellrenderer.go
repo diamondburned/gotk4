@@ -72,15 +72,15 @@ const (
 	CellRendererSelected CellRendererState = 0b1
 	// CellRendererPrelit: mouse is hovering over the cell.
 	CellRendererPrelit CellRendererState = 0b10
-	// CellRendererInsensitive: cell is drawn in an insensitive manner
+	// CellRendererInsensitive: cell is drawn in an insensitive manner.
 	CellRendererInsensitive CellRendererState = 0b100
-	// CellRendererSorted: cell is in a sorted row
+	// CellRendererSorted: cell is in a sorted row.
 	CellRendererSorted CellRendererState = 0b1000
 	// CellRendererFocused: cell is in the focus row.
 	CellRendererFocused CellRendererState = 0b10000
-	// CellRendererExpandable: cell is in a row that can be expanded. Since 3.4
+	// CellRendererExpandable: cell is in a row that can be expanded. Since 3.4.
 	CellRendererExpandable CellRendererState = 0b100000
-	// CellRendererExpanded: cell is in a row that is expanded. Since 3.4
+	// CellRendererExpanded: cell is in a row that is expanded. Since 3.4.
 	CellRendererExpanded CellRendererState = 0b1000000
 )
 

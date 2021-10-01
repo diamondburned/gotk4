@@ -135,7 +135,7 @@ func (t *Triangle) Area() float32 {
 // The returned #graphene_vec2_t contains the following values, in order:
 //
 //    - res.x = u
-//    - res.y = v
+//    - res.y = v.
 func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -271,7 +271,7 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 //    - res.x = u
 //    - res.y = v
 //
-// See also: graphene_triangle_get_barycoords()
+// See also: graphene_triangle_get_barycoords().
 func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out

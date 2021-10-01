@@ -30,21 +30,21 @@ type InputSource int
 
 const (
 	// SourceMouse: device is a mouse. (This will be reported for the core
-	// pointer, even if it is something else, such as a trackball.)
+	// pointer, even if it is something else, such as a trackball.).
 	SourceMouse InputSource = iota
 	// SourcePen: device is a stylus of a graphics tablet or similar device.
 	SourcePen
 	// SourceKeyboard: device is a keyboard.
 	SourceKeyboard
 	// SourceTouchscreen: device is a direct-input touch device, such as a
-	// touchscreen or tablet
+	// touchscreen or tablet.
 	SourceTouchscreen
-	// SourceTouchpad: device is an indirect touch device, such as a touchpad
+	// SourceTouchpad: device is an indirect touch device, such as a touchpad.
 	SourceTouchpad
-	// SourceTrackpoint: device is a trackpoint
+	// SourceTrackpoint: device is a trackpoint.
 	SourceTrackpoint
 	// SourceTabletPad: device is a "pad", a collection of buttons, rings and
-	// strips found in drawing tablets
+	// strips found in drawing tablets.
 	SourceTabletPad
 )
 
@@ -490,7 +490,7 @@ func (device *Device) Timestamp() uint32 {
 //       g_free (path);
 //
 //       return settings;
-//     }
+//     }.
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -550,14 +550,14 @@ func (t *TimeCoord) Time() uint32 {
 	return v
 }
 
-// Flags indicating what axes are present
+// Flags indicating what axes are present.
 func (t *TimeCoord) Flags() AxisFlags {
 	var v AxisFlags // out
 	v = AxisFlags(t.native.flags)
 	return v
 }
 
-// Axes axis values
+// Axes axis values.
 func (t *TimeCoord) Axes() [12]float64 {
 	var v [12]float64 // out
 	v = *(*[12]float64)(unsafe.Pointer(&t.native.axes))

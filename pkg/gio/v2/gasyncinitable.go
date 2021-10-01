@@ -178,7 +178,7 @@ type AsyncInitableOverrider interface {
 //
 //      iface->init_async = foo_init_async;
 //      iface->init_finish = foo_init_finish;
-//    }
+//    }.
 type AsyncInitable struct {
 	*externglib.Object
 }

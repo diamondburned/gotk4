@@ -41,17 +41,17 @@ const PATH_PRIO_MASK = 15
 type PathPriorityType int
 
 const (
-	// PathPrioLowest: deprecated
+	// PathPrioLowest: deprecated.
 	PathPrioLowest PathPriorityType = 0
-	// PathPrioGTK: deprecated
+	// PathPrioGTK: deprecated.
 	PathPrioGTK PathPriorityType = 4
-	// PathPrioApplication: deprecated
+	// PathPrioApplication: deprecated.
 	PathPrioApplication PathPriorityType = 8
-	// PathPrioTheme: deprecated
+	// PathPrioTheme: deprecated.
 	PathPrioTheme PathPriorityType = 10
-	// PathPrioRC: deprecated
+	// PathPrioRC: deprecated.
 	PathPrioRC PathPriorityType = 12
-	// PathPrioHighest: deprecated
+	// PathPrioHighest: deprecated.
 	PathPrioHighest PathPriorityType = 15
 )
 
@@ -85,11 +85,11 @@ func (p PathPriorityType) String() string {
 type PathType int
 
 const (
-	// PathWidget: deprecated
+	// PathWidget: deprecated.
 	PathWidget PathType = iota
-	// PathWidgetClass: deprecated
+	// PathWidgetClass: deprecated.
 	PathWidgetClass
-	// PathClass: deprecated
+	// PathClass: deprecated.
 	PathClass
 )
 
@@ -119,85 +119,85 @@ func (p PathType) String() string {
 type RCTokenType int
 
 const (
-	// RCTokenInvalid: deprecated
+	// RCTokenInvalid: deprecated.
 	RCTokenInvalid RCTokenType = 270
-	// RCTokenInclude: deprecated
+	// RCTokenInclude: deprecated.
 	RCTokenInclude RCTokenType = 271
-	// RCTokenNormal: deprecated
+	// RCTokenNormal: deprecated.
 	RCTokenNormal RCTokenType = 272
-	// RCTokenActive: deprecated
+	// RCTokenActive: deprecated.
 	RCTokenActive RCTokenType = 273
-	// RCTokenPrelight: deprecated
+	// RCTokenPrelight: deprecated.
 	RCTokenPrelight RCTokenType = 274
-	// RCTokenSelected: deprecated
+	// RCTokenSelected: deprecated.
 	RCTokenSelected RCTokenType = 275
-	// RCTokenInsensitive: deprecated
+	// RCTokenInsensitive: deprecated.
 	RCTokenInsensitive RCTokenType = 276
-	// RCTokenFg: deprecated
+	// RCTokenFg: deprecated.
 	RCTokenFg RCTokenType = 277
-	// RCTokenBg: deprecated
+	// RCTokenBg: deprecated.
 	RCTokenBg RCTokenType = 278
-	// RCTokenText: deprecated
+	// RCTokenText: deprecated.
 	RCTokenText RCTokenType = 279
-	// RCTokenBase: deprecated
+	// RCTokenBase: deprecated.
 	RCTokenBase RCTokenType = 280
-	// RCTokenXthickness: deprecated
+	// RCTokenXthickness: deprecated.
 	RCTokenXthickness RCTokenType = 281
-	// RCTokenYthickness: deprecated
+	// RCTokenYthickness: deprecated.
 	RCTokenYthickness RCTokenType = 282
-	// RCTokenFont: deprecated
+	// RCTokenFont: deprecated.
 	RCTokenFont RCTokenType = 283
-	// RCTokenFontset: deprecated
+	// RCTokenFontset: deprecated.
 	RCTokenFontset RCTokenType = 284
-	// RCTokenFontName: deprecated
+	// RCTokenFontName: deprecated.
 	RCTokenFontName RCTokenType = 285
-	// RCTokenBgPixmap: deprecated
+	// RCTokenBgPixmap: deprecated.
 	RCTokenBgPixmap RCTokenType = 286
-	// RCTokenPixmapPath: deprecated
+	// RCTokenPixmapPath: deprecated.
 	RCTokenPixmapPath RCTokenType = 287
-	// RCTokenStyle: deprecated
+	// RCTokenStyle: deprecated.
 	RCTokenStyle RCTokenType = 288
-	// RCTokenBinding: deprecated
+	// RCTokenBinding: deprecated.
 	RCTokenBinding RCTokenType = 289
-	// RCTokenBind: deprecated
+	// RCTokenBind: deprecated.
 	RCTokenBind RCTokenType = 290
-	// RCTokenWidget: deprecated
+	// RCTokenWidget: deprecated.
 	RCTokenWidget RCTokenType = 291
-	// RCTokenWidgetClass: deprecated
+	// RCTokenWidgetClass: deprecated.
 	RCTokenWidgetClass RCTokenType = 292
-	// RCTokenClass: deprecated
+	// RCTokenClass: deprecated.
 	RCTokenClass RCTokenType = 293
-	// RCTokenLowest: deprecated
+	// RCTokenLowest: deprecated.
 	RCTokenLowest RCTokenType = 294
-	// RCTokenGTK: deprecated
+	// RCTokenGTK: deprecated.
 	RCTokenGTK RCTokenType = 295
-	// RCTokenApplication: deprecated
+	// RCTokenApplication: deprecated.
 	RCTokenApplication RCTokenType = 296
-	// RCTokenTheme: deprecated
+	// RCTokenTheme: deprecated.
 	RCTokenTheme RCTokenType = 297
-	// RCTokenRC: deprecated
+	// RCTokenRC: deprecated.
 	RCTokenRC RCTokenType = 298
-	// RCTokenHighest: deprecated
+	// RCTokenHighest: deprecated.
 	RCTokenHighest RCTokenType = 299
-	// RCTokenEngine: deprecated
+	// RCTokenEngine: deprecated.
 	RCTokenEngine RCTokenType = 300
-	// RCTokenModulePath: deprecated
+	// RCTokenModulePath: deprecated.
 	RCTokenModulePath RCTokenType = 301
-	// RCTokenImModulePath: deprecated
+	// RCTokenImModulePath: deprecated.
 	RCTokenImModulePath RCTokenType = 302
-	// RCTokenImModuleFile: deprecated
+	// RCTokenImModuleFile: deprecated.
 	RCTokenImModuleFile RCTokenType = 303
-	// RCTokenStock: deprecated
+	// RCTokenStock: deprecated.
 	RCTokenStock RCTokenType = 304
-	// RCTokenLTR: deprecated
+	// RCTokenLTR: deprecated.
 	RCTokenLTR RCTokenType = 305
-	// RCTokenRTL: deprecated
+	// RCTokenRTL: deprecated.
 	RCTokenRTL RCTokenType = 306
-	// RCTokenColor: deprecated
+	// RCTokenColor: deprecated.
 	RCTokenColor RCTokenType = 307
-	// RCTokenUnbind: deprecated
+	// RCTokenUnbind: deprecated.
 	RCTokenUnbind RCTokenType = 308
-	// RCTokenLast: deprecated
+	// RCTokenLast: deprecated.
 	RCTokenLast RCTokenType = 309
 )
 
@@ -293,17 +293,17 @@ func (r RCTokenType) String() string {
 	}
 }
 
-// RCFlags: deprecated
+// RCFlags: deprecated.
 type RCFlags int
 
 const (
-	// RCFg: deprecated
+	// RCFg: deprecated.
 	RCFg RCFlags = 0b1
-	// RCBg: deprecated
+	// RCBg: deprecated.
 	RCBg RCFlags = 0b10
-	// RCText: deprecated
+	// RCText: deprecated.
 	RCText RCFlags = 0b100
-	// RCBase: deprecated
+	// RCBase: deprecated.
 	RCBase RCFlags = 0b1000
 )
 
@@ -852,21 +852,21 @@ type rcProperty struct {
 	native *C.GtkRcProperty
 }
 
-// TypeName: quark-ified type identifier
+// TypeName: quark-ified type identifier.
 func (r *RCProperty) TypeName() glib.Quark {
 	var v glib.Quark // out
 	v = uint32(r.native.type_name)
 	return v
 }
 
-// PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”
+// PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”.
 func (r *RCProperty) PropertyName() glib.Quark {
 	var v glib.Quark // out
 	v = uint32(r.native.property_name)
 	return v
 }
 
-// Origin: field similar to one found in SettingsValue
+// Origin: field similar to one found in SettingsValue.
 func (r *RCProperty) Origin() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.origin)))

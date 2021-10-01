@@ -178,7 +178,7 @@ func (self *CenterLayout) StartWidget() Widgetter {
 	return _widget
 }
 
-// SetBaselinePosition sets the new baseline position of self
+// SetBaselinePosition sets the new baseline position of self.
 func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _arg1 C.GtkBaselinePosition // out

@@ -82,7 +82,7 @@ func init() {
 //    gtk_paned_set_end_child (GTK_PANED (hpaned), frame2);
 //    gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
 //    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
-//    gtk_widget_set_size_request (frame2, 50, -1);
+//    gtk_widget_set_size_request (frame2, 50, -1);.
 type Paned struct {
 	Widget
 
@@ -139,7 +139,7 @@ func NewPaned(orientation Orientation) *Paned {
 
 // EndChild retrieves the end child of the given GtkPaned.
 //
-// See also: GtkPaned:end-child
+// See also: GtkPaned:end-child.
 func (paned *Paned) EndChild() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
@@ -262,7 +262,7 @@ func (paned *Paned) ShrinkStartChild() bool {
 
 // StartChild retrieves the start child of the given GtkPaned.
 //
-// See also: GtkPaned:start-child
+// See also: GtkPaned:start-child.
 func (paned *Paned) StartChild() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
@@ -335,7 +335,7 @@ func (paned *Paned) SetPosition(position int) {
 	runtime.KeepAlive(position)
 }
 
-// SetResizeEndChild sets the GtkPaned:resize-end-child property
+// SetResizeEndChild sets the GtkPaned:resize-end-child property.
 func (paned *Paned) SetResizeEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
@@ -350,7 +350,7 @@ func (paned *Paned) SetResizeEndChild(resize bool) {
 	runtime.KeepAlive(resize)
 }
 
-// SetResizeStartChild sets the GtkPaned:resize-start-child property
+// SetResizeStartChild sets the GtkPaned:resize-start-child property.
 func (paned *Paned) SetResizeStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
@@ -365,7 +365,7 @@ func (paned *Paned) SetResizeStartChild(resize bool) {
 	runtime.KeepAlive(resize)
 }
 
-// SetShrinkEndChild sets the GtkPaned:shrink-end-child property
+// SetShrinkEndChild sets the GtkPaned:shrink-end-child property.
 func (paned *Paned) SetShrinkEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
@@ -380,7 +380,7 @@ func (paned *Paned) SetShrinkEndChild(resize bool) {
 	runtime.KeepAlive(resize)
 }
 
-// SetShrinkStartChild sets the GtkPaned:shrink-start-child property
+// SetShrinkStartChild sets the GtkPaned:shrink-start-child property.
 func (paned *Paned) SetShrinkStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out

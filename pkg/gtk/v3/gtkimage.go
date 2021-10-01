@@ -39,24 +39,24 @@ func init() {
 type ImageType int
 
 const (
-	// ImageEmpty: there is no image displayed by the widget
+	// ImageEmpty: there is no image displayed by the widget.
 	ImageEmpty ImageType = iota
-	// ImagePixbuf: widget contains a Pixbuf
+	// ImagePixbuf: widget contains a Pixbuf.
 	ImagePixbuf
-	// ImageStock: widget contains a [stock item name][gtkstock]
+	// ImageStock: widget contains a [stock item name][gtkstock].
 	ImageStock
-	// ImageIconSet: widget contains a IconSet
+	// ImageIconSet: widget contains a IconSet.
 	ImageIconSet
-	// ImageAnimation: widget contains a PixbufAnimation
+	// ImageAnimation: widget contains a PixbufAnimation.
 	ImageAnimation
 	// ImageIconName: widget contains a named icon. This image type was added in
-	// GTK+ 2.6
+	// GTK+ 2.6.
 	ImageIconName
 	// ImageGIcon: widget contains a #GIcon. This image type was added in GTK+
-	// 2.14
+	// 2.14.
 	ImageGIcon
 	// ImageSurface: widget contains a #cairo_surface_t. This image type was
-	// added in GTK+ 3.10
+	// added in GTK+ 3.10.
 	ImageSurface
 )
 

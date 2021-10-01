@@ -115,7 +115,7 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //    };
 //
 //    icon1 = g_themed_icon_new_from_names (names, 4);
-//    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
+//    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");.
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in

@@ -70,7 +70,7 @@ func GetDefaultLanguage() *pango.Language {
 //
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);
+//    gtk_widget_set_default_direction (direction);.
 func GetLocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 

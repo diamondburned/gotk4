@@ -203,7 +203,7 @@ func (menuButton *MenuButton) IconName() string {
 	return _utf8
 }
 
-// Label gets the label shown in the button
+// Label gets the label shown in the button.
 func (menuButton *MenuButton) Label() string {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.char          // in

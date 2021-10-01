@@ -34,7 +34,7 @@ type TreeViewColumnSizing int
 
 const (
 	// TreeViewColumnGrowOnly columns only get bigger in reaction to changes in
-	// the model
+	// the model.
 	TreeViewColumnGrowOnly TreeViewColumnSizing = iota
 	// TreeViewColumnAutosize columns resize to be the optimal size every time
 	// the model changes.
@@ -68,7 +68,7 @@ func (t TreeViewColumnSizing) String() string {
 // function might get an* integer from the tree_model, and render it to the
 // “text” attribute of “cell” by converting it to its written equivalent.
 //
-// See also: gtk_tree_view_column_set_cell_data_func()
+// See also: gtk_tree_view_column_set_cell_data_func().
 type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeCellDataFunc
@@ -270,7 +270,7 @@ func (treeColumn *TreeViewColumn) CellGetSize() (xOffset int, yOffset int, width
 
 // CellIsVisible returns TRUE if any of the cells packed into the tree_column
 // are visible. For this to be meaningful, you must first initialize the cells
-// with gtk_tree_view_column_cell_set_cell_data()
+// with gtk_tree_view_column_cell_set_cell_data().
 func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.gboolean           // in
@@ -385,7 +385,7 @@ func (treeColumn *TreeViewColumn) Alignment() float32 {
 	return _gfloat
 }
 
-// Button returns the button used in the treeview column header
+// Button returns the button used in the treeview column header.
 func (treeColumn *TreeViewColumn) Button() Widgetter {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret *C.GtkWidget         // in

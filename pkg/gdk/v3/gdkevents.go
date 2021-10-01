@@ -211,15 +211,15 @@ const (
 	ClientEventType EventType = 28
 	// VisibilityNotifyType: window visibility status has changed.
 	VisibilityNotifyType EventType = 29
-	// ScrollType wheel was turned
+	// ScrollType: scroll wheel was turned.
 	ScrollType EventType = 31
 	// WindowStateType: state of a window has changed. See WindowState for the
-	// possible window states
+	// possible window states.
 	WindowStateType EventType = 32
-	// SettingType has been modified.
+	// SettingType: setting has been modified.
 	SettingType EventType = 33
 	// OwnerChangeType: owner of a selection has changed. This event type was
-	// added in 2.6
+	// added in 2.6.
 	OwnerChangeType EventType = 34
 	// GrabBrokenType: pointer or keyboard grab was broken. This event type was
 	// added in 2.8.
@@ -261,7 +261,7 @@ const (
 	// in 3.22.
 	PadGroupModeType EventType = 47
 	// EventLastType marks the end of the GdkEventType enumeration. Added in
-	// 2.18
+	// 2.18.
 	EventLastType EventType = 48
 )
 
@@ -429,7 +429,7 @@ const (
 	// ancestors of each other and the window is part of the ancestor chain
 	// between one of these windows and their least common ancestor.
 	NotifyNonlinearVirtual
-	// NotifyUnknown type of enter/leave event occurred.
+	// NotifyUnknown: unknown type of enter/leave event occurred.
 	NotifyUnknown
 )
 
@@ -461,11 +461,11 @@ func (n NotifyType) String() string {
 type OwnerChange int
 
 const (
-	// OwnerChangeNewOwner: some other app claimed the ownership
+	// OwnerChangeNewOwner: some other app claimed the ownership.
 	OwnerChangeNewOwner OwnerChange = iota
-	// OwnerChangeDestroy: window was destroyed
+	// OwnerChangeDestroy: window was destroyed.
 	OwnerChangeDestroy
-	// OwnerChangeClose: client was closed
+	// OwnerChangeClose: client was closed.
 	OwnerChangeClose
 )
 
@@ -526,7 +526,7 @@ const (
 	// ScrollRight: window is scrolled to the right.
 	ScrollRight
 	// ScrollSmooth: scrolling is determined by the delta values in EventScroll.
-	// See gdk_event_get_scroll_deltas(). Since: 3.4
+	// See gdk_event_get_scroll_deltas(). Since: 3.4.
 	ScrollSmooth
 )
 
@@ -691,24 +691,25 @@ const (
 	// WindowStateTiled: window is in a tiled state, Since 3.10. Since 3.22.23,
 	// this is deprecated in favor of per-edge information.
 	WindowStateTiled WindowState = 0b100000000
-	// WindowStateTopTiled: whether the top edge is tiled, Since 3.22.23
+	// WindowStateTopTiled: whether the top edge is tiled, Since 3.22.23.
 	WindowStateTopTiled WindowState = 0b1000000000
-	// WindowStateTopResizable: whether the top edge is resizable, Since 3.22.23
+	// WindowStateTopResizable: whether the top edge is resizable, Since
+	// 3.22.23.
 	WindowStateTopResizable WindowState = 0b10000000000
-	// WindowStateRightTiled: whether the right edge is tiled, Since 3.22.23
+	// WindowStateRightTiled: whether the right edge is tiled, Since 3.22.23.
 	WindowStateRightTiled WindowState = 0b100000000000
 	// WindowStateRightResizable: whether the right edge is resizable, Since
-	// 3.22.23
+	// 3.22.23.
 	WindowStateRightResizable WindowState = 0b1000000000000
-	// WindowStateBottomTiled: whether the bottom edge is tiled, Since 3.22.23
+	// WindowStateBottomTiled: whether the bottom edge is tiled, Since 3.22.23.
 	WindowStateBottomTiled WindowState = 0b10000000000000
 	// WindowStateBottomResizable: whether the bottom edge is resizable, Since
-	// 3.22.23
+	// 3.22.23.
 	WindowStateBottomResizable WindowState = 0b100000000000000
-	// WindowStateLeftTiled: whether the left edge is tiled, Since 3.22.23
+	// WindowStateLeftTiled: whether the left edge is tiled, Since 3.22.23.
 	WindowStateLeftTiled WindowState = 0b1000000000000000
 	// WindowStateLeftResizable: whether the left edge is resizable, Since
-	// 3.22.23
+	// 3.22.23.
 	WindowStateLeftResizable WindowState = 0b10000000000000000
 )
 
@@ -1493,7 +1494,7 @@ type eventGrabBroken struct {
 	native *C.GdkEventGrabBroken
 }
 
-// Type: type of the event (GDK_GRAB_BROKEN)
+// Type: type of the event (GDK_GRAB_BROKEN).
 func (e *EventGrabBroken) Type() EventType {
 	var v EventType // out
 	v = EventType(e.native._type)
@@ -1501,7 +1502,7 @@ func (e *EventGrabBroken) Type() EventType {
 }
 
 // Window: window which received the event, i.e. the window that previously
-// owned the grab
+// owned the grab.
 func (e *EventGrabBroken) Window() Windower {
 	var v Windower // out
 	{
@@ -1528,7 +1529,7 @@ func (e *EventGrabBroken) SendEvent() int8 {
 }
 
 // Keyboard: TRUE if a keyboard grab was broken, FALSE if a pointer grab was
-// broken
+// broken.
 func (e *EventGrabBroken) Keyboard() bool {
 	var v bool // out
 	if e.native.keyboard != 0 {
@@ -1537,7 +1538,7 @@ func (e *EventGrabBroken) Keyboard() bool {
 	return v
 }
 
-// Implicit: TRUE if the broken grab was implicit
+// Implicit: TRUE if the broken grab was implicit.
 func (e *EventGrabBroken) Implicit() bool {
 	var v bool // out
 	if e.native.implicit != 0 {
@@ -2249,14 +2250,14 @@ func (e *EventScroll) YRoot() float64 {
 	return v
 }
 
-// DeltaX: x coordinate of the scroll delta
+// DeltaX: x coordinate of the scroll delta.
 func (e *EventScroll) DeltaX() float64 {
 	var v float64 // out
 	v = float64(e.native.delta_x)
 	return v
 }
 
-// DeltaY: y coordinate of the scroll delta
+// DeltaY: y coordinate of the scroll delta.
 func (e *EventScroll) DeltaY() float64 {
 	var v float64 // out
 	v = float64(e.native.delta_y)
@@ -2372,14 +2373,14 @@ type eventTouch struct {
 }
 
 // Type: type of the event (GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE, GDK_TOUCH_END,
-// GDK_TOUCH_CANCEL)
+// GDK_TOUCH_CANCEL).
 func (e *EventTouch) Type() EventType {
 	var v EventType // out
 	v = EventType(e.native._type)
 	return v
 }
 
-// Window: window which received the event
+// Window: window which received the event.
 func (e *EventTouch) Window() Windower {
 	var v Windower // out
 	{
@@ -2412,21 +2413,21 @@ func (e *EventTouch) Time() uint32 {
 	return v
 }
 
-// X: x coordinate of the pointer relative to the window
+// X: x coordinate of the pointer relative to the window.
 func (e *EventTouch) X() float64 {
 	var v float64 // out
 	v = float64(e.native.x)
 	return v
 }
 
-// Y: y coordinate of the pointer relative to the window
+// Y: y coordinate of the pointer relative to the window.
 func (e *EventTouch) Y() float64 {
 	var v float64 // out
 	v = float64(e.native.y)
 	return v
 }
 
-// Axes: x, y translated to the axes of device, or NULL if device is the mouse
+// Axes: x, y translated to the axes of device, or NULL if device is the mouse.
 func (e *EventTouch) Axes() *float64 {
 	var v *float64 // out
 	v = (*float64)(unsafe.Pointer(e.native.axes))
@@ -2434,14 +2435,14 @@ func (e *EventTouch) Axes() *float64 {
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
-// Shift and Alt) and the pointer buttons. See ModifierType
+// Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouch) State() ModifierType {
 	var v ModifierType // out
 	v = ModifierType(e.native.state)
 	return v
 }
 
-// Sequence: event sequence that the event belongs to
+// Sequence: event sequence that the event belongs to.
 func (e *EventTouch) Sequence() *EventSequence {
 	var v *EventSequence // out
 	v = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(e.native.sequence)))
@@ -2449,7 +2450,7 @@ func (e *EventTouch) Sequence() *EventSequence {
 }
 
 // EmulatingPointer: whether the event should be used for emulating pointer
-// event
+// event.
 func (e *EventTouch) EmulatingPointer() bool {
 	var v bool // out
 	if e.native.emulating_pointer != 0 {
@@ -2478,14 +2479,14 @@ func (e *EventTouch) Device() Devicer {
 	return v
 }
 
-// XRoot: x coordinate of the pointer relative to the root of the screen
+// XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventTouch) XRoot() float64 {
 	var v float64 // out
 	v = float64(e.native.x_root)
 	return v
 }
 
-// YRoot: y coordinate of the pointer relative to the root of the screen
+// YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventTouch) YRoot() float64 {
 	var v float64 // out
 	v = float64(e.native.y_root)
@@ -2504,14 +2505,14 @@ type eventTouchpadPinch struct {
 	native *C.GdkEventTouchpadPinch
 }
 
-// Type: type of the event (GDK_TOUCHPAD_PINCH)
+// Type: type of the event (GDK_TOUCHPAD_PINCH).
 func (e *EventTouchpadPinch) Type() EventType {
 	var v EventType // out
 	v = EventType(e.native._type)
 	return v
 }
 
-// Window: window which received the event
+// Window: window which received the event.
 func (e *EventTouchpadPinch) Window() Windower {
 	var v Windower // out
 	{
@@ -2530,56 +2531,56 @@ func (e *EventTouchpadPinch) Window() Windower {
 	return v
 }
 
-// SendEvent: TRUE if the event was sent explicitly
+// SendEvent: TRUE if the event was sent explicitly.
 func (e *EventTouchpadPinch) SendEvent() int8 {
 	var v int8 // out
 	v = int8(e.native.send_event)
 	return v
 }
 
-// Phase: current phase of the gesture
+// Phase: current phase of the gesture.
 func (e *EventTouchpadPinch) Phase() int8 {
 	var v int8 // out
 	v = int8(e.native.phase)
 	return v
 }
 
-// NFingers: number of fingers triggering the pinch
+// NFingers: number of fingers triggering the pinch.
 func (e *EventTouchpadPinch) NFingers() int8 {
 	var v int8 // out
 	v = int8(e.native.n_fingers)
 	return v
 }
 
-// Time: time of the event in milliseconds
+// Time: time of the event in milliseconds.
 func (e *EventTouchpadPinch) Time() uint32 {
 	var v uint32 // out
 	v = uint32(e.native.time)
 	return v
 }
 
-// X coordinate of the pointer
+// X coordinate of the pointer.
 func (e *EventTouchpadPinch) X() float64 {
 	var v float64 // out
 	v = float64(e.native.x)
 	return v
 }
 
-// Y coordinate of the pointer
+// Y coordinate of the pointer.
 func (e *EventTouchpadPinch) Y() float64 {
 	var v float64 // out
 	v = float64(e.native.y)
 	return v
 }
 
-// Dx: movement delta in the X axis of the swipe focal point
+// Dx: movement delta in the X axis of the swipe focal point.
 func (e *EventTouchpadPinch) Dx() float64 {
 	var v float64 // out
 	v = float64(e.native.dx)
 	return v
 }
 
-// Dy: movement delta in the Y axis of the swipe focal point
+// Dy: movement delta in the Y axis of the swipe focal point.
 func (e *EventTouchpadPinch) Dy() float64 {
 	var v float64 // out
 	v = float64(e.native.dy)
@@ -2587,7 +2588,7 @@ func (e *EventTouchpadPinch) Dy() float64 {
 }
 
 // AngleDelta: angle change in radians, negative angles denote counter-clockwise
-// movements
+// movements.
 func (e *EventTouchpadPinch) AngleDelta() float64 {
 	var v float64 // out
 	v = float64(e.native.angle_delta)
@@ -2595,7 +2596,7 @@ func (e *EventTouchpadPinch) AngleDelta() float64 {
 }
 
 // Scale: current scale, relative to that at the time of the corresponding
-// GDK_TOUCHPAD_GESTURE_PHASE_BEGIN event
+// GDK_TOUCHPAD_GESTURE_PHASE_BEGIN event.
 func (e *EventTouchpadPinch) Scale() float64 {
 	var v float64 // out
 	v = float64(e.native.scale)
@@ -2636,14 +2637,14 @@ type eventTouchpadSwipe struct {
 	native *C.GdkEventTouchpadSwipe
 }
 
-// Type: type of the event (GDK_TOUCHPAD_SWIPE)
+// Type: type of the event (GDK_TOUCHPAD_SWIPE).
 func (e *EventTouchpadSwipe) Type() EventType {
 	var v EventType // out
 	v = EventType(e.native._type)
 	return v
 }
 
-// Window: window which received the event
+// Window: window which received the event.
 func (e *EventTouchpadSwipe) Window() Windower {
 	var v Windower // out
 	{
@@ -2662,56 +2663,56 @@ func (e *EventTouchpadSwipe) Window() Windower {
 	return v
 }
 
-// SendEvent: TRUE if the event was sent explicitly
+// SendEvent: TRUE if the event was sent explicitly.
 func (e *EventTouchpadSwipe) SendEvent() int8 {
 	var v int8 // out
 	v = int8(e.native.send_event)
 	return v
 }
 
-// Phase: current phase of the gesture
+// Phase: current phase of the gesture.
 func (e *EventTouchpadSwipe) Phase() int8 {
 	var v int8 // out
 	v = int8(e.native.phase)
 	return v
 }
 
-// NFingers: number of fingers triggering the swipe
+// NFingers: number of fingers triggering the swipe.
 func (e *EventTouchpadSwipe) NFingers() int8 {
 	var v int8 // out
 	v = int8(e.native.n_fingers)
 	return v
 }
 
-// Time: time of the event in milliseconds
+// Time: time of the event in milliseconds.
 func (e *EventTouchpadSwipe) Time() uint32 {
 	var v uint32 // out
 	v = uint32(e.native.time)
 	return v
 }
 
-// X coordinate of the pointer
+// X coordinate of the pointer.
 func (e *EventTouchpadSwipe) X() float64 {
 	var v float64 // out
 	v = float64(e.native.x)
 	return v
 }
 
-// Y coordinate of the pointer
+// Y coordinate of the pointer.
 func (e *EventTouchpadSwipe) Y() float64 {
 	var v float64 // out
 	v = float64(e.native.y)
 	return v
 }
 
-// Dx: movement delta in the X axis of the swipe focal point
+// Dx: movement delta in the X axis of the swipe focal point.
 func (e *EventTouchpadSwipe) Dx() float64 {
 	var v float64 // out
 	v = float64(e.native.dx)
 	return v
 }
 
-// Dy: movement delta in the Y axis of the swipe focal point
+// Dy: movement delta in the Y axis of the swipe focal point.
 func (e *EventTouchpadSwipe) Dy() float64 {
 	var v float64 // out
 	v = float64(e.native.dy)

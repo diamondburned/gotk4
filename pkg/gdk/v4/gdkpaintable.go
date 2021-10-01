@@ -30,7 +30,7 @@ func init() {
 type PaintableFlags int
 
 const (
-	// PaintableStaticSize is immutable. The gdkpaintable::invalidate-size
+	// PaintableStaticSize: size is immutable. The gdkpaintable::invalidate-size
 	// signal will never be emitted.
 	PaintableStaticSize PaintableFlags = 0b1
 	// PaintableStaticContents: content is immutable. The

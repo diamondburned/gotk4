@@ -30,7 +30,7 @@ type SorterChange int
 
 const (
 	// SorterChangeDifferent: sorter change cannot be described by any of the
-	// other enumeration values
+	// other enumeration values.
 	SorterChangeDifferent SorterChange = iota
 	// SorterChangeInverted: sort order was inverted. Comparisons that returned
 	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
@@ -68,12 +68,12 @@ func (s SorterChange) String() string {
 type SorterOrder int
 
 const (
-	// SorterOrderPartial order. Any Ordering is possible.
+	// SorterOrderPartial: partial order. Any Ordering is possible.
 	SorterOrderPartial SorterOrder = iota
 	// SorterOrderNone: no order, all elements are considered equal.
 	// gtk_sorter_compare() will only return GTK_ORDERING_EQUAL.
 	SorterOrderNone
-	// SorterOrderTotal order. gtk_sorter_compare() will only return
+	// SorterOrderTotal: total order. gtk_sorter_compare() will only return
 	// GTK_ORDERING_EQUAL if an item is compared with itself. Two different
 	// items will never cause this value to be returned.
 	SorterOrderTotal

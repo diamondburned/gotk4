@@ -58,7 +58,7 @@ const (
 	CSSSectionValue
 	// CSSSectionKeyframes: section defines keyframes. See [CSS
 	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
-	// details. Since 3.6
+	// details. Since 3.6.
 	CSSSectionKeyframes
 )
 

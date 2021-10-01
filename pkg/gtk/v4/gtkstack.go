@@ -30,61 +30,63 @@ func init() {
 type StackTransitionType int
 
 const (
-	// StackTransitionTypeNone: no transition
+	// StackTransitionTypeNone: no transition.
 	StackTransitionTypeNone StackTransitionType = iota
-	// StackTransitionTypeCrossfade: cross-fade
+	// StackTransitionTypeCrossfade: cross-fade.
 	StackTransitionTypeCrossfade
-	// StackTransitionTypeSlideRight: slide from left to right
+	// StackTransitionTypeSlideRight: slide from left to right.
 	StackTransitionTypeSlideRight
-	// StackTransitionTypeSlideLeft: slide from right to left
+	// StackTransitionTypeSlideLeft: slide from right to left.
 	StackTransitionTypeSlideLeft
-	// StackTransitionTypeSlideUp: slide from bottom up
+	// StackTransitionTypeSlideUp: slide from bottom up.
 	StackTransitionTypeSlideUp
-	// StackTransitionTypeSlideDown: slide from top down
+	// StackTransitionTypeSlideDown: slide from top down.
 	StackTransitionTypeSlideDown
 	// StackTransitionTypeSlideLeftRight: slide from left or right according to
-	// the children order
+	// the children order.
 	StackTransitionTypeSlideLeftRight
 	// StackTransitionTypeSlideUpDown: slide from top down or bottom up
-	// according to the order
+	// according to the order.
 	StackTransitionTypeSlideUpDown
-	// StackTransitionTypeOverUp: cover the old page by sliding up
+	// StackTransitionTypeOverUp: cover the old page by sliding up.
 	StackTransitionTypeOverUp
-	// StackTransitionTypeOverDown: cover the old page by sliding down
+	// StackTransitionTypeOverDown: cover the old page by sliding down.
 	StackTransitionTypeOverDown
-	// StackTransitionTypeOverLeft: cover the old page by sliding to the left
+	// StackTransitionTypeOverLeft: cover the old page by sliding to the left.
 	StackTransitionTypeOverLeft
-	// StackTransitionTypeOverRight: cover the old page by sliding to the right
+	// StackTransitionTypeOverRight: cover the old page by sliding to the right.
 	StackTransitionTypeOverRight
-	// StackTransitionTypeUnderUp: uncover the new page by sliding up
+	// StackTransitionTypeUnderUp: uncover the new page by sliding up.
 	StackTransitionTypeUnderUp
-	// StackTransitionTypeUnderDown: uncover the new page by sliding down
+	// StackTransitionTypeUnderDown: uncover the new page by sliding down.
 	StackTransitionTypeUnderDown
-	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the left
+	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the
+	// left.
 	StackTransitionTypeUnderLeft
 	// StackTransitionTypeUnderRight: uncover the new page by sliding to the
-	// right
+	// right.
 	StackTransitionTypeUnderRight
 	// StackTransitionTypeOverUpDown: cover the old page sliding up or uncover
-	// the new page sliding down, according to order
+	// the new page sliding down, according to order.
 	StackTransitionTypeOverUpDown
 	// StackTransitionTypeOverDownUp: cover the old page sliding down or uncover
-	// the new page sliding up, according to order
+	// the new page sliding up, according to order.
 	StackTransitionTypeOverDownUp
 	// StackTransitionTypeOverLeftRight: cover the old page sliding left or
-	// uncover the new page sliding right, according to order
+	// uncover the new page sliding right, according to order.
 	StackTransitionTypeOverLeftRight
 	// StackTransitionTypeOverRightLeft: cover the old page sliding right or
-	// uncover the new page sliding left, according to order
+	// uncover the new page sliding left, according to order.
 	StackTransitionTypeOverRightLeft
 	// StackTransitionTypeRotateLeft: pretend the pages are sides of a cube and
-	// rotate that cube to the left
+	// rotate that cube to the left.
 	StackTransitionTypeRotateLeft
 	// StackTransitionTypeRotateRight: pretend the pages are sides of a cube and
-	// rotate that cube to the right
+	// rotate that cube to the right.
 	StackTransitionTypeRotateRight
 	// StackTransitionTypeRotateLeftRight: pretend the pages are sides of a cube
-	// and rotate that cube to the left or right according to the children order
+	// and rotate that cube to the left or right according to the children
+	// order.
 	StackTransitionTypeRotateLeftRight
 )
 

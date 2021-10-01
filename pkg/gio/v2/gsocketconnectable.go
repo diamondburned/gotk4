@@ -107,7 +107,7 @@ type SocketConnectableOverrider interface {
 //          g_error_propagate (error, conn_error);
 //          return NULL;
 //        }
-//    }
+//    }.
 type SocketConnectable struct {
 	*externglib.Object
 }

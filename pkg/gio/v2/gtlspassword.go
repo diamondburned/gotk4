@@ -39,7 +39,7 @@ type TLSPasswordOverrider interface {
 	// Value: get the password value. If length is not NULL then it will be
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass NULL for length in
-	// contexts where you know the password will have a certain fixed length.)
+	// contexts where you know the password will have a certain fixed length.).
 	Value(length *uint) *byte
 }
 
@@ -119,7 +119,7 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 // Value: get the password value. If length is not NULL then it will be filled
 // in with the length of the password value. (Note that the password value is
 // not nul-terminated, so you can only pass NULL for length in contexts where
-// you know the password will have a certain fixed length.)
+// you know the password will have a certain fixed length.).
 func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
@@ -194,7 +194,7 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 // Specify the length, for a non-nul-terminated password. Pass -1 as length if
 // using a nul-terminated password, and length will be calculated automatically.
 // (Note that the terminating nul is not considered part of the password in this
-// case.)
+// case.).
 func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar       // out

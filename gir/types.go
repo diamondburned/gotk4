@@ -242,14 +242,32 @@ type Interface struct {
 }
 
 type Member struct {
-	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 member"`
-	Name        string   `xml:"name,attr"`
-	Value       string   `xml:"value,attr"`
-	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
-	GLibNick    string   `xml:"http://www.gtk.org/introspection/glib/1.0 nick,attr"`
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 member"`
+
+	Names       []xml.Attr `xml:"name,attr"`
+	Value       string     `xml:"value,attr"`
+	CIdentifier string     `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
+	GLibNick    string     `xml:"http://www.gtk.org/introspection/glib/1.0 nick,attr"`
 
 	InfoAttrs
 	InfoElements
+}
+
+func (m Member) Name() string {
+	return m.nameAttr(xml.Name{Local: "name"})
+}
+
+func (m Member) GLibName() string {
+	return m.nameAttr(xml.Name{Space: "http://www.gtk.org/introspection/glib/1.0", Local: "name"})
+}
+
+func (m Member) nameAttr(name xml.Name) string {
+	for _, attr := range m.Names {
+		if attr.Name == name {
+			return attr.Value
+		}
+	}
+	return ""
 }
 
 type Method struct {

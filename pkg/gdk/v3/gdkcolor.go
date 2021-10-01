@@ -73,21 +73,21 @@ func (c *Color) Pixel() uint32 {
 }
 
 // Red: red component of the color. This is a value between 0 and 65535, with
-// 65535 indicating full intensity
+// 65535 indicating full intensity.
 func (c *Color) Red() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.red)
 	return v
 }
 
-// Green: green component of the color
+// Green: green component of the color.
 func (c *Color) Green() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.green)
 	return v
 }
 
-// Blue: blue component of the color
+// Blue: blue component of the color.
 func (c *Color) Blue() uint16 {
 	var v uint16 // out
 	v = uint16(c.native.blue)

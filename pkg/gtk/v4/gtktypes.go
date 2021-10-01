@@ -179,7 +179,7 @@ func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uin
 	runtime.KeepAlive(stride)
 }
 
-// Contains checks if the given value has been added to self
+// Contains checks if the given value has been added to self.
 func (self *Bitset) Contains(value uint) bool {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out

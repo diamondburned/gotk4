@@ -63,21 +63,21 @@ type requestedSize struct {
 	native *C.GtkRequestedSize
 }
 
-// Data: client pointer
+// Data: client pointer.
 func (r *RequestedSize) Data() cgo.Handle {
 	var v cgo.Handle // out
 	v = (cgo.Handle)(unsafe.Pointer(r.native.data))
 	return v
 }
 
-// MinimumSize: minimum size needed for allocation in a given orientation
+// MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int {
 	var v int // out
 	v = int(r.native.minimum_size)
 	return v
 }
 
-// NaturalSize: natural size for allocation in a given orientation
+// NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int {
 	var v int // out
 	v = int(r.native.natural_size)

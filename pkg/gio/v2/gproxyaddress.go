@@ -59,7 +59,7 @@ func marshalProxyAddresser(p uintptr) (interface{}, error) {
 //
 // (Note that this method doesn't set the Address:uri or
 // Address:destination-protocol fields; use g_object_new() directly if you want
-// to set those.)
+// to set those.).
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -177,7 +177,7 @@ func (proxy *ProxyAddress) Password() string {
 	return _utf8
 }
 
-// Protocol gets proxy's protocol. eg, "socks" or "http"
+// Protocol gets proxy's protocol. eg, "socks" or "http".
 func (proxy *ProxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in

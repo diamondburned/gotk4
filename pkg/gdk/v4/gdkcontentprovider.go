@@ -154,7 +154,7 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 //    gdk_content_provider_new_union ((GdkContentProvider *[2]) {
 //                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
 //                                      gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
-//                                    }, 2);
+//                                    }, 2);.
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg1 **C.GdkContentProvider // out
 	var _arg2 C.gsize

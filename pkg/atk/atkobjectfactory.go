@@ -54,7 +54,7 @@ func marshalObjectFactorier(p uintptr) (interface{}, error) {
 }
 
 // CreateAccessible provides an Object that implements an accessibility
-// interface on behalf of obj
+// interface on behalf of obj.
 func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out

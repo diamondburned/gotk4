@@ -200,14 +200,14 @@ func NewTimeVal(tvSec, tvUsec int32) TimeVal {
 	return *(*TimeVal)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// TvSec: seconds
+// TvSec: seconds.
 func (t *TimeVal) TvSec() int32 {
 	var v int32 // out
 	v = int32(t.native.tv_sec)
 	return v
 }
 
-// TvUsec: microseconds
+// TvUsec: microseconds.
 func (t *TimeVal) TvUsec() int32 {
 	var v int32 // out
 	v = int32(t.native.tv_usec)

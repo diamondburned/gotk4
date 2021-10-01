@@ -77,7 +77,7 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 	return _tcpWrapperConnection
 }
 
-// BaseIOStream gets conn's base OStream
+// BaseIOStream gets conn's base OStream.
 func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in

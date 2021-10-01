@@ -31,7 +31,7 @@ func init() {
 // A DrawingContext can only be created by calling gdk_window_begin_draw_frame()
 // and will be valid until a call to gdk_window_end_draw_frame().
 //
-// DrawingContext is available since GDK 3.22
+// DrawingContext is available since GDK 3.22.
 type DrawingContext struct {
 	*externglib.Object
 }

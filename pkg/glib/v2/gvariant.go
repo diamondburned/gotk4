@@ -116,50 +116,53 @@ func (v VariantClass) String() string {
 type VariantParseError int
 
 const (
-	// VariantParseErrorFailed: generic error (unused)
+	// VariantParseErrorFailed: generic error (unused).
 	VariantParseErrorFailed VariantParseError = iota
 	// VariantParseErrorBasicTypeExpected: non-basic Type was given where a
-	// basic type was expected
+	// basic type was expected.
 	VariantParseErrorBasicTypeExpected
-	// VariantParseErrorCannotInferType: cannot infer the Type
+	// VariantParseErrorCannotInferType: cannot infer the Type.
 	VariantParseErrorCannotInferType
 	// VariantParseErrorDefiniteTypeExpected: indefinite Type was given where a
-	// definite type was expected
+	// definite type was expected.
 	VariantParseErrorDefiniteTypeExpected
-	// VariantParseErrorInputNotAtEnd: extra data after parsing finished
+	// VariantParseErrorInputNotAtEnd: extra data after parsing finished.
 	VariantParseErrorInputNotAtEnd
 	// VariantParseErrorInvalidCharacter: invalid character in number or unicode
-	// escape
+	// escape.
 	VariantParseErrorInvalidCharacter
-	// VariantParseErrorInvalidFormatString: not a valid #GVariant format string
+	// VariantParseErrorInvalidFormatString: not a valid #GVariant format
+	// string.
 	VariantParseErrorInvalidFormatString
-	// VariantParseErrorInvalidObjectPath: not a valid object path
+	// VariantParseErrorInvalidObjectPath: not a valid object path.
 	VariantParseErrorInvalidObjectPath
-	// VariantParseErrorInvalidSignature: not a valid type signature
+	// VariantParseErrorInvalidSignature: not a valid type signature.
 	VariantParseErrorInvalidSignature
-	// VariantParseErrorInvalidTypeString: not a valid #GVariant type string
+	// VariantParseErrorInvalidTypeString: not a valid #GVariant type string.
 	VariantParseErrorInvalidTypeString
 	// VariantParseErrorNoCommonType: could not find a common type for array
-	// entries
+	// entries.
 	VariantParseErrorNoCommonType
 	// VariantParseErrorNumberOutOfRange: numerical value is out of range of the
-	// given type
+	// given type.
 	VariantParseErrorNumberOutOfRange
 	// VariantParseErrorNumberTooBig: numerical value is out of range for any
-	// type
+	// type.
 	VariantParseErrorNumberTooBig
-	// VariantParseErrorTypeError: cannot parse as variant of the specified type
+	// VariantParseErrorTypeError: cannot parse as variant of the specified
+	// type.
 	VariantParseErrorTypeError
-	// VariantParseErrorUnexpectedToken: unexpected token was encountered
+	// VariantParseErrorUnexpectedToken: unexpected token was encountered.
 	VariantParseErrorUnexpectedToken
-	// VariantParseErrorUnknownKeyword: unknown keyword was encountered
+	// VariantParseErrorUnknownKeyword: unknown keyword was encountered.
 	VariantParseErrorUnknownKeyword
-	// VariantParseErrorUnterminatedStringConstant: unterminated string constant
+	// VariantParseErrorUnterminatedStringConstant: unterminated string
+	// constant.
 	VariantParseErrorUnterminatedStringConstant
-	// VariantParseErrorValueExpected: no value given
+	// VariantParseErrorValueExpected: no value given.
 	VariantParseErrorValueExpected
 	// VariantParseErrorRecursion: variant was too deeply nested; #GVariant is
-	// only guaranteed to handle nesting up to 64 levels (Since: 2.64)
+	// only guaranteed to handle nesting up to 64 levels (Since: 2.64).
 	VariantParseErrorRecursion
 )
 
@@ -2609,7 +2612,7 @@ func (builder *VariantBuilder) End() *Variant {
 //
 //    g_variant_builder_close (&builder);
 //
-//    output = g_variant_builder_end (&builder);
+//    output = g_variant_builder_end (&builder);.
 func (builder *VariantBuilder) Open(typ *VariantType) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariantType    // out

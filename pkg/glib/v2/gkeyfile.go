@@ -149,17 +149,18 @@ const KEY_FILE_DESKTOP_TYPE_LINK = "Link"
 type KeyFileError int
 
 const (
-	// KeyFileErrorUnknownEncoding: text being parsed was in an unknown encoding
+	// KeyFileErrorUnknownEncoding: text being parsed was in an unknown
+	// encoding.
 	KeyFileErrorUnknownEncoding KeyFileError = iota
-	// KeyFileErrorParse: document was ill-formed
+	// KeyFileErrorParse: document was ill-formed.
 	KeyFileErrorParse
-	// KeyFileErrorNotFound: file was not found
+	// KeyFileErrorNotFound: file was not found.
 	KeyFileErrorNotFound
-	// KeyFileErrorKeyNotFound: requested key was not found
+	// KeyFileErrorKeyNotFound: requested key was not found.
 	KeyFileErrorKeyNotFound
-	// KeyFileErrorGroupNotFound: requested group was not found
+	// KeyFileErrorGroupNotFound: requested group was not found.
 	KeyFileErrorGroupNotFound
-	// KeyFileErrorInvalidValue: value could not be parsed
+	// KeyFileErrorInvalidValue: value could not be parsed.
 	KeyFileErrorInvalidValue
 )
 
@@ -187,7 +188,7 @@ func (k KeyFileError) String() string {
 type KeyFileFlags int
 
 const (
-	// KeyFileNone: no flags, default behaviour
+	// KeyFileNone: no flags, default behaviour.
 	KeyFileNone KeyFileFlags = 0b0
 	// KeyFileKeepComments: use this flag if you plan to write the (possibly
 	// modified) contents of the key file back to a file; otherwise all comments

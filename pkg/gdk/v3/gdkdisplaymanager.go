@@ -56,7 +56,7 @@ func init() {
 //        }
 //      else
 //    #endif
-//      g_error ("Unsupported GDK backend");
+//      g_error ("Unsupported GDK backend");.
 type DisplayManager struct {
 	*externglib.Object
 }

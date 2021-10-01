@@ -36,11 +36,11 @@ func init() {
 type TextBufferTargetInfo int
 
 const (
-	// TextBufferTargetInfoBufferContents: buffer contents
+	// TextBufferTargetInfoBufferContents: buffer contents.
 	TextBufferTargetInfoBufferContents TextBufferTargetInfo = -1
-	// TextBufferTargetInfoRichText: rich text
+	// TextBufferTargetInfoRichText: rich text.
 	TextBufferTargetInfoRichText TextBufferTargetInfo = -2
-	// TextBufferTargetInfoText: text
+	// TextBufferTargetInfoText: text.
 	TextBufferTargetInfoText TextBufferTargetInfo = -3
 )
 

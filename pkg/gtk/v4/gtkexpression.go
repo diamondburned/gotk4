@@ -350,10 +350,10 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 // function attributes specify what function to use for the closure, the content
 // of the element contains the expressions for the parameters. For instance:
 //
-//      <closure type='gchararray' function='combine_args_somehow'>
-//        <constant type='gchararray'>File size:</constant>
-//        <lookup type='GFile' name='size'>myfile</lookup>
-//      </closure>
+//    <closure type='gchararray' function='combine_args_somehow'>
+//      <constant type='gchararray'>File size:</constant>
+//      <lookup type='GFile' name='size'>myfile</lookup>
+//    </closure>.
 type Expression struct {
 	*externglib.Object
 }

@@ -31,17 +31,17 @@ func init() {
 type RevealerTransitionType int
 
 const (
-	// RevealerTransitionTypeNone: no transition
+	// RevealerTransitionTypeNone: no transition.
 	RevealerTransitionTypeNone RevealerTransitionType = iota
-	// RevealerTransitionTypeCrossfade: fade in
+	// RevealerTransitionTypeCrossfade: fade in.
 	RevealerTransitionTypeCrossfade
-	// RevealerTransitionTypeSlideRight: slide in from the left
+	// RevealerTransitionTypeSlideRight: slide in from the left.
 	RevealerTransitionTypeSlideRight
-	// RevealerTransitionTypeSlideLeft: slide in from the right
+	// RevealerTransitionTypeSlideLeft: slide in from the right.
 	RevealerTransitionTypeSlideLeft
-	// RevealerTransitionTypeSlideUp: slide in from the bottom
+	// RevealerTransitionTypeSlideUp: slide in from the bottom.
 	RevealerTransitionTypeSlideUp
-	// RevealerTransitionTypeSlideDown: slide in from the top
+	// RevealerTransitionTypeSlideDown: slide in from the top.
 	RevealerTransitionTypeSlideDown
 )
 

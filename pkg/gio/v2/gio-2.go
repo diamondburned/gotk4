@@ -286,7 +286,7 @@ func (*DBusActionGroup) privateDBusActionGroup() {}
 //        }
 //
 //      return authorized;
-//    }
+//    }.
 type DBusAuthObserver struct {
 	*externglib.Object
 }
@@ -417,7 +417,7 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 // An example for exporting a GObject
 //
 // Here is an example for exporting a #GObject: gdbus-example-export.c
-// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c).
 type DBusConnection struct {
 	*externglib.Object
 
@@ -621,7 +621,7 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 // main context of the thread you are calling this method from) at some point
 // after user_data is no longer needed. (It is not guaranteed to be called
 // synchronously when the filter is removed, and may be called after connection
-// has been destroyed.)
+// has been destroyed.).
 func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
 	var _arg0 *C.GDBusConnection           // out
 	var _arg1 C.GDBusMessageFilterFunction // out
@@ -1396,7 +1396,7 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	return _goerr
 }
 
-// Capabilities gets the capabilities negotiated with the remote peer
+// Capabilities gets the capabilities negotiated with the remote peer.
 func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusCapabilityFlags // in
@@ -1433,7 +1433,7 @@ func (connection *DBusConnection) ExitOnClose() bool {
 	return _ok
 }
 
-// Flags gets the flags used to construct this connection
+// Flags gets the flags used to construct this connection.
 func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusConnectionFlags // in
@@ -2716,7 +2716,7 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //      num-unix-fds -> uint32 1
 //    Body: ()
 //    UNIX File Descriptors:
-//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
+//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635.
 func (message *DBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
@@ -4093,7 +4093,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 //          <item label='Paste'/>
 //        </link>
 //      </item>
-//    </menu>
+//    </menu>.
 func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -6371,7 +6371,7 @@ func (self *SubprocessLauncher) Unsetenv(variable string) {
 //        all-am:
 //                $(GLIB_COMPILE_SCHEMAS) .
 //
-//        CLEANFILES += gschemas.compiled
+//        CLEANFILES += gschemas.compiled.
 type TestDBus struct {
 	*externglib.Object
 }

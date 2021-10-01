@@ -345,7 +345,7 @@ func (radioButton *RadioButton) Group() []RadioButton {
 //
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
-//        }
+//        }.
 func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out

@@ -23,7 +23,7 @@ func init() {
 // VolumeButton: GtkVolumeButton is a GtkScaleButton subclass tailored for
 // volume control.
 //
-// !An example GtkVolumeButton (volumebutton.png)
+// !An example GtkVolumeButton (volumebutton.png).
 type VolumeButton struct {
 	ScaleButton
 }

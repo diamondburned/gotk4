@@ -131,7 +131,7 @@ func init() {
 //
 // - "label": a user-visible string to display
 //
-// - "icon": icon name to display
+// - "icon": icon name to display.
 type ApplicationWindow struct {
 	Window
 

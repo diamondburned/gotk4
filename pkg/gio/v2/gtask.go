@@ -263,7 +263,7 @@ func NewTask(ctx context.Context, sourceObject *externglib.Object, callback Asyn
 	return _task
 }
 
-// Cancellable gets task's #GCancellable
+// Cancellable gets task's #GCancellable.
 func (task *Task) Cancellable() *Cancellable {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
@@ -370,7 +370,7 @@ func (task *Task) Name() string {
 	return _utf8
 }
 
-// Priority gets task's priority
+// Priority gets task's priority.
 func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in

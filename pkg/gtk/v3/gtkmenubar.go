@@ -63,7 +63,7 @@ func marshalMenuBarrer(p uintptr) (interface{}, error) {
 	return wrapMenuBar(obj), nil
 }
 
-// NewMenuBar creates a new MenuBar
+// NewMenuBar creates a new MenuBar.
 func NewMenuBar() *MenuBar {
 	var _cret *C.GtkWidget // in
 

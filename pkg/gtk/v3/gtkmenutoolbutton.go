@@ -50,7 +50,7 @@ type MenuToolButtonOverrider interface {
 //      <child type="menu">
 //        <object class="GtkMenu"/>
 //      </child>
-//    </object>
+//    </object>.
 type MenuToolButton struct {
 	ToolButton
 }

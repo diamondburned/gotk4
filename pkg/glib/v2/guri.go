@@ -133,7 +133,7 @@ const (
 	// URIFlagsSchemeNormalize: scheme-based normalization will be applied. For
 	// example, when parsing an HTTP URI changing omitted path to / and omitted
 	// port to 80; and when building a URI, changing empty path to / and default
-	// port 80). This only supports a subset of known schemes. (Since: 2.68)
+	// port 80). This only supports a subset of known schemes. (Since: 2.68).
 	URIFlagsSchemeNormalize URIFlags = 0b100000000
 )
 
@@ -513,7 +513,7 @@ func (uri *URI) Host() string {
 
 // Password gets uri's password, which may contain %-encoding, depending on the
 // flags with which uri was created. (If uri was not created with
-// G_URI_FLAGS_HAS_PASSWORD then this will be NULL.)
+// G_URI_FLAGS_HAS_PASSWORD then this will be NULL.).
 func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -1282,7 +1282,7 @@ func URIPeekScheme(uri string) string {
 // discarded, and an error returned.
 //
 // (If base_uri_string is NULL, this just returns uri_ref, or NULL if uri_ref is
-// invalid or not absolute.)
+// invalid or not absolute.).
 func URIResolveRelative(baseUriString string, uriRef string, flags URIFlags) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -1689,7 +1689,7 @@ type uriParamsIter struct {
 //        // then with baz/bar, then Foo/frob, then baz/bar2.
 //      }
 //    if (error)
-//      // handle parsing error
+//      // handle parsing error.
 func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // out

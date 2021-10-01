@@ -28,12 +28,12 @@ func init() {
 // TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID uses the default sort function in a
 // gtk.TreeSortable.
 //
-// See also: gtk.TreeSortable.SetSortColumnID()
+// See also: gtk.TreeSortable.SetSortColumnID().
 const TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID = -1
 
 // TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID disables sorting in a gtk.TreeSortable.
 //
-// See also: gtk.TreeSortable.SetSortColumnID()
+// See also: gtk.TreeSortable.SetSortColumnID().
 const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
 
 // TreeIterCompareFunc should return a negative integer, zero, or a positive
@@ -115,7 +115,7 @@ type TreeSortableOverrider interface {
 	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
 	// will be used, if it is set
 	//
-	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur.
 	SetSortColumnID(sortColumnId int, order SortType)
 	// SetSortFunc sets the comparison function used when sorting to be
 	// sort_func. If the current sort column id of sortable is the same as
@@ -255,7 +255,7 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 // - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function will be
 // used, if it is set
 //
-// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur.
 func (sortable *TreeSortable) SetSortColumnID(sortColumnId int, order SortType) {
 	var _arg0 *C.GtkTreeSortable // out
 	var _arg1 C.int              // out

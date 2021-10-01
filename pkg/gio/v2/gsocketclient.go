@@ -203,7 +203,7 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 }
 
 // ConnectFinish finishes an async connect operation. See
-// g_socket_client_connect_async()
+// g_socket_client_connect_async().
 func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -328,7 +328,7 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 }
 
 // ConnectToHostFinish finishes an async connect operation. See
-// g_socket_client_connect_to_host_async()
+// g_socket_client_connect_to_host_async().
 func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -436,7 +436,7 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain st
 }
 
 // ConnectToServiceFinish finishes an async connect operation. See
-// g_socket_client_connect_to_service_async()
+// g_socket_client_connect_to_service_async().
 func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -551,7 +551,7 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 }
 
 // ConnectToURIFinish finishes an async connect operation. See
-// g_socket_client_connect_to_uri_async()
+// g_socket_client_connect_to_uri_async().
 func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -577,7 +577,7 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 }
 
 // EnableProxy gets the proxy enable state; see
-// g_socket_client_set_enable_proxy()
+// g_socket_client_set_enable_proxy().
 func (client *SocketClient) EnableProxy() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
@@ -853,7 +853,7 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 //
 // Note that whether or not the proxy resolver is actually used depends on the
 // setting of Client:enable-proxy, which is not changed by this function (but
-// which is TRUE by default)
+// which is TRUE by default).
 func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out

@@ -181,14 +181,14 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	return _targetEntry
 }
 
-// Target: string representation of the target type
+// Target: string representation of the target type.
 func (t *TargetEntry) Target() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.target)))
 	return v
 }
 
-// Flags for DND
+// Flags for DND.
 func (t *TargetEntry) Flags() uint {
 	var v uint // out
 	v = uint(t.native.flags)

@@ -125,7 +125,7 @@ func NewFrame(label string) *Frame {
 
 // Label: if the frame’s label widget is a Label, returns the text in the label
 // widget. (The frame will have a Label for the label widget if a non-NULL
-// argument was passed to gtk_frame_new().)
+// argument was passed to gtk_frame_new().).
 func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.gchar    // in

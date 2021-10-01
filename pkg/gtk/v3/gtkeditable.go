@@ -110,7 +110,7 @@ type EditableOverrider interface {
 //      g_signal_stop_emission_by_name (editable, "insert_text");
 //
 //      g_free (result);
-//    }
+//    }.
 type Editable struct {
 	*externglib.Object
 }

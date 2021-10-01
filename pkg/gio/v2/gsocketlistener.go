@@ -156,7 +156,7 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 }
 
 // AcceptFinish finishes an async accept operation. See
-// g_socket_listener_accept_async()
+// g_socket_listener_accept_async().
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
@@ -260,7 +260,7 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 }
 
 // AcceptSocketFinish finishes an async accept operation. See
-// g_socket_listener_accept_socket_async()
+// g_socket_listener_accept_socket_async().
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
@@ -479,7 +479,7 @@ func (listener *SocketListener) Close() {
 // be called before adding any sockets, addresses or ports to the Listener (for
 // example, by calling g_socket_listener_add_inet_port()) to be effective.
 //
-// See g_socket_set_listen_backlog() for details
+// See g_socket_set_listen_backlog() for details.
 func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out

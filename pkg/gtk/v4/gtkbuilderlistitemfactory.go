@@ -31,20 +31,20 @@ func init() {
 //
 // Example:
 //
-//      <interface>
-//        <template class="GtkListItem">
-//          <property name="child">
-//            <object class="GtkLabel">
-//              <property name="xalign">0</property>
-//              <binding name="label">
-//                <lookup name="name" type="SettingsKey">
-//                  <lookup name="item">GtkListItem</lookup>
-//                </lookup>
-//              </binding>
-//            </object>
-//          </property>
-//        </template>
-//      </interface>
+//    <interface>
+//      <template class="GtkListItem">
+//        <property name="child">
+//          <object class="GtkLabel">
+//            <property name="xalign">0</property>
+//            <binding name="label">
+//              <lookup name="name" type="SettingsKey">
+//                <lookup name="item">GtkListItem</lookup>
+//              </lookup>
+//            </binding>
+//          </object>
+//        </property>
+//      </template>
+//    </interface>.
 type BuilderListItemFactory struct {
 	ListItemFactory
 }

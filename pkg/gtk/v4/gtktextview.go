@@ -1132,7 +1132,7 @@ func (textView *TextView) WrapMode() WrapMode {
 //      // Do some stuff
 //
 //      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
-//    }
+//    }.
 func (textView *TextView) IMContextFilterKeypress(event gdk.Eventer) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEvent    // out

@@ -45,14 +45,14 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(unsafe.Pointer(b))}}, nil
 }
 
-// Item: corresponding PangoItem
+// Item: corresponding PangoItem.
 func (g *GlyphItem) Item() *Item {
 	var v *Item // out
 	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(g.native.item)))
 	return v
 }
 
-// Glyphs: corresponding PangoGlyphString
+// Glyphs: corresponding PangoGlyphString.
 func (g *GlyphItem) Glyphs() *GlyphString {
 	var v *GlyphString // out
 	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(g.native.glyphs)))
@@ -147,7 +147,7 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 // create a zero-length item).
 //
 // This function is similar in function to pango_item_split() (and uses it
-// internally.)
+// internally.).
 func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out

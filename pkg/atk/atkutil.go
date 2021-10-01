@@ -28,17 +28,17 @@ func init() {
 
 // CoordType specifies how xy coordinates are to be interpreted. Used by
 // functions such as atk_component_get_position() and
-// atk_text_get_character_extents()
+// atk_text_get_character_extents().
 type CoordType int
 
 const (
-	// XYScreen specifies xy coordinates relative to the screen
+	// XYScreen specifies xy coordinates relative to the screen.
 	XYScreen CoordType = iota
 	// XYWindow specifies xy coordinates relative to the widget's top-level
-	// window
+	// window.
 	XYWindow
 	// XYParent specifies xy coordinates relative to the widget's immediate
-	// parent. Since: 2.30
+	// parent. Since: 2.30.
 	XYParent
 )
 
@@ -64,11 +64,11 @@ func (c CoordType) String() string {
 type KeyEventType int
 
 const (
-	// KeyEventPress specifies a key press event
+	// KeyEventPress specifies a key press event.
 	KeyEventPress KeyEventType = iota
-	// KeyEventRelease specifies a key release event
+	// KeyEventRelease specifies a key release event.
 	KeyEventRelease
-	// KeyEventLastDefined: not a valid value; specifies end of enumeration
+	// KeyEventLastDefined: not a valid value; specifies end of enumeration.
 	KeyEventLastDefined
 )
 
@@ -223,7 +223,7 @@ func RemoveFocusTracker(trackerId uint) {
 // Toolkit implementor note: this method is not intended to be used by ATK
 // implementors but by ATK consumers.
 //
-// Removes the specified event listener
+// Removes the specified event listener.
 func RemoveGlobalEventListener(listenerId uint) {
 	var _arg1 C.guint // out
 
@@ -281,7 +281,7 @@ type keyEventStruct struct {
 }
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
-// ATK_KEY_EVENT_RELEASE
+// ATK_KEY_EVENT_RELEASE.
 func (k *KeyEventStruct) Type() int {
 	var v int // out
 	v = int(k.native._type)
@@ -291,7 +291,7 @@ func (k *KeyEventStruct) Type() int {
 // State: bitmask representing the state of the modifier keys immediately after
 // the event takes place. The meaning of the bits is currently defined to match
 // the bitmask used by GDK in GdkEventType.state, see
-// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey
+// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) State() uint {
 	var v uint // out
 	v = uint(k.native.state)

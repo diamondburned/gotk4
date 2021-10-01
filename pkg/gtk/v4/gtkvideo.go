@@ -289,7 +289,7 @@ func (self *Video) SetFile(file gio.Filer) {
 
 // SetFilename makes self play the given filename.
 //
-// This is a utility function that calls gtk_video_set_file(),
+// This is a utility function that calls gtk_video_set_file(),.
 func (self *Video) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out

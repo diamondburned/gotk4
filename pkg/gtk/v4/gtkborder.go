@@ -60,28 +60,28 @@ func NewBorder() *Border {
 	return _border
 }
 
-// Left: width of the left border
+// Left: width of the left border.
 func (b *Border) Left() int16 {
 	var v int16 // out
 	v = int16(b.native.left)
 	return v
 }
 
-// Right: width of the right border
+// Right: width of the right border.
 func (b *Border) Right() int16 {
 	var v int16 // out
 	v = int16(b.native.right)
 	return v
 }
 
-// Top: width of the top border
+// Top: width of the top border.
 func (b *Border) Top() int16 {
 	var v int16 // out
 	v = int16(b.native.top)
 	return v
 }
 
-// Bottom: width of the bottom border
+// Bottom: width of the bottom border.
 func (b *Border) Bottom() int16 {
 	var v int16 // out
 	v = int16(b.native.bottom)

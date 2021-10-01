@@ -38,7 +38,7 @@ func init() {
 //    if (!g_app_info_launch_default_for_uri ("http://www.gtk.org", context, &error))
 //      g_warning ("Launching failed: s\n", error->message);
 //
-//    g_object_unref (context);
+//    g_object_unref (context);.
 type AppLaunchContext struct {
 	gio.AppLaunchContext
 }

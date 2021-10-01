@@ -50,14 +50,14 @@ func marshalRect(p uintptr) (interface{}, error) {
 	return &Rect{&rect{(*C.graphene_rect_t)(unsafe.Pointer(b))}}, nil
 }
 
-// Origin coordinates of the origin of the rectangle
+// Origin coordinates of the origin of the rectangle.
 func (r *Rect) Origin() Point {
 	var v Point // out
 	v = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&r.native.origin))))
 	return v
 }
 
-// Size: size of the rectangle
+// Size: size of the rectangle.
 func (r *Rect) Size() Size {
 	var v Size // out
 	v = *(*Size)(gextras.NewStructNative(unsafe.Pointer((&r.native.size))))

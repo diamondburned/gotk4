@@ -24,7 +24,7 @@ func init() {
 
 type State = uint64
 
-// StateType: possible types of states of an object
+// StateType: possible types of states of an object.
 type StateType int
 
 const (
@@ -56,7 +56,7 @@ const (
 	// checkbox is 'non-empty'.
 	StateChecked
 	// StateDefunct indicates that this object no longer has a valid backing
-	// widget (for instance, if its peer object has been destroyed)
+	// widget (for instance, if its peer object has been destroyed).
 	StateDefunct
 	// StateEditable indicates that this object can contain text, and that the
 	// user can change the textual contents of this object by editing those
@@ -69,32 +69,32 @@ const (
 	// currently reflects some application state. Objects that are "greyed out"
 	// may lack this state, and may lack the STATE_SENSITIVE if direct user
 	// interaction cannot cause them to acquire STATE_ENABLED. See also:
-	// ATK_STATE_SENSITIVE
+	// ATK_STATE_SENSITIVE.
 	StateEnabled
 	// StateExpandable indicates this object allows progressive disclosure of
-	// its children
+	// its children.
 	StateExpandable
 	// StateExpanded indicates this object its expanded - see
-	// ATK_STATE_EXPANDABLE above
+	// ATK_STATE_EXPANDABLE above.
 	StateExpanded
 	// StateFocusable indicates this object can accept keyboard focus, which
 	// means all events resulting from typing on the keyboard will normally be
-	// passed to it when it has focus
+	// passed to it when it has focus.
 	StateFocusable
-	// StateFocused indicates this object currently has the keyboard focus
+	// StateFocused indicates this object currently has the keyboard focus.
 	StateFocused
 	// StateHorizontal indicates the orientation of this object is horizontal;
 	// used, for instance, by objects of ATK_ROLE_SCROLL_BAR. For objects where
 	// vertical/horizontal orientation is especially meaningful.
 	StateHorizontal
 	// StateIconified indicates this object is minimized and is represented only
-	// by an icon
+	// by an icon.
 	StateIconified
 	// StateModal indicates something must be done with this object before the
-	// user can interact with an object in a different window
+	// user can interact with an object in a different window.
 	StateModal
 	// StateMultiLine indicates this (text) object can contain multiple lines of
-	// text
+	// text.
 	StateMultiLine
 	// StateMultiselectable indicates this object allows more than one of its
 	// children to be selected at the same time, or in the case of text objects,
@@ -105,15 +105,15 @@ const (
 	StateOpaque
 	// StatePressed indicates this object is currently pressed.
 	StatePressed
-	// StateResizable indicates the size of this object is not fixed
+	// StateResizable indicates the size of this object is not fixed.
 	StateResizable
 	// StateSelectable indicates this object is the child of an object that
 	// allows its children to be selected and that this child is one of those
-	// children that can be selected
+	// children that can be selected.
 	StateSelectable
 	// StateSelected indicates this object is the child of an object that allows
 	// its children to be selected and that this child is one of those children
-	// that has been selected
+	// that has been selected.
 	StateSelected
 	// StateSensitive indicates this object is sensitive, e.g. to user
 	// interaction. STATE_SENSITIVE usually accompanies STATE_ENABLED for
@@ -131,7 +131,7 @@ const (
 	// this object and the top of the window stack.
 	StateShowing
 	// StateSingleLine indicates this (text) object can contain only a single
-	// line of text
+	// line of text.
 	StateSingleLine
 	// StateStale indicates that the information returned for this object may no
 	// longer be synchronized with the application state. This is implied if the
@@ -145,7 +145,7 @@ const (
 	// ATK_STATE_TRANSIENT should not be cached, since there may be no
 	// notification given when the cached data becomes obsolete.
 	StateTransient
-	// StateVertical indicates the orientation of this object is vertical
+	// StateVertical indicates the orientation of this object is vertical.
 	StateVertical
 	// StateVisible indicates this object is visible, e.g. has been explicitly
 	// marked for exposure to the user. **note**: ATK_STATE_VISIBLE is no
@@ -229,14 +229,14 @@ const (
 	// downloaded, rendered, or otherwise "visited".
 	StateVisited
 	// StateCheckable indicates this object has the potential to be checked,
-	// such as a checkbox or toggle-able table cell. Since: ATK-2.12
+	// such as a checkbox or toggle-able table cell. Since: ATK-2.12.
 	StateCheckable
 	// StateHasPopup indicates that the object has a popup context menu or
 	// sub-level menu which may or may not be showing. This means that
 	// activation renders conditional content. Note that ordinary tooltips are
-	// not considered popups in this context. Since: ATK-2.12
+	// not considered popups in this context. Since: ATK-2.12.
 	StateHasPopup
-	// StateHasTooltip indicates this object has a tooltip. Since: ATK-2.16
+	// StateHasTooltip indicates this object has a tooltip. Since: ATK-2.16.
 	StateHasTooltip
 	// StateReadOnly indicates that a widget which is ENABLED and SENSITIVE has
 	// a value which can be read, but not modified, by the user. Note that this
@@ -246,9 +246,9 @@ const (
 	// the expected interaction with that widget is not possible. When the
 	// expected interaction with a widget does not include modification by the
 	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
-	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16
+	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16.
 	StateReadOnly
-	// StateLastDefined: not a valid state, used for finding end of enumeration
+	// StateLastDefined: not a valid state, used for finding end of enumeration.
 	StateLastDefined
 )
 

@@ -341,7 +341,7 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int, precision int) 
 	return _mask, _shift, _precision
 }
 
-// Screen gets the screen to which this visual belongs
+// Screen gets the screen to which this visual belongs.
 func (visual *Visual) Screen() *Screen {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in

@@ -74,42 +74,42 @@ func NewMatrix(xx, xy, yx, yy, x0, y0 float64) Matrix {
 	return *(*Matrix)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
-// XX: 1st component of the transformation matrix
+// XX: 1st component of the transformation matrix.
 func (m *Matrix) XX() float64 {
 	var v float64 // out
 	v = float64(m.native.xx)
 	return v
 }
 
-// XY: 2nd component of the transformation matrix
+// XY: 2nd component of the transformation matrix.
 func (m *Matrix) XY() float64 {
 	var v float64 // out
 	v = float64(m.native.xy)
 	return v
 }
 
-// YX: 3rd component of the transformation matrix
+// YX: 3rd component of the transformation matrix.
 func (m *Matrix) YX() float64 {
 	var v float64 // out
 	v = float64(m.native.yx)
 	return v
 }
 
-// YY: 4th component of the transformation matrix
+// YY: 4th component of the transformation matrix.
 func (m *Matrix) YY() float64 {
 	var v float64 // out
 	v = float64(m.native.yy)
 	return v
 }
 
-// X0: x translation
+// X0: x translation.
 func (m *Matrix) X0() float64 {
 	var v float64 // out
 	v = float64(m.native.x0)
 	return v
 }
 
-// Y0: y translation
+// Y0: y translation.
 func (m *Matrix) Y0() float64 {
 	var v float64 // out
 	v = float64(m.native.y0)

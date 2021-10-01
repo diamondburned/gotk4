@@ -60,7 +60,7 @@ func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 //     <child type="tag">
 //       <object class="GtkTextTag"/>
 //     </child>
-//    </object>
+//    </object>.
 type TextTagTable struct {
 	*externglib.Object
 
@@ -143,7 +143,7 @@ func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 	runtime.KeepAlive(fn)
 }
 
-// Size returns the size of the table (number of tags)
+// Size returns the size of the table (number of tags).
 func (table *TextTagTable) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.int              // in

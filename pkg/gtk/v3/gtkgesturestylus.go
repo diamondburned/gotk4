@@ -25,7 +25,7 @@ func init() {
 }
 
 // GestureStylus is a Gesture implementation specific to stylus input. The
-// provided signals just provide the basic information
+// provided signals just provide the basic information.
 type GestureStylus struct {
 	GestureSingle
 }

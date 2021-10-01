@@ -70,7 +70,7 @@ func NewInvisible() *Invisible {
 	return _invisible
 }
 
-// NewInvisibleForScreen creates a new Invisible object for a specified screen
+// NewInvisibleForScreen creates a new Invisible object for a specified screen.
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
@@ -87,7 +87,7 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	return _invisible
 }
 
-// Screen returns the Screen object associated with invisible
+// Screen returns the Screen object associated with invisible.
 func (invisible *Invisible) Screen() *gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in

@@ -36,9 +36,9 @@ func init() {
 type RecentChooserError int
 
 const (
-	// RecentChooserErrorNotFound indicates that a file does not exist
+	// RecentChooserErrorNotFound indicates that a file does not exist.
 	RecentChooserErrorNotFound RecentChooserError = iota
-	// RecentChooserErrorInvalidURI indicates a malformed URI
+	// RecentChooserErrorInvalidURI indicates a malformed URI.
 	RecentChooserErrorInvalidURI
 )
 
@@ -420,7 +420,7 @@ func (chooser *RecentChooser) Limit() int {
 }
 
 // LocalOnly gets whether only local resources should be shown in the recently
-// used resources selector. See gtk_recent_chooser_set_local_only()
+// used resources selector. See gtk_recent_chooser_set_local_only().
 func (chooser *RecentChooser) LocalOnly() bool {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret C.gboolean          // in

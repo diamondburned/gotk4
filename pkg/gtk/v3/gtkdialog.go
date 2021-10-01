@@ -36,27 +36,27 @@ type ResponseType int
 
 const (
 	// ResponseNone: returned if an action widget has no response id, or if the
-	// dialog gets programmatically hidden or destroyed
+	// dialog gets programmatically hidden or destroyed.
 	ResponseNone ResponseType = -1
-	// ResponseReject: generic response id, not used by GTK+ dialogs
+	// ResponseReject: generic response id, not used by GTK+ dialogs.
 	ResponseReject ResponseType = -2
-	// ResponseAccept: generic response id, not used by GTK+ dialogs
+	// ResponseAccept: generic response id, not used by GTK+ dialogs.
 	ResponseAccept ResponseType = -3
-	// ResponseDeleteEvent: returned if the dialog is deleted
+	// ResponseDeleteEvent: returned if the dialog is deleted.
 	ResponseDeleteEvent ResponseType = -4
-	// ResponseOK: returned by OK buttons in GTK+ dialogs
+	// ResponseOK: returned by OK buttons in GTK+ dialogs.
 	ResponseOK ResponseType = -5
-	// ResponseCancel: returned by Cancel buttons in GTK+ dialogs
+	// ResponseCancel: returned by Cancel buttons in GTK+ dialogs.
 	ResponseCancel ResponseType = -6
-	// ResponseClose: returned by Close buttons in GTK+ dialogs
+	// ResponseClose: returned by Close buttons in GTK+ dialogs.
 	ResponseClose ResponseType = -7
-	// ResponseYes: returned by Yes buttons in GTK+ dialogs
+	// ResponseYes: returned by Yes buttons in GTK+ dialogs.
 	ResponseYes ResponseType = -8
-	// ResponseNo: returned by No buttons in GTK+ dialogs
+	// ResponseNo: returned by No buttons in GTK+ dialogs.
 	ResponseNo ResponseType = -9
-	// ResponseApply: returned by Apply buttons in GTK+ dialogs
+	// ResponseApply: returned by Apply buttons in GTK+ dialogs.
 	ResponseApply ResponseType = -10
-	// ResponseHelp: returned by Help buttons in GTK+ dialogs
+	// ResponseHelp: returned by Help buttons in GTK+ dialogs.
 	ResponseHelp ResponseType = -11
 )
 
@@ -99,10 +99,10 @@ type DialogFlags int
 
 const (
 	// DialogModal: make the constructed dialog modal, see
-	// gtk_window_set_modal()
+	// gtk_window_set_modal().
 	DialogModal DialogFlags = 0b1
 	// DialogDestroyWithParent: destroy the dialog when its parent is destroyed,
-	// see gtk_window_set_destroy_with_parent()
+	// see gtk_window_set_destroy_with_parent().
 	DialogDestroyWithParent DialogFlags = 0b10
 	// DialogUseHeaderBar: create dialog with actions in header bar instead of
 	// action area. Since 3.12.
@@ -302,7 +302,7 @@ type DialogOverrider interface {
 //        <action-widget response="cancel">button_cancel</action-widget>
 //        <action-widget response="ok" default="true">button_ok</action-widget>
 //      </action-widgets>
-//    </object>
+//    </object>.
 type Dialog struct {
 	Window
 }

@@ -167,7 +167,7 @@ func DisableSetlocale() {
 //     while (gtk_events_pending ())
 //       gtk_main_iteration ();
 //
-//     // ...computation continued
+//     // ...computation continued.
 func EventsPending() bool {
 	var _cret C.gboolean // in
 
@@ -322,7 +322,7 @@ func GetInterfaceAge() uint {
 //
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);
+//    gtk_widget_set_default_direction (direction);.
 func GetLocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
@@ -565,7 +565,7 @@ func MainQuit() {
 //      gtk_main ();
 //
 //      return 0;
-//    }
+//    }.
 func True() bool {
 	var _cret C.gboolean // in
 

@@ -38,7 +38,7 @@ type CellAreaContextOverrider interface {
 	// producing a homogeneous effect of the rows. This is generally the case
 	// for TreeView when TreeView:fixed-height-mode is enabled.
 	//
-	// Since 3.0
+	// Since 3.0.
 	Allocate(width int, height int)
 	// PreferredHeightForWidth gets the accumulative preferred height for width
 	// for all rows which have been requested for the same said width with this
@@ -72,7 +72,7 @@ type CellAreaContextOverrider interface {
 	// recalculation of all the displayed row heights using
 	// gtk_cell_area_get_preferred_height_for_width().
 	//
-	// Since 3.0
+	// Since 3.0.
 	Reset()
 }
 
@@ -112,7 +112,7 @@ func marshalCellAreaContexter(p uintptr) (interface{}, error) {
 // homogeneous effect of the rows. This is generally the case for TreeView when
 // TreeView:fixed-height-mode is enabled.
 //
-// Since 3.0
+// Since 3.0.
 func (context *CellAreaContext) Allocate(width int, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -351,7 +351,7 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth int, naturalWidt
 // all the displayed row heights using
 // gtk_cell_area_get_preferred_height_for_width().
 //
-// Since 3.0
+// Since 3.0.
 func (context *CellAreaContext) Reset() {
 	var _arg0 *C.GtkCellAreaContext // out
 

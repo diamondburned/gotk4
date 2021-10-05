@@ -98,3 +98,9 @@ func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, o
 
 	return _velocityX, _velocityY, _ok
 }
+
+// ConnectSwipe: this signal is emitted when the recognized gesture is finished,
+// velocity and direction are a product of previously recorded events.
+func (g *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) glib.SignalHandle {
+	return g.Connect("swipe", f)
+}

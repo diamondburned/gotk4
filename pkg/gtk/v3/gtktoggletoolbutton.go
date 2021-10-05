@@ -167,3 +167,8 @@ func (button *ToggleToolButton) SetActive(isActive bool) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(isActive)
 }
+
+// ConnectToggled: emitted whenever the toggle tool button changes state.
+func (t *ToggleToolButton) ConnectToggled(f func()) glib.SignalHandle {
+	return t.Connect("toggled", f)
+}

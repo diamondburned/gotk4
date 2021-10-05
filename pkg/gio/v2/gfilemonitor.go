@@ -159,3 +159,33 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)
 }
+
+// ConnectChanged: emitted when file has been changed.
+//
+// If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
+// information is available (and if supported by the backend), event_type may be
+// G_FILE_MONITOR_EVENT_RENAMED, G_FILE_MONITOR_EVENT_MOVED_IN or
+// G_FILE_MONITOR_EVENT_MOVED_OUT.
+//
+// In all cases file will be a child of the monitored directory. For renames,
+// file will be the old name and other_file is the new name. For "moved in"
+// events, file is the name of the file that appeared and other_file is the old
+// name that it was moved from (in another directory). For "moved out" events,
+// file is the name of the file that used to be in this directory and other_file
+// is the name of the file at its new location.
+//
+// It makes sense to treat G_FILE_MONITOR_EVENT_MOVED_IN as equivalent to
+// G_FILE_MONITOR_EVENT_CREATED and G_FILE_MONITOR_EVENT_MOVED_OUT as equivalent
+// to G_FILE_MONITOR_EVENT_DELETED, with extra information.
+// G_FILE_MONITOR_EVENT_RENAMED is equivalent to a delete/create pair. This is
+// exactly how the events will be reported in the case that the
+// G_FILE_MONITOR_WATCH_MOVES flag is not in use.
+//
+// If using the deprecated flag G_FILE_MONITOR_SEND_MOVED flag and event_type is
+// FILE_MONITOR_EVENT_MOVED, file will be set to a #GFile containing the old
+// path, and other_file will be set to a #GFile containing the new path.
+//
+// In all the other cases, other_file will be set to LL.
+func (f *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) glib.SignalHandle {
+	return f.Connect("changed", f)
+}

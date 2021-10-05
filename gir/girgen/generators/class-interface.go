@@ -72,6 +72,16 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ else }}
 	func (*{{ .StructName }}) private{{ $.StructName }}() {}
 	{{ end }}
+
+	{{ $recv := FirstLetter $.StructName }}
+
+	{{ range .Signals }}
+	{{ $name := printf "Connect%s" (KebabToGo true .Name) }}
+	{{ GoDoc . 0 (OverrideSelfName $name) }}
+	func ({{ $recv }} *{{ $.StructName }}) {{ $name }}(f func{{ .Tail }}) glib.SignalHandle {
+		return {{ $recv }}.Connect({{ Quote .Name }}, f)
+	}
+	{{ end }}
 `)
 
 // GenerateInterface generates a public interface declaration, optionally

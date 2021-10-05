@@ -1427,3 +1427,21 @@ func (entry *Entry) UnsetInvisibleChar() {
 	C.gtk_entry_unset_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
 }
+
+// ConnectActivate: emitted when the entry is activated.
+//
+// The keybindings for this signal are all forms of the Enter key.
+func (e *Entry) ConnectActivate(f func()) glib.SignalHandle {
+	return e.Connect("activate", f)
+}
+
+// ConnectIconPress: emitted when an activatable icon is clicked.
+func (e *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) glib.SignalHandle {
+	return e.Connect("icon-press", f)
+}
+
+// ConnectIconRelease: emitted on the button release from a mouse click over an
+// activatable icon.
+func (e *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) glib.SignalHandle {
+	return e.Connect("icon-release", f)
+}

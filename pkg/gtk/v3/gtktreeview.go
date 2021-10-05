@@ -2590,3 +2590,90 @@ func (treeView *TreeView) UnsetRowsDragSource() {
 	C.gtk_tree_view_unset_rows_drag_source(_arg0)
 	runtime.KeepAlive(treeView)
 }
+
+// ConnectColumnsChanged: number of columns of the treeview has changed.
+func (t *TreeView) ConnectColumnsChanged(f func()) glib.SignalHandle {
+	return t.Connect("columns-changed", f)
+}
+
+// ConnectCursorChanged: position of the cursor (focused cell) has changed.
+func (t *TreeView) ConnectCursorChanged(f func()) glib.SignalHandle {
+	return t.Connect("cursor-changed", f)
+}
+
+func (t *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 bool) bool) glib.SignalHandle {
+	return t.Connect("expand-collapse-cursor-row", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user presses one of the cursor keys.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+// In contrast to gtk_tree_view_set_cursor() and
+// gtk_tree_view_set_cursor_on_cell() when moving horizontally
+// TreeView::move-cursor does not reset the current selection.
+func (t *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int) bool) glib.SignalHandle {
+	return t.Connect("move-cursor", f)
+}
+
+// ConnectRowActivated: "row-activated" signal is emitted when the method
+// gtk_tree_view_row_activated() is called, when the user double clicks a
+// treeview row with the "activate-on-single-click" property set to FALSE, or
+// when the user single clicks a row when the "activate-on-single-click"
+// property set to TRUE. It is also emitted when a non-editable row is selected
+// and one of the keys: Space, Shift+Space, Return or Enter is pressed.
+//
+// For selection handling refer to the [tree widget conceptual
+// overview][TreeWidget] as well as TreeSelection.
+func (t *TreeView) ConnectRowActivated(f func(path *TreePath, column TreeViewColumn)) glib.SignalHandle {
+	return t.Connect("row-activated", f)
+}
+
+// ConnectRowCollapsed: given row has been collapsed (child nodes are hidden).
+func (t *TreeView) ConnectRowCollapsed(f func(iter TreeIter, path *TreePath)) glib.SignalHandle {
+	return t.Connect("row-collapsed", f)
+}
+
+// ConnectRowExpanded: given row has been expanded (child nodes are shown).
+func (t *TreeView) ConnectRowExpanded(f func(iter TreeIter, path *TreePath)) glib.SignalHandle {
+	return t.Connect("row-expanded", f)
+}
+
+func (t *TreeView) ConnectSelectAll(f func() bool) glib.SignalHandle {
+	return t.Connect("select-all", f)
+}
+
+func (t *TreeView) ConnectSelectCursorParent(f func() bool) glib.SignalHandle {
+	return t.Connect("select-cursor-parent", f)
+}
+
+func (t *TreeView) ConnectSelectCursorRow(f func(object bool) bool) glib.SignalHandle {
+	return t.Connect("select-cursor-row", f)
+}
+
+func (t *TreeView) ConnectStartInteractiveSearch(f func() bool) glib.SignalHandle {
+	return t.Connect("start-interactive-search", f)
+}
+
+// ConnectTestCollapseRow: given row is about to be collapsed (hide its children
+// nodes). Use this signal if you need to control the collapsibility of
+// individual rows.
+func (t *TreeView) ConnectTestCollapseRow(f func(iter TreeIter, path *TreePath) bool) glib.SignalHandle {
+	return t.Connect("test-collapse-row", f)
+}
+
+// ConnectTestExpandRow: given row is about to be expanded (show its children
+// nodes). Use this signal if you need to control the expandability of
+// individual rows.
+func (t *TreeView) ConnectTestExpandRow(f func(iter TreeIter, path *TreePath) bool) glib.SignalHandle {
+	return t.Connect("test-expand-row", f)
+}
+
+func (t *TreeView) ConnectToggleCursorRow(f func() bool) glib.SignalHandle {
+	return t.Connect("toggle-cursor-row", f)
+}
+
+func (t *TreeView) ConnectUnselectAll(f func() bool) glib.SignalHandle {
+	return t.Connect("unselect-all", f)
+}

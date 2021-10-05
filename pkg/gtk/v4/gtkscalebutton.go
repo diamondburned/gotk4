@@ -276,3 +276,27 @@ func (button *ScaleButton) SetValue(value float64) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
 }
+
+// ConnectPopdown: emitted to dismiss the popup.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is <kbd>Escape</kbd>.
+func (s *ScaleButton) ConnectPopdown(f func()) glib.SignalHandle {
+	return s.Connect("popdown", f)
+}
+
+// ConnectPopup: emitted to popup the scale widget.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal are <kbd>Space</kbd>, <kbd>Enter</kbd>
+// and <kbd>Return</kbd>.
+func (s *ScaleButton) ConnectPopup(f func()) glib.SignalHandle {
+	return s.Connect("popup", f)
+}
+
+// ConnectValueChanged: emitted when the value field has changed.
+func (s *ScaleButton) ConnectValueChanged(f func(value float64)) glib.SignalHandle {
+	return s.Connect("value-changed", f)
+}

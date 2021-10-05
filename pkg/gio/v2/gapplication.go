@@ -1211,6 +1211,87 @@ func (application *Application) WithdrawNotification(id string) {
 	runtime.KeepAlive(id)
 }
 
+// ConnectActivate signal is emitted on the primary instance when an activation
+// occurs. See g_application_activate().
+func (a *Application) ConnectActivate(f func()) glib.SignalHandle {
+	return a.Connect("activate", f)
+}
+
+// ConnectCommandLine signal is emitted on the primary instance when a
+// commandline is not handled locally. See g_application_run() and the
+// CommandLine documentation for more information.
+func (a *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) glib.SignalHandle {
+	return a.Connect("command-line", f)
+}
+
+// ConnectHandleLocalOptions signal is emitted on the local instance after the
+// parsing of the commandline options has occurred.
+//
+// You can add options to be recognised during commandline option parsing using
+// g_application_add_main_option_entries() and g_application_add_option_group().
+//
+// Signal handlers can inspect options (along with values pointed to from the
+// arg_data of an installed Entrys) in order to decide to perform certain
+// actions, including direct local handling (which may be useful for options
+// like --version).
+//
+// In the event that the application is marked
+// G_APPLICATION_HANDLES_COMMAND_LINE the "normal processing" will send the
+// options dictionary to the primary instance where it can be read with
+// g_application_command_line_get_options_dict(). The signal handler can modify
+// the dictionary before returning, and the modified dictionary will be sent.
+//
+// In the event that G_APPLICATION_HANDLES_COMMAND_LINE is not set, "normal
+// processing" will treat the remaining uncollected command line arguments as
+// filenames or URIs. If there are no arguments, the application is activated by
+// g_application_activate(). One or more arguments results in a call to
+// g_application_open().
+//
+// If you want to handle the local commandline arguments for yourself by
+// converting them to calls to g_application_open() or
+// g_action_group_activate_action() then you must be sure to register the
+// application first. You should probably not call g_application_activate() for
+// yourself, however: just return -1 and allow the default handler to do it for
+// you. This will ensure that the --gapplication-service switch works properly
+// (i.e. no activation in that case).
+//
+// Note that this signal is emitted from the default implementation of
+// local_command_line(). If you override that function and don't chain up then
+// this signal will never be emitted.
+//
+// You can override local_command_line() if you need more powerful capabilities
+// than what is provided here, but this should not normally be required.
+func (a *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) glib.SignalHandle {
+	return a.Connect("handle-local-options", f)
+}
+
+// ConnectNameLost signal is emitted only on the registered primary instance
+// when a new instance has taken over. This can only happen if the application
+// is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
+//
+// The default handler for this signal calls g_application_quit().
+func (a *Application) ConnectNameLost(f func() bool) glib.SignalHandle {
+	return a.Connect("name-lost", f)
+}
+
+// ConnectOpen signal is emitted on the primary instance when there are files to
+// open. See g_application_open() for more information.
+func (a *Application) ConnectOpen(f func(files []Filer, hint string)) glib.SignalHandle {
+	return a.Connect("open", f)
+}
+
+// ConnectShutdown signal is emitted only on the registered primary instance
+// immediately after the main loop terminates.
+func (a *Application) ConnectShutdown(f func()) glib.SignalHandle {
+	return a.Connect("shutdown", f)
+}
+
+// ConnectStartup signal is emitted on the primary instance immediately after
+// registration. See g_application_register().
+func (a *Application) ConnectStartup(f func()) glib.SignalHandle {
+	return a.Connect("startup", f)
+}
+
 // ApplicationGetDefault returns the default #GApplication instance for this
 // process.
 //

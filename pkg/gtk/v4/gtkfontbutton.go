@@ -240,3 +240,15 @@ func (fontButton *FontButton) SetUseSize(useSize bool) {
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(useSize)
 }
+
+// ConnectFontSet: emitted when the user selects a font.
+//
+// When handling this signal, use gtk.FontChooser.GetFont() to find out which
+// font was just selected.
+//
+// Note that this signal is only emitted when the user changes the font. If you
+// need to react to programmatic font changes as well, use the notify::font
+// signal.
+func (f *FontButton) ConnectFontSet(f func()) glib.SignalHandle {
+	return f.Connect("font-set", f)
+}

@@ -215,3 +215,16 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 	runtime.KeepAlive(linkButton)
 	runtime.KeepAlive(visited)
 }
+
+// ConnectActivateLink signal is emitted each time the LinkButton has been
+// clicked.
+//
+// The default handler will call gtk_show_uri_on_window() with the URI stored
+// inside the LinkButton:uri property.
+//
+// To override the default behavior, you can connect to the ::activate-link
+// signal and stop the propagation of the signal by returning TRUE from your
+// handler.
+func (l *LinkButton) ConnectActivateLink(f func() bool) glib.SignalHandle {
+	return l.Connect("activate-link", f)
+}

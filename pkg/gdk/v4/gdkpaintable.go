@@ -480,6 +480,27 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	runtime.KeepAlive(height)
 }
 
+// ConnectInvalidateContents: emitted when the contents of the paintable change.
+//
+// Examples for such an event would be videos changing to the next frame or the
+// icon theme for an icon changing.
+func (p *Paintable) ConnectInvalidateContents(f func()) glib.SignalHandle {
+	return p.Connect("invalidate-contents", f)
+}
+
+// ConnectInvalidateSize: emitted when the intrinsic size of the paintable
+// changes.
+//
+// This means the values reported by at least one of
+// gdk.Paintable.GetIntrinsicWidth(), gdk.Paintable.GetIntrinsicHeight() or
+// gdk.Paintable.GetIntrinsicAspectRatio() has changed.
+//
+// Examples for such an event would be a paintable displaying the contents of a
+// toplevel surface being resized.
+func (p *Paintable) ConnectInvalidateSize(f func()) glib.SignalHandle {
+	return p.Connect("invalidate-size", f)
+}
+
 // NewPaintableEmpty returns a paintable that has the given intrinsic size and
 // draws nothing.
 //

@@ -1056,3 +1056,58 @@ func (label *Label) SetYAlign(yalign float32) {
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(yalign)
 }
+
+// ConnectActivateCurrentLink: [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user activates a link in the label.
+//
+// Applications may also emit the signal with g_signal_emit_by_name() if they
+// need to control activation of URIs programmatically.
+//
+// The default bindings for this signal are all forms of the Enter key.
+func (l *Label) ConnectActivateCurrentLink(f func()) glib.SignalHandle {
+	return l.Connect("activate-current-link", f)
+}
+
+// ConnectActivateLink: signal which gets emitted to activate a URI.
+// Applications may connect to it to override the default behaviour, which is to
+// call gtk_show_uri_on_window().
+func (l *Label) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
+	return l.Connect("activate-link", f)
+}
+
+// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to copy the selection to the clipboard.
+//
+// The default binding for this signal is Ctrl-c.
+func (l *Label) ConnectCopyClipboard(f func()) glib.SignalHandle {
+	return l.Connect("copy-clipboard", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement. If the cursor is not
+// visible in entry, this signal causes the viewport to be moved instead.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual characters/lines
+//
+// - Ctrl-arrow key combinations move by words/paragraphs
+//
+// - Home/End keys move to the ends of the buffer.
+func (l *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) glib.SignalHandle {
+	return l.Connect("move-cursor", f)
+}
+
+// ConnectPopulatePopup signal gets emitted before showing the context menu of
+// the label. Note that only selectable labels have context menus.
+//
+// If you need to add items to the context menu, connect to this signal and
+// append your menuitems to the menu.
+func (l *Label) ConnectPopulatePopup(f func(menu Menu)) glib.SignalHandle {
+	return l.Connect("populate-popup", f)
+}

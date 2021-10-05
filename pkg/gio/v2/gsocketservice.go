@@ -156,3 +156,13 @@ func (service *SocketService) Stop() {
 	C.g_socket_service_stop(_arg0)
 	runtime.KeepAlive(service)
 }
+
+// ConnectIncoming signal is emitted when a new incoming connection to service
+// needs to be handled. The handler must initiate the handling of connection,
+// but may not block; in essence, asynchronous operations must be used.
+//
+// connection will be unreffed once the signal handler returns, so you need to
+// ref it yourself if you are planning to use it.
+func (s *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) glib.SignalHandle {
+	return s.Connect("incoming", f)
+}

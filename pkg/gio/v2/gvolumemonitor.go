@@ -278,6 +278,71 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	return _list
 }
 
+// ConnectDriveChanged: emitted when a drive changes.
+func (v *VolumeMonitor) ConnectDriveChanged(f func(drive Driver)) glib.SignalHandle {
+	return v.Connect("drive-changed", f)
+}
+
+// ConnectDriveConnected: emitted when a drive is connected to the system.
+func (v *VolumeMonitor) ConnectDriveConnected(f func(drive Driver)) glib.SignalHandle {
+	return v.Connect("drive-connected", f)
+}
+
+// ConnectDriveDisconnected: emitted when a drive is disconnected from the
+// system.
+func (v *VolumeMonitor) ConnectDriveDisconnected(f func(drive Driver)) glib.SignalHandle {
+	return v.Connect("drive-disconnected", f)
+}
+
+// ConnectDriveEjectButton: emitted when the eject button is pressed on drive.
+func (v *VolumeMonitor) ConnectDriveEjectButton(f func(drive Driver)) glib.SignalHandle {
+	return v.Connect("drive-eject-button", f)
+}
+
+// ConnectDriveStopButton: emitted when the stop button is pressed on drive.
+func (v *VolumeMonitor) ConnectDriveStopButton(f func(drive Driver)) glib.SignalHandle {
+	return v.Connect("drive-stop-button", f)
+}
+
+// ConnectMountAdded: emitted when a mount is added.
+func (v *VolumeMonitor) ConnectMountAdded(f func(mount Mounter)) glib.SignalHandle {
+	return v.Connect("mount-added", f)
+}
+
+// ConnectMountChanged: emitted when a mount changes.
+func (v *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) glib.SignalHandle {
+	return v.Connect("mount-changed", f)
+}
+
+// ConnectMountPreUnmount: may be emitted when a mount is about to be removed.
+//
+// This signal depends on the backend and is only emitted if GIO was used to
+// unmount.
+func (v *VolumeMonitor) ConnectMountPreUnmount(f func(mount Mounter)) glib.SignalHandle {
+	return v.Connect("mount-pre-unmount", f)
+}
+
+// ConnectMountRemoved: emitted when a mount is removed.
+func (v *VolumeMonitor) ConnectMountRemoved(f func(mount Mounter)) glib.SignalHandle {
+	return v.Connect("mount-removed", f)
+}
+
+// ConnectVolumeAdded: emitted when a mountable volume is added to the system.
+func (v *VolumeMonitor) ConnectVolumeAdded(f func(volume Volumer)) glib.SignalHandle {
+	return v.Connect("volume-added", f)
+}
+
+// ConnectVolumeChanged: emitted when mountable volume is changed.
+func (v *VolumeMonitor) ConnectVolumeChanged(f func(volume Volumer)) glib.SignalHandle {
+	return v.Connect("volume-changed", f)
+}
+
+// ConnectVolumeRemoved: emitted when a mountable volume is removed from the
+// system.
+func (v *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer)) glib.SignalHandle {
+	return v.Connect("volume-removed", f)
+}
+
 // VolumeMonitorAdoptOrphanMount: this function should be called by any Monitor
 // implementation when a new #GMount object is created that is not associated
 // with a #GVolume object. It must be called just before emitting the

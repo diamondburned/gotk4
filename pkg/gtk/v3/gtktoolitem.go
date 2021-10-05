@@ -637,3 +637,41 @@ func (toolItem *ToolItem) ToolbarReconfigured() {
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 	runtime.KeepAlive(toolItem)
 }
+
+// ConnectCreateMenuProxy: this signal is emitted when the toolbar needs
+// information from tool_item about whether the item should appear in the
+// toolbar overflow menu. In response the tool item should either
+//
+// - call gtk_tool_item_set_proxy_menu_item() with a NULL pointer and return
+// TRUE to indicate that the item should not appear in the overflow menu
+//
+// - call gtk_tool_item_set_proxy_menu_item() with a new menu item and return
+// TRUE, or
+//
+// - return FALSE to indicate that the signal was not handled by the item. This
+// means that the item will not appear in the overflow menu unless a later
+// handler installs a menu item.
+//
+// The toolbar may cache the result of this signal. When the tool item changes
+// how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
+// to invalidate the cache and ensure that the toolbar rebuilds its overflow
+// menu.
+func (t *ToolItem) ConnectCreateMenuProxy(f func() bool) glib.SignalHandle {
+	return t.Connect("create-menu-proxy", f)
+}
+
+// ConnectToolbarReconfigured: this signal is emitted when some property of the
+// toolbar that the item is a child of changes. For custom subclasses of
+// ToolItem, the default handler of this signal use the functions
+//
+// - gtk_tool_shell_get_orientation()
+//
+// - gtk_tool_shell_get_style()
+//
+// - gtk_tool_shell_get_icon_size()
+//
+// - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
+// like and change themselves accordingly.
+func (t *ToolItem) ConnectToolbarReconfigured(f func()) glib.SignalHandle {
+	return t.Connect("toolbar-reconfigured", f)
+}

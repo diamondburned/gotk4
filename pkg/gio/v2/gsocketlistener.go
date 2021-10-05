@@ -491,3 +491,10 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(listenBacklog)
 }
+
+// ConnectEvent: emitted when listener's activity on socket changes state. Note
+// that when listener is used to listen on both IPv4 and IPv6, a separate set of
+// signals will be emitted for each, and the order they happen in is undefined.
+func (s *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket Socket)) glib.SignalHandle {
+	return s.Connect("event", f)
+}

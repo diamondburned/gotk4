@@ -1248,6 +1248,47 @@ func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int)
 	return _ok
 }
 
+// ConnectTextAttributesChanged: "text-attributes-changed" signal is emitted
+// when the text attributes of the text of an object which implements AtkText
+// changes.
+func (t *Text) ConnectTextAttributesChanged(f func()) glib.SignalHandle {
+	return t.Connect("text-attributes-changed", f)
+}
+
+// ConnectTextCaretMoved: "text-caret-moved" signal is emitted when the caret
+// position of the text of an object which implements AtkText changes.
+func (t *Text) ConnectTextCaretMoved(f func(arg1 int)) glib.SignalHandle {
+	return t.Connect("text-caret-moved", f)
+}
+
+// ConnectTextChanged: "text-changed" signal is emitted when the text of the
+// object which implements the AtkText interface changes, This signal will have
+// a detail which is either "insert" or "delete" which identifies whether the
+// text change was an insertion or a deletion.
+func (t *Text) ConnectTextChanged(f func(arg1, arg2 int)) glib.SignalHandle {
+	return t.Connect("text-changed", f)
+}
+
+// ConnectTextInsert: "text-insert" signal is emitted when a new text is
+// inserted. If the signal was not triggered by the user (e.g. typing or pasting
+// text), the "system" detail should be included.
+func (t *Text) ConnectTextInsert(f func(arg1, arg2 int, arg3 string)) glib.SignalHandle {
+	return t.Connect("text-insert", f)
+}
+
+// ConnectTextRemove: "text-remove" signal is emitted when a new text is
+// removed. If the signal was not triggered by the user (e.g. typing or pasting
+// text), the "system" detail should be included.
+func (t *Text) ConnectTextRemove(f func(arg1, arg2 int, arg3 string)) glib.SignalHandle {
+	return t.Connect("text-remove", f)
+}
+
+// ConnectTextSelectionChanged: "text-selection-changed" signal is emitted when
+// the selected text of an object which implements AtkText changes.
+func (t *Text) ConnectTextSelectionChanged(f func()) glib.SignalHandle {
+	return t.Connect("text-selection-changed", f)
+}
+
 // TextRange: structure used to describe a text range.
 //
 // An instance of this type is always passed by reference.

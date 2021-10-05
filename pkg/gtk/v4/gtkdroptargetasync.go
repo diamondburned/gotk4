@@ -182,3 +182,61 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(formats)
 }
+
+// ConnectAccept: emitted on the drop site when a drop operation is about to
+// begin.
+//
+// If the drop is not accepted, FALSE will be returned and the drop target will
+// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
+// rejected later via a call to gtk.DropTargetAsync.RejectDrop() or ultimately
+// by returning FALSE from a gtk.DropTargetAsync::drop handler.
+//
+// The default handler for this signal decides whether to accept the drop based
+// on the formats provided by the drop.
+//
+// If the decision whether the drop will be accepted or rejected needs further
+// processing, such as inspecting the data, this function should return TRUE and
+// proceed as is drop was accepted and if it decides to reject the drop later,
+// it should call gtk.DropTargetAsync.RejectDrop().
+func (d *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) glib.SignalHandle {
+	return d.Connect("accept", f)
+}
+
+// ConnectDragEnter: emitted on the drop site when the pointer enters the
+// widget.
+//
+// It can be used to set up custom highlighting.
+func (d *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) glib.SignalHandle {
+	return d.Connect("drag-enter", f)
+}
+
+// ConnectDragLeave: emitted on the drop site when the pointer leaves the
+// widget.
+//
+// Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
+func (d *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) glib.SignalHandle {
+	return d.Connect("drag-leave", f)
+}
+
+// ConnectDragMotion: emitted while the pointer is moving over the drop target.
+func (d *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) glib.SignalHandle {
+	return d.Connect("drag-motion", f)
+}
+
+// ConnectDrop: emitted on the drop site when the user drops the data onto the
+// widget.
+//
+// The signal handler must determine whether the pointer position is in a drop
+// zone or not. If it is not in a drop zone, it returns FALSE and no further
+// processing is necessary.
+//
+// Otherwise, the handler returns TRUE. In this case, this handler will accept
+// the drop. The handler must ensure that gdk.Drop.Finish() is called to let the
+// source know that the drop is done. The call to gdk.Drop.Finish() must only be
+// done when all data has been received.
+//
+// To receive the data, use one of the read functions provided by gdk.Drop such
+// as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
+func (d *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) glib.SignalHandle {
+	return d.Connect("drop", f)
+}

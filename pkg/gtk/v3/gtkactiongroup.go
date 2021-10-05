@@ -446,6 +446,46 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 	return _utf8
 }
 
+// ConnectConnectProxy signal is emitted after connecting a proxy to an action
+// in the group. Note that the proxy may have been connected to a different
+// action before.
+//
+// This is intended for simple customizations for which a custom action class
+// would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
+//
+// UIManager proxies the signal and provides global notification just before any
+// action is connected to a proxy, which is probably more convenient to use.
+func (a *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) glib.SignalHandle {
+	return a.Connect("connect-proxy", f)
+}
+
+// ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
+// action in the group.
+//
+// UIManager proxies the signal and provides global notification just before any
+// action is connected to a proxy, which is probably more convenient to use.
+func (a *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) glib.SignalHandle {
+	return a.Connect("disconnect-proxy", f)
+}
+
+// ConnectPostActivate signal is emitted just after the action in the
+// action_group is activated
+//
+// This is intended for UIManager to proxy the signal and provide global
+// notification just after any action is activated.
+func (a *ActionGroup) ConnectPostActivate(f func(action Action)) glib.SignalHandle {
+	return a.Connect("post-activate", f)
+}
+
+// ConnectPreActivate signal is emitted just before the action in the
+// action_group is activated
+//
+// This is intended for UIManager to proxy the signal and provide global
+// notification just before any action is activated.
+func (a *ActionGroup) ConnectPreActivate(f func(action Action)) glib.SignalHandle {
+	return a.Connect("pre-activate", f)
+}
+
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct
 // actions.
 //

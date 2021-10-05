@@ -633,3 +633,46 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(column)
 }
+
+// ConnectActionActivated gets emitted when an action is activated.
+func (e *EntryCompletion) ConnectActionActivated(f func(index int)) glib.SignalHandle {
+	return e.Connect("action-activated", f)
+}
+
+// ConnectCursorOnMatch gets emitted when a match from the cursor is on a match
+// of the list. The default behaviour is to replace the contents of the entry
+// with the contents of the text column in the row pointed to by iter.
+//
+// Note that model is the model that was passed to
+// gtk_entry_completion_set_model().
+func (e *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
+	return e.Connect("cursor-on-match", f)
+}
+
+// ConnectInsertPrefix gets emitted when the inline autocompletion is triggered.
+// The default behaviour is to make the entry display the whole prefix and
+// select the newly inserted part.
+//
+// Applications may connect to this signal in order to insert only a smaller
+// part of the prefix into the entry - e.g. the entry used in the FileChooser
+// inserts only the part of the prefix up to the next '/'.
+func (e *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) glib.SignalHandle {
+	return e.Connect("insert-prefix", f)
+}
+
+// ConnectMatchSelected gets emitted when a match from the list is selected. The
+// default behaviour is to replace the contents of the entry with the contents
+// of the text column in the row pointed to by iter.
+//
+// Note that model is the model that was passed to
+// gtk_entry_completion_set_model().
+func (e *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
+	return e.Connect("match-selected", f)
+}
+
+// ConnectNoMatches gets emitted when the filter model has zero number of rows
+// in completion_complete method. (In other words when GtkEntryCompletion is out
+// of suggestions).
+func (e *EntryCompletion) ConnectNoMatches(f func()) glib.SignalHandle {
+	return e.Connect("no-matches", f)
+}

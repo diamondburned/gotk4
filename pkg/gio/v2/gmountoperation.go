@@ -411,3 +411,68 @@ func (op *MountOperation) SetUsername(username string) {
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)
 }
+
+// ConnectAborted: emitted by the backend when e.g. a device becomes unavailable
+// while a mount operation is in progress.
+//
+// Implementations of GMountOperation should handle this signal by dismissing
+// open password dialogs.
+func (m *MountOperation) ConnectAborted(f func()) glib.SignalHandle {
+	return m.Connect("aborted", f)
+}
+
+// ConnectAskPassword: emitted when a mount operation asks the user for a
+// password.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (m *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) glib.SignalHandle {
+	return m.Connect("ask-password", f)
+}
+
+// ConnectAskQuestion: emitted when asking the user a question and gives a list
+// of choices for the user to choose from.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (m *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) glib.SignalHandle {
+	return m.Connect("ask-question", f)
+}
+
+// ConnectReply: emitted when the user has replied to the mount operation.
+func (m *MountOperation) ConnectReply(f func(result MountOperationResult)) glib.SignalHandle {
+	return m.Connect("reply", f)
+}
+
+// ConnectShowProcesses: emitted when one or more processes are blocking an
+// operation e.g. unmounting/ejecting a #GMount or stopping a #GDrive.
+//
+// Note that this signal may be emitted several times to update the list of
+// blocking processes as processes close files. The application should only
+// respond with g_mount_operation_reply() to the latest signal (setting
+// Operation:choice to the choice the user made).
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (m *MountOperation) ConnectShowProcesses(f func(message string, processes []glib.Pid, choices []string)) glib.SignalHandle {
+	return m.Connect("show-processes", f)
+}
+
+// ConnectShowUnmountProgress: emitted when an unmount operation has been busy
+// for more than some time (typically 1.5 seconds).
+//
+// When unmounting or ejecting a volume, the kernel might need to flush pending
+// data in its buffers to the volume stable storage, and this operation can take
+// a considerable amount of time. This signal may be emitted several times as
+// long as the unmount operation is outstanding, and then one last time when the
+// operation is completed, with bytes_left set to zero.
+//
+// Implementations of GMountOperation should handle this signal by showing an UI
+// notification, and then dismiss it, or show another notification of
+// completion, when bytes_left reaches zero.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (m *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) glib.SignalHandle {
+	return m.Connect("show-unmount-progress", f)
+}

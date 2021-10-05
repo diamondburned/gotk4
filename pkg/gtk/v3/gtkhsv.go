@@ -180,3 +180,11 @@ func (hsv *HSV) SetMetrics(size int, ringWidth int) {
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(ringWidth)
 }
+
+func (h *HSV) ConnectChanged(f func()) glib.SignalHandle {
+	return h.Connect("changed", f)
+}
+
+func (h *HSV) ConnectMove(f func(object DirectionType)) glib.SignalHandle {
+	return h.Connect("move", f)
+}

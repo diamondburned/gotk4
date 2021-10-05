@@ -271,3 +271,12 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 	C.gtk_check_menu_item_toggled(_arg0)
 	runtime.KeepAlive(checkMenuItem)
 }
+
+// ConnectToggled: this signal is emitted when the state of the check box is
+// changed.
+//
+// A signal handler can use gtk_check_menu_item_get_active() to discover the new
+// state.
+func (c *CheckMenuItem) ConnectToggled(f func()) glib.SignalHandle {
+	return c.Connect("toggled", f)
+}

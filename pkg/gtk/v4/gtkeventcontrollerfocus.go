@@ -98,3 +98,26 @@ func (self *EventControllerFocus) IsFocus() bool {
 
 	return _ok
 }
+
+// ConnectEnter: emitted whenever the focus enters into the widget or one of its
+// descendents.
+//
+// Note that this means you may not get an ::enter signal even though the widget
+// becomes the focus location, in certain cases (such as when the focus moves
+// from a descendent of the widget to the widget itself). If you are interested
+// in these cases, you can monitor the gtk.EventControllerFocus:is-focus
+// property for changes.
+func (e *EventControllerFocus) ConnectEnter(f func()) glib.SignalHandle {
+	return e.Connect("enter", f)
+}
+
+// ConnectLeave: emitted whenever the focus leaves the widget hierarchy that is
+// rooted at the widget that the controller is attached to.
+//
+// Note that this means you may not get a ::leave signal even though the focus
+// moves away from the widget, in certain cases (such as when the focus moves
+// from the widget to a descendent). If you are interested in these cases, you
+// can monitor the gtk.EventControllerFocus:is-focus property for changes.
+func (e *EventControllerFocus) ConnectLeave(f func()) glib.SignalHandle {
+	return e.Connect("leave", f)
+}

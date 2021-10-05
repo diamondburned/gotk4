@@ -1891,6 +1891,16 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	return _utf8
 }
 
+// ConnectChanged signal is emitted when there is a change in the StyleContext.
+//
+// For a StyleContext returned by gtk_widget_get_style_context(), the
+// Widget::style-updated signal/vfunc might be more convenient to use.
+//
+// This signal is useful when using the theming layer standalone.
+func (s *StyleContext) ConnectChanged(f func()) glib.SignalHandle {
+	return s.Connect("changed", f)
+}
+
 // StyleContextAddProviderForScreen adds a global style provider to screen,
 // which will be used in style construction for all StyleContexts under screen.
 //

@@ -430,3 +430,31 @@ func (toolbar *Toolbar) UnsetStyle() {
 	C.gtk_toolbar_unset_style(_arg0)
 	runtime.KeepAlive(toolbar)
 }
+
+// ConnectFocusHomeOrEnd: keybinding signal used internally by GTK+. This signal
+// can't be used in application code.
+func (t *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) bool) glib.SignalHandle {
+	return t.Connect("focus-home-or-end", f)
+}
+
+// ConnectOrientationChanged: emitted when the orientation of the toolbar
+// changes.
+func (t *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) glib.SignalHandle {
+	return t.Connect("orientation-changed", f)
+}
+
+// ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
+// uses the keybinding to display a popup menu.
+//
+// Application developers should handle this signal if they want to display a
+// context menu on the toolbar. The context-menu should appear at the
+// coordinates given by x and y. The mouse button number is given by the button
+// parameter. If the menu was popped up using the keybaord, button is -1.
+func (t *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) bool) glib.SignalHandle {
+	return t.Connect("popup-context-menu", f)
+}
+
+// ConnectStyleChanged: emitted when the style of the toolbar changes.
+func (t *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) glib.SignalHandle {
+	return t.Connect("style-changed", f)
+}

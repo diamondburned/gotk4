@@ -1461,6 +1461,53 @@ func (accessible *ObjectClass) SetRole(role Role) {
 	runtime.KeepAlive(role)
 }
 
+// ConnectActiveDescendantChanged: "active-descendant-changed" signal is emitted
+// by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
+// object in the object changes. For instance, a table will emit the signal when
+// the cell in the table which has focus changes.
+func (o *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) glib.SignalHandle {
+	return o.Connect("active-descendant-changed", f)
+}
+
+// ConnectChildrenChanged: signal "children-changed" is emitted when a child is
+// added or removed form an object. It supports two details: "add" and "remove".
+func (o *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) glib.SignalHandle {
+	return o.Connect("children-changed", f)
+}
+
+// ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
+// lost focus.
+func (o *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) glib.SignalHandle {
+	return o.Connect("focus-event", f)
+}
+
+// ConnectPropertyChange: signal "property-change" is emitted when an object's
+// property value changes. arg1 contains an PropertyValues with the name and the
+// new value of the property whose value has changed. Note that, as with GObject
+// notify, getting this signal does not guarantee that the value of the property
+// has actually changed; it may also be emitted when the setter of the property
+// is called to reinstate the previous value.
+//
+// Toolkit implementor note: ATK implementors should use g_object_notify() to
+// emit property-changed notifications. Object::property-changed is needed by
+// the implementation of atk_add_global_event_listener() because GObject notify
+// doesn't support emission hooks.
+func (o *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) glib.SignalHandle {
+	return o.Connect("property-change", f)
+}
+
+// ConnectStateChange: "state-change" signal is emitted when an object's state
+// changes. The detail value identifies the state type which has changed.
+func (o *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) glib.SignalHandle {
+	return o.Connect("state-change", f)
+}
+
+// ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
+// visual appearance of the object changed.
+func (o *ObjectClass) ConnectVisibleDataChanged(f func()) glib.SignalHandle {
+	return o.Connect("visible-data-changed", f)
+}
+
 // Attribute is a string name/value pair representing a generic attribute. This
 // can be used to expose additional information from an accessible object as a
 // whole (see atk_object_get_attributes()) or an document (see

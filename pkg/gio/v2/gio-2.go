@@ -156,6 +156,12 @@ func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 
 func (*AppInfoMonitor) privateAppInfoMonitor() {}
 
+// ConnectChanged: signal emitted when the app info database for changes (ie:
+// newly installed or removed applications).
+func (a *AppInfoMonitor) ConnectChanged(f func()) glib.SignalHandle {
+	return a.Connect("changed", f)
+}
+
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
 type BytesIcon struct {
@@ -365,6 +371,17 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	}
 
 	return _ok
+}
+
+// ConnectAllowMechanism: emitted to check if mechanism is allowed to be used.
+func (d *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) bool) glib.SignalHandle {
+	return d.Connect("allow-mechanism", f)
+}
+
+// ConnectAuthorizeAuthenticatedPeer: emitted to check if a peer that is
+// successfully authenticated is authorized.
+func (d *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials Credentials) bool) glib.SignalHandle {
+	return d.Connect("authorize-authenticated-peer", f)
 }
 
 // DBusConnection type is used for D-Bus connections to remote peers such as a
@@ -3607,6 +3624,29 @@ func (server *DBusServer) Stop() {
 	runtime.KeepAlive(server)
 }
 
+// ConnectNewConnection: emitted when a new authenticated connection has been
+// made. Use g_dbus_connection_get_peer_credentials() to figure out what
+// identity (if any), was authenticated.
+//
+// If you want to accept the connection, take a reference to the connection
+// object and return TRUE. When you are done with the connection call
+// g_dbus_connection_close() and give up your reference. Note that the other
+// peer may disconnect at any time - a typical thing to do when accepting a
+// connection is to listen to the BusConnection::closed signal.
+//
+// If BusServer:flags contains G_DBUS_SERVER_FLAGS_RUN_IN_THREAD then the signal
+// is emitted in a new thread dedicated to the connection. Otherwise the signal
+// is emitted in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread that server was
+// constructed in.
+//
+// You are guaranteed that signal handlers for this signal runs before incoming
+// messages on connection are processed. This means that it's suitable to call
+// g_dbus_connection_register_object() or similar from the signal handler.
+func (d *DBusServer) ConnectNewConnection(f func(connection DBusConnection) bool) glib.SignalHandle {
+	return d.Connect("new-connection", f)
+}
+
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
 // Item instances to it.
 //
@@ -4912,6 +4952,57 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	C.g_simple_action_set_state_hint(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(stateHint)
+}
+
+// ConnectActivate indicates that the action was just activated.
+//
+// parameter will always be of the expected type, i.e. the parameter type
+// specified when the action was created. If an incorrect type is given when
+// activating the action, this signal is not emitted.
+//
+// Since GLib 2.40, if no handler is connected to this signal then the default
+// behaviour for boolean-stated actions with a NULL parameter type is to toggle
+// them via the Action::change-state signal. For stateful actions where the
+// state type is equal to the parameter type, the default is to forward them
+// directly to Action::change-state. This should allow almost all users of
+// Action to connect only one handler or the other.
+func (s *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) glib.SignalHandle {
+	return s.Connect("activate", f)
+}
+
+// ConnectChangeState indicates that the action just received a request to
+// change its state.
+//
+// value will always be of the correct state type, i.e. the type of the initial
+// state passed to g_simple_action_new_stateful(). If an incorrect type is given
+// when requesting to change the state, this signal is not emitted.
+//
+// If no handler is connected to this signal then the default behaviour is to
+// call g_simple_action_set_state() to set the state to the requested value. If
+// you connect a signal handler then no default action is taken. If the state
+// should change then you must call g_simple_action_set_state() from the
+// handler.
+//
+// An example of a 'change-state' handler:
+//
+//    static void
+//    change_volume_state (GSimpleAction *action,
+//                         GVariant      *value,
+//                         gpointer       user_data)
+//    {
+//      gint requested;
+//
+//      requested = g_variant_get_int32 (value);
+//
+//      // Volume only goes from 0 to 10
+//      if (0 <= requested && requested <= 10)
+//        g_simple_action_set_state (action, value);
+//    }
+//
+// The handler need not set the state to the requested value. It could set it to
+// any value at all, or take some other action.
+func (s *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) glib.SignalHandle {
+	return s.Connect("change-state", f)
 }
 
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This

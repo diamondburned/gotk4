@@ -418,3 +418,9 @@ func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
 }
+
+// ConnectClicked: this signal is emitted when the tool button is clicked with
+// the mouse or activated with the keyboard.
+func (t *ToolButton) ConnectClicked(f func()) glib.SignalHandle {
+	return t.Connect("clicked", f)
+}

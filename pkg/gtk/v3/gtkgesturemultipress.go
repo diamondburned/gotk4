@@ -119,3 +119,23 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(rect)
 }
+
+// ConnectPressed: this signal is emitted whenever a button or touch press
+// happens.
+func (g *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) glib.SignalHandle {
+	return g.Connect("pressed", f)
+}
+
+// ConnectReleased: this signal is emitted when a button or touch is released.
+// n_press will report the number of press that is paired to this event, note
+// that GestureMultiPress::stopped may have been emitted between the press and
+// its release, n_press will only start over at the next press.
+func (g *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) glib.SignalHandle {
+	return g.Connect("released", f)
+}
+
+// ConnectStopped: this signal is emitted whenever any time/distance threshold
+// has been exceeded.
+func (g *GestureMultiPress) ConnectStopped(f func()) glib.SignalHandle {
+	return g.Connect("stopped", f)
+}

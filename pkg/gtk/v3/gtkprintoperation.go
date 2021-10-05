@@ -1004,3 +1004,163 @@ func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(fullPage)
 }
+
+// ConnectBeginPrint: emitted after the user has finished changing print
+// settings in the dialog, before the actual rendering starts.
+//
+// A typical use for ::begin-print is to use the parameters from the
+// PrintContext and paginate the document accordingly, and then set the number
+// of pages with gtk_print_operation_set_n_pages().
+func (p *PrintOperation) ConnectBeginPrint(f func(context PrintContext)) glib.SignalHandle {
+	return p.Connect("begin-print", f)
+}
+
+// ConnectCreateCustomWidget: emitted when displaying the print dialog. If you
+// return a widget in a handler for this signal it will be added to a custom tab
+// in the print dialog. You typically return a container widget with multiple
+// widgets in it.
+//
+// The print dialog owns the returned widget, and its lifetime is not controlled
+// by the application. However, the widget is guaranteed to stay around until
+// the PrintOperation::custom-widget-apply signal is emitted on the operation.
+// Then you can read out any information you need from the widgets.
+func (p *PrintOperation) ConnectCreateCustomWidget(f func() *externglib.Object) glib.SignalHandle {
+	return p.Connect("create-custom-widget", f)
+}
+
+// ConnectCustomWidgetApply: emitted right before PrintOperation::begin-print if
+// you added a custom widget in the PrintOperation::create-custom-widget
+// handler. When you get this signal you should read the information from the
+// custom widgets, as the widgets are not guaraneed to be around at a later
+// time.
+func (p *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) glib.SignalHandle {
+	return p.Connect("custom-widget-apply", f)
+}
+
+// ConnectDone: emitted when the print operation run has finished doing
+// everything required for printing.
+//
+// result gives you information about what happened during the run. If result is
+// GTK_PRINT_OPERATION_RESULT_ERROR then you can call
+// gtk_print_operation_get_error() for more information.
+//
+// If you enabled print status tracking then gtk_print_operation_is_finished()
+// may still return FALSE after PrintOperation::done was emitted.
+func (p *PrintOperation) ConnectDone(f func(result PrintOperationResult)) glib.SignalHandle {
+	return p.Connect("done", f)
+}
+
+// ConnectDrawPage: emitted for every page that is printed. The signal handler
+// must render the page_nr's page onto the cairo context obtained from context
+// using gtk_print_context_get_cairo_context().
+//
+//    static void
+//    draw_page (GtkPrintOperation *operation,
+//               GtkPrintContext   *context,
+//               gint               page_nr,
+//               gpointer           user_data)
+//    {
+//      cairo_t *cr;
+//      PangoLayout *layout;
+//      gdouble width, text_height;
+//      gint layout_height;
+//      PangoFontDescription *desc;
+//
+//      cr = gtk_print_context_get_cairo_context (context);
+//      width = gtk_print_context_get_width (context);
+//
+//      cairo_rectangle (cr, 0, 0, width, HEADER_HEIGHT);
+//
+//      cairo_set_source_rgb (cr, 0.8, 0.8, 0.8);
+//      cairo_fill (cr);
+//
+//      layout = gtk_print_context_create_pango_layout (context);
+//
+//      desc = pango_font_description_from_string ("sans 14");
+//      pango_layout_set_font_description (layout, desc);
+//      pango_font_description_free (desc);
+//
+//      pango_layout_set_text (layout, "some text", -1);
+//      pango_layout_set_width (layout, width * PANGO_SCALE);
+//      pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+//
+//      pango_layout_get_size (layout, NULL, &layout_height);
+//      text_height = (gdouble)layout_height / PANGO_SCALE;
+//
+//      cairo_move_to (cr, width / 2,  (HEADER_HEIGHT - text_height) / 2);
+//      pango_cairo_show_layout (cr, layout);
+//
+//      g_object_unref (layout);
+//    }
+//
+// Use gtk_print_operation_set_use_full_page() and
+// gtk_print_operation_set_unit() before starting the print operation to set up
+// the transformation of the cairo context according to your needs.
+func (p *PrintOperation) ConnectDrawPage(f func(context PrintContext, pageNr int)) glib.SignalHandle {
+	return p.Connect("draw-page", f)
+}
+
+// ConnectEndPrint: emitted after all pages have been rendered. A handler for
+// this signal can clean up any resources that have been allocated in the
+// PrintOperation::begin-print handler.
+func (p *PrintOperation) ConnectEndPrint(f func(context PrintContext)) glib.SignalHandle {
+	return p.Connect("end-print", f)
+}
+
+// ConnectPaginate: emitted after the PrintOperation::begin-print signal, but
+// before the actual rendering starts. It keeps getting emitted until a
+// connected signal handler returns TRUE.
+//
+// The ::paginate signal is intended to be used for paginating a document in
+// small chunks, to avoid blocking the user interface for a long time. The
+// signal handler should update the number of pages using
+// gtk_print_operation_set_n_pages(), and return TRUE if the document has been
+// completely paginated.
+//
+// If you don't need to do pagination in chunks, you can simply do it all in the
+// ::begin-print handler, and set the number of pages from there.
+func (p *PrintOperation) ConnectPaginate(f func(context PrintContext) bool) glib.SignalHandle {
+	return p.Connect("paginate", f)
+}
+
+// ConnectPreview gets emitted when a preview is requested from the native
+// dialog.
+//
+// The default handler for this signal uses an external viewer application to
+// preview.
+//
+// To implement a custom print preview, an application must return TRUE from its
+// handler for this signal. In order to use the provided context for the preview
+// implementation, it must be given a suitable cairo context with
+// gtk_print_context_set_cairo_context().
+//
+// The custom preview implementation can use
+// gtk_print_operation_preview_is_selected() and
+// gtk_print_operation_preview_render_page() to find pages which are selected
+// for print and render them. The preview must be finished by calling
+// gtk_print_operation_preview_end_preview() (typically in response to the user
+// clicking a close button).
+func (p *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer, context PrintContext, parent Window) bool) glib.SignalHandle {
+	return p.Connect("preview", f)
+}
+
+// ConnectRequestPageSetup: emitted once for every page that is printed, to give
+// the application a chance to modify the page setup. Any changes done to setup
+// will be in force only for printing this page.
+func (p *PrintOperation) ConnectRequestPageSetup(f func(context PrintContext, pageNr int, setup PageSetup)) glib.SignalHandle {
+	return p.Connect("request-page-setup", f)
+}
+
+// ConnectStatusChanged: emitted at between the various phases of the print
+// operation. See PrintStatus for the phases that are being discriminated. Use
+// gtk_print_operation_get_status() to find out the current status.
+func (p *PrintOperation) ConnectStatusChanged(f func()) glib.SignalHandle {
+	return p.Connect("status-changed", f)
+}
+
+// ConnectUpdateCustomWidget: emitted after change of selected printer. The
+// actual page setup and print settings are passed to the custom widget, which
+// can actualize itself according to this change.
+func (p *PrintOperation) ConnectUpdateCustomWidget(f func(widget Widgetter, setup PageSetup, settings PrintSettings)) glib.SignalHandle {
+	return p.Connect("update-custom-widget", f)
+}

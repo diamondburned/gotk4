@@ -119,3 +119,42 @@ func NewSearchEntry() *SearchEntry {
 }
 
 func (*SearchEntry) privateSearchEntry() {}
+
+// ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user initiates a move to the next match for the current
+// search string.
+//
+// Applications should connect to it, to implement moving between matches.
+//
+// The default bindings for this signal is Ctrl-g.
+func (s *SearchEntry) ConnectNextMatch(f func()) glib.SignalHandle {
+	return s.Connect("next-match", f)
+}
+
+// ConnectPreviousMatch signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a move to the previous match for the
+// current search string.
+//
+// Applications should connect to it, to implement moving between matches.
+//
+// The default bindings for this signal is Ctrl-Shift-g.
+func (s *SearchEntry) ConnectPreviousMatch(f func()) glib.SignalHandle {
+	return s.Connect("previous-match", f)
+}
+
+// ConnectSearchChanged signal is emitted with a short delay of 150 milliseconds
+// after the last change to the entry text.
+func (s *SearchEntry) ConnectSearchChanged(f func()) glib.SignalHandle {
+	return s.Connect("search-changed", f)
+}
+
+// ConnectStopSearch signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user stops a search via keyboard input.
+//
+// Applications should connect to it, to implement hiding the search entry in
+// this case.
+//
+// The default bindings for this signal is Escape.
+func (s *SearchEntry) ConnectStopSearch(f func()) glib.SignalHandle {
+	return s.Connect("stop-search", f)
+}

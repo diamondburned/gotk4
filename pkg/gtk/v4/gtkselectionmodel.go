@@ -467,3 +467,14 @@ func (model *SelectionModel) UnselectRange(position uint, nItems uint) bool {
 
 	return _ok
 }
+
+// ConnectSelectionChanged: emitted when the selection state of some of the
+// items in model changes.
+//
+// Note that this signal does not specify the new selection state of the items,
+// they need to be queried manually. It is also not necessary for a model to
+// change the selection state of any of the items in the selection model, though
+// it would be rather useless to emit such a signal.
+func (s *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) glib.SignalHandle {
+	return s.Connect("selection-changed", f)
+}

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #cgo pkg-config: gtk4
@@ -57,3 +58,8 @@ func NewEventControllerLegacy() *EventControllerLegacy {
 }
 
 func (*EventControllerLegacy) privateEventControllerLegacy() {}
+
+// ConnectEvent: emitted for each GDK event delivered to controller.
+func (e *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) glib.SignalHandle {
+	return e.Connect("event", f)
+}

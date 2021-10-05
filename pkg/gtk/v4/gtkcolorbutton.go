@@ -176,3 +176,15 @@ func (button *ColorButton) SetTitle(title string) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
 }
+
+// ConnectColorSet: emitted when the user selects a color.
+//
+// When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which
+// color was just selected.
+//
+// Note that this signal is only emitted when the user changes the color. If you
+// need to react to programmatic color changes as well, use the notify::color
+// signal.
+func (c *ColorButton) ConnectColorSet(f func()) glib.SignalHandle {
+	return c.Connect("color-set", f)
+}

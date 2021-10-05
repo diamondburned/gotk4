@@ -144,3 +144,9 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)
 }
+
+// ConnectGotCompletionData: emitted when the file name completion information
+// comes available.
+func (f *FilenameCompleter) ConnectGotCompletionData(f func()) glib.SignalHandle {
+	return f.Connect("got-completion-data", f)
+}

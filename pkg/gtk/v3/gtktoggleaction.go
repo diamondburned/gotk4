@@ -186,3 +186,9 @@ func (action *ToggleAction) Toggled() {
 	C.gtk_toggle_action_toggled(_arg0)
 	runtime.KeepAlive(action)
 }
+
+// ConnectToggled: should be connected if you wish to perform an action whenever
+// the ToggleAction state is changed.
+func (t *ToggleAction) ConnectToggled(f func()) glib.SignalHandle {
+	return t.Connect("toggled", f)
+}

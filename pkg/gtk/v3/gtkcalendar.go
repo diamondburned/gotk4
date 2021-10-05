@@ -430,3 +430,39 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
 }
+
+// ConnectDaySelected: emitted when the user selects a day.
+func (c *Calendar) ConnectDaySelected(f func()) glib.SignalHandle {
+	return c.Connect("day-selected", f)
+}
+
+// ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
+func (c *Calendar) ConnectDaySelectedDoubleClick(f func()) glib.SignalHandle {
+	return c.Connect("day-selected-double-click", f)
+}
+
+// ConnectMonthChanged: emitted when the user clicks a button to change the
+// selected month on a calendar.
+func (c *Calendar) ConnectMonthChanged(f func()) glib.SignalHandle {
+	return c.Connect("month-changed", f)
+}
+
+// ConnectNextMonth: emitted when the user switched to the next month.
+func (c *Calendar) ConnectNextMonth(f func()) glib.SignalHandle {
+	return c.Connect("next-month", f)
+}
+
+// ConnectNextYear: emitted when user switched to the next year.
+func (c *Calendar) ConnectNextYear(f func()) glib.SignalHandle {
+	return c.Connect("next-year", f)
+}
+
+// ConnectPrevMonth: emitted when the user switched to the previous month.
+func (c *Calendar) ConnectPrevMonth(f func()) glib.SignalHandle {
+	return c.Connect("prev-month", f)
+}
+
+// ConnectPrevYear: emitted when user switched to the previous year.
+func (c *Calendar) ConnectPrevYear(f func()) glib.SignalHandle {
+	return c.Connect("prev-year", f)
+}

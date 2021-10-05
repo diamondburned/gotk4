@@ -93,3 +93,11 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)
 }
+
+// ConnectEdited: this signal is emitted after renderer has been edited.
+//
+// It is the responsibility of the application to update the model and store
+// new_text at the position indicated by path.
+func (c *CellRendererText) ConnectEdited(f func(path, newText string)) glib.SignalHandle {
+	return c.Connect("edited", f)
+}

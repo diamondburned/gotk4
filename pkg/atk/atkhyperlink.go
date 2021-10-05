@@ -291,3 +291,9 @@ func (link_ *Hyperlink) IsValid() bool {
 
 	return _ok
 }
+
+// ConnectLinkActivated: signal link-activated is emitted when a link is
+// activated.
+func (h *Hyperlink) ConnectLinkActivated(f func()) glib.SignalHandle {
+	return h.Connect("link-activated", f)
+}

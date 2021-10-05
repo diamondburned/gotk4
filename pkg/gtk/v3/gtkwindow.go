@@ -2760,6 +2760,40 @@ func (window *Window) Unstick() {
 	runtime.KeepAlive(window)
 }
 
+// ConnectActivateDefault signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user activates the default widget of window.
+func (w *Window) ConnectActivateDefault(f func()) glib.SignalHandle {
+	return w.Connect("activate-default", f)
+}
+
+// ConnectActivateFocus signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user activates the currently focused widget of window.
+func (w *Window) ConnectActivateFocus(f func()) glib.SignalHandle {
+	return w.Connect("activate-focus", f)
+}
+
+// ConnectEnableDebugging signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user enables or disables interactive debugging.
+// When toggle is TRUE, interactive debugging is toggled on or off, when it is
+// FALSE, the debugger will be pointed at the widget under the pointer.
+//
+// The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
+func (w *Window) ConnectEnableDebugging(f func(toggle bool) bool) glib.SignalHandle {
+	return w.Connect("enable-debugging", f)
+}
+
+// ConnectKeysChanged signal gets emitted when the set of accelerators or
+// mnemonics that are associated with window changes.
+func (w *Window) ConnectKeysChanged(f func()) glib.SignalHandle {
+	return w.Connect("keys-changed", f)
+}
+
+// ConnectSetFocus: this signal is emitted whenever the currently focused widget
+// in this window changes.
+func (w *Window) ConnectSetFocus(f func(widget Widgetter)) glib.SignalHandle {
+	return w.Connect("set-focus", f)
+}
+
 // WindowGetDefaultIconList gets the value set by
 // gtk_window_set_default_icon_list(). The list is a copy and should be freed
 // with g_list_free(), but the pixbufs in the list have not had their reference

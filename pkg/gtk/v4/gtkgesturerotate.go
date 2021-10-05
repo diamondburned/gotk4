@@ -79,3 +79,9 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 
 	return _gdouble
 }
+
+// ConnectAngleChanged: emitted when the angle between both tracked points
+// changes.
+func (g *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) glib.SignalHandle {
+	return g.Connect("angle-changed", f)
+}

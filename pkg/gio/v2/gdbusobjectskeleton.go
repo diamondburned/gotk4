@@ -156,3 +156,15 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)
 }
+
+// ConnectAuthorizeMethod: emitted when a method is invoked by a remote caller
+// and used to determine if the method call is authorized.
+//
+// This signal is like BusInterfaceSkeleton's
+// BusInterfaceSkeleton::g-authorize-method signal, except that it is for the
+// enclosing object.
+//
+// The default class handler just returns TRUE.
+func (d *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) glib.SignalHandle {
+	return d.Connect("authorize-method", f)
+}

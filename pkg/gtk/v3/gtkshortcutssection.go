@@ -69,3 +69,7 @@ func marshalShortcutsSectioner(p uintptr) (interface{}, error) {
 }
 
 func (*ShortcutsSection) privateShortcutsSection() {}
+
+func (s *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) bool) glib.SignalHandle {
+	return s.Connect("change-current-page", f)
+}

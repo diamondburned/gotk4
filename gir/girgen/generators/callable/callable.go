@@ -3,6 +3,7 @@ package callable
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -354,6 +355,52 @@ func (g *Generator) renderBlock() bool {
 
 	g.pen.Reset()
 	return true
+}
+
+// CoalesceTail coalesces certain parameters with the same type to be shorter.
+func CoalesceTail(tail string) string {
+	if !strings.HasPrefix(tail, "(") {
+		return tail
+	}
+
+	paramIx := strings.Index(tail, ")")
+	params := strings.Split(tail[1:paramIx], ",")
+
+	newParams := strings.Builder{}
+	newParams.Grow(len(tail))
+	newParams.WriteByte('(')
+
+	for i, param := range params {
+		if i == len(params)-1 {
+			newParams.WriteString(param)
+			break
+		}
+
+		n, t1 := splitParam(param)
+		_, t2 := splitParam(params[i+1])
+
+		if t1 == t2 {
+			// Same type; write the name only.
+			newParams.WriteString(n)
+		} else {
+			newParams.WriteString(param)
+		}
+
+		newParams.WriteString(", ")
+	}
+
+	newParams.WriteByte(')')
+	newParams.WriteString(tail[paramIx+1:])
+
+	return newParams.String()
+}
+
+func splitParam(param string) (name, typ string) {
+	parts := strings.Split(strings.TrimSpace(param), " ")
+	if len(parts) == 2 {
+		return parts[0], parts[1]
+	}
+	panic("splitParam: invalid non-two-part param " + strconv.Quote(param))
 }
 
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {

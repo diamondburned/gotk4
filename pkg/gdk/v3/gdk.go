@@ -424,3 +424,39 @@ func (context *DragContext) SetHotspot(hotX int, hotY int) {
 	runtime.KeepAlive(hotX)
 	runtime.KeepAlive(hotY)
 }
+
+// ConnectActionChanged: new action is being chosen for the drag and drop
+// operation.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (d *DragContext) ConnectActionChanged(f func(action DragAction)) glib.SignalHandle {
+	return d.Connect("action-changed", f)
+}
+
+// ConnectCancel: drag and drop operation was cancelled.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (d *DragContext) ConnectCancel(f func(reason DragCancelReason)) glib.SignalHandle {
+	return d.Connect("cancel", f)
+}
+
+// ConnectDndFinished: drag and drop operation was finished, the drag
+// destination finished reading all data. The drag source can now free all
+// miscellaneous data.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (d *DragContext) ConnectDndFinished(f func()) glib.SignalHandle {
+	return d.Connect("dnd-finished", f)
+}
+
+// ConnectDropPerformed: drag and drop operation was performed on an accepting
+// client.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (d *DragContext) ConnectDropPerformed(f func(time int)) glib.SignalHandle {
+	return d.Connect("drop-performed", f)
+}

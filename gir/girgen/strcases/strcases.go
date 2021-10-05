@@ -206,6 +206,11 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	return PascalToGo(snakeString)
 }
 
+// KebabToGo converts kebab case to Go's special case. See SnakeToGo.
+func KebabToGo(pascal bool, kebabString string) string {
+	return SnakeToGo(pascal, strings.ReplaceAll(kebabString, "-", "_"))
+}
+
 // GoKeywords includes Go keywords. This is primarily to prevent collisions with
 // meaningful Go words.
 var GoKeywords = map[string]struct{}{
@@ -283,6 +288,8 @@ func SnakeNoGo(snake string) string {
 		snake = "err"
 	case "return":
 		snake = "ret"
+	case "interface":
+		snake = "iface"
 	}
 
 	_, isKeyword := GoKeywords[snake]

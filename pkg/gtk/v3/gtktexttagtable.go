@@ -202,3 +202,15 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
 }
+
+func (t *TextTagTable) ConnectTagAdded(f func(tag TextTag)) glib.SignalHandle {
+	return t.Connect("tag-added", f)
+}
+
+func (t *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) glib.SignalHandle {
+	return t.Connect("tag-changed", f)
+}
+
+func (t *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) glib.SignalHandle {
+	return t.Connect("tag-removed", f)
+}

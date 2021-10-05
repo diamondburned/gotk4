@@ -184,3 +184,29 @@ func (self *Switch) SetState(state bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(state)
 }
+
+// ConnectActivate: emitted to animate the switch.
+//
+// Applications should never connect to this signal, but use the
+// gtk.Switch:active property.
+func (s *Switch) ConnectActivate(f func()) glib.SignalHandle {
+	return s.Connect("activate", f)
+}
+
+// ConnectStateSet: emitted to change the underlying state.
+//
+// The ::state-set signal is emitted when the user changes the switch position.
+// The default handler keeps the state in sync with the gtk.Switch:active
+// property.
+//
+// To implement delayed state change, applications can connect to this signal,
+// initiate the change of the underlying state, and call gtk.Switch.SetState()
+// when the underlying state change is complete. The signal handler should
+// return TRUE to prevent the default handler from running.
+//
+// Visually, the underlying state is represented by the trough color of the
+// switch, while the gtk.Switch`:active property is represented by the position
+// of the switch.
+func (s *Switch) ConnectStateSet(f func(state bool) bool) glib.SignalHandle {
+	return s.Connect("state-set", f)
+}

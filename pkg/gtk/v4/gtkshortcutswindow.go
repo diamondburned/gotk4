@@ -120,3 +120,21 @@ func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 }
 
 func (*ShortcutsWindow) privateShortcutsWindow() {}
+
+// ConnectClose: emitted when the user uses a keybinding to close the window.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is the Escape key.
+func (s *ShortcutsWindow) ConnectClose(f func()) glib.SignalHandle {
+	return s.Connect("close", f)
+}
+
+// ConnectSearch: emitted when the user uses a keybinding to start a search.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is Control-F.
+func (s *ShortcutsWindow) ConnectSearch(f func()) glib.SignalHandle {
+	return s.Connect("search", f)
+}

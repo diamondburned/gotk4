@@ -166,3 +166,23 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	return _deviceTool
 }
+
+// ConnectDown: emitted when the stylus touches the device.
+func (g *GestureStylus) ConnectDown(f func(x, y float64)) glib.SignalHandle {
+	return g.Connect("down", f)
+}
+
+// ConnectMotion: emitted when the stylus moves while touching the device.
+func (g *GestureStylus) ConnectMotion(f func(x, y float64)) glib.SignalHandle {
+	return g.Connect("motion", f)
+}
+
+// ConnectProximity: emitted when the stylus is in proximity of the device.
+func (g *GestureStylus) ConnectProximity(f func(x, y float64)) glib.SignalHandle {
+	return g.Connect("proximity", f)
+}
+
+// ConnectUp: emitted when the stylus no longer touches the device.
+func (g *GestureStylus) ConnectUp(f func(x, y float64)) glib.SignalHandle {
+	return g.Connect("up", f)
+}

@@ -368,6 +368,33 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 	return _utf8
 }
 
+// ConnectInterfaceProxyPropertiesChanged: emitted when one or more D-Bus
+// properties on proxy changes. The local cache has already been updated when
+// this signal fires. Note that both changed_properties and
+// invalidated_properties are guaranteed to never be NULL (either may be empty
+// though).
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all interface proxies managed by manager.
+//
+// This signal is emitted in the [thread-default main
+// context][g-main-context-push-thread-default] that manager was constructed in.
+func (d *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) glib.SignalHandle {
+	return d.Connect("interface-proxy-properties-changed", f)
+}
+
+// ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
+// interface_proxy.
+//
+// This signal exists purely as a convenience to avoid having to connect signals
+// to all interface proxies managed by manager.
+//
+// This signal is emitted in the [thread-default main
+// context][g-main-context-push-thread-default] that manager was constructed in.
+func (d *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) glib.SignalHandle {
+	return d.Connect("interface-proxy-signal", f)
+}
+
 // NewDBusObjectManagerClient: asynchronously creates a new
 // BusObjectManagerClient object.
 //

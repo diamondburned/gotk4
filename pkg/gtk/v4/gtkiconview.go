@@ -1485,3 +1485,94 @@ func (iconView *IconView) UnsetModelDragSource() {
 	C.gtk_icon_view_unset_model_drag_source(_arg0)
 	runtime.KeepAlive(iconView)
 }
+
+// ConnectActivateCursorItem: [keybinding signal][GtkSignalAction] which gets
+// emitted when the user activates the currently focused item.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control activation programmatically.
+//
+// The default bindings for this signal are Space, Return and Enter.
+func (i *IconView) ConnectActivateCursorItem(f func() bool) glib.SignalHandle {
+	return i.Connect("activate-cursor-item", f)
+}
+
+// ConnectItemActivated signal is emitted when the method
+// gtk_icon_view_item_activated() is called, when the user double clicks an item
+// with the "activate-on-single-click" property set to FALSE, or when the user
+// single clicks an item when the "activate-on-single-click" property set to
+// TRUE. It is also emitted when a non-editable item is selected and one of the
+// keys: Space, Return or Enter is pressed.
+func (i *IconView) ConnectItemActivated(f func(path *TreePath)) glib.SignalHandle {
+	return i.Connect("item-activated", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkSignalAction] which gets
+// emitted when the user initiates a cursor movement.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+//
+// The default bindings for this signal include
+//
+// - Arrow keys which move by individual steps
+//
+// - Home/End keys which move to the first/last item
+//
+// - PageUp/PageDown which move by "pages" All of these will extend the
+// selection when combined with the Shift modifier.
+func (i *IconView) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) glib.SignalHandle {
+	return i.Connect("move-cursor", f)
+}
+
+// ConnectSelectAll: [keybinding signal][GtkSignalAction] which gets emitted
+// when the user selects all items.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// The default binding for this signal is Ctrl-a.
+func (i *IconView) ConnectSelectAll(f func()) glib.SignalHandle {
+	return i.Connect("select-all", f)
+}
+
+// ConnectSelectCursorItem: [keybinding signal][GtkSignalAction] which gets
+// emitted when the user selects the item that is currently focused.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// There is no default binding for this signal.
+func (i *IconView) ConnectSelectCursorItem(f func()) glib.SignalHandle {
+	return i.Connect("select-cursor-item", f)
+}
+
+// ConnectSelectionChanged signal is emitted when the selection (i.e. the set of
+// selected items) changes.
+func (i *IconView) ConnectSelectionChanged(f func()) glib.SignalHandle {
+	return i.Connect("selection-changed", f)
+}
+
+// ConnectToggleCursorItem: [keybinding signal][GtkSignalAction] which gets
+// emitted when the user toggles whether the currently focused item is selected
+// or not. The exact effect of this depend on the selection mode.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// There is no default binding for this signal is Ctrl-Space.
+func (i *IconView) ConnectToggleCursorItem(f func()) glib.SignalHandle {
+	return i.Connect("toggle-cursor-item", f)
+}
+
+// ConnectUnselectAll: [keybinding signal][GtkSignalAction] which gets emitted
+// when the user unselects all items.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control selection programmatically.
+//
+// The default binding for this signal is Ctrl-Shift-a.
+func (i *IconView) ConnectUnselectAll(f func()) glib.SignalHandle {
+	return i.Connect("unselect-all", f)
+}

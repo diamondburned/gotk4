@@ -255,3 +255,10 @@ func (button *FileChooserButton) SetWidthChars(nChars int) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(nChars)
 }
+
+// ConnectFileSet signal is emitted when the user selects a file.
+//
+// Note that this signal is only emitted when the user changes the file.
+func (f *FileChooserButton) ConnectFileSet(f func()) glib.SignalHandle {
+	return f.Connect("file-set", f)
+}

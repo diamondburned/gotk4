@@ -316,3 +316,15 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
+
+// ConnectChanged: emitted when the active application changes.
+func (a *AppChooserButton) ConnectChanged(f func()) glib.SignalHandle {
+	return a.Connect("changed", f)
+}
+
+// ConnectCustomItemActivated: emitted when a custom item is activated.
+//
+// Use gtk.AppChooserButton.AppendCustomItem(), to add custom items.
+func (a *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) glib.SignalHandle {
+	return a.Connect("custom-item-activated", f)
+}

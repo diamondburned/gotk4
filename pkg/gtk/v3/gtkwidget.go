@@ -6976,6 +6976,664 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	runtime.KeepAlive(flags)
 }
 
+func (w *Widget) ConnectAccelClosuresChanged(f func()) glib.SignalHandle {
+	return w.Connect("accel-closures-changed", f)
+}
+
+// ConnectButtonPressEvent signal will be emitted when a button (typically from
+// a mouse) is pressed.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_BUTTON_PRESS_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
+	return w.Connect("button-press-event", f)
+}
+
+// ConnectButtonReleaseEvent signal will be emitted when a button (typically
+// from a mouse) is released.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_BUTTON_RELEASE_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
+	return w.Connect("button-release-event", f)
+}
+
+// ConnectCanActivateAccel determines whether an accelerator that activates the
+// signal identified by signal_id can currently be activated. This signal is
+// present to allow applications and derived widgets to override the default
+// Widget handling for determining whether an accelerator can be activated.
+func (w *Widget) ConnectCanActivateAccel(f func(signalId uint) bool) glib.SignalHandle {
+	return w.Connect("can-activate-accel", f)
+}
+
+// ConnectCompositedChanged signal is emitted when the composited status of
+// widgets screen changes. See gdk_screen_is_composited().
+func (w *Widget) ConnectCompositedChanged(f func()) glib.SignalHandle {
+	return w.Connect("composited-changed", f)
+}
+
+// ConnectConfigureEvent signal will be emitted when the size, position or
+// stacking of the widget's window has changed.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
+// new windows.
+func (w *Widget) ConnectConfigureEvent(f func(event gdk.EventConfigure) bool) glib.SignalHandle {
+	return w.Connect("configure-event", f)
+}
+
+// ConnectDamageEvent: emitted when a redirected window belonging to widget gets
+// drawn into. The region/area members of the event shows what area of the
+// redirected drawable was drawn into.
+func (w *Widget) ConnectDamageEvent(f func(event gdk.EventExpose) bool) glib.SignalHandle {
+	return w.Connect("damage-event", f)
+}
+
+// ConnectDestroy signals that all holders of a reference to the widget should
+// release the reference that they hold. May result in finalization of the
+// widget if all references are released.
+//
+// This signal is not suitable for saving widget state.
+func (w *Widget) ConnectDestroy(f func()) glib.SignalHandle {
+	return w.Connect("destroy", f)
+}
+
+// ConnectDirectionChanged signal is emitted when the text direction of a widget
+// changes.
+func (w *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) glib.SignalHandle {
+	return w.Connect("direction-changed", f)
+}
+
+// ConnectDragBegin signal is emitted on the drag source when a drag is started.
+// A typical reason to connect to this signal is to set up a custom drag icon
+// with e.g. gtk_drag_source_set_icon_pixbuf().
+//
+// Note that some widgets set up a drag icon in the default handler of this
+// signal, so you may have to use g_signal_connect_after() to override what the
+// default handler did.
+func (w *Widget) ConnectDragBegin(f func(context gdk.DragContext)) glib.SignalHandle {
+	return w.Connect("drag-begin", f)
+}
+
+// ConnectDragDataDelete signal is emitted on the drag source when a drag with
+// the action GDK_ACTION_MOVE is successfully completed. The signal handler is
+// responsible for deleting the data that has been dropped. What "delete" means
+// depends on the context of the drag operation.
+func (w *Widget) ConnectDragDataDelete(f func(context gdk.DragContext)) glib.SignalHandle {
+	return w.Connect("drag-data-delete", f)
+}
+
+// ConnectDragDataGet signal is emitted on the drag source when the drop site
+// requests the data which is dragged. It is the responsibility of the signal
+// handler to fill data with the data in the format which is indicated by info.
+// See gtk_selection_data_set() and gtk_selection_data_set_text().
+func (w *Widget) ConnectDragDataGet(f func(context gdk.DragContext, data *SelectionData, info, time uint)) glib.SignalHandle {
+	return w.Connect("drag-data-get", f)
+}
+
+// ConnectDragDataReceived signal is emitted on the drop site when the dragged
+// data has been received. If the data was received in order to determine
+// whether the drop will be accepted, the handler is expected to call
+// gdk_drag_status() and not finish the drag. If the data was received in
+// response to a Widget::drag-drop signal (and this is the last target to be
+// received), the handler for this signal is expected to process the received
+// data and then call gtk_drag_finish(), setting the success parameter depending
+// on whether the data was processed successfully.
+//
+// Applications must create some means to determine why the signal was emitted
+// and therefore whether to call gdk_drag_status() or gtk_drag_finish().
+//
+// The handler may inspect the selected action with
+// gdk_drag_context_get_selected_action() before calling gtk_drag_finish(), e.g.
+// to implement GDK_ACTION_ASK as shown in the following example:
+//
+//    void
+//    drag_data_received (GtkWidget          *widget,
+//                        GdkDragContext     *context,
+//                        gint                x,
+//                        gint                y,
+//                        GtkSelectionData   *data,
+//                        guint               info,
+//                        guint               time)
+//    {
+//      if ((data->length >= 0) && (data->format == 8))
+//        {
+//          GdkDragAction action;
+//
+//          // handle data here
+//
+//          action = gdk_drag_context_get_selected_action (context);
+//          if (action == GDK_ACTION_ASK)
+//            {
+//              GtkWidget *dialog;
+//              gint response;
+//
+//              dialog = gtk_message_dialog_new (NULL,
+//                                               GTK_DIALOG_MODAL |
+//                                               GTK_DIALOG_DESTROY_WITH_PARENT,
+//                                               GTK_MESSAGE_INFO,
+//                                               GTK_BUTTONS_YES_NO,
+//                                               "Move the data ?\n");
+//              response = gtk_dialog_run (GTK_DIALOG (dialog));
+//              gtk_widget_destroy (dialog);
+//
+//              if (response == GTK_RESPONSE_YES)
+//                action = GDK_ACTION_MOVE;
+//              else
+//                action = GDK_ACTION_COPY;
+//             }
+//
+//          gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
+//        }
+//      else
+//        gtk_drag_finish (context, FALSE, FALSE, time);
+//     }.
+func (w *Widget) ConnectDragDataReceived(f func(context gdk.DragContext, x, y int, data *SelectionData, info, time uint)) glib.SignalHandle {
+	return w.Connect("drag-data-received", f)
+}
+
+// ConnectDragDrop signal is emitted on the drop site when the user drops the
+// data onto the widget. The signal handler must determine whether the cursor
+// position is in a drop zone or not. If it is not in a drop zone, it returns
+// FALSE and no further processing is necessary. Otherwise, the handler returns
+// TRUE. In this case, the handler must ensure that gtk_drag_finish() is called
+// to let the source know that the drop is done. The call to gtk_drag_finish()
+// can be done either directly or in a Widget::drag-data-received handler which
+// gets triggered by calling gtk_drag_get_data() to receive the data for one or
+// more of the supported targets.
+func (w *Widget) ConnectDragDrop(f func(context gdk.DragContext, x, y int, time uint) bool) glib.SignalHandle {
+	return w.Connect("drag-drop", f)
+}
+
+// ConnectDragEnd signal is emitted on the drag source when a drag is finished.
+// A typical reason to connect to this signal is to undo things done in
+// Widget::drag-begin.
+func (w *Widget) ConnectDragEnd(f func(context gdk.DragContext)) glib.SignalHandle {
+	return w.Connect("drag-end", f)
+}
+
+// ConnectDragFailed signal is emitted on the drag source when a drag has
+// failed. The signal handler may hook custom code to handle a failed DnD
+// operation based on the type of error, it returns TRUE is the failure has been
+// already handled (not showing the default "drag operation failed" animation),
+// otherwise it returns FALSE.
+func (w *Widget) ConnectDragFailed(f func(context gdk.DragContext, result DragResult) bool) glib.SignalHandle {
+	return w.Connect("drag-failed", f)
+}
+
+// ConnectDragLeave signal is emitted on the drop site when the cursor leaves
+// the widget. A typical reason to connect to this signal is to undo things done
+// in Widget::drag-motion, e.g. undo highlighting with gtk_drag_unhighlight().
+//
+//    Likewise, the Widget::drag-leave signal is also emitted before the ::drag-drop signal, for instance to allow cleaning up of a preview item created in the Widget::drag-motion signal handler.
+func (w *Widget) ConnectDragLeave(f func(context gdk.DragContext, time uint)) glib.SignalHandle {
+	return w.Connect("drag-leave", f)
+}
+
+// ConnectDragMotion signal is emitted on the drop site when the user moves the
+// cursor over the widget during a drag. The signal handler must determine
+// whether the cursor position is in a drop zone or not. If it is not in a drop
+// zone, it returns FALSE and no further processing is necessary. Otherwise, the
+// handler returns TRUE. In this case, the handler is responsible for providing
+// the necessary information for displaying feedback to the user, by calling
+// gdk_drag_status().
+//
+// If the decision whether the drop will be accepted or rejected can't be made
+// based solely on the cursor position and the type of the data, the handler may
+// inspect the dragged data by calling gtk_drag_get_data() and defer the
+// gdk_drag_status() call to the Widget::drag-data-received handler. Note that
+// you must pass K_DEST_DEFAULT_DROP, K_DEST_DEFAULT_MOTION or
+// K_DEST_DEFAULT_ALL to gtk_drag_dest_set() when using the drag-motion signal
+// that way.
+//
+// Also note that there is no drag-enter signal. The drag receiver has to keep
+// track of whether he has received any drag-motion signals since the last
+// Widget::drag-leave and if not, treat the drag-motion signal as an "enter"
+// signal. Upon an "enter", the handler will typically highlight the drop site
+// with gtk_drag_highlight().
+//
+//    static void
+//    drag_motion (GtkWidget      *widget,
+//                 GdkDragContext *context,
+//                 gint            x,
+//                 gint            y,
+//                 guint           time)
+//    {
+//      GdkAtom target;
+//
+//      PrivateData *private_data = GET_PRIVATE_DATA (widget);
+//
+//      if (!private_data->drag_highlight)
+//       {
+//         private_data->drag_highlight = 1;
+//         gtk_drag_highlight (widget);
+//       }
+//
+//      target = gtk_drag_dest_find_target (widget, context, NULL);
+//      if (target == GDK_NONE)
+//        gdk_drag_status (context, 0, time);
+//      else
+//       {
+//         private_data->pending_status
+//            = gdk_drag_context_get_suggested_action (context);
+//         gtk_drag_get_data (widget, context, target, time);
+//       }
+//
+//      return TRUE;
+//    }
+//
+//    static void
+//    drag_data_received (GtkWidget        *widget,
+//                        GdkDragContext   *context,
+//                        gint              x,
+//                        gint              y,
+//                        GtkSelectionData *selection_data,
+//                        guint             info,
+//                        guint             time)
+//    {
+//      PrivateData *private_data = GET_PRIVATE_DATA (widget);
+//
+//      if (private_data->suggested_action)
+//       {
+//         private_data->suggested_action = 0;
+//
+//         // We are getting this data due to a request in drag_motion,
+//         // rather than due to a request in drag_drop, so we are just
+//         // supposed to call gdk_drag_status(), not actually paste in
+//         // the data.
+//
+//         str = gtk_selection_data_get_text (selection_data);
+//         if (!data_is_acceptable (str))
+//           gdk_drag_status (context, 0, time);
+//         else
+//           gdk_drag_status (context,
+//                            private_data->suggested_action,
+//                            time);
+//       }
+//      else
+//       {
+//         // accept the drop
+//       }
+//    }.
+func (w *Widget) ConnectDragMotion(f func(context gdk.DragContext, x, y int, time uint) bool) glib.SignalHandle {
+	return w.Connect("drag-motion", f)
+}
+
+// ConnectDraw: this signal is emitted when a widget is supposed to render
+// itself. The widget's top left corner must be painted at the origin of the
+// passed in context and be sized to the values returned by
+// gtk_widget_get_allocated_width() and gtk_widget_get_allocated_height().
+//
+// Signal handlers connected to this signal can modify the cairo context passed
+// as cr in any way they like and don't need to restore it. The signal emission
+// takes care of calling cairo_save() before and cairo_restore() after invoking
+// the handler.
+//
+// The signal handler will get a cr with a clip region already set to the
+// widget's dirty region, i.e. to the area that needs repainting. Complicated
+// widgets that want to avoid redrawing themselves completely can get the full
+// extents of the clip region with gdk_cairo_get_clip_rectangle(), or they can
+// get a finer-grained representation of the dirty region with
+// cairo_copy_clip_rectangle_list().
+func (w *Widget) ConnectDraw(f func(cr cairo.Context) bool) glib.SignalHandle {
+	return w.Connect("draw", f)
+}
+
+// ConnectEnterNotifyEvent will be emitted when the pointer enters the widget's
+// window.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_ENTER_NOTIFY_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectEnterNotifyEvent(f func(event gdk.EventCrossing) bool) glib.SignalHandle {
+	return w.Connect("enter-notify-event", f)
+}
+
+func (w *Widget) ConnectFocus(f func(direction DirectionType) bool) glib.SignalHandle {
+	return w.Connect("focus", f)
+}
+
+// ConnectFocusInEvent signal will be emitted when the keyboard focus enters the
+// widget's window.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_FOCUS_CHANGE_MASK mask.
+func (w *Widget) ConnectFocusInEvent(f func(event gdk.EventFocus) bool) glib.SignalHandle {
+	return w.Connect("focus-in-event", f)
+}
+
+// ConnectFocusOutEvent signal will be emitted when the keyboard focus leaves
+// the widget's window.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_FOCUS_CHANGE_MASK mask.
+func (w *Widget) ConnectFocusOutEvent(f func(event gdk.EventFocus) bool) glib.SignalHandle {
+	return w.Connect("focus-out-event", f)
+}
+
+// ConnectGrabBrokenEvent: emitted when a pointer or keyboard grab on a window
+// belonging to widget gets broken.
+//
+// On X11, this happens when the grab window becomes unviewable (i.e. it or one
+// of its ancestors is unmapped), or if the same application grabs the pointer
+// or keyboard again.
+func (w *Widget) ConnectGrabBrokenEvent(f func(event gdk.EventGrabBroken) bool) glib.SignalHandle {
+	return w.Connect("grab-broken-event", f)
+}
+
+func (w *Widget) ConnectGrabFocus(f func()) glib.SignalHandle {
+	return w.Connect("grab-focus", f)
+}
+
+// ConnectGrabNotify signal is emitted when a widget becomes shadowed by a GTK+
+// grab (not a pointer or keyboard grab) on another widget, or when it becomes
+// unshadowed due to a grab being removed.
+//
+// A widget is shadowed by a gtk_grab_add() when the topmost grab widget in the
+// grab stack of its window group is not its ancestor.
+func (w *Widget) ConnectGrabNotify(f func(wasGrabbed bool)) glib.SignalHandle {
+	return w.Connect("grab-notify", f)
+}
+
+// ConnectHide signal is emitted when widget is hidden, for example with
+// gtk_widget_hide().
+func (w *Widget) ConnectHide(f func()) glib.SignalHandle {
+	return w.Connect("hide", f)
+}
+
+// ConnectHierarchyChanged signal is emitted when the anchored state of a widget
+// changes. A widget is “anchored” when its toplevel ancestor is a Window. This
+// signal is emitted when a widget changes from un-anchored to anchored or
+// vice-versa.
+func (w *Widget) ConnectHierarchyChanged(f func(previousToplevel Widgetter)) glib.SignalHandle {
+	return w.Connect("hierarchy-changed", f)
+}
+
+// ConnectKeyPressEvent signal is emitted when a key is pressed. The signal
+// emission will reoccur at the key-repeat rate when the key is kept pressed.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_KEY_PRESS_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectKeyPressEvent(f func(event gdk.EventKey) bool) glib.SignalHandle {
+	return w.Connect("key-press-event", f)
+}
+
+// ConnectKeyReleaseEvent signal is emitted when a key is released.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_KEY_RELEASE_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectKeyReleaseEvent(f func(event gdk.EventKey) bool) glib.SignalHandle {
+	return w.Connect("key-release-event", f)
+}
+
+// ConnectKeynavFailed gets emitted if keyboard navigation fails. See
+// gtk_widget_keynav_failed() for details.
+func (w *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) glib.SignalHandle {
+	return w.Connect("keynav-failed", f)
+}
+
+// ConnectLeaveNotifyEvent will be emitted when the pointer leaves the widget's
+// window.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_LEAVE_NOTIFY_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectLeaveNotifyEvent(f func(event gdk.EventCrossing) bool) glib.SignalHandle {
+	return w.Connect("leave-notify-event", f)
+}
+
+// ConnectMap signal is emitted when widget is going to be mapped, that is when
+// the widget is visible (which is controlled with gtk_widget_set_visible()) and
+// all its parents up to the toplevel widget are also visible. Once the map has
+// occurred, Widget::map-event will be emitted.
+//
+// The ::map signal can be used to determine whether a widget will be drawn, for
+// instance it can resume an animation that was stopped during the emission of
+// Widget::unmap.
+func (w *Widget) ConnectMap(f func()) glib.SignalHandle {
+	return w.Connect("map", f)
+}
+
+// ConnectMapEvent signal will be emitted when the widget's window is mapped. A
+// window is mapped when it becomes visible on the screen.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
+// new windows.
+func (w *Widget) ConnectMapEvent(f func(event gdk.EventAny) bool) glib.SignalHandle {
+	return w.Connect("map-event", f)
+}
+
+// ConnectMnemonicActivate: default handler for this signal activates widget if
+// group_cycling is FALSE, or just makes widget grab focus if group_cycling is
+// TRUE.
+func (w *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) glib.SignalHandle {
+	return w.Connect("mnemonic-activate", f)
+}
+
+// ConnectMotionNotifyEvent signal is emitted when the pointer moves over the
+// widget's Window.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_POINTER_MOTION_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectMotionNotifyEvent(f func(event gdk.EventMotion) bool) glib.SignalHandle {
+	return w.Connect("motion-notify-event", f)
+}
+
+func (w *Widget) ConnectMoveFocus(f func(direction DirectionType)) glib.SignalHandle {
+	return w.Connect("move-focus", f)
+}
+
+// ConnectParentSet signal is emitted when a new parent has been set on a
+// widget.
+func (w *Widget) ConnectParentSet(f func(oldParent Widgetter)) glib.SignalHandle {
+	return w.Connect("parent-set", f)
+}
+
+// ConnectPopupMenu: this signal gets emitted whenever a widget should pop up a
+// context menu. This usually happens through the standard key binding
+// mechanism; by pressing a certain key while a widget is focused, the user can
+// cause the widget to pop up a menu. For example, the Entry widget creates a
+// menu with clipboard commands. See the [Popup Menu Migration
+// Checklist][checklist-popup-menu] for an example of how to use this signal.
+func (w *Widget) ConnectPopupMenu(f func() bool) glib.SignalHandle {
+	return w.Connect("popup-menu", f)
+}
+
+// ConnectPropertyNotifyEvent signal will be emitted when a property on the
+// widget's window has been changed or deleted.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_PROPERTY_CHANGE_MASK mask.
+func (w *Widget) ConnectPropertyNotifyEvent(f func(event gdk.EventProperty) bool) glib.SignalHandle {
+	return w.Connect("property-notify-event", f)
+}
+
+// ConnectProximityInEvent: to receive this signal the Window associated to the
+// widget needs to enable the K_PROXIMITY_IN_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectProximityInEvent(f func(event gdk.EventProximity) bool) glib.SignalHandle {
+	return w.Connect("proximity-in-event", f)
+}
+
+// ConnectProximityOutEvent: to receive this signal the Window associated to the
+// widget needs to enable the K_PROXIMITY_OUT_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectProximityOutEvent(f func(event gdk.EventProximity) bool) glib.SignalHandle {
+	return w.Connect("proximity-out-event", f)
+}
+
+// ConnectQueryTooltip: emitted when Widget:has-tooltip is TRUE and the hover
+// timeout has expired with the cursor hovering "above" widget; or emitted when
+// widget got focus in keyboard mode.
+//
+// Using the given coordinates, the signal handler should determine whether a
+// tooltip should be shown for widget. If this is the case TRUE should be
+// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
+// x and y are undefined and should not be used.
+//
+// The signal handler is free to manipulate tooltip with the therefore destined
+// function calls.
+func (w *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) glib.SignalHandle {
+	return w.Connect("query-tooltip", f)
+}
+
+// ConnectRealize signal is emitted when widget is associated with a Window,
+// which means that gtk_widget_realize() has been called or the widget has been
+// mapped (that is, it is going to be drawn).
+func (w *Widget) ConnectRealize(f func()) glib.SignalHandle {
+	return w.Connect("realize", f)
+}
+
+// ConnectScreenChanged signal gets emitted when the screen of a widget has
+// changed.
+func (w *Widget) ConnectScreenChanged(f func(previousScreen gdk.Screen)) glib.SignalHandle {
+	return w.Connect("screen-changed", f)
+}
+
+// ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
+// pressed. Wheel mice are usually configured to generate button press events
+// for buttons 4 and 5 when the wheel is turned.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_SCROLL_MASK mask.
+//
+// This signal will be sent to the grab widget if there is one.
+func (w *Widget) ConnectScrollEvent(f func(event gdk.EventScroll) bool) glib.SignalHandle {
+	return w.Connect("scroll-event", f)
+}
+
+// ConnectSelectionClearEvent signal will be emitted when the the widget's
+// window has lost ownership of a selection.
+func (w *Widget) ConnectSelectionClearEvent(f func(event gdk.EventSelection) bool) glib.SignalHandle {
+	return w.Connect("selection-clear-event", f)
+}
+
+func (w *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time uint)) glib.SignalHandle {
+	return w.Connect("selection-get", f)
+}
+
+func (w *Widget) ConnectSelectionNotifyEvent(f func(event gdk.EventSelection) bool) glib.SignalHandle {
+	return w.Connect("selection-notify-event", f)
+}
+
+func (w *Widget) ConnectSelectionReceived(f func(data *SelectionData, time uint)) glib.SignalHandle {
+	return w.Connect("selection-received", f)
+}
+
+// ConnectSelectionRequestEvent signal will be emitted when another client
+// requests ownership of the selection owned by the widget's window.
+func (w *Widget) ConnectSelectionRequestEvent(f func(event gdk.EventSelection) bool) glib.SignalHandle {
+	return w.Connect("selection-request-event", f)
+}
+
+// ConnectShow signal is emitted when widget is shown, for example with
+// gtk_widget_show().
+func (w *Widget) ConnectShow(f func()) glib.SignalHandle {
+	return w.Connect("show", f)
+}
+
+func (w *Widget) ConnectShowHelp(f func(helpType WidgetHelpType) bool) glib.SignalHandle {
+	return w.Connect("show-help", f)
+}
+
+func (w *Widget) ConnectSizeAllocate(f func(allocation Allocation)) glib.SignalHandle {
+	return w.Connect("size-allocate", f)
+}
+
+// ConnectStateChanged signal is emitted when the widget state changes. See
+// gtk_widget_get_state().
+func (w *Widget) ConnectStateChanged(f func(state StateType)) glib.SignalHandle {
+	return w.Connect("state-changed", f)
+}
+
+// ConnectStateFlagsChanged signal is emitted when the widget state changes, see
+// gtk_widget_get_state_flags().
+func (w *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) glib.SignalHandle {
+	return w.Connect("state-flags-changed", f)
+}
+
+// ConnectStyleSet signal is emitted when a new style has been set on a widget.
+// Note that style-modifying functions like gtk_widget_modify_base() also cause
+// this signal to be emitted.
+//
+// Note that this signal is emitted for changes to the deprecated Style. To
+// track changes to the StyleContext associated with a widget, use the
+// Widget::style-updated signal.
+func (w *Widget) ConnectStyleSet(f func(previousStyle Style)) glib.SignalHandle {
+	return w.Connect("style-set", f)
+}
+
+// ConnectStyleUpdated signal is a convenience signal that is emitted when the
+// StyleContext::changed signal is emitted on the widget's associated
+// StyleContext as returned by gtk_widget_get_style_context().
+//
+// Note that style-modifying functions like gtk_widget_override_color() also
+// cause this signal to be emitted.
+func (w *Widget) ConnectStyleUpdated(f func()) glib.SignalHandle {
+	return w.Connect("style-updated", f)
+}
+
+// ConnectUnmap signal is emitted when widget is going to be unmapped, which
+// means that either it or any of its parents up to the toplevel widget have
+// been set as hidden.
+//
+// As ::unmap indicates that a widget will not be shown any longer, it can be
+// used to, for example, stop an animation on the widget.
+func (w *Widget) ConnectUnmap(f func()) glib.SignalHandle {
+	return w.Connect("unmap", f)
+}
+
+// ConnectUnmapEvent signal will be emitted when the widget's window is
+// unmapped. A window is unmapped when it becomes invisible on the screen.
+//
+// To receive this signal, the Window associated to the widget needs to enable
+// the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
+// new windows.
+func (w *Widget) ConnectUnmapEvent(f func(event gdk.EventAny) bool) glib.SignalHandle {
+	return w.Connect("unmap-event", f)
+}
+
+// ConnectUnrealize signal is emitted when the Window associated with widget is
+// destroyed, which means that gtk_widget_unrealize() has been called or the
+// widget has been unmapped (that is, it is going to be hidden).
+func (w *Widget) ConnectUnrealize(f func()) glib.SignalHandle {
+	return w.Connect("unrealize", f)
+}
+
+// ConnectVisibilityNotifyEvent will be emitted when the widget's window is
+// obscured or unobscured.
+//
+// To receive this signal the Window associated to the widget needs to enable
+// the K_VISIBILITY_NOTIFY_MASK mask.
+func (w *Widget) ConnectVisibilityNotifyEvent(f func(event gdk.EventVisibility) bool) glib.SignalHandle {
+	return w.Connect("visibility-notify-event", f)
+}
+
+// ConnectWindowStateEvent will be emitted when the state of the toplevel window
+// associated to the widget changes.
+//
+// To receive this signal the Window associated to the widget needs to enable
+// the K_STRUCTURE_MASK mask. GDK will enable this mask automatically for all
+// new windows.
+func (w *Widget) ConnectWindowStateEvent(f func(event gdk.EventWindowState) bool) glib.SignalHandle {
+	return w.Connect("window-state-event", f)
+}
+
 // WidgetGetDefaultDirection obtains the current default reading direction. See
 // gtk_widget_set_default_direction().
 func WidgetGetDefaultDirection() TextDirection {

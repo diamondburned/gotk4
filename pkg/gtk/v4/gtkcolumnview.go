@@ -507,3 +507,12 @@ func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortTyp
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(direction)
 }
+
+// ConnectActivate: emitted when a row has been activated by the user, usually
+// via activating the GtkListBase|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a columnview. See
+// gtk.ListItem.SetActivatable() for details on how to use this signal.
+func (c *ColumnView) ConnectActivate(f func(position uint)) glib.SignalHandle {
+	return c.Connect("activate", f)
+}

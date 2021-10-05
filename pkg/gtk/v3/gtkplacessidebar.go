@@ -733,3 +733,112 @@ func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showTrash)
 }
+
+// ConnectDragActionAsk places sidebar emits this signal when it needs to ask
+// the application to pop up a menu to ask the user for which drag action to
+// perform.
+func (p *PlacesSidebar) ConnectDragActionAsk(f func(actions int) int) glib.SignalHandle {
+	return p.Connect("drag-action-ask", f)
+}
+
+// ConnectMount places sidebar emits this signal when it starts a new operation
+// because the user clicked on some location that needs mounting. In this way
+// the application using the PlacesSidebar can track the progress of the
+// operation and, for example, show a notification.
+func (p *PlacesSidebar) ConnectMount(f func(mountOperation gio.MountOperation)) glib.SignalHandle {
+	return p.Connect("mount", f)
+}
+
+// ConnectOpenLocation places sidebar emits this signal when the user selects a
+// location in it. The calling application should display the contents of that
+// location; for example, a file manager should show a list of files in the
+// specified location.
+func (p *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags PlacesOpenFlags)) glib.SignalHandle {
+	return p.Connect("open-location", f)
+}
+
+// ConnectPopulatePopup places sidebar emits this signal when the user invokes a
+// contextual popup on one of its items. In the signal handler, the application
+// may add extra items to the menu as appropriate. For example, a file manager
+// may want to add a "Properties" command to the menu.
+//
+// It is not necessary to store the selected_item for each menu item; during
+// their callbacks, the application can use gtk_places_sidebar_get_location() to
+// get the file to which the item refers.
+//
+// The selected_item argument may be NULL in case the selection refers to a
+// volume. In this case, selected_volume will be non-NULL. In this case, the
+// calling application will have to g_object_ref() the selected_volume and keep
+// it around to use it in the callback.
+//
+// The container and all its contents are destroyed after the user dismisses the
+// popup. The popup is re-created (and thus, this signal is emitted) every time
+// the user activates the contextual menu.
+//
+// Before 3.18, the container always was a Menu, and you were expected to add
+// your items as MenuItems. Since 3.18, the popup may be implemented as a
+// Popover, in which case container will be something else, e.g. a Box, to which
+// you may add ModelButtons or other widgets, such as Entries, SpinButtons, etc.
+// If your application can deal with this situation, you can set
+// PlacesSidebar::populate-all to TRUE to request that this signal is emitted
+// for populating popovers as well.
+func (p *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)) glib.SignalHandle {
+	return p.Connect("populate-popup", f)
+}
+
+// ConnectShowConnectToServer places sidebar emits this signal when it needs the
+// calling application to present an way to connect directly to a network
+// server. For example, the application may bring up a dialog box asking for a
+// URL like "sftp://ftp.example.com". It is up to the application to create the
+// corresponding mount by using, for example, g_file_mount_enclosing_volume().
+func (p *PlacesSidebar) ConnectShowConnectToServer(f func()) glib.SignalHandle {
+	return p.Connect("show-connect-to-server", f)
+}
+
+// ConnectShowEnterLocation places sidebar emits this signal when it needs the
+// calling application to present an way to directly enter a location. For
+// example, the application may bring up a dialog box asking for a URL like
+// "http://http.example.com".
+func (p *PlacesSidebar) ConnectShowEnterLocation(f func()) glib.SignalHandle {
+	return p.Connect("show-enter-location", f)
+}
+
+// ConnectShowErrorMessage places sidebar emits this signal when it needs the
+// calling application to present an error message. Most of these messages refer
+// to mounting or unmounting media, for example, when a drive cannot be started
+// for some reason.
+func (p *PlacesSidebar) ConnectShowErrorMessage(f func(primary, secondary string)) glib.SignalHandle {
+	return p.Connect("show-error-message", f)
+}
+
+// ConnectShowOtherLocations places sidebar emits this signal when it needs the
+// calling application to present a way to show other locations e.g. drives and
+// network access points. For example, the application may bring up a page
+// showing persistent volumes and discovered network addresses.
+func (p *PlacesSidebar) ConnectShowOtherLocations(f func()) glib.SignalHandle {
+	return p.Connect("show-other-locations", f)
+}
+
+// ConnectShowOtherLocationsWithFlags places sidebar emits this signal when it
+// needs the calling application to present a way to show other locations e.g.
+// drives and network access points. For example, the application may bring up a
+// page showing persistent volumes and discovered network addresses.
+func (p *PlacesSidebar) ConnectShowOtherLocationsWithFlags(f func(openFlags PlacesOpenFlags)) glib.SignalHandle {
+	return p.Connect("show-other-locations-with-flags", f)
+}
+
+// ConnectShowStarredLocation places sidebar emits this signal when it needs the
+// calling application to present a way to show the starred files. In GNOME,
+// starred files are implemented by setting the nao:predefined-tag-favorite tag
+// in the tracker database.
+func (p *PlacesSidebar) ConnectShowStarredLocation(f func(openFlags PlacesOpenFlags)) glib.SignalHandle {
+	return p.Connect("show-starred-location", f)
+}
+
+// ConnectUnmount places sidebar emits this signal when it starts a new
+// operation because the user for example ejected some drive or unmounted a
+// mount. In this way the application using the PlacesSidebar can track the
+// progress of the operation and, for example, show a notification.
+func (p *PlacesSidebar) ConnectUnmount(f func(mountOperation gio.MountOperation)) glib.SignalHandle {
+	return p.Connect("unmount", f)
+}

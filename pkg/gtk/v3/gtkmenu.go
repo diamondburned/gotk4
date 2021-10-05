@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -579,6 +580,35 @@ func (menu *Menu) SetTitle(title string) {
 	C.gtk_menu_set_title(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(title)
+}
+
+func (m *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) glib.SignalHandle {
+	return m.Connect("move-scroll", f)
+}
+
+// ConnectPoppedUp: emitted when the position of menu is finalized after being
+// popped up using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
+// gtk_menu_popup_at_pointer ().
+//
+// menu might be flipped over the anchor rectangle in order to keep it
+// on-screen, in which case flipped_x and flipped_y will be set to TRUE
+// accordingly.
+//
+// flipped_rect is the ideal position of menu after any possible flipping, but
+// before any possible sliding. final_rect is flipped_rect, but possibly
+// translated in the case that flipping is still ineffective in keeping menu
+// on-screen.
+//
+// ! (popup-slide.png)
+//
+// The blue menu is menu's ideal position, the green menu is flipped_rect, and
+// the red menu is final_rect.
+//
+// See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
+// gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
+// Menu:rect-anchor-dy, and Menu:menu-type-hint.
+func (m *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) glib.SignalHandle {
+	return m.Connect("popped-up", f)
 }
 
 // MenuGetForAttachWidget returns a list of the menus which are attached to this

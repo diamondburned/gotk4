@@ -232,3 +232,13 @@ func (list *ListModel) ItemsChanged(position uint, removed uint, added uint) {
 	runtime.KeepAlive(removed)
 	runtime.KeepAlive(added)
 }
+
+// ConnectItemsChanged: this signal is emitted whenever items were added to or
+// removed from list. At position, removed items were removed and added items
+// were added in their place.
+//
+// Note: If removed != added, the positions of all later items in the model
+// change.
+func (l *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) glib.SignalHandle {
+	return l.Connect("items-changed", f)
+}

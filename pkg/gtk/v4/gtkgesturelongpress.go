@@ -103,3 +103,15 @@ func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(delayFactor)
 }
+
+// ConnectCancelled: emitted whenever a press moved too far, or was released
+// before gtk.GestureLongPress::pressed happened.
+func (g *GestureLongPress) ConnectCancelled(f func()) glib.SignalHandle {
+	return g.Connect("cancelled", f)
+}
+
+// ConnectPressed: emitted whenever a press goes unmoved/unreleased longer than
+// what the GTK defaults tell.
+func (g *GestureLongPress) ConnectPressed(f func(x, y float64)) glib.SignalHandle {
+	return g.Connect("pressed", f)
+}

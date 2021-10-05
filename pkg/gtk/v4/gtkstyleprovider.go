@@ -83,3 +83,7 @@ func marshalStyleProviderer(p uintptr) (interface{}, error) {
 }
 
 func (*StyleProvider) privateStyleProvider() {}
+
+func (s *StyleProvider) ConnectGTKPrivateChanged(f func()) glib.SignalHandle {
+	return s.Connect("gtk-private-changed", f)
+}

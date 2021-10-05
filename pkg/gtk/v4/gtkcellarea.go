@@ -1526,3 +1526,31 @@ func (area *CellArea) StopEditing(canceled bool) {
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(canceled)
 }
+
+// ConnectAddEditable indicates that editing has started on renderer and that
+// editable should be added to the owning cell-layouting widget at cell_area.
+func (c *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea gdk.Rectangle, path string)) glib.SignalHandle {
+	return c.Connect("add-editable", f)
+}
+
+// ConnectApplyAttributes: this signal is emitted whenever applying attributes
+// to area from model.
+func (c *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter TreeIter, isExpander, isExpanded bool)) glib.SignalHandle {
+	return c.Connect("apply-attributes", f)
+}
+
+// ConnectFocusChanged indicates that focus changed on this area. This signal is
+// emitted either as a result of focus handling or event handling.
+//
+// It's possible that the signal is emitted even if the currently focused
+// renderer did not change, this is because focus may change to the same
+// renderer in the same cell area for a different row of data.
+func (c *CellArea) ConnectFocusChanged(f func(renderer CellRendererer, path string)) glib.SignalHandle {
+	return c.Connect("focus-changed", f)
+}
+
+// ConnectRemoveEditable indicates that editing finished on renderer and that
+// editable should be removed from the owning cell-layouting widget.
+func (c *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, editable CellEditabler)) glib.SignalHandle {
+	return c.Connect("remove-editable", f)
+}

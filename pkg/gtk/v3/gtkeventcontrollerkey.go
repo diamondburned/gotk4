@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -137,4 +138,30 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)
+}
+
+func (e *EventControllerKey) ConnectFocusIn(f func()) glib.SignalHandle {
+	return e.Connect("focus-in", f)
+}
+
+func (e *EventControllerKey) ConnectFocusOut(f func()) glib.SignalHandle {
+	return e.Connect("focus-out", f)
+}
+
+func (e *EventControllerKey) ConnectImUpdate(f func()) glib.SignalHandle {
+	return e.Connect("im-update", f)
+}
+
+// ConnectKeyPressed: this signal is emitted whenever a key is pressed.
+func (e *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) glib.SignalHandle {
+	return e.Connect("key-pressed", f)
+}
+
+// ConnectKeyReleased: this signal is emitted whenever a key is released.
+func (e *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) glib.SignalHandle {
+	return e.Connect("key-released", f)
+}
+
+func (e *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) glib.SignalHandle {
+	return e.Connect("modifiers", f)
 }

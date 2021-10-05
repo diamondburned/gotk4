@@ -1745,3 +1745,152 @@ func (buffer *TextBuffer) Undo() {
 	C.gtk_text_buffer_undo(_arg0)
 	runtime.KeepAlive(buffer)
 }
+
+// ConnectApplyTag: emitted to apply a tag to a range of text in a
+// GtkTextBuffer.
+//
+// Applying actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them).
+//
+// See also: gtk.TextBuffer.ApplyTag(), gtk.TextBuffer.InsertWithTags(),
+// gtk.TextBuffer.InsertRange().
+func (t *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
+	return t.Connect("apply-tag", f)
+}
+
+// ConnectBeginUserAction: emitted at the beginning of a single user-visible
+// operation on a GtkTextBuffer.
+//
+// See also: gtk.TextBuffer.BeginUserAction(),
+// gtk.TextBuffer.InsertInteractive(), gtk.TextBuffer.InsertRangeInteractive(),
+// gtk.TextBuffer.DeleteInteractive(), gtk.TextBuffer.Backspace(),
+// gtk.TextBuffer.DeleteSelection().
+func (t *TextBuffer) ConnectBeginUserAction(f func()) glib.SignalHandle {
+	return t.Connect("begin-user-action", f)
+}
+
+// ConnectChanged: emitted when the content of a GtkTextBuffer has changed.
+func (t *TextBuffer) ConnectChanged(f func()) glib.SignalHandle {
+	return t.Connect("changed", f)
+}
+
+// ConnectDeleteRange: emitted to delete a range from a GtkTextBuffer.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them). The default
+// signal handler revalidates the start and end iters to both point to the
+// location where text was deleted. Handlers which run after the default handler
+// (see g_signal_connect_after()) do not have access to the deleted text.
+//
+// See also: gtk.TextBuffer.Delete().
+func (t *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) glib.SignalHandle {
+	return t.Connect("delete-range", f)
+}
+
+// ConnectEndUserAction: emitted at the end of a single user-visible operation
+// on the GtkTextBuffer.
+//
+// See also: gtk.TextBuffer.EndUserAction(), gtk.TextBuffer.InsertInteractive(),
+// gtk.TextBuffer.InsertRangeInteractive(), gtk.TextBuffer.DeleteInteractive(),
+// gtk.TextBuffer.Backspace(), gtk.TextBuffer.DeleteSelection(),
+// gtk.TextBuffer.Backspace().
+func (t *TextBuffer) ConnectEndUserAction(f func()) glib.SignalHandle {
+	return t.Connect("end-user-action", f)
+}
+
+// ConnectInsertChildAnchor: emitted to insert a GtkTextChildAnchor in a
+// GtkTextBuffer.
+//
+// Insertion actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to be placed after the inserted anchor.
+//
+// See also: gtk.TextBuffer.InsertChildAnchor().
+func (t *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor TextChildAnchor)) glib.SignalHandle {
+	return t.Connect("insert-child-anchor", f)
+}
+
+// ConnectInsertPaintable: emitted to insert a GdkPaintable in a GtkTextBuffer.
+//
+// Insertion actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to be placed after the inserted paintable.
+//
+// See also: gtk.TextBuffer.InsertPaintable().
+func (t *TextBuffer) ConnectInsertPaintable(f func(location TextIter, paintable gdk.Paintabler)) glib.SignalHandle {
+	return t.Connect("insert-paintable", f)
+}
+
+// ConnectInsertText: emitted to insert text in a GtkTextBuffer.
+//
+// Insertion actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to point to the end of the inserted text.
+//
+// See also: gtk,textbuffer.Insert, gtk.TextBuffer.InsertRange().
+func (t *TextBuffer) ConnectInsertText(f func(location TextIter, text string, len int)) glib.SignalHandle {
+	return t.Connect("insert-text", f)
+}
+
+// ConnectMarkDeleted: emitted as notification after a GtkTextMark is deleted.
+//
+// See also: gtk.TextBuffer.DeleteMark().
+func (t *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) glib.SignalHandle {
+	return t.Connect("mark-deleted", f)
+}
+
+// ConnectMarkSet: emitted as notification after a GtkTextMark is set.
+//
+// See also: gtk.TextBuffer.CreateMark(), gtk.TextBuffer.MoveMark().
+func (t *TextBuffer) ConnectMarkSet(f func(location TextIter, mark TextMark)) glib.SignalHandle {
+	return t.Connect("mark-set", f)
+}
+
+// ConnectModifiedChanged: emitted when the modified bit of a GtkTextBuffer
+// flips.
+//
+// See also: gtk.TextBuffer.SetModified().
+func (t *TextBuffer) ConnectModifiedChanged(f func()) glib.SignalHandle {
+	return t.Connect("modified-changed", f)
+}
+
+// ConnectPasteDone: emitted after paste operation has been completed.
+//
+// This is useful to properly scroll the view to the end of the pasted text. See
+// gtk.TextBuffer.PasteClipboard() for more details.
+func (t *TextBuffer) ConnectPasteDone(f func(clipboard gdk.Clipboard)) glib.SignalHandle {
+	return t.Connect("paste-done", f)
+}
+
+// ConnectRedo: emitted when a request has been made to redo the previously
+// undone operation.
+func (t *TextBuffer) ConnectRedo(f func()) glib.SignalHandle {
+	return t.Connect("redo", f)
+}
+
+// ConnectRemoveTag: emitted to remove all occurrences of tag from a range of
+// text in a GtkTextBuffer.
+//
+// Removal actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them).
+//
+// See also: gtk.TextBuffer.RemoveTag().
+func (t *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
+	return t.Connect("remove-tag", f)
+}
+
+// ConnectUndo: emitted when a request has been made to undo the previous
+// operation or set of operations that have been grouped together.
+func (t *TextBuffer) ConnectUndo(f func()) glib.SignalHandle {
+	return t.Connect("undo", f)
+}

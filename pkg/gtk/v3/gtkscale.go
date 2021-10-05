@@ -427,3 +427,25 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(pos)
 }
+
+// ConnectFormatValue: signal which allows you to change how the scale value is
+// displayed. Connect a signal handler which returns an allocated string
+// representing value. That string will then be used to display the scale's
+// value.
+//
+// If no user-provided handlers are installed, the value will be displayed on
+// its own, rounded according to the value of the Scale:digits property.
+//
+// Here's an example signal handler which displays a value 1.0 as with
+// "-->1.0<--".
+//
+//    static gchar*
+//    format_value_callback (GtkScale *scale,
+//                           gdouble   value)
+//    {
+//      return g_strdup_printf ("-->\0.*g<--",
+//                              gtk_scale_get_digits (scale), value);
+//     }.
+func (s *Scale) ConnectFormatValue(f func(value float64) string) glib.SignalHandle {
+	return s.Connect("format-value", f)
+}

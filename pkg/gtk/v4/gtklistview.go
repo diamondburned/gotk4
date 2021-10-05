@@ -373,3 +373,12 @@ func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
 }
+
+// ConnectActivate: emitted when a row has been activated by the user, usually
+// via activating the GtkListView|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a listview. See
+// gtk.ListItem.SetActivatable() for details on how to use this signal.
+func (l *ListView) ConnectActivate(f func(position uint)) glib.SignalHandle {
+	return l.Connect("activate", f)
+}

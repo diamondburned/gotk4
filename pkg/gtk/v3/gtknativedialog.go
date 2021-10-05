@@ -326,3 +326,13 @@ func (self *NativeDialog) Show() {
 	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)
 }
+
+// ConnectResponse: emitted when the user responds to the dialog.
+//
+// When this is called the dialog has been hidden.
+//
+// If you call gtk_native_dialog_hide() before the user responds to the dialog
+// this signal will not be emitted.
+func (n *NativeDialog) ConnectResponse(f func(responseId int)) glib.SignalHandle {
+	return n.Connect("response", f)
+}

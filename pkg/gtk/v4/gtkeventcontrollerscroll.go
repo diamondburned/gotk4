@@ -189,3 +189,32 @@ func (scroll *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) 
 	runtime.KeepAlive(scroll)
 	runtime.KeepAlive(flags)
 }
+
+// ConnectDecelerate: emitted after scroll is finished if the
+// GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag is set.
+//
+// vel_x and vel_y express the initial velocity that was imprinted by the scroll
+// events. vel_x and vel_y are expressed in pixels/ms.
+func (e *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) glib.SignalHandle {
+	return e.Connect("decelerate", f)
+}
+
+// ConnectScroll signals that the widget should scroll by the amount specified
+// by dx and dy.
+func (e *EventControllerScroll) ConnectScroll(f func(dx, dy float64) bool) glib.SignalHandle {
+	return e.Connect("scroll", f)
+}
+
+// ConnectScrollBegin signals that a new scrolling operation has begun.
+//
+// It will only be emitted on devices capable of it.
+func (e *EventControllerScroll) ConnectScrollBegin(f func()) glib.SignalHandle {
+	return e.Connect("scroll-begin", f)
+}
+
+// ConnectScrollEnd signals that a scrolling operation has finished.
+//
+// It will only be emitted on devices capable of it.
+func (e *EventControllerScroll) ConnectScrollEnd(f func()) glib.SignalHandle {
+	return e.Connect("scroll-end", f)
+}

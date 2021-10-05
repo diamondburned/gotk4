@@ -338,3 +338,55 @@ func (self *DropTarget) SetPreload(preload bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(preload)
 }
+
+// ConnectAccept: emitted on the drop site when a drop operation is about to
+// begin.
+//
+// If the drop is not accepted, FALSE will be returned and the drop target will
+// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
+// rejected later via a call to gtk.DropTarget.Reject() or ultimately by
+// returning FALSE from a gtk.DropTarget::drop handler.
+//
+// The default handler for this signal decides whether to accept the drop based
+// on the formats provided by the drop.
+//
+// If the decision whether the drop will be accepted or rejected depends on the
+// data, this function should return TRUE, the gtk.DropTarget:preload property
+// should be set and the value should be inspected via the ::notify:value
+// signal, calling gtk.DropTarget.Reject() if required.
+func (d *DropTarget) ConnectAccept(f func(drop gdk.Dropper) bool) glib.SignalHandle {
+	return d.Connect("accept", f)
+}
+
+// ConnectDrop: emitted on the drop site when the user drops the data onto the
+// widget.
+//
+// The signal handler must determine whether the pointer position is in a drop
+// zone or not. If it is not in a drop zone, it returns FALSE and no further
+// processing is necessary.
+//
+// Otherwise, the handler returns TRUE. In this case, this handler will accept
+// the drop. The handler is responsible for rading the given value and
+// performing the drop operation.
+func (d *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) bool) glib.SignalHandle {
+	return d.Connect("drop", f)
+}
+
+// ConnectEnter: emitted on the drop site when the pointer enters the widget.
+//
+// It can be used to set up custom highlighting.
+func (d *DropTarget) ConnectEnter(f func(x, y float64) gdk.DragAction) glib.SignalHandle {
+	return d.Connect("enter", f)
+}
+
+// ConnectLeave: emitted on the drop site when the pointer leaves the widget.
+//
+// Its main purpose it to undo things done in gtk.DropTarget::enter.
+func (d *DropTarget) ConnectLeave(f func()) glib.SignalHandle {
+	return d.Connect("leave", f)
+}
+
+// ConnectMotion: emitted while the pointer is moving over the drop target.
+func (d *DropTarget) ConnectMotion(f func(x, y float64) gdk.DragAction) glib.SignalHandle {
+	return d.Connect("motion", f)
+}

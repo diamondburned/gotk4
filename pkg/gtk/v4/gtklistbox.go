@@ -835,6 +835,59 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
+func (l *ListBox) ConnectActivateCursorRow(f func()) glib.SignalHandle {
+	return l.Connect("activate-cursor-row", f)
+}
+
+func (l *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int, p1, p2 bool)) glib.SignalHandle {
+	return l.Connect("move-cursor", f)
+}
+
+// ConnectRowActivated: emitted when a row has been activated by the user.
+func (l *ListBox) ConnectRowActivated(f func(row ListBoxRow)) glib.SignalHandle {
+	return l.Connect("row-activated", f)
+}
+
+// ConnectRowSelected: emitted when a new row is selected, or (with a NULL row)
+// when the selection is cleared.
+//
+// When the box is using GTK_SELECTION_MULTIPLE, this signal will not give you
+// the full picture of selection changes, and you should use the
+// gtk.ListBox::selected-rows-changed signal instead.
+func (l *ListBox) ConnectRowSelected(f func(row ListBoxRow)) glib.SignalHandle {
+	return l.Connect("row-selected", f)
+}
+
+// ConnectSelectAll: emitted to select all children of the box, if the selection
+// mode permits it.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
+func (l *ListBox) ConnectSelectAll(f func()) glib.SignalHandle {
+	return l.Connect("select-all", f)
+}
+
+// ConnectSelectedRowsChanged: emitted when the set of selected rows changes.
+func (l *ListBox) ConnectSelectedRowsChanged(f func()) glib.SignalHandle {
+	return l.Connect("selected-rows-changed", f)
+}
+
+func (l *ListBox) ConnectToggleCursorRow(f func()) glib.SignalHandle {
+	return l.Connect("toggle-cursor-row", f)
+}
+
+// ConnectUnselectAll: emitted to unselect all children of the box, if the
+// selection mode permits it.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is
+// <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
+func (l *ListBox) ConnectUnselectAll(f func()) glib.SignalHandle {
+	return l.Connect("unselect-all", f)
+}
+
 // ListBoxRowOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -1130,4 +1183,13 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(selectable)
+}
+
+// ConnectActivate: this is a keybinding signal, which will cause this row to be
+// activated.
+//
+// If you want to be notified when the user activates a row (by key or not), use
+// the gtk.ListBox::row-activated signal on the row’s parent GtkListBox.
+func (l *ListBoxRow) ConnectActivate(f func()) glib.SignalHandle {
+	return l.Connect("activate", f)
 }

@@ -372,3 +372,13 @@ func (self *LevelBar) SetValue(value float64) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 }
+
+// ConnectOffsetChanged: emitted when an offset specified on the bar changes
+// value as an effect to gtk_level_bar_add_offset_value() being called.
+//
+// The signal supports detailed connections; you can connect to the detailed
+// signal "changed::x" in order to only receive callbacks when the value of
+// offset "x" changes.
+func (l *LevelBar) ConnectOffsetChanged(f func(name string)) glib.SignalHandle {
+	return l.Connect("offset-changed", f)
+}

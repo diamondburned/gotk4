@@ -1785,6 +1785,68 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	return _ok
 }
 
+// ConnectChangeEvent: "change-event" signal is emitted once per change event
+// that affects this settings object. You should connect to this signal only if
+// you are interested in viewing groups of changes before they are split out
+// into multiple emissions of the "changed" signal. For most use cases it is
+// more appropriate to use the "changed" signal.
+//
+// In the event that the change event applies to one or more specified keys,
+// keys will be an array of #GQuark of length n_keys. In the event that the
+// change event applies to the #GSettings object as a whole (ie: potentially
+// every key has been changed) then keys will be NULL and n_keys will be 0.
+//
+// The default handler for this signal invokes the "changed" signal for each
+// affected key. If any other connected handler returns TRUE then this default
+// functionality will be suppressed.
+func (s *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) glib.SignalHandle {
+	return s.Connect("change-event", f)
+}
+
+// ConnectChanged: "changed" signal is emitted when a key has potentially
+// changed. You should call one of the g_settings_get() calls to check the new
+// value.
+//
+// This signal supports detailed connections. You can connect to the detailed
+// signal "changed::x" in order to only receive callbacks when key "x" changes.
+//
+// Note that settings only emits this signal if you have read key at least once
+// while a signal handler was already connected for key.
+func (s *Settings) ConnectChanged(f func(key string)) glib.SignalHandle {
+	return s.Connect("changed", f)
+}
+
+// ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
+// per writability change event that affects this settings object. You should
+// connect to this signal if you are interested in viewing groups of changes
+// before they are split out into multiple emissions of the "writable-changed"
+// signal. For most use cases it is more appropriate to use the
+// "writable-changed" signal.
+//
+// In the event that the writability change applies only to a single key, key
+// will be set to the #GQuark for that key. In the event that the writability
+// change affects the entire settings object, key will be 0.
+//
+// The default handler for this signal invokes the "writable-changed" and
+// "changed" signals for each affected key. This is done because changes in
+// writability might also imply changes in value (if for example, a new
+// mandatory setting is introduced). If any other connected handler returns TRUE
+// then this default functionality will be suppressed.
+func (s *Settings) ConnectWritableChangeEvent(f func(key uint) bool) glib.SignalHandle {
+	return s.Connect("writable-change-event", f)
+}
+
+// ConnectWritableChanged: "writable-changed" signal is emitted when the
+// writability of a key has potentially changed. You should call
+// g_settings_is_writable() in order to determine the new status.
+//
+// This signal supports detailed connections. You can connect to the detailed
+// signal "writable-changed::x" in order to only receive callbacks when the
+// writability of "x" changes.
+func (s *Settings) ConnectWritableChanged(f func(key string)) glib.SignalHandle {
+	return s.Connect("writable-changed", f)
+}
+
 // SettingsListRelocatableSchemas: deprecated.
 //
 // Deprecated: Use g_settings_schema_source_list_schemas() instead.

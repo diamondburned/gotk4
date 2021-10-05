@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config: gtk4
@@ -325,4 +326,20 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
+}
+
+// ConnectApplicationActivated: emitted when an application item is activated
+// from the widget's list.
+//
+// This usually happens when the user double clicks an item, or an item is
+// selected and the user presses one of the keys Space, Shift+Space, Return or
+// Enter.
+func (a *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) glib.SignalHandle {
+	return a.Connect("application-activated", f)
+}
+
+// ConnectApplicationSelected: emitted when an application item is selected from
+// the widget's list.
+func (a *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) glib.SignalHandle {
+	return a.Connect("application-selected", f)
 }

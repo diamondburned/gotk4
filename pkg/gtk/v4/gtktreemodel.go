@@ -1112,6 +1112,49 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	runtime.KeepAlive(iter)
 }
 
+// ConnectRowChanged: this signal is emitted when a row in the model has
+// changed.
+func (t *TreeModel) ConnectRowChanged(f func(path *TreePath, iter TreeIter)) glib.SignalHandle {
+	return t.Connect("row-changed", f)
+}
+
+// ConnectRowDeleted: this signal is emitted when a row has been deleted.
+//
+// Note that no iterator is passed to the signal handler, since the row is
+// already deleted.
+//
+// This should be called by models after a row has been removed. The location
+// pointed to by path should be the location that the row previously was at. It
+// may not be a valid location anymore.
+func (t *TreeModel) ConnectRowDeleted(f func(path *TreePath)) glib.SignalHandle {
+	return t.Connect("row-deleted", f)
+}
+
+// ConnectRowHasChildToggled: this signal is emitted when a row has gotten the
+// first child row or lost its last child row.
+func (t *TreeModel) ConnectRowHasChildToggled(f func(path *TreePath, iter TreeIter)) glib.SignalHandle {
+	return t.Connect("row-has-child-toggled", f)
+}
+
+// ConnectRowInserted: this signal is emitted when a new row has been inserted
+// in the model.
+//
+// Note that the row may still be empty at this point, since it is a common
+// pattern to first insert an empty row, and then fill it with the desired
+// values.
+func (t *TreeModel) ConnectRowInserted(f func(path *TreePath, iter TreeIter)) glib.SignalHandle {
+	return t.Connect("row-inserted", f)
+}
+
+// ConnectRowsReordered: this signal is emitted when the children of a node in
+// the TreeModel have been reordered.
+//
+// Note that this signal is not emitted when rows are reordered by DND, since
+// this is implemented by removing and then reinserting the row.
+func (t *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter TreeIter, newOrder cgo.Handle)) glib.SignalHandle {
+	return t.Connect("rows-reordered", f)
+}
+
 // TreeIter is the primary structure for accessing a TreeModel. Models are
 // expected to put a unique integer in the stamp member, and put model-specific
 // data in the three user_data members.

@@ -362,3 +362,20 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
+
+// ConnectActivate: emitted to when the check button is activated.
+//
+// The ::activate signal on GtkCheckButton is an action signal and emitting it
+// causes the button to animate press then release.
+//
+// Applications should never connect to this signal, but use the
+// gtk.CheckButton::toggled signal.
+func (c *CheckButton) ConnectActivate(f func()) glib.SignalHandle {
+	return c.Connect("activate", f)
+}
+
+// ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
+// changes.
+func (c *CheckButton) ConnectToggled(f func()) glib.SignalHandle {
+	return c.Connect("toggled", f)
+}

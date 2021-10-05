@@ -946,3 +946,54 @@ func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(flags)
 }
+
+// ConnectEvent: emitted when client's activity on connectable changes state.
+// Among other things, this can be used to provide progress information about a
+// network connection in the UI. The meanings of the different event values are
+// as follows:
+//
+// - G_SOCKET_CLIENT_RESOLVING: client is about to look up connectable in DNS.
+// connection will be NULL.
+//
+// - G_SOCKET_CLIENT_RESOLVED: client has successfully resolved connectable in
+// DNS. connection will be NULL.
+//
+// - G_SOCKET_CLIENT_CONNECTING: client is about to make a connection to a
+// remote host; either a proxy server or the destination server itself.
+// connection is the Connection, which is not yet connected. Since GLib 2.40,
+// you can access the remote address via
+// g_socket_connection_get_remote_address().
+//
+// - G_SOCKET_CLIENT_CONNECTED: client has successfully connected to a remote
+// host. connection is the connected Connection.
+//
+// - G_SOCKET_CLIENT_PROXY_NEGOTIATING: client is about to negotiate with a
+// proxy to get it to connect to connectable. connection is the Connection to
+// the proxy server.
+//
+// - G_SOCKET_CLIENT_PROXY_NEGOTIATED: client has negotiated a connection to
+// connectable through a proxy server. connection is the stream returned from
+// g_proxy_connect(), which may or may not be a Connection.
+//
+// - G_SOCKET_CLIENT_TLS_HANDSHAKING: client is about to begin a TLS handshake.
+// connection is a ClientConnection.
+//
+// - G_SOCKET_CLIENT_TLS_HANDSHAKED: client has successfully completed the TLS
+// handshake. connection is a ClientConnection.
+//
+// - G_SOCKET_CLIENT_COMPLETE: client has either successfully connected to
+// connectable (in which case connection is the Connection that it will be
+// returning to the caller) or has failed (in which case connection is NULL and
+// the client is about to return an error).
+//
+// Each event except G_SOCKET_CLIENT_COMPLETE may be emitted multiple times (or
+// not at all) for a given connectable (in particular, if client ends up
+// attempting to connect to more than one address). However, if client emits the
+// Client::event signal at all for a given connectable, then it will always emit
+// it with G_SOCKET_CLIENT_COMPLETE when it is done.
+//
+// Note that there may be additional ClientEvent values in the future;
+// unrecognized event values should be ignored.
+func (s *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) glib.SignalHandle {
+	return s.Connect("event", f)
+}

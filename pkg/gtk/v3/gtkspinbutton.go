@@ -651,3 +651,50 @@ func (spinButton *SpinButton) Update() {
 	C.gtk_spin_button_update(_arg0)
 	runtime.KeepAlive(spinButton)
 }
+
+// ConnectChangeValue signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a value change.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal are Up/Down and PageUp and/PageDown.
+func (s *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) glib.SignalHandle {
+	return s.Connect("change-value", f)
+}
+
+// ConnectOutput signal can be used to change to formatting of the value that is
+// displayed in the spin buttons entry.
+//
+//    // show leading zeros
+//    static gboolean
+//    on_output (GtkSpinButton *spin,
+//               gpointer       data)
+//    {
+//       GtkAdjustment *adjustment;
+//       gchar *text;
+//       int value;
+//
+//       adjustment = gtk_spin_button_get_adjustment (spin);
+//       value = (int)gtk_adjustment_get_value (adjustment);
+//       text = g_strdup_printf ("02d", value);
+//       gtk_entry_set_text (GTK_ENTRY (spin), text);
+//       g_free (text);
+//
+//       return TRUE;
+//    }.
+func (s *SpinButton) ConnectOutput(f func() bool) glib.SignalHandle {
+	return s.Connect("output", f)
+}
+
+// ConnectValueChanged signal is emitted when the value represented by
+// spinbutton changes. Also see the SpinButton::output signal.
+func (s *SpinButton) ConnectValueChanged(f func()) glib.SignalHandle {
+	return s.Connect("value-changed", f)
+}
+
+// ConnectWrapped signal is emitted right after the spinbutton wraps from its
+// maximum to minimum value or vice-versa.
+func (s *SpinButton) ConnectWrapped(f func()) glib.SignalHandle {
+	return s.Connect("wrapped", f)
+}

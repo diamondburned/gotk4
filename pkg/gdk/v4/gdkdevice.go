@@ -531,6 +531,23 @@ func (device *Device) HasBidiLayouts() bool {
 	return _ok
 }
 
+// ConnectChanged: emitted either when the the number of either axes or keys
+// changes.
+//
+// On X11 this will normally happen when the physical device routing events
+// through the logical device changes (for example, user switches from the USB
+// mouse to a tablet); in that case the logical device will change to reflect
+// the axes and keys on the new physical device.
+func (d *Device) ConnectChanged(f func()) glib.SignalHandle {
+	return d.Connect("changed", f)
+}
+
+// ConnectToolChanged: emitted on pen/eraser devices whenever tools enter or
+// leave proximity.
+func (d *Device) ConnectToolChanged(f func(tool DeviceTool)) glib.SignalHandle {
+	return d.Connect("tool-changed", f)
+}
+
 // TimeCoord stores a single event in a motion history.
 //
 // An instance of this type is always passed by reference.

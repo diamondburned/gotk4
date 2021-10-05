@@ -916,6 +916,26 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	runtime.KeepAlive(info)
 }
 
+// ConnectGPropertiesChanged: emitted when one or more D-Bus properties on proxy
+// changes. The local cache has already been updated when this signal fires.
+// Note that both changed_properties and invalidated_properties are guaranteed
+// to never be NULL (either may be empty though).
+//
+// If the proxy has the flag G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set,
+// then invalidated_properties will always be empty.
+//
+// This signal corresponds to the PropertiesChanged D-Bus signal on the
+// org.freedesktop.DBus.Properties interface.
+func (d *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) glib.SignalHandle {
+	return d.Connect("g-properties-changed", f)
+}
+
+// ConnectGSignal: emitted when a signal from the remote object and interface
+// that proxy is for, has been received.
+func (d *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) glib.SignalHandle {
+	return d.Connect("g-signal", f)
+}
+
 // NewDBusProxy creates a proxy for accessing interface_name on the remote
 // object at object_path owned by name at connection and asynchronously loads
 // D-Bus properties unless the G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is

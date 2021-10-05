@@ -486,3 +486,40 @@ func (area *GLArea) SetUseES(useEs bool) {
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
 }
+
+// ConnectCreateContext: emitted when the widget is being realized.
+//
+// This allows you to override how the GL context is created. This is useful
+// when you want to reuse an existing GL context, or if you want to try creating
+// different kinds of GL options.
+//
+// If context creation fails then the signal handler can use
+// gtk.GLArea.SetError() to register a more detailed error of how the
+// construction failed.
+func (g *GLArea) ConnectCreateContext(f func() gdk.GLContexter) glib.SignalHandle {
+	return g.Connect("create-context", f)
+}
+
+// ConnectRender: emitted every time the contents of the GtkGLArea should be
+// redrawn.
+//
+// The context is bound to the area prior to emitting this function, and the
+// buffers are painted to the window once the emission terminates.
+func (g *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) glib.SignalHandle {
+	return g.Connect("render", f)
+}
+
+// ConnectResize: emitted once when the widget is realized, and then each time
+// the widget is changed while realized.
+//
+// This is useful in order to keep GL state up to date with the widget size,
+// like for instance camera properties which may depend on the width/height
+// ratio.
+//
+// The GL context for the area is guaranteed to be current when this signal is
+// emitted.
+//
+// The default handler sets up the GL viewport.
+func (g *GLArea) ConnectResize(f func(width, height int)) glib.SignalHandle {
+	return g.Connect("resize", f)
+}

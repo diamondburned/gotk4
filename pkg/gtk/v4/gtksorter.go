@@ -235,3 +235,17 @@ func (self *Sorter) Order() SorterOrder {
 
 	return _sorterOrder
 }
+
+// ConnectChanged: emitted whenever the sorter changed.
+//
+// Users of the sorter should then update the sort order again via
+// gtk_sorter_compare().
+//
+// gtk.SortListModel handles this signal automatically.
+//
+// Depending on the change parameter, it may be possible to update the sort
+// order without a full resorting. Refer to the gtk.SorterChange documentation
+// for details.
+func (s *Sorter) ConnectChanged(f func(change SorterChange)) glib.SignalHandle {
+	return s.Connect("changed", f)
+}

@@ -151,6 +151,11 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	runtime.KeepAlive(display)
 }
 
+// ConnectDisplayOpened signal is emitted when a display is opened.
+func (d *DisplayManager) ConnectDisplayOpened(f func(display Display)) glib.SignalHandle {
+	return d.Connect("display-opened", f)
+}
+
 // DisplayManagerGet gets the singleton DisplayManager object.
 //
 // When called for the first time, this function consults the GDK_BACKEND

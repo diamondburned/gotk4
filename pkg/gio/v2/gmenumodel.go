@@ -874,3 +874,25 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 
 	return _menuLinkIter
 }
+
+// ConnectItemsChanged: emitted when a change has occurred to the menu.
+//
+// The only changes that can occur to a menu is that items are removed or added.
+// Items may not change (except by being removed and added back in the same
+// location). This signal is capable of describing both of those changes (at the
+// same time).
+//
+// The signal means that starting at the index position, removed items were
+// removed and added items were added in their place. If removed is zero then
+// only items were added. If added is zero then only items were removed.
+//
+// As an example, if the menu contains items a, b, c, d (in that order) and the
+// signal (2, 1, 3) occurs then the new composition of the menu will be a, b, _,
+// _, _, d (with each _ representing some new item).
+//
+// Signal handlers may query the model (particularly the added items) and expect
+// to see the results of the modification that is being reported. The signal is
+// emitted after the modification.
+func (m *MenuModel) ConnectItemsChanged(f func(position, removed, added int)) glib.SignalHandle {
+	return m.Connect("items-changed", f)
+}

@@ -919,3 +919,11 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(wrapLicense)
 }
+
+// ConnectActivateLink: emitted every time a URL is activated.
+//
+// Applications may connect to it to override the default behaviour, which is to
+// call gtk.ShowURI().
+func (a *AboutDialog) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
+	return a.Connect("activate-link", f)
+}

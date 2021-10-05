@@ -930,6 +930,12 @@ func (resolver *Resolver) SetDefault() {
 	runtime.KeepAlive(resolver)
 }
 
+// ConnectReload: emitted when the resolver notices that the system resolver
+// configuration has changed.
+func (r *Resolver) ConnectReload(f func()) glib.SignalHandle {
+	return r.Connect("reload", f)
+}
+
 // ResolverGetDefault gets the default #GResolver. You should unref it when you
 // are done with it. #GResolver may use its reference count as a hint about how
 // many threads it should allocate for concurrent DNS resolutions.

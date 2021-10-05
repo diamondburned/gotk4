@@ -841,3 +841,10 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(wrapLicense)
 }
+
+// ConnectActivateLink: signal which gets emitted to activate a URI.
+// Applications may connect to it to override the default behaviour, which is to
+// call gtk_show_uri_on_window().
+func (a *AboutDialog) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
+	return a.Connect("activate-link", f)
+}

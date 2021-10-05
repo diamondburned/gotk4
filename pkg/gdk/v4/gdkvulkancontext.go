@@ -65,3 +65,12 @@ func marshalVulkanContexter(p uintptr) (interface{}, error) {
 }
 
 func (*VulkanContext) privateVulkanContext() {}
+
+// ConnectImagesUpdated: emitted when the images managed by this context have
+// changed.
+//
+// Usually this means that the swapchain had to be recreated, for example in
+// response to a change of the surface size.
+func (v *VulkanContext) ConnectImagesUpdated(f func()) glib.SignalHandle {
+	return v.Connect("images-updated", f)
+}

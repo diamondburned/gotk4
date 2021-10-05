@@ -522,3 +522,9 @@ func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(transitionsEnabled)
 }
+
+// ConnectClosed: this signal is emitted when the popover is dismissed either
+// through API or user interaction.
+func (p *Popover) ConnectClosed(f func()) glib.SignalHandle {
+	return p.Connect("closed", f)
+}

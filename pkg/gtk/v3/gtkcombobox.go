@@ -866,3 +866,69 @@ func (comboBox *ComboBox) SetWrapWidth(width int) {
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(width)
 }
+
+// ConnectChanged signal is emitted when the active item is changed. The can be
+// due to the user selecting a different item from the list, or due to a call to
+// gtk_combo_box_set_active_iter(). It will also be emitted while typing into
+// the entry of a combo box with an entry.
+func (c *ComboBox) ConnectChanged(f func()) glib.SignalHandle {
+	return c.Connect("changed", f)
+}
+
+// ConnectFormatEntryText: for combo boxes that are created with an entry (See
+// GtkComboBox:has-entry).
+//
+// A signal which allows you to change how the text displayed in a combo box's
+// entry is displayed.
+//
+// Connect a signal handler which returns an allocated string representing path.
+// That string will then be used to set the text in the combo box's entry. The
+// default signal handler uses the text from the GtkComboBox::entry-text-column
+// model column.
+//
+// Here's an example signal handler which fetches data from the model and
+// displays it in the entry.
+//
+//    static gchar*
+//    format_entry_text_callback (GtkComboBox *combo,
+//                                const gchar *path,
+//                                gpointer     user_data)
+//    {
+//      GtkTreeIter iter;
+//      GtkTreeModel model;
+//      gdouble      value;
+//
+//      model = gtk_combo_box_get_model (combo);
+//
+//      gtk_tree_model_get_iter_from_string (model, &iter, path);
+//      gtk_tree_model_get (model, &iter,
+//                          THE_DOUBLE_VALUE_COLUMN, &value,
+//                          -1);
+//
+//      return g_strdup_printf ("g", value);
+//    }.
+func (c *ComboBox) ConnectFormatEntryText(f func(path string) string) glib.SignalHandle {
+	return c.Connect("format-entry-text", f)
+}
+
+// ConnectMoveActive signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to move the active selection.
+func (c *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) glib.SignalHandle {
+	return c.Connect("move-active", f)
+}
+
+// ConnectPopdown signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to popdown the combo box list.
+//
+// The default bindings for this signal are Alt+Up and Escape.
+func (c *ComboBox) ConnectPopdown(f func() bool) glib.SignalHandle {
+	return c.Connect("popdown", f)
+}
+
+// ConnectPopup signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to popup the combo box list.
+//
+// The default binding for this signal is Alt+Down.
+func (c *ComboBox) ConnectPopup(f func()) glib.SignalHandle {
+	return c.Connect("popup", f)
+}

@@ -197,3 +197,13 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)
 }
+
+// ConnectColorActivated: emitted when a color is activated from the color
+// chooser.
+//
+// This usually happens when the user clicks a color swatch, or a color is
+// selected and the user presses one of the keys Space, Shift+Space, Return or
+// Enter.
+func (c *ColorChooser) ConnectColorActivated(f func(color gdk.RGBA)) glib.SignalHandle {
+	return c.Connect("color-activated", f)
+}

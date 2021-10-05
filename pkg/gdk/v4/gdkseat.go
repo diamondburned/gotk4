@@ -284,3 +284,29 @@ func (seat *Seat) Tools() []DeviceTool {
 
 	return _list
 }
+
+// ConnectDeviceAdded: emitted when a new input device is related to this seat.
+func (s *Seat) ConnectDeviceAdded(f func(device Devicer)) glib.SignalHandle {
+	return s.Connect("device-added", f)
+}
+
+// ConnectDeviceRemoved: emitted when an input device is removed (e.g.
+// unplugged).
+func (s *Seat) ConnectDeviceRemoved(f func(device Devicer)) glib.SignalHandle {
+	return s.Connect("device-removed", f)
+}
+
+// ConnectToolAdded: emitted whenever a new tool is made known to the seat.
+//
+// The tool may later be assigned to a device (i.e. on proximity with a tablet).
+// The device will emit the [signalGdkDevice::tool-changed] signal accordingly.
+//
+// A same tool may be used by several devices.
+func (s *Seat) ConnectToolAdded(f func(tool DeviceTool)) glib.SignalHandle {
+	return s.Connect("tool-added", f)
+}
+
+// ConnectToolRemoved: emitted whenever a tool is no longer known to this seat.
+func (s *Seat) ConnectToolRemoved(f func(tool DeviceTool)) glib.SignalHandle {
+	return s.Connect("tool-removed", f)
+}

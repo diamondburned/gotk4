@@ -75,3 +75,18 @@ func NewCellRendererCombo() *CellRendererCombo {
 }
 
 func (*CellRendererCombo) privateCellRendererCombo() {}
+
+// ConnectChanged: this signal is emitted each time after the user selected an
+// item in the combo box, either by using the mouse or the arrow keys. Contrary
+// to GtkComboBox, GtkCellRendererCombo::changed is not emitted for changes made
+// to a selected item in the entry. The argument new_iter corresponds to the
+// newly selected item in the combo box and it is relative to the GtkTreeModel
+// set via the model property on GtkCellRendererCombo.
+//
+// Note that as soon as you change the model displayed in the tree view, the
+// tree view will immediately cease the editing operating. This means that you
+// most probably want to refrain from changing the model until the combo cell
+// renderer emits the edited or editing_canceled signal.
+func (c *CellRendererCombo) ConnectChanged(f func(pathString string, newIter TreeIter)) glib.SignalHandle {
+	return c.Connect("changed", f)
+}

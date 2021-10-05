@@ -500,3 +500,11 @@ func (selection *TreeSelection) UnselectRange(startPath *TreePath, endPath *Tree
 	runtime.KeepAlive(startPath)
 	runtime.KeepAlive(endPath)
 }
+
+// ConnectChanged: emitted whenever the selection has (possibly) changed. Please
+// note that this signal is mostly a hint. It may only be emitted once when a
+// range of rows are selected, and it may occasionally be emitted when nothing
+// has happened.
+func (t *TreeSelection) ConnectChanged(f func()) glib.SignalHandle {
+	return t.Connect("changed", f)
+}

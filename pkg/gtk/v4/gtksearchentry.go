@@ -183,3 +183,57 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(widget)
 }
+
+// ConnectActivate: emitted when the entry is activated.
+//
+// The keybindings for this signal are all forms of the Enter key.
+func (s *SearchEntry) ConnectActivate(f func()) glib.SignalHandle {
+	return s.Connect("activate", f)
+}
+
+// ConnectNextMatch: emitted when the user initiates a move to the next match
+// for the current search string.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// Applications should connect to it, to implement moving between matches.
+//
+// The default bindings for this signal is Ctrl-g.
+func (s *SearchEntry) ConnectNextMatch(f func()) glib.SignalHandle {
+	return s.Connect("next-match", f)
+}
+
+// ConnectPreviousMatch: emitted when the user initiates a move to the previous
+// match for the current search string.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// Applications should connect to it, to implement moving between matches.
+//
+// The default bindings for this signal is Ctrl-Shift-g.
+func (s *SearchEntry) ConnectPreviousMatch(f func()) glib.SignalHandle {
+	return s.Connect("previous-match", f)
+}
+
+// ConnectSearchChanged: emitted with a short delay of 150 milliseconds after
+// the last change to the entry text.
+func (s *SearchEntry) ConnectSearchChanged(f func()) glib.SignalHandle {
+	return s.Connect("search-changed", f)
+}
+
+// ConnectSearchStarted: emitted when the user initiated a search on the entry.
+func (s *SearchEntry) ConnectSearchStarted(f func()) glib.SignalHandle {
+	return s.Connect("search-started", f)
+}
+
+// ConnectStopSearch: emitted when the user stops a search via keyboard input.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// Applications should connect to it, to implement hiding the search entry in
+// this case.
+//
+// The default bindings for this signal is Escape.
+func (s *SearchEntry) ConnectStopSearch(f func()) glib.SignalHandle {
+	return s.Connect("stop-search", f)
+}

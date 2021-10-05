@@ -871,3 +871,47 @@ func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
 	C.gtk_scrolled_window_unset_placement(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 }
+
+// ConnectEdgeOvershot signal is emitted whenever user initiated scrolling makes
+// the scrolled window firmly surpass (i.e. with some edge resistance) the lower
+// or upper limits defined by the adjustment in that orientation.
+//
+// A similar behavior without edge resistance is provided by the
+// ScrolledWindow::edge-reached signal.
+//
+// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
+// intending to provide behavior on horizontal edges.
+func (s *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) glib.SignalHandle {
+	return s.Connect("edge-overshot", f)
+}
+
+// ConnectEdgeReached signal is emitted whenever user-initiated scrolling makes
+// the scrolled window exactly reach the lower or upper limits defined by the
+// adjustment in that orientation.
+//
+// A similar behavior with edge resistance is provided by the
+// ScrolledWindow::edge-overshot signal.
+//
+// Note: The pos argument is LTR/RTL aware, so callers should be aware too if
+// intending to provide behavior on horizontal edges.
+func (s *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) glib.SignalHandle {
+	return s.Connect("edge-reached", f)
+}
+
+// ConnectMoveFocusOut signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when focus is moved away from the scrolled window by a
+// keybinding. The Widget::move-focus signal is emitted with direction_type on
+// this scrolled window’s toplevel parent in the container hierarchy. The
+// default bindings for this signal are Ctrl + Tab to move forward and Ctrl +
+// Shift + Tab to move backward.
+func (s *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) glib.SignalHandle {
+	return s.Connect("move-focus-out", f)
+}
+
+// ConnectScrollChild signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when a keybinding that scrolls is pressed. The horizontal or
+// vertical adjustment is updated which triggers a signal that the scrolled
+// window’s child may listen to and scroll itself.
+func (s *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) glib.SignalHandle {
+	return s.Connect("scroll-child", f)
+}

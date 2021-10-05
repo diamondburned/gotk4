@@ -304,3 +304,10 @@ func (sortable *TreeSortable) SortColumnChanged() {
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
 	runtime.KeepAlive(sortable)
 }
+
+// ConnectSortColumnChanged signal is emitted when the sort column or sort order
+// of sortable is changed. The signal is emitted before the contents of sortable
+// are resorted.
+func (t *TreeSortable) ConnectSortColumnChanged(f func()) glib.SignalHandle {
+	return t.Connect("sort-column-changed", f)
+}

@@ -437,3 +437,52 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)
 }
+
+// ConnectActivateCurrent: action signal that activates the current menu item
+// within the menu shell.
+func (m *MenuShell) ConnectActivateCurrent(f func(forceHide bool)) glib.SignalHandle {
+	return m.Connect("activate-current", f)
+}
+
+// ConnectCancel: action signal which cancels the selection within the menu
+// shell. Causes the MenuShell::selection-done signal to be emitted.
+func (m *MenuShell) ConnectCancel(f func()) glib.SignalHandle {
+	return m.Connect("cancel", f)
+}
+
+// ConnectCycleFocus: keybinding signal which moves the focus in the given
+// direction.
+func (m *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) glib.SignalHandle {
+	return m.Connect("cycle-focus", f)
+}
+
+// ConnectDeactivate: this signal is emitted when a menu shell is deactivated.
+func (m *MenuShell) ConnectDeactivate(f func()) glib.SignalHandle {
+	return m.Connect("deactivate", f)
+}
+
+// ConnectInsert signal is emitted when a new MenuItem is added to a MenuShell.
+// A separate signal is used instead of GtkContainer::add because of the need
+// for an additional position parameter.
+//
+// The inverse of this signal is the GtkContainer::removed signal.
+func (m *MenuShell) ConnectInsert(f func(child Widgetter, position int)) glib.SignalHandle {
+	return m.Connect("insert", f)
+}
+
+// ConnectMoveCurrent: keybinding signal which moves the current menu item in
+// the direction specified by direction.
+func (m *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) glib.SignalHandle {
+	return m.Connect("move-current", f)
+}
+
+// ConnectMoveSelected signal is emitted to move the selection to another item.
+func (m *MenuShell) ConnectMoveSelected(f func(distance int) bool) glib.SignalHandle {
+	return m.Connect("move-selected", f)
+}
+
+// ConnectSelectionDone: this signal is emitted when a selection has been
+// completed within a menu shell.
+func (m *MenuShell) ConnectSelectionDone(f func()) glib.SignalHandle {
+	return m.Connect("selection-done", f)
+}

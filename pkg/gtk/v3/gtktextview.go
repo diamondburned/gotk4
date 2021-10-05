@@ -1808,3 +1808,164 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX int, 
 
 	return _bufferX, _bufferY
 }
+
+// ConnectBackspace signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user asks for it.
+//
+// The default bindings for this signal are Backspace and Shift-Backspace.
+func (t *TextView) ConnectBackspace(f func()) glib.SignalHandle {
+	return t.Connect("backspace", f)
+}
+
+// ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to copy the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-c and Ctrl-Insert.
+func (t *TextView) ConnectCopyClipboard(f func()) glib.SignalHandle {
+	return t.Connect("copy-clipboard", f)
+}
+
+// ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to cut the selection to the clipboard.
+//
+// The default bindings for this signal are Ctrl-x and Shift-Delete.
+func (t *TextView) ConnectCutClipboard(f func()) glib.SignalHandle {
+	return t.Connect("cut-clipboard", f)
+}
+
+// ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when the user initiates a text deletion.
+//
+// If the type is GTK_DELETE_CHARS, GTK+ deletes the selection if there is one,
+// otherwise it deletes the requested number of characters.
+//
+// The default bindings for this signal are Delete for deleting a character,
+// Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word
+// backwords.
+func (t *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) glib.SignalHandle {
+	return t.Connect("delete-from-cursor", f)
+}
+
+// ConnectExtendSelection signal is emitted when the selection needs to be
+// extended at location.
+func (t *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end TextIter) bool) glib.SignalHandle {
+	return t.Connect("extend-selection", f)
+}
+
+// ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates the insertion of a fixed string at the
+// cursor.
+//
+// This signal has no default bindings.
+func (t *TextView) ConnectInsertAtCursor(f func(_string string)) glib.SignalHandle {
+	return t.Connect("insert-at-cursor", f)
+}
+
+// ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to present the Emoji chooser for the text_view.
+//
+// The default bindings for this signal are Ctrl-. and Ctrl-;.
+func (t *TextView) ConnectInsertEmoji(f func()) glib.SignalHandle {
+	return t.Connect("insert-emoji", f)
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement. If the cursor is not
+// visible in text_view, this signal causes the viewport to be moved instead.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual characters/lines
+//
+// - Ctrl-arrow key combinations move by words/paragraphs
+//
+// - Home/End keys move to the ends of the buffer
+//
+// - PageUp/PageDown keys move vertically by pages
+//
+// - Ctrl-PageUp/PageDown keys move horizontally by pages.
+func (t *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) glib.SignalHandle {
+	return t.Connect("move-cursor", f)
+}
+
+// ConnectMoveViewport signal is a [keybinding signal][GtkBindingSignal] which
+// can be bound to key combinations to allow the user to move the viewport, i.e.
+// change what part of the text view is visible in a containing scrolled window.
+//
+// There are no default bindings for this signal.
+func (t *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) glib.SignalHandle {
+	return t.Connect("move-viewport", f)
+}
+
+// ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted to paste the contents of the clipboard into the text view.
+//
+// The default bindings for this signal are Ctrl-v and Shift-Insert.
+func (t *TextView) ConnectPasteClipboard(f func()) glib.SignalHandle {
+	return t.Connect("paste-clipboard", f)
+}
+
+// ConnectPopulatePopup signal gets emitted before showing the context menu of
+// the text view.
+//
+// If you need to add items to the context menu, connect to this signal and
+// append your items to the popup, which will be a Menu in this case.
+//
+// If TextView:populate-all is TRUE, this signal will also be emitted to
+// populate touch popups. In this case, popup will be a different container,
+// e.g. a Toolbar.
+//
+// The signal handler should not make assumptions about the type of widget, but
+// check whether popup is a Menu or Toolbar or another kind of container.
+func (t *TextView) ConnectPopulatePopup(f func(popup Widgetter)) glib.SignalHandle {
+	return t.Connect("populate-popup", f)
+}
+
+// ConnectPreeditChanged: if an input method is used, the typed text will not
+// immediately be committed to the buffer. So if you are interested in the text,
+// connect to this signal.
+//
+// This signal is only emitted if the text at the given position is actually
+// editable.
+func (t *TextView) ConnectPreeditChanged(f func(preedit string)) glib.SignalHandle {
+	return t.Connect("preedit-changed", f)
+}
+
+// ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted to select or unselect the complete contents of the text view.
+//
+// The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
+// Shift-Ctrl-a and Ctrl-\ for unselecting.
+func (t *TextView) ConnectSelectAll(f func(_select bool)) glib.SignalHandle {
+	return t.Connect("select-all", f)
+}
+
+// ConnectSetAnchor signal is a [keybinding signal][GtkBindingSignal] which gets
+// emitted when the user initiates setting the "anchor" mark. The "anchor" mark
+// gets placed at the same position as the "insert" mark.
+//
+// This signal has no default bindings.
+func (t *TextView) ConnectSetAnchor(f func()) glib.SignalHandle {
+	return t.Connect("set-anchor", f)
+}
+
+// ConnectToggleCursorVisible signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to toggle the TextView:cursor-visible property.
+//
+// The default binding for this signal is F7.
+func (t *TextView) ConnectToggleCursorVisible(f func()) glib.SignalHandle {
+	return t.Connect("toggle-cursor-visible", f)
+}
+
+// ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted to toggle the overwrite mode of the text view.
+//
+// The default bindings for this signal is Insert.
+func (t *TextView) ConnectToggleOverwrite(f func()) glib.SignalHandle {
+	return t.Connect("toggle-overwrite", f)
+}

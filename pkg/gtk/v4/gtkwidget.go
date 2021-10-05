@@ -4782,6 +4782,116 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	runtime.KeepAlive(flags)
 }
 
+// ConnectDestroy signals that all holders of a reference to the widget should
+// release the reference that they hold.
+//
+// May result in finalization of the widget if all references are released.
+//
+// This signal is not suitable for saving widget state.
+func (w *Widget) ConnectDestroy(f func()) glib.SignalHandle {
+	return w.Connect("destroy", f)
+}
+
+// ConnectDirectionChanged: emitted when the text direction of a widget changes.
+func (w *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) glib.SignalHandle {
+	return w.Connect("direction-changed", f)
+}
+
+// ConnectHide: emitted when widget is hidden.
+func (w *Widget) ConnectHide(f func()) glib.SignalHandle {
+	return w.Connect("hide", f)
+}
+
+// ConnectKeynavFailed: emitted if keyboard navigation fails.
+//
+// See gtk.Widget.KeynavFailed() for details.
+func (w *Widget) ConnectKeynavFailed(f func(direction DirectionType) bool) glib.SignalHandle {
+	return w.Connect("keynav-failed", f)
+}
+
+// ConnectMap: emitted when widget is going to be mapped.
+//
+// A widget is mapped when the widget is visible (which is controlled with
+// gtk.Widget:visible) and all its parents up to the toplevel widget are also
+// visible.
+//
+// The ::map signal can be used to determine whether a widget will be drawn, for
+// instance it can resume an animation that was stopped during the emission of
+// gtk.Widget::unmap.
+func (w *Widget) ConnectMap(f func()) glib.SignalHandle {
+	return w.Connect("map", f)
+}
+
+// ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
+//
+// The default handler for this signal activates widget if group_cycling is
+// FALSE, or just makes widget grab focus if group_cycling is TRUE.
+func (w *Widget) ConnectMnemonicActivate(f func(groupCycling bool) bool) glib.SignalHandle {
+	return w.Connect("mnemonic-activate", f)
+}
+
+// ConnectMoveFocus: emitted when the focus is moved.
+func (w *Widget) ConnectMoveFocus(f func(direction DirectionType)) glib.SignalHandle {
+	return w.Connect("move-focus", f)
+}
+
+// ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
+//
+// This happens when the gtk.Widget:has-tooltip property is TRUE and the hover
+// timeout has expired with the cursor hovering "above" widget; or emitted when
+// widget got focus in keyboard mode.
+//
+// Using the given coordinates, the signal handler should determine whether a
+// tooltip should be shown for widget. If this is the case TRUE should be
+// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
+// x and y are undefined and should not be used.
+//
+// The signal handler is free to manipulate tooltip with the therefore destined
+// function calls.
+func (w *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) glib.SignalHandle {
+	return w.Connect("query-tooltip", f)
+}
+
+// ConnectRealize: emitted when widget is associated with a GdkSurface.
+//
+// This means that gtk.Widget.Realize() has been called or the widget has been
+// mapped (that is, it is going to be drawn).
+func (w *Widget) ConnectRealize(f func()) glib.SignalHandle {
+	return w.Connect("realize", f)
+}
+
+// ConnectShow: emitted when widget is shown.
+func (w *Widget) ConnectShow(f func()) glib.SignalHandle {
+	return w.Connect("show", f)
+}
+
+// ConnectStateFlagsChanged: emitted when the widget state changes.
+//
+// See gtk.Widget.GetStateFlags().
+func (w *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) glib.SignalHandle {
+	return w.Connect("state-flags-changed", f)
+}
+
+// ConnectUnmap: emitted when widget is going to be unmapped.
+//
+// A widget is unmapped when either it or any of its parents up to the toplevel
+// widget have been set as hidden.
+//
+// As ::unmap indicates that a widget will not be shown any longer, it can be
+// used to, for example, stop an animation on the widget.
+func (w *Widget) ConnectUnmap(f func()) glib.SignalHandle {
+	return w.Connect("unmap", f)
+}
+
+// ConnectUnrealize: emitted when the GdkSurface associated with widget is
+// destroyed.
+//
+// This means that gtk.Widget.Unrealize() has been called or the widget has been
+// unmapped (that is, it is going to be hidden).
+func (w *Widget) ConnectUnrealize(f func()) glib.SignalHandle {
+	return w.Connect("unrealize", f)
+}
+
 // WidgetGetDefaultDirection obtains the current default reading direction.
 //
 // See gtk.Widget().SetDefaultDirection.

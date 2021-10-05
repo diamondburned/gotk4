@@ -1547,3 +1547,19 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)
 }
+
+// ConnectLaunchFailed signal is emitted when a Info launch fails. The startup
+// notification id is provided, so that the launcher can cancel the startup
+// notification.
+func (a *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId string)) glib.SignalHandle {
+	return a.Connect("launch-failed", f)
+}
+
+// ConnectLaunched signal is emitted when a Info is successfully launched. The
+// platform_data is an GVariant dictionary mapping strings to variants (ie
+// a{sv}), which contains additional, platform-specific data about this launch.
+// On UNIX, at least the "pid" and "startup-notification-id" keys will be
+// present.
+func (a *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformData *glib.Variant)) glib.SignalHandle {
+	return a.Connect("launched", f)
+}

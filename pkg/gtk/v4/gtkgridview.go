@@ -346,3 +346,12 @@ func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
 }
+
+// ConnectActivate: emitted when a cell has been activated by the user, usually
+// via activating the GtkGridView|list.activate-item action.
+//
+// This allows for a convenient way to handle activation in a gridview. See
+// gtk.ListItem:activatable for details on how to use this signal.
+func (g *GridView) ConnectActivate(f func(position uint)) glib.SignalHandle {
+	return g.Connect("activate", f)
+}

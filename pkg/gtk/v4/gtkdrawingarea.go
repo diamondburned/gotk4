@@ -287,3 +287,12 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)
 }
+
+// ConnectResize: emitted once when the widget is realized, and then each time
+// the widget is changed while realized.
+//
+// This is useful in order to keep state up to date with the widget size, like
+// for instance a backing surface.
+func (d *DrawingArea) ConnectResize(f func(width, height int)) glib.SignalHandle {
+	return d.Connect("resize", f)
+}

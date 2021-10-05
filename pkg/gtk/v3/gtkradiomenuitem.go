@@ -344,3 +344,7 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []RadioMenuItem) {
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(group)
 }
+
+func (r *RadioMenuItem) ConnectGroupChanged(f func()) glib.SignalHandle {
+	return r.Connect("group-changed", f)
+}

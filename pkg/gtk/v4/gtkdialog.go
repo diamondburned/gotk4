@@ -549,3 +549,22 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
 }
+
+// ConnectClose: emitted when the user uses a keybinding to close the dialog.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is the Escape key.
+func (d *Dialog) ConnectClose(f func()) glib.SignalHandle {
+	return d.Connect("close", f)
+}
+
+// ConnectResponse: emitted when an action widget is clicked.
+//
+// The signal is also emitted when the dialog receives a delete event, and when
+// gtk.Dialog.Response() is called. On a delete event, the response ID is
+// GTK_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
+// clicked.
+func (d *Dialog) ConnectResponse(f func(responseId int)) glib.SignalHandle {
+	return d.Connect("response", f)
+}

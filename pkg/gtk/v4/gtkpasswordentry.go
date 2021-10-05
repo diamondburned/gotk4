@@ -201,3 +201,10 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(showPeekIcon)
 }
+
+// ConnectActivate: emitted when the entry is activated.
+//
+// The keybindings for this signal are all forms of the Enter key.
+func (p *PasswordEntry) ConnectActivate(f func()) glib.SignalHandle {
+	return p.Connect("activate", f)
+}

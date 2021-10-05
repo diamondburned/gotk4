@@ -1534,3 +1534,136 @@ func (buffer *TextBuffer) SetText(text string, len int) {
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(len)
 }
+
+// ConnectApplyTag signal is emitted to apply a tag to a range of text in a
+// TextBuffer. Applying actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them).
+//
+// See also: gtk_text_buffer_apply_tag(), gtk_text_buffer_insert_with_tags(),
+// gtk_text_buffer_insert_range().
+func (t *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
+	return t.Connect("apply-tag", f)
+}
+
+// ConnectBeginUserAction signal is emitted at the beginning of a single
+// user-visible operation on a TextBuffer.
+//
+// See also: gtk_text_buffer_begin_user_action(),
+// gtk_text_buffer_insert_interactive(),
+// gtk_text_buffer_insert_range_interactive(),
+// gtk_text_buffer_delete_interactive(), gtk_text_buffer_backspace(),
+// gtk_text_buffer_delete_selection().
+func (t *TextBuffer) ConnectBeginUserAction(f func()) glib.SignalHandle {
+	return t.Connect("begin-user-action", f)
+}
+
+// ConnectChanged signal is emitted when the content of a TextBuffer has
+// changed.
+func (t *TextBuffer) ConnectChanged(f func()) glib.SignalHandle {
+	return t.Connect("changed", f)
+}
+
+// ConnectDeleteRange signal is emitted to delete a range from a TextBuffer.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them). The default
+// signal handler revalidates the start and end iters to both point to the
+// location where text was deleted. Handlers which run after the default handler
+// (see g_signal_connect_after()) do not have access to the deleted text.
+//
+// See also: gtk_text_buffer_delete().
+func (t *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) glib.SignalHandle {
+	return t.Connect("delete-range", f)
+}
+
+// ConnectEndUserAction signal is emitted at the end of a single user-visible
+// operation on the TextBuffer.
+//
+// See also: gtk_text_buffer_end_user_action(),
+// gtk_text_buffer_insert_interactive(),
+// gtk_text_buffer_insert_range_interactive(),
+// gtk_text_buffer_delete_interactive(), gtk_text_buffer_backspace(),
+// gtk_text_buffer_delete_selection(), gtk_text_buffer_backspace().
+func (t *TextBuffer) ConnectEndUserAction(f func()) glib.SignalHandle {
+	return t.Connect("end-user-action", f)
+}
+
+// ConnectInsertChildAnchor signal is emitted to insert a TextChildAnchor in a
+// TextBuffer. Insertion actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to be placed after the inserted anchor.
+//
+// See also: gtk_text_buffer_insert_child_anchor().
+func (t *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor TextChildAnchor)) glib.SignalHandle {
+	return t.Connect("insert-child-anchor", f)
+}
+
+// ConnectInsertPixbuf signal is emitted to insert a Pixbuf in a TextBuffer.
+// Insertion actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to be placed after the inserted pixbuf.
+//
+// See also: gtk_text_buffer_insert_pixbuf().
+func (t *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf gdkpixbuf.Pixbuf)) glib.SignalHandle {
+	return t.Connect("insert-pixbuf", f)
+}
+
+// ConnectInsertText signal is emitted to insert text in a TextBuffer. Insertion
+// actually occurs in the default handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the location iter (or has to revalidate it). The default signal
+// handler revalidates it to point to the end of the inserted text.
+//
+// See also: gtk_text_buffer_insert(), gtk_text_buffer_insert_range().
+func (t *TextBuffer) ConnectInsertText(f func(location TextIter, text string, len int)) glib.SignalHandle {
+	return t.Connect("insert-text", f)
+}
+
+// ConnectMarkDeleted signal is emitted as notification after a TextMark is
+// deleted.
+//
+// See also: gtk_text_buffer_delete_mark().
+func (t *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) glib.SignalHandle {
+	return t.Connect("mark-deleted", f)
+}
+
+// ConnectMarkSet signal is emitted as notification after a TextMark is set.
+//
+// See also: gtk_text_buffer_create_mark(), gtk_text_buffer_move_mark().
+func (t *TextBuffer) ConnectMarkSet(f func(location TextIter, mark TextMark)) glib.SignalHandle {
+	return t.Connect("mark-set", f)
+}
+
+// ConnectModifiedChanged signal is emitted when the modified bit of a
+// TextBuffer flips.
+//
+// See also: gtk_text_buffer_set_modified().
+func (t *TextBuffer) ConnectModifiedChanged(f func()) glib.SignalHandle {
+	return t.Connect("modified-changed", f)
+}
+
+// ConnectPasteDone signal is emitted after paste operation has been completed.
+// This is useful to properly scroll the view to the end of the pasted text. See
+// gtk_text_buffer_paste_clipboard() for more details.
+func (t *TextBuffer) ConnectPasteDone(f func(clipboard Clipboard)) glib.SignalHandle {
+	return t.Connect("paste-done", f)
+}
+
+// ConnectRemoveTag signal is emitted to remove all occurrences of tag from a
+// range of text in a TextBuffer. Removal actually occurs in the default
+// handler.
+//
+// Note that if your handler runs before the default handler it must not
+// invalidate the start and end iters (or has to revalidate them).
+//
+// See also: gtk_text_buffer_remove_tag().
+func (t *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
+	return t.Connect("remove-tag", f)
+}

@@ -525,6 +525,24 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state Modifie
 	return _keyval, _effectiveGroup, _level, _consumedModifiers, _ok
 }
 
+// ConnectDirectionChanged signal gets emitted when the direction of the keymap
+// changes.
+func (k *Keymap) ConnectDirectionChanged(f func()) glib.SignalHandle {
+	return k.Connect("direction-changed", f)
+}
+
+// ConnectKeysChanged signal is emitted when the mapping represented by keymap
+// changes.
+func (k *Keymap) ConnectKeysChanged(f func()) glib.SignalHandle {
+	return k.Connect("keys-changed", f)
+}
+
+// ConnectStateChanged signal is emitted when the state of the keyboard changes,
+// e.g when Caps Lock is turned on or off. See gdk_keymap_get_caps_lock_state().
+func (k *Keymap) ConnectStateChanged(f func()) glib.SignalHandle {
+	return k.Connect("state-changed", f)
+}
+
 // KeymapGetDefault returns the Keymap attached to the default display.
 //
 // Deprecated: Use gdk_keymap_get_for_display() instead.

@@ -119,3 +119,18 @@ func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	return _x, _y, _ok
 }
+
+// ConnectDragBegin: emitted whenever dragging starts.
+func (g *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) glib.SignalHandle {
+	return g.Connect("drag-begin", f)
+}
+
+// ConnectDragEnd: emitted whenever the dragging is finished.
+func (g *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) glib.SignalHandle {
+	return g.Connect("drag-end", f)
+}
+
+// ConnectDragUpdate: emitted whenever the dragging point moves.
+func (g *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) glib.SignalHandle {
+	return g.Connect("drag-update", f)
+}

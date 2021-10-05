@@ -949,3 +949,36 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 
 	return _goerr
 }
+
+// ConnectAcceptCertificate: emitted during the TLS handshake after the peer
+// certificate has been received. You can examine peer_cert's certification path
+// by calling g_tls_certificate_get_issuer() on it.
+//
+// For a client-side connection, peer_cert is the server's certificate, and the
+// signal will only be emitted if the certificate was not acceptable according
+// to conn's ClientConnection:validation_flags. If you would like the
+// certificate to be accepted despite errors, return TRUE from the signal
+// handler. Otherwise, if no handler accepts the certificate, the handshake will
+// fail with G_TLS_ERROR_BAD_CERTIFICATE.
+//
+// For a server-side connection, peer_cert is the certificate presented by the
+// client, if this was requested via the server's
+// ServerConnection:authentication_mode. On the server side, the signal is
+// always emitted when the client presents a certificate, and the certificate
+// will only be accepted if a handler returns TRUE.
+//
+// Note that if this signal is emitted as part of asynchronous I/O in the main
+// thread, then you should not attempt to interact with the user before
+// returning from the signal handler. If you want to let the user decide whether
+// or not to accept the certificate, you would have to return FALSE from the
+// signal handler on the first attempt, and then after the connection attempt
+// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and if
+// the user decides to accept the certificate, remember that fact, create a new
+// connection, and return TRUE from the signal handler the next time.
+//
+// If you are doing I/O in another thread, you do not need to worry about this,
+// and can simply block in the signal handler until the UI thread returns an
+// answer.
+func (d *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) glib.SignalHandle {
+	return d.Connect("accept-certificate", f)
+}

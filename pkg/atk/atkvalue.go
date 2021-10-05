@@ -548,3 +548,16 @@ func (obj *Value) SetValue(newValue float64) {
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(newValue)
 }
+
+// ConnectValueChanged: 'value-changed' signal is emitted when the current value
+// that represent the object changes. value is the numerical representation of
+// this new value. text is the human readable text alternative of value, and can
+// be NULL if it is not available. Note that if there is a textual description
+// associated with the new numeric value, that description should be included
+// regardless of whether or not it has also changed.
+//
+// Example: a password meter whose value changes as the user types their new
+// password. Appropiate value text would be "weak", "acceptable" and "strong".
+func (v *Value) ConnectValueChanged(f func(value float64, text string)) glib.SignalHandle {
+	return v.Connect("value-changed", f)
+}

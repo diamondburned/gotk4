@@ -337,3 +337,27 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
+
+// ConnectApplicationActivated: emitted when an application item is activated
+// from the widget's list.
+//
+// This usually happens when the user double clicks an item, or an item is
+// selected and the user presses one of the keys Space, Shift+Space, Return or
+// Enter.
+func (a *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) glib.SignalHandle {
+	return a.Connect("application-activated", f)
+}
+
+// ConnectApplicationSelected: emitted when an application item is selected from
+// the widget's list.
+func (a *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) glib.SignalHandle {
+	return a.Connect("application-selected", f)
+}
+
+// ConnectPopulatePopup: emitted when a context menu is about to popup over an
+// application item. Clients can insert menu items into the provided Menu object
+// in the callback of this signal; the context menu will be shown over the item
+// if at least one item has been added to the menu.
+func (a *AppChooserWidget) ConnectPopulatePopup(f func(menu Menu, application gio.AppInfor)) glib.SignalHandle {
+	return a.Connect("populate-popup", f)
+}

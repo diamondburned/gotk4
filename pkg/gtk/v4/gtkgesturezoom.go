@@ -79,3 +79,9 @@ func (gesture *GestureZoom) ScaleDelta() float64 {
 
 	return _gdouble
 }
+
+// ConnectScaleChanged: emitted whenever the distance between both tracked
+// sequences changes.
+func (g *GestureZoom) ConnectScaleChanged(f func(scale float64)) glib.SignalHandle {
+	return g.Connect("scale-changed", f)
+}

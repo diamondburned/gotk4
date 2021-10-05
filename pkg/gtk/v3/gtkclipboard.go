@@ -595,6 +595,13 @@ func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	return _ok
 }
 
+// ConnectOwnerChange signal is emitted when GTK+ receives an event that
+// indicates that the ownership of the selection associated with clipboard has
+// changed.
+func (c *Clipboard) ConnectOwnerChange(f func(event gdk.EventOwnerChange)) glib.SignalHandle {
+	return c.Connect("owner-change", f)
+}
+
 // ClipboardGetDefault returns the default clipboard object for use with
 // cut/copy/paste menu items and keyboard shortcuts.
 func ClipboardGetDefault(display *gdk.Display) *Clipboard {

@@ -34,6 +34,7 @@ type Generator struct {
 	Virtuals     Methods // for overrider
 	Methods      Methods // for big interface
 	Constructors Methods
+	Signals      []Signal
 
 	Tree types.Tree
 
@@ -45,6 +46,14 @@ type Generator struct {
 	header file.Header
 	gen    types.FileGenerator
 	cgen   callable.Generator
+}
+
+// Signal describes a GLib signal in minimal function form.
+type Signal struct {
+	Name string // kebab-cased
+	Tail string
+
+	InfoElements gir.InfoElements
 }
 
 var _ = cmt.EnsureInfoFields((*Generator)(nil))
@@ -186,6 +195,35 @@ func (g *Generator) Use(typ interface{}) bool {
 
 	g.renameGetters(g.Methods)
 	g.renameGetters(g.Virtuals)
+
+	var signals []gir.Signal
+
+	switch v := g.Root.Type.(type) {
+	case *gir.Interface:
+		signals = v.Signals
+	case *gir.Class:
+		signals = v.Signals
+	}
+
+	for _, sig := range signals {
+		if !g.cgen.Use(&g.Root, &gir.CallableAttrs{
+			Parameters:  sig.Parameters,
+			ReturnValue: sig.ReturnValue,
+		}) {
+			g.Logln(logger.Debug, "skipping signal", sig.Name)
+			continue
+		}
+
+		for _, res := range g.cgen.Results {
+			res.Import(&g.header, true)
+		}
+
+		g.Signals = append(g.Signals, Signal{
+			Name:         sig.Name,
+			Tail:         callable.CoalesceTail(g.cgen.Tail),
+			InfoElements: sig.InfoElements,
+		})
+	}
 
 	return true
 }

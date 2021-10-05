@@ -1099,3 +1099,58 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(reorderable)
 }
+
+func (n *Notebook) ConnectChangeCurrentPage(f func(object int) bool) glib.SignalHandle {
+	return n.Connect("change-current-page", f)
+}
+
+// ConnectCreateWindow signal is emitted when a detachable tab is dropped on the
+// root window.
+//
+// A handler for this signal can create a window containing a notebook where the
+// tab will be attached. It is also responsible for moving/resizing the window
+// and adding the necessary properties to the notebook (e.g. the
+// Notebook:group-name ).
+func (n *Notebook) ConnectCreateWindow(f func(page Widgetter, x, y int) Notebook) glib.SignalHandle {
+	return n.Connect("create-window", f)
+}
+
+func (n *Notebook) ConnectFocusTab(f func(object NotebookTab) bool) glib.SignalHandle {
+	return n.Connect("focus-tab", f)
+}
+
+func (n *Notebook) ConnectMoveFocusOut(f func(object DirectionType)) glib.SignalHandle {
+	return n.Connect("move-focus-out", f)
+}
+
+// ConnectPageAdded signal is emitted in the notebook right after a page is
+// added to the notebook.
+func (n *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint)) glib.SignalHandle {
+	return n.Connect("page-added", f)
+}
+
+// ConnectPageRemoved signal is emitted in the notebook right after a page is
+// removed from the notebook.
+func (n *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uint)) glib.SignalHandle {
+	return n.Connect("page-removed", f)
+}
+
+// ConnectPageReordered signal is emitted in the notebook right after a page has
+// been reordered.
+func (n *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum uint)) glib.SignalHandle {
+	return n.Connect("page-reordered", f)
+}
+
+func (n *Notebook) ConnectReorderTab(f func(object DirectionType, p0 bool) bool) glib.SignalHandle {
+	return n.Connect("reorder-tab", f)
+}
+
+func (n *Notebook) ConnectSelectPage(f func(object bool) bool) glib.SignalHandle {
+	return n.Connect("select-page", f)
+}
+
+// ConnectSwitchPage: emitted when the user or a function changes the current
+// page.
+func (n *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint)) glib.SignalHandle {
+	return n.Connect("switch-page", f)
+}

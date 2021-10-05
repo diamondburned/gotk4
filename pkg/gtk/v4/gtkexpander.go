@@ -461,3 +461,8 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(useUnderline)
 }
+
+// ConnectActivate activates the GtkExpander.
+func (e *Expander) ConnectActivate(f func()) glib.SignalHandle {
+	return e.Connect("activate", f)
+}

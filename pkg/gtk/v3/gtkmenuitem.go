@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -461,4 +462,32 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)
+}
+
+// ConnectActivate: emitted when the item is activated.
+func (m *MenuItem) ConnectActivate(f func()) glib.SignalHandle {
+	return m.Connect("activate", f)
+}
+
+// ConnectActivateItem: emitted when the item is activated, but also if the menu
+// item has a submenu. For normal applications, the relevant signal is
+// MenuItem::activate.
+func (m *MenuItem) ConnectActivateItem(f func()) glib.SignalHandle {
+	return m.Connect("activate-item", f)
+}
+
+func (m *MenuItem) ConnectDeselect(f func()) glib.SignalHandle {
+	return m.Connect("deselect", f)
+}
+
+func (m *MenuItem) ConnectSelect(f func()) glib.SignalHandle {
+	return m.Connect("select", f)
+}
+
+func (m *MenuItem) ConnectToggleSizeAllocate(f func(object int)) glib.SignalHandle {
+	return m.Connect("toggle-size-allocate", f)
+}
+
+func (m *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) glib.SignalHandle {
+	return m.Connect("toggle-size-request", f)
 }

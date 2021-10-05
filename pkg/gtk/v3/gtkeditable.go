@@ -382,3 +382,25 @@ func (editable *Editable) SetPosition(position int) {
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
 }
+
+// ConnectChanged signal is emitted at the end of a single user-visible
+// operation on the contents of the Editable.
+//
+// E.g., a paste operation that replaces the contents of the selection will
+// cause only one signal emission (even though it is implemented by first
+// deleting the selection, then inserting the new content, and may cause
+// multiple ::notify::text signals to be emitted).
+func (e *Editable) ConnectChanged(f func()) glib.SignalHandle {
+	return e.Connect("changed", f)
+}
+
+// ConnectDeleteText: this signal is emitted when text is deleted from the
+// widget by the user. The default handler for this signal will normally be
+// responsible for deleting the text, so by connecting to this signal and then
+// stopping the signal with g_signal_stop_emission(), it is possible to modify
+// the range of deleted text, or prevent it from being deleted entirely. The
+// start_pos and end_pos parameters are interpreted as for
+// gtk_editable_delete_text().
+func (e *Editable) ConnectDeleteText(f func(startPos, endPos int)) glib.SignalHandle {
+	return e.Connect("delete-text", f)
+}

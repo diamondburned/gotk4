@@ -1023,3 +1023,8 @@ func (action *Action) UnblockActivate() {
 	C.gtk_action_unblock_activate(_arg0)
 	runtime.KeepAlive(action)
 }
+
+// ConnectActivate: "activate" signal is emitted when the action is activated.
+func (a *Action) ConnectActivate(f func()) glib.SignalHandle {
+	return a.Connect("activate", f)
+}

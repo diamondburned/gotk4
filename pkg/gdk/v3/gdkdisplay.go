@@ -924,6 +924,40 @@ func (display *Display) WarpPointer(screen *Screen, x int, y int) {
 	runtime.KeepAlive(y)
 }
 
+// ConnectClosed signal is emitted when the connection to the windowing system
+// for display is closed.
+func (d *Display) ConnectClosed(f func(isError bool)) glib.SignalHandle {
+	return d.Connect("closed", f)
+}
+
+// ConnectMonitorAdded signal is emitted whenever a monitor is added.
+func (d *Display) ConnectMonitorAdded(f func(monitor Monitor)) glib.SignalHandle {
+	return d.Connect("monitor-added", f)
+}
+
+// ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
+func (d *Display) ConnectMonitorRemoved(f func(monitor Monitor)) glib.SignalHandle {
+	return d.Connect("monitor-removed", f)
+}
+
+// ConnectOpened signal is emitted when the connection to the windowing system
+// for display is opened.
+func (d *Display) ConnectOpened(f func()) glib.SignalHandle {
+	return d.Connect("opened", f)
+}
+
+// ConnectSeatAdded signal is emitted whenever a new seat is made known to the
+// windowing system.
+func (d *Display) ConnectSeatAdded(f func(seat Seater)) glib.SignalHandle {
+	return d.Connect("seat-added", f)
+}
+
+// ConnectSeatRemoved signal is emitted whenever a seat is removed by the
+// windowing system.
+func (d *Display) ConnectSeatRemoved(f func(seat Seater)) glib.SignalHandle {
+	return d.Connect("seat-removed", f)
+}
+
 // DisplayGetDefault gets the default Display. This is a convenience function
 // for: gdk_display_manager_get_default_display (gdk_display_manager_get ()).
 func DisplayGetDefault() *Display {

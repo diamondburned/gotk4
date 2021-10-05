@@ -673,3 +673,36 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
 }
+
+// ConnectActivate signal on GtkButton is an action signal and emitting it
+// causes the button to animate press then release. Applications should never
+// connect to this signal, but use the Button::clicked signal.
+func (b *Button) ConnectActivate(f func()) glib.SignalHandle {
+	return b.Connect("activate", f)
+}
+
+// ConnectClicked: emitted when the button has been activated (pressed and
+// released).
+func (b *Button) ConnectClicked(f func()) glib.SignalHandle {
+	return b.Connect("clicked", f)
+}
+
+// ConnectEnter: emitted when the pointer enters the button.
+func (b *Button) ConnectEnter(f func()) glib.SignalHandle {
+	return b.Connect("enter", f)
+}
+
+// ConnectLeave: emitted when the pointer leaves the button.
+func (b *Button) ConnectLeave(f func()) glib.SignalHandle {
+	return b.Connect("leave", f)
+}
+
+// ConnectPressed: emitted when the button is pressed.
+func (b *Button) ConnectPressed(f func()) glib.SignalHandle {
+	return b.Connect("pressed", f)
+}
+
+// ConnectReleased: emitted when the button is released.
+func (b *Button) ConnectReleased(f func()) glib.SignalHandle {
+	return b.Connect("released", f)
+}

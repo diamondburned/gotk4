@@ -871,3 +871,76 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(visible)
 }
+
+// ConnectActivate gets emitted when the user activates the status icon. If and
+// how status icons can activated is platform-dependent.
+//
+// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
+// applications and should be wrapped by language bindings.
+func (s *StatusIcon) ConnectActivate(f func()) glib.SignalHandle {
+	return s.Connect("activate", f)
+}
+
+// ConnectButtonPressEvent signal will be emitted when a button (typically from
+// a mouse) is pressed.
+//
+// Whether this event is emitted is platform-dependent. Use the ::activate and
+// ::popup-menu signals in preference.
+func (s *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
+	return s.Connect("button-press-event", f)
+}
+
+// ConnectButtonReleaseEvent signal will be emitted when a button (typically
+// from a mouse) is released.
+//
+// Whether this event is emitted is platform-dependent. Use the ::activate and
+// ::popup-menu signals in preference.
+func (s *StatusIcon) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
+	return s.Connect("button-release-event", f)
+}
+
+// ConnectPopupMenu gets emitted when the user brings up the context menu of the
+// status icon. Whether status icons can have context menus and how these are
+// activated is platform-dependent.
+//
+// The button and activate_time parameters should be passed as the last to
+// arguments to gtk_menu_popup().
+//
+// Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
+// applications and should be wrapped by language bindings.
+func (s *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) glib.SignalHandle {
+	return s.Connect("popup-menu", f)
+}
+
+// ConnectQueryTooltip: emitted when the hover timeout has expired with the
+// cursor hovering above status_icon; or emitted when status_icon got focus in
+// keyboard mode.
+//
+// Using the given coordinates, the signal handler should determine whether a
+// tooltip should be shown for status_icon. If this is the case TRUE should be
+// returned, FALSE otherwise. Note that if keyboard_mode is TRUE, the values of
+// x and y are undefined and should not be used.
+//
+// The signal handler is free to manipulate tooltip with the therefore destined
+// function calls.
+//
+// Whether this signal is emitted is platform-dependent. For plain text
+// tooltips, use StatusIcon:tooltip-text in preference.
+func (s *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) glib.SignalHandle {
+	return s.Connect("query-tooltip", f)
+}
+
+// ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
+// pressed. Wheel mice are usually configured to generate button press events
+// for buttons 4 and 5 when the wheel is turned.
+//
+// Whether this event is emitted is platform-dependent.
+func (s *StatusIcon) ConnectScrollEvent(f func(event gdk.EventScroll) bool) glib.SignalHandle {
+	return s.Connect("scroll-event", f)
+}
+
+// ConnectSizeChanged gets emitted when the size available for the image
+// changes, e.g. because the notification area got resized.
+func (s *StatusIcon) ConnectSizeChanged(f func(size int) bool) glib.SignalHandle {
+	return s.Connect("size-changed", f)
+}

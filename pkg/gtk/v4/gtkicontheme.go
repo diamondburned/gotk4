@@ -725,6 +725,14 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	runtime.KeepAlive(themeName)
 }
 
+// ConnectChanged: emitted when the icon theme changes.
+//
+// This can happen becuase current icon theme is switched or because GTK detects
+// that a change has occurred in the contents of the current icon theme.
+func (i *IconTheme) ConnectChanged(f func()) glib.SignalHandle {
+	return i.Connect("changed", f)
+}
+
 // IconThemeGetForDisplay gets the icon theme object associated with display.
 //
 // If this function has not previously been called for the given display, a new

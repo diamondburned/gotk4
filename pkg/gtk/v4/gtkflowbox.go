@@ -783,6 +783,78 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	runtime.KeepAlive(child)
 }
 
+// ConnectActivateCursorChild: emitted when the user activates the box.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (f *FlowBox) ConnectActivateCursorChild(f func()) glib.SignalHandle {
+	return f.Connect("activate-cursor-child", f)
+}
+
+// ConnectChildActivated: emitted when a child has been activated by the user.
+func (f *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) glib.SignalHandle {
+	return f.Connect("child-activated", f)
+}
+
+// ConnectMoveCursor: emitted when the user initiates a cursor movement.
+//
+// This is a keybinding signal (class.SignalAction.html). Applications should
+// not connect to it, but may emit it with g_signal_emit_by_name() if they need
+// to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifier does not. There are too many key combinations to list them all here.
+//
+// - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+// children
+//
+// - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+//
+// - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages.
+func (f *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) glib.SignalHandle {
+	return f.Connect("move-cursor", f)
+}
+
+// ConnectSelectAll: emitted to select all children of the box, if the selection
+// mode permits it.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
+func (f *FlowBox) ConnectSelectAll(f func()) glib.SignalHandle {
+	return f.Connect("select-all", f)
+}
+
+// ConnectSelectedChildrenChanged: emitted when the set of selected children
+// changes.
+//
+// Use gtk.FlowBox.SelectedForeach() or gtk.FlowBox.GetSelectedChildren() to
+// obtain the selected children.
+func (f *FlowBox) ConnectSelectedChildrenChanged(f func()) glib.SignalHandle {
+	return f.Connect("selected-children-changed", f)
+}
+
+// ConnectToggleCursorChild: emitted to toggle the selection of the child that
+// has the focus.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>.
+func (f *FlowBox) ConnectToggleCursorChild(f func()) glib.SignalHandle {
+	return f.Connect("toggle-cursor-child", f)
+}
+
+// ConnectUnselectAll: emitted to unselect all children of the box, if the
+// selection mode permits it.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal is
+// <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
+func (f *FlowBox) ConnectUnselectAll(f func()) glib.SignalHandle {
+	return f.Connect("unselect-all", f)
+}
+
 // FlowBoxChildOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -943,4 +1015,18 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
+}
+
+// ConnectActivate: emitted when the user activates a child widget in a
+// GtkFlowBox.
+//
+// This can be happen either by clicking or double-clicking, or via a
+// keybinding.
+//
+// This is a keybinding signal (class.SignalAction.html), but it can be used by
+// applications for their own purposes.
+//
+// The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>.
+func (f *FlowBoxChild) ConnectActivate(f func()) glib.SignalHandle {
+	return f.Connect("activate", f)
 }

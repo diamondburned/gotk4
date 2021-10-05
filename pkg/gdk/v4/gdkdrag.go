@@ -360,6 +360,25 @@ func (drag *Drag) SetHotspot(hotX int, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
+// ConnectCancel: emitted when the drag operation is cancelled.
+func (d *Drag) ConnectCancel(f func(reason DragCancelReason)) glib.SignalHandle {
+	return d.Connect("cancel", f)
+}
+
+// ConnectDndFinished: emitted when the destination side has finished reading
+// all data.
+//
+// The drag object can now free all miscellaneous data.
+func (d *Drag) ConnectDndFinished(f func()) glib.SignalHandle {
+	return d.Connect("dnd-finished", f)
+}
+
+// ConnectDropPerformed: emitted when the drop operation is performed on an
+// accepting client.
+func (d *Drag) ConnectDropPerformed(f func()) glib.SignalHandle {
+	return d.Connect("drop-performed", f)
+}
+
 // DragBegin starts a drag and creates a new drag context for it.
 //
 // This function is called by the drag source. After this call, you probably

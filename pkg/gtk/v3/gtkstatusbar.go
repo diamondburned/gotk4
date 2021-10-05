@@ -223,3 +223,15 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
 }
+
+// ConnectTextPopped is emitted whenever a new message is popped off a
+// statusbar's stack.
+func (s *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) glib.SignalHandle {
+	return s.Connect("text-popped", f)
+}
+
+// ConnectTextPushed is emitted whenever a new message gets pushed onto a
+// statusbar's stack.
+func (s *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) glib.SignalHandle {
+	return s.Connect("text-pushed", f)
+}

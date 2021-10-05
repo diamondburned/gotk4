@@ -1704,6 +1704,12 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	runtime.KeepAlive(path)
 }
 
+// ConnectChanged: emitted when the current icon theme is switched or GTK+
+// detects that a change has occurred in the contents of the current icon theme.
+func (i *IconTheme) ConnectChanged(f func()) glib.SignalHandle {
+	return i.Connect("changed", f)
+}
+
 // IconThemeAddBuiltinIcon registers a built-in icon for icon theme lookups. The
 // idea of built-in icons is to allow an application or library that uses themed
 // icons to function requiring files to be present in the file system. For

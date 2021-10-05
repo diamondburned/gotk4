@@ -373,3 +373,17 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
 }
+
+// ConnectChanged: emitted when one or more of the GtkAdjustment properties have
+// been changed.
+//
+// Note that the gtk.Adjustment:value property is covered by the
+// gtk.Adjustment::value-changed signal.
+func (a *Adjustment) ConnectChanged(f func()) glib.SignalHandle {
+	return a.Connect("changed", f)
+}
+
+// ConnectValueChanged: emitted when the value has been changed.
+func (a *Adjustment) ConnectValueChanged(f func()) glib.SignalHandle {
+	return a.Connect("value-changed", f)
+}

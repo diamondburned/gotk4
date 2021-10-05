@@ -314,3 +314,15 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	runtime.KeepAlive(chars)
 	runtime.KeepAlive(nChars)
 }
+
+// ConnectDeletedText: this signal is emitted after text is deleted from the
+// buffer.
+func (e *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) glib.SignalHandle {
+	return e.Connect("deleted-text", f)
+}
+
+// ConnectInsertedText: this signal is emitted after text is inserted into the
+// buffer.
+func (e *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) glib.SignalHandle {
+	return e.Connect("inserted-text", f)
+}

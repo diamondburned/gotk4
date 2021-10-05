@@ -664,6 +664,46 @@ func (assistant *Assistant) UpdateButtonsState() {
 	runtime.KeepAlive(assistant)
 }
 
+// ConnectApply: emitted when the apply button is clicked.
+//
+// The default behavior of the GtkAssistant is to switch to the page after the
+// current page, unless the current page is the last one.
+//
+// A handler for the ::apply signal should carry out the actions for which the
+// wizard has collected data. If the action takes a long time to complete, you
+// might consider putting a page of type GTK_ASSISTANT_PAGE_PROGRESS after the
+// confirmation page and handle this operation within the gtk.Assistant::prepare
+// signal of the progress page.
+func (a *Assistant) ConnectApply(f func()) glib.SignalHandle {
+	return a.Connect("apply", f)
+}
+
+// ConnectCancel: emitted when then the cancel button is clicked.
+func (a *Assistant) ConnectCancel(f func()) glib.SignalHandle {
+	return a.Connect("cancel", f)
+}
+
+// ConnectClose: emitted either when the close button of a summary page is
+// clicked, or when the apply button in the last page in the flow (of type
+// GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
+func (a *Assistant) ConnectClose(f func()) glib.SignalHandle {
+	return a.Connect("close", f)
+}
+
+// ConnectEscape: action signal for the Escape binding.
+func (a *Assistant) ConnectEscape(f func()) glib.SignalHandle {
+	return a.Connect("escape", f)
+}
+
+// ConnectPrepare: emitted when a new page is set as the assistant's current
+// page, before making the new page visible.
+//
+// A handler for this signal can do any preparations which are necessary before
+// showing page.
+func (a *Assistant) ConnectPrepare(f func(page Widgetter)) glib.SignalHandle {
+	return a.Connect("prepare", f)
+}
+
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.
 type AssistantPage struct {
 	*externglib.Object

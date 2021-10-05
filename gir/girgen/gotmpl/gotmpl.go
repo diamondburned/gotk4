@@ -7,6 +7,7 @@ import (
 	"log"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"text/template"
@@ -23,6 +24,7 @@ func NewGoTemplate(block string) *template.Template {
 	t.Funcs(template.FuncMap{
 		"PascalToGo":     strcases.PascalToGo,
 		"UnexportPascal": strcases.UnexportPascal,
+		"KebabToGo":      strcases.KebabToGo,
 		"SnakeToGo":      strcases.SnakeToGo,
 		"FirstLetter":    strcases.FirstLetter,
 
@@ -31,6 +33,8 @@ func NewGoTemplate(block string) *template.Template {
 		"OverrideSelfName": cmt.OverrideSelfName,
 		"AdditionalString": cmt.AdditionalString,
 		"TrailingNewLine":  cmt.TrailingNewLine,
+
+		"Quote": strconv.Quote,
 	})
 	t = template.Must(t.Parse(block))
 	return t

@@ -4,6 +4,7 @@ package gdkx11
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -407,6 +408,25 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	}
 
 	return _encoding, _format, _ctext, _ok
+}
+
+// ConnectXevent signal is a low level signal that is emitted whenever an XEvent
+// has been received.
+//
+// When handlers to this signal return TRUE, no other handlers will be invoked.
+// In particular, the default handler for this function is GDK's own event
+// handling mechanism, so by returning TRUE for an event that GDK expects to
+// translate, you may break GDK and/or GTK+ in interesting ways. You have been
+// warned.
+//
+// If you want this signal handler to queue a Event, you can use
+// gdk_display_put_event().
+//
+// If you are interested in X GenericEvents, bear in mind that XGetEventData()
+// has been already called on the event, and XFreeEventData() will be called
+// afterwards.
+func (x *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) glib.SignalHandle {
+	return x.Connect("xevent", f)
 }
 
 // X11DisplayOpen tries to open a new display to the X server given by

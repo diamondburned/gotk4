@@ -255,3 +255,28 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 
 	return _list
 }
+
+// ConnectDeviceAdded signal is emitted either when a new master pointer is
+// created, or when a slave (Hardware) input device is plugged in.
+func (d *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) glib.SignalHandle {
+	return d.Connect("device-added", f)
+}
+
+// ConnectDeviceChanged signal is emitted whenever a device has changed in the
+// hierarchy, either slave devices being disconnected from their master device
+// or connected to another one, or master devices being added or removed a slave
+// device.
+//
+// If a slave device is detached from all master devices
+// (gdk_device_get_associated_device() returns NULL), its DeviceType will change
+// to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
+// GDK_DEVICE_TYPE_SLAVE.
+func (d *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) glib.SignalHandle {
+	return d.Connect("device-changed", f)
+}
+
+// ConnectDeviceRemoved signal is emitted either when a master pointer is
+// removed, or when a slave (Hardware) input device is unplugged.
+func (d *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) glib.SignalHandle {
+	return d.Connect("device-removed", f)
+}

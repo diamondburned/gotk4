@@ -1303,6 +1303,47 @@ func (window *Window) Unminimize() {
 	runtime.KeepAlive(window)
 }
 
+// ConnectActivateDefault: emitted when the user activates the default widget of
+// window.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (w *Window) ConnectActivateDefault(f func()) glib.SignalHandle {
+	return w.Connect("activate-default", f)
+}
+
+// ConnectActivateFocus: emitted when the user activates the currently focused
+// widget of window.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (w *Window) ConnectActivateFocus(f func()) glib.SignalHandle {
+	return w.Connect("activate-focus", f)
+}
+
+// ConnectCloseRequest: emitted when the user clicks on the close button of the
+// window.
+func (w *Window) ConnectCloseRequest(f func() bool) glib.SignalHandle {
+	return w.Connect("close-request", f)
+}
+
+// ConnectEnableDebugging: emitted when the user enables or disables interactive
+// debugging.
+//
+// When toggle is TRUE, interactive debugging is toggled on or off, when it is
+// FALSE, the debugger will be pointed at the widget under the pointer.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
+func (w *Window) ConnectEnableDebugging(f func(toggle bool) bool) glib.SignalHandle {
+	return w.Connect("enable-debugging", f)
+}
+
+// ConnectKeysChanged: emitted when the set of accelerators or mnemonics that
+// are associated with window changes.
+func (w *Window) ConnectKeysChanged(f func()) glib.SignalHandle {
+	return w.Connect("keys-changed", f)
+}
+
 // WindowGetDefaultIconName returns the fallback icon name for windows.
 //
 // The returned string is owned by GTK and should not be modified. It is only

@@ -664,3 +664,52 @@ func (gesture *Gesture) Ungroup() {
 	C.gtk_gesture_ungroup(_arg0)
 	runtime.KeepAlive(gesture)
 }
+
+// ConnectBegin: this signal is emitted when the gesture is recognized. This
+// means the number of touch sequences matches Gesture:n-points, and the
+// Gesture::check handler(s) returned UE.
+//
+// Note: These conditions may also happen when an extra touch (eg. a third touch
+// on a 2-touches gesture) is lifted, in that situation sequence won't pertain
+// to the current set of active touches, so don't rely on this being true.
+func (g *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
+	return g.Connect("begin", f)
+}
+
+// ConnectCancel: this signal is emitted whenever a sequence is cancelled. This
+// usually happens on active touches when gtk_event_controller_reset() is called
+// on gesture (manually, due to grabs...), or the individual sequence was
+// claimed by parent widgets' controllers (see
+// gtk_gesture_set_sequence_state()).
+//
+// gesture must forget everything about sequence as a reaction to this signal.
+func (g *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
+	return g.Connect("cancel", f)
+}
+
+// ConnectEnd: this signal is emitted when gesture either stopped recognizing
+// the event sequences as something to be handled (the Gesture::check handler
+// returned FALSE), or the number of touch sequences became higher or lower than
+// Gesture:n-points.
+//
+// Note: sequence might not pertain to the group of sequences that were
+// previously triggering recognition on gesture (ie. a just pressed touch
+// sequence that exceeds Gesture:n-points). This situation may be detected by
+// checking through gtk_gesture_handles_sequence().
+func (g *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
+	return g.Connect("end", f)
+}
+
+// ConnectSequenceStateChanged: this signal is emitted whenever a sequence state
+// changes. See gtk_gesture_set_sequence_state() to know more about the
+// expectable sequence lifetimes.
+func (g *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) glib.SignalHandle {
+	return g.Connect("sequence-state-changed", f)
+}
+
+// ConnectUpdate: this signal is emitted whenever an event is handled while the
+// gesture is recognized. sequence is guaranteed to pertain to the set of active
+// touches.
+func (g *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
+	return g.Connect("update", f)
+}

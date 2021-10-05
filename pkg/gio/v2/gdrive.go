@@ -926,3 +926,27 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 
 	return _goerr
 }
+
+// ConnectChanged: emitted when the drive's state has changed.
+func (d *Drive) ConnectChanged(f func()) glib.SignalHandle {
+	return d.Connect("changed", f)
+}
+
+// ConnectDisconnected: this signal is emitted when the #GDrive have been
+// disconnected. If the recipient is holding references to the object they
+// should release them so the object can be finalized.
+func (d *Drive) ConnectDisconnected(f func()) glib.SignalHandle {
+	return d.Connect("disconnected", f)
+}
+
+// ConnectEjectButton: emitted when the physical eject button (if any) of a
+// drive has been pressed.
+func (d *Drive) ConnectEjectButton(f func()) glib.SignalHandle {
+	return d.Connect("eject-button", f)
+}
+
+// ConnectStopButton: emitted when the physical stop button (if any) of a drive
+// has been pressed.
+func (d *Drive) ConnectStopButton(f func()) glib.SignalHandle {
+	return d.Connect("stop-button", f)
+}

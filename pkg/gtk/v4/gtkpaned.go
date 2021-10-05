@@ -422,3 +422,62 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)
 }
+
+// ConnectAcceptPosition: emitted to accept the current position of the handle
+// when moving it using key bindings.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is Return or Space.
+func (p *Paned) ConnectAcceptPosition(f func() bool) glib.SignalHandle {
+	return p.Connect("accept-position", f)
+}
+
+// ConnectCancelPosition: emitted to cancel moving the position of the handle
+// using key bindings.
+//
+// The position of the handle will be reset to the value prior to moving it.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is Escape.
+func (p *Paned) ConnectCancelPosition(f func() bool) glib.SignalHandle {
+	return p.Connect("cancel-position", f)
+}
+
+// ConnectCycleChildFocus: emitted to cycle the focus between the children of
+// the paned.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding is F6.
+func (p *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) glib.SignalHandle {
+	return p.Connect("cycle-child-focus", f)
+}
+
+// ConnectCycleHandleFocus: emitted to cycle whether the paned should grab focus
+// to allow the user to change position of the handle by using key bindings.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is F8.
+func (p *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) glib.SignalHandle {
+	return p.Connect("cycle-handle-focus", f)
+}
+
+// ConnectMoveHandle: emitted to move the handle with key bindings.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (p *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) glib.SignalHandle {
+	return p.Connect("move-handle", f)
+}
+
+// ConnectToggleHandleFocus: emitted to accept the current position of the
+// handle and then move focus to the next widget in the focus chain.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding is Tab.
+func (p *Paned) ConnectToggleHandleFocus(f func() bool) glib.SignalHandle {
+	return p.Connect("toggle-handle-focus", f)
+}

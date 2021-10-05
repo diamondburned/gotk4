@@ -1017,3 +1017,24 @@ func (mount *Mount) Unshadow() {
 	C.g_mount_unshadow(_arg0)
 	runtime.KeepAlive(mount)
 }
+
+// ConnectChanged: emitted when the mount has been changed.
+func (m *Mount) ConnectChanged(f func()) glib.SignalHandle {
+	return m.Connect("changed", f)
+}
+
+// ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
+// unmounted.
+//
+// This signal depends on the backend and is only emitted if GIO was used to
+// unmount.
+func (m *Mount) ConnectPreUnmount(f func()) glib.SignalHandle {
+	return m.Connect("pre-unmount", f)
+}
+
+// ConnectUnmounted: this signal is emitted when the #GMount have been
+// unmounted. If the recipient is holding references to the object they should
+// release them so the object can be finalized.
+func (m *Mount) ConnectUnmounted(f func()) glib.SignalHandle {
+	return m.Connect("unmounted", f)
+}

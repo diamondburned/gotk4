@@ -128,3 +128,8 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 
 	return _window
 }
+
+// ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
+func (p *Plug) ConnectEmbedded(f func()) glib.SignalHandle {
+	return p.Connect("embedded", f)
+}

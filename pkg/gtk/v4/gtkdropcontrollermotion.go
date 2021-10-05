@@ -130,3 +130,18 @@ func (self *DropControllerMotion) IsPointer() bool {
 
 	return _ok
 }
+
+// ConnectEnter signals that the pointer has entered the widget.
+func (d *DropControllerMotion) ConnectEnter(f func(x, y float64)) glib.SignalHandle {
+	return d.Connect("enter", f)
+}
+
+// ConnectLeave signals that the pointer has left the widget.
+func (d *DropControllerMotion) ConnectLeave(f func()) glib.SignalHandle {
+	return d.Connect("leave", f)
+}
+
+// ConnectMotion: emitted when the pointer moves inside the widget.
+func (d *DropControllerMotion) ConnectMotion(f func(x, y float64)) glib.SignalHandle {
+	return d.Connect("motion", f)
+}

@@ -1118,3 +1118,7 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(widget)
 }
+
+func (t *TreeViewColumn) ConnectClicked(f func()) glib.SignalHandle {
+	return t.Connect("clicked", f)
+}

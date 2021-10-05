@@ -99,6 +99,13 @@ func marshalAccelMapper(p uintptr) (interface{}, error) {
 
 func (*AccelMap) privateAccelMap() {}
 
+// ConnectChanged notifies of a change in the global accelerator map. The path
+// is also used as the detail for the signal, so it is possible to connect to
+// changed::accel_path.
+func (a *AccelMap) ConnectChanged(f func(accelPath string, accelKey uint, accelMods gdk.ModifierType)) glib.SignalHandle {
+	return a.Connect("changed", f)
+}
+
 // AccelMapAddEntry registers a new accelerator with the global accelerator map.
 // This function should only be called once per accel_path with the canonical
 // accel_key and accel_mods for this path. To change the accelerator during

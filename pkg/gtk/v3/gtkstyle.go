@@ -1307,6 +1307,22 @@ func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 	runtime.KeepAlive(stateType)
 }
 
+// ConnectRealize: emitted when the style has been initialized for a particular
+// visual. Connecting to this signal is probably seldom useful since most of the
+// time applications and widgets only deal with styles that have been already
+// realized.
+func (s *Style) ConnectRealize(f func()) glib.SignalHandle {
+	return s.Connect("realize", f)
+}
+
+// ConnectUnrealize: emitted when the aspects of the style specific to a
+// particular visual is being cleaned up. A connection to this signal can be
+// useful if a widget wants to cache objects as object data on Style. This
+// signal provides a convenient place to free such cached objects.
+func (s *Style) ConnectUnrealize(f func()) glib.SignalHandle {
+	return s.Connect("unrealize", f)
+}
+
 // WidgetGetDefaultStyle returns the default style used by all widgets
 // initially.
 //

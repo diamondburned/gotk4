@@ -183,7 +183,7 @@ func (box *Box) Spacing() int {
 // box children.
 //
 // If sibling is NULL, insert child at the first position.
-func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -233,7 +233,7 @@ func (box *Box) Remove(child Widgetter) {
 // box children.
 //
 // If sibling is NULL, move child to the first position.
-func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out

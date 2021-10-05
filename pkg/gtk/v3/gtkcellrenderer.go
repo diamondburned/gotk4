@@ -173,7 +173,7 @@ type CellRendererOverrider interface {
 	// blank space around the cell, and also the area containing the tree
 	// expander; so the background_area rectangles for all cells tile to cover
 	// the entire window.
-	Render(cr *cairo.Context, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
 }
 
 // CellRenderer is a base class of a set of objects used for rendering a cell to
@@ -255,14 +255,14 @@ type CellRendererer interface {
 	// activated.
 	IsActivatable() bool
 	// Render invokes the virtual render function of the CellRenderer.
-	Render(cr *cairo.Context, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
 	// SetAlignment sets the renderer’s alignment within its available space.
-	SetAlignment(xalign float32, yalign float32)
+	SetAlignment(xalign, yalign float32)
 	// SetFixedSize sets the renderer size to be explicit, independent of the
 	// properties set.
-	SetFixedSize(width int, height int)
+	SetFixedSize(width, height int)
 	// SetPadding sets the renderer’s padding.
-	SetPadding(xpad int, ypad int)
+	SetPadding(xpad, ypad int)
 	// SetSensitive sets the cell renderer’s sensitivity.
 	SetSensitive(sensitive bool)
 	// SetVisible sets the cell renderer’s visibility.
@@ -651,7 +651,7 @@ func (cell *CellRenderer) IsActivatable() bool {
 // blank space around the cell, and also the area containing the tree expander;
 // so the background_area rectangles for all cells tile to cover the entire
 // window.
-func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.cairo_t             // out
 	var _arg2 *C.GtkWidget           // out
@@ -676,7 +676,7 @@ func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgetter, background
 }
 
 // SetAlignment sets the renderer’s alignment within its available space.
-func (cell *CellRenderer) SetAlignment(xalign float32, yalign float32) {
+func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gfloat           // out
 	var _arg2 C.gfloat           // out
@@ -693,7 +693,7 @@ func (cell *CellRenderer) SetAlignment(xalign float32, yalign float32) {
 
 // SetFixedSize sets the renderer size to be explicit, independent of the
 // properties set.
-func (cell *CellRenderer) SetFixedSize(width int, height int) {
+func (cell *CellRenderer) SetFixedSize(width, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -709,7 +709,7 @@ func (cell *CellRenderer) SetFixedSize(width int, height int) {
 }
 
 // SetPadding sets the renderer’s padding.
-func (cell *CellRenderer) SetPadding(xpad int, ypad int) {
+func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out

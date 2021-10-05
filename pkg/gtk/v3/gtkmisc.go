@@ -52,9 +52,9 @@ type Miscer interface {
 	// Padding gets the padding in the X and Y directions of the widget.
 	Padding() (xpad int, ypad int)
 	// SetAlignment sets the alignment of the widget.
-	SetAlignment(xalign float32, yalign float32)
+	SetAlignment(xalign, yalign float32)
 	// SetPadding sets the amount of space to add around the widget.
-	SetPadding(xpad int, ypad int)
+	SetPadding(xpad, ypad int)
 }
 
 var _ Miscer = (*Misc)(nil)
@@ -132,7 +132,7 @@ func (misc *Misc) Padding() (xpad int, ypad int) {
 //
 // Deprecated: Use Widget's alignment (Widget:halign and Widget:valign) and
 // margin properties or Label's Label:xalign and Label:yalign properties.
-func (misc *Misc) SetAlignment(xalign float32, yalign float32) {
+func (misc *Misc) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
@@ -150,7 +150,7 @@ func (misc *Misc) SetAlignment(xalign float32, yalign float32) {
 // SetPadding sets the amount of space to add around the widget.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (misc *Misc) SetPadding(xpad int, ypad int) {
+func (misc *Misc) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out

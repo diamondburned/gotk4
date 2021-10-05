@@ -111,7 +111,7 @@ type GLContexter interface {
 	// forward-compatible.
 	SetForwardCompatible(compatible bool)
 	// SetRequiredVersion sets the major and minor version of OpenGL to request.
-	SetRequiredVersion(major int, minor int)
+	SetRequiredVersion(major, minor int)
 	// SetUseES requests that GDK create an OpenGL ES context instead of an
 	// OpenGL one.
 	SetUseES(useEs int)
@@ -430,7 +430,7 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 // The GdkGLContext must not be realized or made current prior to calling this
 // function.
-func (context *GLContext) SetRequiredVersion(major int, minor int) {
+func (context *GLContext) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

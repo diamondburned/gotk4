@@ -155,7 +155,7 @@ func NewComboBoxTextWithEntry() *ComboBoxText {
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position of
 // -1.
-func (comboBox *ComboBoxText) Append(id string, text string) {
+func (comboBox *ComboBoxText) Append(id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -216,7 +216,7 @@ func (comboBox *ComboBoxText) ActiveText() string {
 // ComboBox:id-column.
 //
 // If position is negative then text is appended.
-func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
+func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.gchar           // out
@@ -265,7 +265,7 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 // non-NULL then it is used as the ID of the row.
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position of 0.
-func (comboBox *ComboBoxText) Prepend(id string, text string) {
+func (comboBox *ComboBoxText) Prepend(id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out

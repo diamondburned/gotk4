@@ -103,7 +103,7 @@ func _gotk4_gtk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, a
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow) (gint int)
+type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int)
 
 //export _gotk4_gtk4_ListBoxSortFunc
 func _gotk4_gtk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.int) {
@@ -131,7 +131,7 @@ func _gotk4_gtk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, a
 //
 // You may remove or set a new one via gtk.ListBoxRow.SetHeader() or just change
 // the state of the current header widget.
-type ListBoxUpdateHeaderFunc func(row *ListBoxRow, before *ListBoxRow)
+type ListBoxUpdateHeaderFunc func(row, before *ListBoxRow)
 
 //export _gotk4_gtk4_ListBoxUpdateHeaderFunc
 func _gotk4_gtk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {

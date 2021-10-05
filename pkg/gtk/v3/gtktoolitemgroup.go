@@ -117,7 +117,7 @@ func (group *ToolItemGroup) Collapsed() bool {
 }
 
 // DropItem gets the tool item at position (x, y).
-func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
+func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gint              // out
 	var _arg2 C.gint              // out

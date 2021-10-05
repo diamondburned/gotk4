@@ -221,7 +221,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 
 // ConvertWidgetToBinWindowCoords converts widget coordinates to coordinates for
 // the bin_window, as expected by e.g. gtk_icon_view_get_path_at_pos().
-func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int) {
+func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx int, by int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -461,7 +461,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 }
 
 // DestItemAtPos determines the destination item for a given position.
-func (iconView *IconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool) {
+func (iconView *IconView) DestItemAtPos(dragX, dragY int) (*TreePath, IconViewDropPosition, bool) {
 	var _arg0 *C.GtkIconView            // out
 	var _arg1 C.gint                    // out
 	var _arg2 C.gint                    // out
@@ -534,7 +534,7 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 // freed with gtk_tree_path_free(). See
 // gtk_icon_view_convert_widget_to_bin_window_coords() for converting widget
 // coordinates to bin_window coordinates.
-func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bool) {
+func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -745,7 +745,7 @@ func (iconView *IconView) Model() TreeModeller {
 // in the cell at the specified position. See
 // gtk_icon_view_convert_widget_to_bin_window_coords() for converting widget
 // coordinates to bin_window coordinates.
-func (iconView *IconView) PathAtPos(x int, y int) *TreePath {
+func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -1027,7 +1027,7 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 // This function only works if the model is set, and path is a valid row on the
 // model. If the model changes before the icon_view is realized, the centered
 // path will be modified to reflect this change.
-func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32) {
+func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, colAlign float32) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 	var _arg2 C.gboolean     // out

@@ -68,7 +68,7 @@ type PixbufAnimationOverrider interface {
 	//
 	// A delay time of -1 is possible, indicating "infinite".
 	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
-	Size(width *int, height *int)
+	Size(width, height *int)
 	// StaticImage retrieves a static image for the animation.
 	//
 	// If an animation is really just a plain image (has only one frame), this

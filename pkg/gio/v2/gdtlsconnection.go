@@ -109,10 +109,10 @@ type DTLSConnectionOverrider interface {
 	// If cancellable is cancelled, the Connection may be left partially-closed
 	// and any pending untransmitted data may be lost. Call
 	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	Shutdown(ctx context.Context, shutdownRead bool, shutdownWrite bool) error
+	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection. See g_dtls_connection_shutdown() for more information.
-	ShutdownAsync(ctx context.Context, shutdownRead bool, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
+	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	ShutdownFinish(result AsyncResulter) error
@@ -202,10 +202,10 @@ type DTLSConnectioner interface {
 	// notification before the connection is closed.
 	SetRequireCloseNotify(requireCloseNotify bool)
 	// Shutdown: shut down part or all of a DTLS connection.
-	Shutdown(ctx context.Context, shutdownRead bool, shutdownWrite bool) error
+	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection.
-	ShutdownAsync(ctx context.Context, shutdownRead bool, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
+	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 }
@@ -854,7 +854,7 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // If cancellable is cancelled, the Connection may be left partially-closed and
 // any pending untransmitted data may be lost. Call g_dtls_connection_shutdown()
 // again to complete closing the Connection.
-func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead bool, shutdownWrite bool) error {
+func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg3 *C.GCancellable    // out
 	var _arg1 C.gboolean         // out
@@ -891,7 +891,7 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead bool, shu
 
 // ShutdownAsync: asynchronously shut down part or all of the DTLS connection.
 // See g_dtls_connection_shutdown() for more information.
-func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead bool, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 C.gboolean            // out

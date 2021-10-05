@@ -194,7 +194,7 @@ func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserNative creates a new GtkFileChooserNative.
-func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative {
+func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
 	var _arg1 *C.char                 // out
 	var _arg2 *C.GtkWindow            // out
 	var _arg3 C.GtkFileChooserAction  // out

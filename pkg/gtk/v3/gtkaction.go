@@ -132,7 +132,7 @@ func marshalActioner(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use #GAction instead, associating it to a widget with Actionable
 // or creating a Menu with gtk_menu_new_from_model().
-func NewAction(name string, label string, tooltip string, stockId string) *Action {
+func NewAction(name, label, tooltip, stockId string) *Action {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _arg3 *C.gchar     // out

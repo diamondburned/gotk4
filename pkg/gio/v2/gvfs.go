@@ -86,7 +86,7 @@ type VFSOverrider interface {
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
-	LocalFileMoved(source string, dest string)
+	LocalFileMoved(source, dest string)
 	LocalFileRemoved(filename string)
 	LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
 	// ParseName: this operation never fails, but the returned object might not
@@ -284,7 +284,7 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 //
 // It's an error to call this function twice with the same scheme. To unregister
 // a custom URI scheme, use g_vfs_unregister_uri_scheme().
-func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool {
+func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
 	var _arg0 *C.GVfs              // out
 	var _arg1 *C.char              // out
 	var _arg2 C.GVfsFileLookupFunc // out

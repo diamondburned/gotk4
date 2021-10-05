@@ -34,7 +34,7 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// DoDeleteText deletes a sequence of characters.
 	//
 	// The characters that are deleted are those characters at positions from
@@ -42,7 +42,7 @@ type EditableOverrider interface {
 	// the characters deleted are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DoDeleteText(startPos int, endPos int)
+	DoDeleteText(startPos, endPos int)
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
 	//
@@ -68,7 +68,7 @@ type EditableOverrider interface {
 	// the text.
 	//
 	// Note that positions are specified in characters, not bytes.
-	SetSelectionBounds(startPos int, endPos int)
+	SetSelectionBounds(startPos, endPos int)
 }
 
 // Editable: GtkEditable is an interface for text editing widgets.
@@ -204,13 +204,13 @@ type Editabler interface {
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
 	// DeleteText deletes a sequence of characters.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// FinishDelegate undoes the setup done by gtk.Editable.InitDelegate().
 	FinishDelegate()
 	// Alignment gets the alignment of the editable.
 	Alignment() float32
 	// Chars retrieves a sequence of characters.
-	Chars(startPos int, endPos int) string
+	Chars(startPos, endPos int) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
 	Delegate() Editabler
@@ -234,7 +234,7 @@ type Editabler interface {
 	// InitDelegate sets up a delegate for GtkEditable.
 	InitDelegate()
 	// SelectRegion selects a region of text.
-	SelectRegion(startPos int, endPos int)
+	SelectRegion(startPos, endPos int)
 	// SetAlignment sets the alignment for the contents of the editable.
 	SetAlignment(xalign float32)
 	// SetEditable determines if the user can edit the text in the editable
@@ -302,7 +302,7 @@ func (editable *Editable) DeleteSelection() {
 // characters deleted are those from start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
-func (editable *Editable) DeleteText(startPos int, endPos int) {
+func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -355,7 +355,7 @@ func (editable *Editable) Alignment() float32 {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) Chars(startPos int, endPos int) string {
+func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -576,7 +576,7 @@ func (editable *Editable) InitDelegate() {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) SelectRegion(startPos int, endPos int) {
+func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out

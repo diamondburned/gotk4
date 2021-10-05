@@ -78,7 +78,7 @@ func (c ConvertError) String() string {
 //
 // Using extensions such as "//TRANSLIT" may not work (or may not work well) on
 // many platforms. Consider using g_str_to_ascii() instead.
-func Convert(str []byte, toCodeset string, fromCodeset string) (uint, []byte, error) {
+func Convert(str []byte, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar  // out
@@ -132,7 +132,7 @@ func Convert(str []byte, toCodeset string, fromCodeset string) (uint, []byte, er
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
 // character is not a mark that could combine with the base character.).
-func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (uint, []byte, error) {
+func ConvertWithFallback(str []byte, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar  // out
@@ -317,7 +317,7 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
-func FilenameToURI(filename string, hostname string) (string, error) {
+func FilenameToURI(filename, hostname string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
 	var _cret *C.gchar  // in

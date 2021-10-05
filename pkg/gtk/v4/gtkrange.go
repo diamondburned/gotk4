@@ -369,7 +369,7 @@ func (_range *Range) SetFlippable(flippable bool) {
 // The step size is used when the user clicks the GtkScrollbar arrows or moves a
 // GtkScale via arrow keys. The page size is used for example when moving via
 // Page Up or Page Down keys.
-func (_range *Range) SetIncrements(step float64, page float64) {
+func (_range *Range) SetIncrements(step, page float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out
@@ -407,7 +407,7 @@ func (_range *Range) SetInverted(setting bool) {
 //
 // The range value is clamped to be between min and max. (If the range has a
 // non-zero page size, it is clamped between min and max - page-size.).
-func (_range *Range) SetRange(min float64, max float64) {
+func (_range *Range) SetRange(min, max float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.double    // out
 	var _arg2 C.double    // out

@@ -252,7 +252,7 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *Spin
 // Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_spin_button_set_digits() to correct it.
-func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton {
+func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out
@@ -515,7 +515,7 @@ func (spinButton *SpinButton) SetDigits(digits uint) {
 
 // SetIncrements sets the step and page increments for spin_button. This affects
 // how quickly the value changes when the spin button’s arrows are activated.
-func (spinButton *SpinButton) SetIncrements(step float64, page float64) {
+func (spinButton *SpinButton) SetIncrements(step, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // out
 	var _arg2 C.gdouble        // out
@@ -550,7 +550,7 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 //
 // If the current value is outside this range, it will be adjusted to fit within
 // the range, otherwise it will remain unchanged.
-func (spinButton *SpinButton) SetRange(min float64, max float64) {
+func (spinButton *SpinButton) SetRange(min, max float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // out
 	var _arg2 C.gdouble        // out

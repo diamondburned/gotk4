@@ -161,7 +161,7 @@ type FileChooserer interface {
 	externglib.Objector
 
 	// AddChoice adds a 'choice' to the file chooser.
-	AddChoice(id string, label string, options []string, optionLabels []string)
+	AddChoice(id, label string, options, optionLabels []string)
 	// AddFilter adds filter to the list of filters that the user can select
 	// between.
 	AddFilter(filter *FileFilter)
@@ -207,7 +207,7 @@ type FileChooserer interface {
 	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
-	SetChoice(id string, option string)
+	SetChoice(id, option string)
 	// SetCreateFolders sets whether file chooser will offer to create new
 	// folders.
 	SetCreateFolders(createFolders bool)
@@ -245,7 +245,7 @@ func marshalFileChooserer(p uintptr) (interface{}, error) {
 // checkbutton. You can select a value using gtk.FileChooser.SetChoice() before
 // the dialog is shown, and you can obtain the user-selected value in the
 // gtk.Dialog::response signal handler using gtk.FileChooser.GetChoice().
-func (chooser *FileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
+func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out
@@ -688,7 +688,7 @@ func (chooser *FileChooser) SetAction(action FileChooserAction) {
 // gtk_file_chooser_add_choice().
 //
 // For a boolean choice, the possible options are "true" and "false".
-func (chooser *FileChooser) SetChoice(id string, option string) {
+func (chooser *FileChooser) SetChoice(id, option string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out

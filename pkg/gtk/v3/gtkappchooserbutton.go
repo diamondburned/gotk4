@@ -147,7 +147,7 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 // the provided name as a detail for the AppChooserButton::custom-item-activated
 // signal, to add a callback for the activation of a particular custom item in
 // the list. See also gtk_app_chooser_button_append_separator().
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out

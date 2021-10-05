@@ -522,7 +522,7 @@ func (button *Button) Released() {
 //
 // Deprecated: Access the child widget directly if you need to control its
 // alignment.
-func (button *Button) SetAlignment(xalign float32, yalign float32) {
+func (button *Button) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out

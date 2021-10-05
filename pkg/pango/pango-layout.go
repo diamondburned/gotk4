@@ -1121,7 +1121,7 @@ func (layout *Layout) IsWrapped() bool {
 // Motion here is in cursor positions, not in characters, so a single call to
 // pango.Layout.MoveCursorVisually() may move the cursor over multiple
 // characters when multiple characters combine to form a single grapheme.
-func (layout *Layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
+func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int) (newIndex int, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.int          // out
@@ -1547,7 +1547,7 @@ func (layout *Layout) SetWrap(wrap WrapMode) {
 // described for pango.LayoutLine.XToIndex(). If either the X or Y positions
 // were not inside the layout, then the function returns FALSE; on an exact hit,
 // it returns TRUE.
-func (layout *Layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
+func (layout *Layout) XYToIndex(x, y int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out

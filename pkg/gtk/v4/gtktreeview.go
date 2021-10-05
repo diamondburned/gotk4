@@ -76,7 +76,7 @@ func (t TreeViewDropPosition) String() string {
 // Please note that returning TRUE does not actually indicate that the column
 // drop was made, but is meant only to indicate a possible drop spot to the
 // user.
-type TreeViewColumnDropFunc func(treeView *TreeView, column *TreeViewColumn, prevColumn *TreeViewColumn, nextColumn *TreeViewColumn) (ok bool)
+type TreeViewColumnDropFunc func(treeView *TreeView, column, prevColumn, nextColumn *TreeViewColumn) (ok bool)
 
 //export _gotk4_gtk4_TreeViewColumnDropFunc
 func _gotk4_gtk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) (cret C.gboolean) {
@@ -218,8 +218,8 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 type TreeViewOverrider interface {
 	ColumnsChanged()
 	CursorChanged()
-	ExpandCollapseCursorRow(logical bool, expand bool, openAll bool) bool
-	MoveCursor(step MovementStep, count int, extend bool, modify bool) bool
+	ExpandCollapseCursorRow(logical, expand, openAll bool) bool
+	MoveCursor(step MovementStep, count int, extend, modify bool) bool
 	// RowActivated activates the cell determined by path and column.
 	RowActivated(path *TreePath, column *TreeViewColumn)
 	RowCollapsed(iter *TreeIter, path *TreePath)
@@ -458,7 +458,7 @@ func (treeView *TreeView) ColumnsAutosize() {
 
 // ConvertBinWindowToTreeCoords converts bin_window coordinates to coordinates
 // for the tree (the full scrollable area of the tree).
-func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx int, by int) (tx int, ty int) {
+func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx, by int) (tx int, ty int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -485,7 +485,7 @@ func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx int, by int) (tx int, 
 
 // ConvertBinWindowToWidgetCoords converts bin_window coordinates to widget
 // relative coordinates.
-func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx int, by int) (wx int, wy int) {
+func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx, by int) (wx int, wy int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -512,7 +512,7 @@ func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx int, by int) (wx int
 
 // ConvertTreeToBinWindowCoords converts tree coordinates (coordinates in full
 // scrollable area of the tree) to bin_window coordinates.
-func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, by int) {
+func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx, ty int) (bx int, by int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -539,7 +539,7 @@ func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, 
 
 // ConvertTreeToWidgetCoords converts tree coordinates (coordinates in full
 // scrollable area of the tree) to widget coordinates.
-func (treeView *TreeView) ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int) {
+func (treeView *TreeView) ConvertTreeToWidgetCoords(tx, ty int) (wx int, wy int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -566,7 +566,7 @@ func (treeView *TreeView) ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy 
 
 // ConvertWidgetToBinWindowCoords converts widget coordinates to coordinates for
 // the bin_window.
-func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int) {
+func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx int, by int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -593,7 +593,7 @@ func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int
 
 // ConvertWidgetToTreeCoords converts widget coordinates to coordinates for the
 // tree (the full scrollable area of the tree).
-func (treeView *TreeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int) {
+func (treeView *TreeView) ConvertWidgetToTreeCoords(wx, wy int) (tx int, ty int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -913,7 +913,7 @@ func (treeView *TreeView) Cursor() (*TreePath, *TreeViewColumn) {
 // drag_y are expected to be in widget coordinates. This function is only
 // meaningful if tree_view is realized. Therefore this function will always
 // return FALSE if tree_view is not realized or does not have a model.
-func (treeView *TreeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool) {
+func (treeView *TreeView) DestRowAtPos(dragX, dragY int) (*TreePath, TreeViewDropPosition, bool) {
 	var _arg0 *C.GtkTreeView            // out
 	var _arg1 C.int                     // out
 	var _arg2 C.int                     // out
@@ -1232,7 +1232,7 @@ func (treeView *TreeView) NColumns() uint {
 // For converting widget coordinates (eg. the ones you get from
 // GtkWidget::query-tooltip), please see
 // gtk_tree_view_convert_widget_to_bin_window_coords().
-func (treeView *TreeView) PathAtPos(x int, y int) (path *TreePath, column *TreeViewColumn, cellX int, cellY int, ok bool) {
+func (treeView *TreeView) PathAtPos(x, y int) (path *TreePath, column *TreeViewColumn, cellX int, cellY int, ok bool) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 C.int                // out
 	var _arg2 C.int                // out
@@ -1431,7 +1431,7 @@ func (treeView *TreeView) TooltipColumn() int {
 // and iter which have been provided will be set to point to that row and the
 // corresponding model. x and y will always be converted to be relative to
 // tree_view’s bin_window if keyboard_tooltip is FALSE.
-func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModeller, *TreePath, TreeIter, bool) {
+func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (TreeModeller, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1634,7 +1634,7 @@ func (treeView *TreeView) InsertColumnWithDataFunc(position int, title string, c
 // The path, column, cell_x and cell_y arguments will be filled in likewise as
 // for gtk_tree_view_get_path_at_pos(). Please see
 // gtk_tree_view_get_path_at_pos() for more information.
-func (treeView *TreeView) IsBlankAtPos(x int, y int) (path *TreePath, column *TreeViewColumn, cellX int, cellY int, ok bool) {
+func (treeView *TreeView) IsBlankAtPos(x, y int) (path *TreePath, column *TreeViewColumn, cellX int, cellY int, ok bool) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 C.int                // out
 	var _arg2 C.int                // out
@@ -1718,7 +1718,7 @@ func (treeView *TreeView) MapExpandedRows(fn TreeViewMappingFunc) {
 
 // MoveColumnAfter moves column to be after to base_column. If base_column is
 // NULL, then column is placed in the first position.
-func (treeView *TreeView) MoveColumnAfter(column *TreeViewColumn, baseColumn *TreeViewColumn) {
+func (treeView *TreeView) MoveColumnAfter(column, baseColumn *TreeViewColumn) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
 	var _arg2 *C.GtkTreeViewColumn // out
@@ -1810,7 +1810,7 @@ func (treeView *TreeView) RowExpanded(path *TreePath) bool {
 // This function only works if the model is set, and path is a valid row on the
 // model. If the model changes before the tree_view is realized, the centered
 // path will be modified to reflect this change.
-func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, useAlign bool, rowAlign float32, colAlign float32) {
+func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, useAlign bool, rowAlign, colAlign float32) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreePath       // out
 	var _arg2 *C.GtkTreeViewColumn // out
@@ -1846,7 +1846,7 @@ func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, u
 // If it isn't, you probably want to be using gtk_tree_view_scroll_to_cell().
 //
 // If either tree_x or tree_y are -1, then that direction isn’t scrolled.
-func (treeView *TreeView) ScrollToPoint(treeX int, treeY int) {
+func (treeView *TreeView) ScrollToPoint(treeX, treeY int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out

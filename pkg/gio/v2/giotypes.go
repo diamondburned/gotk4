@@ -105,7 +105,7 @@ func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (c
 //
 // This function is called in the [thread-default main
 // loop][g-main-context-push-thread-default] that manager was constructed in.
-type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string) (gType externglib.Type)
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath, interfaceName string) (gType externglib.Type)
 
 //export _gotk4_gio2_DBusProxyTypeFunc
 func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
@@ -198,7 +198,7 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 //
 // The last progress callback may or may not be equal to the final result.
 // Always check the async result to get the final value.
-type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64)
+type FileMeasureProgressCallback func(reporting bool, currentSize, numDirs, numFiles uint64)
 
 //export _gotk4_gio2_FileMeasureProgressCallback
 func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
@@ -226,7 +226,7 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, ar
 // FileProgressCallback: when doing file operations that may take a while, such
 // as moving a file or copying a file, a progress callback is used to pass how
 // far along that operation is to the application.
-type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
+type FileProgressCallback func(currentNumBytes, totalNumBytes int64)
 
 //export _gotk4_gio2_FileProgressCallback
 func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {

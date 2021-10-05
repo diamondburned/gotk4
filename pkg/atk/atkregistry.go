@@ -105,7 +105,7 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 // SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
 // associated factory_type will thereafter be responsible for the creation of
 // new Object implementations for instances appropriate for type.
-func (registry *Registry) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
+func (registry *Registry) SetFactoryType(typ, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out

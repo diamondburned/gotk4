@@ -24,7 +24,7 @@ import "C"
 // test function teardown.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestCreateSimpleWindow(windowTitle string, dialogText string) Widgetter {
+func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in

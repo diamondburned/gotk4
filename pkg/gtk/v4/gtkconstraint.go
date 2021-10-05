@@ -85,7 +85,7 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 
 // NewConstraint creates a new constraint representing a relation between a
 // layout attribute on a source and a layout attribute on a target.
-func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint {
+func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out

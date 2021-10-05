@@ -48,7 +48,7 @@ func EnvironGetenv(envp []string, variable string) string {
 
 // EnvironSetenv sets the environment variable variable in the provided list
 // envp to value.
-func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
+func EnvironSetenv(envp []string, variable, value string, overwrite bool) []string {
 	var _arg1 **C.gchar  // out
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // out
@@ -258,7 +258,7 @@ func Listenv() []string {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Setenv(variable string, value string, overwrite bool) bool {
+func Setenv(variable, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _arg3 C.gboolean // out

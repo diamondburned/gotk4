@@ -1510,7 +1510,7 @@ func RegexEscapeNUL(_string string, length int) string {
 // If this function is to be called on the same pattern more than once, it's
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_match().
-func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
+func RegexMatchSimple(pattern, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _arg3 C.GRegexCompileFlags // out
@@ -1563,7 +1563,7 @@ func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompil
 // A pattern that can match empty strings splits string into separate characters
 // wherever it matches the empty string between characters. For example
 // splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
-func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
+func RegexSplitSimple(pattern, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _arg3 C.GRegexCompileFlags // out

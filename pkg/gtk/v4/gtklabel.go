@@ -800,7 +800,7 @@ func (self *Label) YAlign() float32 {
 // See gtk.Label.SetSelectable(). If the label is not selectable, this function
 // has no effect. If start_offset or end_offset are -1, then the end of the
 // label will be substituted.
-func (self *Label) SelectRegion(startOffset int, endOffset int) {
+func (self *Label) SelectRegion(startOffset, endOffset int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.int       // out
 	var _arg2 C.int       // out

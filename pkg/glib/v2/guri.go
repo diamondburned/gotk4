@@ -743,7 +743,7 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 //
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
-func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI {
+func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -808,7 +808,7 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 // In contrast to g_uri_build(), this allows specifying the components of the
 // ‘userinfo’ field separately. Note that user must be non-NULL if either
 // password or auth_params is non-NULL.
-func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
+func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -920,7 +920,7 @@ func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 // specify characters in reserved_chars_allowed they are not escaped. This is
 // useful for the "reserved" characters in the URI specification, since those
 // are allowed unescaped in some portions of a URI.
-func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bool) string {
+func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) string {
 	var _arg1 *C.char    // out
 	var _arg2 *C.char    // out
 	var _arg3 C.gboolean // out
@@ -993,7 +993,7 @@ func URIIsValid(uriString string, flags URIFlags) error {
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in flags.
-func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
+func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1056,7 +1056,7 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in flags.
-func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
+func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1283,7 +1283,7 @@ func URIPeekScheme(uri string) string {
 //
 // (If base_uri_string is NULL, this just returns uri_ref, or NULL if uri_ref is
 // invalid or not absolute.).
-func URIResolveRelative(baseUriString string, uriRef string, flags URIFlags) (string, error) {
+func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
 	var _arg3 C.GUriFlags // out
@@ -1572,7 +1572,7 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 //
 // Note: NUL byte is not accepted in the output, in contrast to
 // g_uri_unescape_bytes().
-func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string {
+func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters string) string {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
 	var _arg3 *C.char // out
@@ -1613,7 +1613,7 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 // will be returned. This is useful if you want to avoid for instance having a
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
-func URIUnescapeString(escapedString string, illegalCharacters string) string {
+func URIUnescapeString(escapedString, illegalCharacters string) string {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
 	var _cret *C.char // in

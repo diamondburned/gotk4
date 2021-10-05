@@ -259,7 +259,7 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //
 // This function can be called before a drag is started, or in a
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin signal handler.
-func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX int, hotY int) {
+func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 *C.GdkPaintable  // out
 	var _arg2 C.int            // out

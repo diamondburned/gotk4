@@ -290,7 +290,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 //
 // The child is identified by the name. The title will be used by
 // GtkStackSwitcher to represent child in a tab bar, so it should be short.
-func (stack *Stack) AddTitled(child Widgetter, name string, title string) *StackPage {
+func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out

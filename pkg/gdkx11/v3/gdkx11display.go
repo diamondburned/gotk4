@@ -34,7 +34,7 @@ func init() {
 //
 // This function should only be needed in unusual circumstances, e.g. when
 // filtering XInput extension events on the root window.
-func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents int) {
+func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out

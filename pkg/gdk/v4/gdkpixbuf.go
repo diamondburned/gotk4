@@ -24,7 +24,7 @@ import "C"
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the surface contains one.
-func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
+func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.int              // out
 	var _arg3 C.int              // out

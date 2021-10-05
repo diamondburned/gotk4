@@ -231,7 +231,7 @@ type Devicer interface {
 	SetAxisUse(index_ uint, use AxisUse)
 	// SetKey specifies the X key event to generate when a macro button of a
 	// device is pressed.
-	SetKey(index_ uint, keyval uint, modifiers ModifierType)
+	SetKey(index_, keyval uint, modifiers ModifierType)
 	// SetMode sets a the mode of an input device.
 	SetMode(mode InputMode) bool
 	// Ungrab: release any grab on device.
@@ -239,7 +239,7 @@ type Devicer interface {
 	// Warp warps device in display to the point x,y on the screen screen,
 	// unless the device is confined to a window by a grab, in which case it
 	// will be moved as far as allowed by the grab.
-	Warp(screen *Screen, x int, y int)
+	Warp(screen *Screen, x, y int)
 }
 
 var _ Devicer = (*Device)(nil)
@@ -875,7 +875,7 @@ func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 
 // SetKey specifies the X key event to generate when a macro button of a device
 // is pressed.
-func (device *Device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
+func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out
@@ -944,7 +944,7 @@ func (device *Device) Ungrab(time_ uint32) {
 // Note that the pointer should normally be under the control of the user. This
 // function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
-func (device *Device) Warp(screen *Screen, x int, y int) {
+func (device *Device) Warp(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out

@@ -136,7 +136,7 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 // K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeRegister(name string, width int, height int) int {
+func IconSizeRegister(name string, width, height int) int {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out

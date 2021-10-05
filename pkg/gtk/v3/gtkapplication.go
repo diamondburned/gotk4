@@ -257,7 +257,7 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 // this function for each accelerator.
 //
 // Deprecated: Use gtk_application_set_accels_for_action() instead.
-func (application *Application) AddAccelerator(accelerator string, actionName string, parameter *glib.Variant) {
+func (application *Application) AddAccelerator(accelerator, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out

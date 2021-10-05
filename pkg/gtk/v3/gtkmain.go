@@ -84,7 +84,7 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 // linked against an old version of GTK+ and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
+func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
 	var _arg3 C.guint  // out

@@ -16,7 +16,7 @@ import "C"
 // category instead of always using LC_MESSAGES. See g_dgettext() for more
 // information about how this functions differs from calling dcgettext()
 // directly.
-func Dcgettext(domain string, msgid string, category int) string {
+func Dcgettext(domain, msgid string, category int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gint   // out
@@ -73,7 +73,7 @@ func Dcgettext(domain string, msgid string, category int) string {
 //
 // Applications should normally not use this function directly, but use the _()
 // macro for translations.
-func Dgettext(domain string, msgid string) string {
+func Dgettext(domain, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
@@ -101,7 +101,7 @@ func Dgettext(domain string, msgid string) string {
 // translations for the current locale.
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
-func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string {
+func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 *C.gchar // out
@@ -142,7 +142,7 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 //
 // Applications should normally not use this function directly, but use the C_()
 // macro for translations with context.
-func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
+func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gsize  // out
@@ -177,7 +177,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 //
 // This function differs from C_() in that it is not a macro and thus you may
 // use non-string-literals as context and msgid arguments.
-func Dpgettext2(domain string, context string, msgid string) string {
+func Dpgettext2(domain, context, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 *C.gchar // out
@@ -205,7 +205,7 @@ func Dpgettext2(domain string, context string, msgid string) string {
 }
 
 // StripContext: auxiliary function for gettext() support (see Q_()).
-func StripContext(msgid string, msgval string) string {
+func StripContext(msgid, msgval string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in

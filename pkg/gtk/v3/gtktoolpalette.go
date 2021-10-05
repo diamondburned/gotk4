@@ -235,7 +235,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 }
 
 // DropGroup gets the group at position (x, y).
-func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
+func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 C.gint              // out
 	var _arg2 C.gint              // out
@@ -261,7 +261,7 @@ func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
 
 // DropItem gets the item at position (x, y). See
 // gtk_tool_palette_get_drop_group().
-func (palette *ToolPalette) DropItem(x int, y int) *ToolItem {
+func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out

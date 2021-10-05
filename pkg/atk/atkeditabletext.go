@@ -28,12 +28,12 @@ func init() {
 type EditableTextOverrider interface {
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
-	CopyText(startPos int, endPos int)
+	CopyText(startPos, endPos int)
 	// CutText: copy text from start_pos up to, but not including end_pos to the
 	// clipboard and then delete from the widget.
-	CutText(startPos int, endPos int)
+	CutText(startPos, endPos int)
 	// DeleteText: delete text start_pos up to, but not including end_pos.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
 	InsertText(_string string, length int, position *int)
 	// PasteText: paste text from clipboard to specified position.
@@ -60,12 +60,12 @@ type EditableTexter interface {
 
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
-	CopyText(startPos int, endPos int)
+	CopyText(startPos, endPos int)
 	// CutText: copy text from start_pos up to, but not including end_pos to the
 	// clipboard and then delete from the widget.
-	CutText(startPos int, endPos int)
+	CutText(startPos, endPos int)
 	// DeleteText: delete text start_pos up to, but not including end_pos.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
 	InsertText(_string string, length int, position *int)
 	// PasteText: paste text from clipboard to specified position.
@@ -90,7 +90,7 @@ func marshalEditableTexter(p uintptr) (interface{}, error) {
 
 // CopyText: copy text from start_pos up to, but not including end_pos to the
 // clipboard.
-func (text *EditableText) CopyText(startPos int, endPos int) {
+func (text *EditableText) CopyText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -107,7 +107,7 @@ func (text *EditableText) CopyText(startPos int, endPos int) {
 
 // CutText: copy text from start_pos up to, but not including end_pos to the
 // clipboard and then delete from the widget.
-func (text *EditableText) CutText(startPos int, endPos int) {
+func (text *EditableText) CutText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -123,7 +123,7 @@ func (text *EditableText) CutText(startPos int, endPos int) {
 }
 
 // DeleteText: delete text start_pos up to, but not including end_pos.
-func (text *EditableText) DeleteText(startPos int, endPos int) {
+func (text *EditableText) DeleteText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out

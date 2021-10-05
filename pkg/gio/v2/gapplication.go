@@ -265,7 +265,7 @@ func (application *Application) Activate() {
 // g_application_add_main_option_entries() for more details.
 //
 // See Entry for more documentation of the arguments.
-func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
+func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.char         // out
 	var _arg2 C.char          // out

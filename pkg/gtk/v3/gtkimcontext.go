@@ -48,7 +48,7 @@ type IMContextOverrider interface {
 	// This function is used by an input method that wants to make subsitutions
 	// in the existing text in response to new input. It is not useful for
 	// applications.
-	DeleteSurrounding(offset int, nChars int) bool
+	DeleteSurrounding(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events. If this function returns TRUE, then no further processing
 	// should be done for this key event.
@@ -99,7 +99,7 @@ type IMContextOverrider interface {
 	// preedit string. This function is expected to be called in response to the
 	// GtkIMContext::retrieve_surrounding signal, and will likely have no effect
 	// if called at other times.
-	SetSurrounding(text string, len int, cursorIndex int)
+	SetSurrounding(text string, len, cursorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback. If use_preedit is FALSE (default is TRUE), then the
 	// IM context may use some other method to display feedback, such as
@@ -157,7 +157,7 @@ type IMContexter interface {
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
-	DeleteSurrounding(offset int, nChars int) bool
+	DeleteSurrounding(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	FilterKeypress(event *gdk.EventKey) bool
@@ -183,7 +183,7 @@ type IMContexter interface {
 	SetCursorLocation(area *gdk.Rectangle)
 	// SetSurrounding sets surrounding context around the insertion point and
 	// preedit string.
-	SetSurrounding(text string, len int, cursorIndex int)
+	SetSurrounding(text string, len, cursorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback.
 	SetUsePreedit(usePreedit bool)
@@ -219,7 +219,7 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 // This function is used by an input method that wants to make subsitutions in
 // the existing text in response to new input. It is not useful for
 // applications.
-func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
+func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -407,7 +407,7 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 // preedit string. This function is expected to be called in response to the
 // GtkIMContext::retrieve_surrounding signal, and will likely have no effect if
 // called at other times.
-func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) {
+func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gint          // out

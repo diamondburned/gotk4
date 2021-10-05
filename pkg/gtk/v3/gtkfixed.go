@@ -104,7 +104,7 @@ func NewFixed() *Fixed {
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
+func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -123,7 +123,7 @@ func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
+func (fixed *Fixed) Put(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

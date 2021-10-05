@@ -33,7 +33,7 @@ func init() {
 // before or containing start_index; cached_iter will be advanced to the range
 // covering the position just after start_index + length. (i.e. if itemizing in
 // a loop, just keep passing in the same cached_iter).
-func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
+func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
 	var _arg3 C.int                // out
@@ -85,7 +85,7 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 // The base direction is used when computing bidirectional levels. (see
 // pango.Context.SetBaseDir()). itemize gets the base direction from the
 // PangoContext.
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out
 	var _arg3 *C.char              // out

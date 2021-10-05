@@ -73,7 +73,7 @@ const PRINT_SETTINGS_USE_COLOR = "use-color"
 const PRINT_SETTINGS_WIN32_DRIVER_EXTRA = "win32-driver-extra"
 const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
 
-type PrintSettingsFunc func(key string, value string)
+type PrintSettingsFunc func(key, value string)
 
 //export _gotk4_gtk4_PrintSettingsFunc
 func _gotk4_gtk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
@@ -969,7 +969,7 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 }
 
 // Set associates value with key.
-func (settings *PrintSettings) Set(key string, value string) {
+func (settings *PrintSettings) Set(key, value string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
@@ -1359,7 +1359,7 @@ func (settings *PrintSettings) SetResolution(resolution int) {
 
 // SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (settings *PrintSettings) SetResolutionXY(resolutionX int, resolutionY int) {
+func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
 	var _arg2 C.int               // out

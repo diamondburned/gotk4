@@ -98,7 +98,7 @@ func NewHScale(adjustment *Adjustment) *HScale {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_HORIZONTAL
 // instead.
-func NewHScaleWithRange(min float64, max float64, step float64) *HScale {
+func NewHScaleWithRange(min, max, step float64) *HScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out

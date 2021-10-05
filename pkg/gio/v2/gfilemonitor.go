@@ -37,7 +37,7 @@ func init() {
 type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
-	Changed(file Filer, otherFile Filer, eventType FileMonitorEvent)
+	Changed(file, otherFile Filer, eventType FileMonitorEvent)
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -62,7 +62,7 @@ type FileMonitorrer interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
 	// EmitEvent emits the Monitor::changed signal if a change has taken place.
-	EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent)
+	EmitEvent(child, otherFile Filer, eventType FileMonitorEvent)
 	// IsCancelled returns whether the monitor is canceled.
 	IsCancelled() bool
 	// SetRateLimit sets the rate limit to which the monitor will report
@@ -109,7 +109,7 @@ func (monitor *FileMonitor) Cancel() bool {
 // Implementations are responsible to call this method from the [thread-default
 // main context][g-main-context-push-thread-default] of the thread that the
 // monitor was created in.
-func (monitor *FileMonitor) EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent) {
+func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
 	var _arg2 *C.GFile            // out

@@ -56,7 +56,7 @@ type DocumentOverrider interface {
 	PageCount() int
 	// SetDocumentAttribute sets the value for the given attribute_name inside
 	// document.
-	SetDocumentAttribute(attributeName string, attributeValue string) bool
+	SetDocumentAttribute(attributeName, attributeValue string) bool
 }
 
 // Document interface should be supported by any object whose content is a
@@ -89,7 +89,7 @@ type Documenter interface {
 	PageCount() int
 	// SetAttributeValue sets the value for the given attribute_name inside
 	// document.
-	SetAttributeValue(attributeName string, attributeValue string) bool
+	SetAttributeValue(attributeName, attributeValue string) bool
 }
 
 var _ Documenter = (*Document)(nil)
@@ -230,7 +230,7 @@ func (document *Document) PageCount() int {
 
 // SetAttributeValue sets the value for the given attribute_name inside
 // document.
-func (document *Document) SetAttributeValue(attributeName string, attributeValue string) bool {
+func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out

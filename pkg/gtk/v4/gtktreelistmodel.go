@@ -82,7 +82,7 @@ func marshalTreeListModeller(p uintptr) (interface{}, error) {
 
 // NewTreeListModel creates a new empty GtkTreeListModel displaying root with
 // all rows collapsed.
-func NewTreeListModel(root gio.ListModeller, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
+func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
 	var _arg2 C.gboolean                        // out
 	var _arg3 C.gboolean                        // out

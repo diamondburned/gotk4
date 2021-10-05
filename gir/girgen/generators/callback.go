@@ -295,6 +295,8 @@ func (g *CallbackGenerator) renderBlock() bool {
 		g.GoTail += " (" + goTypeRets.Join() + ")"
 	}
 
+	g.GoTail = callable.CoalesceTail(g.GoTail)
+
 	// Only add the import now, since we know that the callback will be
 	// generated.
 	g.header.ImportCore("gbox")

@@ -1394,7 +1394,7 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 
 // SetAttributeByteString sets the attribute to contain the given attr_value, if
 // possible.
-func (info *FileInfo) SetAttributeByteString(attribute string, attrValue string) {
+func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
@@ -1511,7 +1511,7 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 
 // SetAttributeString sets the attribute to contain the given attr_value, if
 // possible.
-func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
+func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out

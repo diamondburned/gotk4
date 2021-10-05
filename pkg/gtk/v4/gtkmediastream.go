@@ -128,7 +128,7 @@ type MediaStreamer interface {
 	Play()
 	// Prepared: called by GtkMediaStream implementations to advertise the
 	// stream being ready to play and providing details about the stream.
-	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
+	Prepared(hasAudio, hasVideo, seekable bool, duration int64)
 	// Realize: called by users to attach the media stream to a GdkSurface they
 	// manage.
 	Realize(surface gdk.Surfacer)
@@ -515,7 +515,7 @@ func (self *MediaStream) Play() {
 //
 // This function may not be called again until the stream has been reset via
 // gtk.MediaStream.Unprepared().
-func (self *MediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64) {
+func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
 	var _arg2 C.gboolean        // out

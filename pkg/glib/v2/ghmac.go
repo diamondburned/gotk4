@@ -18,7 +18,7 @@ import "C"
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string {
+func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
 	var _arg3 *C.GBytes       // out
@@ -45,7 +45,7 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
+func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
 	var _arg3 C.gsize

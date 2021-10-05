@@ -237,7 +237,7 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 	return cret
 }
 
-func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
+func AssertWarning(logDomain, file string, line int, prettyFunction, expression string) {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
 	var _arg3 C.int   // out

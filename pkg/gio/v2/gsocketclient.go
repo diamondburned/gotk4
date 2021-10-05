@@ -366,7 +366,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) NULL is returned and error (if non-NULL) is set accordingly.
-func (client *SocketClient) ConnectToService(ctx context.Context, domain string, service string) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToService(ctx context.Context, domain, service string) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg3 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
@@ -404,7 +404,7 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain string,
 
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
-func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain string, service string, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, service string, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out

@@ -49,7 +49,7 @@ type Popupper interface {
 	// SurfaceAnchor gets the current popup surface anchor.
 	SurfaceAnchor() Gravity
 	// Present popup after having processed the PopupLayout rules.
-	Present(width int, height int, layout *PopupLayout) bool
+	Present(width, height int, layout *PopupLayout) bool
 }
 
 var _ Popupper = (*Popup)(nil)
@@ -205,7 +205,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 // Presenting may fail, for example if the popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
 // gdk.Surface::layout signal will not me emitted.
-func (popup *Popup) Present(width int, height int, layout *PopupLayout) bool {
+func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

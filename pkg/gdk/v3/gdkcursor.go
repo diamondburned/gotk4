@@ -560,7 +560,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int, y int) *Cursor {
+func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out
@@ -596,7 +596,7 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int, y in
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromSurface(display *Display, surface *cairo.Surface, x float64, y float64) *Cursor {
+func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out

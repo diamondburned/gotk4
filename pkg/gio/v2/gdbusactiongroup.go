@@ -36,7 +36,7 @@ import "C"
 // be filled in. The correct thing to do is connect the signals for the action
 // group to monitor for changes and then to call g_action_group_list_actions()
 // to get the initial list.
-func DBusActionGroupGet(connection *DBusConnection, busName string, objectPath string) *DBusActionGroup {
+func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) *DBusActionGroup {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out

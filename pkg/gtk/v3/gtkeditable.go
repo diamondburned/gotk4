@@ -35,21 +35,21 @@ type EditableOverrider interface {
 	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// DoDeleteText deletes a sequence of characters. The characters that are
 	// deleted are those characters at positions from start_pos up to, but not
 	// including end_pos. If end_pos is negative, then the characters deleted
 	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DoDeleteText(startPos int, endPos int)
+	DoDeleteText(startPos, endPos int)
 	// Chars retrieves a sequence of characters. The characters that are
 	// retrieved are those characters at positions from start_pos up to, but not
 	// including end_pos. If end_pos is negative, then the characters retrieved
 	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
-	Chars(startPos int, endPos int) string
+	Chars(startPos, endPos int) string
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
 	//
@@ -75,7 +75,7 @@ type EditableOverrider interface {
 	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
-	SetSelectionBounds(startPos int, endPos int)
+	SetSelectionBounds(startPos, endPos int)
 }
 
 // Editable interface is an interface which should be implemented by text
@@ -128,9 +128,9 @@ type Editabler interface {
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
 	// DeleteText deletes a sequence of characters.
-	DeleteText(startPos int, endPos int)
+	DeleteText(startPos, endPos int)
 	// Chars retrieves a sequence of characters.
-	Chars(startPos int, endPos int) string
+	Chars(startPos, endPos int) string
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// Position retrieves the current position of the cursor relative to the
@@ -142,7 +142,7 @@ type Editabler interface {
 	// position of the cursor in the editable.
 	PasteClipboard()
 	// SelectRegion selects a region of text.
-	SelectRegion(startPos int, endPos int)
+	SelectRegion(startPos, endPos int)
 	// SetEditable determines if the user can edit the text in the editable
 	// widget or not.
 	SetEditable(isEditable bool)
@@ -203,7 +203,7 @@ func (editable *Editable) DeleteSelection() {
 // start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
-func (editable *Editable) DeleteText(startPos int, endPos int) {
+func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -224,7 +224,7 @@ func (editable *Editable) DeleteText(startPos int, endPos int) {
 // characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) Chars(startPos int, endPos int) string {
+func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -333,7 +333,7 @@ func (editable *Editable) PasteClipboard() {
 // characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
-func (editable *Editable) SelectRegion(startPos int, endPos int) {
+func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out

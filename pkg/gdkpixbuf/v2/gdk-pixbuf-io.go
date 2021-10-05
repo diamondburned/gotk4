@@ -116,7 +116,7 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPi
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
-type PixbufModuleSizeFunc func(width *int, height *int)
+type PixbufModuleSizeFunc func(width, height *int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
 func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
@@ -140,7 +140,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.g
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x int, y int, width int, height int)
+type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
 func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {

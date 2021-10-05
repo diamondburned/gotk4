@@ -555,7 +555,7 @@ func NewSettings(schemaId string) *Settings {
 //
 // It is a programmer error if path is not a valid path. A valid path begins and
 // ends with '/' and does not contain two consecutive '/' characters.
-func NewSettingsWithPath(schemaId string, path string) *Settings {
+func NewSettingsWithPath(schemaId, path string) *Settings {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GSettings // in
@@ -1622,7 +1622,7 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // string type in the schema for settings.
-func (settings *Settings) SetString(key string, value string) bool {
+func (settings *Settings) SetString(key, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

@@ -73,7 +73,7 @@ func marshalBlendNoder(p uintptr) (interface{}, error) {
 
 // NewBlendNode creates a GskRenderNode that will use blend_mode to blend the
 // top node onto the bottom node.
-func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *BlendNode {
+func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
 	var _arg3 C.GskBlendMode   // out
@@ -956,7 +956,7 @@ func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
 
 // NewCrossFadeNode creates a GskRenderNode that will do a cross-fade between
 // start and end.
-func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *CrossFadeNode {
+func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
 	var _arg3 C.float          // out
@@ -1324,7 +1324,7 @@ func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
 
 // NewInsetShadowNode creates a GskRenderNode that will render an inset shadow
 // into the box given by outline.
-func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *InsetShadowNode {
+func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
 	var _arg3 C.float           // out
@@ -1479,7 +1479,7 @@ func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
 // NewLinearGradientNode creates a GskRenderNode that will create a linear
 // gradient from the given points and color stops, and render that into the area
 // given by bounds.
-func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
+func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
@@ -1685,7 +1685,7 @@ func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
 
 // NewOutsetShadowNode creates a GskRenderNode that will render an outset shadow
 // around the box given by outline.
-func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *OutsetShadowNode {
+func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
 	var _arg3 C.float           // out
@@ -1842,7 +1842,7 @@ func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
 // The radial gradient starts around center. The size of the gradient is
 // dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
-func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) *RadialGradientNode {
+func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out
@@ -2114,7 +2114,7 @@ func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
 // NewRepeatingLinearGradientNode creates a GskRenderNode that will create a
 // repeating linear gradient from the given points and color stops, and render
 // that into the area given by bounds.
-func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 *C.graphene_point_t // out
@@ -2170,7 +2170,7 @@ func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
 // The radial gradient starts around center. The size of the gradient is
 // dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
-func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
 	var _arg3 C.float             // out

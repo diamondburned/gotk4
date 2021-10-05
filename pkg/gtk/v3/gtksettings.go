@@ -152,7 +152,7 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 }
 
 // SetStringProperty: deprecated: Use g_object_set() instead.
-func (settings *Settings) SetStringProperty(name string, vString string, origin string) {
+func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.gchar       // out

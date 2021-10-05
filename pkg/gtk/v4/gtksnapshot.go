@@ -163,7 +163,7 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 }
 
 // AppendInsetShadow appends an inset shadow into the box given by outline.
-func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) {
+func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
 	var _arg0 *C.GtkSnapshot    // out
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -207,7 +207,7 @@ func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 
 // AppendLinearGradient appends a linear gradient node with the given stops to
 // snapshot.
-func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
+func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint, endPoint *graphene.Point, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot      // out
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -251,7 +251,7 @@ func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 
 // AppendOutsetShadow appends an outset shadow node around the box given by
 // outline.
-func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) {
+func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
 	var _arg0 *C.GtkSnapshot    // out
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -280,7 +280,7 @@ func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gd
 
 // AppendRadialGradient appends a radial gradient node with the given stops to
 // snapshot.
-func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
+func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot      // out
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -316,7 +316,7 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 
 // AppendRepeatingLinearGradient appends a repeating linear gradient node with
 // the given stops to snapshot.
-func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
+func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint, endPoint *graphene.Point, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot      // out
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -343,7 +343,7 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 
 // AppendRepeatingRadialGradient appends a repeating radial gradient node with
 // the given stops to snapshot.
-func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
+func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot      // out
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -590,7 +590,7 @@ func (snapshot *Snapshot) PushOpacity(opacity float64) {
 // PushRepeat creates a node that repeats the child node.
 //
 // The child is recorded until the next call to gtk.Snapshot.Pop().
-func (snapshot *Snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect) {
+func (snapshot *Snapshot) PushRepeat(bounds, childBounds *graphene.Rect) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.graphene_rect_t // out
@@ -643,7 +643,7 @@ func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 // RenderBackground creates a render node for the CSS background according to
 // context, and appends it to the current node of snapshot, without changing the
 // current node.
-func (snapshot *Snapshot) RenderBackground(context *StyleContext, x float64, y float64, width float64, height float64) {
+func (snapshot *Snapshot) RenderBackground(context *StyleContext, x, y, width, height float64) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out
@@ -670,7 +670,7 @@ func (snapshot *Snapshot) RenderBackground(context *StyleContext, x float64, y f
 // RenderFocus creates a render node for the focus outline according to context,
 // and appends it to the current node of snapshot, without changing the current
 // node.
-func (snapshot *Snapshot) RenderFocus(context *StyleContext, x float64, y float64, width float64, height float64) {
+func (snapshot *Snapshot) RenderFocus(context *StyleContext, x, y, width, height float64) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out
@@ -697,7 +697,7 @@ func (snapshot *Snapshot) RenderFocus(context *StyleContext, x float64, y float6
 // RenderFrame creates a render node for the CSS border according to context,
 // and appends it to the current node of snapshot, without changing the current
 // node.
-func (snapshot *Snapshot) RenderFrame(context *StyleContext, x float64, y float64, width float64, height float64) {
+func (snapshot *Snapshot) RenderFrame(context *StyleContext, x, y, width, height float64) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out
@@ -723,7 +723,7 @@ func (snapshot *Snapshot) RenderFrame(context *StyleContext, x float64, y float6
 
 // RenderInsertionCursor draws a text caret using snapshot at the specified
 // index of layout.
-func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x float64, y float64, layout *pango.Layout, index int, direction pango.Direction) {
+func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out
@@ -753,7 +753,7 @@ func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x float64
 // RenderLayout creates a render node for rendering layout according to the
 // style information in context, and appends it to the current node of snapshot,
 // without changing the current node.
-func (snapshot *Snapshot) RenderLayout(context *StyleContext, x float64, y float64, layout *pango.Layout) {
+func (snapshot *Snapshot) RenderLayout(context *StyleContext, x, y float64, layout *pango.Layout) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out
@@ -842,7 +842,7 @@ func (snapshot *Snapshot) Save() {
 // factors.
 //
 // Use gtk.Snapshot.Scale3D() to scale in all 3 dimensions.
-func (snapshot *Snapshot) Scale(factorX float32, factorY float32) {
+func (snapshot *Snapshot) Scale(factorX, factorY float32) {
 	var _arg0 *C.GtkSnapshot // out
 	var _arg1 C.float        // out
 	var _arg2 C.float        // out
@@ -858,7 +858,7 @@ func (snapshot *Snapshot) Scale(factorX float32, factorY float32) {
 }
 
 // Scale3D scales snapshot's coordinate system by the given factors.
-func (snapshot *Snapshot) Scale3D(factorX float32, factorY float32, factorZ float32) {
+func (snapshot *Snapshot) Scale3D(factorX, factorY, factorZ float32) {
 	var _arg0 *C.GtkSnapshot // out
 	var _arg1 C.float        // out
 	var _arg2 C.float        // out

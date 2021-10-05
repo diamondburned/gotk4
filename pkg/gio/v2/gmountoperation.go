@@ -37,14 +37,14 @@ func init() {
 // yet, so the interface currently has no use.
 type MountOperationOverrider interface {
 	Aborted()
-	AskPassword(message string, defaultUser string, defaultDomain string, flags AskPasswordFlags)
+	AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	AskQuestion(message string, choices []string)
 	// Reply emits the Operation::reply signal.
 	Reply(result MountOperationResult)
 	// ShowProcesses: virtual implementation of Operation::show-processes.
 	ShowProcesses(message string, processes []glib.Pid, choices []string)
-	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
+	ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 }
 
 // MountOperation provides a mechanism for interacting with the user. It can be

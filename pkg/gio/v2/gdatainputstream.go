@@ -743,7 +743,7 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_upto_finish() to get the result of the operation.
-func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out

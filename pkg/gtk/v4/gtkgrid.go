@@ -158,7 +158,7 @@ func NewGrid() *Grid {
 //
 // The position of child is determined by column and row. The number of “cells”
 // that child will occupy is determined by width and height.
-func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height int) {
+func (grid *Grid) Attach(child Widgetter, column, row, width, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -190,7 +190,7 @@ func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height
 //
 // Attaching widgets labeled [1], [2], [3] with sibling == NULL and side ==
 // GTK_POS_LEFT yields a layout of [3][2][1].
-func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side PositionType, width int, height int) {
+func (grid *Grid) AttachNextTo(child, sibling Widgetter, side PositionType, width, height int) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.GtkWidget      // out
@@ -235,7 +235,7 @@ func (grid *Grid) BaselineRow() int {
 
 // ChildAt gets the child of grid whose area covers the grid cell at column,
 // row.
-func (grid *Grid) ChildAt(column int, row int) Widgetter {
+func (grid *Grid) ChildAt(column, row int) Widgetter {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

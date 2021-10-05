@@ -69,8 +69,8 @@ type EntryOverrider interface {
 	CopyClipboard()
 	CutClipboard()
 	DeleteFromCursor(typ DeleteType, count int)
-	FrameSize(x *int, y *int, width *int, height *int)
-	TextAreaSize(x *int, y *int, width *int, height *int)
+	FrameSize(x, y, width, height *int)
+	TextAreaSize(x, y, width, height *int)
 	InsertAtCursor(str string)
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
@@ -435,7 +435,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 // position’s coordinates are relative to the entry’s top left corner. If x, y
 // doesn’t lie inside an icon, -1 is returned. This function is intended for use
 // in a Widget::query-tooltip signal handler.
-func (entry *Entry) IconAtPos(x int, y int) int {
+func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out

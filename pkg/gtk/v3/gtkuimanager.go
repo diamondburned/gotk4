@@ -416,7 +416,7 @@ func NewUIManager() *UIManager {
 // before or after this item, depending on top.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
+func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.guint                // out
 	var _arg2 *C.gchar               // out

@@ -411,9 +411,9 @@ func (t TextGranularity) String() string {
 // yet, so the interface currently has no use.
 type TextOverrider interface {
 	// AddSelection adds a selection bounded by the specified offsets.
-	AddSelection(startOffset int, endOffset int) bool
+	AddSelection(startOffset, endOffset int) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.
-	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
 	CaretOffset() int
 	// CharacterAtOffset gets the specified text.
@@ -431,12 +431,12 @@ type TextOverrider interface {
 	// OffsetAtPoint gets the offset of the character located at coordinates x
 	// and y. x and y are interpreted as being relative to the screen or this
 	// widget's window depending on coords.
-	OffsetAtPoint(x int, y int, coords CoordType) int
+	OffsetAtPoint(x, y int, coords CoordType) int
 	// RangeExtents: get the bounding box for text within the specified range.
 	//
 	// If the extents can not be obtained (e.g. or missing support), the
 	// rectangle fields are set to -1.
-	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
@@ -471,7 +471,7 @@ type TextOverrider interface {
 	// the following paragraph after the offset.
 	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
 	// Text gets the specified text.
-	Text(startOffset int, endOffset int) string
+	Text(startOffset, endOffset int) string
 	// TextAfterOffset gets the specified text.
 	//
 	// Deprecated: Please use atk_text_get_string_at_offset() instead.
@@ -512,10 +512,10 @@ type TextOverrider interface {
 	RemoveSelection(selectionNum int) bool
 	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
-	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool
 	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
-	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	//
 	// In the case of rich-text content, this method should either grab focus or
@@ -536,10 +536,10 @@ type TextOverrider interface {
 	// unnecessary scroll motion.
 	SetCaretOffset(offset int) bool
 	// SetSelection changes the start and end offset of the specified selection.
-	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	SetSelection(selectionNum, startOffset, endOffset int) bool
 	TextAttributesChanged()
 	TextCaretMoved(location int)
-	TextChanged(position int, length int)
+	TextChanged(position, length int)
 	TextSelectionChanged()
 }
 
@@ -569,9 +569,9 @@ type Texter interface {
 	externglib.Objector
 
 	// AddSelection adds a selection bounded by the specified offsets.
-	AddSelection(startOffset int, endOffset int) bool
+	AddSelection(startOffset, endOffset int) bool
 	// BoundedRanges: get the ranges of text in the specified bounding box.
-	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
 	CaretOffset() int
 	// CharacterAtOffset gets the specified text.
@@ -584,9 +584,9 @@ type Texter interface {
 	NSelections() int
 	// OffsetAtPoint gets the offset of the character located at coordinates x
 	// and y.
-	OffsetAtPoint(x int, y int, coords CoordType) int
+	OffsetAtPoint(x, y int, coords CoordType) int
 	// RangeExtents: get the bounding box for text within the specified range.
-	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
+	RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
@@ -594,7 +594,7 @@ type Texter interface {
 	// start and end offsets defining the boundaries of such a portion of text.
 	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
 	// Text gets the specified text.
-	Text(startOffset int, endOffset int) string
+	Text(startOffset, endOffset int) string
 	// TextAfterOffset gets the specified text.
 	TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
 	// TextAtOffset gets the specified text.
@@ -605,14 +605,14 @@ type Texter interface {
 	RemoveSelection(selectionNum int) bool
 	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
-	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
+	ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool
 	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
-	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
+	ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	SetCaretOffset(offset int) bool
 	// SetSelection changes the start and end offset of the specified selection.
-	SetSelection(selectionNum int, startOffset int, endOffset int) bool
+	SetSelection(selectionNum, startOffset, endOffset int) bool
 }
 
 var _ Texter = (*Text)(nil)
@@ -630,7 +630,7 @@ func marshalTexter(p uintptr) (interface{}, error) {
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
-func (text *Text) AddSelection(startOffset int, endOffset int) bool {
+func (text *Text) AddSelection(startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -655,7 +655,7 @@ func (text *Text) AddSelection(startOffset int, endOffset int) bool {
 }
 
 // BoundedRanges: get the ranges of text in the specified bounding box.
-func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType TextClipType, yClipType TextClipType) []*TextRange {
+func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
 	var _arg0 *C.AtkText          // out
 	var _arg1 *C.AtkTextRectangle // out
 	var _arg2 C.AtkCoordType      // out
@@ -812,7 +812,7 @@ func (text *Text) NSelections() int {
 // OffsetAtPoint gets the offset of the character located at coordinates x and
 // y. x and y are interpreted as being relative to the screen or this widget's
 // window depending on coords.
-func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
+func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -841,7 +841,7 @@ func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 //
 // If the extents can not be obtained (e.g. or missing support), the rectangle
 // fields are set to -1.
-func (text *Text) RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
+func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle {
 	var _arg0 *C.AtkText         // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -953,7 +953,7 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 }
 
 // Text gets the specified text.
-func (text *Text) Text(startOffset int, endOffset int) string {
+func (text *Text) Text(startOffset, endOffset int) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -1120,7 +1120,7 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 
 // ScrollSubstringTo makes a substring of text visible on the screen by
 // scrolling all necessary parents.
-func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool {
+func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
 	var _arg0 *C.AtkText      // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -1149,7 +1149,7 @@ func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollTy
 
 // ScrollSubstringToPoint: move the top-left of a substring of text to a given
 // position of the screen by scrolling all necessary parents.
-func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool {
+func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -1221,7 +1221,7 @@ func (text *Text) SetCaretOffset(offset int) bool {
 }
 
 // SetSelection changes the start and end offset of the specified selection.
-func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int) bool {
+func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out

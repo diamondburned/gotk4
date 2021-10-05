@@ -533,7 +533,7 @@ func RCGetStyle(widget Widgetter) *Style {
 //                               G_OBJECT_TYPE (widget));
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, typ externglib.Type) *Style {
+func RCGetStyleByPaths(settings *Settings, widgetPath, classPath string, typ externglib.Type) *Style {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.char        // out
 	var _arg3 *C.char        // out

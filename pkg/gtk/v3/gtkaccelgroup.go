@@ -174,7 +174,7 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
-func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
+func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
@@ -233,7 +233,7 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // gtk_accelerator_name() but handling keycodes. This is only useful for
 // system-level components, applications should use gtk_accelerator_parse()
 // instead.
-func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
+func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out

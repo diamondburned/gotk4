@@ -624,7 +624,7 @@ type MenuModeller interface {
 	IsMutable() bool
 	// ItemsChanged requests emission of the Model::items-changed signal on
 	// model.
-	ItemsChanged(position int, removed int, added int)
+	ItemsChanged(position, removed, added int)
 	// IterateItemAttributes creates a AttributeIter to iterate over the
 	// attributes of the item at position item_index in model.
 	IterateItemAttributes(itemIndex int) MenuAttributeIterer
@@ -787,7 +787,7 @@ func (model *MenuModel) IsMutable() bool {
 // not in response to calls -- particularly those from the Model API. Said
 // another way: the menu must not change while user code is running without
 // returning to the mainloop.
-func (model *MenuModel) ItemsChanged(position int, removed int, added int) {
+func (model *MenuModel) ItemsChanged(position, removed, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out

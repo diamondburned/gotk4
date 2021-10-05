@@ -96,7 +96,7 @@ func (r RecentSortType) String() string {
 	}
 }
 
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
+type RecentSortFunc func(a, b *RecentInfo) (gint int)
 
 //export _gotk4_gtk3_RecentSortFunc
 func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {

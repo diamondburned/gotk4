@@ -914,7 +914,7 @@ func (window *Window) SetDecorated(setting bool) {
 // that the appropriate size to save is the one returned by
 // gtk.Window.GetDefaultSize(). Using the window allocation directly will not
 // work in all circumstances and can lead to growing or shrinking windows.
-func (window *Window) SetDefaultSize(width int, height int) {
+func (window *Window) SetDefaultSize(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

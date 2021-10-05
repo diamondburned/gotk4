@@ -159,7 +159,7 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 
 // Move sets a translation transformation to the given x and y coordinates to
 // the child widget of the GtkFixed.
-func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
+func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -178,7 +178,7 @@ func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
 }
 
 // Put adds a widget to a GtkFixed at the given position.
-func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
+func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out

@@ -258,7 +258,7 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
 // Note that the returned child_pid on Windows is a handle to the child process
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
-func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (Pid, error) {
+func SpawnAsync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (Pid, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -324,7 +324,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
-func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (Pid, error) {
+func SpawnAsyncWithFds(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd, stdoutFd, stderrFd int) (Pid, error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -399,7 +399,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 
 // SpawnAsyncWithPipes: identical to g_spawn_async_with_pipes_and_fds() but with
 // n_fds set to zero, so no FD assignments are used.
-func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, goerr error) {
+func SpawnAsyncWithPipes(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -646,7 +646,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
-func SpawnAsyncWithPipesAndFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int, sourceFds []int, targetFds []int) (childPidOut Pid, stdinPipeOut int, stdoutPipeOut int, stderrPipeOut int, goerr error) {
+func SpawnAsyncWithPipesAndFds(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd, stdoutFd, stderrFd int, sourceFds, targetFds []int) (childPidOut Pid, stdinPipeOut int, stdoutPipeOut int, stderrPipeOut int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -941,7 +941,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out

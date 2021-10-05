@@ -96,7 +96,7 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_VERTICAL
 // instead.
-func NewVScaleWithRange(min float64, max float64, step float64) *VScale {
+func NewVScaleWithRange(min, max, step float64) *VScale {
 	var _arg1 C.gdouble    // out
 	var _arg2 C.gdouble    // out
 	var _arg3 C.gdouble    // out

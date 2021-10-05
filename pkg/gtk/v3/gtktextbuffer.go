@@ -70,7 +70,7 @@ type TextBufferOverrider interface {
 	// ApplyTag emits the “apply-tag” signal on buffer. The default handler for
 	// the signal applies tag to the given range. start and end do not have to
 	// be in order.
-	ApplyTag(tag *TextTag, start *TextIter, end *TextIter)
+	ApplyTag(tag *TextTag, start, end *TextIter)
 	// BeginUserAction: called to indicate that the buffer operations between
 	// here and a call to gtk_text_buffer_end_user_action() are part of a single
 	// user-visible operation. The operations between
@@ -89,7 +89,7 @@ type TextBufferOverrider interface {
 	// one of those functions.
 	BeginUserAction()
 	Changed()
-	DeleteRange(start *TextIter, end *TextIter)
+	DeleteRange(start, end *TextIter)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
 	// explanation.
@@ -121,7 +121,7 @@ type TextBufferOverrider interface {
 	// RemoveTag emits the “remove-tag” signal. The default handler for the
 	// signal removes all occurrences of tag from the given range. start and end
 	// don’t have to be in order.
-	RemoveTag(tag *TextTag, start *TextIter, end *TextIter)
+	RemoveTag(tag *TextTag, start, end *TextIter)
 }
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
@@ -201,7 +201,7 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard *Clipboard) {
 // ApplyTag emits the “apply-tag” signal on buffer. The default handler for the
 // signal applies tag to the given range. start and end do not have to be in
 // order.
-func (buffer *TextBuffer) ApplyTag(tag *TextTag, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextTag    // out
 	var _arg2 *C.GtkTextIter   // out
@@ -221,7 +221,7 @@ func (buffer *TextBuffer) ApplyTag(tag *TextTag, start *TextIter, end *TextIter)
 
 // ApplyTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag table to
 // get a TextTag, then calls gtk_text_buffer_apply_tag().
-func (buffer *TextBuffer) ApplyTagByName(name string, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkTextIter   // out
@@ -249,7 +249,7 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start *TextIter, end *Text
 // Because the buffer is modified, all outstanding iterators become invalid
 // after calling this function; however, the iter will be re-initialized to
 // point to the location where text was deleted.
-func (buffer *TextBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable bool) bool {
+func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 C.gboolean       // out
@@ -411,7 +411,7 @@ func (buffer *TextBuffer) CutClipboard(clipboard *Clipboard, defaultEditable boo
 // signal deletes the text. Because the buffer is modified, all outstanding
 // iterators become invalid after calling this function; however, the start and
 // end will be re-initialized to point to the location where text was deleted.
-func (buffer *TextBuffer) Delete(start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) Delete(start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -430,7 +430,7 @@ func (buffer *TextBuffer) Delete(start *TextIter, end *TextIter) {
 // gtk_text_buffer_delete() for each editable sub-range of [start,end). start
 // and end are revalidated to point to the location of the last deleted range,
 // or left untouched if no text was deleted.
-func (buffer *TextBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool {
+func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -498,7 +498,7 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 // marks, that is, the currently-selected text. If interactive is TRUE, the
 // editability of the selection will be considered (users can’t delete
 // uneditable text).
-func (buffer *TextBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool {
+func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.gboolean       // out
 	var _arg2 C.gboolean       // out
@@ -717,7 +717,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) TextIter {
 // Since the 3.20 version, if line_number is greater than the number of lines in
 // the buffer, the end iterator is returned. And if byte_index is off the end of
 // the line, the iterator at the end of the line is returned.
-func (buffer *TextBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIter {
+func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -748,7 +748,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIte
 // Since the 3.20 version, if line_number is greater than the number of lines in
 // the buffer, the end iterator is returned. And if char_offset is off the end
 // of the line, the iterator at the end of the line is returned.
-func (buffer *TextBuffer) IterAtLineOffset(lineNumber int, charOffset int) TextIter {
+func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -968,7 +968,7 @@ func (buffer *TextBuffer) SelectionBounds() (start TextIter, end TextIter, ok bo
 // into the buffer. Contrast with gtk_text_buffer_get_text(). Note that 0xFFFC
 // can occur in normal text as well, so it is not a reliable indicator that a
 // pixbuf or widget is in the buffer.
-func (buffer *TextBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars bool) string {
+func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) string {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1038,7 +1038,7 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 // embedded images, so byte and character indexes into the returned string do
 // not correspond to byte and character indexes into the buffer. Contrast with
 // gtk_text_buffer_get_slice().
-func (buffer *TextBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool) string {
+func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) string {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1265,7 +1265,7 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 //
 // Implemented via emissions of the insert_text and apply_tag signals, so expect
 // those.
-func (buffer *TextBuffer) InsertRange(iter *TextIter, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1288,7 +1288,7 @@ func (buffer *TextBuffer) InsertRange(iter *TextIter, start *TextIter, end *Text
 // indicates whether the text is editable at iter if no tags enclosing iter
 // affect editability. Typically the result of gtk_text_view_get_editable() is
 // appropriate here.
-func (buffer *TextBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool {
+func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1406,7 +1406,7 @@ func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 // with this function; it could remove tags added in code unrelated to the code
 // you’re currently writing. That is, using this function is probably a bad idea
 // if you have two or more unrelated code sections that add tags.
-func (buffer *TextBuffer) RemoveAllTags(start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1438,7 +1438,7 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *Clipboard) {
 // RemoveTag emits the “remove-tag” signal. The default handler for the signal
 // removes all occurrences of tag from the given range. start and end don’t have
 // to be in order.
-func (buffer *TextBuffer) RemoveTag(tag *TextTag, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextTag    // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1458,7 +1458,7 @@ func (buffer *TextBuffer) RemoveTag(tag *TextTag, start *TextIter, end *TextIter
 
 // RemoveTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag table
 // to get a TextTag, then calls gtk_text_buffer_remove_tag().
-func (buffer *TextBuffer) RemoveTagByName(name string, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkTextIter   // out
@@ -1483,7 +1483,7 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start *TextIter, end *Tex
 // their old and new locations, which can be pretty inefficient since the
 // temporarily-selected region will force stuff to be recalculated. This
 // function moves them as a unit, which can be optimized.
-func (buffer *TextBuffer) SelectRange(ins *TextIter, bound *TextIter) {
+func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out

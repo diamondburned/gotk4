@@ -105,7 +105,7 @@ func _gotk4_gtk3_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild,
 
 // FlowBoxSortFunc: function to compare two children to determine which should
 // come first.
-type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild) (gint int)
+type FlowBoxSortFunc func(child1, child2 *FlowBoxChild) (gint int)
 
 //export _gotk4_gtk3_FlowBoxSortFunc
 func _gotk4_gtk3_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gint) {
@@ -309,7 +309,7 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 }
 
 // ChildAtPos gets the child in the (x, y) position.
-func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
+func (box *FlowBox) ChildAtPos(x, y int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out

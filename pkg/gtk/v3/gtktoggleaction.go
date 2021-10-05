@@ -62,7 +62,7 @@ func marshalToggleActioner(p uintptr) (interface{}, error) {
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewToggleAction(name string, label string, tooltip string, stockId string) *ToggleAction {
+func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out

@@ -106,7 +106,7 @@ func (box *CellAreaBox) Spacing() int {
 //
 // The renderer is packed after (away from end of) any other CellRenderer packed
 // with reference to the end of box.
-func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool, fixed bool) {
+func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out
@@ -137,7 +137,7 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool
 //
 // The renderer is packed after any other CellRenderer packed with reference to
 // the start of box.
-func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bool, fixed bool) {
+func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.gboolean         // out

@@ -157,7 +157,7 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 // The given label should be considered user-visible, so internationalization
 // rules apply. Some windowing systems may be able to use those for user
 // feedback.
-func (controller *PadController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
+func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
 	var _arg2 C.gint              // out

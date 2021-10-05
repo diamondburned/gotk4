@@ -91,7 +91,7 @@ type ComponentOverrider interface {
 	//
 	// Toolkit implementor note: ATK provides a default implementation for this
 	// virtual method. In general there are little reason to re-implement it.
-	Contains(x int, y int, coordType CoordType) bool
+	Contains(x, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e. the opacity) for this component, on a
 	// scale from 0 (fully transparent) to 1.0 (fully opaque).
 	Alpha() float64
@@ -125,7 +125,7 @@ type ComponentOverrider interface {
 	GrabFocus() bool
 	// RefAccessibleAtPoint gets a reference to the accessible child, if one
 	// exists, at the coordinate point specified by x and y.
-	RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass
+	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -143,16 +143,16 @@ type ComponentOverrider interface {
 	ScrollTo(typ ScrollType) bool
 	// ScrollToPoint: move the top-left of component to a given position of the
 	// screen by scrolling all necessary parents.
-	ScrollToPoint(coords CoordType, x int, y int) bool
+	ScrollToPoint(coords CoordType, x, y int) bool
 	// SetExtents sets the extents of component.
-	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	SetExtents(x, y, width, height int, coordType CoordType) bool
 	// SetPosition sets the position of component.
 	//
 	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
 	// this just moves component in its parent.
-	SetPosition(x int, y int, coordType CoordType) bool
+	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
-	SetSize(width int, height int) bool
+	SetSize(width, height int) bool
 }
 
 // Component should be implemented by most if not all UI elements with an actual
@@ -175,7 +175,7 @@ type Componenter interface {
 
 	// Contains checks whether the specified point is within the extent of the
 	// component.
-	Contains(x int, y int, coordType CoordType) bool
+	Contains(x, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e.
 	Alpha() float64
 	// Extents gets the rectangle which gives the extent of the component.
@@ -193,7 +193,7 @@ type Componenter interface {
 	GrabFocus() bool
 	// RefAccessibleAtPoint gets a reference to the accessible child, if one
 	// exists, at the coordinate point specified by x and y.
-	RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass
+	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -203,13 +203,13 @@ type Componenter interface {
 	ScrollTo(typ ScrollType) bool
 	// ScrollToPoint: move the top-left of component to a given position of the
 	// screen by scrolling all necessary parents.
-	ScrollToPoint(coords CoordType, x int, y int) bool
+	ScrollToPoint(coords CoordType, x, y int) bool
 	// SetExtents sets the extents of component.
-	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	SetExtents(x, y, width, height int, coordType CoordType) bool
 	// SetPosition sets the position of component.
-	SetPosition(x int, y int, coordType CoordType) bool
+	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
-	SetSize(width int, height int) bool
+	SetSize(width, height int) bool
 }
 
 var _ Componenter = (*Component)(nil)
@@ -231,7 +231,7 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 //
 // Toolkit implementor note: ATK provides a default implementation for this
 // virtual method. In general there are little reason to re-implement it.
-func (component *Component) Contains(x int, y int, coordType CoordType) bool {
+func (component *Component) Contains(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -419,7 +419,7 @@ func (component *Component) GrabFocus() bool {
 
 // RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
 // at the coordinate point specified by x and y.
-func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass {
+func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -493,7 +493,7 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 
 // ScrollToPoint: move the top-left of component to a given position of the
 // screen by scrolling all necessary parents.
-func (component *Component) ScrollToPoint(coords CoordType, x int, y int) bool {
+func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkCoordType  // out
 	var _arg2 C.gint          // out
@@ -521,7 +521,7 @@ func (component *Component) ScrollToPoint(coords CoordType, x int, y int) bool {
 }
 
 // SetExtents sets the extents of component.
-func (component *Component) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
+func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -558,7 +558,7 @@ func (component *Component) SetExtents(x int, y int, width int, height int, coor
 //
 // Contrary to atk_component_scroll_to, this does not trigger any scrolling,
 // this just moves component in its parent.
-func (component *Component) SetPosition(x int, y int, coordType CoordType) bool {
+func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -586,7 +586,7 @@ func (component *Component) SetPosition(x int, y int, coordType CoordType) bool 
 }
 
 // SetSize: set the size of the component in terms of width and height.
-func (component *Component) SetSize(width int, height int) bool {
+func (component *Component) SetSize(width, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out

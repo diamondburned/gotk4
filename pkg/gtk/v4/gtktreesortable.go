@@ -46,7 +46,7 @@ const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
 //
 // For example, if model is a product catalogue, then a compare function for the
 // “price” column could be one which returns price_of(a) - price_of(b).
-type TreeIterCompareFunc func(model TreeModeller, a *TreeIter, b *TreeIter) (gint int)
+type TreeIterCompareFunc func(model TreeModeller, a, b *TreeIter) (gint int)
 
 //export _gotk4_gtk4_TreeIterCompareFunc
 func _gotk4_gtk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.int) {

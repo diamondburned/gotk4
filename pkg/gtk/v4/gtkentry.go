@@ -467,7 +467,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 // The position’s coordinates are relative to the entry’s top left corner. If x,
 // y doesn’t lie inside an icon, -1 is returned. This function is intended for
 // use in a gtk.Widget::query-tooltip signal handler.
-func (entry *Entry) IconAtPos(x int, y int) int {
+func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 	var _arg2 C.int       // out

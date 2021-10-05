@@ -140,7 +140,7 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 }
 
 // UnixMountCompare compares two unix mounts.
-func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
+func UnixMountCompare(mount1, mount2 *UnixMountEntry) int {
 	var _arg1 *C.GUnixMountEntry // out
 	var _arg2 *C.GUnixMountEntry // out
 	var _cret C.gint             // in

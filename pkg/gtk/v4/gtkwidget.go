@@ -97,7 +97,7 @@ type WidgetOverrider interface {
 	//
 	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
 	// assumed to be the top left of widget's content area.
-	Contains(x float64, y float64) bool
+	Contains(x, y float64) bool
 	DirectionChanged(previousDirection TextDirection)
 	Focus(direction DirectionType) bool
 	// RequestMode gets whether the widget prefers a height-for-width layout or
@@ -165,7 +165,7 @@ type WidgetOverrider interface {
 	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
 	MoveFocus(direction DirectionType)
-	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
 	// Normally realization happens implicitly; if you show a widget and all its
@@ -201,7 +201,7 @@ type WidgetOverrider interface {
 	// mapped; other shown widgets are realized and mapped when their toplevel
 	// container is realized and mapped.
 	Show()
-	SizeAllocate(width int, height int, baseline int)
+	SizeAllocate(width, height, baseline int)
 	Snapshot(snapshot *Snapshot)
 	StateFlagsChanged(previousStateFlags StateFlags)
 	SystemSettingChanged(settings SystemSetting)
@@ -600,7 +600,7 @@ type Widgetter interface {
 	AddTickCallback(callback TickCallback) uint
 	// Allocate: this function is only used by GtkWidget subclasses, to assign a
 	// size, position and (optionally) baseline to their child widgets.
-	Allocate(width int, height int, baseline int, transform *gsk.Transform)
+	Allocate(width, height, baseline int, transform *gsk.Transform)
 	// ChildFocus: called by widgets as the user moves around the window using
 	// keyboard shortcuts.
 	ChildFocus(direction DirectionType) bool
@@ -617,7 +617,7 @@ type Widgetter interface {
 	// from widget's coordinate system into target's coordinate system.
 	ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 	// Contains tests if the point at (x, y) is contained in widget.
-	Contains(x float64, y float64) bool
+	Contains(x, y float64) bool
 	// CreatePangoContext creates a new PangoContext with the appropriate font
 	// map, font options, font description, and base direction for drawing text
 	// for this widget.
@@ -628,7 +628,7 @@ type Widgetter interface {
 	CreatePangoLayout(text string) *pango.Layout
 	// DragCheckThreshold checks to see if a drag movement has passed the GTK
 	// drag threshold.
-	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
+	DragCheckThreshold(startX, startY, currentX, currentY int) bool
 	// ErrorBell notifies the user about an input-related error on this widget.
 	ErrorBell()
 	// AllocatedBaseline returns the baseline that has currently been allocated
@@ -797,9 +797,9 @@ type Widgetter interface {
 	// InsertActionGroup inserts group into widget.
 	InsertActionGroup(name string, group gio.ActionGrouper)
 	// InsertAfter inserts widget into the child widget list of parent.
-	InsertAfter(parent Widgetter, previousSibling Widgetter)
+	InsertAfter(parent, previousSibling Widgetter)
 	// InsertBefore inserts widget into the child widget list of parent.
-	InsertBefore(parent Widgetter, nextSibling Widgetter)
+	InsertBefore(parent, nextSibling Widgetter)
 	// IsAncestor determines whether widget is somewhere inside ancestor,
 	// possibly with intermediate containers.
 	IsAncestor(ancestor Widgetter) bool
@@ -831,7 +831,7 @@ type Widgetter interface {
 	ObserveControllers() gio.ListModeller
 	// Pick finds the descendant of widget closest to the screen at the point
 	// (x, y).
-	Pick(x float64, y float64, flags PickFlags) Widgetter
+	Pick(x, y float64, flags PickFlags) Widgetter
 	// QueueAllocate flags the widget for a rerun of the
 	// GtkWidgetClass::size_allocate function.
 	QueueAllocate()
@@ -920,7 +920,7 @@ type Widgetter interface {
 	// SetSensitive sets the sensitivity of a widget.
 	SetSensitive(sensitive bool)
 	// SetSizeRequest sets the minimum size of a widget.
-	SetSizeRequest(width int, height int)
+	SetSizeRequest(width, height int)
 	// SetStateFlags turns on flag values in the current widget state.
 	SetStateFlags(flags StateFlags, clear bool)
 	// SetTooltipMarkup sets markup as the contents of the tooltip, which is
@@ -949,7 +949,7 @@ type Widgetter interface {
 	SnapshotChild(child Widgetter, snapshot *Snapshot)
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgetter, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
+	TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX float64, destY float64, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -1193,7 +1193,7 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 // well as at least 0×0 in size.
 //
 // For a version that does not take a transform, see gtk.Widget.SizeAllocate().
-func (widget *Widget) Allocate(width int, height int, baseline int, transform *gsk.Transform) {
+func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Transform) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1387,7 +1387,7 @@ func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 //
 // The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
 // assumed to be the top left of widget's content area.
-func (widget *Widget) Contains(x float64, y float64) bool {
+func (widget *Widget) Contains(x, y float64) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out
@@ -1472,7 +1472,7 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 
 // DragCheckThreshold checks to see if a drag movement has passed the GTK drag
 // threshold.
-func (widget *Widget) DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool {
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -3265,7 +3265,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
-func (widget *Widget) InsertAfter(parent Widgetter, previousSibling Widgetter) {
+func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -3294,7 +3294,7 @@ func (widget *Widget) InsertAfter(parent Widgetter, previousSibling Widgetter) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
-func (widget *Widget) InsertBefore(parent Widgetter, nextSibling Widgetter) {
+func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -3674,7 +3674,7 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 //
 // This function is used on the toplevel to determine the widget below the mouse
 // cursor for purposes of hover highlighting and delivering events.
-func (widget *Widget) Pick(x float64, y float64, flags PickFlags) Widgetter {
+func (widget *Widget) Pick(x, y float64, flags PickFlags) Widgetter {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
@@ -4436,7 +4436,7 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 // gtk.Widget:margin-start, gtk.Widget:margin-end, gtk.Widget:margin-top, and
 // gtk.Widget:margin-bottom, but it does include pretty much all other padding
 // or border properties set by any subclass of GtkWidget.
-func (widget *Widget) SetSizeRequest(width int, height int) {
+func (widget *Widget) SetSizeRequest(width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -4683,7 +4683,7 @@ func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 // allocation to coordinates relative to dest_widget’s allocations.
 //
 // In order to perform this operation, both widget must share a common ancestor.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX float64, srcY float64) (destX float64, destY float64, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX float64, destY float64, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out

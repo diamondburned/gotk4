@@ -300,7 +300,7 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 // MoveAfter moves iter in store to the position after position. Note that this
 // function only works with unsorted stores. If position is NULL, iter will be
 // moved to the start of the list.
-func (store *ListStore) MoveAfter(iter *TreeIter, position *TreeIter) {
+func (store *ListStore) MoveAfter(iter, position *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -320,7 +320,7 @@ func (store *ListStore) MoveAfter(iter *TreeIter, position *TreeIter) {
 // MoveBefore moves iter in store to the position before position. Note that
 // this function only works with unsorted stores. If position is NULL, iter will
 // be moved to the end of the list.
-func (store *ListStore) MoveBefore(iter *TreeIter, position *TreeIter) {
+func (store *ListStore) MoveBefore(iter, position *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -491,7 +491,7 @@ func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []externgl
 
 // Swap swaps a and b in store. Note that this function only works with unsorted
 // stores.
-func (store *ListStore) Swap(a *TreeIter, b *TreeIter) {
+func (store *ListStore) Swap(a, b *TreeIter) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.GtkTreeIter  // out

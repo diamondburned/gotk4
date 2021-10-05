@@ -16,7 +16,7 @@ import "C"
 // this function is to be called in a loop, it's more efficient to compile the
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
-func PatternMatchSimple(pattern string, _string string) bool {
+func PatternMatchSimple(pattern, _string string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _cret C.gboolean // in

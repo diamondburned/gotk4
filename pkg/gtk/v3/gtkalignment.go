@@ -75,7 +75,7 @@ func marshalAlignmenter(p uintptr) (interface{}, error) {
 // NewAlignment creates a new Alignment.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) *Alignment {
+func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 	var _arg1 C.gfloat     // out
 	var _arg2 C.gfloat     // out
 	var _arg3 C.gfloat     // out
@@ -132,7 +132,7 @@ func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, padd
 // Set sets the Alignment values.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (alignment *Alignment) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
+func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.gfloat        // out
 	var _arg2 C.gfloat        // out
@@ -158,7 +158,7 @@ func (alignment *Alignment) Set(xalign float32, yalign float32, xscale float32, 
 // to indent the child widget towards the right by adding padding on the left.
 //
 // Deprecated: Use Widget alignment and margin properties.
-func (alignment *Alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out

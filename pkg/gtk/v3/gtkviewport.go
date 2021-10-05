@@ -83,7 +83,7 @@ func marshalViewporter(p uintptr) (interface{}, error) {
 
 // NewViewport creates a new Viewport with the given adjustments, or with
 // default adjustments if none are given.
-func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
+func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in

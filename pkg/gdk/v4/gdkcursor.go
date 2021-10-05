@@ -119,7 +119,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 }
 
 // NewCursorFromTexture creates a new cursor from a GdkTexture.
-func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback *Cursor) *Cursor {
+func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cursor) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out

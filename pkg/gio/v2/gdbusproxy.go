@@ -42,7 +42,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
-	GSignal(senderName string, signalName string, parameters *glib.Variant)
+	GSignal(senderName, signalName string, parameters *glib.Variant)
 }
 
 // DBusProxy is a base class used for proxies to access a D-Bus interface on a
@@ -158,7 +158,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 // of a BusConnection.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string) (*DBusProxy, error) {
+func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
 	var _arg2 C.GDBusProxyFlags     // out
@@ -228,7 +228,7 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 // g_dbus_proxy_new_finish() for the asynchronous version.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string) (*DBusProxy, error) {
+func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
 	var _arg2 C.GDBusProxyFlags     // out
@@ -963,7 +963,7 @@ func (d *DBusProxy) ConnectGSignal(f func(senderName, signalName string, paramet
 // constructor.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, callback AsyncReadyCallback) {
+func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
 	var _arg2 C.GDBusProxyFlags     // out
@@ -1012,7 +1012,7 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 // BusConnection.
 //
 // BusProxy is used in this [example][gdbus-wellknown-proxy].
-func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, callback AsyncReadyCallback) {
+func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
 	var _arg2 C.GDBusProxyFlags     // out

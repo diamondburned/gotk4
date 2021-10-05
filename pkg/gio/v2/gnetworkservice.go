@@ -61,7 +61,7 @@ func marshalNetworkServicer(p uintptr) (interface{}, error) {
 // NewNetworkService creates a new Service representing the given service,
 // protocol, and domain. This will initially be unresolved; use the Connectable
 // interface to resolve it.
-func NewNetworkService(service string, protocol string, domain string) *NetworkService {
+func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
 	var _arg3 *C.gchar              // out

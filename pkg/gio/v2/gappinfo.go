@@ -951,7 +951,7 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 // example, if the commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
-func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
+func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
 	var _arg3 C.GAppInfoCreateFlags // out
@@ -1516,7 +1516,7 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 
 // Setenv arranges for variable to be set to value in the child's environment
 // when context is used to launch an application.
-func (context *AppLaunchContext) Setenv(variable string, value string) {
+func (context *AppLaunchContext) Setenv(variable, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out

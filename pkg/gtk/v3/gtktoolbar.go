@@ -60,7 +60,7 @@ func (t ToolbarSpaceStyle) String() string {
 // yet, so the interface currently has no use.
 type ToolbarOverrider interface {
 	OrientationChanged(orientation Orientation)
-	PopupContextMenu(x int, y int, buttonNumber int) bool
+	PopupContextMenu(x, y, buttonNumber int) bool
 	StyleChanged(style ToolbarStyle)
 }
 
@@ -157,7 +157,7 @@ func NewToolbar() *Toolbar {
 // returns the position a new item should be inserted.
 //
 // x and y are in toolbar coordinates.
-func (toolbar *Toolbar) DropIndex(x int, y int) int {
+func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out

@@ -59,7 +59,7 @@ func marshalAdjustmenter(p uintptr) (interface{}, error) {
 }
 
 // NewAdjustment creates a new GtkAdjustment.
-func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) *Adjustment {
+func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) *Adjustment {
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
 	var _arg3 C.double         // out
@@ -98,7 +98,7 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 //
 // A gtk.Adjustment::value-changed signal will be emitted if the value is
 // changed.
-func (adjustment *Adjustment) ClampPage(lower float64, upper float64) {
+func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out
@@ -118,7 +118,7 @@ func (adjustment *Adjustment) ClampPage(lower float64, upper float64) {
 // Use this function to avoid multiple emissions of the gtk.Adjustment::changed
 // signal. See gtk.Adjustment.SetLower() for an alternative way of compressing
 // multiple emissions of gtk.Adjustment::changed into one.
-func (adjustment *Adjustment) Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) {
+func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
 	var _arg2 C.double         // out

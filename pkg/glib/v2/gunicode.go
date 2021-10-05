@@ -1176,7 +1176,7 @@ func UnicharCombiningClass(uc uint32) int {
 // If a and b do not compose a new character, ch is set to zero.
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
-func UnicharCompose(a uint32, b uint32) (uint32, bool) {
+func UnicharCompose(a, b uint32) (uint32, bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // out
 	var _arg3 C.gunichar // in
@@ -2022,7 +2022,7 @@ func UTF8Casefold(str string, len int) string {
 // number of strings, it will be significantly faster to obtain collation keys
 // with g_utf8_collate_key() and compare the keys with strcmp() when sorting
 // instead of sorting the original strings.
-func UTF8Collate(str1 string, str2 string) int {
+func UTF8Collate(str1, str2 string) int {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret C.gint   // in
@@ -2114,7 +2114,7 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 // If end is NULL, the return value will never be NULL: if the end of the string
 // is reached, a pointer to the terminating nul byte is returned. If end is
 // non-NULL, the return value will be NULL if the end of the string is reached.
-func UTF8FindNextChar(p string, end string) string {
+func UTF8FindNextChar(p, end string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
@@ -2146,7 +2146,7 @@ func UTF8FindNextChar(p string, end string) string {
 // p does not have to be at the beginning of a UTF-8 character. No check is made
 // to see if the character found is actually valid other than it starts with an
 // appropriate byte.
-func UTF8FindPrevChar(str string, p string) string {
+func UTF8FindPrevChar(str, p string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
@@ -2331,7 +2331,7 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 //
 // Since 2.10, this function allows pos to be before str, and returns a negative
 // offset in this case.
-func UTF8PointerToOffset(str string, pos string) int32 {
+func UTF8PointerToOffset(str, pos string) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret C.glong  // in
@@ -2457,7 +2457,7 @@ func UTF8Strlen(p string, max int) int32 {
 //
 // Note you must ensure dest is at least 4 * n to fit the largest possible UTF-8
 // characters.
-func UTF8Strncpy(dest string, src string, n uint) string {
+func UTF8Strncpy(dest, src string, n uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gsize  // out
@@ -2568,7 +2568,7 @@ func UTF8Strup(str string, len int) string {
 
 // UTF8Substring copies a substring out of a UTF-8 encoded string. The substring
 // will contain end_pos - start_pos characters.
-func UTF8Substring(str string, startPos int32, endPos int32) string {
+func UTF8Substring(str string, startPos, endPos int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
 	var _arg3 C.glong  // out

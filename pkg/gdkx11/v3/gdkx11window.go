@@ -108,7 +108,7 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 // only works on GdkX11Window.
 //
 // Deprecated: Use gdk_window_set_shadow_width() instead.
-func (window *X11Window) SetFrameExtents(left int, right int, top int, bottom int) {
+func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -215,7 +215,7 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given window is not a toplevel window,
 // it is ignored.
-func (window *X11Window) SetUTF8Property(name string, value string) {
+func (window *X11Window) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out

@@ -231,7 +231,7 @@ func (frame *Frame) SetLabel(label string) {
 
 // SetLabelAlign sets the alignment of the frame widget’s label. The default
 // values for a newly created frame are 0.0 and 0.5.
-func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
+func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.gfloat    // out
 	var _arg2 C.gfloat    // out

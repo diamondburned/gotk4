@@ -29,10 +29,10 @@ type LayoutManagerOverrider interface {
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.
-	Allocate(widget Widgetter, width int, height int, baseline int)
+	Allocate(widget Widgetter, width, height, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given for_child
 	// widget.
-	CreateLayoutChild(widget Widgetter, forChild Widgetter) LayoutChilder
+	CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
 	RequestMode(widget Widgetter) SizeRequestMode
 	// Measure measures the size of the widget using manager, for the given
 	// orientation and size.
@@ -101,7 +101,7 @@ type LayoutManagerer interface {
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.
-	Allocate(widget Widgetter, width int, height int, baseline int)
+	Allocate(widget Widgetter, width, height, baseline int)
 	// LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,
 	// creating one if necessary.
 	LayoutChild(child Widgetter) LayoutChilder
@@ -133,7 +133,7 @@ func marshalLayoutManagerer(p uintptr) (interface{}, error) {
 // Allocate assigns the given width, height, and baseline to a widget, and
 // computes the position and sizes of the children of the widget using the
 // layout management policy of manager.
-func (manager *LayoutManager) Allocate(widget Widgetter, width int, height int, baseline int) {
+func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.int               // out

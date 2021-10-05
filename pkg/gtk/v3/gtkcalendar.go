@@ -98,7 +98,7 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns NULL when no information is available.
-type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint) (utf8 string)
+type CalendarDetailFunc func(calendar *Calendar, year, month, day uint) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
 func _gotk4_gtk3_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
@@ -336,7 +336,7 @@ func (calendar *Calendar) SelectDay(day uint) {
 }
 
 // SelectMonth shifts the calendar to a different month.
-func (calendar *Calendar) SelectMonth(month uint, year uint) {
+func (calendar *Calendar) SelectMonth(month, year uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _arg2 C.guint        // out

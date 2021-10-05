@@ -124,7 +124,7 @@ func DBusErrorIsRemoteError(err error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) error {
+func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
 	var _cret *C.GError // in

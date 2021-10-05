@@ -376,7 +376,7 @@ func (selection *TreeSelection) SelectPath(path *TreePath) {
 
 // SelectRange selects a range of nodes, determined by start_path and end_path
 // inclusive. selection must be set to K_SELECTION_MULTIPLE mode.
-func (selection *TreeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
+func (selection *TreeSelection) SelectRange(startPath, endPath *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out
@@ -486,7 +486,7 @@ func (selection *TreeSelection) UnselectPath(path *TreePath) {
 
 // UnselectRange unselects a range of nodes, determined by start_path and
 // end_path inclusive.
-func (selection *TreeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
+func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
 	var _arg2 *C.GtkTreePath      // out

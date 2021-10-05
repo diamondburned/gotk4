@@ -60,7 +60,7 @@ func marshalProxyAddresser(p uintptr) (interface{}, error) {
 // (Note that this method doesn't set the Address:uri or
 // Address:destination-protocol fields; use g_object_new() directly if you want
 // to set those.).
-func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProxyAddress {
+func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname string, destPort uint16, username, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _arg3 *C.gchar          // out

@@ -26,7 +26,7 @@ import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have
 // to have an owner.
-type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string)
+type BusNameAppearedCallback func(connection *DBusConnection, name, nameOwner string)
 
 //export _gotk4_gio2_BusNameAppearedCallback
 func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {

@@ -49,7 +49,7 @@ type Surfacer interface {
 	CreateGLContext() (GLContexter, error)
 	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
 	// possible with the given surface.
-	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
+	CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface
 	// CreateVulkanContext creates a new GdkVulkanContext for rendering on
 	// surface.
 	CreateVulkanContext() (VulkanContexter, error)
@@ -249,7 +249,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 // This function always returns a valid pointer, but it will return a pointer to
 // a “nil” surface if other is already in an error state or any other error
 // occurs.
-func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out

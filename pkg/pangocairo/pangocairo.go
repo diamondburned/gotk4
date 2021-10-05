@@ -226,7 +226,7 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 //
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
-func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 C.double   // out
 	var _arg3 C.double   // out
@@ -307,7 +307,7 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 //
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
-func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 C.double   // out
 	var _arg3 C.double   // out

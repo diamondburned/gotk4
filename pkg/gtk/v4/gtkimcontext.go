@@ -47,7 +47,7 @@ type IMContextOverrider interface {
 	// This function is used by an input method that wants to make subsitutions
 	// in the existing text in response to new input. It is not useful for
 	// applications.
-	DeleteSurrounding(offset int, nChars int) bool
+	DeleteSurrounding(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	//
@@ -133,12 +133,12 @@ type IMContextOverrider interface {
 	// effect if called at other times.
 	//
 	// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
-	SetSurrounding(text string, len int, cursorIndex int)
+	SetSurrounding(text string, len, cursorIndex int)
 	// SetSurroundingWithSelection sets surrounding context around the insertion
 	// point and preedit string. This function is expected to be called in
 	// response to the GtkIMContext::retrieve_surrounding signal, and will
 	// likely have no effect if called at other times.
-	SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int)
+	SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback.
 	//
@@ -194,7 +194,7 @@ type IMContexter interface {
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
-	DeleteSurrounding(offset int, nChars int) bool
+	DeleteSurrounding(offset, nChars int) bool
 	// FilterKey: allow an input method to forward key press and release events
 	// to another input methodm without necessarily having a GdkEvent available.
 	FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool
@@ -224,10 +224,10 @@ type IMContexter interface {
 	SetCursorLocation(area *gdk.Rectangle)
 	// SetSurrounding sets surrounding context around the insertion point and
 	// preedit string.
-	SetSurrounding(text string, len int, cursorIndex int)
+	SetSurrounding(text string, len, cursorIndex int)
 	// SetSurroundingWithSelection sets surrounding context around the insertion
 	// point and preedit string.
-	SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int)
+	SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback.
 	SetUsePreedit(usePreedit bool)
@@ -264,7 +264,7 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 // This function is used by an input method that wants to make subsitutions in
 // the existing text in response to new input. It is not useful for
 // applications.
-func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
+func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -558,7 +558,7 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 // called at other times.
 //
 // Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
-func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) {
+func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
 	var _arg2 C.int           // out
@@ -581,7 +581,7 @@ func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) 
 // point and preedit string. This function is expected to be called in response
 // to the GtkIMContext::retrieve_surrounding signal, and will likely have no
 // effect if called at other times.
-func (context *IMContext) SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int) {
+func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
 	var _arg2 C.int           // out

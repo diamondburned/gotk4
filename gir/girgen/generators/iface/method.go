@@ -24,7 +24,7 @@ func newMethod(cgen *callable.Generator) Method {
 
 		Recv:  cgen.Recv(),
 		Name:  cgen.Name,
-		Tail:  cgen.Tail,
+		Tail:  callable.CoalesceTail(cgen.Tail),
 		Block: cgen.Block,
 	}
 }

@@ -195,7 +195,7 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
 // context_id and message_id must be specified.
-func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
+func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out

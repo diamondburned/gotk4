@@ -84,7 +84,7 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 // As with ProxyResolver:default-proxy, if proxy starts with "socks://",
 // ProxyResolver will treat it as referring to all three of the socks5, socks4a,
 // and socks4 proxy types.
-func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
+func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out

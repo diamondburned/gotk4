@@ -486,7 +486,7 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 }
 
 // NewAttrBackground: create a new background color attribute.
-func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrBackground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -591,7 +591,7 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 }
 
 // NewAttrForeground: create a new foreground color attribute.
-func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrForeground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -720,7 +720,7 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 //
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
-func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -871,7 +871,7 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 //
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
-func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -951,7 +951,7 @@ func NewAttrStyle(style Style) *Attribute {
 //
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
-func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
 	var _arg3 C.guint16         // out
@@ -1896,7 +1896,7 @@ type attrShape struct {
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a PangoLayout.
-func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
+func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 	var _cret *C.PangoAttribute // in

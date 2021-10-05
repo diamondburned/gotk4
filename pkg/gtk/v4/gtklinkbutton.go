@@ -118,7 +118,7 @@ func NewLinkButton(uri string) *LinkButton {
 }
 
 // NewLinkButtonWithLabel creates a new GtkLinkButton containing a label.
-func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
+func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _arg1 *C.char      // out
 	var _arg2 *C.char      // out
 	var _cret *C.GtkWidget // in

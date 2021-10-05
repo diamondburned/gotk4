@@ -302,7 +302,7 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 
 // MonitorAtPoint gets the monitor in which the point (x, y) is located, or a
 // nearby monitor if the point is not in any monitor.
-func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
+func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out
@@ -906,7 +906,7 @@ func (display *Display) Sync() {
 // support for the color picker in the ColorSelectionDialog.
 //
 // Deprecated: Use gdk_device_warp() instead.
-func (display *Display) WarpPointer(screen *Screen, x int, y int) {
+func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkScreen  // out
 	var _arg2 C.gint        // out

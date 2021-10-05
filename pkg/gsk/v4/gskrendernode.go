@@ -31,7 +31,7 @@ func init() {
 
 // ParseErrorFunc: type of callback that is called when an error occurs during
 // node deserialization.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error)
+type ParseErrorFunc func(start, end *ParseLocation, err error)
 
 //export _gotk4_gsk4_ParseErrorFunc
 func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {

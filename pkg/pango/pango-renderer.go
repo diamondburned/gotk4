@@ -79,9 +79,9 @@ type RendererOverrider interface {
 	//
 	// This should be called while renderer is already active. Use
 	// pango.Renderer.Activate() to activate a renderer.
-	DrawErrorUnderline(x int, y int, width int, height int)
+	DrawErrorUnderline(x, y, width, height int)
 	// DrawGlyph draws a single glyph with coordinates in device space.
-	DrawGlyph(font Fonter, glyph Glyph, x float64, y float64)
+	DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
 	// output if the output format supports it.
@@ -95,19 +95,19 @@ type RendererOverrider interface {
 	//
 	// The default implementation of this method simply falls back to
 	// pango.Renderer.DrawGlyphs().
-	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
-	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified PangoRenderer.
 	//
 	// This should be called while renderer is already active. Use
 	// pango.Renderer.Activate() to activate a renderer.
-	DrawRectangle(part RenderPart, x int, y int, width int, height int)
-	DrawShape(attr *AttrShape, x int, y int)
+	DrawRectangle(part RenderPart, x, y, width, height int)
+	DrawShape(attr *AttrShape, x, y int)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given PangoRenderer; coordinates are in device space.
-	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+	DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	End()
 	// PartChanged informs Pango that the way that the rendering is done for
 	// part has changed.
@@ -148,25 +148,25 @@ type Rendererer interface {
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling
 	// error.
-	DrawErrorUnderline(x int, y int, width int, height int)
+	DrawErrorUnderline(x, y, width, height int)
 	// DrawGlyph draws a single glyph with coordinates in device space.
-	DrawGlyph(font Fonter, glyph Glyph, x float64, y float64)
+	DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
 	// output if the output format supports it.
-	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
-	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	// DrawLayout draws layout with the specified PangoRenderer.
-	DrawLayout(layout *Layout, x int, y int)
+	DrawLayout(layout *Layout, x, y int)
 	// DrawLayoutLine draws line with the specified PangoRenderer.
-	DrawLayoutLine(line *LayoutLine, x int, y int)
+	DrawLayoutLine(line *LayoutLine, x, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified PangoRenderer.
-	DrawRectangle(part RenderPart, x int, y int, width int, height int)
+	DrawRectangle(part RenderPart, x, y, width, height int)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given PangoRenderer; coordinates are in device space.
-	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+	DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	// Alpha gets the current alpha for the specified part.
 	Alpha(part RenderPart) uint16
 	// Color gets the current rendering color for the specified part.
@@ -239,7 +239,7 @@ func (renderer *Renderer) Deactivate() {
 //
 // This should be called while renderer is already active. Use
 // pango.Renderer.Activate() to activate a renderer.
-func (renderer *Renderer) DrawErrorUnderline(x int, y int, width int, height int) {
+func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -261,7 +261,7 @@ func (renderer *Renderer) DrawErrorUnderline(x int, y int, width int, height int
 }
 
 // DrawGlyph draws a single glyph with coordinates in device space.
-func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float64) {
+func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoFont     // out
 	var _arg2 C.PangoGlyph     // out
@@ -295,7 +295,7 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x float64, y float
 //
 // The default implementation of this method simply falls back to
 // pango.Renderer.DrawGlyphs().
-func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int) {
+func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
@@ -320,7 +320,7 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int
 }
 
 // DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
-func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int) {
+func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -342,7 +342,7 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y 
 }
 
 // DrawLayout draws layout with the specified PangoRenderer.
-func (renderer *Renderer) DrawLayout(layout *Layout, x int, y int) {
+func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
 	var _arg2 C.int            // out
@@ -361,7 +361,7 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x int, y int) {
 }
 
 // DrawLayoutLine draws line with the specified PangoRenderer.
-func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
+func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg0 *C.PangoRenderer   // out
 	var _arg1 *C.PangoLayoutLine // out
 	var _arg2 C.int              // out
@@ -384,7 +384,7 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
 //
 // This should be called while renderer is already active. Use
 // pango.Renderer.Activate() to activate a renderer.
-func (renderer *Renderer) DrawRectangle(part RenderPart, x int, y int, width int, height int) {
+func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.int             // out
@@ -410,7 +410,7 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x int, y int, width int
 
 // DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
 // axis using the given PangoRenderer; coordinates are in device space.
-func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64) {
+func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.double          // out

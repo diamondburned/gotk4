@@ -164,7 +164,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out

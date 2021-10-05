@@ -76,7 +76,7 @@ func marshalLayouter(p uintptr) (interface{}, error) {
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d
 // like the layout to use for scrolling, pass NULL for hadjustment and
 // vadjustment.
-func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
+func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
@@ -198,7 +198,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of layout to a new position.
-func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -218,7 +218,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
 // parent container of child_widget.
-func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -256,7 +256,7 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 }
 
 // SetSize sets the size of the scrollable area of the layout.
-func (layout *Layout) SetSize(width uint, height uint) {
+func (layout *Layout) SetSize(width, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

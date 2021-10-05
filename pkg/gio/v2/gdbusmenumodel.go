@@ -31,7 +31,7 @@ import "C"
 // to this context. All calls on the returned menu model (and linked models)
 // must also originate from this same context, with the thread default main
 // context unchanged.
-func DBusMenuModelGet(connection *DBusConnection, busName string, objectPath string) *DBusMenuModel {
+func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *DBusMenuModel {
 	var _arg1 *C.GDBusConnection // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out

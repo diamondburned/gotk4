@@ -47,7 +47,7 @@ func ContentTypeCanBeExecutable(typ string) bool {
 }
 
 // ContentTypeEquals compares two content types for equality.
-func ContentTypeEquals(type1 string, type2 string) bool {
+func ContentTypeEquals(type1, type2 string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -324,7 +324,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 }
 
 // ContentTypeIsA determines if type is a subset of supertype.
-func ContentTypeIsA(typ string, supertype string) bool {
+func ContentTypeIsA(typ, supertype string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -349,7 +349,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 
 // ContentTypeIsMIMEType determines if type is a subset of mime_type.
 // Convenience wrapper around g_content_type_is_a().
-func ContentTypeIsMIMEType(typ string, mimeType string) bool {
+func ContentTypeIsMIMEType(typ, mimeType string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _cret C.gboolean // in

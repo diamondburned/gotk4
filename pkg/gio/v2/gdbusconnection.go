@@ -33,7 +33,7 @@ import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in
 // BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string) (err error, variant *glib.Variant)
+type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender, objectPath, interfaceName, propertyName string) (err error, variant *glib.Variant)
 
 //export _gotk4_gio2_DBusInterfaceGetPropertyFunc
 func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) (cret *C.GVariant) {
@@ -65,7 +65,7 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.g
 
 // DBusInterfaceMethodCallFunc: type of the method_call function in
 // BusInterfaceVTable.
-type DBusInterfaceMethodCallFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocation)
+type DBusInterfaceMethodCallFunc func(connection *DBusConnection, sender, objectPath, interfaceName, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocation)
 
 //export _gotk4_gio2_DBusInterfaceMethodCallFunc
 func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
@@ -103,7 +103,7 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gc
 
 // DBusInterfaceSetPropertyFunc: type of the set_property function in
 // BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant) (err error, ok bool)
+type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender, objectPath, interfaceName, propertyName string, value *glib.Variant) (err error, ok bool)
 
 //export _gotk4_gio2_DBusInterfaceSetPropertyFunc
 func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) (cret C.gboolean) {
@@ -235,7 +235,7 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBu
 
 // DBusSignalCallback: signature for callback function used in
 // g_dbus_connection_signal_subscribe().
-type DBusSignalCallback func(connection *DBusConnection, senderName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant)
+type DBusSignalCallback func(connection *DBusConnection, senderName, objectPath, interfaceName, signalName string, parameters *glib.Variant)
 
 //export _gotk4_gio2_DBusSignalCallback
 func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
@@ -275,7 +275,7 @@ func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 //
 // Subtrees are flat. node, if non-NULL, is always exactly one segment of the
 // object path (ie: it never contains a slash).
-type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, node string) (outUserData cgo.Handle, dBusInterfaceVTable *DBusInterfaceVTable)
+type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender, objectPath, interfaceName, node string) (outUserData cgo.Handle, dBusInterfaceVTable *DBusInterfaceVTable)
 
 //export _gotk4_gio2_DBusSubtreeDispatchFunc
 func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) (cret *C.GDBusInterfaceVTable) {
@@ -318,7 +318,7 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar,
 // the / character.
 //
 // The return value will be freed with g_strfreev().
-type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender string, objectPath string) (utf8s []string)
+type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender, objectPath string) (utf8s []string)
 
 //export _gotk4_gio2_DBusSubtreeEnumerateFunc
 func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret **C.gchar) {
@@ -371,7 +371,7 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar
 // The difference between returning NULL and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the NULL case.
-type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender string, objectPath string, node string) (dBusInterfaceInfos []*DBusInterfaceInfo)
+type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender, objectPath, node string) (dBusInterfaceInfos []*DBusInterfaceInfo)
 
 //export _gotk4_gio2_DBusSubtreeIntrospectFunc
 func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret **C.GDBusInterfaceInfo) {

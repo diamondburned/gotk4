@@ -174,7 +174,7 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 // Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_scale_set_digits() to correct it.
-func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) *Scale {
+func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.gdouble        // out
 	var _arg3 C.gdouble        // out

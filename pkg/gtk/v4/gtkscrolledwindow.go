@@ -755,7 +755,7 @@ func (scrolledWindow *ScrolledWindow) SetPlacement(windowPlacement CornerType) {
 // GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is, if
 // the slider part of the bar would be smaller than the trough — the display is
 // larger than the page size).
-func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
+func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.GtkPolicyType      // out
 	var _arg2 C.GtkPolicyType      // out

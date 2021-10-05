@@ -237,7 +237,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 // The parameters position and n_removals must be correct (ie: position +
 // n_removals must be less than or equal to the length of the list at the time
 // this function is called).
-func (store *ListStore) Splice(position uint, nRemovals uint, additions []*externglib.Object) {
+func (store *ListStore) Splice(position, nRemovals uint, additions []*externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

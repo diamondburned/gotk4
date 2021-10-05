@@ -36,7 +36,7 @@ type StatusIconOverrider interface {
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	PopupMenu(button uint, activateTime uint32)
-	QueryTooltip(x int, y int, keyboardMode bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
 	ScrollEvent(event *gdk.EventScroll) bool
 	SizeChanged(size int) bool
 }

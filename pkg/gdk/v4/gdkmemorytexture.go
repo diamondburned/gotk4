@@ -123,7 +123,7 @@ func marshalMemoryTexturer(p uintptr) (interface{}, error) {
 // NewMemoryTexture creates a new texture for a blob of image data.
 //
 // The GBytes must contain stride x height pixels in the given format.
-func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
+func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _arg3 C.GdkMemoryFormat // out

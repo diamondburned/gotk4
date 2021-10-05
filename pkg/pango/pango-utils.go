@@ -301,7 +301,7 @@ func Version() int {
 // required_major.required_minor.required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
-func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
+func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
 	var _arg3 C.int   // out

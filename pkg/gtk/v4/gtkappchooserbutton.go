@@ -127,7 +127,7 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 // callback for the activation of a particular custom item in the list.
 //
 // See also gtk.AppChooserButton.AppendSeparator().
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 	var _arg2 *C.char                // out

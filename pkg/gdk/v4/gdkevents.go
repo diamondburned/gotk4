@@ -448,7 +448,7 @@ func (t TouchpadGesturePhase) String() string {
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns FALSE.
-func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
+func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in
@@ -476,7 +476,7 @@ func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns FALSE.
-func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok bool) {
+func EventsGetCenter(event1, event2 Eventer) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in
@@ -507,7 +507,7 @@ func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok b
 //
 // This assumes that both events have X/Y information. If not, this function
 // returns FALSE.
-func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
+func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
 	var _arg3 C.double    // in

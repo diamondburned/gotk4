@@ -30,7 +30,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int)
+type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
 func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -62,7 +62,7 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DrawingAreaOverrider interface {
-	Resize(width int, height int)
+	Resize(width, height int)
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.

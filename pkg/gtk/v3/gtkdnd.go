@@ -42,7 +42,7 @@ func DragCancel(context *gdk.DragContext) {
 
 // DragFinish informs the drag source that the drop is finished, and that the
 // data of the drag will no longer be required.
-func DragFinish(context *gdk.DragContext, success bool, del bool, time_ uint32) {
+func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 	var _arg3 C.gboolean        // out
@@ -105,7 +105,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 // DragSetIconGIcon sets the icon for a given drag from the given icon. See the
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY int) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out
@@ -127,7 +127,7 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY
 // the docs for IconTheme for more details. Note that the size of the icon
 // depends on the icon theme (the icon is loaded at the symbolic size
 // K_ICON_SIZE_DND), thus hot_x and hot_y have to be used with care.
-func DragSetIconName(context *gdk.DragContext, iconName string, hotX int, hotY int) {
+func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -147,7 +147,7 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX int, hotY i
 }
 
 // DragSetIconPixbuf sets pixbuf as the icon for a given drag.
-func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX int, hotY int) {
+func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkPixbuf      // out
 	var _arg3 C.gint            // out
@@ -168,7 +168,7 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX 
 // DragSetIconStock sets the icon for a given drag from a stock ID.
 //
 // Deprecated: Use gtk_drag_set_icon_name() instead.
-func DragSetIconStock(context *gdk.DragContext, stockId string, hotX int, hotY int) {
+func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -209,7 +209,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
-func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX int, hotY int) {
+func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out

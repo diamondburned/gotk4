@@ -54,7 +54,7 @@ func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
 //
 // Note that nesting is allowed, so if you want more than two alternative,
 // create a new alternative trigger for each option.
-func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *AlternativeTrigger {
+func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutTrigger // out
 	var _cret *C.GtkShortcutTrigger // in

@@ -155,7 +155,7 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 // The actual process of finding the theme might change between releases, but it
 // is guaranteed that this function uses the same mechanism to load the theme
 // that GTK uses for loading its own theme.
-func (provider *CSSProvider) LoadNamed(name string, variant string) {
+func (provider *CSSProvider) LoadNamed(name, variant string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.char           // out

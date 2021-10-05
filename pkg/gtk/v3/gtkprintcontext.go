@@ -326,7 +326,7 @@ func (context *PrintContext) Width() float64 {
 // This function is intended to be used when implementing an internal print
 // preview, it is not needed for printing, since GTK+ itself creates a suitable
 // cairo context in that case.
-func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out
 	var _arg1 *C.cairo_t         // out
 	var _arg2 C.double           // out

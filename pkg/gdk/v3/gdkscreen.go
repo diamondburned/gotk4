@@ -176,7 +176,7 @@ func (screen *Screen) HeightMm() int {
 // located.
 //
 // Deprecated: Use gdk_display_get_monitor_at_point() instead.
-func (screen *Screen) MonitorAtPoint(x int, y int) int {
+func (screen *Screen) MonitorAtPoint(x, y int) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

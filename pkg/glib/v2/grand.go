@@ -27,7 +27,7 @@ func RandomDouble() float64 {
 
 // RandomDoubleRange returns a random #gdouble equally distributed over the
 // range [begin..end).
-func RandomDoubleRange(begin float64, end float64) float64 {
+func RandomDoubleRange(begin, end float64) float64 {
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
 	var _cret C.gdouble // in
@@ -62,7 +62,7 @@ func RandomInt() uint32 {
 
 // RandomIntRange returns a random #gint32 equally distributed over the range
 // [begin..end-1].
-func RandomIntRange(begin int32, end int32) int32 {
+func RandomIntRange(begin, end int32) int32 {
 	var _arg1 C.gint32 // out
 	var _arg2 C.gint32 // out
 	var _cret C.gint32 // in

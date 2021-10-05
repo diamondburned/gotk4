@@ -139,7 +139,7 @@ func marshalTabler(p uintptr) (interface{}, error) {
 // silently interpreted as 1.
 //
 // Deprecated: Use gtk_grid_new().
-func NewTable(rows uint, columns uint, homogeneous bool) *Table {
+func NewTable(rows, columns uint, homogeneous bool) *Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _arg3 C.gboolean   // out
@@ -182,7 +182,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint, xoptions, yoptions AttachOptions, xpadding, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -226,7 +226,7 @@ func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, t
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -387,7 +387,7 @@ func (table *Table) Size() (rows uint, columns uint) {
 // function allows you to do so.
 //
 // Deprecated: Grid resizes automatically.
-func (table *Table) Resize(rows uint, columns uint) {
+func (table *Table) Resize(rows, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -408,7 +408,7 @@ func (table *Table) Resize(rows uint, columns uint) {
 // Deprecated: Use gtk_widget_set_margin_start() and gtk_widget_set_margin_end()
 // on the widgets contained in the row if you need this functionality. Grid does
 // not support per-row spacing.
-func (table *Table) SetColSpacing(column uint, spacing uint) {
+func (table *Table) SetColSpacing(column, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -463,7 +463,7 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 // Deprecated: Use gtk_widget_set_margin_top() and
 // gtk_widget_set_margin_bottom() on the widgets contained in the row if you
 // need this functionality. Grid does not support per-row spacing.
-func (table *Table) SetRowSpacing(row uint, spacing uint) {
+func (table *Table) SetRowSpacing(row, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out

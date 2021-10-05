@@ -208,9 +208,9 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 // yet, so the interface currently has no use.
 type WidgetOverrider interface {
 	AdjustBaselineAllocation(baseline *int)
-	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
-	AdjustSizeAllocation(orientation Orientation, minimumSize *int, naturalSize *int, allocatedPos *int, allocatedSize *int)
-	AdjustSizeRequest(orientation Orientation, minimumSize *int, naturalSize *int)
+	AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
+	AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
+	AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
@@ -260,13 +260,13 @@ type WidgetOverrider interface {
 	DirectionChanged(previousDirection TextDirection)
 	DragBegin(context *gdk.DragContext)
 	DragDataDelete(context *gdk.DragContext)
-	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info uint, time_ uint)
-	DragDataReceived(context *gdk.DragContext, x int, y int, selectionData *SelectionData, info uint, time_ uint)
-	DragDrop(context *gdk.DragContext, x int, y int, time_ uint) bool
+	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
+	DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
+	DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
 	DragEnd(context *gdk.DragContext)
 	DragFailed(context *gdk.DragContext, result DragResult) bool
 	DragLeave(context *gdk.DragContext, time_ uint)
-	DragMotion(context *gdk.DragContext, x int, y int, time_ uint) bool
+	DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
 	Draw(cr *cairo.Context) bool
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
 	Focus(direction DirectionType) bool
@@ -402,7 +402,7 @@ type WidgetOverrider interface {
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
 	ProximityInEvent(event *gdk.EventProximity) bool
 	ProximityOutEvent(event *gdk.EventProximity) bool
-	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows. Once the main loop becomes idle (after the current batch
@@ -433,7 +433,7 @@ type WidgetOverrider interface {
 	ScreenChanged(previousScreen *gdk.Screen)
 	ScrollEvent(event *gdk.EventScroll) bool
 	SelectionClearEvent(event *gdk.EventSelection) bool
-	SelectionGet(selectionData *SelectionData, info uint, time_ uint)
+	SelectionGet(selectionData *SelectionData, info, time_ uint)
 	SelectionNotifyEvent(event *gdk.EventSelection) bool
 	SelectionReceived(selectionData *SelectionData, time_ uint)
 	SelectionRequestEvent(event *gdk.EventSelection) bool
@@ -643,7 +643,7 @@ type Widgetter interface {
 	// start_y) and ending at (current_x, current_y) has passed the GTK+ drag
 	// threshold, and thus should trigger the beginning of a drag-and-drop
 	// operation.
-	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
+	DragCheckThreshold(startX, startY, currentX, currentY int) bool
 	// DragDestAddImageTargets: add the image targets supported by SelectionData
 	// to the target list of the drag destination.
 	DragDestAddImageTargets()
@@ -999,7 +999,7 @@ type Widgetter interface {
 	ModifyBg(state StateType, color *gdk.Color)
 	// ModifyCursor sets the cursor color to use in a widget, overriding the
 	// Widget cursor-color and secondary-cursor-color style properties.
-	ModifyCursor(primary *gdk.Color, secondary *gdk.Color)
+	ModifyCursor(primary, secondary *gdk.Color)
 	// ModifyFg sets the foreground color for a widget in a particular state.
 	ModifyFg(state StateType, color *gdk.Color)
 	// ModifyFont sets the font to use for a widget.
@@ -1014,7 +1014,7 @@ type Widgetter interface {
 	OverrideColor(state StateFlags, color *gdk.RGBA)
 	// OverrideCursor sets the cursor color to use in a widget, overriding the
 	// cursor-color and secondary-cursor-color style properties.
-	OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA)
+	OverrideCursor(cursor, secondaryCursor *gdk.RGBA)
 	// OverrideFont sets the font to use for a widget.
 	OverrideFont(fontDesc *pango.FontDescription)
 	// OverrideSymbolicColor sets a symbolic color for a widget.
@@ -1031,7 +1031,7 @@ type Widgetter interface {
 	// QueueDrawArea: convenience function that calls
 	// gtk_widget_queue_draw_region() on the region created from the given
 	// coordinates.
-	QueueDrawArea(x int, y int, width int, height int)
+	QueueDrawArea(x, y, width, height int)
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows.
@@ -1169,7 +1169,7 @@ type Widgetter interface {
 	SetSensitive(sensitive bool)
 	// SetSizeRequest sets the minimum size of a widget; that is, the widget’s
 	// size request will be at least width by height.
-	SetSizeRequest(width int, height int)
+	SetSizeRequest(width, height int)
 	// SetState: this function is for use in widget implementations.
 	SetState(state StateType)
 	// SetStateFlags: this function is for use in widget implementations.
@@ -1230,7 +1230,7 @@ type Widgetter interface {
 	ThawChildNotify()
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool)
+	TranslateCoordinates(destWidget Widgetter, srcX, srcY int) (destX int, destY int, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -1687,7 +1687,7 @@ func (widget *Widget) DeviceIsShadowed(device gdk.Devicer) bool {
 // start_y) and ending at (current_x, current_y) has passed the GTK+ drag
 // threshold, and thus should trigger the beginning of a drag-and-drop
 // operation.
-func (widget *Widget) DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool {
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -4898,7 +4898,7 @@ func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
 // gtk_widget_modify_style().
 //
 // Deprecated: Use gtk_widget_override_cursor() instead.
-func (widget *Widget) ModifyCursor(primary *gdk.Color, secondary *gdk.Color) {
+func (widget *Widget) ModifyCursor(primary, secondary *gdk.Color) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkColor  // out
 	var _arg2 *C.GdkColor  // out
@@ -5093,7 +5093,7 @@ func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
 // rendering. If you wish to change the color used to render the primary and
 // secondary cursors you should use a custom CSS style, through an
 // application-specific StyleProvider and a CSS style class.
-func (widget *Widget) OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA) {
+func (widget *Widget) OverrideCursor(cursor, secondaryCursor *gdk.RGBA) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkRGBA   // out
 	var _arg2 *C.GdkRGBA   // out
@@ -5251,7 +5251,7 @@ func (widget *Widget) QueueDraw() {
 //
 // width or height may be 0, in this case this function does nothing. Negative
 // values for width and height are not allowed.
-func (widget *Widget) QueueDrawArea(x int, y int, width int, height int) {
+func (widget *Widget) QueueDrawArea(x, y, width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -6400,7 +6400,7 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 // properties margin-left, margin-right, margin-top, and margin-bottom, but it
 // does include pretty much all other padding or border properties set by any
 // subclass of Widget.
-func (widget *Widget) SetSizeRequest(width int, height int) {
+func (widget *Widget) SetSizeRequest(width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -6866,7 +6866,7 @@ func (widget *Widget) ThawChildNotify() {
 // allocation to coordinates relative to dest_widget’s allocations. In order to
 // perform this operation, both widgets must be realized, and must share a
 // common toplevel.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY int) (destX int, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

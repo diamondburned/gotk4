@@ -68,7 +68,7 @@ func marshalAspectFramer(p uintptr) (interface{}, error) {
 }
 
 // NewAspectFrame: create a new AspectFrame.
-func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) *AspectFrame {
+func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gfloat     // out
 	var _arg3 C.gfloat     // out
@@ -102,7 +102,7 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 }
 
 // Set parameters for an existing AspectFrame.
-func (aspectFrame *AspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
+func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gfloat          // out
 	var _arg2 C.gfloat          // out

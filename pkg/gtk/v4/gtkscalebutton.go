@@ -81,7 +81,7 @@ func marshalScaleButtonner(p uintptr) (interface{}, error) {
 //
 // The new scale button has a range between min and max, with a stepping of
 // step.
-func NewScaleButton(min float64, max float64, step float64, icons []string) *ScaleButton {
+func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 	var _arg1 C.double     // out
 	var _arg2 C.double     // out
 	var _arg3 C.double     // out

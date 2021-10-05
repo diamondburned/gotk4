@@ -38,7 +38,7 @@ func init() {
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
-	Interface(objectPath string, interfaceName string) DBusInterfacer
+	Interface(objectPath, interfaceName string) DBusInterfacer
 	// GetObject gets the BusObjectProxy at object_path, if any.
 	GetObject(objectPath string) DBusObjector
 	// ObjectPath gets the object path that manager is for.
@@ -68,7 +68,7 @@ type DBusObjectManagerer interface {
 
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
-	Interface(objectPath string, interfaceName string) DBusInterfacer
+	Interface(objectPath, interfaceName string) DBusInterfacer
 	// GetObject gets the BusObjectProxy at object_path, if any.
 	GetObject(objectPath string) DBusObjector
 	// ObjectPath gets the object path that manager is for.
@@ -92,7 +92,7 @@ func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.
-func (manager *DBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterfacer {
+func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out

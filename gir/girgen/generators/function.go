@@ -50,6 +50,8 @@ func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix 
 		}
 	}
 
+	callableGen.CoalesceTail()
+
 	writer := FileWriterFromType(gen, fn)
 	writer.Pen().WriteTmpl(functionTmpl, &callableGen)
 	file.ApplyHeader(writer, &callableGen)

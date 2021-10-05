@@ -781,7 +781,7 @@ func (socket *Socket) MulticastTTL() uint {
 // Note that even for socket options that are a single byte in size, value is
 // still a pointer to a #gint variable, not a #guchar; g_socket_get_option()
 // will handle the conversion internally.
-func (socket *Socket) Option(level int, optname int) (int, error) {
+func (socket *Socket) Option(level, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -1017,7 +1017,7 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 // Note that this function can be called multiple times for the same group with
 // different source_specific in order to receive multicast packets from more
 // than one source.
-func (socket *Socket) JoinMulticastGroupSSM(group *InetAddress, sourceSpecific *InetAddress, iface string) error {
+func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
@@ -1096,7 +1096,7 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 //
 // socket remains bound to its address and port, and can still receive unicast
 // messages after calling this.
-func (socket *Socket) LeaveMulticastGroupSSM(group *InetAddress, sourceSpecific *InetAddress, iface string) error {
+func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
 	var _arg2 *C.GInetAddress // out
@@ -1910,7 +1910,7 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 // that will define most of the standard/portable socket options. For unusual
 // socket protocols or platform-dependent options, you may need to include
 // additional headers.
-func (socket *Socket) SetOption(level int, optname int, value int) error {
+func (socket *Socket) SetOption(level, optname, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -1994,7 +1994,7 @@ func (socket *Socket) SetTTL(ttl uint) {
 // graceful disconnect for TCP connections where you close the sending side,
 // then wait for the other side to close the connection, thus ensuring that the
 // other side saw all sent data.
-func (socket *Socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
+func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 	var _arg2 C.gboolean // out

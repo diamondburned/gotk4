@@ -32,7 +32,7 @@ func init() {
 // yet, so the interface currently has no use.
 type GLAreaOverrider interface {
 	Render(context gdk.GLContexter) bool
-	Resize(width int, height int)
+	Resize(width, height int)
 }
 
 // GLArea is a widget that allows drawing with OpenGL.
@@ -435,7 +435,7 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 // creating the context for the widget.
 //
 // This function must be called before the area has been realized.
-func (area *GLArea) SetRequiredVersion(major int, minor int) {
+func (area *GLArea) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

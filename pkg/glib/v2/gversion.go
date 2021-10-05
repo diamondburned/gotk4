@@ -23,7 +23,7 @@ import "C"
 // required_major.required_minor.required_micro. Second the running library must
 // be binary compatible with the version
 // required_major.required_minor.required_micro (same major version.).
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
+func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
 	var _arg3 C.guint  // out

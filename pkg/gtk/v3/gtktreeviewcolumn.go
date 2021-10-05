@@ -306,7 +306,7 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 // is, for every attribute mapping in tree_column, it will get a value from the
 // set column on the iter, and use that value to set the attribute on the cell
 // renderer. This is used primarily by the TreeView.
-func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool) {
+func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkTreeModel      // out
 	var _arg2 *C.GtkTreeIter       // out

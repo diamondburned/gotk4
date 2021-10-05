@@ -136,7 +136,7 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 //
 // If either file cannot be read or parsed, the function will return NULL and
 // set error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
-func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificate, error) {
+func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -225,7 +225,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 //
 // Note that the private key is not accessed until usage and may fail or require
 // a PIN later.
-func NewTLSCertificateFromPKCS11URIs(pkcs11Uri string, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
+func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in

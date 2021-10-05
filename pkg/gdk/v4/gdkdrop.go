@@ -78,7 +78,7 @@ type Dropper interface {
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 	// Status selects all actions that are potentially supported by the
 	// destination.
-	Status(actions DragAction, preferred DragAction)
+	Status(actions, preferred DragAction)
 }
 
 var _ Dropper = (*Drop)(nil)
@@ -439,7 +439,7 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 // GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
 // know the exact actions it supports, it should set any possible actions first
 // and then later call this function again.
-func (self *Drop) Status(actions DragAction, preferred DragAction) {
+func (self *Drop) Status(actions, preferred DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
 	var _arg2 C.GdkDragAction // out

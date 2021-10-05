@@ -851,7 +851,7 @@ func VariantTypeStringIsValid(typeString string) bool {
 //
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
-func VariantTypeStringScan(_string string, limit string) (string, bool) {
+func VariantTypeStringScan(_string, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // in

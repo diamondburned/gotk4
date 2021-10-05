@@ -406,7 +406,7 @@ func BuildPathv(separator string, args []string) string {
 // don't exist.
 //
 // No file system I/O is done.
-func CanonicalizeFilename(filename string, relativeTo string) string {
+func CanonicalizeFilename(filename, relativeTo string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in

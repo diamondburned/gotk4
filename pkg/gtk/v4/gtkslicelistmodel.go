@@ -52,7 +52,7 @@ func marshalSliceListModeller(p uintptr) (interface{}, error) {
 // NewSliceListModel creates a new slice model.
 //
 // It presents the slice from offset to offset + size of the given model.
-func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceListModel {
+func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out

@@ -43,7 +43,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
-	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName string, signalName string, parameters *glib.Variant)
+	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 }
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
@@ -191,7 +191,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 // This is a synchronous failable constructor - the calling thread is blocked
 // until a reply is received. See g_dbus_object_manager_client_new_for_bus() for
 // the asynchronous version.
-func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
+func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out
 	var _arg2 C.GDBusObjectManagerClientFlags // out
@@ -244,7 +244,7 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 // This is a synchronous failable constructor - the calling thread is blocked
 // until a reply is received. See g_dbus_object_manager_client_new() for the
 // asynchronous version.
-func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
+func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
 	var _arg2 C.GDBusObjectManagerClientFlags // out
@@ -404,7 +404,7 @@ func (d *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy
 // this method from. You can then call g_dbus_object_manager_client_new_finish()
 // to get the result. See g_dbus_object_manager_client_new_sync() for the
 // synchronous version.
-func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
+func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
 	var _arg2 C.GDBusObjectManagerClientFlags // out
@@ -456,7 +456,7 @@ func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection,
 // method from. You can then call
 // g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
 // g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
-func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
+func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out
 	var _arg2 C.GDBusObjectManagerClientFlags // out

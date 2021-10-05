@@ -113,7 +113,7 @@ type SorterOverrider interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of gtk.Sorter.GetOrder().
-	Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering
+	Compare(item1, item2 *externglib.Object) Ordering
 	// Order gets the order that self conforms to.
 	//
 	// See gtk.SorterOrder for details of the possible return values.
@@ -193,7 +193,7 @@ func (self *Sorter) Changed(change SorterChange) {
 //
 // The sorter may signal it conforms to additional constraints via the return
 // value of gtk.Sorter.GetOrder().
-func (self *Sorter) Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering {
+func (self *Sorter) Compare(item1, item2 *externglib.Object) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.gpointer    // out

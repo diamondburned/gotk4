@@ -141,7 +141,7 @@ type TextViewOverrider interface {
 	CopyClipboard()
 	CutClipboard()
 	DeleteFromCursor(typ DeleteType, count int)
-	ExtendSelection(granularity TextExtendSelection, location *TextIter, start *TextIter, end *TextIter) bool
+	ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
 	InsertAtCursor(str string)
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
@@ -288,7 +288,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 //
 // If instead you want a widget that will not move with the GtkTextView contents
 // see Overlay.
-func (textView *TextView) AddOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) AddOverlay(child Widgetter, xpos, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -367,7 +367,7 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 }
 
 // BufferToWindowCoords converts buffer coordinates to window coordinates.
-func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
+func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX, bufferY int) (windowX int, windowY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.int               // out
@@ -722,7 +722,7 @@ func (textView *TextView) InputPurpose() InputPurpose {
 // currently-displayed portion. If you have coordinates from an event, you have
 // to convert those to buffer coordinates with
 // gtk.TextView.WindowToBufferCoords().
-func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
+func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
 	var _arg2 C.int          // out
@@ -759,7 +759,7 @@ func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
 //
 // Note that this is different from gtk.TextView.GetIterAtLocation(), which
 // returns cursor locations, i.e. positions between characters.
-func (textView *TextView) IterAtPosition(x int, y int) (TextIter, int, bool) {
+func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
 	var _arg2 C.int          // in
@@ -1180,7 +1180,7 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 // MoveOverlay updates the position of a child.
 //
 // See gtk.TextView.AddOverlay().
-func (textView *TextView) MoveOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) MoveOverlay(child Widgetter, xpos, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -1322,7 +1322,7 @@ func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 // function may not have the desired effect if it’s called before the height
 // computations. To avoid oddness, consider using gtk.TextView.ScrollToMark()
 // which saves a point to be scrolled to after line validation.
-func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool {
+func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign, yalign float64) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
 	var _arg2 C.double       // out
@@ -1364,7 +1364,7 @@ func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, use
 // means center. If use_align is FALSE, the text scrolls the minimal distance to
 // get the mark onscreen, possibly not scrolling at all. The effective screen
 // for purposes of this function is reduced by a margin of size within_margin.
-func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64) {
+func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, useAlign bool, xalign, yalign float64) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
 	var _arg2 C.double       // out
@@ -1770,7 +1770,7 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 
 // WindowToBufferCoords converts coordinates on the window identified by win to
 // buffer coordinates.
-func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
+func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, windowY int) (bufferX int, bufferY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 C.int               // out

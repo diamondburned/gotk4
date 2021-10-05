@@ -261,7 +261,7 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given surface is not a toplevel surface,
 // it is ignored.
-func (surface *X11Surface) SetUTF8Property(name string, value string) {
+func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // out

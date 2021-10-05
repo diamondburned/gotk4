@@ -116,7 +116,7 @@ type Dragger interface {
 	Surface() Surfacer
 	// SetHotspot sets the position of the drag surface that will be kept under
 	// the cursor hotspot.
-	SetHotspot(hotX int, hotY int)
+	SetHotspot(hotX, hotY int)
 }
 
 var _ Dragger = (*Drag)(nil)
@@ -345,7 +345,7 @@ func (drag *Drag) Surface() Surfacer {
 // cursor hotspot.
 //
 // Initially, the hotspot is at the top left corner of the drag surface.
-func (drag *Drag) SetHotspot(hotX int, hotY int) {
+func (drag *Drag) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
@@ -391,7 +391,7 @@ func (d *Drag) ConnectDropPerformed(f func()) glib.SignalHandle {
 // Note: if actions include GDK_ACTION_MOVE, you need to listen for the
 // gdk.Drag::dnd-finished signal and delete the data at the source if
 // gdk.Drag.GetSelectedAction() returns GDK_ACTION_MOVE.
-func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx float64, dy float64) Dragger {
+func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
 	var _arg1 *C.GdkSurface         // out
 	var _arg2 *C.GdkDevice          // out
 	var _arg3 *C.GdkContentProvider // out

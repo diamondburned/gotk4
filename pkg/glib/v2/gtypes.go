@@ -100,7 +100,7 @@ const SQRT2 = 1.414214
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a cgo.Handle, b cgo.Handle) (gint int)
+type CompareDataFunc func(a, b cgo.Handle) (gint int)
 
 //export _gotk4_glib2_CompareDataFunc
 func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
@@ -145,7 +145,7 @@ func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
-type HFunc func(key cgo.Handle, value cgo.Handle)
+type HFunc func(key, value cgo.Handle)
 
 //export _gotk4_glib2_HFunc
 func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {

@@ -30,8 +30,8 @@ type TableOverrider interface {
 	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified row to the selection.
 	AddRowSelection(row int) bool
-	ColumnDeleted(column int, numDeleted int)
-	ColumnInserted(column int, numInserted int)
+	ColumnDeleted(column, numDeleted int)
+	ColumnInserted(column, numInserted int)
 	ColumnReordered()
 	// Caption gets the caption for the table.
 	Caption() *ObjectClass
@@ -45,7 +45,7 @@ type TableOverrider interface {
 	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
-	ColumnExtentAt(row int, column int) int
+	ColumnExtentAt(row, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
 	ColumnHeader(column int) *ObjectClass
@@ -54,7 +54,7 @@ type TableOverrider interface {
 	//
 	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
 	// accessible that represents the cell at (row, column).
-	IndexAt(row int, column int) int
+	IndexAt(row, column int) int
 	// NColumns gets the number of columns in the table.
 	NColumns() int
 	// NRows gets the number of rows in the table.
@@ -68,7 +68,7 @@ type TableOverrider interface {
 	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
-	RowExtentAt(row int, column int) int
+	RowExtentAt(row, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
 	RowHeader(row int) *ObjectClass
 	// SelectedColumns gets the selected columns of the table by initializing
@@ -89,17 +89,17 @@ type TableOverrider interface {
 	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified row and column is selected.
-	IsSelected(row int, column int) bool
+	IsSelected(row, column int) bool
 	ModelChanged()
 	// RefAt: get a reference to the table cell at row, column. This cell should
 	// implement the interface TableCell.
-	RefAt(row int, column int) *ObjectClass
+	RefAt(row, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified column to the selection.
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified row from the selection.
 	RemoveRowSelection(row int) bool
-	RowDeleted(row int, numDeleted int)
-	RowInserted(row int, numInserted int)
+	RowDeleted(row, numDeleted int)
+	RowInserted(row, numInserted int)
 	RowReordered()
 	// SetCaption sets the caption for the table.
 	SetCaption(caption *ObjectClass)
@@ -163,13 +163,13 @@ type Tabler interface {
 	ColumnDescription(column int) string
 	// ColumnExtentAt gets the number of columns occupied by the accessible
 	// object at the specified row and column in the table.
-	ColumnExtentAt(row int, column int) int
+	ColumnExtentAt(row, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
 	ColumnHeader(column int) *ObjectClass
 	// IndexAt gets a #gint representing the index at the specified row and
 	// column.
-	IndexAt(row int, column int) int
+	IndexAt(row, column int) int
 	// NColumns gets the number of columns in the table.
 	NColumns() int
 	// NRows gets the number of rows in the table.
@@ -181,7 +181,7 @@ type Tabler interface {
 	RowDescription(row int) string
 	// RowExtentAt gets the number of rows occupied by the accessible object at
 	// a specified row and column in the table.
-	RowExtentAt(row int, column int) int
+	RowExtentAt(row, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
 	RowHeader(row int) *ObjectClass
 	// SelectedColumns gets the selected columns of the table by initializing
@@ -200,9 +200,9 @@ type Tabler interface {
 	IsRowSelected(row int) bool
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified row and column is selected.
-	IsSelected(row int, column int) bool
+	IsSelected(row, column int) bool
 	// RefAt: get a reference to the table cell at row, column.
-	RefAt(row int, column int) *ObjectClass
+	RefAt(row, column int) *ObjectClass
 	// RemoveColumnSelection adds the specified column to the selection.
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified row from the selection.
@@ -345,7 +345,7 @@ func (table *Table) ColumnDescription(column int) string {
 
 // ColumnExtentAt gets the number of columns occupied by the accessible object
 // at the specified row and column in the table.
-func (table *Table) ColumnExtentAt(row int, column int) int {
+func (table *Table) ColumnExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -394,7 +394,7 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 //
 // Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
 // that represents the cell at (row, column).
-func (table *Table) IndexAt(row int, column int) int {
+func (table *Table) IndexAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -496,7 +496,7 @@ func (table *Table) RowDescription(row int) string {
 
 // RowExtentAt gets the number of rows occupied by the accessible object at a
 // specified row and column in the table.
-func (table *Table) RowExtentAt(row int, column int) int {
+func (table *Table) RowExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -648,7 +648,7 @@ func (table *Table) IsRowSelected(row int) bool {
 
 // IsSelected gets a boolean value indicating whether the accessible object at
 // the specified row and column is selected.
-func (table *Table) IsSelected(row int, column int) bool {
+func (table *Table) IsSelected(row, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -674,7 +674,7 @@ func (table *Table) IsSelected(row int, column int) bool {
 
 // RefAt: get a reference to the table cell at row, column. This cell should
 // implement the interface TableCell.
-func (table *Table) RefAt(row int, column int) *ObjectClass {
+func (table *Table) RefAt(row, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

@@ -491,7 +491,7 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 //
 // These values are used when preparing the gdk.PopupLayout for positioning the
 // popover.
-func (popover *Popover) SetOffset(xOffset int, yOffset int) {
+func (popover *Popover) SetOffset(xOffset, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out

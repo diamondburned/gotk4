@@ -34,7 +34,7 @@ type RangeOverrider interface {
 	AdjustBounds(newValue float64)
 	ChangeValue(scroll ScrollType, newValue float64) bool
 	RangeBorder(border_ *Border)
-	RangeSizeRequest(orientation Orientation, minimum *int, natural *int)
+	RangeSizeRequest(orientation Orientation, minimum, natural *int)
 	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
@@ -100,7 +100,7 @@ type Ranger interface {
 	// is horizontal and its direction is GTK_TEXT_DIR_RTL.
 	SetFlippable(flippable bool)
 	// SetIncrements sets the step and page sizes for the range.
-	SetIncrements(step float64, page float64)
+	SetIncrements(step, page float64)
 	// SetInverted ranges normally move from lower to higher values as the
 	// slider moves from top to bottom or left to right.
 	SetInverted(setting bool)
@@ -111,7 +111,7 @@ type Ranger interface {
 	SetMinSliderSize(minSize int)
 	// SetRange sets the allowable values in the Range, and clamps the range
 	// value to be between min and max.
-	SetRange(min float64, max float64)
+	SetRange(min, max float64)
 	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
 	// level.
 	SetRestrictToFillLevel(restrictToFillLevel bool)
@@ -497,7 +497,7 @@ func (_range *Range) SetFlippable(flippable bool) {
 // SetIncrements sets the step and page sizes for the range. The step size is
 // used when the user clicks the Scrollbar arrows or moves Scale via arrow keys.
 // The page size is used for example when moving via Page Up or Page Down keys.
-func (_range *Range) SetIncrements(step float64, page float64) {
+func (_range *Range) SetIncrements(step, page float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gdouble   // out
 	var _arg2 C.gdouble   // out
@@ -563,7 +563,7 @@ func (_range *Range) SetMinSliderSize(minSize int) {
 // SetRange sets the allowable values in the Range, and clamps the range value
 // to be between min and max. (If the range has a non-zero page size, it is
 // clamped between min and max - page-size.).
-func (_range *Range) SetRange(min float64, max float64) {
+func (_range *Range) SetRange(min, max float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gdouble   // out
 	var _arg2 C.gdouble   // out

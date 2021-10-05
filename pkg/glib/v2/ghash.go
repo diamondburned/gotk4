@@ -29,7 +29,7 @@ func init() {
 // together with the user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
 // should be removed from the Table.
-type HRFunc func(key cgo.Handle, value cgo.Handle) (ok bool)
+type HRFunc func(key, value cgo.Handle) (ok bool)
 
 //export _gotk4_glib2_HRFunc
 func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
@@ -61,7 +61,7 @@ func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cre
 //
 // This equality function is also appropriate for keys that are integers stored
 // in pointers, such as GINT_TO_POINTER (n).
-func DirectEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
+func DirectEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -108,7 +108,7 @@ func DirectHash(v cgo.Handle) uint {
 // TRUE if they are equal. It can be passed to g_hash_table_new() as the
 // key_equal_func parameter, when using non-NULL pointers to doubles as keys in
 // a Table.
-func DoubleEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
+func DoubleEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -153,7 +153,7 @@ func DoubleHash(v cgo.Handle) uint {
 // if they are equal. It can be passed to g_hash_table_new() as the
 // key_equal_func parameter, when using non-NULL pointers to 64-bit integers as
 // keys in a Table.
-func Int64Equal(v1 cgo.Handle, v2 cgo.Handle) bool {
+func Int64Equal(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -201,7 +201,7 @@ func Int64Hash(v cgo.Handle) uint {
 // Note that this function acts on pointers to #gint, not on #gint directly: if
 // your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_equal() instead.
-func IntEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
+func IntEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -252,7 +252,7 @@ func IntHash(v cgo.Handle) uint {
 // This function is typically used for hash table comparisons, but can be used
 // for general purpose comparisons of non-NULL strings. For a NULL-safe string
 // comparison function, see g_strcmp0().
-func StrEqual(v1 cgo.Handle, v2 cgo.Handle) bool {
+func StrEqual(v1, v2 cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
@@ -424,7 +424,7 @@ func HashTableDestroy(hashTable map[cgo.Handle]cgo.Handle) {
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
-func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle, value cgo.Handle) bool {
+func HashTableInsert(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
 	var _arg3 C.gpointer    // out
@@ -594,7 +594,7 @@ func HashTableRemoveAll(hashTable map[cgo.Handle]cgo.Handle) {
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
-func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key cgo.Handle, value cgo.Handle) bool {
+func HashTableReplace(hashTable map[cgo.Handle]cgo.Handle, key, value cgo.Handle) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
 	var _arg3 C.gpointer    // out

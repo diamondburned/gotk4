@@ -116,7 +116,7 @@ type ConverterOverrider interface {
 	// partial multibyte sequence). Converters are supposed to try to produce as
 	// much output as possible and then return an error (typically
 	// G_IO_ERROR_PARTIAL_INPUT).
-	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
+	Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
 	// produce output then that output is lost.
@@ -137,7 +137,7 @@ type Converterer interface {
 	externglib.Objector
 
 	// Convert: this is the main operation used when converting data.
-	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
+	Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created.
 	Reset()
@@ -234,7 +234,7 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 // partial multibyte sequence). Converters are supposed to try to produce as
 // much output as possible and then return an error (typically
 // G_IO_ERROR_PARTIAL_INPUT).
-func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
+func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
 	var _arg1 *C.void       // out
 	var _arg2 C.gsize

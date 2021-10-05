@@ -261,12 +261,12 @@ type Resolverer interface {
 	LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
 	// LookupService: synchronously performs a DNS SRV lookup for the given
 	// service and protocol in the given domain and returns an array of Target.
-	LookupService(ctx context.Context, service string, protocol string, domain string) ([]*SrvTarget, error)
+	LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error)
 	// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
 	// the given service and protocol in the given domain, and eventually calls
 	// callback, which must call g_resolver_lookup_service_finish() to get the
 	// final result.
-	LookupServiceAsync(ctx context.Context, service string, protocol string, domain string, callback AsyncReadyCallback)
+	LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback)
 	// LookupServiceFinish retrieves the result of a previous call to
 	// g_resolver_lookup_service_async().
 	LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
@@ -779,7 +779,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //
 // If you are planning to connect to the service, it is usually easier to create
 // a Service and use its Connectable interface.
-func (resolver *Resolver) LookupService(ctx context.Context, service string, protocol string, domain string) ([]*SrvTarget, error) {
+func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -835,7 +835,7 @@ func (resolver *Resolver) LookupService(ctx context.Context, service string, pro
 // given service and protocol in the given domain, and eventually calls
 // callback, which must call g_resolver_lookup_service_finish() to get the final
 // result. See g_resolver_lookup_service() for more details.
-func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service string, protocol string, domain string, callback AsyncReadyCallback) {
+func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out

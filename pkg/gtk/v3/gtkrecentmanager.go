@@ -331,7 +331,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 //
 // Please note that this function will not affect the resource pointed by the
 // URIs, but only the URI used in the recently used resources list.
-func (manager *RecentManager) MoveItem(uri string, newUri string) error {
+func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out

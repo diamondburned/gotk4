@@ -51,7 +51,7 @@ func marshalBookmarkLister(p uintptr) (interface{}, error) {
 }
 
 // NewBookmarkList creates a new GtkBookmarkList with the given attributes.
-func NewBookmarkList(filename string, attributes string) *BookmarkList {
+func NewBookmarkList(filename, attributes string) *BookmarkList {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
 	var _cret *C.GtkBookmarkList // in

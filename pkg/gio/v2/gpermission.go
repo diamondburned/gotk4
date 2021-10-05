@@ -135,7 +135,7 @@ type Permissioner interface {
 	CanRelease() bool
 	// ImplUpdate: this function is called by the #GPermission implementation to
 	// update the properties of the permission.
-	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
+	ImplUpdate(allowed, canAcquire, canRelease bool)
 	// Release attempts to release the permission represented by permission.
 	Release(ctx context.Context) error
 	// ReleaseAsync attempts to release the permission represented by
@@ -320,7 +320,7 @@ func (permission *Permission) CanRelease() bool {
 // except from a #GPermission implementation.
 //
 // GObject notify signals are generated, as appropriate.
-func (permission *Permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
+func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.gboolean     // out

@@ -282,7 +282,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // Pack1 adds a child to the top or left pane.
-func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
+func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -305,7 +305,7 @@ func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
-func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
+func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out

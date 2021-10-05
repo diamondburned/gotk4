@@ -35,8 +35,8 @@ type EntryBufferOverrider interface {
 	// values.
 	//
 	// Note that the positions are specified in characters, not bytes.
-	DeleteText(position uint, nChars uint) uint
-	DeletedText(position uint, nChars uint)
+	DeleteText(position, nChars uint) uint
+	DeletedText(position, nChars uint)
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
 	Text(nBytes *uint) string
@@ -136,7 +136,7 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 }
 
 // EmitDeletedText: used when subclassing GtkEntryBuffer.
-func (buffer *EntryBuffer) EmitDeletedText(position uint, nChars uint) {
+func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out

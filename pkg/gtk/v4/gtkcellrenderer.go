@@ -136,7 +136,7 @@ type CellRendererOverrider interface {
 	// Activate passes an activate event to the cell renderer for possible
 	// processing. Some cell renderers may use events; for example,
 	// CellRendererToggle toggles when it gets a mouse click.
-	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	EditingCanceled()
 	EditingStarted(editable CellEditabler, path string)
 	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
@@ -164,11 +164,11 @@ type CellRendererOverrider interface {
 	// includes the blank space around the cell, and also the area containing
 	// the tree expander; so the background_area rectangles for all cells tile
 	// to cover the entire window.
-	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
 	// StartEditing starts editing the contents of this cell, through a new
 	// CellEditable widget created by the CellRendererClass.start_editing
 	// virtual function.
-	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
 }
 
 // CellRenderer: object for rendering a single cell
@@ -215,7 +215,7 @@ type CellRendererer interface {
 
 	// Activate passes an activate event to the cell renderer for possible
 	// processing.
-	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	// AlignedArea gets the aligned area used by cell inside cell_area.
 	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment fills in xalign and yalign with the appropriate values of cell.
@@ -257,26 +257,26 @@ type CellRendererer interface {
 	// activated.
 	IsActivatable() bool
 	// SetAlignment sets the renderer’s alignment within its available space.
-	SetAlignment(xalign float32, yalign float32)
+	SetAlignment(xalign, yalign float32)
 	// SetFixedSize sets the renderer size to be explicit, independent of the
 	// properties set.
-	SetFixedSize(width int, height int)
+	SetFixedSize(width, height int)
 	// SetIsExpanded sets whether the given CellRenderer is expanded.
 	SetIsExpanded(isExpanded bool)
 	// SetIsExpander sets whether the given CellRenderer is an expander.
 	SetIsExpander(isExpander bool)
 	// SetPadding sets the renderer’s padding.
-	SetPadding(xpad int, ypad int)
+	SetPadding(xpad, ypad int)
 	// SetSensitive sets the cell renderer’s sensitivity.
 	SetSensitive(sensitive bool)
 	// SetVisible sets the cell renderer’s visibility.
 	SetVisible(visible bool)
 	// Snapshot invokes the virtual render function of the CellRenderer.
-	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
 	// StartEditing starts editing the contents of this cell, through a new
 	// CellEditable widget created by the CellRendererClass.start_editing
 	// virtual function.
-	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
 	// StopEditing informs the cell renderer that the editing is stopped.
 	StopEditing(canceled bool)
 }
@@ -300,7 +300,7 @@ func marshalCellRendererer(p uintptr) (interface{}, error) {
 // Activate passes an activate event to the cell renderer for possible
 // processing. Some cell renderers may use events; for example,
 // CellRendererToggle toggles when it gets a mouse click.
-func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -691,7 +691,7 @@ func (cell *CellRenderer) IsActivatable() bool {
 }
 
 // SetAlignment sets the renderer’s alignment within its available space.
-func (cell *CellRenderer) SetAlignment(xalign float32, yalign float32) {
+func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.float            // out
 	var _arg2 C.float            // out
@@ -708,7 +708,7 @@ func (cell *CellRenderer) SetAlignment(xalign float32, yalign float32) {
 
 // SetFixedSize sets the renderer size to be explicit, independent of the
 // properties set.
-func (cell *CellRenderer) SetFixedSize(width int, height int) {
+func (cell *CellRenderer) SetFixedSize(width, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -754,7 +754,7 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 }
 
 // SetPadding sets the renderer’s padding.
-func (cell *CellRenderer) SetPadding(xpad int, ypad int) {
+func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -806,7 +806,7 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 // blank space around the cell, and also the area containing the tree expander;
 // so the background_area rectangles for all cells tile to cover the entire
 // window.
-func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkSnapshot         // out
 	var _arg2 *C.GtkWidget           // out
@@ -833,7 +833,7 @@ func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgro
 // StartEditing starts editing the contents of this cell, through a new
 // CellEditable widget created by the CellRendererClass.start_editing virtual
 // function.
-func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler {
+func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out

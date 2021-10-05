@@ -1269,7 +1269,7 @@ type Filer interface {
 	SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP cgo.Handle, flags FileQueryInfoFlags) error
 	// SetAttributeByteString sets attribute of type
 	// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to value.
-	SetAttributeByteString(ctx context.Context, attribute string, value string, flags FileQueryInfoFlags) error
+	SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error
 	// SetAttributeInt32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
 	// value.
 	SetAttributeInt32(ctx context.Context, attribute string, value int32, flags FileQueryInfoFlags) error
@@ -1278,7 +1278,7 @@ type Filer interface {
 	SetAttributeInt64(ctx context.Context, attribute string, value int64, flags FileQueryInfoFlags) error
 	// SetAttributeString sets attribute of type G_FILE_ATTRIBUTE_TYPE_STRING to
 	// value.
-	SetAttributeString(ctx context.Context, attribute string, value string, flags FileQueryInfoFlags) error
+	SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error
 	// SetAttributeUint32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32 to
 	// value.
 	SetAttributeUint32(ctx context.Context, attribute string, value uint32, flags FileQueryInfoFlags) error
@@ -5028,7 +5028,7 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (file *File) SetAttributeByteString(ctx context.Context, attribute string, value string, flags FileQueryInfoFlags) error {
+func (file *File) SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -5152,7 +5152,7 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (file *File) SetAttributeString(ctx context.Context, attribute string, value string, flags FileQueryInfoFlags) error {
+func (file *File) SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -5932,7 +5932,7 @@ func NewFileForCommandlineArg(arg string) Filer {
 // the invocation of the current process.
 //
 // See also g_application_command_line_create_file_for_arg().
-func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
+func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.GFile // in

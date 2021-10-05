@@ -112,7 +112,7 @@ type ListModeller interface {
 	// Item: get the item at position.
 	Item(position uint) *externglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
-	ItemsChanged(position uint, removed uint, added uint)
+	ItemsChanged(position, removed, added uint)
 }
 
 var _ ListModeller = (*ListModel)(nil)
@@ -215,7 +215,7 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 // accesses to the model via the API, without returning to the mainloop, and
 // without calling other code, will continue to view the same contents of the
 // model.
-func (list *ListModel) ItemsChanged(position uint, removed uint, added uint) {
+func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

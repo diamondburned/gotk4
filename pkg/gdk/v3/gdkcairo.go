@@ -67,7 +67,7 @@ func CairoCreate(window Windower) *cairo.Context {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr *cairo.Context, window Windower, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
+func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.int        // out
@@ -216,7 +216,7 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of pixbuf is pixbuf_x, pixbuf_y.
-func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
 	var _arg3 C.gdouble    // out
@@ -255,7 +255,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 //
 // Note that the contents of window are undefined outside of the visible part of
 // window, so use this function with care.
-func CairoSetSourceWindow(cr *cairo.Context, window Windower, x float64, y float64) {
+func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.gdouble    // out

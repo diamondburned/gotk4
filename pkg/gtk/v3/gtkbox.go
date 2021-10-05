@@ -210,7 +210,7 @@ func (box *Box) Spacing() int {
 // PackEnd adds child to box, packed with reference to the end of box. The child
 // is packed after (away from end of) any other child packed with reference to
 // the end of box.
-func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
+func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -238,7 +238,7 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 // PackStart adds child to box, packed with reference to the start of box. The
 // child is packed after any other child packed with reference to the start of
 // box.
-func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint) {
+func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -354,7 +354,7 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 }
 
 // SetChildPacking sets the way child is packed into box.
-func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding uint, packType PackType) {
+func (box *Box) SetChildPacking(child Widgetter, expand, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out

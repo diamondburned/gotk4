@@ -71,7 +71,7 @@ type BufferedInputStreamOverrider interface {
 	//
 	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
-	FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback)
+	FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
 }
@@ -215,7 +215,7 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //
 // If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
-func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback) {
+func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg3 *C.GCancellable         // out
 	var _arg1 C.gssize                // out

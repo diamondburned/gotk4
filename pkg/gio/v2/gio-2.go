@@ -703,7 +703,7 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
 // G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-func (connection *DBusConnection) Call(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg9 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -822,7 +822,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
-func (connection *DBusConnection) CallSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
+func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg9 *C.GCancellable    // out
 	var _arg1 *C.gchar           // out
@@ -906,7 +906,7 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName string, 
 // G_VARIANT_TYPE_HANDLE in the body of the message.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
+func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg10 *C.GCancellable       // out
 	var _arg1 *C.gchar               // out
@@ -1020,7 +1020,7 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 // g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
+func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg11 *C.GCancellable   // out
 	var _arg1 *C.gchar           // out
@@ -1199,7 +1199,7 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 // This can only fail if parameters is not compatible with the D-Bus protocol
 // (G_IO_ERROR_INVALID_ARGUMENT), or if connection has been closed
 // (G_IO_ERROR_CLOSED).
-func (connection *DBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
+func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -1911,7 +1911,7 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 // to never be zero.
 //
 // This function can never fail.
-func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
+func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -2169,7 +2169,7 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 }
 
 // NewDBusMessageMethodCall creates a new BusMessage for a method call.
-func NewDBusMessageMethodCall(name string, path string, interface_ string, method string) *DBusMessage {
+func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.gchar        // out
@@ -2203,7 +2203,7 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 }
 
 // NewDBusMessageSignal creates a new BusMessage for a signal emission.
-func NewDBusMessageSignal(path string, interface_ string, signal string) *DBusMessage {
+func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.gchar        // out
@@ -2661,7 +2661,7 @@ func (message *DBusMessage) Lock() {
 
 // NewMethodErrorLiteral creates a new BusMessage that is an error reply to
 // method_call_message.
-func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string) *DBusMessage {
+func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -3300,7 +3300,7 @@ func (invocation *DBusMethodInvocation) Sender() string {
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
-func (invocation *DBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
+func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
 	var _arg2 *C.gchar                 // out
@@ -3690,7 +3690,7 @@ func NewMenu() *Menu {
 // Append: convenience function for appending a normal menu item to the end of
 // menu. Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
-func (menu *Menu) Append(label string, detailedAction string) {
+func (menu *Menu) Append(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -3787,7 +3787,7 @@ func (menu *Menu) Freeze() {
 // Insert: convenience function for inserting a normal menu item into menu.
 // Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
-func (menu *Menu) Insert(position int, label string, detailedAction string) {
+func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 	var _arg2 *C.gchar // out
@@ -3893,7 +3893,7 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 // Prepend: convenience function for prepending a normal menu item to the start
 // of menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) Prepend(label string, detailedAction string) {
+func (menu *Menu) Prepend(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -4028,7 +4028,7 @@ func marshalMenuItemmer(p uintptr) (interface{}, error) {
 // If detailed_action is non-NULL it is used to set the "action" and possibly
 // the "target" attribute of the new item. See g_menu_item_set_detailed_action()
 // for more information.
-func NewMenuItem(label string, detailedAction string) *MenuItem {
+func NewMenuItem(label, detailedAction string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GMenuItem // in
@@ -4541,7 +4541,7 @@ func NewNotification(title string) *Notification {
 //
 // See g_action_parse_detailed_name() for a description of the format for
 // detailed_action.
-func (notification *Notification) AddButton(label string, detailedAction string) {
+func (notification *Notification) AddButton(label, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -4563,7 +4563,7 @@ func (notification *Notification) AddButton(label string, detailedAction string)
 // "app.").
 //
 // If target is non-NULL, action will be activated with target as its parameter.
-func (notification *Notification) AddButtonWithTarget(label string, action string, target *glib.Variant) {
+func (notification *Notification) AddButtonWithTarget(label, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
@@ -6202,7 +6202,7 @@ func (self *SubprocessLauncher) SetStdoutFilePath(path string) {
 // On UNIX, both the variable's name and value can be arbitrary byte strings,
 // except that the variable's name cannot contain '='. On Windows, they should
 // be in UTF-8.
-func (self *SubprocessLauncher) Setenv(variable string, value string, overwrite bool) {
+func (self *SubprocessLauncher) Setenv(variable, value string, overwrite bool) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
@@ -6272,7 +6272,7 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 // An example use case is GNUPG, which has a command line argument
 // --passphrase-fd providing a file descriptor number where it expects the
 // passphrase to be written.
-func (self *SubprocessLauncher) TakeFd(sourceFd int, targetFd int) {
+func (self *SubprocessLauncher) TakeFd(sourceFd, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out

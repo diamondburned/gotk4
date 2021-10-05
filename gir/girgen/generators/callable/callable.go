@@ -357,6 +357,11 @@ func (g *Generator) renderBlock() bool {
 	return true
 }
 
+// CoalesceTail calls CoalesceTail on the generator's tail.
+func (g *Generator) CoalesceTail() {
+	g.Tail = CoalesceTail(g.Tail)
+}
+
 // CoalesceTail coalesces certain parameters with the same type to be shorter.
 func CoalesceTail(tail string) string {
 	if !strings.HasPrefix(tail, "(") {

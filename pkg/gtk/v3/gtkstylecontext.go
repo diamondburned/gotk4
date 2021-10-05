@@ -654,7 +654,7 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 
 // RenderInsertionCursor draws a text caret on cr at the specified index of
 // layout.
-func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout, index int, direction pango.Direction) {
+func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.gdouble          // out
@@ -1654,7 +1654,7 @@ func (context *StyleContext) Save() {
 // animation are scrolled together with it.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy int) {
+func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gint             // out

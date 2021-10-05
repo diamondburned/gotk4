@@ -141,7 +141,7 @@ type PaintableOverrider interface {
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
 	// width and height are not larger than zero, this function will do nothing.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshotter, width, height float64)
 }
 
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
@@ -197,7 +197,7 @@ type Paintabler interface {
 	externglib.Objector
 
 	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
-	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
+	ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
 	CurrentImage() Paintabler
@@ -219,7 +219,7 @@ type Paintabler interface {
 	// their size.
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given width and height.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshotter, width, height float64)
 }
 
 var _ Paintabler = (*Paintable)(nil)
@@ -246,7 +246,7 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 // specified_height are known, but it is useful to call this function in
 // GtkWidget:measure implementations to compute the other dimension when only
 // one dimension is given.
-func (paintable *Paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 C.double        // out
 	var _arg2 C.double        // out
@@ -462,7 +462,7 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the snapshot. If width
 // and height are not larger than zero, this function will do nothing.
-func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height float64) {
+func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out
 	var _arg2 C.double        // out
@@ -508,7 +508,7 @@ func (p *Paintable) ConnectInvalidateSize(f func()) glib.SignalHandle {
 // PaintableInterface.get_current_image() virtual function when the paintable is
 // in an incomplete state (like a gtk.MediaStream before receiving the first
 // frame).
-func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
+func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret *C.GdkPaintable // in

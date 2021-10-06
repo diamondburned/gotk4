@@ -714,6 +714,6 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 // This usually happens when the user double clicks an item, or an item is
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
-func (f *FontChooser) ConnectFontActivated(f func(fontname string)) glib.SignalHandle {
-	return f.Connect("font-activated", f)
+func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
+	return fontchooser.Connect("font-activated", f)
 }

@@ -124,18 +124,18 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	return _deviceTool
 }
 
-func (g *GestureStylus) ConnectDown(f func(object, p0 float64)) glib.SignalHandle {
-	return g.Connect("down", f)
+func (gesture *GestureStylus) ConnectDown(f func(object, p0 float64)) externglib.SignalHandle {
+	return gesture.Connect("down", f)
 }
 
-func (g *GestureStylus) ConnectMotion(f func(object, p0 float64)) glib.SignalHandle {
-	return g.Connect("motion", f)
+func (gesture *GestureStylus) ConnectMotion(f func(object, p0 float64)) externglib.SignalHandle {
+	return gesture.Connect("motion", f)
 }
 
-func (g *GestureStylus) ConnectProximity(f func(object, p0 float64)) glib.SignalHandle {
-	return g.Connect("proximity", f)
+func (gesture *GestureStylus) ConnectProximity(f func(object, p0 float64)) externglib.SignalHandle {
+	return gesture.Connect("proximity", f)
 }
 
-func (g *GestureStylus) ConnectUp(f func(object, p0 float64)) glib.SignalHandle {
-	return g.Connect("up", f)
+func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) externglib.SignalHandle {
+	return gesture.Connect("up", f)
 }

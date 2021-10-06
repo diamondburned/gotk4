@@ -292,6 +292,6 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 //
 // A signal handler can use gtk_check_menu_item_get_active() to discover the new
 // state.
-func (c *CheckMenuItem) ConnectToggled(f func()) glib.SignalHandle {
-	return c.Connect("toggled", f)
+func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) externglib.SignalHandle {
+	return checkMenuItem.Connect("toggled", f)
 }

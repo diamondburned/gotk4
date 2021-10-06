@@ -251,6 +251,6 @@ func (action *RadioAction) SetGroup(group []RadioAction) {
 // ConnectChanged signal is emitted on every member of a radio group when the
 // active member is changed. The signal gets emitted after the ::activate
 // signals for the previous and current active members.
-func (r *RadioAction) ConnectChanged(f func(current RadioAction)) glib.SignalHandle {
-	return r.Connect("changed", f)
+func (action *RadioAction) ConnectChanged(f func(current RadioAction)) externglib.SignalHandle {
+	return action.Connect("changed", f)
 }

@@ -2178,8 +2178,8 @@ func (chooser *FileChooser) UnselectURI(uri string) {
 //            save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
 //
 //    gtk_widget_destroy (chooser);.
-func (f *FileChooser) ConnectConfirmOverwrite(f func() FileChooserConfirmation) glib.SignalHandle {
-	return f.Connect("confirm-overwrite", f)
+func (chooser *FileChooser) ConnectConfirmOverwrite(f func() FileChooserConfirmation) externglib.SignalHandle {
+	return chooser.Connect("confirm-overwrite", f)
 }
 
 // ConnectCurrentFolderChanged: this signal is emitted when the current folder
@@ -2195,8 +2195,8 @@ func (f *FileChooser) ConnectConfirmOverwrite(f func() FileChooserConfirmation) 
 // gtk_file_chooser_get_current_folder(),
 // gtk_file_chooser_set_current_folder_uri(),
 // gtk_file_chooser_get_current_folder_uri().
-func (f *FileChooser) ConnectCurrentFolderChanged(f func()) glib.SignalHandle {
-	return f.Connect("current-folder-changed", f)
+func (chooser *FileChooser) ConnectCurrentFolderChanged(f func()) externglib.SignalHandle {
+	return chooser.Connect("current-folder-changed", f)
 }
 
 // ConnectFileActivated: this signal is emitted when the user "activates" a file
@@ -2208,8 +2208,8 @@ func (f *FileChooser) ConnectCurrentFolderChanged(f func()) glib.SignalHandle {
 //
 // See also: gtk_file_chooser_get_filename(), gtk_file_chooser_get_filenames(),
 // gtk_file_chooser_get_uri(), gtk_file_chooser_get_uris().
-func (f *FileChooser) ConnectFileActivated(f func()) glib.SignalHandle {
-	return f.Connect("file-activated", f)
+func (chooser *FileChooser) ConnectFileActivated(f func()) externglib.SignalHandle {
+	return chooser.Connect("file-activated", f)
 }
 
 // ConnectSelectionChanged: this signal is emitted when there is a change in the
@@ -2226,8 +2226,8 @@ func (f *FileChooser) ConnectFileActivated(f func()) glib.SignalHandle {
 // gtk_file_chooser_get_filenames(), gtk_file_chooser_select_uri(),
 // gtk_file_chooser_unselect_uri(), gtk_file_chooser_get_uri(),
 // gtk_file_chooser_get_uris().
-func (f *FileChooser) ConnectSelectionChanged(f func()) glib.SignalHandle {
-	return f.Connect("selection-changed", f)
+func (chooser *FileChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return chooser.Connect("selection-changed", f)
 }
 
 // ConnectUpdatePreview: this signal is emitted when the preview in a file
@@ -2250,6 +2250,6 @@ func (f *FileChooser) ConnectSelectionChanged(f func()) glib.SignalHandle {
 // gtk_file_chooser_set_preview_widget_active(),
 // gtk_file_chooser_set_use_preview_label(),
 // gtk_file_chooser_get_preview_filename(), gtk_file_chooser_get_preview_uri().
-func (f *FileChooser) ConnectUpdatePreview(f func()) glib.SignalHandle {
-	return f.Connect("update-preview", f)
+func (chooser *FileChooser) ConnectUpdatePreview(f func()) externglib.SignalHandle {
+	return chooser.Connect("update-preview", f)
 }

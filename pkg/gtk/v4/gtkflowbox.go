@@ -887,13 +887,13 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 // ConnectActivateCursorChild: emitted when the user activates the box.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (f *FlowBox) ConnectActivateCursorChild(f func()) glib.SignalHandle {
-	return f.Connect("activate-cursor-child", f)
+func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
+	return box.Connect("activate-cursor-child", f)
 }
 
 // ConnectChildActivated: emitted when a child has been activated by the user.
-func (f *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) glib.SignalHandle {
-	return f.Connect("child-activated", f)
+func (box *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) externglib.SignalHandle {
+	return box.Connect("child-activated", f)
 }
 
 // ConnectMoveCursor: emitted when the user initiates a cursor movement.
@@ -912,8 +912,8 @@ func (f *FlowBox) ConnectChildActivated(f func(child FlowBoxChild)) glib.SignalH
 // - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
 //
 // - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages.
-func (f *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) glib.SignalHandle {
-	return f.Connect("move-cursor", f)
+func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool) bool) externglib.SignalHandle {
+	return box.Connect("move-cursor", f)
 }
 
 // ConnectSelectAll: emitted to select all children of the box, if the selection
@@ -922,8 +922,8 @@ func (f *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int, extend,
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
-func (f *FlowBox) ConnectSelectAll(f func()) glib.SignalHandle {
-	return f.Connect("select-all", f)
+func (box *FlowBox) ConnectSelectAll(f func()) externglib.SignalHandle {
+	return box.Connect("select-all", f)
 }
 
 // ConnectSelectedChildrenChanged: emitted when the set of selected children
@@ -931,8 +931,8 @@ func (f *FlowBox) ConnectSelectAll(f func()) glib.SignalHandle {
 //
 // Use gtk.FlowBox.SelectedForeach() or gtk.FlowBox.GetSelectedChildren() to
 // obtain the selected children.
-func (f *FlowBox) ConnectSelectedChildrenChanged(f func()) glib.SignalHandle {
-	return f.Connect("selected-children-changed", f)
+func (box *FlowBox) ConnectSelectedChildrenChanged(f func()) externglib.SignalHandle {
+	return box.Connect("selected-children-changed", f)
 }
 
 // ConnectToggleCursorChild: emitted to toggle the selection of the child that
@@ -941,8 +941,8 @@ func (f *FlowBox) ConnectSelectedChildrenChanged(f func()) glib.SignalHandle {
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>.
-func (f *FlowBox) ConnectToggleCursorChild(f func()) glib.SignalHandle {
-	return f.Connect("toggle-cursor-child", f)
+func (box *FlowBox) ConnectToggleCursorChild(f func()) externglib.SignalHandle {
+	return box.Connect("toggle-cursor-child", f)
 }
 
 // ConnectUnselectAll: emitted to unselect all children of the box, if the
@@ -952,8 +952,8 @@ func (f *FlowBox) ConnectToggleCursorChild(f func()) glib.SignalHandle {
 //
 // The default bindings for this signal is
 // <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
-func (f *FlowBox) ConnectUnselectAll(f func()) glib.SignalHandle {
-	return f.Connect("unselect-all", f)
+func (box *FlowBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
+	return box.Connect("unselect-all", f)
 }
 
 // FlowBoxChildOverrider contains methods that are overridable.
@@ -1133,6 +1133,6 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 // applications for their own purposes.
 //
 // The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>.
-func (f *FlowBoxChild) ConnectActivate(f func()) glib.SignalHandle {
-	return f.Connect("activate", f)
+func (child *FlowBoxChild) ConnectActivate(f func()) externglib.SignalHandle {
+	return child.Connect("activate", f)
 }

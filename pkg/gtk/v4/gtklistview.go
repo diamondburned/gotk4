@@ -404,6 +404,6 @@ func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 //
 // This allows for a convenient way to handle activation in a listview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (l *ListView) ConnectActivate(f func(position uint)) glib.SignalHandle {
-	return l.Connect("activate", f)
+func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
 }

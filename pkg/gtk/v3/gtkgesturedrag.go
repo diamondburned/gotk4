@@ -121,16 +121,16 @@ func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 }
 
 // ConnectDragBegin: this signal is emitted whenever dragging starts.
-func (g *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) glib.SignalHandle {
-	return g.Connect("drag-begin", f)
+func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-begin", f)
 }
 
 // ConnectDragEnd: this signal is emitted whenever the dragging is finished.
-func (g *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) glib.SignalHandle {
-	return g.Connect("drag-end", f)
+func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-end", f)
 }
 
 // ConnectDragUpdate: this signal is emitted whenever the dragging point moves.
-func (g *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) glib.SignalHandle {
-	return g.Connect("drag-update", f)
+func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
+	return gesture.Connect("drag-update", f)
 }

@@ -462,12 +462,12 @@ func (adjustment *Adjustment) ValueChanged() {
 
 // ConnectChanged: emitted when one or more of the Adjustment properties have
 // been changed, other than the Adjustment:value property.
-func (a *Adjustment) ConnectChanged(f func()) glib.SignalHandle {
-	return a.Connect("changed", f)
+func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("changed", f)
 }
 
 // ConnectValueChanged: emitted when the Adjustment:value property has been
 // changed.
-func (a *Adjustment) ConnectValueChanged(f func()) glib.SignalHandle {
-	return a.Connect("value-changed", f)
+func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("value-changed", f)
 }

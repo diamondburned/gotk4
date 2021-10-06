@@ -704,8 +704,8 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 }
 
 // ConnectActionActivated gets emitted when an action is activated.
-func (e *EntryCompletion) ConnectActionActivated(f func(index int)) glib.SignalHandle {
-	return e.Connect("action-activated", f)
+func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) externglib.SignalHandle {
+	return completion.Connect("action-activated", f)
 }
 
 // ConnectCursorOnMatch gets emitted when a match from the cursor is on a match
@@ -714,8 +714,8 @@ func (e *EntryCompletion) ConnectActionActivated(f func(index int)) glib.SignalH
 //
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
-func (e *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
-	return e.Connect("cursor-on-match", f)
+func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+	return completion.Connect("cursor-on-match", f)
 }
 
 // ConnectInsertPrefix gets emitted when the inline autocompletion is triggered.
@@ -725,8 +725,8 @@ func (e *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter T
 // Applications may connect to this signal in order to insert only a smaller
 // part of the prefix into the entry - e.g. the entry used in the FileChooser
 // inserts only the part of the prefix up to the next '/'.
-func (e *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) glib.SignalHandle {
-	return e.Connect("insert-prefix", f)
+func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) externglib.SignalHandle {
+	return completion.Connect("insert-prefix", f)
 }
 
 // ConnectMatchSelected gets emitted when a match from the list is selected. The
@@ -735,13 +735,13 @@ func (e *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) glib.S
 //
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
-func (e *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
-	return e.Connect("match-selected", f)
+func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+	return completion.Connect("match-selected", f)
 }
 
 // ConnectNoMatches gets emitted when the filter model has zero number of rows
 // in completion_complete method. (In other words when GtkEntryCompletion is out
 // of suggestions).
-func (e *EntryCompletion) ConnectNoMatches(f func()) glib.SignalHandle {
-	return e.Connect("no-matches", f)
+func (completion *EntryCompletion) ConnectNoMatches(f func()) externglib.SignalHandle {
+	return completion.Connect("no-matches", f)
 }

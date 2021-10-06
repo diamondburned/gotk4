@@ -403,6 +403,6 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 // G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
 // set, no dedicated thread is ever used and the call will be handled in the
 // same thread as the object that interface belongs to was exported in.
-func (d *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) glib.SignalHandle {
-	return d.Connect("g-authorize-method", f)
+func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation DBusMethodInvocation) bool) externglib.SignalHandle {
+	return interface_.Connect("g-authorize-method", f)
 }

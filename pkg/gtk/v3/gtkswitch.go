@@ -195,8 +195,8 @@ func (sw *Switch) SetState(state bool) {
 // ConnectActivate signal on GtkSwitch is an action signal and emitting it
 // causes the switch to animate. Applications should never connect to this
 // signal, but use the notify::active signal.
-func (s *Switch) ConnectActivate(f func()) glib.SignalHandle {
-	return s.Connect("activate", f)
+func (sw *Switch) ConnectActivate(f func()) externglib.SignalHandle {
+	return sw.Connect("activate", f)
 }
 
 // ConnectStateSet signal on GtkSwitch is emitted to change the underlying
@@ -211,6 +211,6 @@ func (s *Switch) ConnectActivate(f func()) glib.SignalHandle {
 // Visually, the underlying state is represented by the trough color of the
 // switch, while the Switch:active property is represented by the position of
 // the switch.
-func (s *Switch) ConnectStateSet(f func(state bool) bool) glib.SignalHandle {
-	return s.Connect("state-set", f)
+func (sw *Switch) ConnectStateSet(f func(state bool) bool) externglib.SignalHandle {
+	return sw.Connect("state-set", f)
 }

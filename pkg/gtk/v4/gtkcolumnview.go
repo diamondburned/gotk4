@@ -566,6 +566,6 @@ func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortTyp
 //
 // This allows for a convenient way to handle activation in a columnview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (c *ColumnView) ConnectActivate(f func(position uint)) glib.SignalHandle {
-	return c.Connect("activate", f)
+func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
 }

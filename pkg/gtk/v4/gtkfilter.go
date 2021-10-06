@@ -235,6 +235,6 @@ func (self *Filter) Match(item *externglib.Object) bool {
 //
 // Depending on the change parameter, not all items need to be checked, but only
 // some. Refer to the gtk.FilterChange documentation for details.
-func (f *Filter) ConnectChanged(f func(change FilterChange)) glib.SignalHandle {
-	return f.Connect("changed", f)
+func (self *Filter) ConnectChanged(f func(change FilterChange)) externglib.SignalHandle {
+	return self.Connect("changed", f)
 }

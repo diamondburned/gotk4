@@ -383,8 +383,8 @@ func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 //
 // After this signal is emitted, applications can call
 // gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded pixbuf.
-func (p *PixbufLoader) ConnectAreaPrepared(f func()) glib.SignalHandle {
-	return p.Connect("area-prepared", f)
+func (loader *PixbufLoader) ConnectAreaPrepared(f func()) externglib.SignalHandle {
+	return loader.Connect("area-prepared", f)
 }
 
 // ConnectAreaUpdated: this signal is emitted when a significant area of the
@@ -395,8 +395,8 @@ func (p *PixbufLoader) ConnectAreaPrepared(f func()) glib.SignalHandle {
 //
 // Applications can use this signal to know when to repaint areas of an image
 // that is being loaded.
-func (p *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) glib.SignalHandle {
-	return p.Connect("area-updated", f)
+func (loader *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) externglib.SignalHandle {
+	return loader.Connect("area-updated", f)
 }
 
 // ConnectClosed: this signal is emitted when gdk_pixbuf_loader_close() is
@@ -404,8 +404,8 @@ func (p *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) glib.
 //
 // It can be used by different parts of an application to receive notification
 // when an image loader is closed by the code that drives it.
-func (p *PixbufLoader) ConnectClosed(f func()) glib.SignalHandle {
-	return p.Connect("closed", f)
+func (loader *PixbufLoader) ConnectClosed(f func()) externglib.SignalHandle {
+	return loader.Connect("closed", f)
 }
 
 // ConnectSizePrepared: this signal is emitted when the pixbuf loader has been
@@ -414,6 +414,6 @@ func (p *PixbufLoader) ConnectClosed(f func()) glib.SignalHandle {
 //
 // Applications can call gdk_pixbuf_loader_set_size() in response to this signal
 // to set the desired size to which the image should be scaled.
-func (p *PixbufLoader) ConnectSizePrepared(f func(width, height int)) glib.SignalHandle {
-	return p.Connect("size-prepared", f)
+func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) externglib.SignalHandle {
+	return loader.Connect("size-prepared", f)
 }

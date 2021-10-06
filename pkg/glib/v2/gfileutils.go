@@ -571,7 +571,7 @@ func FileSetContents(filename, contents string) error {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
-		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
 	}
 
 	C.g_file_set_contents(_arg1, _arg2, _arg3, &_cerr)
@@ -654,7 +654,7 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
-		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&contents)).Data))
 	}
 	_arg4 = C.GFileSetContentsFlags(flags)
 	_arg5 = C.int(mode)

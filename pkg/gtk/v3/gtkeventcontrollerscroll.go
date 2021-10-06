@@ -202,24 +202,24 @@ func (controller *EventControllerScroll) SetFlags(flags EventControllerScrollFla
 // K_EVENT_CONTROLLER_SCROLL_KINETIC flag is set. vel_x and vel_y express the
 // initial velocity that was imprinted by the scroll events. vel_x and vel_y are
 // expressed in pixels/ms.
-func (e *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) glib.SignalHandle {
-	return e.Connect("decelerate", f)
+func (controller *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
+	return controller.Connect("decelerate", f)
 }
 
 // ConnectScroll signals that the widget should scroll by the amount specified
 // by dx and dy.
-func (e *EventControllerScroll) ConnectScroll(f func(dx, dy float64)) glib.SignalHandle {
-	return e.Connect("scroll", f)
+func (controller *EventControllerScroll) ConnectScroll(f func(dx, dy float64)) externglib.SignalHandle {
+	return controller.Connect("scroll", f)
 }
 
 // ConnectScrollBegin signals that a new scrolling operation has begun. It will
 // only be emitted on devices capable of it.
-func (e *EventControllerScroll) ConnectScrollBegin(f func()) glib.SignalHandle {
-	return e.Connect("scroll-begin", f)
+func (controller *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
+	return controller.Connect("scroll-begin", f)
 }
 
 // ConnectScrollEnd signals that a new scrolling operation has finished. It will
 // only be emitted on devices capable of it.
-func (e *EventControllerScroll) ConnectScrollEnd(f func()) glib.SignalHandle {
-	return e.Connect("scroll-end", f)
+func (controller *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
+	return controller.Connect("scroll-end", f)
 }

@@ -157,22 +157,22 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 // keypress and prevents the controller receiving it.
 //
 // See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
-func (e *EventControllerKey) ConnectImUpdate(f func()) glib.SignalHandle {
-	return e.Connect("im-update", f)
+func (controller *EventControllerKey) ConnectImUpdate(f func()) externglib.SignalHandle {
+	return controller.Connect("im-update", f)
 }
 
 // ConnectKeyPressed: emitted whenever a key is pressed.
-func (e *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) glib.SignalHandle {
-	return e.Connect("key-pressed", f)
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("key-pressed", f)
 }
 
 // ConnectKeyReleased: emitted whenever a key is released.
-func (e *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) glib.SignalHandle {
-	return e.Connect("key-released", f)
+func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
+	return controller.Connect("key-released", f)
 }
 
 // ConnectModifiers: emitted whenever the state of modifier keys and pointer
 // buttons change.
-func (e *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) glib.SignalHandle {
-	return e.Connect("modifiers", f)
+func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("modifiers", f)
 }

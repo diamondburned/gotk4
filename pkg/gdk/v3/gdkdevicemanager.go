@@ -263,8 +263,8 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 
 // ConnectDeviceAdded signal is emitted either when a new master pointer is
 // created, or when a slave (Hardware) input device is plugged in.
-func (d *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) glib.SignalHandle {
-	return d.Connect("device-added", f)
+func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-added", f)
 }
 
 // ConnectDeviceChanged signal is emitted whenever a device has changed in the
@@ -276,12 +276,12 @@ func (d *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) glib.SignalHa
 // (gdk_device_get_associated_device() returns NULL), its DeviceType will change
 // to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
 // GDK_DEVICE_TYPE_SLAVE.
-func (d *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) glib.SignalHandle {
-	return d.Connect("device-changed", f)
+func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-changed", f)
 }
 
 // ConnectDeviceRemoved signal is emitted either when a master pointer is
 // removed, or when a slave (Hardware) input device is unplugged.
-func (d *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) glib.SignalHandle {
-	return d.Connect("device-removed", f)
+func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
+	return deviceManager.Connect("device-removed", f)
 }

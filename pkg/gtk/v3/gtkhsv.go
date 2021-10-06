@@ -194,10 +194,10 @@ func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	runtime.KeepAlive(ringWidth)
 }
 
-func (h *HSV) ConnectChanged(f func()) glib.SignalHandle {
-	return h.Connect("changed", f)
+func (hsv *HSV) ConnectChanged(f func()) externglib.SignalHandle {
+	return hsv.Connect("changed", f)
 }
 
-func (h *HSV) ConnectMove(f func(object DirectionType)) glib.SignalHandle {
-	return h.Connect("move", f)
+func (hsv *HSV) ConnectMove(f func(object DirectionType)) externglib.SignalHandle {
+	return hsv.Connect("move", f)
 }

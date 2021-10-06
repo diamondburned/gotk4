@@ -421,6 +421,6 @@ func (self *LevelBar) SetValue(value float64) {
 // The signal supports detailed connections; you can connect to the detailed
 // signal "changed::x" in order to only receive callbacks when the value of
 // offset "x" changes.
-func (l *LevelBar) ConnectOffsetChanged(f func(name string)) glib.SignalHandle {
-	return l.Connect("offset-changed", f)
+func (self *LevelBar) ConnectOffsetChanged(f func(name string)) externglib.SignalHandle {
+	return self.Connect("offset-changed", f)
 }

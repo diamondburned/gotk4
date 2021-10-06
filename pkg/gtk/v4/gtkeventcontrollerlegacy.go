@@ -60,6 +60,6 @@ func NewEventControllerLegacy() *EventControllerLegacy {
 func (*EventControllerLegacy) privateEventControllerLegacy() {}
 
 // ConnectEvent: emitted for each GDK event delivered to controller.
-func (e *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) glib.SignalHandle {
-	return e.Connect("event", f)
+func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) bool) externglib.SignalHandle {
+	return v.Connect("event", f)
 }

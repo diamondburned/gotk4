@@ -66,8 +66,8 @@ func NewGestureClick() *GestureClick {
 func (*GestureClick) privateGestureClick() {}
 
 // ConnectPressed: emitted whenever a button or touch press happens.
-func (g *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) glib.SignalHandle {
-	return g.Connect("pressed", f)
+func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
+	return v.Connect("pressed", f)
 }
 
 // ConnectReleased: emitted when a button or touch is released.
@@ -75,14 +75,14 @@ func (g *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) glib.Sig
 // n_press will report the number of press that is paired to this event, note
 // that gtk.GestureClick::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
-func (g *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) glib.SignalHandle {
-	return g.Connect("released", f)
+func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
+	return v.Connect("released", f)
 }
 
 // ConnectStopped: emitted whenever any time/distance threshold has been
 // exceeded.
-func (g *GestureClick) ConnectStopped(f func()) glib.SignalHandle {
-	return g.Connect("stopped", f)
+func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
+	return v.Connect("stopped", f)
 }
 
 // ConnectUnpairedRelease: emitted whenever the gesture receives a release event
@@ -91,6 +91,6 @@ func (g *GestureClick) ConnectStopped(f func()) glib.SignalHandle {
 // Due to implicit grabs, this can only happen on situations where input is
 // grabbed elsewhere mid-press or the pressed widget voluntarily relinquishes
 // its implicit grab.
-func (g *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) glib.SignalHandle {
-	return g.Connect("unpaired-release", f)
+func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) externglib.SignalHandle {
+	return v.Connect("unpaired-release", f)
 }

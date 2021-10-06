@@ -133,6 +133,6 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 
 // ConnectStateChange: emitted when the attributes of the accessible for the
 // GtkATContext instance change.
-func (a *ATContext) ConnectStateChange(f func()) glib.SignalHandle {
-	return a.Connect("state-change", f)
+func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
+	return self.Connect("state-change", f)
 }

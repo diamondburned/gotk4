@@ -382,6 +382,6 @@ func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 //
 // This allows for a convenient way to handle activation in a gridview. See
 // gtk.ListItem:activatable for details on how to use this signal.
-func (g *GridView) ConnectActivate(f func(position uint)) glib.SignalHandle {
-	return g.Connect("activate", f)
+func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
+	return self.Connect("activate", f)
 }

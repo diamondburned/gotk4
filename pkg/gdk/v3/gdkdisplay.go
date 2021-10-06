@@ -985,36 +985,36 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 
 // ConnectClosed signal is emitted when the connection to the windowing system
 // for display is closed.
-func (d *Display) ConnectClosed(f func(isError bool)) glib.SignalHandle {
-	return d.Connect("closed", f)
+func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
+	return display.Connect("closed", f)
 }
 
 // ConnectMonitorAdded signal is emitted whenever a monitor is added.
-func (d *Display) ConnectMonitorAdded(f func(monitor Monitor)) glib.SignalHandle {
-	return d.Connect("monitor-added", f)
+func (display *Display) ConnectMonitorAdded(f func(monitor Monitor)) externglib.SignalHandle {
+	return display.Connect("monitor-added", f)
 }
 
 // ConnectMonitorRemoved signal is emitted whenever a monitor is removed.
-func (d *Display) ConnectMonitorRemoved(f func(monitor Monitor)) glib.SignalHandle {
-	return d.Connect("monitor-removed", f)
+func (display *Display) ConnectMonitorRemoved(f func(monitor Monitor)) externglib.SignalHandle {
+	return display.Connect("monitor-removed", f)
 }
 
 // ConnectOpened signal is emitted when the connection to the windowing system
 // for display is opened.
-func (d *Display) ConnectOpened(f func()) glib.SignalHandle {
-	return d.Connect("opened", f)
+func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
+	return display.Connect("opened", f)
 }
 
 // ConnectSeatAdded signal is emitted whenever a new seat is made known to the
 // windowing system.
-func (d *Display) ConnectSeatAdded(f func(seat Seater)) glib.SignalHandle {
-	return d.Connect("seat-added", f)
+func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-added", f)
 }
 
 // ConnectSeatRemoved signal is emitted whenever a seat is removed by the
 // windowing system.
-func (d *Display) ConnectSeatRemoved(f func(seat Seater)) glib.SignalHandle {
-	return d.Connect("seat-removed", f)
+func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-removed", f)
 }
 
 // DisplayGetDefault gets the default Display. This is a convenience function

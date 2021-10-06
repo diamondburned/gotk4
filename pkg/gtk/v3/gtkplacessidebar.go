@@ -812,24 +812,24 @@ func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 // ConnectDragActionAsk places sidebar emits this signal when it needs to ask
 // the application to pop up a menu to ask the user for which drag action to
 // perform.
-func (p *PlacesSidebar) ConnectDragActionAsk(f func(actions int) int) glib.SignalHandle {
-	return p.Connect("drag-action-ask", f)
+func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int) int) externglib.SignalHandle {
+	return sidebar.Connect("drag-action-ask", f)
 }
 
 // ConnectMount places sidebar emits this signal when it starts a new operation
 // because the user clicked on some location that needs mounting. In this way
 // the application using the PlacesSidebar can track the progress of the
 // operation and, for example, show a notification.
-func (p *PlacesSidebar) ConnectMount(f func(mountOperation gio.MountOperation)) glib.SignalHandle {
-	return p.Connect("mount", f)
+func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation gio.MountOperation)) externglib.SignalHandle {
+	return sidebar.Connect("mount", f)
 }
 
 // ConnectOpenLocation places sidebar emits this signal when the user selects a
 // location in it. The calling application should display the contents of that
 // location; for example, a file manager should show a list of files in the
 // specified location.
-func (p *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags PlacesOpenFlags)) glib.SignalHandle {
-	return p.Connect("open-location", f)
+func (sidebar *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags PlacesOpenFlags)) externglib.SignalHandle {
+	return sidebar.Connect("open-location", f)
 }
 
 // ConnectPopulatePopup places sidebar emits this signal when the user invokes a
@@ -857,8 +857,8 @@ func (p *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags
 // If your application can deal with this situation, you can set
 // PlacesSidebar::populate-all to TRUE to request that this signal is emitted
 // for populating popovers as well.
-func (p *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)) glib.SignalHandle {
-	return p.Connect("populate-popup", f)
+func (sidebar *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)) externglib.SignalHandle {
+	return sidebar.Connect("populate-popup", f)
 }
 
 // ConnectShowConnectToServer places sidebar emits this signal when it needs the
@@ -866,54 +866,54 @@ func (p *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selecte
 // server. For example, the application may bring up a dialog box asking for a
 // URL like "sftp://ftp.example.com". It is up to the application to create the
 // corresponding mount by using, for example, g_file_mount_enclosing_volume().
-func (p *PlacesSidebar) ConnectShowConnectToServer(f func()) glib.SignalHandle {
-	return p.Connect("show-connect-to-server", f)
+func (sidebar *PlacesSidebar) ConnectShowConnectToServer(f func()) externglib.SignalHandle {
+	return sidebar.Connect("show-connect-to-server", f)
 }
 
 // ConnectShowEnterLocation places sidebar emits this signal when it needs the
 // calling application to present an way to directly enter a location. For
 // example, the application may bring up a dialog box asking for a URL like
 // "http://http.example.com".
-func (p *PlacesSidebar) ConnectShowEnterLocation(f func()) glib.SignalHandle {
-	return p.Connect("show-enter-location", f)
+func (sidebar *PlacesSidebar) ConnectShowEnterLocation(f func()) externglib.SignalHandle {
+	return sidebar.Connect("show-enter-location", f)
 }
 
 // ConnectShowErrorMessage places sidebar emits this signal when it needs the
 // calling application to present an error message. Most of these messages refer
 // to mounting or unmounting media, for example, when a drive cannot be started
 // for some reason.
-func (p *PlacesSidebar) ConnectShowErrorMessage(f func(primary, secondary string)) glib.SignalHandle {
-	return p.Connect("show-error-message", f)
+func (sidebar *PlacesSidebar) ConnectShowErrorMessage(f func(primary, secondary string)) externglib.SignalHandle {
+	return sidebar.Connect("show-error-message", f)
 }
 
 // ConnectShowOtherLocations places sidebar emits this signal when it needs the
 // calling application to present a way to show other locations e.g. drives and
 // network access points. For example, the application may bring up a page
 // showing persistent volumes and discovered network addresses.
-func (p *PlacesSidebar) ConnectShowOtherLocations(f func()) glib.SignalHandle {
-	return p.Connect("show-other-locations", f)
+func (sidebar *PlacesSidebar) ConnectShowOtherLocations(f func()) externglib.SignalHandle {
+	return sidebar.Connect("show-other-locations", f)
 }
 
 // ConnectShowOtherLocationsWithFlags places sidebar emits this signal when it
 // needs the calling application to present a way to show other locations e.g.
 // drives and network access points. For example, the application may bring up a
 // page showing persistent volumes and discovered network addresses.
-func (p *PlacesSidebar) ConnectShowOtherLocationsWithFlags(f func(openFlags PlacesOpenFlags)) glib.SignalHandle {
-	return p.Connect("show-other-locations-with-flags", f)
+func (sidebar *PlacesSidebar) ConnectShowOtherLocationsWithFlags(f func(openFlags PlacesOpenFlags)) externglib.SignalHandle {
+	return sidebar.Connect("show-other-locations-with-flags", f)
 }
 
 // ConnectShowStarredLocation places sidebar emits this signal when it needs the
 // calling application to present a way to show the starred files. In GNOME,
 // starred files are implemented by setting the nao:predefined-tag-favorite tag
 // in the tracker database.
-func (p *PlacesSidebar) ConnectShowStarredLocation(f func(openFlags PlacesOpenFlags)) glib.SignalHandle {
-	return p.Connect("show-starred-location", f)
+func (sidebar *PlacesSidebar) ConnectShowStarredLocation(f func(openFlags PlacesOpenFlags)) externglib.SignalHandle {
+	return sidebar.Connect("show-starred-location", f)
 }
 
 // ConnectUnmount places sidebar emits this signal when it starts a new
 // operation because the user for example ejected some drive or unmounted a
 // mount. In this way the application using the PlacesSidebar can track the
 // progress of the operation and, for example, show a notification.
-func (p *PlacesSidebar) ConnectUnmount(f func(mountOperation gio.MountOperation)) glib.SignalHandle {
-	return p.Connect("unmount", f)
+func (sidebar *PlacesSidebar) ConnectUnmount(f func(mountOperation gio.MountOperation)) externglib.SignalHandle {
+	return sidebar.Connect("unmount", f)
 }

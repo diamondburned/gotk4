@@ -831,6 +831,6 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 // If you are doing I/O in another thread, you do not need to worry about this,
 // and can simply block in the signal handler until the UI thread returns an
 // answer.
-func (t *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) glib.SignalHandle {
-	return t.Connect("accept-certificate", f)
+func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
+	return conn.Connect("accept-certificate", f)
 }

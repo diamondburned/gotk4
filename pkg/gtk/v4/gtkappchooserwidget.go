@@ -364,12 +364,12 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 // This usually happens when the user double clicks an item, or an item is
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
-func (a *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) glib.SignalHandle {
-	return a.Connect("application-activated", f)
+func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
+	return self.Connect("application-activated", f)
 }
 
 // ConnectApplicationSelected: emitted when an application item is selected from
 // the widget's list.
-func (a *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) glib.SignalHandle {
-	return a.Connect("application-selected", f)
+func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
+	return self.Connect("application-selected", f)
 }

@@ -1237,6 +1237,6 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 }
 
 // ConnectClicked: emitted when the column's header has been clicked.
-func (t *TreeViewColumn) ConnectClicked(f func()) glib.SignalHandle {
-	return t.Connect("clicked", f)
+func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHandle {
+	return treeColumn.Connect("clicked", f)
 }

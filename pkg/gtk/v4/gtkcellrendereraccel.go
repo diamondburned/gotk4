@@ -95,11 +95,11 @@ func NewCellRendererAccel() *CellRendererAccel {
 func (*CellRendererAccel) privateCellRendererAccel() {}
 
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
-func (c *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) glib.SignalHandle {
-	return c.Connect("accel-cleared", f)
+func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) externglib.SignalHandle {
+	return v.Connect("accel-cleared", f)
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (c *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) glib.SignalHandle {
-	return c.Connect("accel-edited", f)
+func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) externglib.SignalHandle {
+	return v.Connect("accel-edited", f)
 }

@@ -1008,14 +1008,14 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 //
 // This signal corresponds to the PropertiesChanged D-Bus signal on the
 // org.freedesktop.DBus.Properties interface.
-func (d *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) glib.SignalHandle {
-	return d.Connect("g-properties-changed", f)
+func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
+	return proxy.Connect("g-properties-changed", f)
 }
 
 // ConnectGSignal: emitted when a signal from the remote object and interface
 // that proxy is for, has been received.
-func (d *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) glib.SignalHandle {
-	return d.Connect("g-signal", f)
+func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
+	return proxy.Connect("g-signal", f)
 }
 
 // NewDBusProxy creates a proxy for accessing interface_name on the remote

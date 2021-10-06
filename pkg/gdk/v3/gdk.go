@@ -447,16 +447,16 @@ func (context *DragContext) SetHotspot(hotX, hotY int) {
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (d *DragContext) ConnectActionChanged(f func(action DragAction)) glib.SignalHandle {
-	return d.Connect("action-changed", f)
+func (context *DragContext) ConnectActionChanged(f func(action DragAction)) externglib.SignalHandle {
+	return context.Connect("action-changed", f)
 }
 
 // ConnectCancel: drag and drop operation was cancelled.
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (d *DragContext) ConnectCancel(f func(reason DragCancelReason)) glib.SignalHandle {
-	return d.Connect("cancel", f)
+func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
+	return context.Connect("cancel", f)
 }
 
 // ConnectDndFinished: drag and drop operation was finished, the drag
@@ -465,8 +465,8 @@ func (d *DragContext) ConnectCancel(f func(reason DragCancelReason)) glib.Signal
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (d *DragContext) ConnectDndFinished(f func()) glib.SignalHandle {
-	return d.Connect("dnd-finished", f)
+func (context *DragContext) ConnectDndFinished(f func()) externglib.SignalHandle {
+	return context.Connect("dnd-finished", f)
 }
 
 // ConnectDropPerformed: drag and drop operation was performed on an accepting
@@ -474,6 +474,6 @@ func (d *DragContext) ConnectDndFinished(f func()) glib.SignalHandle {
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (d *DragContext) ConnectDropPerformed(f func(time int)) glib.SignalHandle {
-	return d.Connect("drop-performed", f)
+func (context *DragContext) ConnectDropPerformed(f func(time int)) externglib.SignalHandle {
+	return context.Connect("drop-performed", f)
 }

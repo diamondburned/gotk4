@@ -1100,6 +1100,6 @@ func (action *Action) UnblockActivate() {
 }
 
 // ConnectActivate: "activate" signal is emitted when the action is activated.
-func (a *Action) ConnectActivate(f func()) glib.SignalHandle {
-	return a.Connect("activate", f)
+func (action *Action) ConnectActivate(f func()) externglib.SignalHandle {
+	return action.Connect("activate", f)
 }

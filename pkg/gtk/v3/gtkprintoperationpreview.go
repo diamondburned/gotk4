@@ -151,14 +151,14 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 // A handler for this signal should update the context according to page_setup
 // and set up a suitable cairo context, using
 // gtk_print_context_set_cairo_context().
-func (p *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) glib.SignalHandle {
-	return p.Connect("got-page-size", f)
+func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context PrintContext, pageSetup PageSetup)) externglib.SignalHandle {
+	return preview.Connect("got-page-size", f)
 }
 
 // ConnectReady signal gets emitted once per preview operation, before the first
 // page is rendered.
 //
 // A handler for this signal can be used for setup tasks.
-func (p *PrintOperationPreview) ConnectReady(f func(context PrintContext)) glib.SignalHandle {
-	return p.Connect("ready", f)
+func (preview *PrintOperationPreview) ConnectReady(f func(context PrintContext)) externglib.SignalHandle {
+	return preview.Connect("ready", f)
 }

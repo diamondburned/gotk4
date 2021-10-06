@@ -1076,6 +1076,6 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 // If you are doing I/O in another thread, you do not need to worry about this,
 // and can simply block in the signal handler until the UI thread returns an
 // answer.
-func (d *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) glib.SignalHandle {
-	return d.Connect("accept-certificate", f)
+func (conn *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) bool) externglib.SignalHandle {
+	return conn.Connect("accept-certificate", f)
 }

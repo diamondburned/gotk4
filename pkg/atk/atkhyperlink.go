@@ -304,6 +304,6 @@ func (link_ *Hyperlink) IsValid() bool {
 
 // ConnectLinkActivated: signal link-activated is emitted when a link is
 // activated.
-func (h *Hyperlink) ConnectLinkActivated(f func()) glib.SignalHandle {
-	return h.Connect("link-activated", f)
+func (link_ *Hyperlink) ConnectLinkActivated(f func()) externglib.SignalHandle {
+	return link_.Connect("link-activated", f)
 }

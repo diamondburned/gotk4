@@ -269,6 +269,6 @@ func (fontButton *FontButton) SetUseSize(useSize bool) {
 // Note that this signal is only emitted when the user changes the font. If you
 // need to react to programmatic font changes as well, use the notify::font
 // signal.
-func (f *FontButton) ConnectFontSet(f func()) glib.SignalHandle {
-	return f.Connect("font-set", f)
+func (fontButton *FontButton) ConnectFontSet(f func()) externglib.SignalHandle {
+	return fontButton.Connect("font-set", f)
 }

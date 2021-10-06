@@ -407,8 +407,8 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 // Note that the cancelled signal is emitted in the thread that the user
 // cancelled from, which may be the main thread. So, the cancellable signal
 // should not do something that can block.
-func (c *Cancellable) ConnectCancelled(f func()) glib.SignalHandle {
-	return c.Connect("cancelled", f)
+func (cancellable *Cancellable) ConnectCancelled(f func()) externglib.SignalHandle {
+	return cancellable.Connect("cancelled", f)
 }
 
 // CancellableGetCurrent gets the top cancellable from the stack.

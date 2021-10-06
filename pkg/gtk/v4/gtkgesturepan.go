@@ -114,6 +114,6 @@ func (gesture *GesturePan) SetOrientation(orientation Orientation) {
 
 // ConnectPan: emitted once a panning gesture along the expected axis is
 // detected.
-func (g *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) glib.SignalHandle {
-	return g.Connect("pan", f)
+func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
+	return gesture.Connect("pan", f)
 }

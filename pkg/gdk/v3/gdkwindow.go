@@ -5285,8 +5285,8 @@ func (window *Window) Withdraw() {
 // Note that it is not possible to access the window's previous surface from
 // within any callback of this signal. Calling
 // gdk_offscreen_window_get_surface() will lead to a crash.
-func (w *Window) ConnectCreateSurface(f func(width, height int) cairo.Surface) glib.SignalHandle {
-	return w.Connect("create-surface", f)
+func (window *Window) ConnectCreateSurface(f func(width, height int) cairo.Surface) externglib.SignalHandle {
+	return window.Connect("create-surface", f)
 }
 
 // ConnectMovedToRect: emitted when the position of window is finalized after
@@ -5300,14 +5300,14 @@ func (w *Window) ConnectCreateSurface(f func(width, height int) cairo.Surface) g
 // before any possible sliding. final_rect is flipped_rect, but possibly
 // translated in the case that flipping is still ineffective in keeping window
 // on-screen.
-func (w *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) glib.SignalHandle {
-	return w.Connect("moved-to-rect", f)
+func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
+	return window.Connect("moved-to-rect", f)
 }
 
 // ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
 // given position.
-func (w *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) glib.SignalHandle {
-	return w.Connect("pick-embedded-child", f)
+func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) Windower) externglib.SignalHandle {
+	return window.Connect("pick-embedded-child", f)
 }
 
 // WindowAtPointer obtains the window underneath the mouse pointer, returning

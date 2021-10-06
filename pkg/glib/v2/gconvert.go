@@ -91,7 +91,7 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 
 	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -146,7 +146,7 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 
 	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&str)).Data))
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -501,7 +501,7 @@ func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 s
 
 	_arg2 = (C.gssize)(len(opsysstring))
 	if len(opsysstring) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&opsysstring).Data))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&opsysstring)).Data))
 	}
 
 	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)

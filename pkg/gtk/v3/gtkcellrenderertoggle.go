@@ -201,6 +201,6 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 // It is the responsibility of the application to update the model with the
 // correct value to store at path. Often this is simply the opposite of the
 // value currently stored at path.
-func (c *CellRendererToggle) ConnectToggled(f func(path string)) glib.SignalHandle {
-	return c.Connect("toggled", f)
+func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) externglib.SignalHandle {
+	return toggle.Connect("toggled", f)
 }

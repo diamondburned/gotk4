@@ -1062,18 +1062,18 @@ func (container *Container) UnsetFocusChain() {
 	runtime.KeepAlive(container)
 }
 
-func (c *Container) ConnectAdd(f func(object Widgetter)) glib.SignalHandle {
-	return c.Connect("add", f)
+func (container *Container) ConnectAdd(f func(object Widgetter)) externglib.SignalHandle {
+	return container.Connect("add", f)
 }
 
-func (c *Container) ConnectCheckResize(f func()) glib.SignalHandle {
-	return c.Connect("check-resize", f)
+func (container *Container) ConnectCheckResize(f func()) externglib.SignalHandle {
+	return container.Connect("check-resize", f)
 }
 
-func (c *Container) ConnectRemove(f func(object Widgetter)) glib.SignalHandle {
-	return c.Connect("remove", f)
+func (container *Container) ConnectRemove(f func(object Widgetter)) externglib.SignalHandle {
+	return container.Connect("remove", f)
 }
 
-func (c *Container) ConnectSetFocusChild(f func(object Widgetter)) glib.SignalHandle {
-	return c.Connect("set-focus-child", f)
+func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) externglib.SignalHandle {
+	return container.Connect("set-focus-child", f)
 }

@@ -150,28 +150,28 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	runtime.KeepAlive(imContext)
 }
 
-func (e *EventControllerKey) ConnectFocusIn(f func()) glib.SignalHandle {
-	return e.Connect("focus-in", f)
+func (controller *EventControllerKey) ConnectFocusIn(f func()) externglib.SignalHandle {
+	return controller.Connect("focus-in", f)
 }
 
-func (e *EventControllerKey) ConnectFocusOut(f func()) glib.SignalHandle {
-	return e.Connect("focus-out", f)
+func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.SignalHandle {
+	return controller.Connect("focus-out", f)
 }
 
-func (e *EventControllerKey) ConnectImUpdate(f func()) glib.SignalHandle {
-	return e.Connect("im-update", f)
+func (controller *EventControllerKey) ConnectImUpdate(f func()) externglib.SignalHandle {
+	return controller.Connect("im-update", f)
 }
 
 // ConnectKeyPressed: this signal is emitted whenever a key is pressed.
-func (e *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) glib.SignalHandle {
-	return e.Connect("key-pressed", f)
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("key-pressed", f)
 }
 
 // ConnectKeyReleased: this signal is emitted whenever a key is released.
-func (e *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) glib.SignalHandle {
-	return e.Connect("key-released", f)
+func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
+	return controller.Connect("key-released", f)
 }
 
-func (e *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) glib.SignalHandle {
-	return e.Connect("modifiers", f)
+func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) bool) externglib.SignalHandle {
+	return controller.Connect("modifiers", f)
 }

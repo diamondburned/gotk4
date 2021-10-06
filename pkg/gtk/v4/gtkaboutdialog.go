@@ -1010,6 +1010,6 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 //
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk.ShowURI().
-func (a *AboutDialog) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
-	return a.Connect("activate-link", f)
+func (about *AboutDialog) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
+	return about.Connect("activate-link", f)
 }

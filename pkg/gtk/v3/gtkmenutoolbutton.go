@@ -251,6 +251,6 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 // Note that even if you populate the menu dynamically in this way, you must set
 // an empty menu on the MenuToolButton beforehand, since the arrow is made
 // insensitive if the menu is not set.
-func (m *MenuToolButton) ConnectShowMenu(f func()) glib.SignalHandle {
-	return m.Connect("show-menu", f)
+func (button *MenuToolButton) ConnectShowMenu(f func()) externglib.SignalHandle {
+	return button.Connect("show-menu", f)
 }

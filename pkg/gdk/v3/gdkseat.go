@@ -321,14 +321,14 @@ func (seat *Seat) Ungrab() {
 
 // ConnectDeviceAdded signal is emitted when a new input device is related to
 // this seat.
-func (s *Seat) ConnectDeviceAdded(f func(device Devicer)) glib.SignalHandle {
-	return s.Connect("device-added", f)
+func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-added", f)
 }
 
 // ConnectDeviceRemoved signal is emitted when an input device is removed (e.g.
 // unplugged).
-func (s *Seat) ConnectDeviceRemoved(f func(device Devicer)) glib.SignalHandle {
-	return s.Connect("device-removed", f)
+func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
+	return seat.Connect("device-removed", f)
 }
 
 // ConnectToolAdded signal is emitted whenever a new tool is made known to the
@@ -336,12 +336,12 @@ func (s *Seat) ConnectDeviceRemoved(f func(device Devicer)) glib.SignalHandle {
 // tablet). The device will emit the Device::tool-changed signal accordingly.
 //
 // A same tool may be used by several devices.
-func (s *Seat) ConnectToolAdded(f func(tool DeviceTool)) glib.SignalHandle {
-	return s.Connect("tool-added", f)
+func (seat *Seat) ConnectToolAdded(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-added", f)
 }
 
 // ConnectToolRemoved: this signal is emitted whenever a tool is no longer known
 // to this seat.
-func (s *Seat) ConnectToolRemoved(f func(tool DeviceTool)) glib.SignalHandle {
-	return s.Connect("tool-removed", f)
+func (seat *Seat) ConnectToolRemoved(f func(tool DeviceTool)) externglib.SignalHandle {
+	return seat.Connect("tool-removed", f)
 }

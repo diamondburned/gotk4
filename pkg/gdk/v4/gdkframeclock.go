@@ -421,23 +421,23 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 // ConnectAfterPaint: this signal ends processing of the frame.
 //
 // Applications should generally not handle this signal.
-func (f *FrameClock) ConnectAfterPaint(f func()) glib.SignalHandle {
-	return f.Connect("after-paint", f)
+func (frameClock *FrameClock) ConnectAfterPaint(f func()) externglib.SignalHandle {
+	return frameClock.Connect("after-paint", f)
 }
 
 // ConnectBeforePaint begins processing of the frame.
 //
 // Applications should generally not handle this signal.
-func (f *FrameClock) ConnectBeforePaint(f func()) glib.SignalHandle {
-	return f.Connect("before-paint", f)
+func (frameClock *FrameClock) ConnectBeforePaint(f func()) externglib.SignalHandle {
+	return frameClock.Connect("before-paint", f)
 }
 
 // ConnectFlushEvents: used to flush pending motion events that are being
 // batched up and compressed together.
 //
 // Applications should not handle this signal.
-func (f *FrameClock) ConnectFlushEvents(f func()) glib.SignalHandle {
-	return f.Connect("flush-events", f)
+func (frameClock *FrameClock) ConnectFlushEvents(f func()) externglib.SignalHandle {
+	return frameClock.Connect("flush-events", f)
 }
 
 // ConnectLayout: emitted as the second step of toolkit and application
@@ -445,8 +445,8 @@ func (f *FrameClock) ConnectFlushEvents(f func()) glib.SignalHandle {
 //
 // Any work to update sizes and positions of application elements should be
 // performed. GTK normally handles this internally.
-func (f *FrameClock) ConnectLayout(f func()) glib.SignalHandle {
-	return f.Connect("layout", f)
+func (frameClock *FrameClock) ConnectLayout(f func()) externglib.SignalHandle {
+	return frameClock.Connect("layout", f)
 }
 
 // ConnectPaint: emitted as the third step of toolkit and application processing
@@ -455,16 +455,16 @@ func (f *FrameClock) ConnectLayout(f func()) glib.SignalHandle {
 // The frame is repainted. GDK normally handles this internally and emits
 // gdk.Surface::render signals which are turned into gtk.Widget::snapshot
 // signals by GTK.
-func (f *FrameClock) ConnectPaint(f func()) glib.SignalHandle {
-	return f.Connect("paint", f)
+func (frameClock *FrameClock) ConnectPaint(f func()) externglib.SignalHandle {
+	return frameClock.Connect("paint", f)
 }
 
 // ConnectResumeEvents: emitted after processing of the frame is finished.
 //
 // This signal is handled internally by GTK to resume normal event processing.
 // Applications should not handle this signal.
-func (f *FrameClock) ConnectResumeEvents(f func()) glib.SignalHandle {
-	return f.Connect("resume-events", f)
+func (frameClock *FrameClock) ConnectResumeEvents(f func()) externglib.SignalHandle {
+	return frameClock.Connect("resume-events", f)
 }
 
 // ConnectUpdate: emitted as the first step of toolkit and application
@@ -473,6 +473,6 @@ func (f *FrameClock) ConnectResumeEvents(f func()) glib.SignalHandle {
 // Animations should be updated using gdk.FrameClock.GetFrameTime().
 // Applications can connect directly to this signal, or use
 // gtk.Widget.AddTickCallback() as a more convenient interface.
-func (f *FrameClock) ConnectUpdate(f func()) glib.SignalHandle {
-	return f.Connect("update", f)
+func (frameClock *FrameClock) ConnectUpdate(f func()) externglib.SignalHandle {
+	return frameClock.Connect("update", f)
 }

@@ -646,8 +646,8 @@ func (menu *Menu) SetTitle(title string) {
 	runtime.KeepAlive(title)
 }
 
-func (m *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) glib.SignalHandle {
-	return m.Connect("move-scroll", f)
+func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
+	return menu.Connect("move-scroll", f)
 }
 
 // ConnectPoppedUp: emitted when the position of menu is finalized after being
@@ -671,8 +671,8 @@ func (m *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) glib.SignalHandl
 // See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
 // gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
 // Menu:rect-anchor-dy, and Menu:menu-type-hint.
-func (m *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) glib.SignalHandle {
-	return m.Connect("popped-up", f)
+func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
+	return menu.Connect("popped-up", f)
 }
 
 // MenuGetForAttachWidget returns a list of the menus which are attached to this

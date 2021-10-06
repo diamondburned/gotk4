@@ -199,6 +199,6 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 // path, and other_file will be set to a #GFile containing the new path.
 //
 // In all the other cases, other_file will be set to LL.
-func (f *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) glib.SignalHandle {
-	return f.Connect("changed", f)
+func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
+	return monitor.Connect("changed", f)
 }

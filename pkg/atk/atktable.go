@@ -971,43 +971,43 @@ func (table *Table) SetSummary(accessible *ObjectClass) {
 
 // ConnectColumnDeleted: "column-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a column is deleted.
-func (t *Table) ConnectColumnDeleted(f func(arg1, arg2 int)) glib.SignalHandle {
-	return t.Connect("column-deleted", f)
+func (table *Table) ConnectColumnDeleted(f func(arg1, arg2 int)) externglib.SignalHandle {
+	return table.Connect("column-deleted", f)
 }
 
 // ConnectColumnInserted: "column-inserted" signal is emitted by an object which
 // implements the AtkTable interface when a column is inserted.
-func (t *Table) ConnectColumnInserted(f func(arg1, arg2 int)) glib.SignalHandle {
-	return t.Connect("column-inserted", f)
+func (table *Table) ConnectColumnInserted(f func(arg1, arg2 int)) externglib.SignalHandle {
+	return table.Connect("column-inserted", f)
 }
 
 // ConnectColumnReordered: "column-reordered" signal is emitted by an object
 // which implements the AtkTable interface when the columns are reordered.
-func (t *Table) ConnectColumnReordered(f func()) glib.SignalHandle {
-	return t.Connect("column-reordered", f)
+func (table *Table) ConnectColumnReordered(f func()) externglib.SignalHandle {
+	return table.Connect("column-reordered", f)
 }
 
 // ConnectModelChanged: "model-changed" signal is emitted by an object which
 // implements the AtkTable interface when the model displayed by the table
 // changes.
-func (t *Table) ConnectModelChanged(f func()) glib.SignalHandle {
-	return t.Connect("model-changed", f)
+func (table *Table) ConnectModelChanged(f func()) externglib.SignalHandle {
+	return table.Connect("model-changed", f)
 }
 
 // ConnectRowDeleted: "row-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a row is deleted.
-func (t *Table) ConnectRowDeleted(f func(arg1, arg2 int)) glib.SignalHandle {
-	return t.Connect("row-deleted", f)
+func (table *Table) ConnectRowDeleted(f func(arg1, arg2 int)) externglib.SignalHandle {
+	return table.Connect("row-deleted", f)
 }
 
 // ConnectRowInserted: "row-inserted" signal is emitted by an object which
 // implements the AtkTable interface when a row is inserted.
-func (t *Table) ConnectRowInserted(f func(arg1, arg2 int)) glib.SignalHandle {
-	return t.Connect("row-inserted", f)
+func (table *Table) ConnectRowInserted(f func(arg1, arg2 int)) externglib.SignalHandle {
+	return table.Connect("row-inserted", f)
 }
 
 // ConnectRowReordered: "row-reordered" signal is emitted by an object which
 // implements the AtkTable interface when the rows are reordered.
-func (t *Table) ConnectRowReordered(f func()) glib.SignalHandle {
-	return t.Connect("row-reordered", f)
+func (table *Table) ConnectRowReordered(f func()) externglib.SignalHandle {
+	return table.Connect("row-reordered", f)
 }

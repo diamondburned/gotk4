@@ -618,6 +618,6 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 }
 
 // ConnectChanged: emitted when the clipboard changes ownership.
-func (c *Clipboard) ConnectChanged(f func()) glib.SignalHandle {
-	return c.Connect("changed", f)
+func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
+	return clipboard.Connect("changed", f)
 }

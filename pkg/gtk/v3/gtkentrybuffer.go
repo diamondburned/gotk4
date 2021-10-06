@@ -356,12 +356,12 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 
 // ConnectDeletedText: this signal is emitted after text is deleted from the
 // buffer.
-func (e *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) glib.SignalHandle {
-	return e.Connect("deleted-text", f)
+func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
+	return buffer.Connect("deleted-text", f)
 }
 
 // ConnectInsertedText: this signal is emitted after text is inserted into the
 // buffer.
-func (e *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) glib.SignalHandle {
-	return e.Connect("inserted-text", f)
+func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
+	return buffer.Connect("inserted-text", f)
 }

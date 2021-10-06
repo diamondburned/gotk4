@@ -682,38 +682,38 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 // ConnectCommit signal is emitted when a complete input sequence has been
 // entered by the user. This can be a single character immediately after a key
 // press or the final result of preediting.
-func (i *IMContext) ConnectCommit(f func(str string)) glib.SignalHandle {
-	return i.Connect("commit", f)
+func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
+	return context.Connect("commit", f)
 }
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
-func (i *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) glib.SignalHandle {
-	return i.Connect("delete-surrounding", f)
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) bool) externglib.SignalHandle {
+	return context.Connect("delete-surrounding", f)
 }
 
 // ConnectPreeditChanged signal is emitted whenever the preedit sequence
 // currently being entered has changed. It is also emitted at the end of a
 // preedit sequence, in which case gtk_im_context_get_preedit_string() returns
 // the empty string.
-func (i *IMContext) ConnectPreeditChanged(f func()) glib.SignalHandle {
-	return i.Connect("preedit-changed", f)
+func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-changed", f)
 }
 
 // ConnectPreeditEnd signal is emitted when a preediting sequence has been
 // completed or canceled.
-func (i *IMContext) ConnectPreeditEnd(f func()) glib.SignalHandle {
-	return i.Connect("preedit-end", f)
+func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-end", f)
 }
 
 // ConnectPreeditStart signal is emitted when a new preediting sequence starts.
-func (i *IMContext) ConnectPreeditStart(f func()) glib.SignalHandle {
-	return i.Connect("preedit-start", f)
+func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
+	return context.Connect("preedit-start", f)
 }
 
 // ConnectRetrieveSurrounding signal is emitted when the input method requires
 // the context surrounding the cursor. The callback should set the input method
 // surrounding context by calling the gtk_im_context_set_surrounding() method.
-func (i *IMContext) ConnectRetrieveSurrounding(f func() bool) glib.SignalHandle {
-	return i.Connect("retrieve-surrounding", f)
+func (context *IMContext) ConnectRetrieveSurrounding(f func() bool) externglib.SignalHandle {
+	return context.Connect("retrieve-surrounding", f)
 }

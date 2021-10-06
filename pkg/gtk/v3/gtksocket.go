@@ -153,13 +153,13 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 
 // ConnectPlugAdded: this signal is emitted when a client is successfully added
 // to the socket.
-func (s *Socket) ConnectPlugAdded(f func()) glib.SignalHandle {
-	return s.Connect("plug-added", f)
+func (socket_ *Socket) ConnectPlugAdded(f func()) externglib.SignalHandle {
+	return socket_.Connect("plug-added", f)
 }
 
 // ConnectPlugRemoved: this signal is emitted when a client is removed from the
 // socket. The default action is to destroy the Socket widget, so if you want to
 // reuse it you must add a signal handler that returns TRUE.
-func (s *Socket) ConnectPlugRemoved(f func() bool) glib.SignalHandle {
-	return s.Connect("plug-removed", f)
+func (socket_ *Socket) ConnectPlugRemoved(f func() bool) externglib.SignalHandle {
+	return socket_.Connect("plug-removed", f)
 }

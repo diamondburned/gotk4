@@ -470,8 +470,8 @@ func (paned *Paned) SetWideHandle(wide bool) {
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Return or Space.
-func (p *Paned) ConnectAcceptPosition(f func() bool) glib.SignalHandle {
-	return p.Connect("accept-position", f)
+func (paned *Paned) ConnectAcceptPosition(f func() bool) externglib.SignalHandle {
+	return paned.Connect("accept-position", f)
 }
 
 // ConnectCancelPosition: emitted to cancel moving the position of the handle
@@ -482,8 +482,8 @@ func (p *Paned) ConnectAcceptPosition(f func() bool) glib.SignalHandle {
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Escape.
-func (p *Paned) ConnectCancelPosition(f func() bool) glib.SignalHandle {
-	return p.Connect("cancel-position", f)
+func (paned *Paned) ConnectCancelPosition(f func() bool) externglib.SignalHandle {
+	return paned.Connect("cancel-position", f)
 }
 
 // ConnectCycleChildFocus: emitted to cycle the focus between the children of
@@ -492,8 +492,8 @@ func (p *Paned) ConnectCancelPosition(f func() bool) glib.SignalHandle {
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding is F6.
-func (p *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) glib.SignalHandle {
-	return p.Connect("cycle-child-focus", f)
+func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) externglib.SignalHandle {
+	return paned.Connect("cycle-child-focus", f)
 }
 
 // ConnectCycleHandleFocus: emitted to cycle whether the paned should grab focus
@@ -502,15 +502,15 @@ func (p *Paned) ConnectCycleChildFocus(f func(reversed bool) bool) glib.SignalHa
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is F8.
-func (p *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) glib.SignalHandle {
-	return p.Connect("cycle-handle-focus", f)
+func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) bool) externglib.SignalHandle {
+	return paned.Connect("cycle-handle-focus", f)
 }
 
 // ConnectMoveHandle: emitted to move the handle with key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (p *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) glib.SignalHandle {
-	return p.Connect("move-handle", f)
+func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) externglib.SignalHandle {
+	return paned.Connect("move-handle", f)
 }
 
 // ConnectToggleHandleFocus: emitted to accept the current position of the
@@ -519,6 +519,6 @@ func (p *Paned) ConnectMoveHandle(f func(scrollType ScrollType) bool) glib.Signa
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding is Tab.
-func (p *Paned) ConnectToggleHandleFocus(f func() bool) glib.SignalHandle {
-	return p.Connect("toggle-handle-focus", f)
+func (paned *Paned) ConnectToggleHandleFocus(f func() bool) externglib.SignalHandle {
+	return paned.Connect("toggle-handle-focus", f)
 }

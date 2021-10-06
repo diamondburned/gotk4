@@ -762,25 +762,25 @@ func (assistant *Assistant) UpdateButtonsState() {
 // might consider putting a page of type GTK_ASSISTANT_PAGE_PROGRESS after the
 // confirmation page and handle this operation within the gtk.Assistant::prepare
 // signal of the progress page.
-func (a *Assistant) ConnectApply(f func()) glib.SignalHandle {
-	return a.Connect("apply", f)
+func (assistant *Assistant) ConnectApply(f func()) externglib.SignalHandle {
+	return assistant.Connect("apply", f)
 }
 
 // ConnectCancel: emitted when then the cancel button is clicked.
-func (a *Assistant) ConnectCancel(f func()) glib.SignalHandle {
-	return a.Connect("cancel", f)
+func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
+	return assistant.Connect("cancel", f)
 }
 
 // ConnectClose: emitted either when the close button of a summary page is
 // clicked, or when the apply button in the last page in the flow (of type
 // GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
-func (a *Assistant) ConnectClose(f func()) glib.SignalHandle {
-	return a.Connect("close", f)
+func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
+	return assistant.Connect("close", f)
 }
 
 // ConnectEscape: action signal for the Escape binding.
-func (a *Assistant) ConnectEscape(f func()) glib.SignalHandle {
-	return a.Connect("escape", f)
+func (assistant *Assistant) ConnectEscape(f func()) externglib.SignalHandle {
+	return assistant.Connect("escape", f)
 }
 
 // ConnectPrepare: emitted when a new page is set as the assistant's current
@@ -788,8 +788,8 @@ func (a *Assistant) ConnectEscape(f func()) glib.SignalHandle {
 //
 // A handler for this signal can do any preparations which are necessary before
 // showing page.
-func (a *Assistant) ConnectPrepare(f func(page Widgetter)) glib.SignalHandle {
-	return a.Connect("prepare", f)
+func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) externglib.SignalHandle {
+	return assistant.Connect("prepare", f)
 }
 
 // AssistantPage: GtkAssistantPage is an auxiliary object used by `GtkAssistant.

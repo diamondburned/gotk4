@@ -395,12 +395,12 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 //
 // Applications should never connect to this signal, but use the
 // gtk.CheckButton::toggled signal.
-func (c *CheckButton) ConnectActivate(f func()) glib.SignalHandle {
-	return c.Connect("activate", f)
+func (self *CheckButton) ConnectActivate(f func()) externglib.SignalHandle {
+	return self.Connect("activate", f)
 }
 
 // ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
 // changes.
-func (c *CheckButton) ConnectToggled(f func()) glib.SignalHandle {
-	return c.Connect("toggled", f)
+func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return self.Connect("toggled", f)
 }

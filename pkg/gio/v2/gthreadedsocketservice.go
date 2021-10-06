@@ -95,6 +95,6 @@ func (*ThreadedSocketService) privateThreadedSocketService() {}
 // connection. This thread is dedicated to handling connection and may perform
 // blocking IO. The signal handler need not return until the connection is
 // closed.
-func (t *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) glib.SignalHandle {
-	return t.Connect("run", f)
+func (service *ThreadedSocketService) ConnectRun(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
+	return service.Connect("run", f)
 }

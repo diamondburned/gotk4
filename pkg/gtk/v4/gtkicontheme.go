@@ -785,8 +785,8 @@ func (self *IconTheme) SetThemeName(themeName string) {
 //
 // This can happen becuase current icon theme is switched or because GTK detects
 // that a change has occurred in the contents of the current icon theme.
-func (i *IconTheme) ConnectChanged(f func()) glib.SignalHandle {
-	return i.Connect("changed", f)
+func (self *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
+	return self.Connect("changed", f)
 }
 
 // IconThemeGetForDisplay gets the icon theme object associated with display.

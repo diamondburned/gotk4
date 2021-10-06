@@ -498,6 +498,6 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 }
 
 // ConnectActivate activates the GtkExpander.
-func (e *Expander) ConnectActivate(f func()) glib.SignalHandle {
-	return e.Connect("activate", f)
+func (expander *Expander) ConnectActivate(f func()) externglib.SignalHandle {
+	return expander.Connect("activate", f)
 }

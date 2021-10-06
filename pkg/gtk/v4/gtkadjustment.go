@@ -425,11 +425,11 @@ func (adjustment *Adjustment) SetValue(value float64) {
 //
 // Note that the gtk.Adjustment:value property is covered by the
 // gtk.Adjustment::value-changed signal.
-func (a *Adjustment) ConnectChanged(f func()) glib.SignalHandle {
-	return a.Connect("changed", f)
+func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("changed", f)
 }
 
 // ConnectValueChanged: emitted when the value has been changed.
-func (a *Adjustment) ConnectValueChanged(f func()) glib.SignalHandle {
-	return a.Connect("value-changed", f)
+func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return adjustment.Connect("value-changed", f)
 }

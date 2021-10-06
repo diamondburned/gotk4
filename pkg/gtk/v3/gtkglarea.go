@@ -513,8 +513,8 @@ func (area *GLArea) SetUseES(useEs bool) {
 // If context creation fails then the signal handler can use
 // gtk_gl_area_set_error() to register a more detailed error of how the
 // construction failed.
-func (g *GLArea) ConnectCreateContext(f func() gdk.GLContexter) glib.SignalHandle {
-	return g.Connect("create-context", f)
+func (area *GLArea) ConnectCreateContext(f func() gdk.GLContexter) externglib.SignalHandle {
+	return area.Connect("create-context", f)
 }
 
 // ConnectRender signal is emitted every time the contents of the GLArea should
@@ -522,8 +522,8 @@ func (g *GLArea) ConnectCreateContext(f func() gdk.GLContexter) glib.SignalHandl
 //
 // The context is bound to the area prior to emitting this function, and the
 // buffers are painted to the window once the emission terminates.
-func (g *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) glib.SignalHandle {
-	return g.Connect("render", f)
+func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) externglib.SignalHandle {
+	return area.Connect("render", f)
 }
 
 // ConnectResize signal is emitted once when the widget is realized, and then
@@ -535,6 +535,6 @@ func (g *GLArea) ConnectRender(f func(context gdk.GLContexter) bool) glib.Signal
 // emitted.
 //
 // The default handler sets up the GL viewport.
-func (g *GLArea) ConnectResize(f func(width, height int)) glib.SignalHandle {
-	return g.Connect("resize", f)
+func (area *GLArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
+	return area.Connect("resize", f)
 }

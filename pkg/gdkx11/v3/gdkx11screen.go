@@ -127,6 +127,6 @@ func (screen *X11Screen) WindowManagerName() string {
 	return _utf8
 }
 
-func (x *X11Screen) ConnectWindowManagerChanged(f func()) glib.SignalHandle {
-	return x.Connect("window-manager-changed", f)
+func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("window-manager-changed", f)
 }

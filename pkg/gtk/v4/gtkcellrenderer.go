@@ -1024,8 +1024,8 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 // written to cancel editing when the user presses Escape.
 //
 // See also: gtk_cell_renderer_stop_editing().
-func (c *CellRenderer) ConnectEditingCanceled(f func()) glib.SignalHandle {
-	return c.Connect("editing-canceled", f)
+func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHandle {
+	return cell.Connect("editing-canceled", f)
 }
 
 // ConnectEditingStarted: this signal gets emitted when a cell starts to be
@@ -1055,6 +1055,6 @@ func (c *CellRenderer) ConnectEditingCanceled(f func()) glib.SignalHandle {
 //          gtk_entry_set_completion (entry, completion);
 //        }
 //    }.
-func (c *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) glib.SignalHandle {
-	return c.Connect("editing-started", f)
+func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) externglib.SignalHandle {
+	return cell.Connect("editing-started", f)
 }

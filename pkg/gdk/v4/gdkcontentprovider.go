@@ -361,6 +361,6 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 
 // ConnectContentChanged: emitted whenever the content provided by this provider
 // has changed.
-func (c *ContentProvider) ConnectContentChanged(f func()) glib.SignalHandle {
-	return c.Connect("content-changed", f)
+func (provider *ContentProvider) ConnectContentChanged(f func()) externglib.SignalHandle {
+	return provider.Connect("content-changed", f)
 }

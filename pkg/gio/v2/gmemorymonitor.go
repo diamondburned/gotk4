@@ -124,8 +124,8 @@ func (*MemoryMonitor) privateMemoryMonitor() {}
 // ConnectLowMemoryWarning: emitted when the system is running low on free
 // memory. The signal handler should then take the appropriate action depending
 // on the warning level. See the MonitorWarningLevel documentation for details.
-func (m *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) glib.SignalHandle {
-	return m.Connect("low-memory-warning", f)
+func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) externglib.SignalHandle {
+	return monitor.Connect("low-memory-warning", f)
 }
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the

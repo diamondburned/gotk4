@@ -1807,8 +1807,8 @@ func (buffer *TextBuffer) SetText(text string, len int) {
 //
 // See also: gtk_text_buffer_apply_tag(), gtk_text_buffer_insert_with_tags(),
 // gtk_text_buffer_insert_range().
-func (t *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
-	return t.Connect("apply-tag", f)
+func (buffer *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) externglib.SignalHandle {
+	return buffer.Connect("apply-tag", f)
 }
 
 // ConnectBeginUserAction signal is emitted at the beginning of a single
@@ -1819,14 +1819,14 @@ func (t *TextBuffer) ConnectApplyTag(f func(tag TextTag, start, end TextIter)) g
 // gtk_text_buffer_insert_range_interactive(),
 // gtk_text_buffer_delete_interactive(), gtk_text_buffer_backspace(),
 // gtk_text_buffer_delete_selection().
-func (t *TextBuffer) ConnectBeginUserAction(f func()) glib.SignalHandle {
-	return t.Connect("begin-user-action", f)
+func (buffer *TextBuffer) ConnectBeginUserAction(f func()) externglib.SignalHandle {
+	return buffer.Connect("begin-user-action", f)
 }
 
 // ConnectChanged signal is emitted when the content of a TextBuffer has
 // changed.
-func (t *TextBuffer) ConnectChanged(f func()) glib.SignalHandle {
-	return t.Connect("changed", f)
+func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
+	return buffer.Connect("changed", f)
 }
 
 // ConnectDeleteRange signal is emitted to delete a range from a TextBuffer.
@@ -1838,8 +1838,8 @@ func (t *TextBuffer) ConnectChanged(f func()) glib.SignalHandle {
 // (see g_signal_connect_after()) do not have access to the deleted text.
 //
 // See also: gtk_text_buffer_delete().
-func (t *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) glib.SignalHandle {
-	return t.Connect("delete-range", f)
+func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) externglib.SignalHandle {
+	return buffer.Connect("delete-range", f)
 }
 
 // ConnectEndUserAction signal is emitted at the end of a single user-visible
@@ -1850,8 +1850,8 @@ func (t *TextBuffer) ConnectDeleteRange(f func(start, end TextIter)) glib.Signal
 // gtk_text_buffer_insert_range_interactive(),
 // gtk_text_buffer_delete_interactive(), gtk_text_buffer_backspace(),
 // gtk_text_buffer_delete_selection(), gtk_text_buffer_backspace().
-func (t *TextBuffer) ConnectEndUserAction(f func()) glib.SignalHandle {
-	return t.Connect("end-user-action", f)
+func (buffer *TextBuffer) ConnectEndUserAction(f func()) externglib.SignalHandle {
+	return buffer.Connect("end-user-action", f)
 }
 
 // ConnectInsertChildAnchor signal is emitted to insert a TextChildAnchor in a
@@ -1862,8 +1862,8 @@ func (t *TextBuffer) ConnectEndUserAction(f func()) glib.SignalHandle {
 // handler revalidates it to be placed after the inserted anchor.
 //
 // See also: gtk_text_buffer_insert_child_anchor().
-func (t *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor TextChildAnchor)) glib.SignalHandle {
-	return t.Connect("insert-child-anchor", f)
+func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor TextChildAnchor)) externglib.SignalHandle {
+	return buffer.Connect("insert-child-anchor", f)
 }
 
 // ConnectInsertPixbuf signal is emitted to insert a Pixbuf in a TextBuffer.
@@ -1874,8 +1874,8 @@ func (t *TextBuffer) ConnectInsertChildAnchor(f func(location TextIter, anchor T
 // handler revalidates it to be placed after the inserted pixbuf.
 //
 // See also: gtk_text_buffer_insert_pixbuf().
-func (t *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf gdkpixbuf.Pixbuf)) glib.SignalHandle {
-	return t.Connect("insert-pixbuf", f)
+func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf gdkpixbuf.Pixbuf)) externglib.SignalHandle {
+	return buffer.Connect("insert-pixbuf", f)
 }
 
 // ConnectInsertText signal is emitted to insert text in a TextBuffer. Insertion
@@ -1886,38 +1886,38 @@ func (t *TextBuffer) ConnectInsertPixbuf(f func(location TextIter, pixbuf gdkpix
 // handler revalidates it to point to the end of the inserted text.
 //
 // See also: gtk_text_buffer_insert(), gtk_text_buffer_insert_range().
-func (t *TextBuffer) ConnectInsertText(f func(location TextIter, text string, len int)) glib.SignalHandle {
-	return t.Connect("insert-text", f)
+func (buffer *TextBuffer) ConnectInsertText(f func(location TextIter, text string, len int)) externglib.SignalHandle {
+	return buffer.Connect("insert-text", f)
 }
 
 // ConnectMarkDeleted signal is emitted as notification after a TextMark is
 // deleted.
 //
 // See also: gtk_text_buffer_delete_mark().
-func (t *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) glib.SignalHandle {
-	return t.Connect("mark-deleted", f)
+func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark TextMark)) externglib.SignalHandle {
+	return buffer.Connect("mark-deleted", f)
 }
 
 // ConnectMarkSet signal is emitted as notification after a TextMark is set.
 //
 // See also: gtk_text_buffer_create_mark(), gtk_text_buffer_move_mark().
-func (t *TextBuffer) ConnectMarkSet(f func(location TextIter, mark TextMark)) glib.SignalHandle {
-	return t.Connect("mark-set", f)
+func (buffer *TextBuffer) ConnectMarkSet(f func(location TextIter, mark TextMark)) externglib.SignalHandle {
+	return buffer.Connect("mark-set", f)
 }
 
 // ConnectModifiedChanged signal is emitted when the modified bit of a
 // TextBuffer flips.
 //
 // See also: gtk_text_buffer_set_modified().
-func (t *TextBuffer) ConnectModifiedChanged(f func()) glib.SignalHandle {
-	return t.Connect("modified-changed", f)
+func (buffer *TextBuffer) ConnectModifiedChanged(f func()) externglib.SignalHandle {
+	return buffer.Connect("modified-changed", f)
 }
 
 // ConnectPasteDone signal is emitted after paste operation has been completed.
 // This is useful to properly scroll the view to the end of the pasted text. See
 // gtk_text_buffer_paste_clipboard() for more details.
-func (t *TextBuffer) ConnectPasteDone(f func(clipboard Clipboard)) glib.SignalHandle {
-	return t.Connect("paste-done", f)
+func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard Clipboard)) externglib.SignalHandle {
+	return buffer.Connect("paste-done", f)
 }
 
 // ConnectRemoveTag signal is emitted to remove all occurrences of tag from a
@@ -1928,6 +1928,6 @@ func (t *TextBuffer) ConnectPasteDone(f func(clipboard Clipboard)) glib.SignalHa
 // invalidate the start and end iters (or has to revalidate them).
 //
 // See also: gtk_text_buffer_remove_tag().
-func (t *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end TextIter)) glib.SignalHandle {
-	return t.Connect("remove-tag", f)
+func (buffer *TextBuffer) ConnectRemoveTag(f func(tag TextTag, start, end TextIter)) externglib.SignalHandle {
+	return buffer.Connect("remove-tag", f)
 }

@@ -683,8 +683,8 @@ func (component *Component) SetSize(width, height int) bool {
 
 // ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
 // or size of the component changes.
-func (c *Component) ConnectBoundsChanged(f func(arg1 Rectangle)) glib.SignalHandle {
-	return c.Connect("bounds-changed", f)
+func (component *Component) ConnectBoundsChanged(f func(arg1 Rectangle)) externglib.SignalHandle {
+	return component.Connect("bounds-changed", f)
 }
 
 // Rectangle: data structure for holding a rectangle. Those coordinates are

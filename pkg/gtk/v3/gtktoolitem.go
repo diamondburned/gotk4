@@ -710,8 +710,8 @@ func (toolItem *ToolItem) ToolbarReconfigured() {
 // how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
 // to invalidate the cache and ensure that the toolbar rebuilds its overflow
 // menu.
-func (t *ToolItem) ConnectCreateMenuProxy(f func() bool) glib.SignalHandle {
-	return t.Connect("create-menu-proxy", f)
+func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() bool) externglib.SignalHandle {
+	return toolItem.Connect("create-menu-proxy", f)
 }
 
 // ConnectToolbarReconfigured: this signal is emitted when some property of the
@@ -726,6 +726,6 @@ func (t *ToolItem) ConnectCreateMenuProxy(f func() bool) glib.SignalHandle {
 //
 // - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
 // like and change themselves accordingly.
-func (t *ToolItem) ConnectToolbarReconfigured(f func()) glib.SignalHandle {
-	return t.Connect("toolbar-reconfigured", f)
+func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
+	return toolItem.Connect("toolbar-reconfigured", f)
 }

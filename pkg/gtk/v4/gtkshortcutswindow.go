@@ -126,8 +126,8 @@ func (*ShortcutsWindow) privateShortcutsWindow() {}
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is the Escape key.
-func (s *ShortcutsWindow) ConnectClose(f func()) glib.SignalHandle {
-	return s.Connect("close", f)
+func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
+	return v.Connect("close", f)
 }
 
 // ConnectSearch: emitted when the user uses a keybinding to start a search.
@@ -135,6 +135,6 @@ func (s *ShortcutsWindow) ConnectClose(f func()) glib.SignalHandle {
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Control-F.
-func (s *ShortcutsWindow) ConnectSearch(f func()) glib.SignalHandle {
-	return s.Connect("search", f)
+func (v *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
+	return v.Connect("search", f)
 }

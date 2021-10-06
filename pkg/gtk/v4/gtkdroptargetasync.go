@@ -213,29 +213,29 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 // processing, such as inspecting the data, this function should return TRUE and
 // proceed as is drop was accepted and if it decides to reject the drop later,
 // it should call gtk.DropTargetAsync.RejectDrop().
-func (d *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) glib.SignalHandle {
-	return d.Connect("accept", f)
+func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) bool) externglib.SignalHandle {
+	return self.Connect("accept", f)
 }
 
 // ConnectDragEnter: emitted on the drop site when the pointer enters the
 // widget.
 //
 // It can be used to set up custom highlighting.
-func (d *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) glib.SignalHandle {
-	return d.Connect("drag-enter", f)
+func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("drag-enter", f)
 }
 
 // ConnectDragLeave: emitted on the drop site when the pointer leaves the
 // widget.
 //
 // Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
-func (d *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) glib.SignalHandle {
-	return d.Connect("drag-leave", f)
+func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
+	return self.Connect("drag-leave", f)
 }
 
 // ConnectDragMotion: emitted while the pointer is moving over the drop target.
-func (d *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) glib.SignalHandle {
-	return d.Connect("drag-motion", f)
+func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) gdk.DragAction) externglib.SignalHandle {
+	return self.Connect("drag-motion", f)
 }
 
 // ConnectDrop: emitted on the drop site when the user drops the data onto the
@@ -252,6 +252,6 @@ func (d *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float6
 //
 // To receive the data, use one of the read functions provided by gdk.Drop such
 // as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
-func (d *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) glib.SignalHandle {
-	return d.Connect("drop", f)
+func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) bool) externglib.SignalHandle {
+	return self.Connect("drop", f)
 }

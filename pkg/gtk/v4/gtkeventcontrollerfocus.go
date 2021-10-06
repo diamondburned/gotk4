@@ -107,8 +107,8 @@ func (self *EventControllerFocus) IsFocus() bool {
 // from a descendent of the widget to the widget itself). If you are interested
 // in these cases, you can monitor the gtk.EventControllerFocus:is-focus
 // property for changes.
-func (e *EventControllerFocus) ConnectEnter(f func()) glib.SignalHandle {
-	return e.Connect("enter", f)
+func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle {
+	return self.Connect("enter", f)
 }
 
 // ConnectLeave: emitted whenever the focus leaves the widget hierarchy that is
@@ -118,6 +118,6 @@ func (e *EventControllerFocus) ConnectEnter(f func()) glib.SignalHandle {
 // moves away from the widget, in certain cases (such as when the focus moves
 // from the widget to a descendent). If you are interested in these cases, you
 // can monitor the gtk.EventControllerFocus:is-focus property for changes.
-func (e *EventControllerFocus) ConnectLeave(f func()) glib.SignalHandle {
-	return e.Connect("leave", f)
+func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle {
+	return self.Connect("leave", f)
 }

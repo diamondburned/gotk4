@@ -100,7 +100,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = (C.gssize)(len(data))
 	if len(data) > 0 {
-		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&data).Data))
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&data)).Data))
 	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2)

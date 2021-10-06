@@ -320,6 +320,6 @@ func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 // Note that this signal is only emitted when the user changes the color. If you
 // need to react to programmatic color changes as well, use the notify::color
 // signal.
-func (c *ColorButton) ConnectColorSet(f func()) glib.SignalHandle {
-	return c.Connect("color-set", f)
+func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
+	return button.Connect("color-set", f)
 }

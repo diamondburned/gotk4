@@ -856,25 +856,25 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 
 // ConnectActionAdded signals that a new action was just added to the group.
 // This signal is emitted after the action has been added and is now visible.
-func (a *ActionGroup) ConnectActionAdded(f func(actionName string)) glib.SignalHandle {
-	return a.Connect("action-added", f)
+func (actionGroup *ActionGroup) ConnectActionAdded(f func(actionName string)) externglib.SignalHandle {
+	return actionGroup.Connect("action-added", f)
 }
 
 // ConnectActionEnabledChanged signals that the enabled status of the named
 // action has changed.
-func (a *ActionGroup) ConnectActionEnabledChanged(f func(actionName string, enabled bool)) glib.SignalHandle {
-	return a.Connect("action-enabled-changed", f)
+func (actionGroup *ActionGroup) ConnectActionEnabledChanged(f func(actionName string, enabled bool)) externglib.SignalHandle {
+	return actionGroup.Connect("action-enabled-changed", f)
 }
 
 // ConnectActionRemoved signals that an action is just about to be removed from
 // the group. This signal is emitted before the action is removed, so the action
 // is still visible and can be queried from the signal handler.
-func (a *ActionGroup) ConnectActionRemoved(f func(actionName string)) glib.SignalHandle {
-	return a.Connect("action-removed", f)
+func (actionGroup *ActionGroup) ConnectActionRemoved(f func(actionName string)) externglib.SignalHandle {
+	return actionGroup.Connect("action-removed", f)
 }
 
 // ConnectActionStateChanged signals that the state of the named action has
 // changed.
-func (a *ActionGroup) ConnectActionStateChanged(f func(actionName string, value *glib.Variant)) glib.SignalHandle {
-	return a.Connect("action-state-changed", f)
+func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName string, value *glib.Variant)) externglib.SignalHandle {
+	return actionGroup.Connect("action-state-changed", f)
 }

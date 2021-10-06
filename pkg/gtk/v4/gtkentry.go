@@ -1621,17 +1621,17 @@ func (entry *Entry) UnsetInvisibleChar() {
 // ConnectActivate: emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
-func (e *Entry) ConnectActivate(f func()) glib.SignalHandle {
-	return e.Connect("activate", f)
+func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
+	return entry.Connect("activate", f)
 }
 
 // ConnectIconPress: emitted when an activatable icon is clicked.
-func (e *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) glib.SignalHandle {
-	return e.Connect("icon-press", f)
+func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
+	return entry.Connect("icon-press", f)
 }
 
 // ConnectIconRelease: emitted on the button release from a mouse click over an
 // activatable icon.
-func (e *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) glib.SignalHandle {
-	return e.Connect("icon-release", f)
+func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
+	return entry.Connect("icon-release", f)
 }

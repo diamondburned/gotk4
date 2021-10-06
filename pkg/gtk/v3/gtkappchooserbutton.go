@@ -331,6 +331,6 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 // ConnectCustomItemActivated: emitted when a custom item, previously added with
 // gtk_app_chooser_button_append_custom_item(), is activated from the dropdown
 // menu.
-func (a *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) glib.SignalHandle {
-	return a.Connect("custom-item-activated", f)
+func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
+	return self.Connect("custom-item-activated", f)
 }

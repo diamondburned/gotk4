@@ -162,6 +162,6 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 
 // ConnectGotCompletionData: emitted when the file name completion information
 // comes available.
-func (f *FilenameCompleter) ConnectGotCompletionData(f func()) glib.SignalHandle {
-	return f.Connect("got-completion-data", f)
+func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
+	return completer.Connect("got-completion-data", f)
 }

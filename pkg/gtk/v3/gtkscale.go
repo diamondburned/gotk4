@@ -479,6 +479,6 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 //      return g_strdup_printf ("-->\0.*g<--",
 //                              gtk_scale_get_digits (scale), value);
 //     }.
-func (s *Scale) ConnectFormatValue(f func(value float64) string) glib.SignalHandle {
-	return s.Connect("format-value", f)
+func (scale *Scale) ConnectFormatValue(f func(value float64) string) externglib.SignalHandle {
+	return scale.Connect("format-value", f)
 }

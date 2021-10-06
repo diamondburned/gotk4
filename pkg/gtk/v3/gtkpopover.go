@@ -566,6 +566,6 @@ func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 
 // ConnectClosed: this signal is emitted when the popover is dismissed either
 // through API or user interaction.
-func (p *Popover) ConnectClosed(f func()) glib.SignalHandle {
-	return p.Connect("closed", f)
+func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
+	return popover.Connect("closed", f)
 }

@@ -156,8 +156,8 @@ func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 //
 // gtk_cell_editable_editing_done() is a convenience method for emitting
 // CellEditable::editing-done.
-func (c *CellEditable) ConnectEditingDone(f func()) glib.SignalHandle {
-	return c.Connect("editing-done", f)
+func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
+	return cellEditable.Connect("editing-done", f)
 }
 
 // ConnectRemoveWidget: this signal is meant to indicate that the cell is
@@ -171,6 +171,6 @@ func (c *CellEditable) ConnectEditingDone(f func()) glib.SignalHandle {
 //
 // gtk_cell_editable_remove_widget() is a convenience method for emitting
 // CellEditable::remove-widget.
-func (c *CellEditable) ConnectRemoveWidget(f func()) glib.SignalHandle {
-	return c.Connect("remove-widget", f)
+func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
+	return cellEditable.Connect("remove-widget", f)
 }

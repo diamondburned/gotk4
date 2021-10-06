@@ -291,6 +291,6 @@ func (toggleButton *ToggleButton) Toggled() {
 }
 
 // ConnectToggled: emitted whenever the GtkToggleButton's state is changed.
-func (t *ToggleButton) ConnectToggled(f func()) glib.SignalHandle {
-	return t.Connect("toggled", f)
+func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return toggleButton.Connect("toggled", f)
 }

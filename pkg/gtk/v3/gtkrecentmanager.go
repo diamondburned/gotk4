@@ -441,8 +441,8 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 // ConnectChanged: emitted when the current recently used resources manager
 // changes its contents, either by calling gtk_recent_manager_add_item() or by
 // another application.
-func (r *RecentManager) ConnectChanged(f func()) glib.SignalHandle {
-	return r.Connect("changed", f)
+func (manager *RecentManager) ConnectChanged(f func()) externglib.SignalHandle {
+	return manager.Connect("changed", f)
 }
 
 // RecentManagerGetDefault gets a unique instance of RecentManager, that you can

@@ -509,8 +509,8 @@ func (actionGroup *ActionGroup) TranslateString(str string) string {
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (a *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) glib.SignalHandle {
-	return a.Connect("connect-proxy", f)
+func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return actionGroup.Connect("connect-proxy", f)
 }
 
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
@@ -518,8 +518,8 @@ func (a *ActionGroup) ConnectConnectProxy(f func(action Action, proxy Widgetter)
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (a *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) glib.SignalHandle {
-	return a.Connect("disconnect-proxy", f)
+func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgetter)) externglib.SignalHandle {
+	return actionGroup.Connect("disconnect-proxy", f)
 }
 
 // ConnectPostActivate signal is emitted just after the action in the
@@ -527,8 +527,8 @@ func (a *ActionGroup) ConnectDisconnectProxy(f func(action Action, proxy Widgett
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just after any action is activated.
-func (a *ActionGroup) ConnectPostActivate(f func(action Action)) glib.SignalHandle {
-	return a.Connect("post-activate", f)
+func (actionGroup *ActionGroup) ConnectPostActivate(f func(action Action)) externglib.SignalHandle {
+	return actionGroup.Connect("post-activate", f)
 }
 
 // ConnectPreActivate signal is emitted just before the action in the
@@ -536,8 +536,8 @@ func (a *ActionGroup) ConnectPostActivate(f func(action Action)) glib.SignalHand
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just before any action is activated.
-func (a *ActionGroup) ConnectPreActivate(f func(action Action)) glib.SignalHandle {
-	return a.Connect("pre-activate", f)
+func (actionGroup *ActionGroup) ConnectPreActivate(f func(action Action)) externglib.SignalHandle {
+	return actionGroup.Connect("pre-activate", f)
 }
 
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct

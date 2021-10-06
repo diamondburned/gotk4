@@ -307,6 +307,6 @@ func (self *NativeDialog) Show() {
 //
 // If you call gtk.NativeDialog.Hide() before the user responds to the dialog
 // this signal will not be emitted.
-func (n *NativeDialog) ConnectResponse(f func(responseId int)) glib.SignalHandle {
-	return n.Connect("response", f)
+func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return self.Connect("response", f)
 }

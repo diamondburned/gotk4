@@ -1984,8 +1984,8 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 // The default handler for this signal invokes the "changed" signal for each
 // affected key. If any other connected handler returns TRUE then this default
 // functionality will be suppressed.
-func (s *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) glib.SignalHandle {
-	return s.Connect("change-event", f)
+func (settings *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) externglib.SignalHandle {
+	return settings.Connect("change-event", f)
 }
 
 // ConnectChanged: "changed" signal is emitted when a key has potentially
@@ -1997,8 +1997,8 @@ func (s *Settings) ConnectChangeEvent(f func(keys []*glib.Quark) bool) glib.Sign
 //
 // Note that settings only emits this signal if you have read key at least once
 // while a signal handler was already connected for key.
-func (s *Settings) ConnectChanged(f func(key string)) glib.SignalHandle {
-	return s.Connect("changed", f)
+func (settings *Settings) ConnectChanged(f func(key string)) externglib.SignalHandle {
+	return settings.Connect("changed", f)
 }
 
 // ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
@@ -2017,8 +2017,8 @@ func (s *Settings) ConnectChanged(f func(key string)) glib.SignalHandle {
 // writability might also imply changes in value (if for example, a new
 // mandatory setting is introduced). If any other connected handler returns TRUE
 // then this default functionality will be suppressed.
-func (s *Settings) ConnectWritableChangeEvent(f func(key uint) bool) glib.SignalHandle {
-	return s.Connect("writable-change-event", f)
+func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) bool) externglib.SignalHandle {
+	return settings.Connect("writable-change-event", f)
 }
 
 // ConnectWritableChanged: "writable-changed" signal is emitted when the
@@ -2028,8 +2028,8 @@ func (s *Settings) ConnectWritableChangeEvent(f func(key uint) bool) glib.Signal
 // This signal supports detailed connections. You can connect to the detailed
 // signal "writable-changed::x" in order to only receive callbacks when the
 // writability of "x" changes.
-func (s *Settings) ConnectWritableChanged(f func(key string)) glib.SignalHandle {
-	return s.Connect("writable-changed", f)
+func (settings *Settings) ConnectWritableChanged(f func(key string)) externglib.SignalHandle {
+	return settings.Connect("writable-changed", f)
 }
 
 // SettingsListRelocatableSchemas: deprecated.

@@ -1335,16 +1335,16 @@ func (self *Label) SetYAlign(yalign float32) {
 // need to control activation of URIs programmatically.
 //
 // The default bindings for this signal are all forms of the Enter key.
-func (l *Label) ConnectActivateCurrentLink(f func()) glib.SignalHandle {
-	return l.Connect("activate-current-link", f)
+func (self *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
+	return self.Connect("activate-current-link", f)
 }
 
 // ConnectActivateLink gets emitted to activate a URI.
 //
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri().
-func (l *Label) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
-	return l.Connect("activate-link", f)
+func (self *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
+	return self.Connect("activate-link", f)
 }
 
 // ConnectCopyClipboard gets emitted to copy the slection to the clipboard.
@@ -1352,8 +1352,8 @@ func (l *Label) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
 // The ::copy-clipboard signal is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Ctrl-c.
-func (l *Label) ConnectCopyClipboard(f func()) glib.SignalHandle {
-	return l.Connect("copy-clipboard", f)
+func (self *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return self.Connect("copy-clipboard", f)
 }
 
 // ConnectMoveCursor gets emitted when the user initiates a cursor movement.
@@ -1374,6 +1374,6 @@ func (l *Label) ConnectCopyClipboard(f func()) glib.SignalHandle {
 // - Ctrl-arrow key combinations move by words/paragraphs
 //
 // - Home/End keys move to the ends of the buffer.
-func (l *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) glib.SignalHandle {
-	return l.Connect("move-cursor", f)
+func (self *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return self.Connect("move-cursor", f)
 }

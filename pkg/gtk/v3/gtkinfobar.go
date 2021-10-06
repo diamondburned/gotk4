@@ -435,13 +435,13 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 // emitted when the user uses a keybinding to dismiss the info bar.
 //
 // The default binding for this signal is the Escape key.
-func (i *InfoBar) ConnectClose(f func()) glib.SignalHandle {
-	return i.Connect("close", f)
+func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
+	return infoBar.Connect("close", f)
 }
 
 // ConnectResponse: emitted when an action widget is clicked or the application
 // programmer calls gtk_dialog_response(). The response_id depends on which
 // action widget was clicked.
-func (i *InfoBar) ConnectResponse(f func(responseId int)) glib.SignalHandle {
-	return i.Connect("response", f)
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return infoBar.Connect("response", f)
 }

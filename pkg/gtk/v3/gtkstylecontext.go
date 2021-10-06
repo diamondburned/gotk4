@@ -2086,8 +2086,8 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 // Widget::style-updated signal/vfunc might be more convenient to use.
 //
 // This signal is useful when using the theming layer standalone.
-func (s *StyleContext) ConnectChanged(f func()) glib.SignalHandle {
-	return s.Connect("changed", f)
+func (context *StyleContext) ConnectChanged(f func()) externglib.SignalHandle {
+	return context.Connect("changed", f)
 }
 
 // StyleContextAddProviderForScreen adds a global style provider to screen,

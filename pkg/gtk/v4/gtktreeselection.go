@@ -562,6 +562,6 @@ func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 // note that this signal is mostly a hint. It may only be emitted once when a
 // range of rows are selected, and it may occasionally be emitted when nothing
 // has happened.
-func (t *TreeSelection) ConnectChanged(f func()) glib.SignalHandle {
-	return t.Connect("changed", f)
+func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
+	return selection.Connect("changed", f)
 }

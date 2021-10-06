@@ -502,29 +502,29 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 }
 
 // ConnectActivate: emitted when the item is activated.
-func (m *MenuItem) ConnectActivate(f func()) glib.SignalHandle {
-	return m.Connect("activate", f)
+func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
+	return menuItem.Connect("activate", f)
 }
 
 // ConnectActivateItem: emitted when the item is activated, but also if the menu
 // item has a submenu. For normal applications, the relevant signal is
 // MenuItem::activate.
-func (m *MenuItem) ConnectActivateItem(f func()) glib.SignalHandle {
-	return m.Connect("activate-item", f)
+func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
+	return menuItem.Connect("activate-item", f)
 }
 
-func (m *MenuItem) ConnectDeselect(f func()) glib.SignalHandle {
-	return m.Connect("deselect", f)
+func (menuItem *MenuItem) ConnectDeselect(f func()) externglib.SignalHandle {
+	return menuItem.Connect("deselect", f)
 }
 
-func (m *MenuItem) ConnectSelect(f func()) glib.SignalHandle {
-	return m.Connect("select", f)
+func (menuItem *MenuItem) ConnectSelect(f func()) externglib.SignalHandle {
+	return menuItem.Connect("select", f)
 }
 
-func (m *MenuItem) ConnectToggleSizeAllocate(f func(object int)) glib.SignalHandle {
-	return m.Connect("toggle-size-allocate", f)
+func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) externglib.SignalHandle {
+	return menuItem.Connect("toggle-size-allocate", f)
 }
 
-func (m *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) glib.SignalHandle {
-	return m.Connect("toggle-size-request", f)
+func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object cgo.Handle)) externglib.SignalHandle {
+	return menuItem.Connect("toggle-size-request", f)
 }

@@ -192,8 +192,8 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 // ConnectActivate: emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
-func (s *SearchEntry) ConnectActivate(f func()) glib.SignalHandle {
-	return s.Connect("activate", f)
+func (entry *SearchEntry) ConnectActivate(f func()) externglib.SignalHandle {
+	return entry.Connect("activate", f)
 }
 
 // ConnectNextMatch: emitted when the user initiates a move to the next match
@@ -204,8 +204,8 @@ func (s *SearchEntry) ConnectActivate(f func()) glib.SignalHandle {
 // Applications should connect to it, to implement moving between matches.
 //
 // The default bindings for this signal is Ctrl-g.
-func (s *SearchEntry) ConnectNextMatch(f func()) glib.SignalHandle {
-	return s.Connect("next-match", f)
+func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
+	return entry.Connect("next-match", f)
 }
 
 // ConnectPreviousMatch: emitted when the user initiates a move to the previous
@@ -216,19 +216,19 @@ func (s *SearchEntry) ConnectNextMatch(f func()) glib.SignalHandle {
 // Applications should connect to it, to implement moving between matches.
 //
 // The default bindings for this signal is Ctrl-Shift-g.
-func (s *SearchEntry) ConnectPreviousMatch(f func()) glib.SignalHandle {
-	return s.Connect("previous-match", f)
+func (entry *SearchEntry) ConnectPreviousMatch(f func()) externglib.SignalHandle {
+	return entry.Connect("previous-match", f)
 }
 
 // ConnectSearchChanged: emitted with a short delay of 150 milliseconds after
 // the last change to the entry text.
-func (s *SearchEntry) ConnectSearchChanged(f func()) glib.SignalHandle {
-	return s.Connect("search-changed", f)
+func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle {
+	return entry.Connect("search-changed", f)
 }
 
 // ConnectSearchStarted: emitted when the user initiated a search on the entry.
-func (s *SearchEntry) ConnectSearchStarted(f func()) glib.SignalHandle {
-	return s.Connect("search-started", f)
+func (entry *SearchEntry) ConnectSearchStarted(f func()) externglib.SignalHandle {
+	return entry.Connect("search-started", f)
 }
 
 // ConnectStopSearch: emitted when the user stops a search via keyboard input.
@@ -239,6 +239,6 @@ func (s *SearchEntry) ConnectSearchStarted(f func()) glib.SignalHandle {
 // this case.
 //
 // The default bindings for this signal is Escape.
-func (s *SearchEntry) ConnectStopSearch(f func()) glib.SignalHandle {
-	return s.Connect("stop-search", f)
+func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
+	return entry.Connect("stop-search", f)
 }

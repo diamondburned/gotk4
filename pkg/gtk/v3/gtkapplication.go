@@ -951,19 +951,19 @@ func (application *Application) Uninhibit(cookie uint) {
 // connect to this signal and call gtk_application_inhibit() with
 // GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until state
 // has been saved.
-func (a *Application) ConnectQueryEnd(f func()) glib.SignalHandle {
-	return a.Connect("query-end", f)
+func (application *Application) ConnectQueryEnd(f func()) externglib.SignalHandle {
+	return application.Connect("query-end", f)
 }
 
 // ConnectWindowAdded: emitted when a Window is added to application through
 // gtk_application_add_window().
-func (a *Application) ConnectWindowAdded(f func(window Window)) glib.SignalHandle {
-	return a.Connect("window-added", f)
+func (application *Application) ConnectWindowAdded(f func(window Window)) externglib.SignalHandle {
+	return application.Connect("window-added", f)
 }
 
 // ConnectWindowRemoved: emitted when a Window is removed from application,
 // either as a side-effect of being destroyed or explicitly through
 // gtk_application_remove_window().
-func (a *Application) ConnectWindowRemoved(f func(window Window)) glib.SignalHandle {
-	return a.Connect("window-removed", f)
+func (application *Application) ConnectWindowRemoved(f func(window Window)) externglib.SignalHandle {
+	return application.Connect("window-removed", f)
 }

@@ -308,6 +308,6 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 //
 // This is useful in order to keep state up to date with the widget size, like
 // for instance a backing surface.
-func (d *DrawingArea) ConnectResize(f func(width, height int)) glib.SignalHandle {
-	return d.Connect("resize", f)
+func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
+	return self.Connect("resize", f)
 }

@@ -946,14 +946,14 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 // ConnectItemActivated: this signal is emitted when the user "activates" a
 // recent item in the recent chooser. This can happen by double-clicking on an
 // item in the recently used resources list, or by pressing Enter.
-func (r *RecentChooser) ConnectItemActivated(f func()) glib.SignalHandle {
-	return r.Connect("item-activated", f)
+func (chooser *RecentChooser) ConnectItemActivated(f func()) externglib.SignalHandle {
+	return chooser.Connect("item-activated", f)
 }
 
 // ConnectSelectionChanged: this signal is emitted when there is a change in the
 // set of selected recently used resources. This can happen when a user modifies
 // the selection with the mouse or the keyboard, or when explicitly calling
 // functions to change the selection.
-func (r *RecentChooser) ConnectSelectionChanged(f func()) glib.SignalHandle {
-	return r.Connect("selection-changed", f)
+func (chooser *RecentChooser) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return chooser.Connect("selection-changed", f)
 }

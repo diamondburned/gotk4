@@ -254,12 +254,12 @@ func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 
 // ConnectChildAttached: this signal is emitted when the contents of the
 // handlebox are reattached to the main window.
-func (h *HandleBox) ConnectChildAttached(f func(widget Widgetter)) glib.SignalHandle {
-	return h.Connect("child-attached", f)
+func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
+	return handleBox.Connect("child-attached", f)
 }
 
 // ConnectChildDetached: this signal is emitted when the contents of the
 // handlebox are detached from the main window.
-func (h *HandleBox) ConnectChildDetached(f func(widget Widgetter)) glib.SignalHandle {
-	return h.Connect("child-detached", f)
+func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
+	return handleBox.Connect("child-detached", f)
 }

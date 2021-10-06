@@ -729,8 +729,8 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 // The can be due to the user selecting a different item from the list, or due
 // to a call to gtk.ComboBox.SetActiveIter(). It will also be emitted while
 // typing into the entry of a combo box with an entry.
-func (c *ComboBox) ConnectChanged(f func()) glib.SignalHandle {
-	return c.Connect("changed", f)
+func (comboBox *ComboBox) ConnectChanged(f func()) externglib.SignalHandle {
+	return comboBox.Connect("changed", f)
 }
 
 // ConnectFormatEntryText: emitted to allow changing how the text in a combo
@@ -764,15 +764,15 @@ func (c *ComboBox) ConnectChanged(f func()) glib.SignalHandle {
 //
 //      return g_strdup_printf ("g", value);
 //    }.
-func (c *ComboBox) ConnectFormatEntryText(f func(path string) string) glib.SignalHandle {
-	return c.Connect("format-entry-text", f)
+func (comboBox *ComboBox) ConnectFormatEntryText(f func(path string) string) externglib.SignalHandle {
+	return comboBox.Connect("format-entry-text", f)
 }
 
 // ConnectMoveActive: emitted to move the active selection.
 //
 // This is an keybinding signal (class.SignalAction.html).
-func (c *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) glib.SignalHandle {
-	return c.Connect("move-active", f)
+func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) externglib.SignalHandle {
+	return comboBox.Connect("move-active", f)
 }
 
 // ConnectPopdown: emitted to popdown the combo box list.
@@ -780,8 +780,8 @@ func (c *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) glib.SignalH
 // This is an keybinding signal (class.SignalAction.html).
 //
 // The default bindings for this signal are Alt+Up and Escape.
-func (c *ComboBox) ConnectPopdown(f func() bool) glib.SignalHandle {
-	return c.Connect("popdown", f)
+func (comboBox *ComboBox) ConnectPopdown(f func() bool) externglib.SignalHandle {
+	return comboBox.Connect("popdown", f)
 }
 
 // ConnectPopup: emitted to popup the combo box list.
@@ -789,6 +789,6 @@ func (c *ComboBox) ConnectPopdown(f func() bool) glib.SignalHandle {
 // This is an keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Alt+Down.
-func (c *ComboBox) ConnectPopup(f func()) glib.SignalHandle {
-	return c.Connect("popup", f)
+func (comboBox *ComboBox) ConnectPopup(f func()) externglib.SignalHandle {
+	return comboBox.Connect("popup", f)
 }

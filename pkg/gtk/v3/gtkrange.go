@@ -747,8 +747,8 @@ func (_range *Range) SetValue(value float64) {
 
 // ConnectAdjustBounds: emitted before clamping a value, to give the application
 // a chance to adjust the bounds.
-func (r *Range) ConnectAdjustBounds(f func(value float64)) glib.SignalHandle {
-	return r.Connect("adjust-bounds", f)
+func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
+	return _range.Connect("adjust-bounds", f)
 }
 
 // ConnectChangeValue signal is emitted when a scroll action is performed on a
@@ -762,17 +762,17 @@ func (r *Range) ConnectAdjustBounds(f func(value float64)) glib.SignalHandle {
 // GtkRange::change-value signal is responsible for clamping the value to the
 // desired number of decimal digits; the default GTK+ handler clamps the value
 // based on Range:round-digits.
-func (r *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) glib.SignalHandle {
-	return r.Connect("change-value", f)
+func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) bool) externglib.SignalHandle {
+	return _range.Connect("change-value", f)
 }
 
 // ConnectMoveSlider: virtual function that moves the slider. Used for
 // keybindings.
-func (r *Range) ConnectMoveSlider(f func(step ScrollType)) glib.SignalHandle {
-	return r.Connect("move-slider", f)
+func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
+	return _range.Connect("move-slider", f)
 }
 
 // ConnectValueChanged: emitted when the range value changes.
-func (r *Range) ConnectValueChanged(f func()) glib.SignalHandle {
-	return r.Connect("value-changed", f)
+func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return _range.Connect("value-changed", f)
 }

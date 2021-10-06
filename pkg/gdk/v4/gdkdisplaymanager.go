@@ -208,8 +208,8 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 }
 
 // ConnectDisplayOpened: emitted when a display is opened.
-func (d *DisplayManager) ConnectDisplayOpened(f func(display Display)) glib.SignalHandle {
-	return d.Connect("display-opened", f)
+func (manager *DisplayManager) ConnectDisplayOpened(f func(display Display)) externglib.SignalHandle {
+	return manager.Connect("display-opened", f)
 }
 
 // DisplayManagerGet gets the singleton GdkDisplayManager object.

@@ -174,6 +174,6 @@ func (button *ToggleToolButton) SetActive(isActive bool) {
 }
 
 // ConnectToggled: emitted whenever the toggle tool button changes state.
-func (t *ToggleToolButton) ConnectToggled(f func()) glib.SignalHandle {
-	return t.Connect("toggled", f)
+func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return button.Connect("toggled", f)
 }

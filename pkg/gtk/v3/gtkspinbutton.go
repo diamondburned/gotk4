@@ -721,8 +721,8 @@ func (spinButton *SpinButton) Update() {
 // g_signal_emit_by_name() if they need to control the cursor programmatically.
 //
 // The default bindings for this signal are Up/Down and PageUp and/PageDown.
-func (s *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) glib.SignalHandle {
-	return s.Connect("change-value", f)
+func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) externglib.SignalHandle {
+	return spinButton.Connect("change-value", f)
 }
 
 // ConnectOutput signal can be used to change to formatting of the value that is
@@ -745,18 +745,18 @@ func (s *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) glib.SignalHa
 //
 //       return TRUE;
 //    }.
-func (s *SpinButton) ConnectOutput(f func() bool) glib.SignalHandle {
-	return s.Connect("output", f)
+func (spinButton *SpinButton) ConnectOutput(f func() bool) externglib.SignalHandle {
+	return spinButton.Connect("output", f)
 }
 
 // ConnectValueChanged signal is emitted when the value represented by
 // spinbutton changes. Also see the SpinButton::output signal.
-func (s *SpinButton) ConnectValueChanged(f func()) glib.SignalHandle {
-	return s.Connect("value-changed", f)
+func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
+	return spinButton.Connect("value-changed", f)
 }
 
 // ConnectWrapped signal is emitted right after the spinbutton wraps from its
 // maximum to minimum value or vice-versa.
-func (s *SpinButton) ConnectWrapped(f func()) glib.SignalHandle {
-	return s.Connect("wrapped", f)
+func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
+	return spinButton.Connect("wrapped", f)
 }

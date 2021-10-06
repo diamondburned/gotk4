@@ -1030,8 +1030,8 @@ func (resolver *Resolver) SetDefault() {
 
 // ConnectReload: emitted when the resolver notices that the system resolver
 // configuration has changed.
-func (r *Resolver) ConnectReload(f func()) glib.SignalHandle {
-	return r.Connect("reload", f)
+func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
+	return resolver.Connect("reload", f)
 }
 
 // ResolverGetDefault gets the default #GResolver. You should unref it when you

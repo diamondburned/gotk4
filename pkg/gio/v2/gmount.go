@@ -1102,8 +1102,8 @@ func (mount *Mount) Unshadow() {
 }
 
 // ConnectChanged: emitted when the mount has been changed.
-func (m *Mount) ConnectChanged(f func()) glib.SignalHandle {
-	return m.Connect("changed", f)
+func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
+	return mount.Connect("changed", f)
 }
 
 // ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
@@ -1111,13 +1111,13 @@ func (m *Mount) ConnectChanged(f func()) glib.SignalHandle {
 //
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
-func (m *Mount) ConnectPreUnmount(f func()) glib.SignalHandle {
-	return m.Connect("pre-unmount", f)
+func (mount *Mount) ConnectPreUnmount(f func()) externglib.SignalHandle {
+	return mount.Connect("pre-unmount", f)
 }
 
 // ConnectUnmounted: this signal is emitted when the #GMount have been
 // unmounted. If the recipient is holding references to the object they should
 // release them so the object can be finalized.
-func (m *Mount) ConnectUnmounted(f func()) glib.SignalHandle {
-	return m.Connect("unmounted", f)
+func (mount *Mount) ConnectUnmounted(f func()) externglib.SignalHandle {
+	return mount.Connect("unmounted", f)
 }

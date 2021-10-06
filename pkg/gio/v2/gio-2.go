@@ -158,8 +158,8 @@ func (*AppInfoMonitor) privateAppInfoMonitor() {}
 
 // ConnectChanged: signal emitted when the app info database for changes (ie:
 // newly installed or removed applications).
-func (a *AppInfoMonitor) ConnectChanged(f func()) glib.SignalHandle {
-	return a.Connect("changed", f)
+func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
+	return v.Connect("changed", f)
 }
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
@@ -385,14 +385,14 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 }
 
 // ConnectAllowMechanism: emitted to check if mechanism is allowed to be used.
-func (d *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) bool) glib.SignalHandle {
-	return d.Connect("allow-mechanism", f)
+func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) bool) externglib.SignalHandle {
+	return observer.Connect("allow-mechanism", f)
 }
 
 // ConnectAuthorizeAuthenticatedPeer: emitted to check if a peer that is
 // successfully authenticated is authorized.
-func (d *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials Credentials) bool) glib.SignalHandle {
-	return d.Connect("authorize-authenticated-peer", f)
+func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials Credentials) bool) externglib.SignalHandle {
+	return observer.Connect("authorize-authenticated-peer", f)
 }
 
 // DBusConnection type is used for D-Bus connections to remote peers such as a
@@ -4022,8 +4022,8 @@ func (server *DBusServer) Stop() {
 // You are guaranteed that signal handlers for this signal runs before incoming
 // messages on connection are processed. This means that it's suitable to call
 // g_dbus_connection_register_object() or similar from the signal handler.
-func (d *DBusServer) ConnectNewConnection(f func(connection DBusConnection) bool) glib.SignalHandle {
-	return d.Connect("new-connection", f)
+func (server *DBusServer) ConnectNewConnection(f func(connection DBusConnection) bool) externglib.SignalHandle {
+	return server.Connect("new-connection", f)
 }
 
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
@@ -5541,8 +5541,8 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 // state type is equal to the parameter type, the default is to forward them
 // directly to Action::change-state. This should allow almost all users of
 // Action to connect only one handler or the other.
-func (s *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) glib.SignalHandle {
-	return s.Connect("activate", f)
+func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) externglib.SignalHandle {
+	return simple.Connect("activate", f)
 }
 
 // ConnectChangeState indicates that the action just received a request to
@@ -5576,8 +5576,8 @@ func (s *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) glib.Sig
 //
 // The handler need not set the state to the requested value. It could set it to
 // any value at all, or take some other action.
-func (s *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) glib.SignalHandle {
-	return s.Connect("change-state", f)
+func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) externglib.SignalHandle {
+	return simple.Connect("change-state", f)
 }
 
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This

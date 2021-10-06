@@ -1122,6 +1122,6 @@ func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 //
 // Note that there may be additional ClientEvent values in the future;
 // unrecognized event values should be ignored.
-func (s *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) glib.SignalHandle {
-	return s.Connect("event", f)
+func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) externglib.SignalHandle {
+	return client.Connect("event", f)
 }

@@ -73,12 +73,12 @@ func (*GestureLongPress) privateGestureLongPress() {}
 
 // ConnectCancelled: this signal is emitted whenever a press moved too far, or
 // was released before GestureLongPress::pressed happened.
-func (g *GestureLongPress) ConnectCancelled(f func()) glib.SignalHandle {
-	return g.Connect("cancelled", f)
+func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
+	return v.Connect("cancelled", f)
 }
 
 // ConnectPressed: this signal is emitted whenever a press goes
 // unmoved/unreleased longer than what the GTK+ defaults tell.
-func (g *GestureLongPress) ConnectPressed(f func(x, y float64)) glib.SignalHandle {
-	return g.Connect("pressed", f)
+func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
+	return v.Connect("pressed", f)
 }

@@ -233,6 +233,6 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 // To override the default behavior, you can connect to the ::activate-link
 // signal and stop the propagation of the signal by returning TRUE from your
 // handler.
-func (l *LinkButton) ConnectActivateLink(f func() bool) glib.SignalHandle {
-	return l.Connect("activate-link", f)
+func (linkButton *LinkButton) ConnectActivateLink(f func() bool) externglib.SignalHandle {
+	return linkButton.Connect("activate-link", f)
 }

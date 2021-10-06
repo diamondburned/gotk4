@@ -402,6 +402,6 @@ func (radioButton *RadioButton) SetGroup(group []RadioButton) {
 // when a button is moved from one group of 2 or more buttons to a different
 // one, but not when the composition of the group that a button belongs to
 // changes.
-func (r *RadioButton) ConnectGroupChanged(f func()) glib.SignalHandle {
-	return r.Connect("group-changed", f)
+func (radioButton *RadioButton) ConnectGroupChanged(f func()) externglib.SignalHandle {
+	return radioButton.Connect("group-changed", f)
 }

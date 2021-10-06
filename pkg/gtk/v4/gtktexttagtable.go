@@ -222,13 +222,13 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 
 // ConnectTagAdded: emitted every time a new tag is added in the
 // GtkTextTagTable.
-func (t *TextTagTable) ConnectTagAdded(f func(tag TextTag)) glib.SignalHandle {
-	return t.Connect("tag-added", f)
+func (table *TextTagTable) ConnectTagAdded(f func(tag TextTag)) externglib.SignalHandle {
+	return table.Connect("tag-added", f)
 }
 
 // ConnectTagChanged: emitted every time a tag in the GtkTextTagTable changes.
-func (t *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) glib.SignalHandle {
-	return t.Connect("tag-changed", f)
+func (table *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) externglib.SignalHandle {
+	return table.Connect("tag-changed", f)
 }
 
 // ConnectTagRemoved: emitted every time a tag is removed from the
@@ -236,6 +236,6 @@ func (t *TextTagTable) ConnectTagChanged(f func(tag TextTag, sizeChanged bool)) 
 //
 // The tag is still valid by the time the signal is emitted, but it is not
 // associated with a tag table any more.
-func (t *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) glib.SignalHandle {
-	return t.Connect("tag-removed", f)
+func (table *TextTagTable) ConnectTagRemoved(f func(tag TextTag)) externglib.SignalHandle {
+	return table.Connect("tag-removed", f)
 }

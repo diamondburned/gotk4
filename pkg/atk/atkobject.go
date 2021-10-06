@@ -1524,20 +1524,20 @@ func (accessible *ObjectClass) SetRole(role Role) {
 // by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
 // object in the object changes. For instance, a table will emit the signal when
 // the cell in the table which has focus changes.
-func (o *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) glib.SignalHandle {
-	return o.Connect("active-descendant-changed", f)
+func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) externglib.SignalHandle {
+	return object.Connect("active-descendant-changed", f)
 }
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
-func (o *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) glib.SignalHandle {
-	return o.Connect("children-changed", f)
+func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) externglib.SignalHandle {
+	return object.Connect("children-changed", f)
 }
 
 // ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
 // lost focus.
-func (o *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) glib.SignalHandle {
-	return o.Connect("focus-event", f)
+func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) externglib.SignalHandle {
+	return object.Connect("focus-event", f)
 }
 
 // ConnectPropertyChange: signal "property-change" is emitted when an object's
@@ -1551,20 +1551,20 @@ func (o *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) glib.SignalHandle {
 // emit property-changed notifications. Object::property-changed is needed by
 // the implementation of atk_add_global_event_listener() because GObject notify
 // doesn't support emission hooks.
-func (o *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) glib.SignalHandle {
-	return o.Connect("property-change", f)
+func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) externglib.SignalHandle {
+	return object.Connect("property-change", f)
 }
 
 // ConnectStateChange: "state-change" signal is emitted when an object's state
 // changes. The detail value identifies the state type which has changed.
-func (o *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) glib.SignalHandle {
-	return o.Connect("state-change", f)
+func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) externglib.SignalHandle {
+	return object.Connect("state-change", f)
 }
 
 // ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
 // visual appearance of the object changed.
-func (o *ObjectClass) ConnectVisibleDataChanged(f func()) glib.SignalHandle {
-	return o.Connect("visible-data-changed", f)
+func (object *ObjectClass) ConnectVisibleDataChanged(f func()) externglib.SignalHandle {
+	return object.Connect("visible-data-changed", f)
 }
 
 // Attribute is a string name/value pair representing a generic attribute. This

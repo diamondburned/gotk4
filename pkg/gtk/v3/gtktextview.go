@@ -2064,24 +2064,24 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, wind
 // emitted when the user asks for it.
 //
 // The default bindings for this signal are Backspace and Shift-Backspace.
-func (t *TextView) ConnectBackspace(f func()) glib.SignalHandle {
-	return t.Connect("backspace", f)
+func (textView *TextView) ConnectBackspace(f func()) externglib.SignalHandle {
+	return textView.Connect("backspace", f)
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to copy the selection to the clipboard.
 //
 // The default bindings for this signal are Ctrl-c and Ctrl-Insert.
-func (t *TextView) ConnectCopyClipboard(f func()) glib.SignalHandle {
-	return t.Connect("copy-clipboard", f)
+func (textView *TextView) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("copy-clipboard", f)
 }
 
 // ConnectCutClipboard signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to cut the selection to the clipboard.
 //
 // The default bindings for this signal are Ctrl-x and Shift-Delete.
-func (t *TextView) ConnectCutClipboard(f func()) glib.SignalHandle {
-	return t.Connect("cut-clipboard", f)
+func (textView *TextView) ConnectCutClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("cut-clipboard", f)
 }
 
 // ConnectDeleteFromCursor signal is a [keybinding signal][GtkBindingSignal]
@@ -2093,14 +2093,14 @@ func (t *TextView) ConnectCutClipboard(f func()) glib.SignalHandle {
 // The default bindings for this signal are Delete for deleting a character,
 // Ctrl-Delete for deleting a word and Ctrl-Backspace for deleting a word
 // backwords.
-func (t *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) glib.SignalHandle {
-	return t.Connect("delete-from-cursor", f)
+func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) externglib.SignalHandle {
+	return textView.Connect("delete-from-cursor", f)
 }
 
 // ConnectExtendSelection signal is emitted when the selection needs to be
 // extended at location.
-func (t *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end TextIter) bool) glib.SignalHandle {
-	return t.Connect("extend-selection", f)
+func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end TextIter) bool) externglib.SignalHandle {
+	return textView.Connect("extend-selection", f)
 }
 
 // ConnectInsertAtCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -2108,16 +2108,16 @@ func (t *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection
 // cursor.
 //
 // This signal has no default bindings.
-func (t *TextView) ConnectInsertAtCursor(f func(str string)) glib.SignalHandle {
-	return t.Connect("insert-at-cursor", f)
+func (textView *TextView) ConnectInsertAtCursor(f func(str string)) externglib.SignalHandle {
+	return textView.Connect("insert-at-cursor", f)
 }
 
 // ConnectInsertEmoji signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to present the Emoji chooser for the text_view.
 //
 // The default bindings for this signal are Ctrl-. and Ctrl-;.
-func (t *TextView) ConnectInsertEmoji(f func()) glib.SignalHandle {
-	return t.Connect("insert-emoji", f)
+func (textView *TextView) ConnectInsertEmoji(f func()) externglib.SignalHandle {
+	return textView.Connect("insert-emoji", f)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -2140,8 +2140,8 @@ func (t *TextView) ConnectInsertEmoji(f func()) glib.SignalHandle {
 // - PageUp/PageDown keys move vertically by pages
 //
 // - Ctrl-PageUp/PageDown keys move horizontally by pages.
-func (t *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) glib.SignalHandle {
-	return t.Connect("move-cursor", f)
+func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return textView.Connect("move-cursor", f)
 }
 
 // ConnectMoveViewport signal is a [keybinding signal][GtkBindingSignal] which
@@ -2149,16 +2149,16 @@ func (t *TextView) ConnectMoveCursor(f func(step MovementStep, count int, extend
 // change what part of the text view is visible in a containing scrolled window.
 //
 // There are no default bindings for this signal.
-func (t *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) glib.SignalHandle {
-	return t.Connect("move-viewport", f)
+func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) externglib.SignalHandle {
+	return textView.Connect("move-viewport", f)
 }
 
 // ConnectPasteClipboard signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to paste the contents of the clipboard into the text view.
 //
 // The default bindings for this signal are Ctrl-v and Shift-Insert.
-func (t *TextView) ConnectPasteClipboard(f func()) glib.SignalHandle {
-	return t.Connect("paste-clipboard", f)
+func (textView *TextView) ConnectPasteClipboard(f func()) externglib.SignalHandle {
+	return textView.Connect("paste-clipboard", f)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -2173,8 +2173,8 @@ func (t *TextView) ConnectPasteClipboard(f func()) glib.SignalHandle {
 //
 // The signal handler should not make assumptions about the type of widget, but
 // check whether popup is a Menu or Toolbar or another kind of container.
-func (t *TextView) ConnectPopulatePopup(f func(popup Widgetter)) glib.SignalHandle {
-	return t.Connect("populate-popup", f)
+func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) externglib.SignalHandle {
+	return textView.Connect("populate-popup", f)
 }
 
 // ConnectPreeditChanged: if an input method is used, the typed text will not
@@ -2183,8 +2183,8 @@ func (t *TextView) ConnectPopulatePopup(f func(popup Widgetter)) glib.SignalHand
 //
 // This signal is only emitted if the text at the given position is actually
 // editable.
-func (t *TextView) ConnectPreeditChanged(f func(preedit string)) glib.SignalHandle {
-	return t.Connect("preedit-changed", f)
+func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) externglib.SignalHandle {
+	return textView.Connect("preedit-changed", f)
 }
 
 // ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -2192,8 +2192,8 @@ func (t *TextView) ConnectPreeditChanged(f func(preedit string)) glib.SignalHand
 //
 // The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
 // Shift-Ctrl-a and Ctrl-\ for unselecting.
-func (t *TextView) ConnectSelectAll(f func(sel bool)) glib.SignalHandle {
-	return t.Connect("select-all", f)
+func (textView *TextView) ConnectSelectAll(f func(sel bool)) externglib.SignalHandle {
+	return textView.Connect("select-all", f)
 }
 
 // ConnectSetAnchor signal is a [keybinding signal][GtkBindingSignal] which gets
@@ -2201,22 +2201,22 @@ func (t *TextView) ConnectSelectAll(f func(sel bool)) glib.SignalHandle {
 // gets placed at the same position as the "insert" mark.
 //
 // This signal has no default bindings.
-func (t *TextView) ConnectSetAnchor(f func()) glib.SignalHandle {
-	return t.Connect("set-anchor", f)
+func (textView *TextView) ConnectSetAnchor(f func()) externglib.SignalHandle {
+	return textView.Connect("set-anchor", f)
 }
 
 // ConnectToggleCursorVisible signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted to toggle the TextView:cursor-visible property.
 //
 // The default binding for this signal is F7.
-func (t *TextView) ConnectToggleCursorVisible(f func()) glib.SignalHandle {
-	return t.Connect("toggle-cursor-visible", f)
+func (textView *TextView) ConnectToggleCursorVisible(f func()) externglib.SignalHandle {
+	return textView.Connect("toggle-cursor-visible", f)
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted to toggle the overwrite mode of the text view.
 //
 // The default bindings for this signal is Insert.
-func (t *TextView) ConnectToggleOverwrite(f func()) glib.SignalHandle {
-	return t.Connect("toggle-overwrite", f)
+func (textView *TextView) ConnectToggleOverwrite(f func()) externglib.SignalHandle {
+	return textView.Connect("toggle-overwrite", f)
 }

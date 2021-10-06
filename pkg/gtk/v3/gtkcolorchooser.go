@@ -218,6 +218,6 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 // chooser. This usually happens when the user clicks a color swatch, or a color
 // is selected and the user presses one of the keys Space, Shift+Space, Return
 // or Enter.
-func (c *ColorChooser) ConnectColorActivated(f func(color gdk.RGBA)) glib.SignalHandle {
-	return c.Connect("color-activated", f)
+func (chooser *ColorChooser) ConnectColorActivated(f func(color gdk.RGBA)) externglib.SignalHandle {
+	return chooser.Connect("color-activated", f)
 }

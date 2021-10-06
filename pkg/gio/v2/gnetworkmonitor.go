@@ -319,8 +319,8 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 }
 
 // ConnectNetworkChanged: emitted when the network configuration changes.
-func (n *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) glib.SignalHandle {
-	return n.Connect("network-changed", f)
+func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
+	return monitor.Connect("network-changed", f)
 }
 
 // NetworkMonitorGetDefault gets the default Monitor for the system.

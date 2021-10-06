@@ -880,8 +880,8 @@ func (screen *Screen) SetResolution(dpi float64) {
 
 // ConnectCompositedChanged signal is emitted when the composited status of the
 // screen changes.
-func (s *Screen) ConnectCompositedChanged(f func()) glib.SignalHandle {
-	return s.Connect("composited-changed", f)
+func (screen *Screen) ConnectCompositedChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("composited-changed", f)
 }
 
 // ConnectMonitorsChanged signal is emitted when the number, size or position of
@@ -889,14 +889,14 @@ func (s *Screen) ConnectCompositedChanged(f func()) glib.SignalHandle {
 //
 // Only for X11 and OS X for now. A future implementation for Win32 may be a
 // possibility.
-func (s *Screen) ConnectMonitorsChanged(f func()) glib.SignalHandle {
-	return s.Connect("monitors-changed", f)
+func (screen *Screen) ConnectMonitorsChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("monitors-changed", f)
 }
 
 // ConnectSizeChanged signal is emitted when the pixel width or height of a
 // screen changes.
-func (s *Screen) ConnectSizeChanged(f func()) glib.SignalHandle {
-	return s.Connect("size-changed", f)
+func (screen *Screen) ConnectSizeChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("size-changed", f)
 }
 
 // ScreenGetDefault gets the default screen for the default display. (See

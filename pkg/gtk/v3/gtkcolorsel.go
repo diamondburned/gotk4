@@ -424,8 +424,8 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 
 // ConnectColorChanged: this signal is emitted when the color changes in the
 // ColorSelection according to its update policy.
-func (c *ColorSelection) ConnectColorChanged(f func()) glib.SignalHandle {
-	return c.Connect("color-changed", f)
+func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
+	return colorsel.Connect("color-changed", f)
 }
 
 // ColorSelectionPaletteFromString parses a color palette string; the string is

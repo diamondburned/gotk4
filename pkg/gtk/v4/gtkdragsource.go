@@ -299,8 +299,8 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 // ConnectDragBegin: emitted on the drag source when a drag is started.
 //
 // It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
-func (d *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) glib.SignalHandle {
-	return d.Connect("drag-begin", f)
+func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.SignalHandle {
+	return source.Connect("drag-begin", f)
 }
 
 // ConnectDragCancel: emitted on the drag source when a drag has failed.
@@ -308,16 +308,16 @@ func (d *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) glib.SignalHandl
 // The signal handler may handle a failed drag operation based on the type of
 // error. It should return TRUE if the failure has been handled and the default
 // "drag operation failed" animation should not be shown.
-func (d *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) bool) glib.SignalHandle {
-	return d.Connect("drag-cancel", f)
+func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) bool) externglib.SignalHandle {
+	return source.Connect("drag-cancel", f)
 }
 
 // ConnectDragEnd: emitted on the drag source when a drag is finished.
 //
 // A typical reason to connect to this signal is to undo things done in
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
-func (d *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) glib.SignalHandle {
-	return d.Connect("drag-end", f)
+func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) externglib.SignalHandle {
+	return source.Connect("drag-end", f)
 }
 
 // ConnectPrepare: emitted when a drag is about to be initiated.
@@ -326,6 +326,6 @@ func (d *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) g
 // The default handler for this signal returns the value of the
 // gtk.DragSource:content property, so if you set up that property ahead of
 // time, you don't need to connect to this signal.
-func (d *DragSource) ConnectPrepare(f func(x, y float64) gdk.ContentProvider) glib.SignalHandle {
-	return d.Connect("prepare", f)
+func (source *DragSource) ConnectPrepare(f func(x, y float64) gdk.ContentProvider) externglib.SignalHandle {
+	return source.Connect("prepare", f)
 }

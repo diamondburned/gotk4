@@ -418,8 +418,8 @@ func (editable *Editable) SetPosition(position int) {
 // cause only one signal emission (even though it is implemented by first
 // deleting the selection, then inserting the new content, and may cause
 // multiple ::notify::text signals to be emitted).
-func (e *Editable) ConnectChanged(f func()) glib.SignalHandle {
-	return e.Connect("changed", f)
+func (editable *Editable) ConnectChanged(f func()) externglib.SignalHandle {
+	return editable.Connect("changed", f)
 }
 
 // ConnectDeleteText: this signal is emitted when text is deleted from the
@@ -429,6 +429,6 @@ func (e *Editable) ConnectChanged(f func()) glib.SignalHandle {
 // the range of deleted text, or prevent it from being deleted entirely. The
 // start_pos and end_pos parameters are interpreted as for
 // gtk_editable_delete_text().
-func (e *Editable) ConnectDeleteText(f func(startPos, endPos int)) glib.SignalHandle {
-	return e.Connect("delete-text", f)
+func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) externglib.SignalHandle {
+	return editable.Connect("delete-text", f)
 }

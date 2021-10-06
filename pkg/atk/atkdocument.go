@@ -276,8 +276,8 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 // should be safe for clients to assume that the AtkDocument's static contents
 // are fully loaded into the container. (Dynamic document contents should be
 // exposed via other signals.).
-func (d *Document) ConnectLoadComplete(f func()) glib.SignalHandle {
-	return d.Connect("load-complete", f)
+func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle {
+	return document.Connect("load-complete", f)
 }
 
 // ConnectLoadStopped: 'load-stopped' signal is emitted when a pending load of
@@ -285,20 +285,20 @@ func (d *Document) ConnectLoadComplete(f func()) glib.SignalHandle {
 // or application logic. It should not however be emitted while waiting for a
 // resource (for instance while blocking on a file or network read) unless a
 // user-significant timeout has occurred.
-func (d *Document) ConnectLoadStopped(f func()) glib.SignalHandle {
-	return d.Connect("load-stopped", f)
+func (document *Document) ConnectLoadStopped(f func()) externglib.SignalHandle {
+	return document.Connect("load-stopped", f)
 }
 
 // ConnectPageChanged: 'page-changed' signal is emitted when the current page of
 // a document changes, e.g. pressing page up/down in a document viewer.
-func (d *Document) ConnectPageChanged(f func(pageNumber int)) glib.SignalHandle {
-	return d.Connect("page-changed", f)
+func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.SignalHandle {
+	return document.Connect("page-changed", f)
 }
 
 // ConnectReload: 'reload' signal is emitted when the contents of a document is
 // refreshed from its source. Once 'reload' has been emitted, a matching
 // 'load-complete' or 'load-stopped' signal should follow, which clients may
 // await before interrogating ATK for the latest document content.
-func (d *Document) ConnectReload(f func()) glib.SignalHandle {
-	return d.Connect("reload", f)
+func (document *Document) ConnectReload(f func()) externglib.SignalHandle {
+	return document.Connect("reload", f)
 }

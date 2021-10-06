@@ -639,8 +639,8 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (e *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
-	return e.Connect("cursor-on-match", f)
+func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+	return completion.Connect("cursor-on-match", f)
 }
 
 // ConnectInsertPrefix: emitted when the inline autocompletion is triggered.
@@ -651,8 +651,8 @@ func (e *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter T
 // Applications may connect to this signal in order to insert only a smaller
 // part of the prefix into the entry - e.g. the entry used in the FileChooser
 // inserts only the part of the prefix up to the next '/'.
-func (e *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) glib.SignalHandle {
-	return e.Connect("insert-prefix", f)
+func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) externglib.SignalHandle {
+	return completion.Connect("insert-prefix", f)
 }
 
 // ConnectMatchSelected: emitted when a match from the list is selected.
@@ -662,14 +662,14 @@ func (e *EntryCompletion) ConnectInsertPrefix(f func(prefix string) bool) glib.S
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (e *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) glib.SignalHandle {
-	return e.Connect("match-selected", f)
+func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter TreeIter) bool) externglib.SignalHandle {
+	return completion.Connect("match-selected", f)
 }
 
 // ConnectNoMatches: emitted when the filter model has zero number of rows in
 // completion_complete method.
 //
 // In other words when GtkEntryCompletion is out of suggestions.
-func (e *EntryCompletion) ConnectNoMatches(f func()) glib.SignalHandle {
-	return e.Connect("no-matches", f)
+func (completion *EntryCompletion) ConnectNoMatches(f func()) externglib.SignalHandle {
+	return completion.Connect("no-matches", f)
 }

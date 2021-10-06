@@ -709,31 +709,31 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 
 // ConnectClosed: emitted when the connection to the windowing system for
 // display is closed.
-func (d *Display) ConnectClosed(f func(isError bool)) glib.SignalHandle {
-	return d.Connect("closed", f)
+func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
+	return display.Connect("closed", f)
 }
 
 // ConnectOpened: emitted when the connection to the windowing system for
 // display is opened.
-func (d *Display) ConnectOpened(f func()) glib.SignalHandle {
-	return d.Connect("opened", f)
+func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
+	return display.Connect("opened", f)
 }
 
 // ConnectSeatAdded: emitted whenever a new seat is made known to the windowing
 // system.
-func (d *Display) ConnectSeatAdded(f func(seat Seater)) glib.SignalHandle {
-	return d.Connect("seat-added", f)
+func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-added", f)
 }
 
 // ConnectSeatRemoved: emitted whenever a seat is removed by the windowing
 // system.
-func (d *Display) ConnectSeatRemoved(f func(seat Seater)) glib.SignalHandle {
-	return d.Connect("seat-removed", f)
+func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
+	return display.Connect("seat-removed", f)
 }
 
 // ConnectSettingChanged: emitted whenever a setting changes its value.
-func (d *Display) ConnectSettingChanged(f func(setting string)) glib.SignalHandle {
-	return d.Connect("setting-changed", f)
+func (display *Display) ConnectSettingChanged(f func(setting string)) externglib.SignalHandle {
+	return display.Connect("setting-changed", f)
 }
 
 // DisplayGetDefault gets the default GdkDisplay.

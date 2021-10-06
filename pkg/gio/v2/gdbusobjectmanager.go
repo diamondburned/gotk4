@@ -228,24 +228,24 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (d *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) glib.SignalHandle {
-	return d.Connect("interface-added", f)
+func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
+	return manager.Connect("interface-added", f)
 }
 
 // ConnectInterfaceRemoved: emitted when interface has been removed from object.
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (d *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) glib.SignalHandle {
-	return d.Connect("interface-removed", f)
+func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
+	return manager.Connect("interface-removed", f)
 }
 
 // ConnectObjectAdded: emitted when object is added to manager.
-func (d *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) glib.SignalHandle {
-	return d.Connect("object-added", f)
+func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
+	return manager.Connect("object-added", f)
 }
 
 // ConnectObjectRemoved: emitted when object is removed from manager.
-func (d *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) glib.SignalHandle {
-	return d.Connect("object-removed", f)
+func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
+	return manager.Connect("object-removed", f)
 }

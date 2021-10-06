@@ -420,12 +420,12 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 //
 // This is an action signal. Applications should never connect to this signal,
 // but use the gtk.Button::clicked signal.
-func (b *Button) ConnectActivate(f func()) glib.SignalHandle {
-	return b.Connect("activate", f)
+func (button *Button) ConnectActivate(f func()) externglib.SignalHandle {
+	return button.Connect("activate", f)
 }
 
 // ConnectClicked: emitted when the button has been activated (pressed and
 // released).
-func (b *Button) ConnectClicked(f func()) glib.SignalHandle {
-	return b.Connect("clicked", f)
+func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
+	return button.Connect("clicked", f)
 }

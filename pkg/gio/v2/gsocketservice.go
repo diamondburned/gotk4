@@ -163,6 +163,6 @@ func (service *SocketService) Stop() {
 //
 // connection will be unreffed once the signal handler returns, so you need to
 // ref it yourself if you are planning to use it.
-func (s *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) glib.SignalHandle {
-	return s.Connect("incoming", f)
+func (service *SocketService) ConnectIncoming(f func(connection SocketConnection, sourceObject *externglib.Object) bool) externglib.SignalHandle {
+	return service.Connect("incoming", f)
 }

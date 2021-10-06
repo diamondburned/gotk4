@@ -522,6 +522,6 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 // they need to be queried manually. It is also not necessary for a model to
 // change the selection state of any of the items in the selection model, though
 // it would be rather useless to emit such a signal.
-func (s *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) glib.SignalHandle {
-	return s.Connect("selection-changed", f)
+func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) externglib.SignalHandle {
+	return model.Connect("selection-changed", f)
 }

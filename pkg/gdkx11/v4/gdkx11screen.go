@@ -150,6 +150,6 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	return _ok
 }
 
-func (x *X11Screen) ConnectWindowManagerChanged(f func()) glib.SignalHandle {
-	return x.Connect("window-manager-changed", f)
+func (screen *X11Screen) ConnectWindowManagerChanged(f func()) externglib.SignalHandle {
+	return screen.Connect("window-manager-changed", f)
 }

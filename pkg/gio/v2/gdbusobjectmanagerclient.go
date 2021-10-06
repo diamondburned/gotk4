@@ -379,8 +379,8 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 //
 // This signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] that manager was constructed in.
-func (d *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) glib.SignalHandle {
-	return d.Connect("interface-proxy-properties-changed", f)
+func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)) externglib.SignalHandle {
+	return manager.Connect("interface-proxy-properties-changed", f)
 }
 
 // ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
@@ -391,8 +391,8 @@ func (d *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f func(
 //
 // This signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] that manager was constructed in.
-func (d *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) glib.SignalHandle {
-	return d.Connect("interface-proxy-signal", f)
+func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objectProxy DBusObjectProxy, interfaceProxy DBusProxy, senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
+	return manager.Connect("interface-proxy-signal", f)
 }
 
 // NewDBusObjectManagerClient: asynchronously creates a new

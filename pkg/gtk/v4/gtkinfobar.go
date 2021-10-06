@@ -455,8 +455,8 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 // The ::close signal is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is the Escape key.
-func (i *InfoBar) ConnectClose(f func()) glib.SignalHandle {
-	return i.Connect("close", f)
+func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
+	return infoBar.Connect("close", f)
 }
 
 // ConnectResponse: emitted when an action widget is clicked.
@@ -464,6 +464,6 @@ func (i *InfoBar) ConnectClose(f func()) glib.SignalHandle {
 // The signal is also emitted when the application programmer calls
 // gtk.InfoBar.Response(). The response_id depends on which action widget was
 // clicked.
-func (i *InfoBar) ConnectResponse(f func(responseId int)) glib.SignalHandle {
-	return i.Connect("response", f)
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
+	return infoBar.Connect("response", f)
 }

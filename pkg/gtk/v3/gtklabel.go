@@ -1186,23 +1186,23 @@ func (label *Label) SetYAlign(yalign float32) {
 // need to control activation of URIs programmatically.
 //
 // The default bindings for this signal are all forms of the Enter key.
-func (l *Label) ConnectActivateCurrentLink(f func()) glib.SignalHandle {
-	return l.Connect("activate-current-link", f)
+func (label *Label) ConnectActivateCurrentLink(f func()) externglib.SignalHandle {
+	return label.Connect("activate-current-link", f)
 }
 
 // ConnectActivateLink: signal which gets emitted to activate a URI.
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri_on_window().
-func (l *Label) ConnectActivateLink(f func(uri string) bool) glib.SignalHandle {
-	return l.Connect("activate-link", f)
+func (label *Label) ConnectActivateLink(f func(uri string) bool) externglib.SignalHandle {
+	return label.Connect("activate-link", f)
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted to copy the selection to the clipboard.
 //
 // The default binding for this signal is Ctrl-c.
-func (l *Label) ConnectCopyClipboard(f func()) glib.SignalHandle {
-	return l.Connect("copy-clipboard", f)
+func (label *Label) ConnectCopyClipboard(f func()) externglib.SignalHandle {
+	return label.Connect("copy-clipboard", f)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -1221,8 +1221,8 @@ func (l *Label) ConnectCopyClipboard(f func()) glib.SignalHandle {
 // - Ctrl-arrow key combinations move by words/paragraphs
 //
 // - Home/End keys move to the ends of the buffer.
-func (l *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) glib.SignalHandle {
-	return l.Connect("move-cursor", f)
+func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) externglib.SignalHandle {
+	return label.Connect("move-cursor", f)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -1230,6 +1230,6 @@ func (l *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSel
 //
 // If you need to add items to the context menu, connect to this signal and
 // append your menuitems to the menu.
-func (l *Label) ConnectPopulatePopup(f func(menu Menu)) glib.SignalHandle {
-	return l.Connect("populate-popup", f)
+func (label *Label) ConnectPopulatePopup(f func(menu Menu)) externglib.SignalHandle {
+	return label.Connect("populate-popup", f)
 }

@@ -1316,15 +1316,15 @@ func (application *Application) WithdrawNotification(id string) {
 
 // ConnectActivate signal is emitted on the primary instance when an activation
 // occurs. See g_application_activate().
-func (a *Application) ConnectActivate(f func()) glib.SignalHandle {
-	return a.Connect("activate", f)
+func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
+	return application.Connect("activate", f)
 }
 
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
-func (a *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) glib.SignalHandle {
-	return a.Connect("command-line", f)
+func (application *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLine) int) externglib.SignalHandle {
+	return application.Connect("command-line", f)
 }
 
 // ConnectHandleLocalOptions signal is emitted on the local instance after the
@@ -1364,8 +1364,8 @@ func (a *Application) ConnectCommandLine(f func(commandLine ApplicationCommandLi
 //
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
-func (a *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) glib.SignalHandle {
-	return a.Connect("handle-local-options", f)
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) int) externglib.SignalHandle {
+	return application.Connect("handle-local-options", f)
 }
 
 // ConnectNameLost signal is emitted only on the registered primary instance
@@ -1373,26 +1373,26 @@ func (a *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict
 // is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
 //
 // The default handler for this signal calls g_application_quit().
-func (a *Application) ConnectNameLost(f func() bool) glib.SignalHandle {
-	return a.Connect("name-lost", f)
+func (application *Application) ConnectNameLost(f func() bool) externglib.SignalHandle {
+	return application.Connect("name-lost", f)
 }
 
 // ConnectOpen signal is emitted on the primary instance when there are files to
 // open. See g_application_open() for more information.
-func (a *Application) ConnectOpen(f func(files []Filer, hint string)) glib.SignalHandle {
-	return a.Connect("open", f)
+func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
+	return application.Connect("open", f)
 }
 
 // ConnectShutdown signal is emitted only on the registered primary instance
 // immediately after the main loop terminates.
-func (a *Application) ConnectShutdown(f func()) glib.SignalHandle {
-	return a.Connect("shutdown", f)
+func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
+	return application.Connect("shutdown", f)
 }
 
 // ConnectStartup signal is emitted on the primary instance immediately after
 // registration. See g_application_register().
-func (a *Application) ConnectStartup(f func()) glib.SignalHandle {
-	return a.Connect("startup", f)
+func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
+	return application.Connect("startup", f)
 }
 
 // ApplicationGetDefault returns the default #GApplication instance for this

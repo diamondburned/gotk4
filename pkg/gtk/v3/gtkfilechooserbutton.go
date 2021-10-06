@@ -275,6 +275,6 @@ func (button *FileChooserButton) SetWidthChars(nChars int) {
 // ConnectFileSet signal is emitted when the user selects a file.
 //
 // Note that this signal is only emitted when the user changes the file.
-func (f *FileChooserButton) ConnectFileSet(f func()) glib.SignalHandle {
-	return f.Connect("file-set", f)
+func (button *FileChooserButton) ConnectFileSet(f func()) externglib.SignalHandle {
+	return button.Connect("file-set", f)
 }

@@ -103,8 +103,8 @@ func (*SignalListItemFactory) privateSignalListItemFactory() {}
 //
 // The gtk.SignalListItemFactory::unbind signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
-func (s *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) glib.SignalHandle {
-	return s.Connect("bind", f)
+func (v *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) externglib.SignalHandle {
+	return v.Connect("bind", f)
 }
 
 // ConnectSetup: emitted when a new listitem has been created and needs to be
@@ -114,8 +114,8 @@ func (s *SignalListItemFactory) ConnectBind(f func(listitem ListItem)) glib.Sign
 //
 // The gtk.SignalListItemFactory::teardown signal is the opposite of this signal
 // and can be used to undo everything done in this signal.
-func (s *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) glib.SignalHandle {
-	return s.Connect("setup", f)
+func (v *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) externglib.SignalHandle {
+	return v.Connect("setup", f)
 }
 
 // ConnectTeardown: emitted when a listitem is about to be destroyed.
@@ -124,8 +124,8 @@ func (s *SignalListItemFactory) ConnectSetup(f func(listitem ListItem)) glib.Sig
 //
 // This signal is the opposite of the gtk.SignalListItemFactory::setup signal
 // and should be used to undo everything done in that signal.
-func (s *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) glib.SignalHandle {
-	return s.Connect("teardown", f)
+func (v *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) externglib.SignalHandle {
+	return v.Connect("teardown", f)
 }
 
 // ConnectUnbind: emitted when a listitem has been removed from use in a list
@@ -133,6 +133,6 @@ func (s *SignalListItemFactory) ConnectTeardown(f func(listitem ListItem)) glib.
 //
 // This signal is the opposite of the gtk.SignalListItemFactory::bind signal and
 // should be used to undo everything done in that signal.
-func (s *SignalListItemFactory) ConnectUnbind(f func(listitem ListItem)) glib.SignalHandle {
-	return s.Connect("unbind", f)
+func (v *SignalListItemFactory) ConnectUnbind(f func(listitem ListItem)) externglib.SignalHandle {
+	return v.Connect("unbind", f)
 }

@@ -630,13 +630,13 @@ func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 }
 
 // ConnectMountpointsChanged: emitted when the unix mount points have changed.
-func (u *UnixMountMonitor) ConnectMountpointsChanged(f func()) glib.SignalHandle {
-	return u.Connect("mountpoints-changed", f)
+func (mountMonitor *UnixMountMonitor) ConnectMountpointsChanged(f func()) externglib.SignalHandle {
+	return mountMonitor.Connect("mountpoints-changed", f)
 }
 
 // ConnectMountsChanged: emitted when the unix mounts have changed.
-func (u *UnixMountMonitor) ConnectMountsChanged(f func()) glib.SignalHandle {
-	return u.Connect("mounts-changed", f)
+func (mountMonitor *UnixMountMonitor) ConnectMountsChanged(f func()) externglib.SignalHandle {
+	return mountMonitor.Connect("mounts-changed", f)
 }
 
 // UnixMountMonitorGet gets the MountMonitor for the current thread-default main

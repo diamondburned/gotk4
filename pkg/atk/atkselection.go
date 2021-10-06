@@ -298,6 +298,6 @@ func (selection *Selection) SelectAllSelection() bool {
 
 // ConnectSelectionChanged: "selection-changed" signal is emitted by an object
 // which implements AtkSelection interface when the selection changes.
-func (s *Selection) ConnectSelectionChanged(f func()) glib.SignalHandle {
-	return s.Connect("selection-changed", f)
+func (selection *Selection) ConnectSelectionChanged(f func()) externglib.SignalHandle {
+	return selection.Connect("selection-changed", f)
 }

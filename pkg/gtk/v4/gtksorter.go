@@ -257,6 +257,6 @@ func (self *Sorter) Order() SorterOrder {
 // Depending on the change parameter, it may be possible to update the sort
 // order without a full resorting. Refer to the gtk.SorterChange documentation
 // for details.
-func (s *Sorter) ConnectChanged(f func(change SorterChange)) glib.SignalHandle {
-	return s.Connect("changed", f)
+func (self *Sorter) ConnectChanged(f func(change SorterChange)) externglib.SignalHandle {
+	return self.Connect("changed", f)
 }

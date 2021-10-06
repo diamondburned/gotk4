@@ -310,6 +310,6 @@ func (monitor *Monitor) IsPrimary() bool {
 	return _ok
 }
 
-func (m *Monitor) ConnectInvalidate(f func()) glib.SignalHandle {
-	return m.Connect("invalidate", f)
+func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
+	return monitor.Connect("invalidate", f)
 }

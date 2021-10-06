@@ -452,8 +452,8 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 // If you are interested in X GenericEvents, bear in mind that XGetEventData()
 // has been already called on the event, and XFreeEventData() will be called
 // afterwards.
-func (x *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) glib.SignalHandle {
-	return x.Connect("xevent", f)
+func (display *X11Display) ConnectXevent(f func(xevent cgo.Handle) bool) externglib.SignalHandle {
+	return display.Connect("xevent", f)
 }
 
 // X11DisplayOpen tries to open a new display to the X server given by

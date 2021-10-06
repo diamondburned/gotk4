@@ -568,6 +568,6 @@ func (obj *Value) SetValue(newValue float64) {
 //
 // Example: a password meter whose value changes as the user types their new
 // password. Appropiate value text would be "weak", "acceptable" and "strong".
-func (v *Value) ConnectValueChanged(f func(value float64, text string)) glib.SignalHandle {
-	return v.Connect("value-changed", f)
+func (obj *Value) ConnectValueChanged(f func(value float64, text string)) externglib.SignalHandle {
+	return obj.Connect("value-changed", f)
 }

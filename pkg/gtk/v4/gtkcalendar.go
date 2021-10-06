@@ -311,26 +311,26 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 }
 
 // ConnectDaySelected: emitted when the user selects a day.
-func (c *Calendar) ConnectDaySelected(f func()) glib.SignalHandle {
-	return c.Connect("day-selected", f)
+func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
+	return calendar.Connect("day-selected", f)
 }
 
 // ConnectNextMonth: emitted when the user switched to the next month.
-func (c *Calendar) ConnectNextMonth(f func()) glib.SignalHandle {
-	return c.Connect("next-month", f)
+func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
+	return calendar.Connect("next-month", f)
 }
 
 // ConnectNextYear: emitted when user switched to the next year.
-func (c *Calendar) ConnectNextYear(f func()) glib.SignalHandle {
-	return c.Connect("next-year", f)
+func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
+	return calendar.Connect("next-year", f)
 }
 
 // ConnectPrevMonth: emitted when the user switched to the previous month.
-func (c *Calendar) ConnectPrevMonth(f func()) glib.SignalHandle {
-	return c.Connect("prev-month", f)
+func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
+	return calendar.Connect("prev-month", f)
 }
 
 // ConnectPrevYear: emitted when user switched to the previous year.
-func (c *Calendar) ConnectPrevYear(f func()) glib.SignalHandle {
-	return c.Connect("prev-year", f)
+func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
+	return calendar.Connect("prev-year", f)
 }

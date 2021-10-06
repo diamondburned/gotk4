@@ -251,6 +251,6 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 //
 // Note: If removed != added, the positions of all later items in the model
 // change.
-func (l *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) glib.SignalHandle {
-	return l.Connect("items-changed", f)
+func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
+	return list.Connect("items-changed", f)
 }

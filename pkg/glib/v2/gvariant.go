@@ -544,7 +544,7 @@ func NewVariantBytestring(str []byte) *Variant {
 	var _cret *C.GVariant // in
 
 	_arg1 = (*C.gchar)(C.malloc(C.ulong(len(str) + 1)))
-	copy(unsafe.Slice(_arg1, len(str)), str)
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 
 	_cret = C.g_variant_new_bytestring(_arg1)
 	runtime.KeepAlive(str)

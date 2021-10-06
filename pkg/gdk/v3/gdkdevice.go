@@ -1027,14 +1027,14 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 // when the slave device routing events through the master device changes (for
 // example, user switches from the USB mouse to a tablet), in that case the
 // master device will change to reflect the new slave device axes and keys.
-func (d *Device) ConnectChanged(f func()) glib.SignalHandle {
-	return d.Connect("changed", f)
+func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
+	return device.Connect("changed", f)
 }
 
 // ConnectToolChanged signal is emitted on pen/eraser Devices whenever tools
 // enter or leave proximity.
-func (d *Device) ConnectToolChanged(f func(tool DeviceTool)) glib.SignalHandle {
-	return d.Connect("tool-changed", f)
+func (device *Device) ConnectToolChanged(f func(tool DeviceTool)) externglib.SignalHandle {
+	return device.Connect("tool-changed", f)
 }
 
 // DeviceGrabInfoLibgtkOnly determines information about the current keyboard

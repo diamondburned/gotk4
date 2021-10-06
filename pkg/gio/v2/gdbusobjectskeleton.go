@@ -185,6 +185,6 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 // enclosing object.
 //
 // The default class handler just returns TRUE.
-func (d *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) glib.SignalHandle {
-	return d.Connect("authorize-method", f)
+func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation DBusMethodInvocation) bool) externglib.SignalHandle {
+	return object.Connect("authorize-method", f)
 }

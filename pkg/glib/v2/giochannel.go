@@ -943,7 +943,7 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	if len(buf) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&buf).Data))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&buf)).Data))
 	}
 	_arg2 = C.gssize(count)
 

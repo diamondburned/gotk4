@@ -502,8 +502,8 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 //
 // Examples for such an event would be videos changing to the next frame or the
 // icon theme for an icon changing.
-func (p *Paintable) ConnectInvalidateContents(f func()) glib.SignalHandle {
-	return p.Connect("invalidate-contents", f)
+func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
+	return paintable.Connect("invalidate-contents", f)
 }
 
 // ConnectInvalidateSize: emitted when the intrinsic size of the paintable
@@ -515,8 +515,8 @@ func (p *Paintable) ConnectInvalidateContents(f func()) glib.SignalHandle {
 //
 // Examples for such an event would be a paintable displaying the contents of a
 // toplevel surface being resized.
-func (p *Paintable) ConnectInvalidateSize(f func()) glib.SignalHandle {
-	return p.Connect("invalidate-size", f)
+func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
+	return paintable.Connect("invalidate-size", f)
 }
 
 // NewPaintableEmpty returns a paintable that has the given intrinsic size and

@@ -144,6 +144,6 @@ func (hypertext *Hypertext) NLinks() int {
 
 // ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
 // object when one of the hyperlinks associated with the object is selected.
-func (h *Hypertext) ConnectLinkSelected(f func(arg1 int)) glib.SignalHandle {
-	return h.Connect("link-selected", f)
+func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
+	return hypertext.Connect("link-selected", f)
 }

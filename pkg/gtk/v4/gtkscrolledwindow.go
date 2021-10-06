@@ -913,8 +913,8 @@ func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
 //
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
-func (s *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) glib.SignalHandle {
-	return s.Connect("edge-overshot", f)
+func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("edge-overshot", f)
 }
 
 // ConnectEdgeReached: emitted whenever user-initiated scrolling makes the
@@ -926,8 +926,8 @@ func (s *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) glib.Sign
 //
 // Note: The pos argument is LTR/RTL aware, so callers should be aware too if
 // intending to provide behavior on horizontal edges.
-func (s *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) glib.SignalHandle {
-	return s.Connect("edge-reached", f)
+func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("edge-reached", f)
 }
 
 // ConnectMoveFocusOut: emitted when focus is moved away from the scrolled
@@ -937,8 +937,8 @@ func (s *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType)) glib.Signa
 //
 // The default bindings for this signal are Ctrl + Tab to move forward and Ctrl
 // + Shift + Tab to move backward.
-func (s *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) glib.SignalHandle {
-	return s.Connect("move-focus-out", f)
+func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) externglib.SignalHandle {
+	return scrolledWindow.Connect("move-focus-out", f)
 }
 
 // ConnectScrollChild: emitted when a keybinding that scrolls is pressed.
@@ -947,6 +947,6 @@ func (s *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)
 //
 // The horizontal or vertical adjustment is updated which triggers a signal that
 // the scrolled window’s child may listen to and scroll itself.
-func (s *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) glib.SignalHandle {
-	return s.Connect("scroll-child", f)
+func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollType, horizontal bool) bool) externglib.SignalHandle {
+	return scrolledWindow.Connect("scroll-child", f)
 }

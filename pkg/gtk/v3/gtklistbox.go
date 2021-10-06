@@ -843,18 +843,18 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
-func (l *ListBox) ConnectActivateCursorRow(f func()) glib.SignalHandle {
-	return l.Connect("activate-cursor-row", f)
+func (box *ListBox) ConnectActivateCursorRow(f func()) externglib.SignalHandle {
+	return box.Connect("activate-cursor-row", f)
 }
 
-func (l *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int)) glib.SignalHandle {
-	return l.Connect("move-cursor", f)
+func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int)) externglib.SignalHandle {
+	return box.Connect("move-cursor", f)
 }
 
 // ConnectRowActivated signal is emitted when a row has been activated by the
 // user.
-func (l *ListBox) ConnectRowActivated(f func(row ListBoxRow)) glib.SignalHandle {
-	return l.Connect("row-activated", f)
+func (box *ListBox) ConnectRowActivated(f func(row ListBoxRow)) externglib.SignalHandle {
+	return box.Connect("row-activated", f)
 }
 
 // ConnectRowSelected signal is emitted when a new row is selected, or (with a
@@ -863,26 +863,26 @@ func (l *ListBox) ConnectRowActivated(f func(row ListBoxRow)) glib.SignalHandle 
 // When the box is using K_SELECTION_MULTIPLE, this signal will not give you the
 // full picture of selection changes, and you should use the
 // ListBox::selected-rows-changed signal instead.
-func (l *ListBox) ConnectRowSelected(f func(row ListBoxRow)) glib.SignalHandle {
-	return l.Connect("row-selected", f)
+func (box *ListBox) ConnectRowSelected(f func(row ListBoxRow)) externglib.SignalHandle {
+	return box.Connect("row-selected", f)
 }
 
 // ConnectSelectAll signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted to select all children of the box, if the selection mode permits it.
 //
 // The default bindings for this signal is Ctrl-a.
-func (l *ListBox) ConnectSelectAll(f func()) glib.SignalHandle {
-	return l.Connect("select-all", f)
+func (box *ListBox) ConnectSelectAll(f func()) externglib.SignalHandle {
+	return box.Connect("select-all", f)
 }
 
 // ConnectSelectedRowsChanged signal is emitted when the set of selected rows
 // changes.
-func (l *ListBox) ConnectSelectedRowsChanged(f func()) glib.SignalHandle {
-	return l.Connect("selected-rows-changed", f)
+func (box *ListBox) ConnectSelectedRowsChanged(f func()) externglib.SignalHandle {
+	return box.Connect("selected-rows-changed", f)
 }
 
-func (l *ListBox) ConnectToggleCursorRow(f func()) glib.SignalHandle {
-	return l.Connect("toggle-cursor-row", f)
+func (box *ListBox) ConnectToggleCursorRow(f func()) externglib.SignalHandle {
+	return box.Connect("toggle-cursor-row", f)
 }
 
 // ConnectUnselectAll signal is a [keybinding signal][GtkBindingSignal] which
@@ -890,8 +890,8 @@ func (l *ListBox) ConnectToggleCursorRow(f func()) glib.SignalHandle {
 // permits it.
 //
 // The default bindings for this signal is Ctrl-Shift-a.
-func (l *ListBox) ConnectUnselectAll(f func()) glib.SignalHandle {
-	return l.Connect("unselect-all", f)
+func (box *ListBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
+	return box.Connect("unselect-all", f)
 }
 
 // ListBoxRowOverrider contains methods that are overridable.
@@ -1161,6 +1161,6 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 //
 // If you want to be notified when the user activates a row (by key or not), use
 // the ListBox::row-activated signal on the row’s parent ListBox.
-func (l *ListBoxRow) ConnectActivate(f func()) glib.SignalHandle {
-	return l.Connect("activate", f)
+func (row *ListBoxRow) ConnectActivate(f func()) externglib.SignalHandle {
+	return row.Connect("activate", f)
 }

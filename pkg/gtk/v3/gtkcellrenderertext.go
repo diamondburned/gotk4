@@ -104,6 +104,6 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 //
 // It is the responsibility of the application to update the model and store
 // new_text at the position indicated by path.
-func (c *CellRendererText) ConnectEdited(f func(path, newText string)) glib.SignalHandle {
-	return c.Connect("edited", f)
+func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
+	return renderer.Connect("edited", f)
 }

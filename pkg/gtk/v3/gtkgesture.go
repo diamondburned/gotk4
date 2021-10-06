@@ -713,8 +713,8 @@ func (gesture *Gesture) Ungroup() {
 // Note: These conditions may also happen when an extra touch (eg. a third touch
 // on a 2-touches gesture) is lifted, in that situation sequence won't pertain
 // to the current set of active touches, so don't rely on this being true.
-func (g *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
-	return g.Connect("begin", f)
+func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
+	return gesture.Connect("begin", f)
 }
 
 // ConnectCancel: this signal is emitted whenever a sequence is cancelled. This
@@ -724,8 +724,8 @@ func (g *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) glib.SignalH
 // gtk_gesture_set_sequence_state()).
 //
 // gesture must forget everything about sequence as a reaction to this signal.
-func (g *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
-	return g.Connect("cancel", f)
+func (gesture *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
+	return gesture.Connect("cancel", f)
 }
 
 // ConnectEnd: this signal is emitted when gesture either stopped recognizing
@@ -737,20 +737,20 @@ func (g *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) glib.Signal
 // previously triggering recognition on gesture (ie. a just pressed touch
 // sequence that exceeds Gesture:n-points). This situation may be detected by
 // checking through gtk_gesture_handles_sequence().
-func (g *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
-	return g.Connect("end", f)
+func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
+	return gesture.Connect("end", f)
 }
 
 // ConnectSequenceStateChanged: this signal is emitted whenever a sequence state
 // changes. See gtk_gesture_set_sequence_state() to know more about the
 // expectable sequence lifetimes.
-func (g *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) glib.SignalHandle {
-	return g.Connect("sequence-state-changed", f)
+func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) externglib.SignalHandle {
+	return gesture.Connect("sequence-state-changed", f)
 }
 
 // ConnectUpdate: this signal is emitted whenever an event is handled while the
 // gesture is recognized. sequence is guaranteed to pertain to the set of active
 // touches.
-func (g *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) glib.SignalHandle {
-	return g.Connect("update", f)
+func (gesture *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) externglib.SignalHandle {
+	return gesture.Connect("update", f)
 }

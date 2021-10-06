@@ -451,8 +451,8 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 //
 // This can happen either by calling gtk.RecentManager.AddItem() or by another
 // application.
-func (r *RecentManager) ConnectChanged(f func()) glib.SignalHandle {
-	return r.Connect("changed", f)
+func (manager *RecentManager) ConnectChanged(f func()) externglib.SignalHandle {
+	return manager.Connect("changed", f)
 }
 
 // RecentManagerGetDefault gets a unique instance of GtkRecentManager that you

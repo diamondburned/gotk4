@@ -348,6 +348,6 @@ func (toggleButton *ToggleButton) Toggled() {
 
 // ConnectToggled: should be connected if you wish to perform an action whenever
 // the ToggleButton's state is changed.
-func (t *ToggleButton) ConnectToggled(f func()) glib.SignalHandle {
-	return t.Connect("toggled", f)
+func (toggleButton *ToggleButton) ConnectToggled(f func()) externglib.SignalHandle {
+	return toggleButton.Connect("toggled", f)
 }

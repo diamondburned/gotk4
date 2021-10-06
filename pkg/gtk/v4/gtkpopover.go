@@ -590,11 +590,11 @@ func (popover *Popover) SetPosition(position PositionType) {
 // ConnectActivateDefault: emitted whend the user activates the default widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (p *Popover) ConnectActivateDefault(f func()) glib.SignalHandle {
-	return p.Connect("activate-default", f)
+func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
+	return popover.Connect("activate-default", f)
 }
 
 // ConnectClosed: emitted when the popover is closed.
-func (p *Popover) ConnectClosed(f func()) glib.SignalHandle {
-	return p.Connect("closed", f)
+func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
+	return popover.Connect("closed", f)
 }

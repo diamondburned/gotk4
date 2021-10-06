@@ -100,16 +100,16 @@ func (self *EventControllerMotion) IsPointer() bool {
 }
 
 // ConnectEnter signals that the pointer has entered the widget.
-func (e *EventControllerMotion) ConnectEnter(f func(x, y float64)) glib.SignalHandle {
-	return e.Connect("enter", f)
+func (self *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("enter", f)
 }
 
 // ConnectLeave signals that the pointer has left the widget.
-func (e *EventControllerMotion) ConnectLeave(f func()) glib.SignalHandle {
-	return e.Connect("leave", f)
+func (self *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
+	return self.Connect("leave", f)
 }
 
 // ConnectMotion: emitted when the pointer moves inside the widget.
-func (e *EventControllerMotion) ConnectMotion(f func(x, y float64)) glib.SignalHandle {
-	return e.Connect("motion", f)
+func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
+	return self.Connect("motion", f)
 }

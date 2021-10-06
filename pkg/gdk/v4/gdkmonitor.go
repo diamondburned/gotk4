@@ -309,6 +309,6 @@ func (monitor *Monitor) IsValid() bool {
 
 // ConnectInvalidate: emitted when the output represented by monitor gets
 // disconnected.
-func (m *Monitor) ConnectInvalidate(f func()) glib.SignalHandle {
-	return m.Connect("invalidate", f)
+func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
+	return monitor.Connect("invalidate", f)
 }

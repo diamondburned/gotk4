@@ -609,8 +609,8 @@ func (accelGroup *AccelGroup) Unlock() {
 
 // ConnectAccelActivate signal is an implementation detail of AccelGroup and not
 // meant to be used by applications.
-func (a *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) glib.SignalHandle {
-	return a.Connect("accel-activate", f)
+func (accelGroup *AccelGroup) ConnectAccelActivate(f func(acceleratable *externglib.Object, keyval uint, modifier gdk.ModifierType) bool) externglib.SignalHandle {
+	return accelGroup.Connect("accel-activate", f)
 }
 
 // AccelGroupEntry: instance of this type is always passed by reference.

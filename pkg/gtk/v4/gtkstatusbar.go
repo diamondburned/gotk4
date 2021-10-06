@@ -227,12 +227,12 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 
 // ConnectTextPopped: emitted whenever a new message is popped off a statusbar's
 // stack.
-func (s *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) glib.SignalHandle {
-	return s.Connect("text-popped", f)
+func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) externglib.SignalHandle {
+	return statusbar.Connect("text-popped", f)
 }
 
 // ConnectTextPushed: emitted whenever a new message gets pushed onto a
 // statusbar's stack.
-func (s *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) glib.SignalHandle {
-	return s.Connect("text-pushed", f)
+func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) externglib.SignalHandle {
+	return statusbar.Connect("text-pushed", f)
 }

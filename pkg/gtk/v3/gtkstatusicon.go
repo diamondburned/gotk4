@@ -937,8 +937,8 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 //
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
-func (s *StatusIcon) ConnectActivate(f func()) glib.SignalHandle {
-	return s.Connect("activate", f)
+func (statusIcon *StatusIcon) ConnectActivate(f func()) externglib.SignalHandle {
+	return statusIcon.Connect("activate", f)
 }
 
 // ConnectButtonPressEvent signal will be emitted when a button (typically from
@@ -946,8 +946,8 @@ func (s *StatusIcon) ConnectActivate(f func()) glib.SignalHandle {
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (s *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
-	return s.Connect("button-press-event", f)
+func (statusIcon *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+	return statusIcon.Connect("button-press-event", f)
 }
 
 // ConnectButtonReleaseEvent signal will be emitted when a button (typically
@@ -955,8 +955,8 @@ func (s *StatusIcon) ConnectButtonPressEvent(f func(event gdk.EventButton) bool)
 //
 // Whether this event is emitted is platform-dependent. Use the ::activate and
 // ::popup-menu signals in preference.
-func (s *StatusIcon) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) glib.SignalHandle {
-	return s.Connect("button-release-event", f)
+func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event gdk.EventButton) bool) externglib.SignalHandle {
+	return statusIcon.Connect("button-release-event", f)
 }
 
 // ConnectPopupMenu gets emitted when the user brings up the context menu of the
@@ -968,8 +968,8 @@ func (s *StatusIcon) ConnectButtonReleaseEvent(f func(event gdk.EventButton) boo
 //
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
-func (s *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) glib.SignalHandle {
-	return s.Connect("popup-menu", f)
+func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) externglib.SignalHandle {
+	return statusIcon.Connect("popup-menu", f)
 }
 
 // ConnectQueryTooltip: emitted when the hover timeout has expired with the
@@ -986,8 +986,8 @@ func (s *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) glib.Si
 //
 // Whether this signal is emitted is platform-dependent. For plain text
 // tooltips, use StatusIcon:tooltip-text in preference.
-func (s *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) glib.SignalHandle {
-	return s.Connect("query-tooltip", f)
+func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip Tooltip) bool) externglib.SignalHandle {
+	return statusIcon.Connect("query-tooltip", f)
 }
 
 // ConnectScrollEvent signal is emitted when a button in the 4 to 7 range is
@@ -995,12 +995,12 @@ func (s *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, too
 // for buttons 4 and 5 when the wheel is turned.
 //
 // Whether this event is emitted is platform-dependent.
-func (s *StatusIcon) ConnectScrollEvent(f func(event gdk.EventScroll) bool) glib.SignalHandle {
-	return s.Connect("scroll-event", f)
+func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event gdk.EventScroll) bool) externglib.SignalHandle {
+	return statusIcon.Connect("scroll-event", f)
 }
 
 // ConnectSizeChanged gets emitted when the size available for the image
 // changes, e.g. because the notification area got resized.
-func (s *StatusIcon) ConnectSizeChanged(f func(size int) bool) glib.SignalHandle {
-	return s.Connect("size-changed", f)
+func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) bool) externglib.SignalHandle {
+	return statusIcon.Connect("size-changed", f)
 }

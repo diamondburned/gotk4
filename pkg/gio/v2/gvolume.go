@@ -803,13 +803,13 @@ func (volume *Volume) ShouldAutomount() bool {
 }
 
 // ConnectChanged: emitted when the volume has been changed.
-func (v *Volume) ConnectChanged(f func()) glib.SignalHandle {
-	return v.Connect("changed", f)
+func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
+	return volume.Connect("changed", f)
 }
 
 // ConnectRemoved: this signal is emitted when the #GVolume have been removed.
 // If the recipient is holding references to the object they should release them
 // so the object can be finalized.
-func (v *Volume) ConnectRemoved(f func()) glib.SignalHandle {
-	return v.Connect("removed", f)
+func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
+	return volume.Connect("removed", f)
 }

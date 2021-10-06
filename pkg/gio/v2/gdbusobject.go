@@ -172,11 +172,11 @@ func (object *DBusObject) ObjectPath() string {
 }
 
 // ConnectInterfaceAdded: emitted when interface is added to object.
-func (d *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) glib.SignalHandle {
-	return d.Connect("interface-added", f)
+func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
+	return object.Connect("interface-added", f)
 }
 
 // ConnectInterfaceRemoved: emitted when interface is removed from object.
-func (d *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) glib.SignalHandle {
-	return d.Connect("interface-removed", f)
+func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
+	return object.Connect("interface-removed", f)
 }

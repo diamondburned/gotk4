@@ -143,6 +143,7 @@ var Preprocessors = []Preprocessor{
 	ModifyParamDirections("Gio-2.DBusInterfaceGetPropertyFunc", map[string]string{
 		"error": "out",
 	}),
+
 	ModifyCallable("Gdk-4.Clipboard.read_async", func(c *gir.CallableAttrs) {
 		// Fix this parameter's type not being a proper array.
 		p := FindParameter(c, "mime_types")
@@ -151,6 +152,47 @@ var Preprocessors = []Preprocessor{
 			Type:  &gir.Type{Name: "utf8"},
 		}
 	}),
+
+	modifyBufferInsert("Gtk-4.TextBuffer.insert"),
+	modifyBufferInsert("Gtk-4.TextBuffer.insert_markup"),
+	modifyBufferInsert("Gtk-4.TextBuffer.insert_at_cursor"),
+	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive"),
+	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive_at_cursor"),
+	modifyBufferInsert("Gtk-4.TextBuffer.set_text"),
+}
+
+func modifyBufferInsert(name string) Preprocessor {
+	return ModifyCallable(name, func(c *gir.CallableAttrs) {
+		p := FindParameter(c, "text")
+		if p == nil {
+			return
+		}
+
+		lenIx := findTextLenParam(c.Parameters.Parameters)
+		if lenIx == -1 {
+			return
+		}
+
+		p.Type = nil
+		p.Array = &gir.Array{
+			CType:          "const char*",
+			Type:           &gir.Type{Name: "gchar"},
+			Length:         &lenIx,
+			ZeroTerminated: new(bool), // false
+		}
+	})
+}
+
+func findTextLenParam(params []gir.Parameter) int {
+	const doc = "length of text"
+
+	for i, param := range params {
+		if param.Doc != nil && strings.Contains(param.Doc.String, doc) {
+			return i
+		}
+	}
+
+	return -1
 }
 
 var ConversionProcessors = []ConversionProcessor{
@@ -535,6 +577,35 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 				f("%s: %s: %s:%s (%s): %s", lvl, domain, codeFile, codeLine, codeFunc, message)
 				return LogWriterHandled
 			}
+		}
+	`)
+
+	return nil
+}
+
+func GtkTextBufferInsert(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["gtktextbuffer.go"]
+	if !ok {
+		return errors.New("missing file gmessages.go")
+	}
+
+	h := fg.Header()
+	h.Import("reflect")
+	h.Import("runtime")
+	h.Import("unsafe")
+
+	p := fg.Pen()
+	p.Line(`
+		// Insert is a convenient method around InsertBytes.
+		func (buffer *TextBuffer) Insert(iter *TextIter, str string) {
+			var bytes []byte
+			bytesHeader := (*reflect.SliceHeader)(unsafe.Pointer(&bytes))
+			bytesHeader.Len = len(str)
+			bytesHeader.Cap = len(str)
+			bytesHeader.Data = (*reflect.StringHeader)(unsafe.Pointer(&str)).Data
+
+			buffer.InsertBytes(iter, bytes)
+			runtime.KeepAlive(str)
 		}
 	`)
 

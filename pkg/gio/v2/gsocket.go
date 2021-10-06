@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1519,7 +1520,7 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 //    - ctx: GCancellable or NULL.
 //    - buffer: buffer containing the data to send.
 //
-func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
+func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -1535,7 +1536,7 @@ func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&buffer).Data))
 	}
 
 	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -1849,7 +1850,7 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 //    - address or NULL.
 //    - buffer: buffer containing the data to send.
 //
-func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffer []byte) (int, error) {
+func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffer string) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
@@ -1869,7 +1870,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	}
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&buffer).Data))
 	}
 
 	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -1899,7 +1900,7 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 //    - buffer: buffer containing the data to send.
 //    - blocking: whether to do blocking or non-blocking I/O.
 //
-func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
+func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -1916,7 +1917,7 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, block
 	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&buffer).Data))
 	}
 	if blocking {
 		_arg3 = C.TRUE

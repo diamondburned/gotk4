@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1332,25 +1333,24 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 //
 //    - iter: position in the buffer.
 //    - text in UTF-8 format.
-//    - len: length of text in bytes, or -1.
 //
-func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int) {
+func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.char          // out
-	var _arg3 C.int            // out
+	var _arg3 C.int
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(len)
+	_arg3 = (C.int)(len(text))
+	if len(text) > 0 {
+		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&text).Data))
+	}
 
 	C.gtk_text_buffer_insert(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
 }
 
 // InsertAtCursor inserts text in buffer.
@@ -1361,22 +1361,21 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string, len int) {
 // The function takes the following parameters:
 //
 //    - text in UTF-8 format.
-//    - len: length of text, in bytes.
 //
-func (buffer *TextBuffer) InsertAtCursor(text string, len int) {
+func (buffer *TextBuffer) InsertAtCursor(text string) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
+	var _arg2 C.int
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
+	_arg2 = (C.int)(len(text))
+	if len(text) > 0 {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&text).Data))
+	}
 
 	C.gtk_text_buffer_insert_at_cursor(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
 }
 
 // InsertChildAnchor inserts a child widget anchor into the text buffer at iter.
@@ -1427,22 +1426,22 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 //
 //    - iter: position in buffer.
 //    - text: some UTF-8 text.
-//    - len: length of text in bytes, or -1.
 //    - defaultEditable: default editability of buffer.
 //
-func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool {
+func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.char          // out
-	var _arg3 C.int            // out
-	var _arg4 C.gboolean       // out
-	var _cret C.gboolean       // in
+	var _arg3 C.int
+	var _arg4 C.gboolean // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(len)
+	_arg3 = (C.int)(len(text))
+	if len(text) > 0 {
+		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&text).Data))
+	}
 	if defaultEditable {
 		_arg4 = C.TRUE
 	}
@@ -1451,7 +1450,6 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
 	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
@@ -1474,20 +1472,20 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, len int
 // The function takes the following parameters:
 //
 //    - text in UTF-8 format.
-//    - len: length of text in bytes, or -1.
 //    - defaultEditable: default editability of buffer.
 //
-func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool {
+func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 C.gboolean       // out
-	var _cret C.gboolean       // in
+	var _arg2 C.int
+	var _arg3 C.gboolean // out
+	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
+	_arg2 = (C.int)(len(text))
+	if len(text) > 0 {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&text).Data))
+	}
 	if defaultEditable {
 		_arg3 = C.TRUE
 	}
@@ -1495,7 +1493,6 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, len int, defaul
 	_cret = C.gtk_text_buffer_insert_interactive_at_cursor(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
 	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out

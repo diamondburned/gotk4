@@ -264,7 +264,17 @@ func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueCo
 		existing = &of.Inner[0]
 	}
 
-	return conv.convertTypeExisting(of, in, out, inner, existing)
+	value := conv.convertTypeExisting(of, in, out, inner, existing)
+	if value == nil {
+		switch {
+		case of.Array != nil:
+			of.Logln(logger.Debug, "convertInner fail on array", of.Array.Type.Name)
+		case len(of.Type.Types) > 0:
+			of.Logln(logger.Debug, "convertInner fail on inner types", of.Type.Types[0].Name)
+		}
+	}
+
+	return value
 }
 
 // convertType converts a manually-crafted value with the given type.

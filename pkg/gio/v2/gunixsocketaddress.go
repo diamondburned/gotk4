@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -89,14 +90,14 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for path.
 //
 // Deprecated: Use g_unix_socket_address_new_with_type().
-func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
+func NewUnixSocketAddressAbstract(path string) *UnixSocketAddress {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint
 	var _cret *C.GSocketAddress // in
 
 	_arg2 = (C.gint)(len(path))
 	if len(path) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&path).Data))
 	}
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
@@ -139,7 +140,7 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 // connecting to a server created by another process, you must use the
 // appropriate type corresponding to how that process created its listening
 // socket.
-func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixSocketAddress {
+func NewUnixSocketAddressWithType(path string, typ UnixSocketAddressType) *UnixSocketAddress {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint
 	var _arg3 C.GUnixSocketAddressType // out
@@ -147,7 +148,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixS
 
 	_arg2 = (C.gint)(len(path))
 	if len(path) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&path).Data))
 	}
 	_arg3 = C.GUnixSocketAddressType(typ)
 

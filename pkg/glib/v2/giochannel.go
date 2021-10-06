@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -932,7 +933,7 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 // of reading and writing is not allowed. A call to g_io_channel_write_chars ()
 // may only be made on a channel from which data has been read in the cases
 // described in the documentation for g_io_channel_set_encoding ().
-func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, error) {
+func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gssize      // out
@@ -942,7 +943,7 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 
 	_arg0 = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(channel)))
 	if len(buf) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&buf).Data))
 	}
 	_arg2 = C.gssize(count)
 

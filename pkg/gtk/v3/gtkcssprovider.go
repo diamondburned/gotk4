@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -141,7 +142,7 @@ func NewCSSProvider() *CSSProvider {
 //
 //    - data: CSS data loaded in memory.
 //
-func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
+func (cssProvider *CSSProvider) LoadFromData(data string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gssize
@@ -150,7 +151,7 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = (C.gssize)(len(data))
 	if len(data) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&data).Data))
 	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)

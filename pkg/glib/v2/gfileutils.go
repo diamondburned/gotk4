@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -560,7 +561,7 @@ func FileReadLink(filename string) (string, error) {
 // convenience wrapper around calling g_file_set_contents_full() with flags set
 // to G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING and
 // mode set to 0666.
-func FileSetContents(filename string, contents []byte) error {
+func FileSetContents(filename, contents string) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
@@ -570,7 +571,7 @@ func FileSetContents(filename string, contents []byte) error {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
-		_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
 	}
 
 	C.g_file_set_contents(_arg1, _arg2, _arg3, &_cerr)
@@ -641,7 +642,7 @@ func FileSetContents(filename string, contents []byte) error {
 // If the file didn’t exist before and is created, it will be given the
 // permissions from mode. Otherwise, the permissions of the existing file may be
 // changed to mode depending on flags, or they may remain unchanged.
-func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) error {
+func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, mode int) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
@@ -653,7 +654,7 @@ func FileSetContentsFull(filename string, contents []byte, flags FileSetContents
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (C.gssize)(len(contents))
 	if len(contents) > 0 {
-		_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+		_arg2 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
 	}
 	_arg4 = C.GFileSetContentsFlags(flags)
 	_arg5 = C.int(mode)

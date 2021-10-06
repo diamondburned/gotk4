@@ -2,6 +2,7 @@ package typeconv
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -43,6 +44,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		length = conv.convertParam(*array.Length)
 		// Ensure length is present.
 		if length == nil {
+			value.Logln(logger.Debug, "missing array length", *array.Length)
 			return false
 		}
 
@@ -66,28 +68,43 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 	// These cases have invalid inner type names that aren't useful to us, so we
 	// handle them on our own.
-	switch {
-	case types.CleanCType(array.CType, false) == "gchar*":
-		// This is technically a []byte, and we should use a []byte, because the
-		// C code may mutate the backing array. The internal type is "utf8",
-		// which is false, because the C type is just a single character.
-		value.In.Type = "[]byte"
-		value.inDecl.Reset()
-		value.inDecl.Linef("var %s []byte", value.InName)
+	switch types.CleanCType(array.CType, false) {
+	case "char*", "gchar*":
+		isString := strings.Contains(array.CType, "const") &&
+			!value.MustRealloc() &&
+			!array.IsZeroTerminated()
 
-		if array.IsZeroTerminated() {
-			// Ensure that the input has a null byte.
-			value.p.Linef("%s = append(%[1]s, 0)", value.InName)
+		if isString {
+			value.In.Type = "string"
+		} else {
+			// This is technically a []byte, and we should use a []byte, because
+			// the C code may mutate the backing array. The internal type is
+			// "utf8", which is false, because the C type is just a single
+			// character.
+			value.In.Type = "[]byte"
 		}
 
+		value.inDecl.Reset()
+		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
+
 		// Only hand over Go memory if we don't have to reallocate.
-		if !value.MustRealloc() {
+		if !value.MustRealloc() && !array.IsZeroTerminated() {
 			value.header.Import("unsafe")
 			value.p.Linef("if len(%s) > 0 {", value.InName)
-			value.p.Linef(
-				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.Out.Set, value.Out.Type, value.InName,
-			)
+
+			if !isString {
+				value.p.Linef(
+					"%s = (%s)(unsafe.Pointer(&%s[0]))",
+					value.Out.Set, value.Out.Type, value.InName,
+				)
+			} else {
+				value.header.Import("reflect")
+				value.p.Linef(
+					"%s = (%s)(unsafe.Pointer((*reflect.StringHeader)(&%s).Data))",
+					value.Out.Set, value.Out.Type, value.InName,
+				)
+			}
+
 			value.p.Linef("}")
 			return true
 		}
@@ -95,9 +112,22 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// Use CBytes, which copies. Since we're transferring ownership to C,
 		// don't free it after we're done. CString is actually null-terminated,
 		// but we're giving the caller the length, so an extra byte is fine.
+		if !array.IsZeroTerminated() && !isString {
+			value.p.Linef(
+				"%s = (%s)(C.CBytes(%s))",
+				value.Out.Set, value.Out.Type, value.InName,
+			)
+			return true
+		}
+
+		// Over-malloc once to have the zero terminator.
 		value.p.Linef(
-			"%s = (%s)(C.CBytes(%s))",
+			"%s = (%s)(C.malloc(C.ulong(len(%s) + 1)))",
 			value.Out.Set, value.Out.Type, value.InName,
+		)
+		value.p.Linef(
+			"copy(unsafe.Slice(%s, len(%s)), %[2]s)",
+			value.Out.Set, value.InName,
 		)
 
 		return true

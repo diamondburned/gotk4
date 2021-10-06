@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -2699,7 +2700,7 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 // Returns TRUE if all of str was valid. Many GLib and GTK+ routines require
 // valid UTF-8 as input; so data read from a file or the network should be
 // checked with g_utf8_validate() before doing anything else with it.
-func UTF8Validate(str []byte) (string, bool) {
+func UTF8Validate(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar   // in
@@ -2707,7 +2708,7 @@ func UTF8Validate(str []byte) (string, bool) {
 
 	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
 	}
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
@@ -2730,7 +2731,7 @@ func UTF8Validate(str []byte) (string, bool) {
 //
 // As with g_utf8_validate(), but max_len must be set, and hence this function
 // will always return FALSE if any of the bytes of str are nul.
-func UTF8ValidateLen(str []byte) (string, bool) {
+func UTF8ValidateLen(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gsize
 	var _arg3 *C.gchar   // in
@@ -2738,7 +2739,7 @@ func UTF8ValidateLen(str []byte) (string, bool) {
 
 	_arg2 = (C.gsize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
 	}
 
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)

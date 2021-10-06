@@ -4,6 +4,7 @@ package glib
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -78,7 +79,7 @@ func (c ConvertError) String() string {
 //
 // Using extensions such as "//TRANSLIT" may not work (or may not work well) on
 // many platforms. Consider using g_str_to_ascii() instead.
-func Convert(str []byte, toCodeset, fromCodeset string) (uint, []byte, error) {
+func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar  // out
@@ -90,7 +91,7 @@ func Convert(str []byte, toCodeset, fromCodeset string) (uint, []byte, error) {
 
 	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -132,7 +133,7 @@ func Convert(str []byte, toCodeset, fromCodeset string) (uint, []byte, error) {
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
 // character is not a mark that could combine with the base character.).
-func ConvertWithFallback(str []byte, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
+func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar  // out
@@ -145,7 +146,7 @@ func ConvertWithFallback(str []byte, toCodeset, fromCodeset, fallback string) (u
 
 	_arg2 = (C.gssize)(len(str))
 	if len(str) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&str).Data))
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(toCodeset)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -490,7 +491,7 @@ func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 // treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
 // compatibility with earlier versions of this library. Use g_convert() to
 // produce output that may contain embedded nul characters.
-func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
+func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 C.gsize   // in
@@ -500,7 +501,7 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 
 	_arg2 = (C.gssize)(len(opsysstring))
 	if len(opsysstring) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
+		_arg1 = (*C.gchar)(unsafe.Pointer((*reflect.StringHeader)(&opsysstring).Data))
 	}
 
 	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)

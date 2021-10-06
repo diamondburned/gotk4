@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -1239,10 +1240,10 @@ type Filer interface {
 	ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceContents replaces the contents of file with contents of length
 	// bytes.
-	ReplaceContents(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags) (string, error)
+	ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error)
 	// ReplaceContentsAsync starts an asynchronous replacement of file with the
 	// given contents of length bytes.
-	ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
+	ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
 	// takes a #GBytes input instead.
 	ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
@@ -5068,7 +5069,7 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 //    - makeBackup: TRUE if a backup should be created.
 //    - flags: set of CreateFlags.
 //
-func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
+func (file *File) ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg7 *C.GCancellable // out
 	var _arg1 *C.char         // out
@@ -5087,7 +5088,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 	}
 	_arg2 = (C.gsize)(len(contents))
 	if len(contents) > 0 {
-		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
 	}
 	if etag != "" {
 		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
@@ -5148,7 +5149,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 //    - flags: set of CreateFlags.
 //    - callback to call when the request is satisfied.
 //
-func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile        // out
 	var _arg6 *C.GCancellable // out
 	var _arg1 *C.char         // out
@@ -5167,7 +5168,7 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 	}
 	_arg2 = (C.gsize)(len(contents))
 	if len(contents) > 0 {
-		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(&contents).Data))
 	}
 	if etag != "" {
 		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))

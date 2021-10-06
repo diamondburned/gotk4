@@ -99,6 +99,11 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 }
 
 // AddBytes appends bytes to data that can be read from the input stream.
+//
+// The function takes the following parameters:
+//
+//    - bytes: input data.
+//
 func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _arg0 *C.GMemoryInputStream // out
 	var _arg1 *C.GBytes             // out

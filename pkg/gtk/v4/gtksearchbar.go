@@ -117,6 +117,11 @@ func NewSearchBar() *SearchBar {
 // The entry should be a descendant of the search bar. Calling this function
 // manually is only required if the entry isn’t the direct child of the search
 // bar (as in our main example).
+//
+// The function takes the following parameters:
+//
+//    - entry: GtkEditable.
+//
 func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
@@ -225,6 +230,11 @@ func (bar *SearchBar) ShowCloseButton() bool {
 }
 
 // SetChild sets the child widget of bar.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -250,6 +260,11 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget.
+//
 func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -265,6 +280,11 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 }
 
 // SetSearchMode switches the search mode on or off.
+//
+// The function takes the following parameters:
+//
+//    - searchMode: new state of the search mode.
+//
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
@@ -284,6 +304,11 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 // Applications that already have a “search” toggle button should not show a
 // close button in their search bar, as it duplicates the role of the toggle
 // button.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether the close button will be shown or not.
+//
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out

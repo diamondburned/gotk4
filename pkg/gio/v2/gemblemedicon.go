@@ -81,6 +81,11 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 }
 
 // AddEmblem adds emblem to the #GList of #GEmblems.
+//
+// The function takes the following parameters:
+//
+//    - emblem: #GEmblem.
+//
 func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out

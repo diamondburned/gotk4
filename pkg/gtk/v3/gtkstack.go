@@ -198,6 +198,12 @@ func NewStack() *Stack {
 }
 
 // AddNamed adds a child to stack. The child is identified by the name.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - name for child.
+//
 func (stack *Stack) AddNamed(child Widgetter, name string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
@@ -217,6 +223,13 @@ func (stack *Stack) AddNamed(child Widgetter, name string) {
 // AddTitled adds a child to stack. The child is identified by the name. The
 // title will be used by StackSwitcher to represent child in a tab bar, so it
 // should be short.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - name for child.
+//    - title: human-readable title for child.
+//
 func (stack *Stack) AddTitled(child Widgetter, name, title string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
@@ -239,6 +252,11 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) {
 
 // ChildByName finds the child of the Stack with the name given as the argument.
 // Returns NULL if there is no child with this name.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to find.
+//
 func (stack *Stack) ChildByName(name string) Widgetter {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.gchar     // out
@@ -459,6 +477,11 @@ func (stack *Stack) VisibleChildName() string {
 // is homogeneous, the Stack will request the same width for all its children.
 // If it isn't, the stack may change width when a different child becomes
 // visible.
+//
+// The function takes the following parameters:
+//
+//    - hhomogeneous: TRUE to make stack horizontally homogeneous.
+//
 func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -479,6 +502,11 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 //
 // Since 3.16, homogeneity can be controlled separately for horizontal and
 // vertical size, with the Stack:hhomogeneous and Stack:vhomogeneous.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: TRUE to make stack homogeneous.
+//
 func (stack *Stack) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -498,6 +526,11 @@ func (stack *Stack) SetHomogeneous(homogeneous bool) {
 // TRUE, stack will interpolate its size between the current one and the one
 // it'll take after changing the visible child, according to the set transition
 // duration.
+//
+// The function takes the following parameters:
+//
+//    - interpolateSize: new value.
+//
 func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -514,6 +547,11 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 
 // SetTransitionDuration sets the duration that transitions between pages in
 // stack will take.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (stack *Stack) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.guint     // out
@@ -533,6 +571,11 @@ func (stack *Stack) SetTransitionDuration(duration uint) {
 // The transition type can be changed without problems at runtime, so it is
 // possible to change the animation based on the page that is about to become
 // current.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
 func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 C.GtkStackTransitionType // out
@@ -548,6 +591,11 @@ func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it is
 // homogeneous, the Stack will request the same height for all its children. If
 // it isn't, the stack may change height when a different child becomes visible.
+//
+// The function takes the following parameters:
+//
+//    - vhomogeneous: TRUE to make stack vertically homogeneous.
+//
 func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -569,6 +617,11 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - child of stack.
+//
 func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
@@ -585,6 +638,12 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 //
 // Note that the child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to make visible.
+//    - transition type to use.
+//
 func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 *C.gchar                 // out
@@ -608,6 +667,11 @@ func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionT
 //
 // Note that the child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to make visible.
+//
 func (stack *Stack) SetVisibleChildName(name string) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 *C.gchar    // out

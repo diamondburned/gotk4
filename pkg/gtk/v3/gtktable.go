@@ -182,6 +182,23 @@ func NewTable(rows, columns uint, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - leftAttach: column number to attach the left side of a child widget to.
+//    - rightAttach: column number to attach the right side of a child widget
+//    to.
+//    - topAttach: row number to attach the top of a child widget to.
+//    - bottomAttach: row number to attach the bottom of a child widget to.
+//    - xoptions: used to specify the properties of the child widget when the
+//    table is resized.
+//    - yoptions: same as xoptions, except this field determines behaviour of
+//    vertical resizing.
+//    - xpadding: integer value specifying the padding on the left and right of
+//    the widget being added to the table.
+//    - ypadding: amount of padding above and below the child widget.
+//
 func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint, xoptions, yoptions AttachOptions, xpadding, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
@@ -226,6 +243,17 @@ func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, 
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget to add.
+//    - leftAttach: column number to attach the left side of the child widget
+//    to.
+//    - rightAttach: column number to attach the right side of the child widget
+//    to.
+//    - topAttach: row number to attach the top of the child widget to.
+//    - bottomAttach: row number to attach the bottom of the child widget to.
+//
 func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
@@ -254,6 +282,11 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 // See gtk_table_set_col_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
+//
+// The function takes the following parameters:
+//
+//    - column in the table, 0 indicates the first column.
+//
 func (table *Table) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -342,6 +375,11 @@ func (table *Table) Homogeneous() bool {
 // gtk_table_set_row_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
+//
+// The function takes the following parameters:
+//
+//    - row in the table, 0 indicates the first row.
+//
 func (table *Table) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -387,6 +425,12 @@ func (table *Table) Size() (rows uint, columns uint) {
 // function allows you to do so.
 //
 // Deprecated: Grid resizes automatically.
+//
+// The function takes the following parameters:
+//
+//    - rows: new number of rows.
+//    - columns: new number of columns.
+//
 func (table *Table) Resize(rows, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -408,6 +452,12 @@ func (table *Table) Resize(rows, columns uint) {
 // Deprecated: Use gtk_widget_set_margin_start() and gtk_widget_set_margin_end()
 // on the widgets contained in the row if you need this functionality. Grid does
 // not support per-row spacing.
+//
+// The function takes the following parameters:
+//
+//    - column whose spacing should be changed.
+//    - spacing: number of pixels that the spacing should take up.
+//
 func (table *Table) SetColSpacing(column, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -426,6 +476,12 @@ func (table *Table) SetColSpacing(column, spacing uint) {
 // SetColSpacings sets the space between every column in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_column_spacing() with Grid.
+//
+// The function takes the following parameters:
+//
+//    - spacing: number of pixels of space to place between every column in the
+//    table.
+//
 func (table *Table) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -443,6 +499,12 @@ func (table *Table) SetColSpacings(spacing uint) {
 //
 // Deprecated: Use gtk_grid_set_row_homogeneous() and
 // gtk_grid_set_column_homogeneous() with Grid.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: set to TRUE to ensure all table cells are the same size.
+//    Set to FALSE if this is not your desired behaviour.
+//
 func (table *Table) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.gboolean  // out
@@ -463,6 +525,12 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 // Deprecated: Use gtk_widget_set_margin_top() and
 // gtk_widget_set_margin_bottom() on the widgets contained in the row if you
 // need this functionality. Grid does not support per-row spacing.
+//
+// The function takes the following parameters:
+//
+//    - row number whose spacing will be changed.
+//    - spacing: number of pixels that the spacing should take up.
+//
 func (table *Table) SetRowSpacing(row, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
@@ -481,6 +549,12 @@ func (table *Table) SetRowSpacing(row, spacing uint) {
 // SetRowSpacings sets the space between every row in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_row_spacing() with Grid.
+//
+// The function takes the following parameters:
+//
+//    - spacing: number of pixels of space to place between every row in the
+//    table.
+//
 func (table *Table) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out

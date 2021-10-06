@@ -277,6 +277,11 @@ func (cellView *CellView) Model() TreeModeller {
 // their last value; this is not normally a desired result, but may be a needed
 // intermediate state if say, the model for the CellView becomes temporarily
 // empty.
+//
+// The function takes the following parameters:
+//
+//    - path or NULL to unset.
+//
 func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
@@ -295,6 +300,11 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 // sensitive state, this is used by ComboBox menus to ensure that rows with
 // insensitive cells that contain children appear sensitive in the parent menu
 // item.
+//
+// The function takes the following parameters:
+//
+//    - drawSensitive: whether to draw all cells in a sensitive state.
+//
 func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
@@ -315,6 +325,11 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 // This is used by ComboBox to ensure that the cell view displayed on the combo
 // box’s button always gets enough space and does not resize when selection
 // changes.
+//
+// The function takes the following parameters:
+//
+//    - fitModel: whether cell_view should request space for the whole model.
+//
 func (cellView *CellView) SetFitModel(fitModel bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
@@ -332,6 +347,11 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 // SetModel sets the model for cell_view. If cell_view already has a model set,
 // it will remove it before setting the new model. If model is NULL, then it
 // will unset the old model.
+//
+// The function takes the following parameters:
+//
+//    - model: TreeModel.
+//
 func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out

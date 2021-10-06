@@ -109,6 +109,13 @@ func (monitor *FileMonitor) Cancel() bool {
 // Implementations are responsible to call this method from the [thread-default
 // main context][g-main-context-push-thread-default] of the thread that the
 // monitor was created in.
+//
+// The function takes the following parameters:
+//
+//    - child: #GFile.
+//    - otherFile: #GFile.
+//    - eventType: set of MonitorEvent flags.
+//
 func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
@@ -148,6 +155,12 @@ func (monitor *FileMonitor) IsCancelled() bool {
 
 // SetRateLimit sets the rate limit to which the monitor will report consecutive
 // change events to the same file.
+//
+// The function takes the following parameters:
+//
+//    - limitMsecs: non-negative integer with the limit in milliseconds to poll
+//    for changes.
+//
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out

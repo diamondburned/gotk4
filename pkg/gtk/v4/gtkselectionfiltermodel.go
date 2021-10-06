@@ -98,6 +98,11 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 // Note that GTK makes no effort to ensure that model conforms to the item type
 // of self. It assumes that the caller knows what they are doing and have set up
 // an appropriate filter to ensure that item types match.
+//
+// The function takes the following parameters:
+//
+//    - model to be filtered.
+//
 func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _arg1 *C.GtkSelectionModel       // out

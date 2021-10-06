@@ -77,6 +77,11 @@ func marshalThemingEnginer(p uintptr) (interface{}, error) {
 // BackgroundColor gets the background color for a given state.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the color for.
+//
 func (engine *ThemingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -99,6 +104,11 @@ func (engine *ThemingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 // Border gets the border for a given state as a Border.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the border for.
+//
 func (engine *ThemingEngine) Border(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -121,6 +131,11 @@ func (engine *ThemingEngine) Border(state StateFlags) Border {
 // BorderColor gets the border color for a given state.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the color for.
+//
 func (engine *ThemingEngine) BorderColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -143,6 +158,11 @@ func (engine *ThemingEngine) BorderColor(state StateFlags) gdk.RGBA {
 // Color gets the foreground color for a given state.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the color for.
+//
 func (engine *ThemingEngine) Color(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -185,6 +205,11 @@ func (engine *ThemingEngine) Direction() TextDirection {
 // Font returns the font description for a given state.
 //
 // Deprecated: Use gtk_theming_engine_get().
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the font for.
+//
 func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkThemingEngine     // out
 	var _arg1 C.GtkStateFlags         // out
@@ -226,6 +251,11 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 // Margin gets the margin for a given state as a Border.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the border for.
+//
 func (engine *ThemingEngine) Margin(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -248,6 +278,11 @@ func (engine *ThemingEngine) Margin(state StateFlags) Border {
 // Padding gets the padding for a given state as a Border.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - state to retrieve the padding for.
+//
 func (engine *ThemingEngine) Padding(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
@@ -297,6 +332,12 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 // apply to the currently rendered element.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - property name.
+//    - state to retrieve the value for.
+//
 func (engine *ThemingEngine) Property(property string, state StateFlags) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -371,6 +412,11 @@ func (engine *ThemingEngine) State() StateFlags {
 // StyleProperty gets the value for a widget style property.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - propertyName: name of the widget style property.
+//
 func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -395,6 +441,11 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value
 // given class name.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - styleClass class name to look up.
+//
 func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -422,6 +473,11 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 // region.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - styleRegion: region name.
+//
 func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -451,6 +507,11 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 // map.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - colorName: color name to lookup.
+//
 func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
@@ -485,6 +546,11 @@ func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 // is being set to TRUE and from 1 to 0 when it’s being set to FALSE.
 //
 // Deprecated: Always returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - state: widget state.
+//
 func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateType      // out

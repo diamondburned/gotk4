@@ -170,6 +170,11 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 //
 // This function is intended for implementors of GtkSorter subclasses and should
 // not be called from other functions.
+//
+// The function takes the following parameters:
+//
+//    - change: how the sorter changed.
+//
 func (self *Sorter) Changed(change SorterChange) {
 	var _arg0 *C.GtkSorter      // out
 	var _arg1 C.GtkSorterChange // out
@@ -193,6 +198,12 @@ func (self *Sorter) Changed(change SorterChange) {
 //
 // The sorter may signal it conforms to additional constraints via the return
 // value of gtk.Sorter.GetOrder().
+//
+// The function takes the following parameters:
+//
+//    - item1: first item to compare.
+//    - item2: second item to compare.
+//
 func (self *Sorter) Compare(item1, item2 *externglib.Object) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out

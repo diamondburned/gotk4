@@ -198,6 +198,11 @@ func (res *AsyncResult) UserData() cgo.Handle {
 
 // IsTagged checks if res has the given source_tag (generally a function pointer
 // indicating the function res was created by).
+//
+// The function takes the following parameters:
+//
+//    - sourceTag: application-defined tag.
+//
 func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out

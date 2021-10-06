@@ -35,11 +35,11 @@ type EditableTextOverrider interface {
 	// DeleteText: delete text start_pos up to, but not including end_pos.
 	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
-	InsertText(_string string, length int, position *int)
+	InsertText(str string, length int, position *int)
 	// PasteText: paste text from clipboard to specified position.
 	PasteText(position int)
 	// SetTextContents: set text contents of text.
-	SetTextContents(_string string)
+	SetTextContents(str string)
 }
 
 // EditableText should be implemented by UI components which contain text which
@@ -67,11 +67,11 @@ type EditableTexter interface {
 	// DeleteText: delete text start_pos up to, but not including end_pos.
 	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
-	InsertText(_string string, length int, position *int)
+	InsertText(str string, length int, position *int)
 	// PasteText: paste text from clipboard to specified position.
 	PasteText(position int)
 	// SetTextContents: set text contents of text.
-	SetTextContents(_string string)
+	SetTextContents(str string)
 }
 
 var _ EditableTexter = (*EditableText)(nil)
@@ -90,6 +90,12 @@ func marshalEditableTexter(p uintptr) (interface{}, error) {
 
 // CopyText: copy text from start_pos up to, but not including end_pos to the
 // clipboard.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
 func (text *EditableText) CopyText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -107,6 +113,12 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 
 // CutText: copy text from start_pos up to, but not including end_pos to the
 // clipboard and then delete from the widget.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
 func (text *EditableText) CutText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -123,6 +135,12 @@ func (text *EditableText) CutText(startPos, endPos int) {
 }
 
 // DeleteText: delete text start_pos up to, but not including end_pos.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
 func (text *EditableText) DeleteText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -139,26 +157,40 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 }
 
 // InsertText: insert text at a given position.
-func (text *EditableText) InsertText(_string string, length int, position *int) {
+//
+// The function takes the following parameters:
+//
+//    - str: text to insert.
+//    - length of text to insert, in bytes.
+//    - position: caller initializes this to the position at which to insert
+//    the text. After the call it points at the position after the newly
+//    inserted text.
+//
+func (text *EditableText) InsertText(str string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // out
 	var _arg3 *C.gint            // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 	_arg3 = (*C.gint)(unsafe.Pointer(position))
 
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(position)
 }
 
 // PasteText: paste text from clipboard to specified position.
+//
+// The function takes the following parameters:
+//
+//    - position to paste.
+//
 func (text *EditableText) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -172,15 +204,20 @@ func (text *EditableText) PasteText(position int) {
 }
 
 // SetTextContents: set text contents of text.
-func (text *EditableText) SetTextContents(_string string) {
+//
+// The function takes the following parameters:
+//
+//    - str: string to set for text contents of text.
+//
+func (text *EditableText) SetTextContents(str string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_editable_text_set_text_contents(_arg0, _arg1)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 }

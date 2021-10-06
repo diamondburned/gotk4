@@ -268,6 +268,13 @@ func (display *X11Display) Grab() {
 // cursors constructed with gdk_cursor_new_from_texture() will have to be
 // handled by the application (GTK applications can learn about cursor theme
 // changes by listening for change notification for the corresponding Setting).
+//
+// The function takes the following parameters:
+//
+//    - theme: name of the cursor theme to use, or NULL to unset a previously
+//    set value.
+//    - size: cursor size to use, or 0 to keep the previous size.
+//
 func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -299,6 +306,11 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // The startup ID is also what is used to signal that the startup is complete
 // (for example, when opening a window or when calling
 // gdk_display_notify_startup_complete()).
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup notification ID (must be valid utf8).
+//
 func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -319,6 +331,11 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
+//
+// The function takes the following parameters:
+//
+//    - scale: new scale value.
+//
 func (display *X11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
@@ -333,6 +350,11 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
+//
+// The function takes the following parameters:
+//
+//    - str: nul-terminated string.
+//
 func (display *X11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -376,6 +398,11 @@ func (display *X11Display) Ungrab() {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
+//
+// The function takes the following parameters:
+//
+//    - str: UTF-8 string.
+//
 func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out

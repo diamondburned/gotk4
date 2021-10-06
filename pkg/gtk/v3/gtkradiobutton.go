@@ -346,6 +346,12 @@ func (radioButton *RadioButton) Group() []RadioButton {
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
 //        }.
+//
+// The function takes the following parameters:
+//
+//    - groupSource: radio button object whos group we are joining, or NULL to
+//    remove the radio button from its group.
+//
 func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
@@ -364,6 +370,12 @@ func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 // change the layout of your interface in any way, so if you are changing the
 // group, it is likely you will need to re-arrange the user interface to reflect
 // these changes.
+//
+// The function takes the following parameters:
+//
+//    - group: existing radio button group, such as one returned from
+//    gtk_radio_button_get_group(), or NULL.
+//
 func (radioButton *RadioButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GSList         // out

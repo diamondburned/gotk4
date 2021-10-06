@@ -349,6 +349,12 @@ func (menuItem *MenuItem) Select() {
 // Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath: accelerator path, corresponding to this menu item’s
+//    functionality, or NULL to unset the current path.
+//
 func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
@@ -365,6 +371,11 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 }
 
 // SetLabel sets text on the menu_item label.
+//
+// The function takes the following parameters:
+//
+//    - label: text you want to set.
+//
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
@@ -382,6 +393,11 @@ func (menuItem *MenuItem) SetLabel(label string) {
 // submenu indicator, regardless if it actually has a submenu or not.
 //
 // There should be little need for applications to call this functions.
+//
+// The function takes the following parameters:
+//
+//    - reserve: new value.
+//
 func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
@@ -404,6 +420,12 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 //
 // Deprecated: If you insist on using it, use gtk_widget_set_hexpand() and
 // gtk_widget_set_halign().
+//
+// The function takes the following parameters:
+//
+//    - rightJustified: if TRUE the menu item will appear at the far right if
+//    added to a menu bar.
+//
 func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
@@ -420,6 +442,11 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 
 // SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
 // NULL submenu is passed.
+//
+// The function takes the following parameters:
+//
+//    - submenu: submenu, or NULL.
+//
 func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.GtkWidget   // out
@@ -436,6 +463,11 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 
 // SetUseUnderline: if true, an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE if underlines in the text indicate mnemonics.
+//
 func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gboolean     // out
@@ -452,6 +484,11 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 // given item.
+//
+// The function takes the following parameters:
+//
+//    - allocation to use as signal data.
+//
 func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 C.gint         // out

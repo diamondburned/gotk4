@@ -99,6 +99,11 @@ func (self *MultiSelection) Model() gio.ListModeller {
 // SetModel sets the model that self should wrap.
 //
 // If model is NULL, self will be empty.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to wrap.
+//
 func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out

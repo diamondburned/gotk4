@@ -174,6 +174,11 @@ func (stream *PollableOutputStream) CanPoll() bool {
 // stream may not actually be writable even after the source triggers, so you
 // should use g_pollable_output_stream_write_nonblocking() rather than
 // g_output_stream_write() from the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GCancellable          // out
@@ -242,6 +247,12 @@ func (stream *PollableOutputStream) IsWritable() bool {
 // Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
 // transports like D/TLS require that you re-send the same buffer and count in
 // the next write call.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - buffer to write data from.
+//
 func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg3 *C.GCancellable          // out
@@ -292,6 +303,12 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 // Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some underlying
 // transports like D/TLS require that you re-send the same vectors and n_vectors
 // in the next write call.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - vectors: buffer containing the Vectors to write.
+//
 func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vectors []OutputVector) (uint, PollableReturn, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg4 *C.GCancellable          // out

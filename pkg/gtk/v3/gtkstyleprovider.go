@@ -109,6 +109,11 @@ func marshalStyleProviderer(p uintptr) (interface{}, error) {
 // none is defined.
 //
 // Deprecated: Will always return NULL for all GTK-provided style providers.
+//
+// The function takes the following parameters:
+//
+//    - path to query.
+//
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
@@ -135,6 +140,11 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 //
 // Deprecated: Will always return NULL for all GTK-provided style providers as
 // the interface cannot correctly work the way CSS is specified.
+//
+// The function takes the following parameters:
+//
+//    - path to query.
+//
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out
 	var _arg1 *C.GtkWidgetPath      // out

@@ -190,6 +190,11 @@ func marshalActioner(p uintptr) (interface{}, error) {
 // then parameter must also be NULL.
 //
 // If the parameter GVariant is floating, it is consumed.
+//
+// The function takes the following parameters:
+//
+//    - parameter to the activation.
+//
 func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
@@ -214,6 +219,11 @@ func (action *Action) Activate(parameter *glib.Variant) {
 // g_action_get_state_hint().
 //
 // If the value GVariant is floating, it is consumed.
+//
+// The function takes the following parameters:
+//
+//    - value: new state.
+//
 func (action *Action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out

@@ -385,17 +385,17 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 // If there is an error parsing string then the program will be aborted. You
 // should not attempt to parse user interface description from untrusted
 // sources.
-func NewBuilderFromString(_string string, length int) *Builder {
+func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gssize      // out
 	var _cret *C.GtkBuilder // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_builder_new_from_string(_arg1, _arg2)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
 
 	var _builder *Builder // out
@@ -419,6 +419,11 @@ func NewBuilderFromString(_string string, length int) *Builder {
 // program, and it’s possible that memory was leaked leading up to the reported
 // failure. The only reasonable thing to do when an error is detected is to call
 // g_error().
+//
+// The function takes the following parameters:
+//
+//    - filename: name of the file to parse.
+//
 func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -454,6 +459,11 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file to parse.
+//
 func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -489,6 +499,12 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
 // only reasonable thing to do when an error is detected is to call g_error().
+//
+// The function takes the following parameters:
+//
+//    - buffer: string to parse.
+//    - length of buffer (may be -1 if buffer is nul-terminated).
+//
 func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -527,6 +543,12 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of the file to parse.
+//    - objectIds: nul-terminated array of objects to build.
+//
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -577,6 +599,12 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path of the resource file to parse.
+//    - objectIds: nul-terminated array of objects to build.
+//
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -627,6 +655,13 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
+//
+// The function takes the following parameters:
+//
+//    - buffer: string to parse.
+//    - length of buffer (may be -1 if buffer is nul-terminated).
+//    - objectIds: nul-terminated array of objects to build.
+//
 func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -691,6 +726,11 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 // with MODULE_EXPORT, or they will not be put in the symbol table. On Linux and
 // Unices, this is not necessary; applications should instead be compiled with
 // the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
+//
+// The function takes the following parameters:
+//
+//    - userData: user data to pass back with all signals.
+//
 func (builder *Builder) ConnectSignals(userData cgo.Handle) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.gpointer    // out
@@ -705,6 +745,12 @@ func (builder *Builder) ConnectSignals(userData cgo.Handle) {
 
 // ExposeObject: add object to the builder object pool so it can be referenced
 // just like any other object built by builder.
+//
+// The function takes the following parameters:
+//
+//    - name of the object exposed to the builder.
+//    - object to expose.
+//
 func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -726,6 +772,14 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
+//
+// The function takes the following parameters:
+//
+//    - widget that is being extended.
+//    - templateType: type that the template is for.
+//    - buffer: string to parse.
+//    - length of buffer (may be -1 if buffer is nul-terminated).
+//
 func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
@@ -788,6 +842,11 @@ func (builder *Builder) Application() *Application {
 
 // GetObject gets the object named name. Note that this function does not
 // increment the reference count of the returned object.
+//
+// The function takes the following parameters:
+//
+//    - name of object to get.
+//
 func (builder *Builder) GetObject(name string) *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -855,6 +914,11 @@ func (builder *Builder) TranslationDomain() string {
 // TypeFromName looks up a type by name, using the virtual function that Builder
 // has for that purpose. This is mainly used when implementing the Buildable
 // interface on a type.
+//
+// The function takes the following parameters:
+//
+//    - typeName: type name to lookup.
+//
 func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.char       // out
@@ -879,6 +943,11 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 //
 // You only need this function if there is more than one #GApplication in your
 // process. application cannot be NULL.
+//
+// The function takes the following parameters:
+//
+//    - application: Application.
+//
 func (builder *Builder) SetApplication(application *Application) {
 	var _arg0 *C.GtkBuilder     // out
 	var _arg1 *C.GtkApplication // out
@@ -893,6 +962,11 @@ func (builder *Builder) SetApplication(application *Application) {
 
 // SetTranslationDomain sets the translation domain of builder. See
 // Builder:translation-domain.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain or NULL.
+//
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -915,7 +989,13 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 //
 // Upon errors FALSE will be returned and error will be assigned a #GError from
 // the K_BUILDER_ERROR domain.
-func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error) {
+//
+// The function takes the following parameters:
+//
+//    - typ of the value.
+//    - str: string representation of the value.
+//
+func (builder *Builder) ValueFromStringType(typ externglib.Type, str string) (externglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 C.GType       // out
 	var _arg2 *C.gchar      // out
@@ -924,13 +1004,13 @@ func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string)
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = C.GType(typ)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(typ)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _value externglib.Value // out
 	var _goerr error            // out

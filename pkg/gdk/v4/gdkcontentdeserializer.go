@@ -288,6 +288,11 @@ func (deserializer *ContentDeserializer) Value() *externglib.Value {
 // ReturnError: indicate that the deserialization has ended with an error.
 //
 // This function consumes error.
+//
+// The function takes the following parameters:
+//
+//    - err: GError.
+//
 func (deserializer *ContentDeserializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _arg1 *C.GError                 // out

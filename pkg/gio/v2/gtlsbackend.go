@@ -245,6 +245,11 @@ func (backend *TLSBackend) ServerConnectionType() externglib.Type {
 //
 // Setting a NULL default database will reset to using the system default
 // database as if g_tls_backend_set_default_database() had never been called.
+//
+// The function takes the following parameters:
+//
+//    - database: Database.
+//
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsBackend  // out
 	var _arg1 *C.GTlsDatabase // out

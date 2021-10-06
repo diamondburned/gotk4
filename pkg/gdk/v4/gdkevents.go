@@ -799,6 +799,11 @@ func (event *Event) Axes() ([]float64, bool) {
 
 // Axis: extract the axis value for a particular axis use from an event
 // structure.
+//
+// The function takes the following parameters:
+//
+//    - axisUse axis use to look for.
+//
 func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg0 *C.GdkEvent  // out
 	var _arg1 C.GdkAxisUse // out
@@ -1397,6 +1402,12 @@ func (event *KeyEvent) IsModifier() bool {
 // active group is ignored.
 //
 // Note that we ignore Caps Lock for matching.
+//
+// The function takes the following parameters:
+//
+//    - keyval to match.
+//    - modifiers to match.
+//
 func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // out

@@ -185,6 +185,11 @@ func (self *WindowControls) Side() PackType {
 //
 // If gtk.WindowControls:side value is GTK_PACK_START, self will display the
 // part before the colon, otherwise after that.
+//
+// The function takes the following parameters:
+//
+//    - layout: decoration layout, or NULL to unset the layout.
+//
 func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 *C.char              // out
@@ -204,6 +209,11 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 // uses.
 //
 // See gtk.WindowControls:decoration-layout.
+//
+// The function takes the following parameters:
+//
+//    - side: side.
+//
 func (self *WindowControls) SetSide(side PackType) {
 	var _arg0 *C.GtkWindowControls // out
 	var _arg1 C.GtkPackType        // out

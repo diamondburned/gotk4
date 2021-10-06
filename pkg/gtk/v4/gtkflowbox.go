@@ -237,6 +237,12 @@ func NewFlowBox() *FlowBox {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting should
 // be implemented by the model.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to be bound to box.
+//    - createWidgetFunc: function that creates widgets for items.
+//
 func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
@@ -278,6 +284,11 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 }
 
 // ChildAtIndex gets the nth child in the box.
+//
+// The function takes the following parameters:
+//
+//    - idx: position of the child.
+//
 func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.int              // out
@@ -302,6 +313,12 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 // ChildAtPos gets the child in the (x, y) position.
 //
 // Both x and y are assumed to be relative to the origin of box.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the child.
+//    - y coordinate of the child.
+//
 func (box *FlowBox) ChildAtPos(x, y int) *FlowBoxChild {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.int              // out
@@ -460,6 +477,12 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to add.
+//    - position to insert child in.
+//
 func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
@@ -504,6 +527,11 @@ func (box *FlowBox) InvalidateSort() {
 }
 
 // Remove removes a child from box.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget to remove.
+//
 func (box *FlowBox) Remove(widget Widgetter) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
@@ -527,6 +555,11 @@ func (box *FlowBox) SelectAll() {
 }
 
 // SelectChild selects a single child of box, if the selection mode allows it.
+//
+// The function takes the following parameters:
+//
+//    - child of box.
+//
 func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 *C.GtkFlowBoxChild // out
@@ -542,6 +575,11 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 // SelectedForeach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call for each selected child.
+//
 func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 	var _arg0 *C.GtkFlowBox           // out
 	var _arg1 C.GtkFlowBoxForeachFunc // out
@@ -559,6 +597,11 @@ func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 
 // SetActivateOnSingleClick: if single is TRUE, children will be activated when
 // you click on them, otherwise you need to double-click.
+//
+// The function takes the following parameters:
+//
+//    - single: TRUE to emit child-activated on a single click.
+//
 func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.gboolean    // out
@@ -574,6 +617,11 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 }
 
 // SetColumnSpacing sets the horizontal space to add between children.
+//
+// The function takes the following parameters:
+//
+//    - spacing to use.
+//
 func (box *FlowBox) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
@@ -598,6 +646,11 @@ func (box *FlowBox) SetColumnSpacing(spacing uint) {
 //
 // Note that using a filter function is incompatible with using a model (see
 // gtk.FlowBox.BindModel()).
+//
+// The function takes the following parameters:
+//
+//    - filterFunc: callback that lets you filter which children to show.
+//
 func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 	var _arg0 *C.GtkFlowBox          // out
 	var _arg1 C.GtkFlowBoxFilterFunc // out
@@ -625,6 +678,12 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the box.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//    descendents of container.
+//
 func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
 	var _arg1 *C.GtkAdjustment // out
@@ -639,6 +698,12 @@ func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 
 // SetHomogeneous sets whether or not all children of box are given equal space
 // in the box.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: TRUE to create equal allotments, FALSE for variable
+//    allotments.
+//
 func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.gboolean    // out
@@ -659,6 +724,11 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 // Setting the maximum number of children per line limits the overall natural
 // size request to be no more than n_children children long in the given
 // orientation.
+//
+// The function takes the following parameters:
+//
+//    - nChildren: maximum number of children per line.
+//
 func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
@@ -673,6 +743,11 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
 
 // SetMinChildrenPerLine sets the minimum number of children to line up in box’s
 // orientation before flowing.
+//
+// The function takes the following parameters:
+//
+//    - nChildren: minimum number of children per line.
+//
 func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
@@ -686,6 +761,11 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
 }
 
 // SetRowSpacing sets the vertical space to add between children.
+//
+// The function takes the following parameters:
+//
+//    - spacing to use.
+//
 func (box *FlowBox) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 C.guint       // out
@@ -699,6 +779,11 @@ func (box *FlowBox) SetRowSpacing(spacing uint) {
 }
 
 // SetSelectionMode sets how selection works in box.
+//
+// The function takes the following parameters:
+//
+//    - mode: new selection mode.
+//
 func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 C.GtkSelectionMode // out
@@ -720,6 +805,11 @@ func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
 //
 // Note that using a sort function is incompatible with using a model (see
 // gtk.FlowBox.BindModel()).
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: sort function.
+//
 func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 	var _arg0 *C.GtkFlowBox        // out
 	var _arg1 C.GtkFlowBoxSortFunc // out
@@ -747,6 +837,12 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the box.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//    descendents of container.
+//
 func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
 	var _arg1 *C.GtkAdjustment // out
@@ -771,6 +867,11 @@ func (box *FlowBox) UnselectAll() {
 
 // UnselectChild unselects a single child of box, if the selection mode allows
 // it.
+//
+// The function takes the following parameters:
+//
+//    - child of box.
+//
 func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	var _arg0 *C.GtkFlowBox      // out
 	var _arg1 *C.GtkFlowBoxChild // out
@@ -1003,6 +1104,11 @@ func (child *FlowBoxChild) IsSelected() bool {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *FlowBoxChild) SetChild(child Widgetter) {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _arg1 *C.GtkWidget       // out

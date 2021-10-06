@@ -231,6 +231,14 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 //
 // Toolkit implementor note: ATK provides a default implementation for this
 // virtual method. In general there are little reason to re-implement it.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate.
+//    - y coordinate.
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (component *Component) Contains(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -280,6 +288,12 @@ func (component *Component) Alpha() float64 {
 //
 // If the extent can not be obtained (e.g. a non-embedded plug or missing
 // support), all of x, y, width, height are set to -1.
+//
+// The function takes the following parameters:
+//
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (component *Component) Extents(coordType CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -351,6 +365,12 @@ func (component *Component) MDIZOrder() int {
 // support), x and y are set to -1.
 //
 // Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function takes the following parameters:
+//
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (component *Component) Position(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -419,6 +439,14 @@ func (component *Component) GrabFocus() bool {
 
 // RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
 // at the coordinate point specified by x and y.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate.
+//    - y coordinate.
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -452,6 +480,12 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 //
 // Deprecated: If you need to track when an object gains or lose the focus, use
 // the Object::state-change "focused" notification instead.
+//
+// The function takes the following parameters:
+//
+//    - handlerId: handler id of the focus handler to be removed from
+//    component.
+//
 func (component *Component) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
@@ -470,6 +504,11 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 // Contrary to atk_component_set_position, this does not actually move component
 // in its parent, this only makes the parents scroll so that the object shows up
 // on the screen, given its current position within the parents.
+//
+// The function takes the following parameters:
+//
+//    - typ: specify where the object should be made visible.
+//
 func (component *Component) ScrollTo(typ ScrollType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkScrollType // out
@@ -493,6 +532,14 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 
 // ScrollToPoint: move the top-left of component to a given position of the
 // screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//    - coords: specify whether coordinates are relative to the screen or to
+//    the parent object.
+//    - x: x-position where to scroll to.
+//    - y: y-position where to scroll to.
+//
 func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkCoordType  // out
@@ -521,6 +568,16 @@ func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 }
 
 // SetExtents sets the extents of component.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate.
+//    - y coordinate.
+//    - width to set for component.
+//    - height to set for component.
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -558,6 +615,14 @@ func (component *Component) SetExtents(x, y, width, height int, coordType CoordT
 //
 // Contrary to atk_component_scroll_to, this does not trigger any scrolling,
 // this just moves component in its parent.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate.
+//    - y coordinate.
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the component's top level window.
+//
 func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -586,6 +651,12 @@ func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 }
 
 // SetSize: set the size of the component in terms of width and height.
+//
+// The function takes the following parameters:
+//
+//    - width to set for component.
+//    - height to set for component.
+//
 func (component *Component) SetSize(width, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out

@@ -401,6 +401,13 @@ func marshalExpressioner(p uintptr) (interface{}, error) {
 //
 // Note that this function takes ownership of self. If you want to keep it
 // around, you should gtk.Expression.Ref() it beforehand.
+//
+// The function takes the following parameters:
+//
+//    - target object to bind to.
+//    - property: name of the property on target to bind to.
+//    - this_: argument for the evaluation of self.
+//
 func (self *Expression) Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
 	var _arg1 C.gpointer            // out
@@ -443,6 +450,12 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 // It is possible that expressions cannot be evaluated - for example when the
 // expression references objects that have been destroyed or set to NULL. In
 // that case value will remain empty and FALSE will be returned.
+//
+// The function takes the following parameters:
+//
+//    - this_: argument for the evaluation.
+//    - value: empty GValue.
+//
 func (self *Expression) Evaluate(this_ *externglib.Object, value *externglib.Value) bool {
 	var _arg0 *C.GtkExpression // out
 	var _arg1 C.gpointer       // out
@@ -518,6 +531,12 @@ func (self *Expression) IsStatic() bool {
 // GTK cannot guarantee that the evaluation did indeed change when the notify
 // gets invoked, but it guarantees the opposite: When it did in fact change, the
 // notify will be invoked.
+//
+// The function takes the following parameters:
+//
+//    - this_: this argument to watch.
+//    - notify: callback to invoke when the expression changes.
+//
 func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
 	var _arg1 C.gpointer            // out

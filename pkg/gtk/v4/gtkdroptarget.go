@@ -290,6 +290,11 @@ func (self *DropTarget) Reject() {
 }
 
 // SetActions sets the actions that this drop target supports.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions.
+//
 func (self *DropTarget) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.GdkDragAction  // out
@@ -303,6 +308,11 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 }
 
 // SetGTypes sets the supported GTypes for this drop target.
+//
+// The function takes the following parameters:
+//
+//    - types: all supported #GTypes that can be dropped.
+//
 func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType         // out
@@ -325,6 +335,11 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 }
 
 // SetPreload sets whether data should be preloaded on hover.
+//
+// The function takes the following parameters:
+//
+//    - preload: TRUE to preload drop data.
+//
 func (self *DropTarget) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.gboolean       // out

@@ -115,6 +115,11 @@ func (cancellable *Cancellable) Cancel() {
 // #GCancellable::cancelled for details on how to use this.
 //
 // If cancellable is NULL or handler_id is 0 this function does nothing.
+//
+// The function takes the following parameters:
+//
+//    - handlerId: handler id of the handler to be disconnected, or 0.
+//
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
@@ -198,6 +203,11 @@ func (cancellable *Cancellable) IsCancelled() bool {
 // You are not supposed to read from the fd yourself, just check for readable
 // status. Reading to unset the readable status is done with
 // g_cancellable_reset().
+//
+// The function takes the following parameters:
+//
+//    - pollfd: pointer to a FD.
+//
 func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var _arg0 *C.GCancellable // out
 	var _arg1 *C.GPollFD      // out

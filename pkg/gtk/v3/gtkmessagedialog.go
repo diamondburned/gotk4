@@ -212,6 +212,11 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 // SetImage sets the dialog’s image to image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
+//
+// The function takes the following parameters:
+//
+//    - image: image.
+//
 func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
@@ -226,6 +231,11 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 
 // SetMarkup sets the text of the message dialog to be str, which is marked up
 // with the [Pango text markup language][PangoMarkupFormat].
+//
+// The function takes the following parameters:
+//
+//    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
+//
 func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out

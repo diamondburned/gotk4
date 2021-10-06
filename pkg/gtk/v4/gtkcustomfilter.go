@@ -109,6 +109,11 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 // to be called.
 //
 // If a previous function was set, its user_destroy will be called now.
+//
+// The function takes the following parameters:
+//
+//    - matchFunc: function to filter items.
+//
 func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	var _arg0 *C.GtkCustomFilter    // out
 	var _arg1 C.GtkCustomFilterFunc // out

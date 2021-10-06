@@ -125,6 +125,12 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //
 // Note that the cell_editable is created on-demand for the current edit; its
 // lifetime is temporary and does not persist across other edits and/or cells.
+//
+// The function takes the following parameters:
+//
+//    - event that began the editing process, or NULL if editing was initiated
+//    programmatically.
+//
 func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	var _arg0 *C.GtkCellEditable // out
 	var _arg1 *C.GdkEvent        // out

@@ -77,6 +77,11 @@ func marshalCellAccessibleParenter(p uintptr) (interface{}, error) {
 	return wrapCellAccessibleParent(obj), nil
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -89,6 +94,11 @@ func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	runtime.KeepAlive(cell)
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -101,6 +111,11 @@ func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	runtime.KeepAlive(cell)
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -113,6 +128,11 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 	runtime.KeepAlive(cell)
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -132,6 +152,11 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle
 	return _cellRect
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType atk.CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -163,6 +188,11 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 	return _x, _y, _width, _height
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -185,6 +215,11 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int,
 	return _row, _column
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -204,6 +239,11 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 	return _gint
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) RendererState(cell *CellAccessible) CellRendererState {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -223,6 +263,11 @@ func (parent *CellAccessibleParent) RendererState(cell *CellAccessible) CellRend
 	return _cellRendererState
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -244,6 +289,11 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	return _ok
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out

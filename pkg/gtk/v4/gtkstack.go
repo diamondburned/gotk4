@@ -239,6 +239,11 @@ func NewStack() *Stack {
 }
 
 // AddChild adds a child to stack.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//
 func (stack *Stack) AddChild(child Widgetter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
@@ -261,6 +266,12 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 // AddNamed adds a child to stack.
 //
 // The child is identified by the name.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - name for child or NULL.
+//
 func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
@@ -290,6 +301,13 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 //
 // The child is identified by the name. The title will be used by
 // GtkStackSwitcher to represent child in a tab bar, so it should be short.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - name for child.
+//    - title: human-readable title for child.
+//
 func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
@@ -322,6 +340,11 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 // ChildByName finds the child with the name given as the argument.
 //
 // Returns NULL if there is no child with this name.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to find.
+//
 func (stack *Stack) ChildByName(name string) Widgetter {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.char      // out
@@ -393,6 +416,11 @@ func (stack *Stack) InterpolateSize() bool {
 }
 
 // Page returns the GtkStackPage object for child.
+//
+// The function takes the following parameters:
+//
+//    - child of stack.
+//
 func (stack *Stack) Page(child Widgetter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
@@ -571,6 +599,11 @@ func (stack *Stack) VisibleChildName() string {
 }
 
 // Remove removes a child widget from stack.
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (stack *Stack) Remove(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
@@ -588,6 +621,11 @@ func (stack *Stack) Remove(child Widgetter) {
 // If it is homogeneous, the GtkStack will request the same width for all its
 // children. If it isn't, the stack may change width when a different child
 // becomes visible.
+//
+// The function takes the following parameters:
+//
+//    - hhomogeneous: TRUE to make stack horizontally homogeneous.
+//
 func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -608,6 +646,11 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 // If the gtk.Stack:interpolate-size property is set to TRUE, stack will
 // interpolate its size between the current one and the one it'll take after
 // changing the visible child, according to the set transition duration.
+//
+// The function takes the following parameters:
+//
+//    - interpolateSize: new value.
+//
 func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -624,6 +667,11 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 
 // SetTransitionDuration sets the duration that transitions between pages in
 // stack will take.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (stack *Stack) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.guint     // out
@@ -644,6 +692,11 @@ func (stack *Stack) SetTransitionDuration(duration uint) {
 // The transition type can be changed without problems at runtime, so it is
 // possible to change the animation based on the page that is about to become
 // current.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
 func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 C.GtkStackTransitionType // out
@@ -661,6 +714,11 @@ func (stack *Stack) SetTransitionType(transition StackTransitionType) {
 // If it is homogeneous, the GtkStack will request the same height for all its
 // children. If it isn't, the stack may change height when a different child
 // becomes visible.
+//
+// The function takes the following parameters:
+//
+//    - vhomogeneous: TRUE to make stack vertically homogeneous.
+//
 func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 C.gboolean  // out
@@ -682,6 +740,11 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the child widget has to be visible itself (see gtk.Widget.Show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - child of stack.
+//
 func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
@@ -698,6 +761,12 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 //
 // Note that the child widget has to be visible itself (see gtk.Widget.Show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to make visible.
+//    - transition type to use.
+//
 func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionType) {
 	var _arg0 *C.GtkStack              // out
 	var _arg1 *C.char                  // out
@@ -721,6 +790,11 @@ func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionT
 //
 // Note that the child widget has to be visible itself (see gtk.Widget.Show())
 // in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to make visible.
+//
 func (stack *Stack) SetVisibleChildName(name string) {
 	var _arg0 *C.GtkStack // out
 	var _arg1 *C.char     // out
@@ -902,6 +976,11 @@ func (self *StackPage) Visible() bool {
 }
 
 // SetIconName sets the icon name of the page.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *StackPage) SetIconName(setting string) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 *C.char         // out
@@ -916,6 +995,11 @@ func (self *StackPage) SetIconName(setting string) {
 }
 
 // SetName sets the name of the page.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *StackPage) SetName(setting string) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 *C.char         // out
@@ -930,6 +1014,11 @@ func (self *StackPage) SetName(setting string) {
 }
 
 // SetNeedsAttention sets whether the page is marked as “needs attention”.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *StackPage) SetNeedsAttention(setting bool) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 C.gboolean      // out
@@ -945,6 +1034,11 @@ func (self *StackPage) SetNeedsAttention(setting bool) {
 }
 
 // SetTitle sets the page title.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *StackPage) SetTitle(setting string) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 *C.char         // out
@@ -959,6 +1053,11 @@ func (self *StackPage) SetTitle(setting string) {
 }
 
 // SetUseUnderline sets whether underlines in the page title indicate mnemonics.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *StackPage) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 C.gboolean      // out
@@ -974,6 +1073,11 @@ func (self *StackPage) SetUseUnderline(setting bool) {
 }
 
 // SetVisible sets whether page is visible in its GtkStack.
+//
+// The function takes the following parameters:
+//
+//    - visible: new property value.
+//
 func (self *StackPage) SetVisible(visible bool) {
 	var _arg0 *C.GtkStackPage // out
 	var _arg1 C.gboolean      // out

@@ -149,6 +149,11 @@ func (button *ColorButton) Title() string {
 }
 
 // SetModal sets whether the dialog should be modal.
+//
+// The function takes the following parameters:
+//
+//    - modal: TRUE to make the dialog modal.
+//
 func (button *ColorButton) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
@@ -164,6 +169,11 @@ func (button *ColorButton) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the color chooser dialog.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing new window title.
+//
 func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out

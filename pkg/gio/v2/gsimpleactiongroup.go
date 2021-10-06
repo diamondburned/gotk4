@@ -76,6 +76,12 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 // adding them to the action group.
 //
 // Deprecated: Use g_action_map_add_action_entries().
+//
+// The function takes the following parameters:
+//
+//    - entries: pointer to the first item in an array of Entry structs.
+//    - userData: user data for signal connections.
+//
 func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GActionEntry       // out
@@ -108,6 +114,11 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 // The action group takes its own reference on action.
 //
 // Deprecated: Use g_action_map_add_action().
+//
+// The function takes the following parameters:
+//
+//    - action: #GAction.
+//
 func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
@@ -125,6 +136,11 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 // If no such action exists, returns NULL.
 //
 // Deprecated: Use g_action_map_lookup_action().
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action.
+//
 func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -162,6 +178,11 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 // If no action of this name is in the group then nothing happens.
 //
 // Deprecated: Use g_action_map_remove_action().
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action.
+//
 func (simple *SimpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out

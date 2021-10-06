@@ -105,6 +105,11 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 //
 // Note that manager will take a reference on object for as long as it is
 // exported.
+//
+// The function takes the following parameters:
+//
+//    - object: BusObjectSkeleton.
+//
 func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -121,6 +126,11 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 // string of the form _N (with N being a natural number) to object's object path
 // if an object with the given path already exists. As such, the
 // BusObjectProxy:g-object-path property of object may be modified.
+//
+// The function takes the following parameters:
+//
+//    - object: object.
+//
 func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -151,6 +161,11 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 }
 
 // IsExported returns whether object is currently exported on manager.
+//
+// The function takes the following parameters:
+//
+//    - object: object.
+//
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -174,6 +189,11 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 
 // SetConnection exports all objects managed by manager on connection. If
 // connection is NULL, stops exporting objects.
+//
+// The function takes the following parameters:
+//
+//    - connection or NULL.
+//
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
@@ -193,6 +213,11 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 //
 // Note that object_path must be in the hierarchy rooted by the object path for
 // manager.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path.
+//
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out

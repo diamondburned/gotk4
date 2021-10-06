@@ -202,6 +202,12 @@ func (model *SelectionModel) Selection() *Bitset {
 // This function is an optimization for gtk.SelectionModel.GetSelection() when
 // you are only interested in part of the model's selected state. A common use
 // case is in response to the gtk.SelectionModel::selection-changed signal.
+//
+// The function takes the following parameters:
+//
+//    - position: start of the queired range.
+//    - nItems: number of items in the queried range.
+//
 func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -231,6 +237,11 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 }
 
 // IsSelected checks if the given item is selected.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to query.
+//
 func (model *SelectionModel) IsSelected(position uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -272,6 +283,12 @@ func (model *SelectionModel) SelectAll() bool {
 }
 
 // SelectItem requests to select an item in the model.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to select.
+//    - unselectRest: whether previously selected items should be unselected.
+//
 func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -299,6 +316,13 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 }
 
 // SelectRange requests to select a range of items in the model.
+//
+// The function takes the following parameters:
+//
+//    - position: first item to select.
+//    - nItems: number of items to select.
+//    - unselectRest: whether previously selected items should be unselected.
+//
 func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest bool) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -332,6 +356,12 @@ func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest boo
 //
 // Call this when a the selection changes to emit the
 // gtk.SelectionModel::selection-changed signal.
+//
+// The function takes the following parameters:
+//
+//    - position: first changed item.
+//    - nItems: number of changed items.
+//
 func (model *SelectionModel) SelectionChanged(position, nItems uint) {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -378,6 +408,12 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint) {
 //
 // mask and selected must not be modified. They may refer to the same bitset,
 // which would mean that every item in the set should be selected.
+//
+// The function takes the following parameters:
+//
+//    - selected: bitmask specifying if items should be selected or unselected.
+//    - mask specifying which items should be updated.
+//
 func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 *C.GtkBitset         // out
@@ -422,6 +458,11 @@ func (model *SelectionModel) UnselectAll() bool {
 }
 
 // UnselectItem requests to unselect an item in the model.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to unselect.
+//
 func (model *SelectionModel) UnselectItem(position uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -444,6 +485,12 @@ func (model *SelectionModel) UnselectItem(position uint) bool {
 }
 
 // UnselectRange requests to unselect a range of items in the model.
+//
+// The function takes the following parameters:
+//
+//    - position: first item to unselect.
+//    - nItems: number of items to unselect.
+//
 func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out

@@ -504,6 +504,11 @@ func (obj *Value) ValueAndText() (float64, string) {
 // SetCurrentValue sets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_set_value() instead.
+//
+// The function takes the following parameters:
+//
+//    - value which is the desired new accessible value.
+//
 func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	var _arg0 *C.AtkValue // out
 	var _arg1 *C.GValue   // out
@@ -537,6 +542,11 @@ func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 // practice several implementors were not able to decide it, and returned TRUE
 // in any case. For that reason it is not required anymore to return if the
 // value was properly assigned or not.
+//
+// The function takes the following parameters:
+//
+//    - newValue: double which is the desired new accessible value.
+//
 func (obj *Value) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out

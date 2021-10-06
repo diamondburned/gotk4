@@ -121,6 +121,12 @@ func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
 // connections.
 //
 // Use g_dbus_interface_skeleton_unexport() to unexport the object.
+//
+// The function takes the following parameters:
+//
+//    - connection to export interface_ on.
+//    - objectPath: path to export the interface at.
+//
 func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, objectPath string) error {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -290,6 +296,11 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 }
 
 // HasConnection checks if interface_ is exported on connection.
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -312,6 +323,11 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 }
 
 // SetFlags sets flags describing what the behavior of skeleton should be.
+//
+// The function takes the following parameters:
+//
+//    - flags flags from the BusInterfaceSkeletonFlags enumeration.
+//
 func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _arg1 C.GDBusInterfaceSkeletonFlags // out
@@ -341,6 +357,11 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 //
 // To stop exporting on all connections the interface is exported on, use
 // g_dbus_interface_skeleton_unexport().
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//
 func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out

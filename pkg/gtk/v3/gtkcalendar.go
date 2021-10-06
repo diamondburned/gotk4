@@ -235,6 +235,11 @@ func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 }
 
 // DayIsMarked returns if the day of the calendar is already marked.
+//
+// The function takes the following parameters:
+//
+//    - day number between 1 and 31.
+//
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -310,6 +315,11 @@ func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 }
 
 // MarkDay places a visual marker on a particular day.
+//
+// The function takes the following parameters:
+//
+//    - day number to mark between 1 and 31.
+//
 func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -323,6 +333,12 @@ func (calendar *Calendar) MarkDay(day uint) {
 }
 
 // SelectDay selects a day from the current month.
+//
+// The function takes the following parameters:
+//
+//    - day number between 1 and 31, or 0 to unselect the currently selected
+//    day.
+//
 func (calendar *Calendar) SelectDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -336,6 +352,12 @@ func (calendar *Calendar) SelectDay(day uint) {
 }
 
 // SelectMonth shifts the calendar to a different month.
+//
+// The function takes the following parameters:
+//
+//    - month number between 0 and 11.
+//    - year the month is in.
+//
 func (calendar *Calendar) SelectMonth(month, year uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -360,6 +382,11 @@ func (calendar *Calendar) SelectMonth(month, year uint) {
 //
 // The size of the details area can be restricted by setting the
 // Calendar:detail-width-chars and Calendar:detail-height-rows properties.
+//
+// The function takes the following parameters:
+//
+//    - fn: function providing details for each day.
+//
 func (calendar *Calendar) SetDetailFunc(fn CalendarDetailFunc) {
 	var _arg0 *C.GtkCalendar          // out
 	var _arg1 C.GtkCalendarDetailFunc // out
@@ -378,6 +405,11 @@ func (calendar *Calendar) SetDetailFunc(fn CalendarDetailFunc) {
 
 // SetDetailHeightRows updates the height of detail cells. See
 // Calendar:detail-height-rows.
+//
+// The function takes the following parameters:
+//
+//    - rows: detail height in rows.
+//
 func (calendar *Calendar) SetDetailHeightRows(rows int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
@@ -392,6 +424,11 @@ func (calendar *Calendar) SetDetailHeightRows(rows int) {
 
 // SetDetailWidthChars updates the width of detail cells. See
 // Calendar:detail-width-chars.
+//
+// The function takes the following parameters:
+//
+//    - chars: detail width in characters.
+//
 func (calendar *Calendar) SetDetailWidthChars(chars int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
@@ -406,6 +443,11 @@ func (calendar *Calendar) SetDetailWidthChars(chars int) {
 
 // SetDisplayOptions sets display options (whether to display the heading and
 // the month headings).
+//
+// The function takes the following parameters:
+//
+//    - flags: display options to set.
+//
 func (calendar *Calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
 	var _arg0 *C.GtkCalendar              // out
 	var _arg1 C.GtkCalendarDisplayOptions // out
@@ -419,6 +461,11 @@ func (calendar *Calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
+//
+// The function takes the following parameters:
+//
+//    - day number to unmark between 1 and 31.
+//
 func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out

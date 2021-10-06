@@ -115,6 +115,11 @@ func (self *DragIcon) Child() Widgetter {
 }
 
 // SetChild sets the widget to display as the drag icon.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget or NULL.
+//
 func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out

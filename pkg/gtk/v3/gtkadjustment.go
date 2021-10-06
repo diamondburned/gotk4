@@ -122,6 +122,12 @@ func (adjustment *Adjustment) Changed() {
 // page size, then only the start of it will be in the current page.
 //
 // A Adjustment::value-changed signal will be emitted if the value is changed.
+//
+// The function takes the following parameters:
+//
+//    - lower value.
+//    - upper value.
+//
 func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -142,6 +148,16 @@ func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 // Use this function to avoid multiple emissions of the Adjustment::changed
 // signal. See gtk_adjustment_set_lower() for an alternative way of compressing
 // multiple emissions of Adjustment::changed into one.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//    - lower: new minimum value.
+//    - upper: new maximum value.
+//    - stepIncrement: new step increment.
+//    - pageIncrement: new page increment.
+//    - pageSize: new page size.
+//
 func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -301,6 +317,11 @@ func (adjustment *Adjustment) Value() float64 {
 // Alternatively, using a single g_object_set() for all the properties to
 // change, or using gtk_adjustment_configure() has the same effect of
 // compressing Adjustment::changed emissions.
+//
+// The function takes the following parameters:
+//
+//    - lower: new minimum value.
+//
 func (adjustment *Adjustment) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -317,6 +338,11 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 //
 // See gtk_adjustment_set_lower() about how to compress multiple emissions of
 // the Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - pageIncrement: new page increment.
+//
 func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -334,6 +360,11 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 // See gtk_adjustment_set_lower() about how to compress multiple emissions of
 // the GtkAdjustment::changed signal when setting multiple adjustment
 // properties.
+//
+// The function takes the following parameters:
+//
+//    - pageSize: new page size.
+//
 func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -350,6 +381,11 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 //
 // See gtk_adjustment_set_lower() about how to compress multiple emissions of
 // the Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - stepIncrement: new step increment.
+//
 func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -369,6 +405,11 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 //
 // See gtk_adjustment_set_lower() about how to compress multiple emissions of
 // the Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - upper: new maximum value.
+//
 func (adjustment *Adjustment) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out
@@ -387,6 +428,11 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 // Note that for adjustments which are used in a Scrollbar, the effective range
 // of allowed values goes from Adjustment:lower to Adjustment:upper -
 // Adjustment:page-size.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//
 func (adjustment *Adjustment) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.gdouble        // out

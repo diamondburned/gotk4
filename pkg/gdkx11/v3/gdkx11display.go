@@ -198,6 +198,13 @@ func (display *X11Display) Grab() {
 // gdk_cursor_new_from_pixbuf() will have to be handled by the application (GTK+
 // applications can learn about cursor theme changes by listening for change
 // notification for the corresponding Setting).
+//
+// The function takes the following parameters:
+//
+//    - theme: name of the cursor theme to use, or NULL to unset a previously
+//    set value.
+//    - size: cursor size to use, or 0 to keep the previous size.
+//
 func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -229,6 +236,11 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // The startup ID is also what is used to signal that the startup is complete
 // (for example, when opening a window or when calling
 // gdk_notify_startup_complete()).
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup notification ID (must be valid utf8).
+//
 func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -249,6 +261,11 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
+//
+// The function takes the following parameters:
+//
+//    - scale: new scale value.
+//
 func (display *X11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out

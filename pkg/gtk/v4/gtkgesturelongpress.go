@@ -92,6 +92,11 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 //
 // The default long press time will be multiplied by this value. Valid values
 // are in the range [0.5..2.0].
+//
+// The function takes the following parameters:
+//
+//    - delayFactor: delay factor to apply.
+//
 func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out
 	var _arg1 C.double               // out

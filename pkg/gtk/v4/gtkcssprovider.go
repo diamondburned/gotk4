@@ -86,6 +86,11 @@ func NewCSSProvider() *CSSProvider {
 // LoadFromData loads data into css_provider.
 //
 // This clears any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - data: CSS data loaded in memory.
+//
 func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
@@ -105,6 +110,11 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) {
 // LoadFromFile loads the data contained in file into css_provider.
 //
 // This clears any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile pointing to a file to load.
+//
 func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.GFile          // out
@@ -120,6 +130,11 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
 // LoadFromPath loads the data contained in path into css_provider.
 //
 // This clears any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - path of a filename to load, in the GLib filename encoding.
+//
 func (cssProvider *CSSProvider) LoadFromPath(path string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
@@ -137,6 +152,11 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) {
 // into the css_provider.
 //
 // This clears any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: GResource resource path.
+//
 func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out
@@ -155,6 +175,12 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 // The actual process of finding the theme might change between releases, but it
 // is guaranteed that this function uses the same mechanism to load the theme
 // that GTK uses for loading its own theme.
+//
+// The function takes the following parameters:
+//
+//    - name: theme name.
+//    - variant to load, for example, "dark", or NULL for the default.
+//
 func (provider *CSSProvider) LoadNamed(name, variant string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char           // out

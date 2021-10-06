@@ -305,6 +305,11 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 // ActionAdded emits the Group::action-added signal on action_group.
 //
 // This function should only be called by Group implementations.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -322,6 +327,12 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 // action_group.
 //
 // This function should only be called by Group implementations.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//    - enabled: whether or not the action is now enabled.
+//
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -343,6 +354,11 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 // ActionRemoved emits the Group::action-removed signal on action_group.
 //
 // This function should only be called by Group implementations.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -360,6 +376,12 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 // action_group.
 //
 // This function should only be called by Group implementations.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//    - state: new state of the named action.
+//
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -405,6 +427,12 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //    g_debug ("application has been terminated. exiting.");
 //
 //    exit (0);.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to activate.
+//    - parameter parameters to the activation.
+//
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -434,6 +462,12 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 // g_action_group_get_action_state_hint().
 //
 // If the value GVariant is floating, it is consumed.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to request the change on.
+//    - value: new state.
+//
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -455,6 +489,11 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 //
 // An action must be enabled in order to be activated or in order to have its
 // state changed from outside callers.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to query.
+//
 func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -490,6 +529,11 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 // The parameter type of a particular action will never change but it is
 // possible for an action to be removed and for a new action to be added with
 // the same name but a different parameter type.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to query.
+//
 func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -521,6 +565,11 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to query.
+//
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -566,6 +615,11 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to query.
+//
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -609,6 +663,11 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 // The state type of a particular action will never change but it is possible
 // for an action to be removed and for a new action to be added with the same
 // name but a different state type.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to query.
+//
 func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -632,6 +691,11 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 }
 
 // HasAction checks if the named action exists within action_group.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to check for.
+//
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -714,6 +778,11 @@ func (actionGroup *ActionGroup) ListActions() []string {
 // indicated by having a non-NULL reference passed in) are filled. If the action
 // doesn't exist, FALSE is returned and the fields may or may not have been
 // modified.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//
 func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out

@@ -79,6 +79,11 @@ func NewAppLaunchContext() *AppLaunchContext {
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
+//
+// The function takes the following parameters:
+//
+//    - desktop: number of a workspace, or -1.
+//
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.gint                 // out
@@ -95,6 +100,11 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // this context. See also gdk_app_launch_context_set_screen().
 //
 // Deprecated: Use gdk_display_get_app_launch_context() instead.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//
 func (context *AppLaunchContext) SetDisplay(display *Display) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkDisplay          // out
@@ -113,6 +123,11 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 // notification.
 //
 // See also gdk_app_launch_context_set_icon_name().
+//
+// The function takes the following parameters:
+//
+//    - icon or NULL.
+//
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
@@ -135,6 +150,11 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 // icon or icon_name is set, the icon is taken from either the file that is
 // passed to launched application or from the Info for the launched application
 // itself.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name, or NULL.
+//
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
@@ -155,6 +175,11 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 //
 // If both screen and display are set, the screen takes priority. If neither
 // screen or display are set, the default screen and display are used.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func (context *AppLaunchContext) SetScreen(screen *Screen) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkScreen           // out
@@ -173,6 +198,11 @@ func (context *AppLaunchContext) SetScreen(screen *Screen) {
 // Window managers can use this information to avoid moving the focus to the
 // newly launched application when the user is busy typing in another window.
 // This is also known as 'focus stealing prevention'.
+//
+// The function takes the following parameters:
+//
+//    - timestamp: timestamp.
+//
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out

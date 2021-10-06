@@ -351,16 +351,16 @@ func NewGlyphString() *GlyphString {
 }
 
 // Copy a glyph string and associated storage.
-func (_string *GlyphString) Copy() *GlyphString {
+func (str *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
 
-	if _string != nil {
-		_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(_string)))
+	if str != nil {
+		_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(str)))
 	}
 
 	_cret = C.pango_glyph_string_copy(_arg0)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _glyphString *GlyphString // out
 
@@ -501,15 +501,15 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 }
 
 // SetSize: resize a glyph string to the given length.
-func (_string *GlyphString) SetSize(newLen int) {
+func (str *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
 
-	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(_string)))
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(str)))
 	_arg1 = C.gint(newLen)
 
 	C.pango_glyph_string_set_size(_arg0, _arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(newLen)
 }
 

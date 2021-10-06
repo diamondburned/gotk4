@@ -110,6 +110,11 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 // PackEnd adds child to action_bar, packed with reference to the end of the
 // action_bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to action_bar.
+//
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -124,6 +129,11 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 
 // PackStart adds child to action_bar, packed with reference to the start of the
 // action_bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to action_bar.
+//
 func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -137,6 +147,11 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 }
 
 // SetCenterWidget sets the center widget for the ActionBar.
+//
+// The function takes the following parameters:
+//
+//    - centerWidget: widget to use for the center.
+//
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out

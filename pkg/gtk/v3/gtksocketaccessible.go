@@ -51,6 +51,11 @@ func marshalSocketAccessibler(p uintptr) (interface{}, error) {
 	return wrapSocketAccessible(obj), nil
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (socket *SocketAccessible) Embed(path string) {
 	var _arg0 *C.GtkSocketAccessible // out
 	var _arg1 *C.gchar               // out

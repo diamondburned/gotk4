@@ -99,6 +99,11 @@ func marshalDropper(p uintptr) (interface{}, error) {
 //
 // The action must be a single action selected from the actions available via
 // gdk.Drop.GetActions().
+//
+// The function takes the following parameters:
+//
+//    - action performed by the destination or 0 if the drop failed.
+//
 func (self *Drop) Finish(action DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
@@ -273,6 +278,14 @@ func (self *Drop) Surface() Surfacer {
 
 // ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
 // that complies with one of the mime types.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - mimeTypes: pointer to an array of mime types.
+//    - ioPriority: i/O priority for the read operation.
+//    - callback: GAsyncReadyCallback to call when the request is satisfied.
+//
 func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
@@ -322,6 +335,11 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 // g_input_stream_read_bytes_async().
 //
 // See gdk.Drop.ReadAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
@@ -370,6 +388,14 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 // For local drag'n'drop operations that are available in the given GType, the
 // value will be copied directly. Otherwise, GDK will try to use
 // gdk.ContentDeserializeAsync() to convert the data.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - typ: GType to read.
+//    - ioPriority: i/O priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
@@ -402,6 +428,11 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPri
 // ReadValueFinish finishes an async drop read.
 //
 // See gdk.Drop.ReadValueAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
@@ -439,6 +470,14 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 // GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
 // know the exact actions it supports, it should set any possible actions first
 // and then later call this function again.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions of the destination, or 0 to indicate that a
+//    drop will not be accepted.
+//    - preferred: unique action that's a member of actions indicating the
+//    preferred action.
+//
 func (self *Drop) Status(actions, preferred DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out

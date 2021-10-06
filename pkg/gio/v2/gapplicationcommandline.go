@@ -144,6 +144,11 @@ func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
 // process rather than the local process.
+//
+// The function takes the following parameters:
+//
+//    - arg: argument from cmdline.
+//
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -429,6 +434,11 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 //
 // The return value should not be modified or freed and is valid for as long as
 // cmdline exists.
+//
+// The function takes the following parameters:
+//
+//    - name: environment variable to get.
+//
 func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -470,6 +480,11 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 // non-zero value) then the application is considered to have been 'successful'
 // in a certain sense, and the exit status is always zero. If the application
 // use count is zero, though, the exit status of the local CommandLine is used.
+//
+// The function takes the following parameters:
+//
+//    - exitStatus: exit status.
+//
 func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out

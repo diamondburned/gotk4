@@ -172,6 +172,11 @@ func marshalMultiFilterer(p uintptr) (interface{}, error) {
 }
 
 // Append adds a filter to self to use for matching.
+//
+// The function takes the following parameters:
+//
+//    - filter: new filter to use.
+//
 func (self *MultiFilter) Append(filter *Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
@@ -190,6 +195,11 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 // If position is larger than the number of filters, nothing happens and the
 // function returns.
+//
+// The function takes the following parameters:
+//
+//    - position of filter to remove.
+//
 func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out

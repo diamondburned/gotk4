@@ -353,6 +353,14 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 //
 // The adjustment, climb rate, and number of decimal places are updated
 // accordingly.
+//
+// The function takes the following parameters:
+//
+//    - adjustment: GtkAdjustment to replace the spin button’s existing
+//    adjustment, or NULL to leave its current adjustment unchanged.
+//    - climbRate: new climb rate.
+//    - digits: number of decimal places to display in the spin button.
+//
 func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
@@ -580,6 +588,11 @@ func (spinButton *SpinButton) Wrap() bool {
 }
 
 // SetAdjustment replaces the GtkAdjustment associated with spin_button.
+//
+// The function takes the following parameters:
+//
+//    - adjustment: GtkAdjustment to replace the existing adjustment.
+//
 func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
@@ -594,6 +607,11 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 
 // SetClimbRate sets the acceleration rate for repeated changes when you hold
 // down a button or key.
+//
+// The function takes the following parameters:
+//
+//    - climbRate: rate of acceleration, must be >= 0.
+//
 func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
@@ -609,6 +627,12 @@ func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 // SetDigits: set the precision to be displayed by spin_button.
 //
 // Up to 20 digit precision is allowed.
+//
+// The function takes the following parameters:
+//
+//    - digits: number of digits after the decimal point to be displayed for
+//    the spin button’s value.
+//
 func (spinButton *SpinButton) SetDigits(digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.guint          // out
@@ -625,6 +649,12 @@ func (spinButton *SpinButton) SetDigits(digits uint) {
 //
 // This affects how quickly the value changes when the spin button’s arrows are
 // activated.
+//
+// The function takes the following parameters:
+//
+//    - step: increment applied for a button 1 press.
+//    - page: increment applied for a button 2 press.
+//
 func (spinButton *SpinButton) SetIncrements(step, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
@@ -642,6 +672,11 @@ func (spinButton *SpinButton) SetIncrements(step, page float64) {
 
 // SetNumeric sets the flag that determines if non-numeric text can be typed
 // into the spin button.
+//
+// The function takes the following parameters:
+//
+//    - numeric: flag indicating if only numeric entry is allowed.
+//
 func (spinButton *SpinButton) SetNumeric(numeric bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
@@ -660,6 +695,12 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 //
 // If the current value is outside this range, it will be adjusted to fit within
 // the range, otherwise it will remain unchanged.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum allowable value.
+//    - max: maximum allowable value.
+//
 func (spinButton *SpinButton) SetRange(min, max float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
@@ -678,6 +719,11 @@ func (spinButton *SpinButton) SetRange(min, max float64) {
 // SetSnapToTicks sets the policy as to whether values are corrected to the
 // nearest step increment when a spin button is activated after providing an
 // invalid value.
+//
+// The function takes the following parameters:
+//
+//    - snapToTicks: flag indicating if invalid values should be corrected.
+//
 func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
@@ -696,6 +742,11 @@ func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 //
 // This determines whether the spin button is always updated or only when a
 // valid value is set.
+//
+// The function takes the following parameters:
+//
+//    - policy: GtkSpinButtonUpdatePolicy value.
+//
 func (spinButton *SpinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy) {
 	var _arg0 *C.GtkSpinButton            // out
 	var _arg1 C.GtkSpinButtonUpdatePolicy // out
@@ -709,6 +760,11 @@ func (spinButton *SpinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy) {
 }
 
 // SetValue sets the value of spin_button.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//
 func (spinButton *SpinButton) SetValue(value float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.double         // out
@@ -723,6 +779,11 @@ func (spinButton *SpinButton) SetValue(value float64) {
 
 // SetWrap sets the flag that determines if a spin button value wraps around to
 // the opposite limit when the upper or lower limit of the range is exceeded.
+//
+// The function takes the following parameters:
+//
+//    - wrap: flag indicating if wrapping behavior is performed.
+//
 func (spinButton *SpinButton) SetWrap(wrap bool) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gboolean       // out
@@ -739,6 +800,12 @@ func (spinButton *SpinButton) SetWrap(wrap bool) {
 
 // Spin: increment or decrement a spin button’s value in a specified direction
 // by a specified amount.
+//
+// The function takes the following parameters:
+//
+//    - direction: GtkSpinType indicating the direction to spin.
+//    - increment: step increment to apply in the specified direction.
+//
 func (spinButton *SpinButton) Spin(direction SpinType, increment float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.GtkSpinType    // out

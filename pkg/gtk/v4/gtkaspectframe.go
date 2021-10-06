@@ -190,6 +190,11 @@ func (self *AspectFrame) YAlign() float32 {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
@@ -206,6 +211,12 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 
 // SetObeyChild sets whether the aspect ratio of the child's size request should
 // override the set aspect ratio of the GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
+//    from the requistion of the child.
+//
 func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gboolean        // out
@@ -221,6 +232,11 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 }
 
 // SetRatio sets the desired aspect ratio of the child.
+//
+// The function takes the following parameters:
+//
+//    - ratio: aspect ratio of the child.
+//
 func (self *AspectFrame) SetRatio(ratio float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
@@ -235,6 +251,12 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 
 // SetXAlign sets the horizontal alignment of the child within the allocation of
 // the GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0.0 (left aligned) to 1.0 (right
+//    aligned).
+//
 func (self *AspectFrame) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
@@ -249,6 +271,12 @@ func (self *AspectFrame) SetXAlign(xalign float32) {
 
 // SetYAlign sets the vertical alignment of the child within the allocation of
 // the GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - yalign: horizontal alignment, from 0.0 (top aligned) to 1.0 (bottom
+//    aligned).
+//
 func (self *AspectFrame) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out

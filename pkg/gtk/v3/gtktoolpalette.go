@@ -180,6 +180,15 @@ func NewToolPalette() *ToolPalette {
 // AddDragDest sets palette as drag source (see
 // gtk_tool_palette_set_drag_source()) and sets widget as a drag destination for
 // drags from palette. See gtk_drag_dest_set().
+//
+// The function takes the following parameters:
+//
+//    - widget which should be a drag destination for palette.
+//    - flags that specify what actions GTK+ should take for drops on that
+//    widget.
+//    - targets which the widget should support.
+//    - actions which the widget should suppport.
+//
 func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
 	var _arg0 *C.GtkToolPalette           // out
 	var _arg1 *C.GtkWidget                // out
@@ -203,6 +212,11 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 
 // DragItem: get the dragged item from the selection. This could be a ToolItem
 // or a ToolItemGroup.
+//
+// The function takes the following parameters:
+//
+//    - selection: SelectionData.
+//
 func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkSelectionData // out
@@ -235,6 +249,12 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 }
 
 // DropGroup gets the group at position (x, y).
+//
+// The function takes the following parameters:
+//
+//    - x position.
+//    - y position.
+//
 func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 C.gint              // out
@@ -261,6 +281,12 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 
 // DropItem gets the item at position (x, y). See
 // gtk_tool_palette_get_drop_group().
+//
+// The function takes the following parameters:
+//
+//    - x position.
+//    - y position.
+//
 func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.gint            // out
@@ -287,6 +313,11 @@ func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 
 // Exclusive gets whether group is exclusive or not. See
 // gtk_tool_palette_set_exclusive().
+//
+// The function takes the following parameters:
+//
+//    - group which is a child of palette.
+//
 func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -310,6 +341,11 @@ func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 
 // Expand gets whether group should be given extra space. See
 // gtk_tool_palette_set_expand().
+//
+// The function takes the following parameters:
+//
+//    - group which is a child of palette.
+//
 func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -333,6 +369,11 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 
 // GroupPosition gets the position of group in palette as index. See
 // gtk_tool_palette_set_group_position().
+//
+// The function takes the following parameters:
+//
+//    - group: ToolItemGroup.
+//
 func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -428,6 +469,11 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 // SetDragSource sets the tool palette as a drag source. Enables all groups and
 // items in the tool palette as drag sources on button 1 and button 3 press with
 // copy and move actions. See gtk_drag_source_set().
+//
+// The function takes the following parameters:
+//
+//    - targets: ToolPaletteDragTargets which the widget should support.
+//
 func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
 	var _arg0 *C.GtkToolPalette           // out
 	var _arg1 C.GtkToolPaletteDragTargets // out
@@ -442,6 +488,12 @@ func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
 
 // SetExclusive sets whether the group should be exclusive or not. If an
 // exclusive group is expanded all other groups are collapsed.
+//
+// The function takes the following parameters:
+//
+//    - group which is a child of palette.
+//    - exclusive: whether the group should be exclusive or not.
+//
 func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -460,6 +512,12 @@ func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
 }
 
 // SetExpand sets whether the group should be given extra space.
+//
+// The function takes the following parameters:
+//
+//    - group which is a child of palette.
+//    - expand: whether the group should be given extra space.
+//
 func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -480,6 +538,12 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 // SetGroupPosition sets the position of the group as an index of the tool
 // palette. If position is 0 the group will become the first child, if position
 // is -1 it will become the last child.
+//
+// The function takes the following parameters:
+//
+//    - group which is a child of palette.
+//    - position: new index for group.
+//
 func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int) {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkToolItemGroup // out
@@ -496,6 +560,11 @@ func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int)
 }
 
 // SetIconSize sets the size of icons in the tool palette.
+//
+// The function takes the following parameters:
+//
+//    - iconSize that icons in the tool palette shall have.
+//
 func (palette *ToolPalette) SetIconSize(iconSize int) {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.GtkIconSize     // out
@@ -509,6 +578,11 @@ func (palette *ToolPalette) SetIconSize(iconSize int) {
 }
 
 // SetStyle sets the style (text, icons or both) of items in the tool palette.
+//
+// The function takes the following parameters:
+//
+//    - style that items in the tool palette shall have.
+//
 func (palette *ToolPalette) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolPalette // out
 	var _arg1 C.GtkToolbarStyle // out

@@ -175,6 +175,11 @@ func marshalPermissioner(p uintptr) (interface{}, error) {
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -203,6 +208,12 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 // AcquireAsync attempts to acquire the permission represented by permission.
 //
 // This is the first half of the asynchronous version of g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when done.
+//
 func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
@@ -231,6 +242,11 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 //
 // This is the second half of the asynchronous version of
 // g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
 func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
@@ -320,6 +336,13 @@ func (permission *Permission) CanRelease() bool {
 // except from a #GPermission implementation.
 //
 // GObject notify signals are generated, as appropriate.
+//
+// The function takes the following parameters:
+//
+//    - allowed: new value for the 'allowed' property.
+//    - canAcquire: new value for the 'can-acquire' property.
+//    - canRelease: new value for the 'can-release' property.
+//
 func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
@@ -359,6 +382,11 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_release_async() for the
 // non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (permission *Permission) Release(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -387,6 +415,12 @@ func (permission *Permission) Release(ctx context.Context) error {
 // ReleaseAsync attempts to release the permission represented by permission.
 //
 // This is the first half of the asynchronous version of g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when done.
+//
 func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
@@ -415,6 +449,11 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 //
 // This is the second half of the asynchronous version of
 // g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
 func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out

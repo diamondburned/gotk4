@@ -298,17 +298,17 @@ func TestTextGet(widget Widgetter) string {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestTextSet(widget Widgetter, _string string) {
+func TestTextSet(widget Widgetter, str string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_test_text_set(_arg1, _arg2)
 	runtime.KeepAlive(widget)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 }
 
 // TestWidgetClick: this function will generate a button click (button press and

@@ -136,6 +136,11 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 // SetObject sets the BusObject for interface_ to object.
 //
 // Note that interface_ will hold a weak reference to object.
+//
+// The function takes the following parameters:
+//
+//    - object or NULL.
+//
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out

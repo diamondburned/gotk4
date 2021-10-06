@@ -148,6 +148,11 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 // IsSameUser checks if credentials and other_credentials is the same user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
+//
+// The function takes the following parameters:
+//
+//    - otherCredentials: #GCredentials.
+//
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
@@ -175,6 +180,12 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 // It is a programming error (which will cause a warning to be logged) to use
 // this method if there is no #GCredentials support for the OS or if native_type
 // isn't supported by the OS.
+//
+// The function takes the following parameters:
+//
+//    - nativeType: type of native credentials to set.
+//    - native: pointer to native credentials.
+//
 func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo.Handle) {
 	var _arg0 *C.GCredentials    // out
 	var _arg1 C.GCredentialsType // out
@@ -196,6 +207,11 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user. It
 // can also fail if the OS does not allow the use of "spoofed" credentials.
+//
+// The function takes the following parameters:
+//
+//    - uid: UNIX user identifier to set.
+//
 func (credentials *Credentials) SetUnixUser(uid uint) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 C.uid_t         // out

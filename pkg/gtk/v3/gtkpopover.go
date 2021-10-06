@@ -193,6 +193,12 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 // using gtk_widget_insert_action_group(). As an example, if you created a group
 // with a “quit” action and inserted it with the name “mygroup” then you would
 // use the action name “mygroup.quit” in your Model.
+//
+// The function takes the following parameters:
+//
+//    - model to bind to or NULL to remove binding.
+//    - actionNamespace: namespace for actions in model.
+//
 func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GMenuModel // out
@@ -402,6 +408,11 @@ func (popover *Popover) Popup() {
 //
 // Note that not all platforms support placing popovers freely, and may already
 // impose constraints.
+//
+// The function takes the following parameters:
+//
+//    - constraint: new constraint.
+//
 func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 	var _arg0 *C.GtkPopover          // out
 	var _arg1 C.GtkPopoverConstraint // out
@@ -417,6 +428,11 @@ func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 // SetDefaultWidget sets the widget that should be set as default widget while
 // the popover is shown (see gtk_window_set_default()). Popover remembers the
 // previous default widget and reestablishes it when the popover is dismissed.
+//
+// The function takes the following parameters:
+//
+//    - widget: new default widget, or NULL.
+//
 func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -435,6 +451,11 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 // within the toplevel and grab the keyboard focus on it when being displayed.
 // Clicking outside the popover area or pressing Esc will dismiss the popover
 // and ungrab input.
+//
+// The function takes the following parameters:
+//
+//    - modal to make popover claim all input within the toplevel.
+//
 func (popover *Popover) SetModal(modal bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -452,6 +473,11 @@ func (popover *Popover) SetModal(modal bool) {
 // SetPointingTo sets the rectangle that popover will point to, in the
 // coordinate space of the widget popover is attached to, see
 // gtk_popover_set_relative_to().
+//
+// The function takes the following parameters:
+//
+//    - rect: rectangle to point to.
+//
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
@@ -470,6 +496,11 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 // This preference will be respected where possible, although on lack of space
 // (eg. if close to the window edges), the Popover may choose to appear on the
 // opposite side.
+//
+// The function takes the following parameters:
+//
+//    - position: preferred popover position.
+//
 func (popover *Popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out
 	var _arg1 C.GtkPositionType // out
@@ -489,6 +520,11 @@ func (popover *Popover) SetPosition(position PositionType) {
 // so if relative_to is set to NULL on an attached popover, it will be detached
 // from its previous widget, and consequently destroyed unless extra references
 // are kept.
+//
+// The function takes the following parameters:
+//
+//    - relativeTo: Widget.
+//
 func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -509,6 +545,11 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 // Deprecated: You can show or hide the popover without transitions using
 // gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
 // gtk_popover_popdown() will use transitions.
+//
+// The function takes the following parameters:
+//
+//    - transitionsEnabled: whether transitions are enabled.
+//
 func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out

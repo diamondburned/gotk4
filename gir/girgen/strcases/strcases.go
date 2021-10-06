@@ -213,58 +213,58 @@ func KebabToGo(pascal bool, kebabString string) string {
 
 // GoKeywords includes Go keywords. This is primarily to prevent collisions with
 // meaningful Go words.
-var GoKeywords = map[string]struct{}{
+var GoKeywords = map[string]string{
 	// Keywords.
-	"break":       {},
-	"default":     {},
-	"func":        {},
-	"interface":   {},
-	"select":      {},
-	"case":        {},
-	"defer":       {},
-	"go":          {},
-	"map":         {},
-	"struct":      {},
-	"chan":        {},
-	"else":        {},
-	"goto":        {},
-	"package":     {},
-	"switch":      {},
-	"const":       {},
-	"fallthrough": {},
-	"if":          {},
-	"range":       {},
-	"type":        {},
-	"continue":    {},
-	"for":         {},
-	"import":      {},
-	"return":      {},
-	"var":         {},
+	"break":       "",
+	"default":     "",
+	"func":        "fn",
+	"interface":   "iface",
+	"select":      "sel",
+	"case":        "",
+	"defer":       "",
+	"go":          "",
+	"map":         "",
+	"struct":      "",
+	"chan":        "ch",
+	"else":        "",
+	"goto":        "",
+	"package":     "pkg",
+	"switch":      "",
+	"const":       "",
+	"fallthrough": "",
+	"if":          "",
+	"range":       "",
+	"type":        "typ",
+	"continue":    "",
+	"for":         "",
+	"import":      "",
+	"return":      "ret",
+	"var":         "",
 }
 
 // GoBuiltinTypes contains Go built-in types.
-var GoBuiltinTypes = map[string]struct{}{
+var GoBuiltinTypes = map[string]string{
 	// Types.
-	"bool":       {},
-	"byte":       {},
-	"complex128": {},
-	"complex64":  {},
-	"error":      {},
-	"float32":    {},
-	"float64":    {},
-	"int":        {},
-	"int16":      {},
-	"int32":      {},
-	"int64":      {},
-	"int8":       {},
-	"rune":       {},
-	"string":     {},
-	"uint":       {},
-	"uint16":     {},
-	"uint32":     {},
-	"uint64":     {},
-	"uint8":      {},
-	"uintptr":    {},
+	"bool":       "",
+	"byte":       "",
+	"complex128": "cmplx",
+	"complex64":  "cmplx",
+	"error":      "err",
+	"float32":    "",
+	"float64":    "",
+	"int":        "",
+	"int16":      "",
+	"int32":      "",
+	"int64":      "",
+	"int8":       "",
+	"rune":       "",
+	"string":     "str",
+	"uint":       "",
+	"uint16":     "",
+	"uint32":     "",
+	"uint64":     "",
+	"uint8":      "",
+	"uintptr":    "",
 }
 
 // CGoField formats the C field name to not be confused with a Go keyword.
@@ -279,26 +279,19 @@ func CGoField(field string) string {
 
 // SnakeNoGo ensures the snake-case string is never a Go keyword.
 func SnakeNoGo(snake string) string {
-	switch snake {
-	case "func":
-		snake = "fn"
-	case "type":
-		snake = "typ"
-	case "error":
-		snake = "err"
-	case "return":
-		snake = "ret"
-	case "interface":
-		snake = "iface"
-	}
-
-	_, isKeyword := GoKeywords[snake]
+	s, isKeyword := GoKeywords[snake]
 	if isKeyword {
+		if s != "" {
+			return s
+		}
 		return "_" + snake
 	}
 
-	_, isType := GoBuiltinTypes[snake]
+	s, isType := GoBuiltinTypes[snake]
 	if isType {
+		if s != "" {
+			return s
+		}
 		return "_" + snake
 	}
 

@@ -114,6 +114,11 @@ func NewTreeStore(types []externglib.Type) *TreeStore {
 // row to the top level. iter will be changed to point to this new row. The row
 // will be empty after this function is called. To fill in values, you need to
 // call gtk_tree_store_set() or gtk_tree_store_set_value().
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//
 func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -152,6 +157,12 @@ func (treeStore *TreeStore) Clear() {
 // changed to point to this new row. The row will be empty after this function
 // is called. To fill in values, you need to call gtk_tree_store_set() or
 // gtk_tree_store_set_value().
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//    - position to insert the new row, or -1 for last.
+//
 func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -185,6 +196,12 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 // iter will be changed to point to this new row. The row will be empty after
 // this function is called. To fill in values, you need to call
 // gtk_tree_store_set() or gtk_tree_store_set_value().
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//    - sibling: valid TreeIter, or NULL.
+//
 func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -220,6 +237,12 @@ func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) TreeIter {
 // iter will be changed to point to this new row. The row will be empty after
 // this function is called. To fill in values, you need to call
 // gtk_tree_store_set() or gtk_tree_store_set_value().
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//    - sibling: valid TreeIter, or NULL.
+//
 func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -249,6 +272,14 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) TreeIter {
 // InsertWithValues: variant of gtk_tree_store_insert_with_values() which takes
 // the columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language bindings.
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//    - position to insert the new row, or -1 for last.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
 func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -298,6 +329,12 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, col
 
 // IsAncestor returns TRUE if iter is an ancestor of descendant. That is, iter
 // is the parent (or grandparent or great-grandparent) of descendant.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter.
+//    - descendant: valid TreeIter.
+//
 func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -324,6 +361,11 @@ func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 
 // IterDepth returns the depth of iter. This will be 0 for anything on the root
 // level, 1 for anything down a level, etc.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter.
+//
 func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -347,6 +389,11 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 // testing purposes.
 //
 // Checks if the given iter is a valid iter for this TreeStore.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter.
+//
 func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -372,6 +419,12 @@ func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 // position should be in the same level. Note that this function only works with
 // unsorted stores. If position is NULL, iter will be moved to the start of the
 // level.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter.
+//    - position: TreeIter.
+//
 func (treeStore *TreeStore) MoveAfter(iter, position *TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -393,6 +446,12 @@ func (treeStore *TreeStore) MoveAfter(iter, position *TreeIter) {
 // position should be in the same level. Note that this function only works with
 // unsorted stores. If position is NULL, iter will be moved to the end of the
 // level.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter.
+//    - position or NULL.
+//
 func (treeStore *TreeStore) MoveBefore(iter, position *TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -415,6 +474,11 @@ func (treeStore *TreeStore) MoveBefore(iter, position *TreeIter) {
 // prepend a row to the top level. iter will be changed to point to this new
 // row. The row will be empty after this function is called. To fill in values,
 // you need to call gtk_tree_store_set() or gtk_tree_store_set_value().
+//
+// The function takes the following parameters:
+//
+//    - parent: valid TreeIter, or NULL.
+//
 func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
@@ -439,6 +503,11 @@ func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
 // Remove removes iter from tree_store. After being removed, iter is set to the
 // next valid row at that level, or invalidated if it previously pointed to the
 // last one.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter.
+//
 func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -464,6 +533,11 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 // from TreeStore, and should only be used when constructing a new TreeStore. It
 // will not function after a row has been added, or a method on the TreeModel
 // interface is called.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types, one for each column.
+//
 func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg2 *C.GType        // out
@@ -487,6 +561,13 @@ func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - column number to modify.
+//    - value: new value for the cell.
+//
 func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -509,6 +590,13 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 // values as two arrays, instead of varargs. This function is mainly intended
 // for language bindings or in case the number of columns to change is not known
 // until run-time.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
 func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
@@ -546,6 +634,12 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []externgl
 
 // Swap swaps a and b in the same level of tree_store. Note that this function
 // only works with unsorted stores.
+//
+// The function takes the following parameters:
+//
+//    - a: TreeIter.
+//    - b: another TreeIter.
+//
 func (treeStore *TreeStore) Swap(a, b *TreeIter) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out

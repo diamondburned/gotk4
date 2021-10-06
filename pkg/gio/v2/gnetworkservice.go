@@ -158,6 +158,11 @@ func (srv *NetworkService) Service() string {
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
+//
+// The function takes the following parameters:
+//
+//    - scheme: URI scheme.
+//
 func (srv *NetworkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out

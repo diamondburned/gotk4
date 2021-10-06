@@ -237,6 +237,11 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 // present it.
 //
 // window takes responsibility for destroying help_overlay.
+//
+// The function takes the following parameters:
+//
+//    - helpOverlay: GtkShortcutsWindow.
+//
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
@@ -253,6 +258,11 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 
 // SetShowMenubar sets whether the window will display a menubar for the app
 // menu and menubar as needed.
+//
+// The function takes the following parameters:
+//
+//    - showMenubar: whether to show a menubar when needed.
+//
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 C.gboolean              // out

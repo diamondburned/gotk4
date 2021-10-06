@@ -300,6 +300,18 @@ func marshalCellRendererer(p uintptr) (interface{}, error) {
 // Activate passes an activate event to the cell renderer for possible
 // processing. Some cell renderers may use events; for example,
 // CellRendererToggle toggles when it gets a mouse click.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//    - widget that received the event.
+//    - path: widget-dependent string representation of the event location;
+//    e.g. for TreeView, a string representation of TreePath.
+//    - backgroundArea: background area as passed to
+//    gtk_cell_renderer_render().
+//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+//    - flags: render flags.
+//
 func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
@@ -339,6 +351,14 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path str
 
 // AlignedArea gets the aligned area used by cell inside cell_area. Used for
 // finding the appropriate edit and focus rectangle.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//    - flags: render flags.
+//    - cellArea: cell area which would be passed to
+//    gtk_cell_renderer_render().
+//
 func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
@@ -463,6 +483,11 @@ func (cell *CellRenderer) Padding() (xpad int, ypad int) {
 }
 
 // PreferredHeight retrieves a renderer’s natural size when rendered to widget.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//
 func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -487,6 +512,12 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, na
 
 // PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 // height if it were rendered to widget with the specified width.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//    - width: size which is available for allocation.
+//
 func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -514,6 +545,11 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (
 
 // PreferredSize retrieves the minimum and natural size of a cell taking into
 // account the widget’s preference for height-for-width management.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//
 func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -537,6 +573,11 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisiti
 }
 
 // PreferredWidth retrieves a renderer’s natural size when rendered to widget.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//
 func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -561,6 +602,12 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, nat
 
 // PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 // width if it were rendered to widget with the specified height.
+//
+// The function takes the following parameters:
+//
+//    - widget this cell will be rendering to.
+//    - height: size which is available for allocation.
+//
 func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -625,6 +672,12 @@ func (cell *CellRenderer) Sensitive() bool {
 
 // State translates the cell renderer state to StateFlags, based on the cell
 // renderer and widget sensitivity, and the given CellRendererState.
+//
+// The function takes the following parameters:
+//
+//    - widget or NULL.
+//    - cellState: cell renderer state.
+//
 func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) StateFlags {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
@@ -691,6 +744,12 @@ func (cell *CellRenderer) IsActivatable() bool {
 }
 
 // SetAlignment sets the renderer’s alignment within its available space.
+//
+// The function takes the following parameters:
+//
+//    - xalign: x alignment of the cell renderer.
+//    - yalign: y alignment of the cell renderer.
+//
 func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.float            // out
@@ -708,6 +767,12 @@ func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 
 // SetFixedSize sets the renderer size to be explicit, independent of the
 // properties set.
+//
+// The function takes the following parameters:
+//
+//    - width of the cell renderer, or -1.
+//    - height of the cell renderer, or -1.
+//
 func (cell *CellRenderer) SetFixedSize(width, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
@@ -724,6 +789,11 @@ func (cell *CellRenderer) SetFixedSize(width, height int) {
 }
 
 // SetIsExpanded sets whether the given CellRenderer is expanded.
+//
+// The function takes the following parameters:
+//
+//    - isExpanded: whether cell should be expanded.
+//
 func (cell *CellRenderer) SetIsExpanded(isExpanded bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
@@ -739,6 +809,11 @@ func (cell *CellRenderer) SetIsExpanded(isExpanded bool) {
 }
 
 // SetIsExpander sets whether the given CellRenderer is an expander.
+//
+// The function takes the following parameters:
+//
+//    - isExpander: whether cell is an expander.
+//
 func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
@@ -754,6 +829,12 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 }
 
 // SetPadding sets the renderer’s padding.
+//
+// The function takes the following parameters:
+//
+//    - xpad: x padding of the cell renderer.
+//    - ypad: y padding of the cell renderer.
+//
 func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
@@ -770,6 +851,11 @@ func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 }
 
 // SetSensitive sets the cell renderer’s sensitivity.
+//
+// The function takes the following parameters:
+//
+//    - sensitive: sensitivity of the cell.
+//
 func (cell *CellRenderer) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
@@ -785,6 +871,11 @@ func (cell *CellRenderer) SetSensitive(sensitive bool) {
 }
 
 // SetVisible sets the cell renderer’s visibility.
+//
+// The function takes the following parameters:
+//
+//    - visible: visibility of the cell.
+//
 func (cell *CellRenderer) SetVisible(visible bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out
@@ -806,6 +897,16 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 // blank space around the cell, and also the area containing the tree expander;
 // so the background_area rectangles for all cells tile to cover the entire
 // window.
+//
+// The function takes the following parameters:
+//
+//    - snapshot to draw to.
+//    - widget owning window.
+//    - backgroundArea: entire cell area (including tree expanders and maybe
+//    padding on the sides).
+//    - cellArea: area normally rendered by a cell renderer.
+//    - flags that affect rendering.
+//
 func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkSnapshot         // out
@@ -833,6 +934,18 @@ func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgro
 // StartEditing starts editing the contents of this cell, through a new
 // CellEditable widget created by the CellRendererClass.start_editing virtual
 // function.
+//
+// The function takes the following parameters:
+//
+//    - event: Event.
+//    - widget that received the event.
+//    - path: widget-dependent string representation of the event location;
+//    e.g. for TreeView, a string representation of TreePath.
+//    - backgroundArea: background area as passed to
+//    gtk_cell_renderer_render().
+//    - cellArea: cell area as passed to gtk_cell_renderer_render().
+//    - flags: render flags.
+//
 func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
@@ -887,6 +1000,11 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path
 //
 // This function should be called by cell renderer implementations in response
 // to the CellEditable::editing-done signal of CellEditable.
+//
+// The function takes the following parameters:
+//
+//    - canceled: TRUE if the editing has been canceled.
+//
 func (cell *CellRenderer) StopEditing(canceled bool) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gboolean         // out

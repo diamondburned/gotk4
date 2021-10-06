@@ -132,6 +132,12 @@ func (misc *Misc) Padding() (xpad int, ypad int) {
 //
 // Deprecated: Use Widget's alignment (Widget:halign and Widget:valign) and
 // margin properties or Label's Label:xalign and Label:yalign properties.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0 (left) to 1 (right).
+//    - yalign: vertical alignment, from 0 (top) to 1 (bottom).
+//
 func (misc *Misc) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gfloat   // out
@@ -150,6 +156,14 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 // SetPadding sets the amount of space to add around the widget.
 //
 // Deprecated: Use Widget alignment and margin properties.
+//
+// The function takes the following parameters:
+//
+//    - xpad: amount of space to add on the left and right of the widget, in
+//    pixels.
+//    - ypad: amount of space to add on the top and bottom of the widget, in
+//    pixels.
+//
 func (misc *Misc) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // out

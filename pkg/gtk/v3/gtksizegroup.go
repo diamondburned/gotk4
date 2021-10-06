@@ -133,6 +133,11 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
+//
+// The function takes the following parameters:
+//
+//    - widget to add.
+//
 func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
@@ -224,6 +229,11 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 }
 
 // RemoveWidget removes a widget from a SizeGroup.
+//
+// The function takes the following parameters:
+//
+//    - widget to remove.
+//
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
@@ -244,6 +254,12 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 // their size will not affect the other size group members. In effect, size
 // groups will always operate as if this property was TRUE. Use a Stack instead
 // to hide widgets while still having their size taken into account.
+//
+// The function takes the following parameters:
+//
+//    - ignoreHidden: whether unmapped widgets should be ignored when
+//    calculating the size.
+//
 func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 C.gboolean      // out
@@ -263,6 +279,11 @@ func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 // horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical
 // requisition (GTK_SIZE_GROUP_VERTICAL), or should all have the same
 // requisition in both directions (GTK_SIZE_GROUP_BOTH).
+//
+// The function takes the following parameters:
+//
+//    - mode to set for the size group.
+//
 func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _arg1 C.GtkSizeGroupMode // out

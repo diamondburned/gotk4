@@ -234,6 +234,13 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 // partial multibyte sequence). Converters are supposed to try to produce as
 // much output as possible and then return an error (typically
 // G_IO_ERROR_PARTIAL_INPUT).
+//
+// The function takes the following parameters:
+//
+//    - inbuf: buffer containing the data to convert.
+//    - outbuf: buffer to write converted data in.
+//    - flags controlling the conversion details.
+//
 func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
 	var _arg1 *C.void       // out

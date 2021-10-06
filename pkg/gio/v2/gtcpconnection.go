@@ -82,6 +82,11 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 // also means we have to wait for all the data to reach the other side and for
 // it to acknowledge this by closing the socket, which may take a while. For
 // this reason it is disabled by default.
+//
+// The function takes the following parameters:
+//
+//    - gracefulDisconnect: whether to do graceful disconnects or not.
+//
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out

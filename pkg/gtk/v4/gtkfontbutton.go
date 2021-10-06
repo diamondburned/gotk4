@@ -181,6 +181,11 @@ func (fontButton *FontButton) UseSize() bool {
 }
 
 // SetModal sets whether the dialog should be modal.
+//
+// The function takes the following parameters:
+//
+//    - modal: TRUE to make the dialog modal.
+//
 func (fontButton *FontButton) SetModal(modal bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
@@ -196,6 +201,11 @@ func (fontButton *FontButton) SetModal(modal bool) {
 }
 
 // SetTitle sets the title for the font chooser dialog.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing the font chooser dialog title.
+//
 func (fontButton *FontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.char          // out
@@ -211,6 +221,11 @@ func (fontButton *FontButton) SetTitle(title string) {
 
 // SetUseFont: if use_font is TRUE, the font name will be written using the
 // selected font.
+//
+// The function takes the following parameters:
+//
+//    - useFont: if TRUE, font name will be written using font chosen.
+//
 func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
@@ -227,6 +242,11 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 
 // SetUseSize: if use_size is TRUE, the font name will be written using the
 // selected size.
+//
+// The function takes the following parameters:
+//
+//    - useSize: if TRUE, font name will be written using the selected size.
+//
 func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out

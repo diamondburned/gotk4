@@ -112,6 +112,11 @@ func (switcher *StackSwitcher) Stack() *Stack {
 }
 
 // SetStack sets the stack to control.
+//
+// The function takes the following parameters:
+//
+//    - stack: GtkStack.
+//
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out

@@ -211,6 +211,11 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 }
 
 // SetActive sets the active state of the menu item’s check box.
+//
+// The function takes the following parameters:
+//
+//    - isActive: boolean value indicating whether the check box is active.
+//
 func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
@@ -226,6 +231,11 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 }
 
 // SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem.
+//
+// The function takes the following parameters:
+//
+//    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
+//
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out
@@ -248,6 +258,11 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 // explicitly selects a setting. This has to be done manually,
 // gtk_check_menu_item_set_inconsistent() only affects visual appearance, it
 // doesn’t affect the semantics of the widget.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to display an “inconsistent” third state check.
+//
 func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out

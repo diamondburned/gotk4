@@ -79,6 +79,11 @@ func (display *Display) Close() {
 
 // DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
 // display.
+//
+// The function takes the following parameters:
+//
+//    - device: GdkDevice.
+//
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
@@ -189,6 +194,11 @@ func (display *Display) DefaultSeat() Seater {
 // resides.
 //
 // Returns a monitor close to surface if it is outside of all monitors.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface.
+//
 func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
@@ -282,6 +292,12 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 
 // Setting retrieves a desktop-wide setting such as double-click time for the
 // display.
+//
+// The function takes the following parameters:
+//
+//    - name of the setting.
+//    - value: location to store the value of the setting.
+//
 func (display *Display) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -444,6 +460,11 @@ func (display *Display) ListSeats() []Seater {
 // is selected by considering the effective keyboard group and level.
 //
 // Free the returned arrays with g_free().
+//
+// The function takes the following parameters:
+//
+//    - keycode: keycode.
+//
 func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay   // out
 	var _arg1 C.guint         // out
@@ -500,6 +521,11 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 // The level is computed from the modifier mask.
 //
 // The returned array should be freed with g_free().
+//
+// The function takes the following parameters:
+//
+//    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+//
 func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay   // out
 	var _arg1 C.guint         // out
@@ -533,6 +559,12 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 // GTK will call this function automatically for gtk.Window with custom
 // startup-notification identifier unless
 // gtk.Window.SetAutoStartupNotification() is called to disable that feature.
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup-notification identifier, for which notification
+//    process should be completed.
+//
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -551,6 +583,11 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 //
 // This function is only useful in very special situations and should not be
 // used by applications.
+//
+// The function takes the following parameters:
+//
+//    - event: GdkEvent.
+//
 func (display *Display) PutEvent(event Eventer) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
@@ -624,6 +661,13 @@ func (display *Display) Sync() {
 // This function should rarely be needed, since GdkEventKey already contains the
 // translated keyval. It is exported for the benefit of virtualized test
 // environments.
+//
+// The function takes the following parameters:
+//
+//    - keycode: keycode.
+//    - state: modifier state.
+//    - group: active keyboard group.
+//
 func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 C.guint           // out

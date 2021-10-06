@@ -1362,6 +1362,12 @@ func marshalFiler(p uintptr) (interface{}, error) {
 // G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
 // G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
 // too, and depend on what kind of filesystem the file is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
 func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg2 *C.GCancellable      // out
@@ -1400,6 +1406,14 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_append_to_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -1431,6 +1445,11 @@ func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 
 // AppendToFinish finishes an asynchronous file append operation started with
 // g_file_append_to_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -1464,6 +1483,12 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 // used by the implementation of g_file_copy_attributes() and is useful when one
 // needs to query and set the attributes in two stages (e.g., for recursive move
 // of a directory).
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CopyFlags.
+//
 func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyFlags) (string, error) {
 	var _arg0 *C.GFile         // out
 	var _arg2 *C.GCancellable  // out
@@ -1536,6 +1561,15 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 //
 // If you are interested in copying the #GFile object itself (not the on-disk
 // file), see g_file_dup().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - destination #GFile.
+//    - flags: set of CopyFlags.
+//    - progressCallback: function to callback with progress information, or
+//    NULL if progress information is not needed.
+//
 func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
@@ -1582,6 +1616,13 @@ func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyF
 // e.g. owner). However if FILE_COPY_ALL_METADATA is specified in flags, then
 // all the metadata that is possible to copy is copied. This is useful when
 // implementing move by copy + delete source.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - destination to copy attributes to.
+//    - flags: set of CopyFlags.
+//
 func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error {
 	var _arg0 *C.GFile         // out
 	var _arg3 *C.GCancellable  // out
@@ -1614,6 +1655,11 @@ func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags
 }
 
 // CopyFinish finishes copying the file started with g_file_copy_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) CopyFinish(res AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -1651,6 +1697,12 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 // return an G_IO_ERROR_INVALID_FILENAME error, and if the name is to long
 // G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible too,
 // and depend on what kind of filesystem the file is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
 func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg2 *C.GCancellable      // out
@@ -1690,6 +1742,14 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_create_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -1721,6 +1781,11 @@ func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 
 // CreateFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -1765,6 +1830,12 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 // Note that in many non-local file cases read and write streams are not
 // supported, so make sure you really need to do read and write streaming,
 // rather than just opening for reading or writing.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
 func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg2 *C.GCancellable    // out
@@ -1804,6 +1875,14 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_create_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -1835,6 +1914,11 @@ func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlag
 
 // CreateReadwriteFinish finishes an asynchronous file create operation started
 // with g_file_create_readwrite_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -1879,6 +1963,11 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) Delete(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -1907,6 +1996,13 @@ func (file *File) Delete(ctx context.Context) error {
 // DeleteAsync: asynchronously delete a file. If the file is a directory, it
 // will only be deleted if it is empty. This has the same semantics as
 // g_unlink().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -1934,6 +2030,11 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback Asyn
 }
 
 // DeleteFinish finishes deleting a file started with g_file_delete_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) DeleteFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2002,6 +2103,13 @@ func (file *File) Dup() Filer {
 // the error G_IO_ERROR_CANCELLED will be returned.
 //
 // Deprecated: Use g_file_eject_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -2032,6 +2140,11 @@ func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, c
 // g_file_eject_mountable().
 //
 // Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2061,6 +2174,14 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation: Operation, or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -2094,6 +2215,11 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject operation
 // started by g_file_eject_mountable_with_operation().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2135,6 +2261,13 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
 // If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY error will be
 // returned. Other errors are possible too.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//
 func (file *File) EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -2179,6 +2312,15 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_enumerate_children_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -2214,6 +2356,11 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 
 // EnumerateChildrenFinish finishes an async enumerate children operation. See
 // g_file_enumerate_children_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.GAsyncResult    // out
@@ -2244,6 +2391,11 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 // filesystem due to various forms of filename aliasing.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - file2: second #GFile.
+//
 func (file1 *File) Equal(file2 Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -2274,6 +2426,11 @@ func (file1 *File) Equal(file2 Filer) bool {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -2321,6 +2478,13 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_find_enclosing_mount_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -2349,6 +2513,11 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 
 // FindEnclosingMountFinish finishes an asynchronous find mount request. See
 // g_file_find_enclosing_mount_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2425,6 +2594,11 @@ func (file *File) Basename() string {
 // file.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - name: string containing the child's basename.
+//
 func (file *File) Child(name string) Filer {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -2464,6 +2638,11 @@ func (file *File) Child(name string) Filer {
 // you select a directory and type a filename in the file selector.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - displayName: string to a possible child.
+//
 func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
@@ -2587,6 +2766,11 @@ func (file *File) Path() string {
 // RelativePath gets the path for descendant relative to parent.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - descendant: input #GFile.
+//
 func (parent *File) RelativePath(descendant Filer) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
@@ -2664,6 +2848,11 @@ func (file *File) URIScheme() string {
 // If parent is NULL then this function returns TRUE if file has any parent at
 // all. If parent is non-NULL then TRUE is only returned if file is an immediate
 // child of parent.
+//
+// The function takes the following parameters:
+//
+//    - parent to check for, or NULL.
+//
 func (file *File) HasParent(parent Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -2699,6 +2888,11 @@ func (file *File) HasParent(parent Filer) bool {
 // This call does no I/O, as it works purely on names. As such it can sometimes
 // return FALSE even if file is inside a prefix (from a filesystem point of
 // view), because the prefix of file is an alias of prefix.
+//
+// The function takes the following parameters:
+//
+//    - prefix: input #GFile.
+//
 func (file *File) HasPrefix(prefix Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -2723,6 +2917,11 @@ func (file *File) HasPrefix(prefix Filer) bool {
 // HasURIScheme checks to see if a #GFile has a given URI scheme.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - uriScheme: string containing a URI scheme.
+//
 func (file *File) HasURIScheme(uriScheme string) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.char    // out
@@ -2804,6 +3003,11 @@ func (file *File) IsNative() bool {
 // The data contained in the resulting #GBytes is always zero-terminated, but
 // this is not included in the #GBytes length. The resulting #GBytes should be
 // freed with g_bytes_unref() when no longer in use.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -2854,6 +3058,12 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 // asynchronous operation.
 //
 // See g_file_load_bytes() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -2887,6 +3097,11 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 // freed with g_bytes_unref() when no longer in use.
 //
 // See g_file_load_bytes() for more information.
+//
+// The function takes the following parameters:
+//
+//    - result provided to the callback.
+//
 func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -2930,6 +3145,11 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -2979,6 +3199,12 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -3007,6 +3233,11 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 // contents string. The contents should be freed with g_free() when no longer
 // needed. If etag_out is present, it will be set to the new entity tag for the
 // file.
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3044,6 +3275,11 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 // that was started with g_file_load_partial_contents_async(). The data is
 // always zero-terminated, but this is not included in the resultant length. The
 // returned contents should be freed with g_free() when no longer needed.
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3091,6 +3327,11 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) MakeDirectory(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -3117,6 +3358,13 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 }
 
 // MakeDirectoryAsync: asynchronously creates a directory.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -3145,6 +3393,11 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callba
 
 // MakeDirectoryFinish finishes an asynchronous directory creation, started with
 // g_file_make_directory_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3179,6 +3432,11 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -3210,6 +3468,12 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - symlinkValue: string with the path for the target of the new symlink.
+//
 func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) error {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -3242,6 +3506,11 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 // MeasureDiskUsageFinish collects the results from an earlier call to
 // g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for more
 // information.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3278,6 +3547,12 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
 func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -3333,6 +3608,12 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 // monitor all the files in a directory for changes made via hard links; if you
 // want to do this then you must register individual watches with
 // g_file_monitor().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
 func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -3389,6 +3670,12 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 // filename contained in file to be reported. Using this flag may result in an
 // increase in resource usage, and may not have any effect depending on the
 // Monitor backend and/or filesystem type.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
 func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -3442,6 +3729,14 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation: Operation or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -3475,6 +3770,11 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 
 // MountEnclosingVolumeFinish finishes a mount operation started by
 // g_file_mount_enclosing_volume().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3506,6 +3806,14 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation: Operation, or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -3542,6 +3850,11 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 //
 // Finish an asynchronous mount operation that was started with
 // g_file_mount_mountable().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3611,6 +3924,14 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 // FILE_COPY_OVERWRITE is specified and the target is a file, then the
 // G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move operation
 // isn't available).
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - destination pointing to the destination location.
+//    - flags: set of CopyFlags.
+//    - progressCallback: ProgressCallback function for updates.
+//
 func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
@@ -3663,6 +3984,11 @@ func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyF
 // filesystem the file is on. Note that in many non-local file cases read and
 // write streams are not supported, so make sure you really need to do read and
 // write streaming, rather than just opening for reading or writing.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//
 func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GCancellable  // out
@@ -3698,6 +4024,13 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_open_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -3726,6 +4059,11 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callba
 
 // OpenReadwriteFinish finishes an asynchronous file read operation started with
 // g_file_open_readwrite_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -3782,6 +4120,12 @@ func (file *File) PeekPath() string {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -3810,6 +4154,11 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 //
 // Finish an asynchronous poll operation that was polled with
 // g_file_poll_mountable().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) PollMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3837,6 +4186,11 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -3878,6 +4232,13 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 }
 
 // QueryDefaultHandlerAsync: async version of g_file_query_default_handler().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is done.
+//
 func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -3906,6 +4267,11 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 
 // QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 // operation.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -3965,6 +4331,11 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 // fool users that something is possible and then just show an error dialog. If
 // you do this, you should make sure to also handle the errors that can happen
 // due to races when you execute the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) QueryExists(ctx context.Context) bool {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -3995,6 +4366,12 @@ func (file *File) QueryExists(ctx context.Context) bool {
 //
 // The primary use case of this method is to check if a file is a regular file,
 // directory, or symlink.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags: set of QueryInfoFlags passed to g_file_query_info().
+//
 func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) FileType {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -4043,6 +4420,12 @@ func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) F
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
 // Other errors are possible too, and depend on what kind of filesystem the file
 // is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//
 func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -4084,6 +4467,14 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -4116,6 +4507,11 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 
 // QueryFilesystemInfoFinish finishes an asynchronous filesystem info query. See
 // g_file_query_filesystem_info_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -4166,6 +4562,13 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
 // Other errors are possible too, and depend on what kind of filesystem the file
 // is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//
 func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -4210,6 +4613,15 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -4245,6 +4657,11 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 
 // QueryInfoFinish finishes an asynchronous file info query. See
 // g_file_query_info_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -4279,6 +4696,11 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -4320,6 +4742,11 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -4365,6 +4792,11 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 // If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error will be
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//
 func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GCancellable     // out
@@ -4400,6 +4832,13 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_read_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -4428,6 +4867,11 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncR
 
 // ReadFinish finishes an asynchronous file read operation started with
 // g_file_read_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
@@ -4489,6 +4933,15 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 // and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
 // Other errors are possible too, and depend on what kind of filesystem the file
 // is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - etag: optional [entity tag][gfile-etag] for the current #GFile, or LL
+//    to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
 func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg4 *C.GCancellable      // out
@@ -4539,6 +4992,17 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_replace_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - etag: [entity tag][gfile-etag] for the current #GFile, or NULL to
+//    ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -4595,6 +5059,15 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 //
 // The returned new_etag can be used to verify that the file hasn't changed the
 // next time it is saved over.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - contents: string containing the new contents for file.
+//    - etag: old [entity-tag][gfile-etag] for the document, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
 func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg7 *C.GCancellable // out
@@ -4665,6 +5138,16 @@ func (file *File) ReplaceContents(ctx context.Context, contents []byte, etag str
 // callback is called. See g_file_replace_contents_bytes_async() for a #GBytes
 // version that will automatically hold a reference to the contents (without
 // copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - contents: string of contents to replace the file with.
+//    - etag: new [entity tag][gfile-etag] for the file, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile        // out
 	var _arg6 *C.GCancellable // out
@@ -4717,6 +5200,16 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents []byte, eta
 // When this operation has completed, callback will be called with user_user
 // data, and the operation can be finalized with
 // g_file_replace_contents_finish().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - contents: #GBytes.
+//    - etag: new [entity tag][gfile-etag] for the file, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -4760,6 +5253,11 @@ func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.
 // ReplaceContentsFinish finishes an asynchronous replace of the given file. See
 // g_file_replace_contents_async(). Sets new_etag to the new entity tag for the
 // document, if present.
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -4789,6 +5287,11 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 
 // ReplaceFinish finishes an asynchronous file replace operation started with
 // g_file_replace_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -4823,6 +5326,15 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 // Note that in many non-local file cases read and write streams are not
 // supported, so make sure you really need to do read and write streaming,
 // rather than just opening for reading or writing.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - etag: optional [entity tag][gfile-etag] for the current #GFile, or LL
+//    to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
 func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg4 *C.GCancellable    // out
@@ -4873,6 +5385,17 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_replace_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - etag: [entity tag][gfile-etag] for the current #GFile, or NULL to
+//    ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -4915,6 +5438,11 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
 // started with g_file_replace_readwrite_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -4942,6 +5470,11 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 // ResolveRelativePath resolves a relative path for file to an absolute path.
 //
 // This call does no blocking I/O.
+//
+// The function takes the following parameters:
+//
+//    - relativePath: given relative path string.
+//
 func (file *File) ResolveRelativePath(relativePath string) Filer {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -4983,6 +5516,16 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - typ: type of the attribute.
+//    - valueP: pointer to the value (or the pointer itself if the type is a
+//    pointer type).
+//    - flags: set of QueryInfoFlags.
+//
 func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP cgo.Handle, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -5028,6 +5571,14 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value: string containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5070,6 +5621,14 @@ func (file *File) SetAttributeByteString(ctx context.Context, attribute, value s
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value int32, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5111,6 +5670,14 @@ func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value int64, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5152,6 +5719,14 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value: string containing the attribute's value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5194,6 +5769,14 @@ func (file *File) SetAttributeString(ctx context.Context, attribute, value strin
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeUint32(ctx context.Context, attribute string, value uint32, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5235,6 +5818,14 @@ func (file *File) SetAttributeUint32(ctx context.Context, attribute string, valu
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5277,6 +5868,15 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_set_attributes_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - info: Info.
+//    - flags: QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback: ReadyCallback.
+//
 func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -5311,6 +5911,11 @@ func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags 
 
 // SetAttributesFinish finishes setting an attribute started in
 // g_file_set_attributes_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5346,6 +5951,13 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - info: Info.
+//    - flags: QueryInfoFlags.
+//
 func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -5392,6 +6004,12 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - displayName: string.
+//
 func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -5443,6 +6061,14 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_set_display_name_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - displayName: string.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -5475,6 +6101,11 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 
 // SetDisplayNameFinish finishes setting a display name started with
 // g_file_set_display_name_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5521,6 +6152,14 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - startOperation or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -5557,6 +6196,11 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 //
 // Finish an asynchronous start operation that was started with
 // g_file_start_mountable().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) StartMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5586,6 +6230,14 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_stop_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation: Operation, or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -5622,6 +6274,11 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 //
 // Finish an asynchronous stop operation that was started with
 // g_file_stop_mountable().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) StopMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5675,6 +6332,11 @@ func (file *File) SupportsThreadContexts() bool {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (file *File) Trash(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -5701,6 +6363,13 @@ func (file *File) Trash(ctx context.Context) error {
 }
 
 // TrashAsync: asynchronously sends file to the Trash location, if possible.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -5729,6 +6398,11 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback Async
 
 // TrashFinish finishes an asynchronous file trashing operation, started with
 // g_file_trash_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) TrashFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5760,6 +6434,13 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 // g_file_unmount_mountable_finish() to get the result of the operation.
 //
 // Deprecated: Use g_file_unmount_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -5793,6 +6474,11 @@ func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags,
 // g_file_unmount_mountable().
 //
 // Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -5822,6 +6508,14 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation: Operation, or NULL to avoid user interaction.
+//    - callback to call when the request is satisfied, or NULL.
+//
 func (file *File) UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -5858,6 +6552,11 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 //
 // Finish an asynchronous unmount operation that was started with
 // g_file_unmount_mountable_with_operation().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out

@@ -127,6 +127,13 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 // callback for the activation of a particular custom item in the list.
 //
 // See also gtk.AppChooserButton.AppendSeparator().
+//
+// The function takes the following parameters:
+//
+//    - name of the custom item.
+//    - label for the custom item.
+//    - icon for the custom item.
+//
 func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
@@ -241,6 +248,11 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 // See gtk.AppChooserButton.AppendCustomItem().
 //
 // Use gtk.AppChooser.Refresh() to bring the selection to its initial state.
+//
+// The function takes the following parameters:
+//
+//    - name of the custom item.
+//
 func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
@@ -257,6 +269,11 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 // SetHeading sets the text to display at the top of the dialog.
 //
 // If the heading is not set, the dialog displays a default text.
+//
+// The function takes the following parameters:
+//
+//    - heading: string containing Pango markup.
+//
 func (self *AppChooserButton) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
@@ -271,6 +288,11 @@ func (self *AppChooserButton) SetHeading(heading string) {
 }
 
 // SetModal sets whether the dialog should be modal.
+//
+// The function takes the following parameters:
+//
+//    - modal: TRUE to make the dialog modal.
+//
 func (self *AppChooserButton) SetModal(modal bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
@@ -287,6 +309,11 @@ func (self *AppChooserButton) SetModal(modal bool) {
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should show
 // the default application for the given content type at top.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserButton:show-default-item.
+//
 func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
@@ -303,6 +330,11 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 
 // SetShowDialogItem sets whether the dropdown menu of this button should show
 // an entry to trigger a GtkAppChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserButton:show-dialog-item.
+//
 func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out

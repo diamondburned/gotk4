@@ -522,6 +522,11 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 //
 // This usually means that the dialog containing the GtkText will be closed,
 // since the default widget is usually one of the dialog buttons.
+//
+// The function takes the following parameters:
+//
+//    - activates: TRUE to activate window’s default widget on Enter keypress.
+//
 func (self *Text) SetActivatesDefault(activates bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -537,6 +542,11 @@ func (self *Text) SetActivatesDefault(activates bool) {
 }
 
 // SetAttributes sets attributes that are applied to the text.
+//
+// The function takes the following parameters:
+//
+//    - attrs: PangoAttrList or NULL to unset.
+//
 func (self *Text) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoAttrList // out
@@ -553,6 +563,11 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 
 // SetBuffer: set the GtkEntryBuffer object which holds the text for this
 // widget.
+//
+// The function takes the following parameters:
+//
+//    - buffer: GtkEntryBuffer.
+//
 func (self *Text) SetBuffer(buffer *EntryBuffer) {
 	var _arg0 *C.GtkText        // out
 	var _arg1 *C.GtkEntryBuffer // out
@@ -569,6 +584,11 @@ func (self *Text) SetBuffer(buffer *EntryBuffer) {
 //
 // If it is, typing ':', followed by a recognized keyword, will pop up a window
 // with suggested Emojis matching the keyword.
+//
+// The function takes the following parameters:
+//
+//    - enableEmojiCompletion: TRUE to enable Emoji completion.
+//
 func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -585,6 +605,11 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // self.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel.
+//
 func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkText    // out
 	var _arg1 *C.GMenuModel // out
@@ -601,6 +626,11 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 
 // SetInputHints sets input hints that allow input methods to fine-tune their
 // behaviour.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
 func (self *Text) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkText      // out
 	var _arg1 C.GtkInputHints // out
@@ -617,6 +647,11 @@ func (self *Text) SetInputHints(hints InputHints) {
 //
 // This can be used by on-screen keyboards and other input methods to adjust
 // their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
 func (self *Text) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkText        // out
 	var _arg1 C.GtkInputPurpose // out
@@ -635,6 +670,11 @@ func (self *Text) SetInputPurpose(purpose InputPurpose) {
 // By default, GTK picks the best invisible char available in the current font.
 // If you set the invisible char to 0, then the user will get no feedback at
 // all; there will be no text on the screen as they type.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
 func (self *Text) SetInvisibleChar(ch uint32) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gunichar // out
@@ -654,6 +694,13 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 //
 // This is equivalent to getting self's GtkEntryBuffer and calling
 // gtk.EntryBuffer.SetMaxLength() on it.
+//
+// The function takes the following parameters:
+//
+//    - length: maximum length of the GtkText, or 0 for no maximum. (other than
+//    the maximum length of entries.) The value passed in will be clamped to
+//    the range 0-65536.
+//
 func (self *Text) SetMaxLength(length int) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.int      // out
@@ -668,6 +715,11 @@ func (self *Text) SetMaxLength(length int) {
 
 // SetOverwriteMode sets whether the text is overwritten when typing in the
 // GtkText.
+//
+// The function takes the following parameters:
+//
+//    - overwrite: new value.
+//
 func (self *Text) SetOverwriteMode(overwrite bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -686,6 +738,11 @@ func (self *Text) SetOverwriteMode(overwrite bool) {
 //
 // This can be used to give a visual hint of the expected contents of the
 // GtkText.
+//
+// The function takes the following parameters:
+//
+//    - text: string to be displayed when self is empty and unfocused, or NULL.
+//
 func (self *Text) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkText // out
 	var _arg1 *C.char    // out
@@ -703,6 +760,11 @@ func (self *Text) SetPlaceholderText(text string) {
 
 // SetPropagateTextWidth sets whether the GtkText should grow and shrink with
 // the content.
+//
+// The function takes the following parameters:
+//
+//    - propagateTextWidth: TRUE to propagate the text width.
+//
 func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -718,6 +780,11 @@ func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 }
 
 // SetTabs sets tabstops that are applied to the text.
+//
+// The function takes the following parameters:
+//
+//    - tabs: PangoTabArray.
+//
 func (self *Text) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkText       // out
 	var _arg1 *C.PangoTabArray // out
@@ -734,6 +801,11 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 
 // SetTruncateMultiline sets whether the GtkText should truncate multi-line text
 // that is pasted into the widget.
+//
+// The function takes the following parameters:
+//
+//    - truncateMultiline: TRUE to truncate multi-line text.
+//
 func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -760,6 +832,12 @@ func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 // Note that you probably want to set gtk.Text:input-purpose to
 // GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input methods
 // about the purpose of this self, in addition to setting visibility to FALSE.
+//
+// The function takes the following parameters:
+//
+//    - visible: TRUE if the contents of the GtkText are displayed as
+//    plaintext.
+//
 func (self *Text) SetVisibility(visible bool) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.gboolean // out
@@ -843,7 +921,7 @@ func (t *Text) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) glib.S
 // This is a keybinding signal (class.SignalAction.html).
 //
 // This signal has no default bindings.
-func (t *Text) ConnectInsertAtCursor(f func(_string string)) glib.SignalHandle {
+func (t *Text) ConnectInsertAtCursor(f func(str string)) glib.SignalHandle {
 	return t.Connect("insert-at-cursor", f)
 }
 

@@ -165,6 +165,11 @@ func (gesture *GestureSingle) TouchOnly() bool {
 //
 // If non-0, every button press from a different button number will be ignored.
 // Touch events implicitly match with button 1.
+//
+// The function takes the following parameters:
+//
+//    - button number to listen to, or 0 for any button.
+//
 func (gesture *GestureSingle) SetButton(button uint) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.guint             // out
@@ -182,6 +187,11 @@ func (gesture *GestureSingle) SetButton(button uint) {
 // An exclusive gesture will only handle pointer and "pointer emulated" touch
 // events, so at any given time, there is only one sequence able to interact
 // with those.
+//
+// The function takes the following parameters:
+//
+//    - exclusive: TRUE to make gesture exclusive.
+//
 func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out
@@ -201,6 +211,11 @@ func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 // If touch_only is TRUE, gesture will only handle events of type
 // GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE or GDK_TOUCH_END. If FALSE, mouse events
 // will be handled too.
+//
+// The function takes the following parameters:
+//
+//    - touchOnly: whether gesture handles only touch events.
+//
 func (gesture *GestureSingle) SetTouchOnly(touchOnly bool) {
 	var _arg0 *C.GtkGestureSingle // out
 	var _arg1 C.gboolean          // out

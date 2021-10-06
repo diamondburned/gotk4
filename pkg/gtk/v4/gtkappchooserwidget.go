@@ -235,6 +235,11 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 
 // SetDefaultText sets the text that is shown if there are not applications that
 // can handle the content type.
+//
+// The function takes the following parameters:
+//
+//    - text: new value for gtk.AppChooserWidget:default-text.
+//
 func (self *AppChooserWidget) SetDefaultText(text string) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 *C.char                // out
@@ -250,6 +255,11 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 
 // SetShowAll sets whether the app chooser should show all applications in a
 // flat list.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserWidget:show-all.
+//
 func (self *AppChooserWidget) SetShowAll(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
@@ -266,6 +276,11 @@ func (self *AppChooserWidget) SetShowAll(setting bool) {
 
 // SetShowDefault sets whether the app chooser should show the default handler
 // for the content type in a separate section.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserWidget:show-default.
+//
 func (self *AppChooserWidget) SetShowDefault(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
@@ -282,6 +297,11 @@ func (self *AppChooserWidget) SetShowDefault(setting bool) {
 
 // SetShowFallback sets whether the app chooser should show related applications
 // for the content type in a separate section.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserWidget:show-fallback.
+//
 func (self *AppChooserWidget) SetShowFallback(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
@@ -298,6 +318,11 @@ func (self *AppChooserWidget) SetShowFallback(setting bool) {
 
 // SetShowOther sets whether the app chooser should show applications which are
 // unrelated to the content type.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserWidget:show-other.
+//
 func (self *AppChooserWidget) SetShowOther(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out
@@ -314,6 +339,11 @@ func (self *AppChooserWidget) SetShowOther(setting bool) {
 
 // SetShowRecommended sets whether the app chooser should show recommended
 // applications for the content type in a separate section.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value for gtk.AppChooserWidget:show-recommended.
+//
 func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
 	var _arg1 C.gboolean             // out

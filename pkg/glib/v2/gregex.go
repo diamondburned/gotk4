@@ -1305,7 +1305,7 @@ func (regex *Regex) StringNumber(name string) int {
 // string is not copied and is used in Info internally. If you use any Info
 // method (except g_match_info_free()) after freeing or modifying string then
 // the behaviour is undefined.
-func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
+func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
@@ -1313,13 +1313,13 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(regex)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(matchOptions)
 
 	var _matchInfo *MatchInfo // out
@@ -1354,7 +1354,7 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 // string is not copied and is used in Info internally. If you use any Info
 // method (except g_match_info_free()) after freeing or modifying string then
 // the behaviour is undefined.
-func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
+func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
@@ -1362,13 +1362,13 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(regex)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(matchOptions)
 
 	var _matchInfo *MatchInfo // out
@@ -1405,20 +1405,20 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 // A pattern that can match empty strings splits string into separate characters
 // wherever it matches the empty string between characters. For example
 // splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
-func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string {
+func (regex *Regex) Split(str string, matchOptions RegexMatchFlags) []string {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
 	var _cret **C.gchar          // in
 
 	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_split(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(regex)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(matchOptions)
 
 	var _utf8s []string // out
@@ -1479,17 +1479,17 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 //
 // For completeness, length can be -1 for a nul-terminated string. In this case
 // the output string will be of course equal to string.
-func RegexEscapeNUL(_string string, length int) string {
+func RegexEscapeNUL(str string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	_cret = C.g_regex_escape_nul(_arg1, _arg2)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
 
 	var _utf8 string // out
@@ -1510,7 +1510,7 @@ func RegexEscapeNUL(_string string, length int) string {
 // If this function is to be called on the same pattern more than once, it's
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_match().
-func RegexMatchSimple(pattern, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
+func RegexMatchSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _arg3 C.GRegexCompileFlags // out
@@ -1519,14 +1519,14 @@ func RegexMatchSimple(pattern, _string string, compileOptions RegexCompileFlags,
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GRegexCompileFlags(compileOptions)
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match_simple(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(pattern)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(compileOptions)
 	runtime.KeepAlive(matchOptions)
 
@@ -1563,7 +1563,7 @@ func RegexMatchSimple(pattern, _string string, compileOptions RegexCompileFlags,
 // A pattern that can match empty strings splits string into separate characters
 // wherever it matches the empty string between characters. For example
 // splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
-func RegexSplitSimple(pattern, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
+func RegexSplitSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
 	var _arg3 C.GRegexCompileFlags // out
@@ -1572,14 +1572,14 @@ func RegexSplitSimple(pattern, _string string, compileOptions RegexCompileFlags,
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GRegexCompileFlags(compileOptions)
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_split_simple(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(pattern)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(compileOptions)
 	runtime.KeepAlive(matchOptions)
 

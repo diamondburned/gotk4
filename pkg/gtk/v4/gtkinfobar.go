@@ -143,6 +143,12 @@ func NewInfoBar() *InfoBar {
 // This also connects a signal handler that will emit the gtk.InfoBar::response
 // signal on the message area when the widget is activated. The widget is
 // appended to the end of the message areas action area.
+//
+// The function takes the following parameters:
+//
+//    - child: activatable widget.
+//    - responseId: response ID for child.
+//
 func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
@@ -163,6 +169,12 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 // Clicking the button will emit the gtk.InfoBar::response signal with the given
 // response_id. The button is appended to the end of the info bars's action
 // area. The button widget is returned, but usually you don't need it.
+//
+// The function takes the following parameters:
+//
+//    - buttonText: text of button.
+//    - responseId: response ID for the button.
+//
 func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
@@ -187,6 +199,11 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 }
 
 // AddChild adds a widget to the content area of the info bar.
+//
+// The function takes the following parameters:
+//
+//    - widget: child to be added.
+//
 func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
@@ -259,6 +276,11 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 // The widget must have been put there by a call to
 // gtk.InfoBar.AddActionWidget() or gtk.InfoBar.AddButton().
+//
+// The function takes the following parameters:
+//
+//    - widget: action widget to remove.
+//
 func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
@@ -272,6 +294,11 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 }
 
 // RemoveChild removes a widget from the content area of the info bar.
+//
+// The function takes the following parameters:
+//
+//    - widget: child that has been added to the content area.
+//
 func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
@@ -285,6 +312,11 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 }
 
 // Response emits the “response” signal with the given response_id.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
 func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
@@ -304,6 +336,11 @@ func (infoBar *InfoBar) Response(responseId int) {
 //
 // Note that this function currently requires info_bar to be added to a widget
 // hierarchy.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
 func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
@@ -319,6 +356,11 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 // SetMessageType sets the message type of the message area.
 //
 // GTK uses this type to determine how the message is displayed.
+//
+// The function takes the following parameters:
+//
+//    - messageType: MessageType.
+//
 func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 	var _arg0 *C.GtkInfoBar    // out
 	var _arg1 C.GtkMessageType // out
@@ -336,6 +378,12 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 // Calls gtk_widget_set_sensitive (widget, setting) for each widget in the info
 // bars’s action area with the given response_id. A convenient way to
 // sensitize/desensitize buttons.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//    - setting: TRUE for sensitive.
+//
 func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
@@ -360,6 +408,11 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 //
 // Note: this does not show or hide info_bar in the gtk.Widget:visible sense, so
 // revealing has no effect if gtk.Widget:visible is FALSE.
+//
+// The function takes the following parameters:
+//
+//    - revealed: new value of the property.
+//
 func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out
@@ -377,6 +430,11 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 // SetShowCloseButton: if true, a standard close button is shown.
 //
 // When clicked it emits the response GTK_RESPONSE_CLOSE.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to include a close button.
+//
 func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gboolean    // out

@@ -593,6 +593,11 @@ func (task *Task) PropagateValue() (externglib.Value, error) {
 
 // ReturnBoolean sets task's result to result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
+//
+// The function takes the following parameters:
+//
+//    - result result of a task function.
+//
 func (task *Task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -617,6 +622,11 @@ func (task *Task) ReturnBoolean(result bool) {
 // you need to keep a local copy as well.
 //
 // See also g_task_return_new_error().
+//
+// The function takes the following parameters:
+//
+//    - err result of a task function.
+//
 func (task *Task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
@@ -652,6 +662,11 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 
 // ReturnInt sets task's result to result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
+//
+// The function takes the following parameters:
+//
+//    - result: integer (#gssize) result of a task function.
+//
 func (task *Task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
@@ -673,6 +688,11 @@ func (task *Task) ReturnInt(result int) {
 // This is a very generic low-level method intended primarily for use by
 // language bindings; for C code, g_task_return_pointer() and the like will
 // normally be much easier to use.
+//
+// The function takes the following parameters:
+//
+//    - result result of a task function.
+//
 func (task *Task) ReturnValue(result *externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
@@ -700,6 +720,12 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 //
 // If you are using g_task_set_return_on_cancel() as well, then you must leave
 // check-cancellable set TRUE.
+//
+// The function takes the following parameters:
+//
+//    - checkCancellable: whether #GTask will check the state of its
+//    #GCancellable for you.
+//
 func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -723,6 +749,11 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 //
 // This function may only be called before the task is first used in a thread
 // other than the one it was constructed in.
+//
+// The function takes the following parameters:
+//
+//    - name: human readable name for the task, or NULL to unset it.
+//
 func (task *Task) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
@@ -744,6 +775,11 @@ func (task *Task) SetName(name string) {
 // This will affect the priority of #GSources created with
 // g_task_attach_source() and the scheduling of tasks run in threads, and can
 // also be explicitly retrieved later via g_task_get_priority().
+//
+// The function takes the following parameters:
+//
+//    - priority: [priority][io-priority] of the request.
+//
 func (task *Task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
@@ -781,6 +817,12 @@ func (task *Task) SetPriority(priority int) {
 // g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc will
 // still be run (for consistency), but the task will also be completed right
 // away.
+//
+// The function takes the following parameters:
+//
+//    - returnOnCancel: whether the task returns automatically when it is
+//    cancelled.
+//
 func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -809,6 +851,11 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 // tagging) and then later check it using g_task_get_source_tag() (or
 // g_async_result_is_tagged()) in the task's "finish" function, to figure out if
 // the response came from a particular place.
+//
+// The function takes the following parameters:
+//
+//    - sourceTag: opaque pointer indicating the source of this task.
+//
 func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out

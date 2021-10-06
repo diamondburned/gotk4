@@ -98,6 +98,11 @@ func (gesture *GesturePan) Orientation() Orientation {
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.
+//
+// The function takes the following parameters:
+//
+//    - orientation: expected orientation.
+//
 func (gesture *GesturePan) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkGesturePan // out
 	var _arg1 C.GtkOrientation // out

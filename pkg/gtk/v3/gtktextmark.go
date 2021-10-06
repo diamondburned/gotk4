@@ -200,6 +200,11 @@ func (mark *TextMark) Visible() bool {
 // visible, i.e. you can see it as a vertical bar. Also, the text widget uses a
 // visible mark to indicate where a drop will occur when dragging-and-dropping
 // text. Most other marks are not visible. Marks are not visible by default.
+//
+// The function takes the following parameters:
+//
+//    - setting: visibility of mark.
+//
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out

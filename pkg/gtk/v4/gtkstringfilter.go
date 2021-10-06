@@ -196,6 +196,11 @@ func (self *StringFilter) Search() string {
 // strings from items.
 //
 // The expression must have a value type of G_TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - expression: GtkExpression.
+//
 func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.GtkExpression   // out
@@ -211,6 +216,11 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 }
 
 // SetIgnoreCase sets whether the filter ignores case differences.
+//
+// The function takes the following parameters:
+//
+//    - ignoreCase: TRUE to ignore case.
+//
 func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 C.gboolean         // out
@@ -226,6 +236,11 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 }
 
 // SetMatchMode sets the match mode for the filter.
+//
+// The function takes the following parameters:
+//
+//    - mode: new match mode.
+//
 func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 	var _arg0 *C.GtkStringFilter         // out
 	var _arg1 C.GtkStringFilterMatchMode // out
@@ -239,6 +254,11 @@ func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 }
 
 // SetSearch sets the string to search for.
+//
+// The function takes the following parameters:
+//
+//    - search: string to search for or NULL to clear the search.
+//
 func (self *StringFilter) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out
 	var _arg1 *C.char            // out

@@ -176,6 +176,12 @@ func (screen *Screen) HeightMm() int {
 // located.
 //
 // Deprecated: Use gdk_display_get_monitor_at_point() instead.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate in the virtual screen.
+//    - y coordinate in the virtual screen.
+//
 func (screen *Screen) MonitorAtPoint(x, y int) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
@@ -202,6 +208,11 @@ func (screen *Screen) MonitorAtPoint(x, y int) int {
 // of the bounding rectangle of window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func (screen *Screen) MonitorAtWindow(window Windower) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.GdkWindow // out
@@ -233,6 +244,11 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 // gdk_screen_get_width() and gdk_screen_get_height().
 //
 // Deprecated: Use gdk_monitor_get_geometry() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: monitor number.
+//
 func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
@@ -255,6 +271,12 @@ func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
 // MonitorHeightMm gets the height in millimeters of the specified monitor.
 //
 // Deprecated: Use gdk_monitor_get_height_mm() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor, between 0 and
+//    gdk_screen_get_n_monitors (screen).
+//
 func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
@@ -279,6 +301,12 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 // device.
 //
 // Deprecated: Use gdk_monitor_get_model() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor, between 0 and
+//    gdk_screen_get_n_monitors (screen).
+//
 func (screen *Screen) MonitorPlugName(monitorNum int) string {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
@@ -310,6 +338,12 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 // to use gdk_window_get_scale_factor() instead.
 //
 // Deprecated: Use gdk_monitor_get_scale_factor() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor, between 0 and
+//    gdk_screen_get_n_monitors (screen).
+//
 func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
@@ -333,6 +367,12 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 // available.
 //
 // Deprecated: Use gdk_monitor_get_width_mm() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor, between 0 and
+//    gdk_screen_get_n_monitors (screen).
+//
 func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gint       // out
@@ -368,6 +408,11 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 // gdk_screen_get_n_monitors().
 //
 // Deprecated: Use gdk_monitor_get_workarea() instead.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: monitor number.
+//
 func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
 	var _arg0 *C.GdkScreen   // out
 	var _arg1 C.gint         // out
@@ -533,6 +578,12 @@ func (screen *Screen) RootWindow() Windower {
 // Screen screen.
 //
 // FIXME needs a list of valid settings here, or a link to more information.
+//
+// The function takes the following parameters:
+//
+//    - name of the setting.
+//    - value: location to store the value of the setting.
+//
 func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.gchar     // out
@@ -786,6 +837,11 @@ func (screen *Screen) MakeDisplayName() string {
 // will be set on any Context’s newly created with
 // gdk_pango_context_get_for_screen(). Changing the default set of font options
 // does not affect contexts that have already been created.
+//
+// The function takes the following parameters:
+//
+//    - options or NULL to unset any previously set default font options.
+//
 func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GdkScreen            // out
 	var _arg1 *C.cairo_font_options_t // out
@@ -804,6 +860,12 @@ func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 // scale factor between points specified in a FontDescription and cairo units.
 // The default value is 96, meaning that a 10 point font will be 13 units high.
 // (10 * 96. / 72. = 13.3).
+//
+// The function takes the following parameters:
+//
+//    - dpi: resolution in “dots per inch”. (Physical inches aren’t actually
+//    involved; the terminology is conventional.).
+//
 func (screen *Screen) SetResolution(dpi float64) {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 C.gdouble    // out

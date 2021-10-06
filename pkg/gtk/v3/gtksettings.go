@@ -79,6 +79,11 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 // ResetProperty undoes the effect of calling g_object_set() to install an
 // application-specific value for a setting. After this call, the setting will
 // again follow the session-wide value for this setting.
+//
+// The function takes the following parameters:
+//
+//    - name of the setting to reset.
+//
 func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
@@ -93,6 +98,11 @@ func (settings *Settings) ResetProperty(name string) {
 }
 
 // SetDoubleProperty: deprecated: Use g_object_set() instead.
+//
+// The function takes the following parameters:
+//
+
+//
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
@@ -114,6 +124,11 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 }
 
 // SetLongProperty: deprecated: Use g_object_set() instead.
+//
+// The function takes the following parameters:
+//
+
+//
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
@@ -135,6 +150,11 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 }
 
 // SetPropertyValue: deprecated: Use g_object_set() instead.
+//
+// The function takes the following parameters:
+//
+
+//
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _arg0 *C.GtkSettings      // out
 	var _arg1 *C.gchar            // out
@@ -152,6 +172,11 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 }
 
 // SetStringProperty: deprecated: Use g_object_set() instead.
+//
+// The function takes the following parameters:
+//
+
+//
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out

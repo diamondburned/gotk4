@@ -258,6 +258,11 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 }
 
 // SetChild sets the child widget of revealer.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
@@ -275,6 +280,11 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 // SetRevealChild tells the GtkRevealer to reveal or conceal its child.
 //
 // The transition will be animated with the current transition type of revealer.
+//
+// The function takes the following parameters:
+//
+//    - revealChild: TRUE to reveal the child.
+//
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
@@ -290,6 +300,11 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 }
 
 // SetTransitionDuration sets the duration that transitions will take.
+//
+// The function takes the following parameters:
+//
+//    - duration: new duration, in milliseconds.
+//
 func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
@@ -306,6 +321,11 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 // transitions in revealer.
 //
 // Available types include various kinds of fades and slides.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
 func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	var _arg0 *C.GtkRevealer              // out
 	var _arg1 C.GtkRevealerTransitionType // out

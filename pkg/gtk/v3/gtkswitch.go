@@ -147,6 +147,11 @@ func (sw *Switch) State() bool {
 }
 
 // SetActive changes the state of sw to the desired one.
+//
+// The function takes the following parameters:
+//
+//    - isActive: TRUE if sw should be active, and FALSE otherwise.
+//
 func (sw *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
@@ -168,6 +173,11 @@ func (sw *Switch) SetActive(isActive bool) {
 // Switch::state-set signal handler.
 //
 // See Switch::state-set for details.
+//
+// The function takes the following parameters:
+//
+//    - state: new state.
+//
 func (sw *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out

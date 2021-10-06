@@ -230,6 +230,11 @@ func (toggleButton *ToggleButton) Active() bool {
 //
 // If the status of the button changes, this action causes the
 // gtktogglebutton::toggled signal to be emitted.
+//
+// The function takes the following parameters:
+//
+//    - isActive: TRUE or FALSE.
+//
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
@@ -254,6 +259,11 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 // Note that the same effect can be achieved via the gtk.Actionable API, by
 // using the same action with parameter type and state type 's' for all buttons
 // in the group, and giving each button its own target value.
+//
+// The function takes the following parameters:
+//
+//    - group: another GtkToggleButton to form a group with.
+//
 func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out

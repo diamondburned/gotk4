@@ -246,6 +246,17 @@ func marshalPaintabler(p uintptr) (interface{}, error) {
 // specified_height are known, but it is useful to call this function in
 // GtkWidget:measure implementations to compute the other dimension when only
 // one dimension is given.
+//
+// The function takes the following parameters:
+//
+//    - specifiedWidth: width paintable could be drawn into or 0.0 if unknown.
+//    - specifiedHeight: height paintable could be drawn into or 0.0 if
+//    unknown.
+//    - defaultWidth: width paintable would be drawn into if no other
+//    constraints were given.
+//    - defaultHeight: height paintable would be drawn into if no other
+//    constraints were given.
+//
 func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 C.double        // out
@@ -462,6 +473,13 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the snapshot. If width
 // and height are not larger than zero, this function will do nothing.
+//
+// The function takes the following parameters:
+//
+//    - snapshot: GdkSnapshot to snapshot to.
+//    - width to snapshot in.
+//    - height to snapshot in.
+//
 func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out

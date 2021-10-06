@@ -612,6 +612,11 @@ func NewUnixMountMonitor() *UnixMountMonitor {
 // have side effects for other users of the monitor.
 //
 // Deprecated: This function does nothing. Don't call it.
+//
+// The function takes the following parameters:
+//
+//    - limitMsec: integer with the limit in milliseconds to poll for changes.
+//
 func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 	var _arg0 *C.GUnixMountMonitor // out
 	var _arg1 C.int                // out

@@ -214,6 +214,11 @@ func (frame *Frame) ShadowType() ShadowType {
 
 // SetLabel removes the current Frame:label-widget. If label is not NULL,
 // creates a new Label with that text and adds it as the Frame:label-widget.
+//
+// The function takes the following parameters:
+//
+//    - label: text to use as the label of the frame.
+//
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.gchar    // out
@@ -231,6 +236,16 @@ func (frame *Frame) SetLabel(label string) {
 
 // SetLabelAlign sets the alignment of the frame widget’s label. The default
 // values for a newly created frame are 0.0 and 0.5.
+//
+// The function takes the following parameters:
+//
+//    - xalign: position of the label along the top edge of the widget. A value
+//    of 0.0 represents left alignment; 1.0 represents right alignment.
+//    - yalign: y alignment of the label. A value of 0.0 aligns under the
+//    frame; 1.0 aligns above the frame. If the values are exactly 0.0 or 1.0
+//    the gap in the frame won’t be painted because the label will be
+//    completely above or below the frame.
+//
 func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.gfloat    // out
@@ -248,6 +263,11 @@ func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
 // that will appear embedded in the top edge of the frame as a title.
+//
+// The function takes the following parameters:
+//
+//    - labelWidget: new label widget.
+//
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
@@ -267,6 +287,11 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 // other than GTK_SHADOW_NONE are treated identically by GtkFrame. The chosen
 // type is applied by removing or adding the .flat class to the CSS node named
 // border.
+//
+// The function takes the following parameters:
+//
+//    - typ: new ShadowType.
+//
 func (frame *Frame) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkFrame     // out
 	var _arg1 C.GtkShadowType // out

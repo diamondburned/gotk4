@@ -105,6 +105,12 @@ func marshalFileInputStreamer(p uintptr) (interface{}, error) {
 // of this function, see g_file_input_stream_query_info_async(). While the
 // stream is blocked, the stream will set the pending flag internally, and any
 // other operations on the stream will fail with G_IO_ERROR_PENDING.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: file attribute query string.
+//
 func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -147,6 +153,14 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: file attribute query string.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg3 *C.GCancellable       // out
@@ -178,6 +192,11 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 }
 
 // QueryInfoFinish finishes an asynchronous info query operation.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out

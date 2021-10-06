@@ -119,6 +119,11 @@ func (coverage *Coverage) Copy() *Coverage {
 }
 
 // Get: determine whether a particular index is covered by coverage.
+//
+// The function takes the following parameters:
+//
+//    - index_: index to check.
+//
 func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -143,6 +148,11 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 // index in other.
 //
 // Deprecated: This function does nothing.
+//
+// The function takes the following parameters:
+//
+//    - other PangoCoverage.
+//
 func (coverage *Coverage) Max(other *Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
@@ -156,6 +166,12 @@ func (coverage *Coverage) Max(other *Coverage) {
 }
 
 // Set: modify a particular index within coverage.
+//
+// The function takes the following parameters:
+//
+//    - index_: index to modify.
+//    - level: new level for index_.
+//
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out

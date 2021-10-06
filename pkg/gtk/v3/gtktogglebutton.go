@@ -259,6 +259,11 @@ func (toggleButton *ToggleButton) Mode() bool {
 // GtkToggleButton to be “pressed in”, and FALSE to raise it. This action causes
 // the ToggleButton::toggled signal and the Button::clicked signal to be
 // emitted.
+//
+// The function takes the following parameters:
+//
+//    - isActive: TRUE or FALSE.
+//
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
@@ -281,6 +286,11 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 // the toggle button. This has to be done manually,
 // gtk_toggle_button_set_inconsistent() only affects visual appearance, it
 // doesn’t affect the semantics of the button.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE if state is inconsistent.
+//
 func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
@@ -305,6 +315,12 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 // This function only affects instances of classes like CheckButton and
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
+//
+// The function takes the following parameters:
+//
+//    - drawIndicator: if TRUE, draw the button as a separate indicator and
+//    label; if FALSE, draw the button like a normal button.
+//
 func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out

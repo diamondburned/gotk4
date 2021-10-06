@@ -95,6 +95,11 @@ func NewSocketListener() *SocketListener {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg2 *C.GCancellable      // out
@@ -132,6 +137,12 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_listener_accept_socket() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback: ReadyCallback.
+//
 func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
@@ -157,6 +168,11 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 
 // AcceptFinish finishes an async accept operation. See
 // g_socket_listener_accept_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
@@ -198,6 +214,11 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg2 *C.GCancellable    // out
@@ -236,6 +257,12 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_listener_accept_socket_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback: ReadyCallback.
+//
 func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
@@ -261,6 +288,11 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 
 // AcceptSocketFinish finishes an async accept operation. See
 // g_socket_listener_accept_socket_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
@@ -310,6 +342,14 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 // Call g_socket_listener_close() to stop listening on address; this will not be
 // done automatically when you drop your final reference to listener, as
 // references may be held internally.
+//
+// The function takes the following parameters:
+//
+//    - address: Address.
+//    - typ: Type.
+//    - protocol: Protocol.
+//    - sourceObject: optional #GObject identifying this source.
+//
 func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
@@ -365,6 +405,11 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 // source_object will be passed out in the various calls to accept to identify
 // this particular source, which is useful if you're listening on multiple
 // addresses and do different things depending on what address is connected to.
+//
+// The function takes the following parameters:
+//
+//    - sourceObject: optional #GObject identifying this source.
+//
 func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // out
@@ -402,6 +447,12 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 // Call g_socket_listener_close() to stop listening on port; this will not be
 // done automatically when you drop your final reference to listener, as
 // references may be held internally.
+//
+// The function takes the following parameters:
+//
+//    - port: IP port number (non-zero).
+//    - sourceObject: optional #GObject identifying this source.
+//
 func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externglib.Object) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.guint16          // out
@@ -439,6 +490,12 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 // unless the listener held the final reference to the socket. Before GLib 2.42,
 // the socket was automatically closed on finalization of the listener, even if
 // references to it were held elsewhere.
+//
+// The function takes the following parameters:
+//
+//    - socket: listening #GSocket.
+//    - sourceObject: optional #GObject identifying this source.
+//
 func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externglib.Object) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
@@ -480,6 +537,11 @@ func (listener *SocketListener) Close() {
 // example, by calling g_socket_listener_add_inet_port()) to be effective.
 //
 // See g_socket_set_listen_backlog() for details.
+//
+// The function takes the following parameters:
+//
+//    - listenBacklog: integer.
+//
 func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out

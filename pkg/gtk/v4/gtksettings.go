@@ -74,6 +74,11 @@ func marshalSettingser(p uintptr) (interface{}, error) {
 //
 // After this call, the setting will again follow the session-wide value for
 // this setting.
+//
+// The function takes the following parameters:
+//
+//    - name of the setting to reset.
+//
 func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.char        // out

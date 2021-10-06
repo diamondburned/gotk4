@@ -71,6 +71,11 @@ func NewFilenameCompleter() *FilenameCompleter {
 }
 
 // CompletionSuffix obtains a completion for initial_text from completer.
+//
+// The function takes the following parameters:
+//
+//    - initialText: text to be completed.
+//
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -95,6 +100,11 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 }
 
 // Completions gets an array of completion strings for a given initial text.
+//
+// The function takes the following parameters:
+//
+//    - initialText: text to be completed.
+//
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -131,6 +141,11 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 
 // SetDirsOnly: if dirs_only is TRUE, completer will only complete directory
 // names, and not file names.
+//
+// The function takes the following parameters:
+//
+//    - dirsOnly: #gboolean.
+//
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out

@@ -298,6 +298,11 @@ func marshalRecentChooserer(p uintptr) (interface{}, error) {
 //
 // If no previous filter objects were defined, this function will call
 // gtk_recent_chooser_set_filter().
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
 func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
@@ -610,6 +615,11 @@ func (chooser *RecentChooser) ListFilters() []RecentFilter {
 
 // RemoveFilter removes filter from the list of RecentFilter objects held by
 // chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
 func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
@@ -634,6 +644,11 @@ func (chooser *RecentChooser) SelectAll() {
 }
 
 // SelectURI selects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
 func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
@@ -657,6 +672,11 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 }
 
 // SetCurrentURI sets uri as the current URI for chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
 func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out
@@ -681,6 +701,11 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 
 // SetFilter sets filter as the current RecentFilter object used by chooser to
 // affect the displayed recently used resources.
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
 func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.GtkRecentFilter  // out
@@ -697,6 +722,11 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 
 // SetLimit sets the number of items that should be returned by
 // gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
+//
+// The function takes the following parameters:
+//
+//    - limit: positive integer, or -1 for all items.
+//
 func (chooser *RecentChooser) SetLimit(limit int) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gint              // out
@@ -713,6 +743,11 @@ func (chooser *RecentChooser) SetLimit(limit int) {
 // file:// URI scheme, should be shown in the recently used resources selector.
 // If local_only is TRUE (the default) then the shown resources are guaranteed
 // to be accessible through the operating system native file system.
+//
+// The function takes the following parameters:
+//
+//    - localOnly: TRUE if only local files can be shown.
+//
 func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -728,6 +763,11 @@ func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 }
 
 // SetSelectMultiple sets whether chooser can select multiple items.
+//
+// The function takes the following parameters:
+//
+//    - selectMultiple: TRUE if chooser can select more than one item.
+//
 func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -744,6 +784,11 @@ func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 
 // SetShowIcons sets whether chooser should show an icon near the resource when
 // displaying it.
+//
+// The function takes the following parameters:
+//
+//    - showIcons: whether to show an icon near the resource.
+//
 func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -760,6 +805,11 @@ func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 
 // SetShowNotFound sets whether chooser should display the recently used
 // resources that it didn’t find. This only applies to local resources.
+//
+// The function takes the following parameters:
+//
+//    - showNotFound: whether to show the local items we didn’t find.
+//
 func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -776,6 +826,11 @@ func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 
 // SetShowPrivate: whether to show recently used resources marked registered as
 // private.
+//
+// The function takes the following parameters:
+//
+//    - showPrivate: TRUE to show private items, FALSE otherwise.
+//
 func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -792,6 +847,11 @@ func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 
 // SetShowTips sets whether to show a tooltips containing the full path of each
 // recently used resource in a RecentChooser widget.
+//
+// The function takes the following parameters:
+//
+//    - showTips: TRUE if tooltips should be shown.
+//
 func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.gboolean          // out
@@ -814,6 +874,11 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 // sort_data; sort_func should return a positive integer if the first item comes
 // before the second, zero if the two items are equal and a negative integer if
 // the first item comes after the second.
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: comparison function.
+//
 func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.GtkRecentSortFunc // out
@@ -832,6 +897,11 @@ func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
 
 // SetSortType changes the sorting order of the recently used resources list
 // displayed by chooser.
+//
+// The function takes the following parameters:
+//
+//    - sortType: sort order that the chooser should use.
+//
 func (chooser *RecentChooser) SetSortType(sortType RecentSortType) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 C.GtkRecentSortType // out
@@ -855,6 +925,11 @@ func (chooser *RecentChooser) UnselectAll() {
 }
 
 // UnselectURI unselects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
 func (chooser *RecentChooser) UnselectURI(uri string) {
 	var _arg0 *C.GtkRecentChooser // out
 	var _arg1 *C.gchar            // out

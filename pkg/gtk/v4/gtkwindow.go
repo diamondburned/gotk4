@@ -216,6 +216,11 @@ func (window *Window) Fullscreen() {
 // You can track the result of this operation via the gdk.Toplevel:state
 // property, or by listening to notifications of the gtk.Window:fullscreened
 // property.
+//
+// The function takes the following parameters:
+//
+//    - monitor: which monitor to go fullscreen on.
+//
 func (window *Window) FullscreenOnMonitor(monitor *gdk.Monitor) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkMonitor // out
@@ -812,6 +817,12 @@ func (window *Window) Present() {
 // timestamp should be gathered when the window was requested to be shown (when
 // clicking a link for example), rather than once the window is ready to be
 // shown.
+//
+// The function takes the following parameters:
+//
+//    - timestamp of the user interaction (typically a button or key press
+//    event) which triggered this call.
+//
 func (window *Window) PresentWithTime(timestamp uint32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint32    // out
@@ -836,6 +847,11 @@ func (window *Window) PresentWithTime(timestamp uint32) {
 //
 // This is equivalent to calling gtk.Application.RemoveWindow() and/or
 // gtk.Application.AddWindow() on the old/new applications as relevant.
+//
+// The function takes the following parameters:
+//
+//    - application: GtkApplication, or NULL to unset.
+//
 func (window *Window) SetApplication(application *Application) {
 	var _arg0 *C.GtkWindow      // out
 	var _arg1 *C.GtkApplication // out
@@ -851,6 +867,11 @@ func (window *Window) SetApplication(application *Application) {
 }
 
 // SetChild sets the child widget of window.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (window *Window) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
@@ -877,6 +898,11 @@ func (window *Window) SetChild(child Widgetter) {
 //
 // On Windows, this function always works, since there’s no window manager
 // policy involved.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to decorate the window.
+//
 func (window *Window) SetDecorated(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -914,6 +940,12 @@ func (window *Window) SetDecorated(setting bool) {
 // that the appropriate size to save is the one returned by
 // gtk.Window.GetDefaultSize(). Using the window allocation directly will not
 // work in all circumstances and can lead to growing or shrinking windows.
+//
+// The function takes the following parameters:
+//
+//    - width in pixels, or -1 to unset the default width.
+//    - height in pixels, or -1 to unset the default height.
+//
 func (window *Window) SetDefaultSize(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // out
@@ -933,6 +965,12 @@ func (window *Window) SetDefaultSize(width, height int) {
 //
 // The default widget is the widget that is activated when the user presses
 // Enter in a dialog (for example).
+//
+// The function takes the following parameters:
+//
+//    - defaultWidget: widget to be the default, or NULL to unset the default
+//    widget for the toplevel.
+//
 func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
@@ -958,6 +996,11 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 //
 // On Windows, this function always works, since there’s no window manager
 // policy involved.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to decorate the window as deletable.
+//
 func (window *Window) SetDeletable(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -977,6 +1020,11 @@ func (window *Window) SetDeletable(setting bool) {
 //
 // This is useful for dialogs that shouldn’t persist beyond the lifetime of the
 // main window they are associated with, for example.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether to destroy window with its transient parent.
+//
 func (window *Window) SetDestroyWithParent(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -995,6 +1043,11 @@ func (window *Window) SetDestroyWithParent(setting bool) {
 //
 // If the window is already mapped, it will be unmapped, and then remapped on
 // the new display.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func (window *Window) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkDisplay // out
@@ -1014,6 +1067,12 @@ func (window *Window) SetDisplay(display *gdk.Display) {
 // this window. To set the focus to a particular widget in the toplevel, it is
 // usually more convenient to use gtk.Widget.GrabFocus() instead of this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - focus: widget to be the new focus widget, or NULL to unset any focus
+//    widget for the toplevel window.
+//
 func (window *Window) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
@@ -1029,6 +1088,11 @@ func (window *Window) SetFocus(focus Widgetter) {
 }
 
 // SetFocusVisible sets whether “focus rectangles” are supposed to be visible.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value.
+//
 func (window *Window) SetFocusVisible(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1045,6 +1109,11 @@ func (window *Window) SetFocusVisible(setting bool) {
 
 // SetHandleMenubarAccel sets whether this window should react to F10 key
 // presses by activating a menubar it contains.
+//
+// The function takes the following parameters:
+//
+//    - handleMenubarAccel: TRUE to make window handle F10.
+//
 func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1061,6 +1130,11 @@ func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
 
 // SetHideOnClose: if setting is TRUE, then clicking the close button on the
 // window will not destroy it, but only hide it.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether to hide the window when it is closed.
+//
 func (window *Window) SetHideOnClose(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1082,6 +1156,11 @@ func (window *Window) SetHideOnClose(setting bool) {
 //
 // Note that this has nothing to do with the WM_ICON_NAME property which is
 // mentioned in the ICCCM.
+//
+// The function takes the following parameters:
+//
+//    - name of the themed icon.
+//
 func (window *Window) SetIconName(name string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
@@ -1098,6 +1177,11 @@ func (window *Window) SetIconName(name string) {
 }
 
 // SetMnemonicsVisible sets whether mnemonics are supposed to be visible.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value.
+//
 func (window *Window) SetMnemonicsVisible(setting bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1118,6 +1202,11 @@ func (window *Window) SetMnemonicsVisible(setting bool) {
 // To keep modal dialogs on top of main application windows, use
 // gtk.Window.SetTransientFor() to make the dialog transient for the parent;
 // most window managers will then disallow lowering the dialog below the parent.
+//
+// The function takes the following parameters:
+//
+//    - modal: whether the window is modal.
+//
 func (window *Window) SetModal(modal bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1135,6 +1224,11 @@ func (window *Window) SetModal(modal bool) {
 // SetResizable sets whether the user can resize a window.
 //
 // Windows are user resizable by default.
+//
+// The function takes the following parameters:
+//
+//    - resizable: TRUE if the user can resize this window.
+//
 func (window *Window) SetResizable(resizable bool) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1161,6 +1255,11 @@ func (window *Window) SetResizable(resizable bool) {
 // equivalent function generating a window map event.
 //
 // This function is only useful on X11, not with other GTK targets.
+//
+// The function takes the following parameters:
+//
+//    - startupId: string with startup-notification identifier.
+//
 func (window *Window) SetStartupID(startupId string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
@@ -1184,6 +1283,11 @@ func (window *Window) SetStartupID(startupId string) {
 // document filename, for example.
 //
 // Passing NULL does the same as setting the title to an empty string.
+//
+// The function takes the following parameters:
+//
+//    - title of the window.
+//
 func (window *Window) SetTitle(title string) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.char      // out
@@ -1208,6 +1312,11 @@ func (window *Window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the system,
 // this function may not work for a window that is already visible, so you set
 // the titlebar before calling gtk.Widget.Show().
+//
+// The function takes the following parameters:
+//
+//    - titlebar: widget to use as titlebar.
+//
 func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
@@ -1232,6 +1341,11 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 //
 // On Windows, this function puts the child window on top of the parent, much as
 // the window manager would have done on X.
+//
+// The function takes the following parameters:
+//
+//    - parent window, or NULL.
+//
 func (window *Window) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWindow // out

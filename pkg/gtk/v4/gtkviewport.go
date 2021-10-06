@@ -151,6 +151,11 @@ func (viewport *Viewport) ScrollToFocus() bool {
 }
 
 // SetChild sets the child widget of viewport.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
@@ -167,6 +172,11 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 
 // SetScrollToFocus sets whether the viewport should automatically scroll to
 // keep the focused child in view.
+//
+// The function takes the following parameters:
+//
+//    - scrollToFocus: whether to keep the focus widget scrolled to view.
+//
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out

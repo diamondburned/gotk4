@@ -265,6 +265,17 @@ func (application *Application) Activate() {
 // g_application_add_main_option_entries() for more details.
 //
 // See Entry for more documentation of the arguments.
+//
+// The function takes the following parameters:
+//
+//    - longName: long name of an option used to specify it in a commandline.
+//    - shortName: short name of an option.
+//    - flags from Flags.
+//    - arg: type of the option, as a Arg.
+//    - description for the option in --help output.
+//    - argDescription: placeholder to use for the extra argument parsed by the
+//    option in --help output.
+//
 func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.char         // out
@@ -357,6 +368,11 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // - for G_OPTION_ARG_STRING_ARRAY, use ^a&s
 //
 // - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay.
+//
+// The function takes the following parameters:
+//
+//    - entries: a NULL-terminated list of Entrys.
+//
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry // out
@@ -403,6 +419,11 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 // be parsed, but it does not cause you to be "opted in" to the new
 // functionality whereby unrecognised options are rejected even if
 // G_APPLICATION_HANDLES_COMMAND_LINE was given.
+//
+// The function takes the following parameters:
+//
+//    - group: Group.
+//
 func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
@@ -420,6 +441,12 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 //
 // The binding holds a reference to application while it is active, but not to
 // object. Instead, the binding is destroyed when object is finalized.
+//
+// The function takes the following parameters:
+//
+//    - object: #GObject.
+//    - property: name of a boolean property of object.
+//
 func (application *Application) BindBusyProperty(object *externglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -695,6 +722,12 @@ func (application *Application) MarkBusy() {
 //
 // The application must be registered before calling this function and it must
 // have the G_APPLICATION_HANDLES_OPEN flag set.
+//
+// The function takes the following parameters:
+//
+//    - files: array of #GFiles to open.
+//    - hint (or ""), but never NULL.
+//
 func (application *Application) Open(files []Filer, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile       // out
@@ -769,6 +802,11 @@ func (application *Application) Quit() {
 // Note: the return value of this function is not an indicator that this
 // instance is or is not the primary instance of the application. See
 // g_application_get_is_remote() for that.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (application *Application) Register(ctx context.Context) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
@@ -879,6 +917,11 @@ func (application *Application) Release() {
 // suitable for use by most graphical applications but should not be used from
 // applications like editors that need precise control over when processes
 // invoked via the commandline will exit and what their exit status will be.
+//
+// The function takes the following parameters:
+//
+//    - argv: the argv from main(), or NULL.
+//
 func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char        // out
@@ -932,6 +975,12 @@ func (application *Application) Run(argv []string) int {
 //
 // If notification is no longer relevant, it can be withdrawn with
 // g_application_withdraw_notification().
+//
+// The function takes the following parameters:
+//
+//    - id of the notification, or NULL.
+//    - notification to send.
+//
 func (application *Application) SendNotification(id string, notification *Notification) {
 	var _arg0 *C.GApplication  // out
 	var _arg1 *C.gchar         // out
@@ -957,6 +1006,11 @@ func (application *Application) SendNotification(id string, notification *Notifi
 // with use of Map on the same application or things will go very badly wrong.
 // This function is known to introduce buggy behaviour (ie: signals not emitted
 // on changes to the action group), so you should really use Map instead.
+//
+// The function takes the following parameters:
+//
+//    - actionGroup or NULL.
+//
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
@@ -978,6 +1032,11 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 //
 // If non-NULL, the application id must be valid. See
 // g_application_id_is_valid().
+//
+// The function takes the following parameters:
+//
+//    - applicationId: identifier for application.
+//
 func (application *Application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1014,6 +1073,11 @@ func (application *Application) SetDefault() {
 // The flags can only be modified if application has not yet been registered.
 //
 // See Flags.
+//
+// The function takes the following parameters:
+//
+//    - flags for application.
+//
 func (application *Application) SetFlags(flags ApplicationFlags) {
 	var _arg0 *C.GApplication     // out
 	var _arg1 C.GApplicationFlags // out
@@ -1034,6 +1098,11 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 // This call has no side effects of its own. The value set here is only used for
 // next time g_application_release() drops the use count to zero. Any timeouts
 // currently in progress are not impacted.
+//
+// The function takes the following parameters:
+//
+//    - inactivityTimeout: timeout, in milliseconds.
+//
 func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
@@ -1050,6 +1119,12 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 // context.
 //
 // See g_option_context_set_description() for more information.
+//
+// The function takes the following parameters:
+//
+//    - description: string to be shown in --help output after the list of
+//    options, or NULL.
+//
 func (application *Application) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1072,6 +1147,12 @@ func (application *Application) SetOptionContextDescription(description string) 
 // when the internal Context of application is created.
 //
 // See g_option_context_new() for more information about parameter_string.
+//
+// The function takes the following parameters:
+//
+//    - parameterString: string which is displayed in the first line of --help
+//    output, after the usage summary programname [OPTION...].
+//
 func (application *Application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1090,6 +1171,12 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 // SetOptionContextSummary adds a summary to the application option context.
 //
 // See g_option_context_set_summary() for more information.
+//
+// The function takes the following parameters:
+//
+//    - summary: string to be shown in --help output before the list of
+//    options, or NULL.
+//
 func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1136,6 +1223,11 @@ func (application *Application) SetOptionContextSummary(summary string) {
 // initialization. Alternatively, you can call this function in the
 // Class.startup virtual function, before chaining up to the parent
 // implementation.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path to use.
+//
 func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1154,6 +1246,12 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 // UnbindBusyProperty destroys a binding between property and the busy state of
 // application that was previously created with
 // g_application_bind_busy_property().
+//
+// The function takes the following parameters:
+//
+//    - object: #GObject.
+//    - property: name of a boolean property of object.
+//
 func (application *Application) UnbindBusyProperty(object *externglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -1198,6 +1296,11 @@ func (application *Application) UnmarkBusy() {
 // Note that notifications are dismissed when the user clicks on one of the
 // buttons in a notification or triggers its default action, so there is no need
 // to explicitly withdraw the notification in that case.
+//
+// The function takes the following parameters:
+//
+//    - id of a previously sent notification.
+//
 func (application *Application) WithdrawNotification(id string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out

@@ -118,6 +118,11 @@ func (self *ShortcutLabel) DisabledText() string {
 }
 
 // SetAccelerator sets the accelerator to be displayed by self.
+//
+// The function takes the following parameters:
+//
+//    - accelerator: new accelerator.
+//
 func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.gchar            // out
@@ -133,6 +138,11 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 
 // SetDisabledText sets the text to be displayed by self when no accelerator is
 // set.
+//
+// The function takes the following parameters:
+//
+//    - disabledText: text to be displayed when no accelerator is set.
+//
 func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.gchar            // out

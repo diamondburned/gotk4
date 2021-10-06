@@ -376,6 +376,11 @@ func (context *GLContext) Realize() error {
 //
 // The GLContext must not be realized or made current prior to calling this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - enabled: whether to enable debugging in the context.
+//
 func (context *GLContext) SetDebugEnabled(enabled bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
@@ -399,6 +404,11 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 //
 // The GLContext must not be realized or made current prior to calling this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - compatible: whether the context should be forward compatible.
+//
 func (context *GLContext) SetForwardCompatible(compatible bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
@@ -419,6 +429,12 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 // The GLContext must not be realized or made current prior to calling this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - major version to request.
+//    - minor version to request.
+//
 func (context *GLContext) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
@@ -445,6 +461,12 @@ func (context *GLContext) SetRequiredVersion(major, minor int) {
 // You should check the return value of gdk_gl_context_get_use_es() after
 // calling gdk_gl_context_realize() to decide whether to use the OpenGL or
 // OpenGL ES API, extensions, or shaders.
+//
+// The function takes the following parameters:
+//
+//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or
+//    -1 to allow auto-detection.
+//
 func (context *GLContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out

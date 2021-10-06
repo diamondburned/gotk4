@@ -135,6 +135,11 @@ func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
+//
+// The function takes the following parameters:
+//
+//    - callback to call with the handle.
+//
 func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
 	var _arg0 *C.GdkToplevel               // out
 	var _arg1 C.GdkWaylandToplevelExported // out
@@ -161,6 +166,11 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 }
 
 // SetApplicationID sets the application id on a GdkToplevel.
+//
+// The function takes the following parameters:
+//
+//    - applicationId: application id for the toplevel.
+//
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -182,6 +192,11 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
+//
+// The function takes the following parameters:
+//
+//    - parentHandleStr: exported handle for a surface.
+//
 func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out

@@ -233,6 +233,11 @@ func NewConstraintLayout() *ConstraintLayout {
 //    - set to a gtk.ConstraintGuide that is part of layout
 //
 // The layout acquires the ownership of constraint after calling this function.
+//
+// The function takes the following parameters:
+//
+//    - constraint: gtk.Constraint.
+//
 func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
@@ -322,6 +327,18 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 //      // Named attributes
 //      [button1(==button2.height)].
+//
+// The function takes the following parameters:
+//
+//    - lines: array of Visual Format Language lines defining a set of
+//    constraints.
+//    - hspacing: default horizontal spacing value, or -1 for the fallback
+//    value.
+//    - vspacing: default vertical spacing value, or -1 for the fallback value.
+//    - views: dictionary of [ name, target ] pairs; the name keys map to the
+//    view names in the VFL lines, while the target values map to children of
+//    the widget using a GtkConstraintLayout, or guides.
+//
 func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out
@@ -386,6 +403,11 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 // but it is not visible.
 //
 // The layout acquires the ownership of guide after calling this function.
+//
+// The function takes the following parameters:
+//
+//    - guide: gtk.ConstraintGuide object.
+//
 func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
@@ -485,6 +507,11 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 
 // RemoveConstraint removes constraint from the layout manager, so that it no
 // longer influences the layout.
+//
+// The function takes the following parameters:
+//
+//    - constraint: gtk.Constraint.
+//
 func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
@@ -499,6 +526,11 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 
 // RemoveGuide removes guide from the layout manager, so that it no longer
 // influences the layout.
+//
+// The function takes the following parameters:
+//
+//    - guide: gtk.ConstraintGuide object.
+//
 func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out

@@ -65,6 +65,11 @@ func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 
 // AddFrame adds a new frame to animation. The pixbuf must have the dimensions
 // specified when the animation was constructed.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf to add.
+//
 func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
@@ -98,6 +103,11 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 
 // SetLoop sets whether animation should loop indefinitely when it reaches the
 // end.
+//
+// The function takes the following parameters:
+//
+//    - loop: whether to loop the animation.
+//
 func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out

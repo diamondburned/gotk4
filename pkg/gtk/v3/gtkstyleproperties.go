@@ -94,6 +94,12 @@ func (props *StyleProperties) Clear() {
 // value, g_value_unset() needs to be called to free any allocated memory.
 //
 // Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: style property name.
+//    - state to retrieve the property value for.
+//
 func (props *StyleProperties) Property(property string, state StateFlags) (externglib.Value, bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
@@ -128,6 +134,11 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 // LookupColor returns the symbolic color that is mapped to name.
 //
 // Deprecated: SymbolicColor is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - name: color name to lookup.
+//
 func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
@@ -159,6 +170,12 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 // gtk_style_properties_lookup_color()
 //
 // Deprecated: SymbolicColor is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - name: color name.
+//    - color to map name to.
+//
 func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
@@ -180,6 +197,12 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 // FALSE, the older values will prevail.
 //
 // Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - propsToMerge: second StyleProperties.
+//    - replace: whether to replace values or not.
+//
 func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
@@ -200,6 +223,13 @@ func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool)
 // SetProperty sets a styling property in props.
 //
 // Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: styling property to set.
+//    - state to set the value for.
+//    - value: new value for the property.
+//
 func (props *StyleProperties) SetProperty(property string, state StateFlags, value *externglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out
@@ -222,6 +252,12 @@ func (props *StyleProperties) SetProperty(property string, state StateFlags, val
 // UnsetProperty unsets a style property in props.
 //
 // Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property to unset.
+//    - state to unset.
+//
 func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.gchar              // out

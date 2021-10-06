@@ -213,6 +213,11 @@ func (self *CenterBox) StartWidget() Widgetter {
 // If there is more vertical space available than requested, and the baseline is
 // not allocated by the parent then position is used to allocate the baseline
 // wrt. the extra space available.
+//
+// The function takes the following parameters:
+//
+//    - position: GtkBaselinePosition.
+//
 func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkCenterBox       // out
 	var _arg1 C.GtkBaselinePosition // out
@@ -228,6 +233,11 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 // SetCenterWidget sets the center widget.
 //
 // To remove the existing center widget, pas NULL.
+//
+// The function takes the following parameters:
+//
+//    - child: new center widget, or NULL.
+//
 func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
@@ -245,6 +255,11 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 // SetEndWidget sets the end widget.
 //
 // To remove the existing end widget, pass NULL.
+//
+// The function takes the following parameters:
+//
+//    - child: new end widget, or NULL.
+//
 func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
@@ -262,6 +277,11 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 // SetStartWidget sets the start widget.
 //
 // To remove the existing start widget, pass NULL.
+//
+// The function takes the following parameters:
+//
+//    - child: new start widget, or NULL.
+//
 func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out

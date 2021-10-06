@@ -314,6 +314,11 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 //
 // Note that the returned pointer is only valid as long as the sequence is still
 // interpreted by the gesture. If in doubt, you should make a copy of the event.
+//
+// The function takes the following parameters:
+//
+//    - sequence: GdkEventSequence.
+//
 func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
@@ -371,6 +376,11 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 // sequence.
 //
 // The coordinates are always relative to the widget allocation.
+//
+// The function takes the following parameters:
+//
+//    - sequence: GdkEventSequence, or NULL for pointer events.
+//
 func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
@@ -401,6 +411,11 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64
 }
 
 // SequenceState returns the sequence state, as seen by gesture.
+//
+// The function takes the following parameters:
+//
+//    - sequence: EventSequence.
+//
 func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
@@ -459,6 +474,11 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 // GdkEventSequence state is set to GTK_EVENT_SEQUENCE_CLAIMED on one group,
 // every other gesture group attached to the same GtkWidget will switch the
 // state for that sequence to GTK_EVENT_SEQUENCE_DENIED.
+//
+// The function takes the following parameters:
+//
+//    - gesture: GtkGesture.
+//
 func (groupGesture *Gesture) Group(gesture Gesturer) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
@@ -473,6 +493,11 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 
 // HandlesSequence returns TRUE if gesture is currently handling events
 // corresponding to sequence.
+//
+// The function takes the following parameters:
+//
+//    - sequence: GdkEventSequence or NULL.
+//
 func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
@@ -518,6 +543,11 @@ func (gesture *Gesture) IsActive() bool {
 }
 
 // IsGroupedWith returns TRUE if both gestures pertain to the same group.
+//
+// The function takes the following parameters:
+//
+//    - other GtkGesture.
+//
 func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GtkGesture // out
@@ -597,6 +627,12 @@ func (gesture *Gesture) IsRecognized() bool {
 // If both gestures are in the same group, just set the state on the gesture
 // emitting the event, the sequence will be already be initialized to the
 // group's global state when the second gesture processes the event.
+//
+// The function takes the following parameters:
+//
+//    - sequence: GdkEventSequence.
+//    - state: sequence state.
+//
 func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 *C.GdkEventSequence     // out
@@ -625,6 +661,11 @@ func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state Even
 // interacting with.
 //
 // See gtk.Gesture.SetSequenceState() for more details on sequence states.
+//
+// The function takes the following parameters:
+//
+//    - state: sequence state.
+//
 func (gesture *Gesture) SetState(state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
 	var _arg1 C.GtkEventSequenceState // out

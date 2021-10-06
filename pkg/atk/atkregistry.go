@@ -62,6 +62,11 @@ func marshalRegistrier(p uintptr) (interface{}, error) {
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate
 // for type.
+//
+// The function takes the following parameters:
+//
+//    - typ with which to look up the associated ObjectFactory.
+//
 func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
@@ -83,6 +88,11 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 
 // FactoryType provides a #GType indicating the ObjectFactory subclass
 // associated with type.
+//
+// The function takes the following parameters:
+//
+//    - typ with which to look up the associated ObjectFactory subclass.
+//
 func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
@@ -105,6 +115,13 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 // SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
 // associated factory_type will thereafter be responsible for the creation of
 // new Object implementations for instances appropriate for type.
+//
+// The function takes the following parameters:
+//
+//    - typ: Object type.
+//    - factoryType type to associate with type. Must implement AtkObject
+//    appropriate for type.
+//
 func (registry *Registry) SetFactoryType(typ, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out

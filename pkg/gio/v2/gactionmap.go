@@ -99,6 +99,11 @@ func marshalActionMapper(p uintptr) (interface{}, error) {
 // then the old action is dropped from the action map.
 //
 // The action map takes its own reference on action.
+//
+// The function takes the following parameters:
+//
+//    - action: #GAction.
+//
 func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
@@ -146,6 +151,12 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //
 //      return G_ACTION_GROUP (group);
 //    }.
+//
+// The function takes the following parameters:
+//
+//    - entries: pointer to the first item in an array of Entry structs.
+//    - userData: user data for signal connections.
+//
 func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo.Handle) {
 	var _arg0 *C.GActionMap   // out
 	var _arg1 *C.GActionEntry // out
@@ -173,6 +184,11 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 // LookupAction looks up the action with the name action_name in action_map.
 //
 // If no such action exists, returns NULL.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action.
+//
 func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -207,6 +223,11 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 // RemoveAction removes the named action from the action map.
 //
 // If no action of this name is in the map then nothing happens.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action.
+//
 func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out

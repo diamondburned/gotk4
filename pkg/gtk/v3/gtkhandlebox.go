@@ -185,6 +185,11 @@ func (handleBox *HandleBox) SnapEdge() PositionType {
 // SetHandlePosition sets the side of the handlebox where the handle is drawn.
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function takes the following parameters:
+//
+//    - position: side of the handlebox where the handle should be drawn.
+//
 func (handleBox *HandleBox) SetHandlePosition(position PositionType) {
 	var _arg0 *C.GtkHandleBox   // out
 	var _arg1 C.GtkPositionType // out
@@ -201,6 +206,11 @@ func (handleBox *HandleBox) SetHandlePosition(position PositionType) {
 // handle box.
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function takes the following parameters:
+//
+//    - typ: shadow type.
+//
 func (handleBox *HandleBox) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkHandleBox // out
 	var _arg1 C.GtkShadowType // out
@@ -224,6 +234,12 @@ func (handleBox *HandleBox) SetShadowType(typ ShadowType) {
 // then the snap edge will be GTK_POS_TOP, otherwise it will be GTK_POS_LEFT.
 //
 // Deprecated: HandleBox has been deprecated.
+//
+// The function takes the following parameters:
+//
+//    - edge: snap edge, or -1 to unset the value; in which case GTK+ will try
+//    to guess an appropriate value in the future.
+//
 func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	var _arg0 *C.GtkHandleBox   // out
 	var _arg1 C.GtkPositionType // out

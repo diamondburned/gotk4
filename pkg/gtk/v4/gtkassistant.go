@@ -221,6 +221,11 @@ func NewAssistant() *Assistant {
 }
 
 // AddActionWidget adds a widget to the action area of a GtkAssistant.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget.
+//
 func (assistant *Assistant) AddActionWidget(child Widgetter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -234,6 +239,11 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 }
 
 // AppendPage appends a page to the assistant.
+//
+// The function takes the following parameters:
+//
+//    - page: GtkWidget.
+//
 func (assistant *Assistant) AppendPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -306,6 +316,11 @@ func (assistant *Assistant) NPages() int {
 }
 
 // NthPage returns the child widget contained in page number page_num.
+//
+// The function takes the following parameters:
+//
+//    - pageNum: index of a page in the assistant, or -1 to get the last page.
+//
 func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
@@ -337,6 +352,11 @@ func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 }
 
 // Page returns the GtkAssistantPage object for child.
+//
+// The function takes the following parameters:
+//
+//    - child of assistant.
+//
 func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 	var _arg0 *C.GtkAssistant     // out
 	var _arg1 *C.GtkWidget        // out
@@ -357,6 +377,11 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 }
 
 // PageComplete gets whether page is complete.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//
 func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -379,6 +404,11 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 }
 
 // PageTitle gets the title for page.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//
 func (assistant *Assistant) PageTitle(page Widgetter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -399,6 +429,11 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 }
 
 // PageType gets the page type of page.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//
 func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
@@ -448,6 +483,13 @@ func (assistant *Assistant) Pages() gio.ListModeller {
 }
 
 // InsertPage inserts a page in the assistant at a given position.
+//
+// The function takes the following parameters:
+//
+//    - page: GtkWidget.
+//    - position: index (starting at 0) at which to insert the page, or -1 to
+//    append the page to the assistant.
+//
 func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -486,6 +528,11 @@ func (assistant *Assistant) NextPage() {
 }
 
 // PrependPage prepends a page to the assistant.
+//
+// The function takes the following parameters:
+//
+//    - page: GtkWidget.
+//
 func (assistant *Assistant) PrependPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -522,6 +569,11 @@ func (assistant *Assistant) PreviousPage() {
 }
 
 // RemoveActionWidget removes a widget from the action area of a GtkAssistant.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget.
+//
 func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -535,6 +587,12 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 }
 
 // RemovePage removes the page_num’s page from assistant.
+//
+// The function takes the following parameters:
+//
+//    - pageNum: index of a page in the assistant, or -1 to remove the last
+//    page.
+//
 func (assistant *Assistant) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
@@ -551,6 +609,13 @@ func (assistant *Assistant) RemovePage(pageNum int) {
 //
 // Note that this will only be necessary in custom buttons, as the assistant
 // flow can be set with gtk_assistant_set_forward_page_func().
+//
+// The function takes the following parameters:
+//
+//    - pageNum: index of the page to switch to, starting from 0. If negative,
+//    the last page will be used. If greater than the number of pages in the
+//    assistant, nothing will be done.
+//
 func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
@@ -569,6 +634,11 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 // user presses the forward button. Setting page_func to NULL will make the
 // assistant to use the default forward function, which just goes to the next
 // visible page.
+//
+// The function takes the following parameters:
+//
+//    - pageFunc: GtkAssistantPageFunc, or NULL to use the default one.
+//
 func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 C.GtkAssistantPageFunc // out
@@ -591,6 +661,12 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 //
 // This will make assistant update the buttons state to be able to continue the
 // task.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//    - complete completeness status of the page.
+//
 func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -612,6 +688,12 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 //
 // The title is displayed in the header area of the assistant when page is the
 // current page.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//    - title: new title for page.
+//
 func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
@@ -631,6 +713,12 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 // SetPageType sets the page type for page.
 //
 // The page type determines the page behavior in the assistant.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//    - typ: new type for page.
+//
 func (assistant *Assistant) SetPageType(page Widgetter, typ AssistantPageType) {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out

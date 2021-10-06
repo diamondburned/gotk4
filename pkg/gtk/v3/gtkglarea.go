@@ -348,6 +348,11 @@ func (area *GLArea) QueueRender() {
 // resized. In order to force a rendering gtk_gl_area_queue_render() must be
 // called. This mode is useful when the scene changes seldomly, but takes a long
 // time to redraw.
+//
+// The function takes the following parameters:
+//
+//    - autoRender: boolean.
+//
 func (area *GLArea) SetAutoRender(autoRender bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
@@ -365,6 +370,11 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 // SetError sets an error on the area which will be shown instead of the GL
 // rendering. This is useful in the GLArea::create-context signal if GL context
 // creation fails.
+//
+// The function takes the following parameters:
+//
+//    - err: new #GError, or NULL to unset the error.
+//
 func (area *GLArea) SetError(err error) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 *C.GError    // out
@@ -383,6 +393,11 @@ func (area *GLArea) SetError(err error) {
 //
 // If has_alpha is FALSE there will be no alpha channel, and the buffer will
 // fully replace anything below the widget.
+//
+// The function takes the following parameters:
+//
+//    - hasAlpha: TRUE to add an alpha component.
+//
 func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
@@ -400,6 +415,11 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 // SetHasDepthBuffer: if has_depth_buffer is TRUE the widget will allocate and
 // enable a depth buffer for the target framebuffer. Otherwise there will be
 // none.
+//
+// The function takes the following parameters:
+//
+//    - hasDepthBuffer: TRUE to add a depth buffer.
+//
 func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
@@ -417,6 +437,11 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 // SetHasStencilBuffer: if has_stencil_buffer is TRUE the widget will allocate
 // and enable a stencil buffer for the target framebuffer. Otherwise there will
 // be none.
+//
+// The function takes the following parameters:
+//
+//    - hasStencilBuffer: TRUE to add a stencil buffer.
+//
 func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out
@@ -435,6 +460,12 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 // creating the context for the widget.
 //
 // This function must be called before the area has been realized.
+//
+// The function takes the following parameters:
+//
+//    - major version.
+//    - minor version.
+//
 func (area *GLArea) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gint       // out
@@ -455,6 +486,11 @@ func (area *GLArea) SetRequiredVersion(major, minor int) {
 //
 // You should check the capabilities of the GLContext before drawing with either
 // API.
+//
+// The function takes the following parameters:
+//
+//    - useEs: whether to use OpenGL or OpenGL ES.
+//
 func (area *GLArea) SetUseES(useEs bool) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.gboolean   // out

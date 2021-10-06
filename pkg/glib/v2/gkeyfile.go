@@ -1511,7 +1511,7 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 
 // SetLocaleString associates a string value for key and locale under
 // group_name. If the translation for key cannot be found then it is created.
-func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, _string string) {
+func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, str string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -1525,7 +1525,7 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg4))
 
 	C.g_key_file_set_locale_string(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1533,7 +1533,7 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(locale)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 }
 
 // SetLocaleStringList associates a list of string values for key and locale
@@ -1577,7 +1577,7 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 // cannot be found then it is created. If group_name cannot be found then it is
 // created. Unlike g_key_file_set_value(), this function handles characters that
 // need escaping, such as newlines.
-func (keyFile *KeyFile) SetString(groupName string, key string, _string string) {
+func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -1588,14 +1588,14 @@ func (keyFile *KeyFile) SetString(groupName string, key string, _string string) 
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_key_file_set_string(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 }
 
 // SetStringList associates a list of string values for key under group_name. If

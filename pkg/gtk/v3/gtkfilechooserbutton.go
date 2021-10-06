@@ -215,6 +215,12 @@ func (button *FileChooserButton) WidthChars() int {
 // of the application.
 //
 // Deprecated: Use gtk_widget_set_focus_on_click() instead.
+//
+// The function takes the following parameters:
+//
+//    - focusOnClick: whether the button grabs focus when clicked with the
+//    mouse.
+//
 func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gboolean              // out
@@ -230,6 +236,11 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 }
 
 // SetTitle modifies the title of the browse dialog used by button.
+//
+// The function takes the following parameters:
+//
+//    - title: new browse dialog title.
+//
 func (button *FileChooserButton) SetTitle(title string) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 *C.gchar                // out
@@ -244,6 +255,11 @@ func (button *FileChooserButton) SetTitle(title string) {
 }
 
 // SetWidthChars sets the width (in characters) that button will use to n_chars.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new width, in characters.
+//
 func (button *FileChooserButton) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gint                  // out

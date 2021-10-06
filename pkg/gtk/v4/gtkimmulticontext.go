@@ -79,6 +79,11 @@ func (context *IMMulticontext) ContextID() string {
 //
 // This causes the currently active delegate of context to be replaced by the
 // delegate corresponding to the new context id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: id to use.
+//
 func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out

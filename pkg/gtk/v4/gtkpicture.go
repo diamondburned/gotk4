@@ -360,6 +360,11 @@ func (self *Picture) Paintable() gdk.Paintabler {
 // This text will be made available to accessibility tools.
 //
 // If the picture cannot be described textually, set this property to NULL.
+//
+// The function takes the following parameters:
+//
+//    - alternativeText: textual description of the contents.
+//
 func (self *Picture) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
@@ -385,6 +390,11 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 // Also of note is that a similar function for growing does not exist because
 // the grow behavior can be controlled via gtk.Widget.SetHAlign() and
 // gtk.Widget.SetVAlign().
+//
+// The function takes the following parameters:
+//
+//    - canShrink: if self can be made smaller than its contents.
+//
 func (self *Picture) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
@@ -402,6 +412,11 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 // SetFile makes self load and display file.
 //
 // See gtk.Picture.NewForFile for details.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile or NULL.
+//
 func (self *Picture) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GFile      // out
@@ -419,6 +434,11 @@ func (self *Picture) SetFile(file gio.Filer) {
 // SetFilename makes self load and display the given filename.
 //
 // This is a utility function that calls gtk.Picture.SetFile().
+//
+// The function takes the following parameters:
+//
+//    - filename to play.
+//
 func (self *Picture) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
@@ -442,6 +462,11 @@ func (self *Picture) SetFilename(filename string) {
 //
 // If set to FALSE or if the contents provide no aspect ratio, the contents will
 // be stretched over the picture's whole area.
+//
+// The function takes the following parameters:
+//
+//    - keepAspectRatio: whether to keep aspect ratio.
+//
 func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
@@ -461,6 +486,11 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 // If paintable is NULL, nothing will be displayed.
 //
 // See gtk.Picture.NewForPaintable for details.
+//
+// The function takes the following parameters:
+//
+//    - paintable: GdkPaintable or NULL.
+//
 func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkPicture   // out
 	var _arg1 *C.GdkPaintable // out
@@ -480,6 +510,11 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 // See gtk.Picture.NewForPixbuf for details.
 //
 // This is a utility function that calls gtk.Picture.SetPaintable().
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: GdkPixbuf or NULL.
+//
 func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
@@ -498,6 +533,11 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 // resource_path.
 //
 // This is a utility function that calls gtk.Picture.SetFile().
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource to set.
+//
 func (self *Picture) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out

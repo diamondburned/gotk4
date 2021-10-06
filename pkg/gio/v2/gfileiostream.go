@@ -158,6 +158,12 @@ func (stream *FileIOStream) ETag() string {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set, and NULL will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: file attribute query string.
+//
 func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg2 *C.GCancellable  // out
@@ -196,6 +202,14 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 //
 // For the synchronous version of this function, see
 // g_file_io_stream_query_info().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - attributes: file attribute query string.
+//    - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileIOStream      // out
 	var _arg3 *C.GCancellable       // out
@@ -228,6 +242,11 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_io_stream_query_info_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out

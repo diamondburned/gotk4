@@ -239,6 +239,14 @@ func (renderer *Renderer) Deactivate() {
 //
 // This should be called while renderer is already active. Use
 // pango.Renderer.Activate() to activate a renderer.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate of underline, in Pango units in user coordinate system.
+//    - y: y coordinate of underline, in Pango units in user coordinate system.
+//    - width of underline, in Pango units in user coordinate system.
+//    - height of underline, in Pango units in user coordinate system.
+//
 func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
@@ -261,6 +269,14 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 }
 
 // DrawGlyph draws a single glyph with coordinates in device space.
+//
+// The function takes the following parameters:
+//
+//    - font: Font.
+//    - glyph index of a single glyph.
+//    - x: x coordinate of left edge of baseline of glyph.
+//    - y: y coordinate of left edge of baseline of glyph.
+//
 func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoFont     // out
@@ -295,6 +311,16 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //
 // The default implementation of this method simply falls back to
 // pango.Renderer.DrawGlyphs().
+//
+// The function takes the following parameters:
+//
+//    - text: UTF-8 text that glyph_item refers to, or NULL.
+//    - glyphItem: PangoGlyphItem.
+//    - x: x position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//    - y: y position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//
 func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
@@ -320,6 +346,16 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 }
 
 // DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
+//
+// The function takes the following parameters:
+//
+//    - font: PangoFont.
+//    - glyphs: PangoGlyphString.
+//    - x: x position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//    - y: y position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//
 func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
@@ -342,6 +378,15 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 }
 
 // DrawLayout draws layout with the specified PangoRenderer.
+//
+// The function takes the following parameters:
+//
+//    - layout: PangoLayout.
+//    - x: x position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//    - y: y position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//
 func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
@@ -361,6 +406,15 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 }
 
 // DrawLayoutLine draws line with the specified PangoRenderer.
+//
+// The function takes the following parameters:
+//
+//    - line: PangoLayoutLine.
+//    - x: x position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//    - y: y position of left edge of baseline, in user space coordinates in
+//    Pango units.
+//
 func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg0 *C.PangoRenderer   // out
 	var _arg1 *C.PangoLayoutLine // out
@@ -384,6 +438,17 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 //
 // This should be called while renderer is already active. Use
 // pango.Renderer.Activate() to activate a renderer.
+//
+// The function takes the following parameters:
+//
+//    - part: type of object this rectangle is part of.
+//    - x: x position at which to draw rectangle, in user space coordinates in
+//    Pango units.
+//    - y: y position at which to draw rectangle, in user space coordinates in
+//    Pango units.
+//    - width of rectangle in Pango units.
+//    - height of rectangle in Pango units.
+//
 func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -410,6 +475,17 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int
 
 // DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
 // axis using the given PangoRenderer; coordinates are in device space.
+//
+// The function takes the following parameters:
+//
+//    - part: type of object this trapezoid is part of.
+//    - y1: y coordinate of top of trapezoid.
+//    - x11: x coordinate of left end of top of trapezoid.
+//    - x21: x coordinate of right end of top of trapezoid.
+//    - y2: y coordinate of bottom of trapezoid.
+//    - x12: x coordinate of left end of bottom of trapezoid.
+//    - x22: x coordinate of right end of bottom of trapezoid.
+//
 func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -441,6 +517,11 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 }
 
 // Alpha gets the current alpha for the specified part.
+//
+// The function takes the following parameters:
+//
+//    - part to get the alpha for.
+//
 func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -461,6 +542,11 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 }
 
 // Color gets the current rendering color for the specified part.
+//
+// The function takes the following parameters:
+//
+//    - part to get the color for.
+//
 func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -572,6 +658,11 @@ func (renderer *Renderer) Matrix() *Matrix {
 // When the stipple changes or underlines with different stipples might be
 // joined together. Pango automatically calls this for changes to colors. (See
 // pango.Renderer.SetColor()).
+//
+// The function takes the following parameters:
+//
+//    - part for which rendering has changed.
+//
 func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -588,6 +679,12 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 //
 // Note that the alpha may only be used if a color is specified for part as
 // well.
+//
+// The function takes the following parameters:
+//
+//    - part to set the alpha for.
+//    - alpha value between 1 and 65536, or 0 to unset the alpha.
+//
 func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -606,6 +703,12 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 // SetColor sets the color for part of the rendering.
 //
 // Also see pango.Renderer.SetAlpha().
+//
+// The function takes the following parameters:
+//
+//    - part to change the color of.
+//    - color: new color or NULL to unset the current color.
+//
 func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -624,6 +727,12 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.
+//
+// The function takes the following parameters:
+//
+//    - matrix: PangoMatrix, or NULL to unset any existing matrix. (No matrix
+//    set is the same as setting the identity matrix.).
+//
 func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out

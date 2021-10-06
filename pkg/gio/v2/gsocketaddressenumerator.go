@@ -122,6 +122,11 @@ func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 // *error. However, if the first call to g_socket_address_enumerator_next()
 // succeeds, then any further internal errors (other than cancellable being
 // triggered) will be ignored.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
@@ -168,6 +173,12 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 //
 // It is an error to call this multiple times before the previous callback has
 // finished.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
@@ -194,6 +205,11 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 // NextFinish retrieves the result of a completed call to
 // g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error handling.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out

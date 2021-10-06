@@ -79,6 +79,11 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 // be called.
 //
 // If a previous function was set, its user_destroy will be called now.
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: function to sort items.
+//
 func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	var _arg0 *C.GtkCustomSorter // out
 	var _arg1 C.GCompareDataFunc // out

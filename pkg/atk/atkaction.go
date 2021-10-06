@@ -136,6 +136,11 @@ func marshalActioner(p uintptr) (interface{}, error) {
 }
 
 // DoAction: perform the specified action on the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
 func (action *Action) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -158,6 +163,11 @@ func (action *Action) DoAction(i int) bool {
 }
 
 // Description returns a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
 func (action *Action) Description(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -203,6 +213,11 @@ func (action *Action) Description(i int) string {
 // would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
 // for the German locale. If, hypothetically, this menu item lacked a mnemonic,
 // it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
 func (action *Action) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -226,6 +241,11 @@ func (action *Action) Keybinding(i int) string {
 
 // LocalizedName returns the localized name of the specified action of the
 // object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
 func (action *Action) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -278,6 +298,11 @@ func (action *Action) NActions() int {
 // For technical reasons, some toolkits cannot guarantee that the reported
 // action is actually 'bound' to a nontrivial user event; i.e. the result of
 // some actions via atk_action_do_action() may be NIL.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
 func (action *Action) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -300,6 +325,12 @@ func (action *Action) Name(i int) string {
 }
 
 // SetDescription sets a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//    - desc: description to be assigned to this action.
+//
 func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out

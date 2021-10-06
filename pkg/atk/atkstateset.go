@@ -60,6 +60,11 @@ func NewStateSet() *StateSet {
 // used to add a state to a newly-created set which will then be returned by
 // #atk_object_ref_state_set. It should not be used to modify the existing state
 // of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//    - typ: StateType.
+//
 func (set *StateSet) AddState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -87,6 +92,11 @@ func (set *StateSet) AddState(typ StateType) bool {
 // used to add states to a newly-created set which will then be returned by
 // #atk_object_ref_state_set. It should not be used to modify the existing state
 // of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//    - types: array of StateType.
+//
 func (set *StateSet) AddStates(types []StateType) {
 	var _arg0 *C.AtkStateSet  // out
 	var _arg1 *C.AtkStateType // out
@@ -110,6 +120,11 @@ func (set *StateSet) AddStates(types []StateType) {
 
 // AndSets constructs the intersection of the two sets, returning NULL if the
 // intersection is empty.
+//
+// The function takes the following parameters:
+//
+//    - compareSet: another StateSet.
+//
 func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
@@ -141,6 +156,11 @@ func (set *StateSet) ClearStates() {
 
 // ContainsState checks whether the state for the specified type is in the
 // specified set.
+//
+// The function takes the following parameters:
+//
+//    - typ: StateType.
+//
 func (set *StateSet) ContainsState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -164,6 +184,11 @@ func (set *StateSet) ContainsState(typ StateType) bool {
 
 // ContainsStates checks whether the states for all the specified types are in
 // the specified set.
+//
+// The function takes the following parameters:
+//
+//    - types: array of StateType.
+//
 func (set *StateSet) ContainsStates(types []StateType) bool {
 	var _arg0 *C.AtkStateSet  // out
 	var _arg1 *C.AtkStateType // out
@@ -214,6 +239,11 @@ func (set *StateSet) IsEmpty() bool {
 }
 
 // OrSets constructs the union of the two sets.
+//
+// The function takes the following parameters:
+//
+//    - compareSet: another StateSet.
+//
 func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
@@ -241,6 +271,11 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 // used to remove a state to a newly-created set which will then be returned by
 // #atk_object_ref_state_set. It should not be used to modify the existing state
 // of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//    - typ: Type.
+//
 func (set *StateSet) RemoveState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -265,6 +300,11 @@ func (set *StateSet) RemoveState(typ StateType) bool {
 // XorSets constructs the exclusive-or of the two sets, returning NULL is empty.
 // The set returned by this operation contains the states in exactly one of the
 // two sets.
+//
+// The function takes the following parameters:
+//
+//    - compareSet: another StateSet.
+//
 func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out

@@ -137,6 +137,11 @@ func NewActionGroup(name string) *ActionGroup {
 // (..., NULL).
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action: action.
+//
 func (actionGroup *ActionGroup) AddAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
@@ -158,6 +163,14 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 // Accel paths are set to <Actions>/group-name/action-name.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action to add.
+//    - accelerator for the action, in the format understood by
+//    gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
+//    stock accelerator.
+//
 func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
@@ -198,6 +211,11 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 // Action looks up an action in the action group by name.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action.
+//
 func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
@@ -311,6 +329,11 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 // RemoveAction removes an action object from the action group.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action: action.
+//
 func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
@@ -327,6 +350,11 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 // group.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - accelGroup to set or NULL.
+//
 func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
@@ -344,6 +372,11 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 // SetSensitive changes the sensitivity of action_group
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - sensitive: new sensitivity.
+//
 func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
@@ -365,6 +398,11 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 // gtk_action_group_set_translation_domain().
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - fn: TranslateFunc.
+//
 func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 	var _arg0 *C.GtkActionGroup  // out
 	var _arg1 C.GtkTranslateFunc // out
@@ -389,6 +427,12 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 // gtk_action_group_set_translate_func().
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain to use for g_dgettext() calls, or NULL to
+//    use the domain set with textdomain().
+//
 func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
@@ -407,6 +451,11 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 // SetVisible changes the visible of action_group.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - visible: new visiblity.
+//
 func (actionGroup *ActionGroup) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
@@ -426,18 +475,23 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 // bindings.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) TranslateString(_string string) string {
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
+func (actionGroup *ActionGroup) TranslateString(str string) string {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 

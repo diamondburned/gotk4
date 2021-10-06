@@ -304,6 +304,11 @@ func (button *ToolButton) UseUnderline() bool {
 // the docs for IconTheme for more details. The ToolButton:icon-name property
 // only has an effect if not overridden by non-NULL ToolButton:label-widget,
 // ToolButton:icon-widget and ToolButton:stock-id properties.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of the themed icon.
+//
 func (button *ToolButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
@@ -322,6 +327,11 @@ func (button *ToolButton) SetIconName(iconName string) {
 // SetIconWidget sets icon as the widget used as icon on button. If icon_widget
 // is NULL the icon is determined by the ToolButton:stock-id property. If the
 // ToolButton:stock-id property is also NULL, button will not have an icon.
+//
+// The function takes the following parameters:
+//
+//    - iconWidget: widget used as icon, or NULL.
+//
 func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
@@ -342,6 +352,11 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 // ToolButton:label properties are NULL, the label is determined by the
 // ToolButton:stock-id property. If the ToolButton:stock-id property is also
 // NULL, button will not have a label.
+//
+// The function takes the following parameters:
+//
+//    - label: string that will be used as label, or NULL.
+//
 func (button *ToolButton) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
@@ -362,6 +377,11 @@ func (button *ToolButton) SetLabel(label string) {
 // label. If ToolButton:label is also NULL, the label in the stock item
 // determined by the ToolButton:stock-id property is used as label. If
 // ToolButton:stock-id is also NULL, button does not have a label.
+//
+// The function takes the following parameters:
+//
+//    - labelWidget: widget used as label, or NULL.
+//
 func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
@@ -382,6 +402,11 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 // properties.
 //
 // Deprecated: Use gtk_tool_button_set_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: name of a stock item, or NULL.
+//
 func (button *ToolButton) SetStockID(stockId string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
@@ -405,6 +430,11 @@ func (button *ToolButton) SetStockID(stockId string) {
 //
 // Labels shown on tool buttons never have mnemonics on them; this property only
 // affects the menu item on the overflow menu.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: whether the button label has the form “_Open”.
+//
 func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 C.gboolean       // out

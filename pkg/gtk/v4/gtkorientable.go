@@ -72,6 +72,11 @@ func (orientable *Orientable) Orientation() Orientation {
 }
 
 // SetOrientation sets the orientation of the orientable.
+//
+// The function takes the following parameters:
+//
+//    - orientation orientable’s new orientation.
+//
 func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkOrientable // out
 	var _arg1 C.GtkOrientation // out

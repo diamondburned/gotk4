@@ -270,6 +270,12 @@ func (clipboard *Clipboard) Owner() *externglib.Object {
 // request succeeded, or NULL if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of the
 // clipboard could not be converted into an image.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the image is received, or the retrieval
+//    fails. (It will always be called one way or the other.).
+//
 func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 	var _arg0 *C.GtkClipboard                 // out
 	var _arg1 C.GtkClipboardImageReceivedFunc // out
@@ -292,6 +298,12 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 // succeeded, or NULL if it failed. This could happen for various reasons, in
 // particular if the clipboard was empty or if the contents of the clipboard
 // could not be converted into text form.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the text is received, or the retrieval
+//    fails. (It will always be called one way or the other.).
+//
 func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg0 *C.GtkClipboard                // out
 	var _arg1 C.GtkClipboardTextReceivedFunc // out
@@ -313,6 +325,12 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 // the request succeeded, or NULL if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of the
 // clipboard could not be converted into URI form.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the URIs are received, or the retrieval
+//    fails. (It will always be called one way or the other.).
+//
 func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 	var _arg0 *C.GtkClipboard               // out
 	var _arg1 C.GtkClipboardURIReceivedFunc // out
@@ -333,6 +351,12 @@ func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 // This value is reset when the clipboard owner changes. Where the clipboard
 // data is stored is platform dependent, see gdk_display_store_clipboard () for
 // more information.
+//
+// The function takes the following parameters:
+//
+//    - targets: array containing information about which forms should be
+//    stored or NULL to indicate that all forms should be stored.
+//
 func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 	var _arg0 *C.GtkClipboard   // out
 	var _arg1 *C.GtkTargetEntry // out
@@ -357,6 +381,11 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
 // take responsibility for responding for requests for the image, and for
 // converting the image into the requested format.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//
 func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.GdkPixbuf    // out
@@ -372,6 +401,13 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 // SetText sets the contents of the clipboard to the given UTF-8 string. GTK+
 // will make a copy of the text and take responsibility for responding for
 // requests for the text, and for converting the text into the requested format.
+//
+// The function takes the following parameters:
+//
+//    - text: UTF-8 string.
+//    - len: length of text, in bytes, or -1, in which case the length will be
+//    determined with strlen().
+//
 func (clipboard *Clipboard) SetText(text string, len int) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.gchar        // out
@@ -523,6 +559,11 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 // actual text.
+//
+// The function takes the following parameters:
+//
+//    - buffer: TextBuffer.
+//
 func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 	var _arg0 *C.GtkClipboard  // out
 	var _arg1 *C.GtkTextBuffer // out

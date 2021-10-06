@@ -117,6 +117,12 @@ func (group *ToolItemGroup) Collapsed() bool {
 }
 
 // DropItem gets the tool item at position (x, y).
+//
+// The function takes the following parameters:
+//
+//    - x position.
+//    - y position.
+//
 func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gint              // out
@@ -174,6 +180,11 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 }
 
 // ItemPosition gets the position of item in group as index.
+//
+// The function takes the following parameters:
+//
+//    - item: ToolItem.
+//
 func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
@@ -258,6 +269,11 @@ func (group *ToolItemGroup) NItems() uint {
 }
 
 // NthItem gets the tool item at index in group.
+//
+// The function takes the following parameters:
+//
+//    - index: index.
+//
 func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.guint             // out
@@ -278,6 +294,13 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 }
 
 // Insert inserts item at position in the list of children of group.
+//
+// The function takes the following parameters:
+//
+//    - item to insert into group.
+//    - position of item in group, starting with 0. The position -1 means end
+//    of list.
+//
 func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
@@ -294,6 +317,11 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 }
 
 // SetCollapsed sets whether the group should be collapsed or expanded.
+//
+// The function takes the following parameters:
+//
+//    - collapsed: whether the group should be collapsed or expanded.
+//
 func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gboolean          // out
@@ -310,6 +338,11 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 
 // SetEllipsize sets the ellipsization mode which should be used by labels in
 // group.
+//
+// The function takes the following parameters:
+//
+//    - ellipsize labels in group should use.
+//
 func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 	var _arg0 *C.GtkToolItemGroup  // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -324,6 +357,11 @@ func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 
 // SetHeaderRelief: set the button relief of the group header. See
 // gtk_button_set_relief() for details.
+//
+// The function takes the following parameters:
+//
+//    - style: ReliefStyle.
+//
 func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.GtkReliefStyle    // out
@@ -337,6 +375,13 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 }
 
 // SetItemPosition sets the position of item in the list of children of group.
+//
+// The function takes the following parameters:
+//
+//    - item to move to a new position, should be a child of group.
+//    - position: new position of item in group, starting with 0. The position
+//    -1 means end of list.
+//
 func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
@@ -354,6 +399,11 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 
 // SetLabel sets the label of the tool item group. The label is displayed in the
 // header of the group.
+//
+// The function takes the following parameters:
+//
+//    - label: new human-readable label of of the group.
+//
 func (group *ToolItemGroup) SetLabel(label string) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.gchar            // out
@@ -369,6 +419,11 @@ func (group *ToolItemGroup) SetLabel(label string) {
 
 // SetLabelWidget sets the label of the tool item group. The label widget is
 // displayed in the header of the group, in place of the usual label.
+//
+// The function takes the following parameters:
+//
+//    - labelWidget: widget to be displayed in place of the usual label.
+//
 func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkWidget        // out

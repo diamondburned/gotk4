@@ -75,6 +75,11 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 }
 
 // Link gets the link in this hypertext document at index link_index.
+//
+// The function takes the following parameters:
+//
+//    - linkIndex: integer specifying the desired link.
+//
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
@@ -96,6 +101,11 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 
 // LinkIndex gets the index into the array of hyperlinks that is associated with
 // the character specified by char_index.
+//
+// The function takes the following parameters:
+//
+//    - charIndex: character index.
+//
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out

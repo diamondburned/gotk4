@@ -83,6 +83,11 @@ func marshalDBusObjector(p uintptr) (interface{}, error) {
 
 // Interface gets the D-Bus interface with name interface_name associated with
 // object, if any.
+//
+// The function takes the following parameters:
+//
+//    - interfaceName d-Bus interface name.
+//
 func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out

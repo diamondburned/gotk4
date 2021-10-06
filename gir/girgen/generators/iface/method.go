@@ -5,27 +5,50 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 type Method struct {
 	InfoElements *gir.InfoElements
 	InfoAttrs    *gir.InfoAttrs
 
-	Recv  string
-	Name  string
-	Tail  string
-	Block string
+	Recv      string
+	Name      string
+	Tail      string
+	Block     string
+	ParamDocs []ParamDoc
+}
+
+type ParamDoc struct {
+	Name         string
+	InfoElements gir.InfoElements
 }
 
 func newMethod(cgen *callable.Generator) Method {
+	var paramDocs []ParamDoc
+
+	if cgen.Parameters != nil && len(cgen.Parameters.Parameters) > 0 {
+		paramDocs = make([]ParamDoc, 0, len(cgen.Parameters.Parameters))
+
+		cgen.EachParamResult(func(value *typeconv.ValueConverted) {
+			paramDocs = append(paramDocs, ParamDoc{
+				Name: value.InName, // GoName
+				InfoElements: gir.InfoElements{
+					DocElements: gir.DocElements{Doc: value.Doc},
+				},
+			})
+		})
+	}
+
 	return Method{
 		InfoElements: &cgen.InfoElements,
 		InfoAttrs:    &cgen.InfoAttrs,
 
-		Recv:  cgen.Recv(),
-		Name:  cgen.Name,
-		Tail:  callable.CoalesceTail(cgen.Tail),
-		Block: cgen.Block,
+		Recv:      cgen.Recv(),
+		Name:      cgen.Name,
+		Tail:      callable.CoalesceTail(cgen.Tail),
+		Block:     cgen.Block,
+		ParamDocs: paramDocs,
 	}
 }
 

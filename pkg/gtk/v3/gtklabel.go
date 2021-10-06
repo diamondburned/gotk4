@@ -631,6 +631,12 @@ func (label *Label) YAlign() float32 {
 // selectable. See gtk_label_set_selectable(). If the label is not selectable,
 // this function has no effect. If start_offset or end_offset are -1, then the
 // end of the label will be substituted.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset (in characters not bytes).
+//    - endOffset: end offset (in characters not bytes).
+//
 func (label *Label) SelectRegion(startOffset, endOffset int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -649,6 +655,12 @@ func (label *Label) SelectRegion(startOffset, endOffset int) {
 // SetAngle sets the angle of rotation for the label. An angle of 90 reads from
 // from bottom to top, an angle of 270, from top to bottom. The angle setting
 // for the label is ignored if the label is selectable, wrapped, or ellipsized.
+//
+// The function takes the following parameters:
+//
+//    - angle that the baseline of the label makes with the horizontal, in
+//    degrees, measured counterclockwise.
+//
 func (label *Label) SetAngle(angle float64) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gdouble   // out
@@ -669,6 +681,11 @@ func (label *Label) SetAngle(angle float64) {
 // Label:use-markup properties. While it is not recommended to mix markup
 // strings with manually set attributes, if you must; know that the attributes
 // will be applied to the label after the markup string is parsed.
+//
+// The function takes the following parameters:
+//
+//    - attrs or NULL.
+//
 func (label *Label) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkLabel      // out
 	var _arg1 *C.PangoAttrList // out
@@ -685,6 +702,11 @@ func (label *Label) SetAttributes(attrs *pango.AttrList) {
 
 // SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to the
 // text if there is not enough space to render the entire string.
+//
+// The function takes the following parameters:
+//
+//    - mode: EllipsizeMode.
+//
 func (label *Label) SetEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.GtkLabel          // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -703,6 +725,11 @@ func (label *Label) SetEllipsize(mode pango.EllipsizeMode) {
 // label as a whole, use gtk_widget_set_halign() instead.
 // gtk_label_set_justify() has no effect on labels containing only a single
 // line.
+//
+// The function takes the following parameters:
+//
+//    - jtype: Justification.
+//
 func (label *Label) SetJustify(jtype Justification) {
 	var _arg0 *C.GtkLabel        // out
 	var _arg1 C.GtkJustification // out
@@ -718,6 +745,11 @@ func (label *Label) SetJustify(jtype Justification) {
 // SetLabel sets the text of the label. The label is interpreted as including
 // embedded underlines and/or Pango markup depending on the values of the
 // Label:use-underline and Label:use-markup properties.
+//
+// The function takes the following parameters:
+//
+//    - str: new text to set for the label.
+//
 func (label *Label) SetLabel(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -740,6 +772,11 @@ func (label *Label) SetLabel(str string) {
 // requisition depend on the parent container’s size. For a label that wraps at
 // a specific position, set the label’s width using
 // gtk_widget_set_size_request().
+//
+// The function takes the following parameters:
+//
+//    - wrap: setting.
+//
 func (label *Label) SetLineWrap(wrap bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -757,6 +794,11 @@ func (label *Label) SetLineWrap(wrap bool) {
 // SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap()) this
 // controls how the line wrapping is done. The default is PANGO_WRAP_WORD which
 // means wrap on word boundaries.
+//
+// The function takes the following parameters:
+//
+//    - wrapMode: line wrapping mode.
+//
 func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
 	var _arg0 *C.GtkLabel     // out
 	var _arg1 C.PangoWrapMode // out
@@ -772,6 +814,11 @@ func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
 // SetLines sets the number of lines to which an ellipsized, wrapping label
 // should be limited. This has no effect if the label is not wrapping or
 // ellipsized. Set this to -1 if you don’t want to limit the number of lines.
+//
+// The function takes the following parameters:
+//
+//    - lines: desired number of lines, or -1.
+//
 func (label *Label) SetLines(lines int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -807,6 +854,11 @@ func (label *Label) SetLines(lines int) {
 // ensure that you set the Label:use-markup property accordingly.
 //
 // See also: gtk_label_set_text().
+//
+// The function takes the following parameters:
+//
+//    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
+//
 func (label *Label) SetMarkup(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -828,6 +880,11 @@ func (label *Label) SetMarkup(str string) {
 //
 // The mnemonic key can be used to activate another widget, chosen
 // automatically, or explicitly using gtk_label_set_mnemonic_widget().
+//
+// The function takes the following parameters:
+//
+//    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
+//
 func (label *Label) SetMarkupWithMnemonic(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -843,6 +900,11 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 
 // SetMaxWidthChars sets the desired maximum width in characters of label to
 // n_chars.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired maximum width, in characters.
+//
 func (label *Label) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -868,6 +930,11 @@ func (label *Label) SetMaxWidthChars(nChars int) {
 // GtkWidget::mnemonic-activate signal on it. The default handler for this
 // signal will activate the widget if there are no mnemonic collisions and
 // toggle focus between the colliding widgets otherwise.
+//
+// The function takes the following parameters:
+//
+//    - widget: target Widget, or NULL to unset.
+//
 func (label *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg0 *C.GtkLabel  // out
 	var _arg1 *C.GtkWidget // out
@@ -885,6 +952,11 @@ func (label *Label) SetMnemonicWidget(widget Widgetter) {
 // SetPattern: pattern of underlines you want under the existing text within the
 // Label widget. For example if the current text of the label says “FooBarBaz”
 // passing a pattern of “___ ___” will underline “Foo” and “Baz” but not “Bar”.
+//
+// The function takes the following parameters:
+//
+//    - pattern as described above.
+//
 func (label *Label) SetPattern(pattern string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -900,6 +972,11 @@ func (label *Label) SetPattern(pattern string) {
 
 // SetSelectable: selectable labels allow the user to select text from the
 // label, for copy-and-paste.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to allow selecting text in the label.
+//
 func (label *Label) SetSelectable(setting bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -915,6 +992,11 @@ func (label *Label) SetSelectable(setting bool) {
 }
 
 // SetSingleLineMode sets whether the label is in single line mode.
+//
+// The function takes the following parameters:
+//
+//    - singleLineMode: TRUE if the label should be in single line mode.
+//
 func (label *Label) SetSingleLineMode(singleLineMode bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -939,6 +1021,11 @@ func (label *Label) SetSingleLineMode(singleLineMode bool) {
 // effect.
 //
 // See also: gtk_label_set_markup().
+//
+// The function takes the following parameters:
+//
+//    - str: text you want to set.
+//
 func (label *Label) SetText(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -957,6 +1044,11 @@ func (label *Label) SetText(str string) {
 // they represent a keyboard accelerator called a mnemonic. The mnemonic key can
 // be used to activate another widget, chosen automatically, or explicitly using
 // gtk_label_set_mnemonic_widget().
+//
+// The function takes the following parameters:
+//
+//    - str: string.
+//
 func (label *Label) SetTextWithMnemonic(str string) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 *C.gchar    // out
@@ -972,6 +1064,11 @@ func (label *Label) SetTextWithMnemonic(str string) {
 
 // SetTrackVisitedLinks sets whether the label should keep track of clicked
 // links (and use a different color for them).
+//
+// The function takes the following parameters:
+//
+//    - trackLinks: TRUE to track visited links.
+//
 func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -988,6 +1085,11 @@ func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
 
 // SetUseMarkup sets whether the text of the label contains markup in [Pango’s
 // text markup language][PangoMarkupFormat]. See gtk_label_set_markup().
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE if the label’s text should be parsed for markup.
+//
 func (label *Label) SetUseMarkup(setting bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -1004,6 +1106,11 @@ func (label *Label) SetUseMarkup(setting bool) {
 
 // SetUseUnderline: if true, an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE if underlines in the text indicate mnemonics.
+//
 func (label *Label) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gboolean  // out
@@ -1019,6 +1126,11 @@ func (label *Label) SetUseUnderline(setting bool) {
 }
 
 // SetWidthChars sets the desired width in characters of label to n_chars.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired width, in characters.
+//
 func (label *Label) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -1032,6 +1144,11 @@ func (label *Label) SetWidthChars(nChars int) {
 }
 
 // SetXAlign sets the Label:xalign property for label.
+//
+// The function takes the following parameters:
+//
+//    - xalign: new xalign value, between 0 and 1.
+//
 func (label *Label) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out
@@ -1045,6 +1162,11 @@ func (label *Label) SetXAlign(xalign float32) {
 }
 
 // SetYAlign sets the Label:yalign property for label.
+//
+// The function takes the following parameters:
+//
+//    - yalign: new yalign value, between 0 and 1.
+//
 func (label *Label) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out

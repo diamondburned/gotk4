@@ -216,6 +216,11 @@ func NewRecentFilter() *RecentFilter {
 
 // AddAge adds a rule that allows resources based on their age - that is, the
 // number of days elapsed since they were last modified.
+//
+// The function takes the following parameters:
+//
+//    - days: number of days.
+//
 func (filter *RecentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
@@ -230,6 +235,11 @@ func (filter *RecentFilter) AddAge(days int) {
 
 // AddApplication adds a rule that allows resources based on the name of the
 // application that has registered them.
+//
+// The function takes the following parameters:
+//
+//    - application name.
+//
 func (filter *RecentFilter) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
@@ -248,6 +258,14 @@ func (filter *RecentFilter) AddApplication(application string) {
 // information about what sorts of information that the filter function needs;
 // this allows GTK+ to avoid retrieving expensive information when it isn’t
 // needed by the filter.
+//
+// The function takes the following parameters:
+//
+//    - needed: bitfield of flags indicating the information that the custom
+//    filter function needs.
+//    - fn: callback function; if the function returns TRUE, then the file will
+//    be displayed.
+//
 func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 C.GtkRecentFilterFlags // out
@@ -269,6 +287,11 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 
 // AddGroup adds a rule that allows resources based on the name of the group to
 // which they belong.
+//
+// The function takes the following parameters:
+//
+//    - group name.
+//
 func (filter *RecentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
@@ -284,6 +307,11 @@ func (filter *RecentFilter) AddGroup(group string) {
 
 // AddMIMEType adds a rule that allows resources based on their registered MIME
 // type.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: MIME type.
+//
 func (filter *RecentFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
@@ -299,6 +327,11 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 
 // AddPattern adds a rule that allows resources based on a pattern matching
 // their display name.
+//
+// The function takes the following parameters:
+//
+//    - pattern: file pattern.
+//
 func (filter *RecentFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
@@ -330,6 +363,11 @@ func (filter *RecentFilter) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
+//
+// The function takes the following parameters:
+//
+//    - filterInfo containing information about a recently used resource.
+//
 func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _arg1 *C.GtkRecentFilterInfo // out
@@ -395,6 +433,11 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the recently used resources selector user interface if
 // there is a selectable list of filters.
+//
+// The function takes the following parameters:
+//
+//    - name: then human readable name of filter.
+//
 func (filter *RecentFilter) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out

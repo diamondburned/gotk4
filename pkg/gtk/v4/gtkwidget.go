@@ -992,6 +992,12 @@ func marshalWidgetter(p uintptr) (interface{}, error) {
 
 // ActionSetEnabled: enable or disable an action installed with
 // gtk_widget_class_install_action().
+//
+// The function takes the following parameters:
+//
+//    - actionName: action name, such as "clipboard.paste".
+//    - enabled: whether the action is now enabled.
+//
 func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -1051,6 +1057,12 @@ func (widget *Widget) Activate() bool {
 //
 // The arguments must match the actions expected parameter type, as returned by
 // g_action_get_parameter_type().
+//
+// The function takes the following parameters:
+//
+//    - name of the action to activate.
+//    - args parameters to use, or NULL.
+//
 func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -1092,6 +1104,11 @@ func (widget *Widget) ActivateDefault() {
 //
 // You will usually want to call this function right after creating any kind of
 // gtk.EventController.
+//
+// The function takes the following parameters:
+//
+//    - controller that hasn't been added to a widget yet.
+//
 func (widget *Widget) AddController(controller EventControllerer) {
 	var _arg0 *C.GtkWidget          // out
 	var _arg1 *C.GtkEventController // out
@@ -1111,6 +1128,12 @@ func (widget *Widget) AddController(controller EventControllerer) {
 // according to CSS matching rules.
 //
 // Use gtk.Widget.RemoveCSSClass() to remove the style again.
+//
+// The function takes the following parameters:
+//
+//    - cssClass: style class to add to widget, without the leading '.' used
+//    for notation of style classes.
+//
 func (widget *Widget) AddCSSClass(cssClass string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -1131,6 +1154,11 @@ func (widget *Widget) AddCSSClass(cssClass string) {
 // widget is cleared when the widget is destroyed, so the caller must make sure
 // to update its internal state at this point as well, by using a connection to
 // the gtk.Widget::destroy signal or a weak notifier.
+//
+// The function takes the following parameters:
+//
+//    - label: GtkWidget that acts as a mnemonic label for widget.
+//
 func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -1162,6 +1190,11 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 // This is a more convenient alternative to connecting directly to the
 // gdk.FrameClock::update signal of GdkFrameClock, since you don't have to worry
 // about when a GdkFrameClock is assigned to a widget.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call for updating animations.
+//
 func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkTickCallback // out
@@ -1193,6 +1226,14 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 // well as at least 0×0 in size.
 //
 // For a version that does not take a transform, see gtk.Widget.SizeAllocate().
+//
+// The function takes the following parameters:
+//
+//    - width: new width of widget.
+//    - height: new height of widget.
+//    - baseline: new baseline of widget, or -1.
+//    - transform: transformation to be applied to widget.
+//
 func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Transform) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.int           // out
@@ -1236,6 +1277,11 @@ func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Trans
 // This function is used by custom widget implementations; if you're writing an
 // app, you’d use gtk.Widget.GrabFocus() to move the focus to a particular
 // widget.
+//
+// The function takes the following parameters:
+//
+//    - direction of focus movement.
+//
 func (widget *Widget) ChildFocus(direction DirectionType) bool {
 	var _arg0 *C.GtkWidget       // out
 	var _arg1 C.GtkDirectionType // out
@@ -1268,6 +1314,11 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 // to the zero rectangle.
 //
 // It is valid for widget and target to be the same widget.
+//
+// The function takes the following parameters:
+//
+//    - target: GtkWidget.
+//
 func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkWidget      // out
@@ -1304,6 +1355,11 @@ func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
 // The computed expand value uses either the expand setting explicitly set on
 // the widget itself, or, if none has been explicitly set, the widget may expand
 // if some of its children do.
+//
+// The function takes the following parameters:
+//
+//    - orientation: expand direction.
+//
 func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
@@ -1330,6 +1386,12 @@ func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 //
 // In order to perform this operation, both widgets must share a common
 // ancestor.
+//
+// The function takes the following parameters:
+//
+//    - target: GtkWidget to transform into.
+//    - point in widget's coordinate system.
+//
 func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (graphene.Point, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
@@ -1359,6 +1421,11 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (gra
 
 // ComputeTransform computes a matrix suitable to describe a transformation from
 // widget's coordinate system into target's coordinate system.
+//
+// The function takes the following parameters:
+//
+//    - target widget that the matrix will transform to.
+//
 func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
@@ -1387,6 +1454,12 @@ func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 //
 // The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
 // assumed to be the top left of widget's content area.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate to test, relative to widget's origin.
+//    - y: y coordinate to test, relative to widget's origin.
+//
 func (widget *Widget) Contains(x, y float64) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.double     // out
@@ -1443,6 +1516,11 @@ func (widget *Widget) CreatePangoContext() *pango.Context {
 // If you keep a PangoLayout created in this way around, you need to re-create
 // it when the widget PangoContext is replaced. This can be tracked by listening
 // to changes of the gtk.Widget:root property on the widget.
+//
+// The function takes the following parameters:
+//
+//    - text to set on the layout (can be NULL).
+//
 func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 *C.char        // out
@@ -1472,6 +1550,14 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 
 // DragCheckThreshold checks to see if a drag movement has passed the GTK drag
 // threshold.
+//
+// The function takes the following parameters:
+//
+//    - startX: x coordinate of start of drag.
+//    - startY: y coordinate of start of drag.
+//    - currentX: current X coordinate.
+//    - currentY: current Y coordinate.
+//
 func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -1614,6 +1700,11 @@ func (widget *Widget) Allocation() Allocation {
 //
 // Note that unlike gtk.Widget.IsAncestor(), this function considers widget to
 // be an ancestor of itself.
+//
+// The function takes the following parameters:
+//
+//    - widgetType: ancestor type.
+//
 func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
@@ -2768,6 +2859,11 @@ func (widget *Widget) Settings() *Settings {
 // GTK_ORIENTATION_VERTICAL, but can be used when writing
 // orientation-independent code, such as when implementing gtk.Orientable
 // widgets.
+//
+// The function takes the following parameters:
+//
+//    - orientation to query.
+//
 func (widget *Widget) Size(orientation Orientation) int {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
@@ -2866,6 +2962,12 @@ func (widget *Widget) StyleContext() *StyleContext {
 // This function is only meant to be called for code which is private to the
 // widget_type which declared the child and is meant for language bindings which
 // cannot easily make use of the GObject structure offsets.
+//
+// The function takes the following parameters:
+//
+//    - widgetType to get a template child for.
+//    - name: “id” of the child defined in the template XML.
+//
 func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *externglib.Object {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
@@ -3070,6 +3172,12 @@ func (widget *Widget) GrabFocus() bool {
 }
 
 // HasCSSClass returns whether css_class is currently applied to widget.
+//
+// The function takes the following parameters:
+//
+//    - cssClass: style class, without the leading '.' used for notation of
+//    style classes.
+//
 func (widget *Widget) HasCSSClass(cssClass string) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -3234,6 +3342,12 @@ func (widget *Widget) InitTemplate() {
 //
 // If group is NULL, a previously inserted group for name is removed from
 // widget.
+//
+// The function takes the following parameters:
+//
+//    - name: prefix for actions in group.
+//    - group or NULL.
+//
 func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.char         // out
@@ -3265,6 +3379,12 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
+//
+// The function takes the following parameters:
+//
+//    - parent GtkWidget to insert widget into.
+//    - previousSibling: new previous sibling of widget or NULL.
+//
 func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -3294,6 +3414,12 @@ func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
+//
+// The function takes the following parameters:
+//
+//    - parent GtkWidget to insert widget into.
+//    - nextSibling: new next sibling of widget or NULL.
+//
 func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -3313,6 +3439,11 @@ func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 
 // IsAncestor determines whether widget is somewhere inside ancestor, possibly
 // with intermediate containers.
+//
+// The function takes the following parameters:
+//
+//    - ancestor: another GtkWidget.
+//
 func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -3446,6 +3577,11 @@ func (widget *Widget) IsVisible() bool {
 // connecting to it or by overriding it) would be a row of gtk.Entry widgets
 // where the user should be able to navigate the entire row with the cursor
 // keys, as e.g. known from user interfaces that require entering license keys.
+//
+// The function takes the following parameters:
+//
+//    - direction of focus movement.
+//
 func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	var _arg0 *C.GtkWidget       // out
 	var _arg1 C.GtkDirectionType // out
@@ -3533,6 +3669,16 @@ func (widget *Widget) Map() {
 // See GtkWidget’s geometry management section
 // (class.Widget.html#height-for-width-geometry-management) for a more details
 // on implementing WidgetClass.measure().
+//
+// The function takes the following parameters:
+//
+//    - orientation to measure.
+//    - forSize: size for the opposite of orientation, i.e. if orientation is
+//    GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
+//    measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This way,
+//    both height-for-width and width-for-height requests can be implemented.
+//    If no size is known, -1 can be passed.
+//
 func (widget *Widget) Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
@@ -3565,6 +3711,11 @@ func (widget *Widget) Measure(orientation Orientation, forSize int) (minimum int
 }
 
 // MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
+//
+// The function takes the following parameters:
+//
+//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
+//
 func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -3674,6 +3825,13 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 //
 // This function is used on the toplevel to determine the widget below the mouse
 // cursor for purposes of hover highlighting and delivering events.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate to test, relative to widget's origin.
+//    - y: y coordinate to test, relative to widget's origin.
+//    - flags flags to influence what is picked.
+//
 func (widget *Widget) Pick(x, y float64, flags PickFlags) Widgetter {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.double       // out
@@ -3792,6 +3950,11 @@ func (widget *Widget) Realize() {
 //
 // Widgets will remove all event controllers automatically when they are
 // destroyed, there is normally no need to call this function.
+//
+// The function takes the following parameters:
+//
+//    - controller: EventController.
+//
 func (widget *Widget) RemoveController(controller EventControllerer) {
 	var _arg0 *C.GtkWidget          // out
 	var _arg1 *C.GtkEventController // out
@@ -3807,6 +3970,12 @@ func (widget *Widget) RemoveController(controller EventControllerer) {
 // RemoveCSSClass removes a style from widget.
 //
 // After this, the style of widget will stop matching for css_class.
+//
+// The function takes the following parameters:
+//
+//    - cssClass: style class to remove from widget, without the leading '.'
+//    used for notation of style classes.
+//
 func (widget *Widget) RemoveCSSClass(cssClass string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -3825,6 +3994,12 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 //
 // See gtk.Widget.ListMnemonicLabels(). The widget must have previously been
 // added to the list with gtk.Widget.AddMnemonicLabel().
+//
+// The function takes the following parameters:
+//
+//    - label: GtkWidget that was previously set as a mnemonic label for widget
+//    with gtk.Widget.AddMnemonicLabel().
+//
 func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -3839,6 +4014,11 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 
 // RemoveTickCallback removes a tick callback previously registered with
 // gtk_widget_add_tick_callback().
+//
+// The function takes the following parameters:
+//
+//    - id returned by gtk.Widget.AddTickCallback().
+//
 func (widget *Widget) RemoveTickCallback(id uint) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
@@ -3863,6 +4043,12 @@ func (widget *Widget) RemoveTickCallback(id uint) {
 // focus.
 //
 // See gtk.Widget.GrabFocus() for actually setting the input focus on a widget.
+//
+// The function takes the following parameters:
+//
+//    - canFocus: whether or not the input focus can enter the widget or any of
+//    its children.
+//
 func (widget *Widget) SetCanFocus(canFocus bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -3878,6 +4064,12 @@ func (widget *Widget) SetCanFocus(canFocus bool) {
 }
 
 // SetCanTarget sets whether widget can be the target of pointer events.
+//
+// The function takes the following parameters:
+//
+//    - canTarget: whether this widget should be able to receive pointer
+//    events.
+//
 func (widget *Widget) SetCanTarget(canTarget bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -3906,6 +4098,11 @@ func (widget *Widget) SetCanTarget(canTarget bool) {
 //
 // This function is only useful for container implementations and should never
 // be called by an application.
+//
+// The function takes the following parameters:
+//
+//    - childVisible: if TRUE, widget should be mapped along with its parent.
+//
 func (widget *Widget) SetChildVisible(childVisible bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -3922,6 +4119,11 @@ func (widget *Widget) SetChildVisible(childVisible bool) {
 
 // SetCSSClasses will clear all style classes applied to widget and replace them
 // with classes.
+//
+// The function takes the following parameters:
+//
+//    - classes: NULL-terminated list of style classes to apply to widget.
+//
 func (widget *Widget) SetCSSClasses(classes []string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 **C.char     // out
@@ -3951,6 +4153,11 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 //
 // If the cursor is NULL, widget will use the cursor inherited from the parent
 // widget.
+//
+// The function takes the following parameters:
+//
+//    - cursor: new cursor or NULL to use the default cursor.
+//
 func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkCursor // out
@@ -3974,6 +4181,11 @@ func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 //
 // On top of that, this function allows name to be NULL, which will do the same
 // as calling gtk.Widget.SetCursor() with a NULL cursor.
+//
+// The function takes the following parameters:
+//
+//    - name of the cursor or NULL to use the default cursor.
+//
 func (widget *Widget) SetCursorFromName(name string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -4001,6 +4213,11 @@ func (widget *Widget) SetCursorFromName(name string) {
 //
 // If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
 // gtk.Widget().SetDefaultDirection will be used.
+//
+// The function takes the following parameters:
+//
+//    - dir: new direction.
+//
 func (widget *Widget) SetDirection(dir TextDirection) {
 	var _arg0 *C.GtkWidget       // out
 	var _arg1 C.GtkTextDirection // out
@@ -4019,6 +4236,12 @@ func (widget *Widget) SetDirection(dir TextDirection) {
 //
 // This function is only suitable for widget implementations. If you want a
 // certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
+//
+// The function takes the following parameters:
+//
+//    - child: direct child widget of widget or NULL to unset the focus child
+//    of widget.
+//
 func (widget *Widget) SetFocusChild(child Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -4039,6 +4262,12 @@ func (widget *Widget) SetFocusChild(child Widgetter) {
 // Making mouse clicks not grab focus is useful in places like toolbars where
 // you don’t want the keyboard focus removed from the main area of the
 // application.
+//
+// The function takes the following parameters:
+//
+//    - focusOnClick: whether the widget should grab focus when clicked with
+//    the mouse.
+//
 func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4064,6 +4293,11 @@ func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 // focus.
 //
 // See gtk.Widget.GrabFocus() for actually setting the input focus on a widget.
+//
+// The function takes the following parameters:
+//
+//    - focusable: whether or not widget can own the input focus.
+//
 func (widget *Widget) SetFocusable(focusable bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4085,6 +4319,11 @@ func (widget *Widget) SetFocusable(focusable bool) {
 // application-specific fonts to the set of available fonts.
 //
 // When not set, the widget will inherit the font map from its parent.
+//
+// The function takes the following parameters:
+//
+//    - fontMap: PangoFontMap, or NULL to unset any previously set font map.
+//
 func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
@@ -4103,6 +4342,11 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 // widget.
 //
 // When not set, the default font options for the GdkDisplay will be used.
+//
+// The function takes the following parameters:
+//
+//    - options or NULL to unset any previously set default font options.
+//
 func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	var _arg0 *C.GtkWidget            // out
 	var _arg1 *C.cairo_font_options_t // out
@@ -4118,6 +4362,11 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 }
 
 // SetHAlign sets the horizontal alignment of widget.
+//
+// The function takes the following parameters:
+//
+//    - align: horizontal alignment.
+//
 func (widget *Widget) SetHAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
@@ -4131,6 +4380,11 @@ func (widget *Widget) SetHAlign(align Align) {
 }
 
 // SetHasTooltip sets the has-tooltip property on widget to has_tooltip.
+//
+// The function takes the following parameters:
+//
+//    - hasTooltip: whether or not widget has a tooltip.
+//
 func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4169,6 +4423,11 @@ func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 // hexpand-set property (see gtk.Widget.SetHExpandSet()) which causes the
 // widget’s hexpand value to be used, rather than looking at children and widget
 // state.
+//
+// The function takes the following parameters:
+//
+//    - expand: whether to expand.
+//
 func (widget *Widget) SetHExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4195,6 +4454,11 @@ func (widget *Widget) SetHExpand(expand bool) {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
+//
+// The function takes the following parameters:
+//
+//    - set: value for hexpand-set property.
+//
 func (widget *Widget) SetHExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4211,6 +4475,11 @@ func (widget *Widget) SetHExpandSet(set bool) {
 
 // SetLayoutManager sets the layout manager delegate instance that provides an
 // implementation for measuring and allocating the children of widget.
+//
+// The function takes the following parameters:
+//
+//    - layoutManager: GtkLayoutManager.
+//
 func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkLayoutManager // out
@@ -4227,6 +4496,11 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 }
 
 // SetMarginBottom sets the bottom margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: bottom margin.
+//
 func (widget *Widget) SetMarginBottom(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -4240,6 +4514,11 @@ func (widget *Widget) SetMarginBottom(margin int) {
 }
 
 // SetMarginEnd sets the end margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: end margin.
+//
 func (widget *Widget) SetMarginEnd(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -4253,6 +4532,11 @@ func (widget *Widget) SetMarginEnd(margin int) {
 }
 
 // SetMarginStart sets the start margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: start margin.
+//
 func (widget *Widget) SetMarginStart(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -4266,6 +4550,11 @@ func (widget *Widget) SetMarginStart(margin int) {
 }
 
 // SetMarginTop sets the top margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: top margin.
+//
 func (widget *Widget) SetMarginTop(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -4289,6 +4578,11 @@ func (widget *Widget) SetMarginTop(margin int) {
 // represent elements in a selector (period, #, >, *...), so using these will
 // make your widget impossible to match by name. Any combination of alphanumeric
 // symbols, dashes and underscores will suffice.
+//
+// The function takes the following parameters:
+//
+//    - name for the widget.
+//
 func (widget *Widget) SetName(name string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -4321,6 +4615,11 @@ func (widget *Widget) SetName(name string) {
 // and other gtk.Native widgets with their own surface will use their own
 // opacity value, and thus by default appear non-translucent, even if they are
 // attached to a toplevel that is translucent.
+//
+// The function takes the following parameters:
+//
+//    - opacity: desired opacity, between 0 and 1.
+//
 func (widget *Widget) SetOpacity(opacity float64) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.double     // out
@@ -4342,6 +4641,11 @@ func (widget *Widget) SetOpacity(opacity float64) {
 // application code.
 //
 // The default value is GTK_OVERFLOW_VISIBLE.
+//
+// The function takes the following parameters:
+//
+//    - overflow: desired overflow.
+//
 func (widget *Widget) SetOverflow(overflow Overflow) {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 C.GtkOverflow // out
@@ -4361,6 +4665,11 @@ func (widget *Widget) SetOverflow(overflow Overflow) {
 // gtk.Widget.Unparent().
 //
 // This function is useful only when implementing subclasses of GtkWidget.
+//
+// The function takes the following parameters:
+//
+//    - parent widget.
+//
 func (widget *Widget) SetParent(parent Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -4376,6 +4685,11 @@ func (widget *Widget) SetParent(parent Widgetter) {
 // SetReceivesDefault specifies whether widget will be treated as the default
 // widget within its toplevel when it has the focus, even if another widget is
 // the default.
+//
+// The function takes the following parameters:
+//
+//    - receivesDefault: whether or not widget can be a default widget.
+//
 func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4395,6 +4709,11 @@ func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
 // A widget is sensitive if the user can interact with it. Insensitive widgets
 // are “grayed out” and the user can’t interact with them. Insensitive widgets
 // are known as “inactive”, “disabled”, or “ghosted” in some other toolkits.
+//
+// The function takes the following parameters:
+//
+//    - sensitive: TRUE to make the widget sensitive.
+//
 func (widget *Widget) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4436,6 +4755,12 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 // gtk.Widget:margin-start, gtk.Widget:margin-end, gtk.Widget:margin-top, and
 // gtk.Widget:margin-bottom, but it does include pretty much all other padding
 // or border properties set by any subclass of GtkWidget.
+//
+// The function takes the following parameters:
+//
+//    - width widget should request, or -1 to unset.
+//    - height widget should request, or -1 to unset.
+//
 func (widget *Widget) SetSizeRequest(width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
@@ -4460,6 +4785,12 @@ func (widget *Widget) SetSizeRequest(width, height int) {
 // direction, use gtk.Widget.SetDirection().
 //
 // This function is for use in widget implementations.
+//
+// The function takes the following parameters:
+//
+//    - flags: state flags to turn on.
+//    - clear: whether to clear state before turning on flags.
+//
 func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkStateFlags // out
@@ -4484,6 +4815,11 @@ func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
 // effect, and of the default handler for the gtk.Widget::query-tooltip signal.
 //
 // See also gtk.Tooltip.SetMarkup().
+//
+// The function takes the following parameters:
+//
+//    - markup contents of the tooltip for widget.
+//
 func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -4507,6 +4843,11 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 // effect, and of the default handler for the gtk.Widget::query-tooltip signal.
 //
 // See also gtk.Tooltip.SetText().
+//
+// The function takes the following parameters:
+//
+//    - text contents of the tooltip for widget.
+//
 func (widget *Widget) SetTooltipText(text string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.char      // out
@@ -4523,6 +4864,11 @@ func (widget *Widget) SetTooltipText(text string) {
 }
 
 // SetVAlign sets the vertical alignment of widget.
+//
+// The function takes the following parameters:
+//
+//    - align: vertical alignment.
+//
 func (widget *Widget) SetVAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
@@ -4539,6 +4885,11 @@ func (widget *Widget) SetVAlign(align Align) {
 // space.
 //
 // See gtk.Widget.SetHExpand() for more detail.
+//
+// The function takes the following parameters:
+//
+//    - expand: whether to expand.
+//
 func (widget *Widget) SetVExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4556,6 +4907,11 @@ func (widget *Widget) SetVExpand(expand bool) {
 // SetVExpandSet sets whether the vexpand flag will be used.
 //
 // See gtk.Widget.SetHExpandSet() for more detail.
+//
+// The function takes the following parameters:
+//
+//    - set: value for vexpand-set property.
+//
 func (widget *Widget) SetVExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4577,6 +4933,11 @@ func (widget *Widget) SetVExpandSet(set bool) {
 //
 // This function simply calls gtk.Widget.Show() or gtk.Widget.Hide() but is
 // nicer to use when the visibility of the widget depends on some condition.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether the widget should be shown or not.
+//
 func (widget *Widget) SetVisible(visible bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
@@ -4637,6 +4998,12 @@ func (widget *Widget) Show() {
 // origin to the position in allocation.
 //
 // This is a simple form of gtk.Widget.Allocate().
+//
+// The function takes the following parameters:
+//
+//    - allocation: position and size to be allocated to widget.
+//    - baseline of the child, or -1.
+//
 func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkAllocation // out
@@ -4664,6 +5031,13 @@ func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 // and deciding whether the child needs to be snapshot.
 //
 // This function does nothing for children that implement GtkNative.
+//
+// The function takes the following parameters:
+//
+//    - child of widget.
+//    - snapshot as passed to the widget. In particular, no calls to
+//    gtk_snapshot_translate() or other transform calls should have been made.
+//
 func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 *C.GtkWidget   // out
@@ -4683,6 +5057,13 @@ func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 // allocation to coordinates relative to dest_widget’s allocations.
 //
 // In order to perform this operation, both widget must share a common ancestor.
+//
+// The function takes the following parameters:
+//
+//    - destWidget: GtkWidget.
+//    - srcX: x position relative to src_widget.
+//    - srcY: y position relative to src_widget.
+//
 func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX float64, destY float64, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
@@ -4770,6 +5151,11 @@ func (widget *Widget) Unrealize() {
 // See gtk.Widget.SetStateFlags().
 //
 // This function is for use in widget implementations.
+//
+// The function takes the following parameters:
+//
+//    - flags: state flags to turn off.
+//
 func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkStateFlags // out

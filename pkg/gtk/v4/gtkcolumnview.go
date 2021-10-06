@@ -147,6 +147,12 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 }
 
 // AppendColumn appends the column to the end of the columns in self.
+//
+// The function takes the following parameters:
+//
+//    - column: GtkColumnViewColumn that hasn't been added to a GtkColumnView
+//    yet.
+//
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
@@ -356,6 +362,12 @@ func (self *ColumnView) Sorter() *Sorter {
 // InsertColumn inserts a column at the given position in the columns of self.
 //
 // If column is already a column of self, it will be repositioned.
+//
+// The function takes the following parameters:
+//
+//    - position to insert column at.
+//    - column: GtkColumnViewColumn to insert.
+//
 func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 C.guint                // out
@@ -372,6 +384,11 @@ func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 }
 
 // RemoveColumn removes the column from the list of columns of self.
+//
+// The function takes the following parameters:
+//
+//    - column: GtkColumnViewColumn that's part of self.
+//
 func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out
@@ -386,6 +403,11 @@ func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
+//
+// The function takes the following parameters:
+//
+//    - enableRubberband: TRUE to enable rubberband selection.
+//
 func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
@@ -403,6 +425,11 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 // SetModel sets the model to use.
 //
 // This must be a gtk.SelectionModel.
+//
+// The function takes the following parameters:
+//
+//    - model to use or NULL for none.
+//
 func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkColumnView     // out
 	var _arg1 *C.GtkSelectionModel // out
@@ -418,6 +445,11 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 }
 
 // SetReorderable sets whether columns should be reorderable by dragging.
+//
+// The function takes the following parameters:
+//
+//    - reorderable: whether columns should be reorderable.
+//
 func (self *ColumnView) SetReorderable(reorderable bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
@@ -434,6 +466,11 @@ func (self *ColumnView) SetReorderable(reorderable bool) {
 
 // SetShowColumnSeparators sets whether the list should show separators between
 // columns.
+//
+// The function takes the following parameters:
+//
+//    - showColumnSeparators: TRUE to show column separators.
+//
 func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
@@ -450,6 +487,11 @@ func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 
 // SetShowRowSeparators sets whether the list should show separators between
 // rows.
+//
+// The function takes the following parameters:
+//
+//    - showRowSeparators: TRUE to show row separators.
+//
 func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
@@ -466,6 +508,11 @@ func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 
 // SetSingleClickActivate sets whether rows should be activated on single click
 // and selected on hover.
+//
+// The function takes the following parameters:
+//
+//    - singleClickActivate: TRUE to activate items on single click.
+//
 func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkColumnView // out
 	var _arg1 C.gboolean       // out
@@ -491,6 +538,12 @@ func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 // sorter with the column.
 //
 // If column is NULL, the view will be unsorted.
+//
+// The function takes the following parameters:
+//
+//    - column: GtkColumnViewColumn to sort by, or NULL.
+//    - direction to sort in.
+//
 func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortType) {
 	var _arg0 *C.GtkColumnView       // out
 	var _arg1 *C.GtkColumnViewColumn // out

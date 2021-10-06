@@ -86,6 +86,11 @@ func marshalUnixConnectioner(p uintptr) (interface{}, error) {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -122,6 +127,12 @@ func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Cred
 // When the operation is finished, callback will be called. You can then call
 // g_unix_connection_receive_credentials_finish() to get the result of the
 // operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (connection *UnixConnection) ReceiveCredentialsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -147,6 +158,11 @@ func (connection *UnixConnection) ReceiveCredentialsAsync(ctx context.Context, c
 
 // ReceiveCredentialsFinish finishes an asynchronous receive credentials
 // operation started with g_unix_connection_receive_credentials_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter) (*Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -176,6 +192,11 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 //
 // As well as reading the fd this also reads a single byte from the stream, as
 // this is required for fd passing to work on some implementations.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -227,6 +248,11 @@ func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (connection *UnixConnection) SendCredentials(ctx context.Context) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -260,6 +286,12 @@ func (connection *UnixConnection) SendCredentials(ctx context.Context) error {
 // When the operation is finished, callback will be called. You can then call
 // g_unix_connection_send_credentials_finish() to get the result of the
 // operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (connection *UnixConnection) SendCredentialsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -285,6 +317,11 @@ func (connection *UnixConnection) SendCredentialsAsync(ctx context.Context, call
 
 // SendCredentialsFinish finishes an asynchronous send credentials operation
 // started with g_unix_connection_send_credentials_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -312,6 +349,12 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 //
 // As well as sending the fd this also writes a single byte to the stream, as
 // this is required for fd passing to work on some implementations.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - fd: file descriptor.
+//
 func (connection *UnixConnection) SendFd(ctx context.Context, fd int) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg2 *C.GCancellable    // out

@@ -108,6 +108,13 @@ func marshalProxier(p uintptr) (interface{}, error) {
 // that is connected to the proxy server), this does the necessary handshake to
 // connect to proxy_address, and if required, wraps the OStream to handle proxy
 // payload.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - connection: OStream.
+//    - proxyAddress: Address.
+//
 func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg3 *C.GCancellable  // out
@@ -155,6 +162,14 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - connection: OStream.
+//    - proxyAddress: Address.
+//    - callback: ReadyCallback.
+//
 func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
 	var _arg3 *C.GCancellable       // out
@@ -185,6 +200,11 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 }
 
 // ConnectFinish: see g_proxy_connect().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out

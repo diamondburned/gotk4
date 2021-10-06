@@ -71,6 +71,11 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 
 // QueryRegistry returns TRUE if the the interface was found in the display
 // wl_registry.global handler.
+//
+// The function takes the following parameters:
+//
+//    - global interface to query in the registry.
+//
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -94,6 +99,12 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 }
 
 // SetCursorTheme sets the cursor theme for the given display.
+//
+// The function takes the following parameters:
+//
+//    - name: new cursor theme.
+//    - size to use for cursors.
+//
 func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -119,6 +130,11 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 // The startup ID is also what is used to signal that the startup is complete
 // (for example, when opening a window or when calling
 // gdk.Display.NotifyStartupComplete()).
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup notification ID (must be valid utf8).
+//
 func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out

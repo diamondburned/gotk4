@@ -154,6 +154,11 @@ func (button *ToggleToolButton) Active() bool {
 // SetActive sets the status of the toggle tool button. Set to TRUE if you want
 // the GtkToggleButton to be “pressed in”, and FALSE to raise it. This action
 // causes the toggled signal to be emitted.
+//
+// The function takes the following parameters:
+//
+//    - isActive: whether button should be active.
+//
 func (button *ToggleToolButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _arg1 C.gboolean             // out

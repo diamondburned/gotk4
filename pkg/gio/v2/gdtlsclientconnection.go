@@ -123,6 +123,11 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 // tell servers on virtual hosts which certificate to present, and also to let
 // conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
+//
+// The function takes the following parameters:
+//
+//    - identity describing the expected server identity.
+//
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
@@ -138,6 +143,11 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 // SetValidationFlags sets conn's validation flags, to override the default set
 // of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+//
+// The function takes the following parameters:
+//
+//    - flags to use.
+//
 func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags   // out

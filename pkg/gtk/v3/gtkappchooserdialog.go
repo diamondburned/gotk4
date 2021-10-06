@@ -190,6 +190,11 @@ func (self *AppChooserDialog) Widget() Widgetter {
 
 // SetHeading sets the text to display at the top of the dialog. If the heading
 // is not set, the dialog displays a default text.
+//
+// The function takes the following parameters:
+//
+//    - heading: string containing Pango markup.
+//
 func (self *AppChooserDialog) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _arg1 *C.gchar               // out

@@ -120,6 +120,11 @@ func (child *OverlayLayoutChild) Measure() bool {
 }
 
 // SetClipOverlay sets whether to clip this child.
+//
+// The function takes the following parameters:
+//
+//    - clipOverlay: whether to clip this child.
+//
 func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
@@ -135,6 +140,11 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 }
 
 // SetMeasure sets whether to measure this child.
+//
+// The function takes the following parameters:
+//
+//    - measure: whether to measure this child.
+//
 func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out

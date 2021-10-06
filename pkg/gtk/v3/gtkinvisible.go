@@ -110,6 +110,11 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 }
 
 // SetScreen sets the Screen where the Invisible object will be displayed.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out

@@ -160,6 +160,11 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 //
 // This function is intended for implementors of Filter subclasses and should
 // not be called from other functions.
+//
+// The function takes the following parameters:
+//
+//    - change: how the filter changed.
+//
 func (self *Filter) Changed(change FilterChange) {
 	var _arg0 *C.GtkFilter      // out
 	var _arg1 C.GtkFilterChange // out
@@ -196,6 +201,11 @@ func (self *Filter) Strictness() FilterMatch {
 }
 
 // Match checks if the given item is matched by the filter or not.
+//
+// The function takes the following parameters:
+//
+//    - item to check.
+//
 func (self *Filter) Match(item *externglib.Object) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out

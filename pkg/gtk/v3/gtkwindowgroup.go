@@ -69,6 +69,11 @@ func NewWindowGroup() *WindowGroup {
 }
 
 // AddWindow adds a window to a WindowGroup.
+//
+// The function takes the following parameters:
+//
+//    - window to add.
+//
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
@@ -83,6 +88,11 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 
 // CurrentDeviceGrab returns the current grab widget for device, or NULL if
 // none.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
 func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GdkDevice      // out
@@ -167,6 +177,11 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 }
 
 // RemoveWindow removes a window from a WindowGroup.
+//
+// The function takes the following parameters:
+//
+//    - window to remove.
+//
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out

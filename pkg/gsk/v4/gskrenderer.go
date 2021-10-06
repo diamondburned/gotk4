@@ -151,6 +151,11 @@ func (renderer *Renderer) IsRealized() bool {
 
 // Realize creates the resources needed by the renderer to render the scene
 // graph.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface renderer will be used on.
+//
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
@@ -182,6 +187,13 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 //
 // The renderer will acquire a reference on the GskRenderNode tree while the
 // rendering is in progress.
+//
+// The function takes the following parameters:
+//
+//    - root: GskRenderNode.
+//    - region: cairo_region_t that must be redrawn or NULL for the whole
+//    window.
+//
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
@@ -207,6 +219,12 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 //
 // If you want to apply any transformations to root, you should put it into a
 // transform node and pass that node instead.
+//
+// The function takes the following parameters:
+//
+//    - root: GskRenderNode.
+//    - viewport: section to draw or NULL to use root's bounds.
+//
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out

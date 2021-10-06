@@ -220,6 +220,11 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 }
 
 // SetMarkup sets the text of the message dialog.
+//
+// The function takes the following parameters:
+//
+//    - str: string with Pango markup.
+//
 func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.char             // out

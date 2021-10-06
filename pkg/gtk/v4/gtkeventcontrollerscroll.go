@@ -178,6 +178,11 @@ func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 }
 
 // SetFlags sets the flags conditioning scroll controller behavior.
+//
+// The function takes the following parameters:
+//
+//    - flags affecting the controller behavior.
+//
 func (scroll *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _arg1 C.GtkEventControllerScrollFlags // out

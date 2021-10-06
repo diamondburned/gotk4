@@ -170,6 +170,11 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
 func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out

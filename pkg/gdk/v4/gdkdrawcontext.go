@@ -92,6 +92,11 @@ func marshalDrawContexter(p uintptr) (interface{}, error) {
 // gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the use
 // of gsk.Renderers, so application code does not need to call these functions
 // explicitly.
+//
+// The function takes the following parameters:
+//
+//    - region: minimum region that should be drawn.
+//
 func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out

@@ -178,6 +178,12 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 //
 // For the asynchronous, non-blocking, version of this function, see
 // g_buffered_input_stream_fill_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - count: number of bytes that will be read from the stream.
+//
 func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg2 *C.GCancellable         // out
@@ -215,6 +221,14 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //
 // If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object.
+//    - count: number of bytes that will be read from the stream.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback: ReadyCallback.
+//
 func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg3 *C.GCancellable         // out
@@ -245,6 +259,11 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPrior
 }
 
 // FillFinish finishes an asynchronous read.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
@@ -305,6 +324,12 @@ func (stream *BufferedInputStream) BufferSize() uint {
 
 // Peek peeks in the buffer, copying data of size count into buffer, offset
 // offset bytes.
+//
+// The function takes the following parameters:
+//
+//    - buffer: pointer to an allocated chunk of memory.
+//    - offset: #gsize.
+//
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.void                 // out
@@ -365,6 +390,11 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 // be returned, without an error.
 //
 // On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
@@ -396,6 +426,11 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 // SetBufferSize sets the size of the internal buffer of stream to size, or to
 // the size of the contents of the buffer. The buffer can never be resized
 // smaller than its current contents.
+//
+// The function takes the following parameters:
+//
+//    - size: #gsize.
+//
 func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out

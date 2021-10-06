@@ -187,6 +187,11 @@ func (linkButton *LinkButton) Visited() bool {
 
 // SetURI sets uri as the URI where the LinkButton points. As a side-effect this
 // unsets the “visited” state of the button.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//
 func (linkButton *LinkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.gchar         // out
@@ -202,6 +207,11 @@ func (linkButton *LinkButton) SetURI(uri string) {
 
 // SetVisited sets the “visited” state of the URI where the LinkButton points.
 // See gtk_link_button_get_visited() for more details.
+//
+// The function takes the following parameters:
+//
+//    - visited: new “visited” state.
+//
 func (linkButton *LinkButton) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out

@@ -109,6 +109,11 @@ func NewTextTagTable() *TextTagTable {
 //
 // tag must not be in a tag table already, and may not have the same name as an
 // already-added tag.
+//
+// The function takes the following parameters:
+//
+//    - tag: TextTag.
+//
 func (table *TextTagTable) Add(tag *TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
@@ -133,6 +138,11 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 // Foreach calls func on each tag in table, with user data data. Note that the
 // table may not be modified while iterating over it (you can’t add/remove
 // tags).
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call on each tag.
+//
 func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 	var _arg0 *C.GtkTextTagTable       // out
 	var _arg1 C.GtkTextTagTableForeach // out
@@ -166,6 +176,11 @@ func (table *TextTagTable) Size() int {
 }
 
 // Lookup: look up a named tag.
+//
+// The function takes the following parameters:
+//
+//    - name of a tag.
+//
 func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.gchar           // out
@@ -191,6 +206,11 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 // Remove a tag from the table. If a TextBuffer has table as its tag table, the
 // tag is removed from the buffer. The table’s reference to the tag is removed,
 // so the tag will end up destroyed if you don’t have a reference to it.
+//
+// The function takes the following parameters:
+//
+//    - tag: TextTag.
+//
 func (table *TextTagTable) Remove(tag *TextTag) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out

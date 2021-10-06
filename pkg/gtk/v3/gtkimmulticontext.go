@@ -61,6 +61,11 @@ func NewIMMulticontext() *IMMulticontext {
 // Deprecated: It is better to use the system-wide input method framework for
 // changing input methods. Modern desktop shells offer on-screen displays for
 // this that can triggered with a keyboard shortcut, e.g. Super-Space.
+//
+// The function takes the following parameters:
+//
+//    - menushell: MenuShell.
+//
 func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.GtkMenuShell      // out
@@ -94,6 +99,11 @@ func (context *IMMulticontext) ContextID() string {
 //
 // This causes the currently active slave of context to be replaced by the slave
 // corresponding to the new context id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: id to use.
+//
 func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out

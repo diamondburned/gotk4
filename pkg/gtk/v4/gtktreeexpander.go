@@ -172,6 +172,11 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 }
 
 // SetChild sets the content widget to display.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget, or NULL.
+//
 func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
@@ -187,6 +192,11 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 }
 
 // SetListRow sets the tree list row that this expander should manage.
+//
+// The function takes the following parameters:
+//
+//    - listRow: GtkTreeListRow, or NULL.
+//
 func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out

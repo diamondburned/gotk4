@@ -92,6 +92,12 @@ func marshalDBusObjectManagerer(p uintptr) (interface{}, error) {
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path to look up.
+//    - interfaceName d-Bus interface name to look up.
+//
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -129,6 +135,11 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 }
 
 // GetObject gets the BusObjectProxy at object_path, if any.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: object path to look up.
+//
 func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out

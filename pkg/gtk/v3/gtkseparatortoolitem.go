@@ -111,6 +111,11 @@ func (item *SeparatorToolItem) Draw() bool {
 // SetDraw: whether item is drawn as a vertical line, or just blank. Setting
 // this to FALSE along with gtk_tool_item_set_expand() is useful to create an
 // item that forces following items to the end of the toolbar.
+//
+// The function takes the following parameters:
+//
+//    - draw: whether item is drawn as a vertical line.
+//
 func (item *SeparatorToolItem) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out
 	var _arg1 C.gboolean              // out

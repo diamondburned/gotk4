@@ -522,6 +522,14 @@ func (button *Button) Released() {
 //
 // Deprecated: Access the child widget directly if you need to control its
 // alignment.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
+//    right aligned.
+//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is
+//    bottom aligned.
+//
 func (button *Button) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gfloat     // out
@@ -542,6 +550,11 @@ func (button *Button) SetAlignment(xalign, yalign float32) {
 //
 // Use this property if the button would be useless or hard to use without the
 // image.
+//
+// The function takes the following parameters:
+//
+//    - alwaysShow: TRUE if the menuitem should always show the image.
+//
 func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
@@ -562,6 +575,12 @@ func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 // of the application.
 //
 // Deprecated: Use gtk_widget_set_focus_on_click() instead.
+//
+// The function takes the following parameters:
+//
+//    - focusOnClick: whether the button grabs focus when clicked with the
+//    mouse.
+//
 func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
@@ -579,6 +598,11 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of button to the given widget. The image will be
 // displayed if the label text is NULL or if Button:always-show-image is TRUE.
 // You don’t have to call gtk_widget_show() on image yourself.
+//
+// The function takes the following parameters:
+//
+//    - image: widget to set as the image for the button, or NULL to unset.
+//
 func (button *Button) SetImage(image Widgetter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
@@ -595,6 +619,11 @@ func (button *Button) SetImage(image Widgetter) {
 
 // SetImagePosition sets the position of the image relative to the text inside
 // the button.
+//
+// The function takes the following parameters:
+//
+//    - position: position.
+//
 func (button *Button) SetImagePosition(position PositionType) {
 	var _arg0 *C.GtkButton      // out
 	var _arg1 C.GtkPositionType // out
@@ -611,6 +640,11 @@ func (button *Button) SetImagePosition(position PositionType) {
 // used to select the stock item if gtk_button_set_use_stock() is used.
 //
 // This will also clear any previously set labels.
+//
+// The function takes the following parameters:
+//
+//    - label: string.
+//
 func (button *Button) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.gchar     // out
@@ -628,6 +662,11 @@ func (button *Button) SetLabel(label string) {
 // styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default style is, as
 // one can guess, GTK_RELIEF_NORMAL. The deprecated value GTK_RELIEF_HALF
 // behaves the same as GTK_RELIEF_NORMAL.
+//
+// The function takes the following parameters:
+//
+//    - relief: gtkReliefStyle as described above.
+//
 func (button *Button) SetRelief(relief ReliefStyle) {
 	var _arg0 *C.GtkButton     // out
 	var _arg1 C.GtkReliefStyle // out
@@ -644,6 +683,11 @@ func (button *Button) SetRelief(relief ReliefStyle) {
 // select the stock item for the button.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - useStock: TRUE if the button should use a stock item.
+//
 func (button *Button) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
@@ -660,6 +704,11 @@ func (button *Button) SetUseStock(useStock bool) {
 
 // SetUseUnderline: if true, an underline in the text of the button label
 // indicates the next character should be used for the mnemonic accelerator key.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//
 func (button *Button) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out

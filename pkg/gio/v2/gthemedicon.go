@@ -137,6 +137,11 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
+//
+// The function takes the following parameters:
+//
+//    - iconname: name of icon to append to list of icons from within icon.
+//
 func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
@@ -183,6 +188,11 @@ func (icon *ThemedIcon) Names() []string {
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
+//
+// The function takes the following parameters:
+//
+//    - iconname: name of icon to prepend to list of icons from within icon.
+//
 func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out

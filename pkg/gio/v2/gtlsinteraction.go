@@ -174,6 +174,12 @@ func marshalTLSInteractioner(p uintptr) (interface{}, error) {
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - password: Password object.
+//
 func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg2 *C.GCancellable         // out
@@ -220,6 +226,13 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 // immediate cancellation.
 //
 // Certain implementations may not support immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - password: Password object.
+//    - callback will be called when the interaction completes.
+//
 func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction    // out
 	var _arg2 *C.GCancellable       // out
@@ -256,6 +269,11 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 // If the interaction is cancelled by the cancellation object, or by the user
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code.
+//
+// The function takes the following parameters:
+//
+//    - result passed to the callback.
+//
 func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
@@ -298,6 +316,12 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - password: Password object.
+//
 func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg2 *C.GCancellable         // out
@@ -349,6 +373,13 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - connection: Connection object.
+//    - flags providing more information about the request.
+//
 func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -401,6 +432,13 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - connection: Connection object.
+//    - flags providing more information about the request.
+//
 func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -444,6 +482,14 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 // may also choose to provide a certificate from elsewhere. callback will be
 // called when the operation completes. Alternatively the user may abort this
 // certificate request, which will usually abort the TLS connection.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable cancellation object.
+//    - connection: Connection object.
+//    - flags providing more information about the request.
+//    - callback will be called when the interaction completes.
+//
 func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -484,6 +530,11 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 // If the interaction is cancelled by the cancellation object, or by the user
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code.
+//
+// The function takes the following parameters:
+//
+//    - result passed to the callback.
+//
 func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out

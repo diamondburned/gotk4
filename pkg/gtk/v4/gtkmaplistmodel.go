@@ -189,6 +189,11 @@ func (self *MapListModel) HasMap() bool {
 // GTK makes no effort to ensure that map_func conforms to the item type of
 // self. It assumes that the caller knows what they are doing and the map
 // function returns items of the appropriate type.
+//
+// The function takes the following parameters:
+//
+//    - mapFunc: map function or NULL to not map items.
+//
 func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 	var _arg0 *C.GtkMapListModel       // out
 	var _arg1 C.GtkMapListModelMapFunc // out
@@ -212,6 +217,11 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 // GTK makes no effort to ensure that model conforms to the item type expected
 // by the map function. It assumes that the caller knows what they are doing and
 // have set up an appropriate map function.
+//
+// The function takes the following parameters:
+//
+//    - model to be mapped.
+//
 func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMapListModel // out
 	var _arg1 *C.GListModel      // out

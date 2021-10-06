@@ -299,6 +299,11 @@ func (self *DropDown) SelectedItem() *externglib.Object {
 // allows to search for items in the list.
 //
 // Note that gtk.DropDown:expression must be set for search to work.
+//
+// The function takes the following parameters:
+//
+//    - enableSearch: whether to enable search.
+//
 func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
@@ -318,6 +323,11 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 //
 // This is used for search in the popup. The expression must have a value type
 // of G_TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - expression: GtkExpression, or NULL.
+//
 func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
@@ -333,6 +343,11 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
+//
+// The function takes the following parameters:
+//
+//    - factory to use or NULL for none.
+//
 func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -349,6 +364,11 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 
 // SetListFactory sets the GtkListItemFactory to use for populating list items
 // in the popup.
+//
+// The function takes the following parameters:
+//
+//    - factory to use or NULL for none.
+//
 func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -364,6 +384,11 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 }
 
 // SetModel sets the GListModel to use.
+//
+// The function takes the following parameters:
+//
+//    - model to use or NULL for none.
+//
 func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
@@ -379,6 +404,11 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 }
 
 // SetSelected selects the item at the given position.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to select, or GTK_INVALID_LIST_POSITION.
+//
 func (self *DropDown) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out

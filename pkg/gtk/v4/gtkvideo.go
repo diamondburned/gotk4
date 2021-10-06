@@ -258,6 +258,11 @@ func (self *Video) MediaStream() MediaStreamer {
 
 // SetAutoplay sets whether self automatically starts playback when it becomes
 // visible or when a new file gets loaded.
+//
+// The function takes the following parameters:
+//
+//    - autoplay: whether media streams should autoplay.
+//
 func (self *Video) SetAutoplay(autoplay bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
@@ -273,6 +278,11 @@ func (self *Video) SetAutoplay(autoplay bool) {
 }
 
 // SetFile makes self play the given file.
+//
+// The function takes the following parameters:
+//
+//    - file to play.
+//
 func (self *Video) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.GFile    // out
@@ -290,6 +300,11 @@ func (self *Video) SetFile(file gio.Filer) {
 // SetFilename makes self play the given filename.
 //
 // This is a utility function that calls gtk_video_set_file(),.
+//
+// The function takes the following parameters:
+//
+//    - filename to play.
+//
 func (self *Video) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
@@ -306,6 +321,11 @@ func (self *Video) SetFilename(filename string) {
 }
 
 // SetLoop sets whether new files loaded by self should be set to loop.
+//
+// The function takes the following parameters:
+//
+//    - loop: whether media streams should loop.
+//
 func (self *Video) SetLoop(loop bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
@@ -326,6 +346,11 @@ func (self *Video) SetLoop(loop bool) {
 // manage a media stream yourself, consider using a gtk.Picture for display.
 //
 // If you want to display a file, consider using gtk.Video.SetFile() instead.
+//
+// The function takes the following parameters:
+//
+//    - stream: media stream to play or NULL to unset.
+//
 func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkVideo       // out
 	var _arg1 *C.GtkMediaStream // out
@@ -343,6 +368,11 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 // SetResource makes self play the resource at the given resource_path.
 //
 // This is a utility function that calls gtk.Video.SetFile().
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource to set.
+//
 func (self *Video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out

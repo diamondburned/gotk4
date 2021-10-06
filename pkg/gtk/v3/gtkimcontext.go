@@ -219,6 +219,13 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 // This function is used by an input method that wants to make subsitutions in
 // the existing text in response to new input. It is not useful for
 // applications.
+//
+// The function takes the following parameters:
+//
+//    - offset from cursor position in chars; a negative value means start
+//    before the cursor.
+//    - nChars: number of characters to delete.
+//
 func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gint          // out
@@ -246,6 +253,11 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 // FilterKeypress: allow an input method to internally handle key press and
 // release events. If this function returns TRUE, then no further processing
 // should be done for this key event.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
 func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkEventKey  // out
@@ -375,6 +387,12 @@ func (context *IMContext) Reset() {
 // Window in which the input appears. This window is used in order to correctly
 // position status windows, and may also be used for purposes internal to the
 // input method.
+//
+// The function takes the following parameters:
+//
+//    - window: client window. This may be NULL to indicate that the previous
+//    client window no longer exists.
+//
 func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
@@ -391,6 +409,11 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 
 // SetCursorLocation: notify the input method that a change in cursor position
 // has been made. The location is relative to the client window.
+//
+// The function takes the following parameters:
+//
+//    - area: new location.
+//
 func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
@@ -407,6 +430,14 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 // preedit string. This function is expected to be called in response to the
 // GtkIMContext::retrieve_surrounding signal, and will likely have no effect if
 // called at other times.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string
+//    should not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//
 func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // out
@@ -430,6 +461,11 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 // display feedback. If use_preedit is FALSE (default is TRUE), then the IM
 // context may use some other method to display feedback, such as displaying it
 // in a child of the root window.
+//
+// The function takes the following parameters:
+//
+//    - usePreedit: whether the IM context should use the preedit string.
+//
 func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out

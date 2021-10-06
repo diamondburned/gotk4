@@ -375,6 +375,16 @@ func (context *Context) Matrix() *Matrix {
 // multiple of these families would be used to render the string, then the
 // returned fonts would be a composite of the metrics for the fonts loaded for
 // the individual families.
+//
+// The function takes the following parameters:
+//
+//    - desc: PangoFontDescription structure. NULL means that the font
+//    description from the context will be used.
+//    - language tag used to determine which script to get the metrics for.
+//    NULL means that the language tag from the context will be used. If no
+//    language tag is set on the context, metrics for the default language (as
+//    determined by pango.Language.GetDefault will be returned.
+//
 func (context *Context) Metrics(desc *FontDescription, language *Language) *FontMetrics {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -493,6 +503,11 @@ func (context *Context) ListFamilies() []FontFamilier {
 
 // LoadFont loads the font in one of the fontmaps in the context that is the
 // closest match for desc.
+//
+// The function takes the following parameters:
+//
+//    - desc: PangoFontDescription describing the font to load.
+//
 func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -525,6 +540,12 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 
 // LoadFontset: load a set of fonts in the context that can be used to render a
 // font matching desc.
+//
+// The function takes the following parameters:
+//
+//    - desc: PangoFontDescription describing the fonts to load.
+//    - language: PangoLanguage the fonts will be used for.
+//
 func (context *Context) LoadFontset(desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -566,6 +587,11 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 // algorithm. A value of PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is
 // used only for paragraphs that do not contain any strong characters
 // themselves.
+//
+// The function takes the following parameters:
+//
+//    - direction: new base direction.
+//
 func (context *Context) SetBaseDir(direction Direction) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 C.PangoDirection // out
@@ -581,6 +607,11 @@ func (context *Context) SetBaseDir(direction Direction) {
 // SetBaseGravity sets the base gravity for the context.
 //
 // The base gravity is used in laying vertical text out.
+//
+// The function takes the following parameters:
+//
+//    - gravity: new base gravity.
+//
 func (context *Context) SetBaseGravity(gravity Gravity) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.PangoGravity  // out
@@ -594,6 +625,11 @@ func (context *Context) SetBaseGravity(gravity Gravity) {
 }
 
 // SetFontDescription: set the default font description for the context.
+//
+// The function takes the following parameters:
+//
+//    - desc: new pango font description.
+//
 func (context *Context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -611,6 +647,11 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 //
 // This is only for internal use by Pango backends, a PangoContext obtained via
 // one of the recommended methods should already have a suitable font map.
+//
+// The function takes the following parameters:
+//
+//    - fontMap: PangoFontMap to set.
+//
 func (context *Context) SetFontMap(fontMap FontMapper) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
@@ -628,6 +669,11 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 // The gravity hint is used in laying vertical text out, and is only relevant if
 // gravity of the context as returned by pango.Context.GetGravity() is set to
 // PANGO_GRAVITY_EAST or PANGO_GRAVITY_WEST.
+//
+// The function takes the following parameters:
+//
+//    - hint: new gravity hint.
+//
 func (context *Context) SetGravityHint(hint GravityHint) {
 	var _arg0 *C.PangoContext    // out
 	var _arg1 C.PangoGravityHint // out
@@ -644,6 +690,11 @@ func (context *Context) SetGravityHint(hint GravityHint) {
 //
 // The default language for the locale of the running process can be found using
 // pango.Language.GetDefault.
+//
+// The function takes the following parameters:
+//
+//    - language: new language tag.
+//
 func (context *Context) SetLanguage(language *Language) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 *C.PangoLanguage // out
@@ -664,6 +715,12 @@ func (context *Context) SetLanguage(language *Language) {
 // of the matrix. So, they don't scale with the matrix, though they may change
 // slightly for different matrices, depending on how the text is fit to the
 // pixel grid.
+//
+// The function takes the following parameters:
+//
+//    - matrix: PangoMatrix, or NULL to unset any existing matrix. (No matrix
+//    set is the same as setting the identity matrix.).
+//
 func (context *Context) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoMatrix  // out
@@ -685,6 +742,11 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 //
 // The default value is to round glyph positions, to remain compatible with
 // previous Pango behavior.
+//
+// The function takes the following parameters:
+//
+//    - roundPositions: whether to round glyph positions.
+//
 func (context *Context) SetRoundGlyphPositions(roundPositions bool) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.gboolean      // out

@@ -142,6 +142,11 @@ func (treeModelSort *TreeModelSort) ClearCache() {
 // ConvertChildIterToIter sets sort_iter to point to the row in tree_model_sort
 // that corresponds to the row pointed at by child_iter. If sort_iter was not
 // set, FALSE is returned. Note: a boolean is only returned since 2.14.
+//
+// The function takes the following parameters:
+//
+//    - childIter: valid TreeIter pointing to a row on the child model.
+//
 func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 C.GtkTreeIter       // in
@@ -170,6 +175,11 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 // tree_model_sort. That is, child_path points to a path in the child model. The
 // returned path will point to the same row in the sorted model. If child_path
 // isn’t a valid path on the child model, then NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - childPath to convert.
+//
 func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
@@ -199,6 +209,11 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 
 // ConvertIterToChildIter sets child_iter to point to the row pointed to by
 // sorted_iter.
+//
+// The function takes the following parameters:
+//
+//    - sortedIter: valid TreeIter pointing to a row on tree_model_sort.
+//
 func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 C.GtkTreeIter       // in
@@ -223,6 +238,11 @@ func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter)
 // tree_model_sort. The returned path will point to the same location in the
 // model not being sorted. If sorted_path does not point to a location in the
 // child model, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - sortedPath to convert.
+//
 func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreePath      // out
@@ -283,6 +303,11 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 // testing > purposes.
 //
 // Checks if the given iter is a valid iter for this TreeModelSort.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter.
+//
 func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _arg1 *C.GtkTreeIter      // out

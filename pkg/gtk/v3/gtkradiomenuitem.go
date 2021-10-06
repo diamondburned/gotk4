@@ -310,6 +310,12 @@ func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
 //          gtk_radio_menu_item_join_group (radio_item, last_item);
 //          last_item = radio_item;
 //        }.
+//
+// The function takes the following parameters:
+//
+//    - groupSource whose group we are joining, or NULL to remove the
+//    radio_menu_item from its current group.
+//
 func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out
@@ -325,6 +331,11 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 }
 
 // SetGroup sets the group of a radio menu item, or changes it.
+//
+// The function takes the following parameters:
+//
+//    - group: new group, or NULL.
+//
 func (radioMenuItem *RadioMenuItem) SetGroup(group []RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GSList           // out

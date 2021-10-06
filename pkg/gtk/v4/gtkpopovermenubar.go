@@ -102,6 +102,12 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 //
 // For this to work, the menu model of bar must have an item with a custom
 // attribute that matches id.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to add.
+//    - id: ID to insert child at.
+//
 func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
@@ -158,6 +164,11 @@ func (bar *PopoverMenuBar) MenuModel() gio.MenuModeller {
 
 // RemoveChild removes a widget that has previously been added with
 // gtk_popover_menu_bar_add_child().
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
@@ -180,6 +191,11 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 }
 
 // SetMenuModel sets a menu model from which bar should take its contents.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel, or NULL.
+//
 func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeller) {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GMenuModel        // out

@@ -151,6 +151,12 @@ func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 // style class named level-name will be applied when rendering the level bar
 // fill. If another offset marker named name exists, its value will be replaced
 // by value.
+//
+// The function takes the following parameters:
+//
+//    - name of the new offset.
+//    - value for the new offset.
+//
 func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
@@ -239,6 +245,11 @@ func (self *LevelBar) Mode() LevelBarMode {
 
 // OffsetValue fetches the value specified for the offset marker name in self,
 // returning TRUE in case an offset named name was found.
+//
+// The function takes the following parameters:
+//
+//    - name of an offset in the bar.
+//
 func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
@@ -285,6 +296,11 @@ func (self *LevelBar) Value() float64 {
 
 // RemoveOffsetValue removes an offset marker previously added with
 // gtk_level_bar_add_offset_value().
+//
+// The function takes the following parameters:
+//
+//    - name of an offset in the bar.
+//
 func (self *LevelBar) RemoveOffsetValue(name string) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
@@ -301,6 +317,11 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 }
 
 // SetInverted sets the value of the LevelBar:inverted property.
+//
+// The function takes the following parameters:
+//
+//    - inverted: TRUE to invert the level bar.
+//
 func (self *LevelBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gboolean     // out
@@ -319,6 +340,11 @@ func (self *LevelBar) SetInverted(inverted bool) {
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - value: positive value.
+//
 func (self *LevelBar) SetMaxValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gdouble      // out
@@ -335,6 +361,11 @@ func (self *LevelBar) SetMaxValue(value float64) {
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
+//
+// The function takes the following parameters:
+//
+//    - value: positive value.
+//
 func (self *LevelBar) SetMinValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gdouble      // out
@@ -348,6 +379,11 @@ func (self *LevelBar) SetMinValue(value float64) {
 }
 
 // SetMode sets the value of the LevelBar:mode property.
+//
+// The function takes the following parameters:
+//
+//    - mode: LevelBarMode.
+//
 func (self *LevelBar) SetMode(mode LevelBarMode) {
 	var _arg0 *C.GtkLevelBar    // out
 	var _arg1 C.GtkLevelBarMode // out
@@ -361,6 +397,12 @@ func (self *LevelBar) SetMode(mode LevelBarMode) {
 }
 
 // SetValue sets the value of the LevelBar:value property.
+//
+// The function takes the following parameters:
+//
+//    - value in the interval between LevelBar:min-value and
+//    LevelBar:max-value.
+//
 func (self *LevelBar) SetValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 C.gdouble      // out

@@ -99,6 +99,11 @@ func (spinner *Spinner) Spinning() bool {
 }
 
 // SetSpinning sets the activity of the spinner.
+//
+// The function takes the following parameters:
+//
+//    - spinning: whether the spinner should be spinning.
+//
 func (spinner *Spinner) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out
 	var _arg1 C.gboolean    // out

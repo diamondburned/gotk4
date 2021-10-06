@@ -223,6 +223,11 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 // SetHAdjustment sets the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
+//
+// The function takes the following parameters:
+//
+//    - adjustment: Adjustment.
+//
 func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
@@ -238,6 +243,11 @@ func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 }
 
 // SetShadowType sets the shadow type of the viewport.
+//
+// The function takes the following parameters:
+//
+//    - typ: new shadow type.
+//
 func (viewport *Viewport) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkViewport  // out
 	var _arg1 C.GtkShadowType // out
@@ -253,6 +263,11 @@ func (viewport *Viewport) SetShadowType(typ ShadowType) {
 // SetVAdjustment sets the vertical adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
+//
+// The function takes the following parameters:
+//
+//    - adjustment: Adjustment.
+//
 func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out

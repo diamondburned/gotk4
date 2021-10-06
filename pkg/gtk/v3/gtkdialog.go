@@ -357,6 +357,12 @@ func NewDialog() *Dialog {
 // dialog when the widget is activated. The widget is appended to the end of the
 // dialog’s action area. If you want to add a non-activatable widget, simply
 // pack it into the action_area field of the Dialog struct.
+//
+// The function takes the following parameters:
+//
+//    - child: activatable widget.
+//    - responseId: response ID for child.
+//
 func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
@@ -376,6 +382,12 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 // clicking the button will emit the Dialog::response signal with the given
 // response_id. The button is appended to the end of the dialog’s action area.
 // The button widget is returned, but usually you don’t need it.
+//
+// The function takes the following parameters:
+//
+//    - buttonText: text of button.
+//    - responseId: response ID for the button.
+//
 func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.gchar     // out
@@ -468,6 +480,11 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
+//
+// The function takes the following parameters:
+//
+//    - widget in the action area of dialog.
+//
 func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
@@ -489,6 +506,11 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID used by the dialog widget.
+//
 func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
@@ -523,6 +545,11 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 // to indicate that the user has responded to the dialog in some way; typically
 // either you or gtk_dialog_run() will be monitoring the ::response signal and
 // take appropriate action.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
 func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
@@ -603,6 +630,11 @@ func (dialog *Dialog) Run() int {
 // This function is for use by language bindings.
 //
 // Deprecated: Deprecated.
+//
+// The function takes the following parameters:
+//
+//    - newOrder: array of response ids of dialog’s buttons.
+//
 func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg2 *C.gint      // out
@@ -627,6 +659,11 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
 // given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
 func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
@@ -642,6 +679,12 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
 // each widget in the dialog’s action area with the given response_id. A
 // convenient way to sensitize/desensitize dialog buttons.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//    - setting: TRUE for sensitive.
+//
 func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out

@@ -161,6 +161,11 @@ func (message *SocketControlMessage) Size() uint {
 //
 // data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
+//
+// The function takes the following parameters:
+//
+//    - data: buffer to write data to.
+//
 func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out

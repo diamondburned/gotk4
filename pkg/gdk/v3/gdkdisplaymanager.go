@@ -116,6 +116,11 @@ func (manager *DisplayManager) ListDisplays() []Display {
 }
 
 // OpenDisplay opens a display.
+//
+// The function takes the following parameters:
+//
+//    - name of the display to open.
+//
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.gchar             // out
@@ -139,6 +144,11 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 }
 
 // SetDefaultDisplay sets display as the default display.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//
 func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out

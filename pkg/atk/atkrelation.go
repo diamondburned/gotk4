@@ -127,6 +127,11 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
+//
+// The function takes the following parameters:
+//
+//    - target: Object.
+//
 func (relation *Relation) AddTarget(target *ObjectClass) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
@@ -158,6 +163,11 @@ func (relation *Relation) RelationType() RelationType {
 
 // RemoveTarget: remove the specified AtkObject from the target for the
 // relation.
+//
+// The function takes the following parameters:
+//
+//    - target: Object.
+//
 func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out

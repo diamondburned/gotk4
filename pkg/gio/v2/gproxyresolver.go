@@ -144,6 +144,12 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 // direct:// is used when no proxy is needed. Direct connection should not be
 // attempted unless it is part of the returned array of proxies.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - uri: URI representing the destination to connect to.
+//
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg2 *C.GCancellable   // out
@@ -192,6 +198,13 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
 // more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - uri: URI representing the destination to connect to.
+//    - callback to call after resolution completes.
+//
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
 	var _arg2 *C.GCancellable       // out
@@ -222,6 +235,11 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
 // for more details.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out

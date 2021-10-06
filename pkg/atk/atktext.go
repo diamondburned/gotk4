@@ -630,6 +630,12 @@ func marshalTexter(p uintptr) (interface{}, error) {
 }
 
 // AddSelection adds a selection bounded by the specified offsets.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: starting character offset of the selected region.
+//    - endOffset: offset of the first character after the selected region.
+//
 func (text *Text) AddSelection(startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -655,6 +661,15 @@ func (text *Text) AddSelection(startOffset, endOffset int) bool {
 }
 
 // BoundedRanges: get the ranges of text in the specified bounding box.
+//
+// The function takes the following parameters:
+//
+//    - rect: atkTextRectangle giving the dimensions of the bounding box.
+//    - coordType: specify whether coordinates are relative to the screen or
+//    widget window.
+//    - xClipType: specify the horizontal clip type.
+//    - yClipType: specify the vertical clip type.
+//
 func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
 	var _arg0 *C.AtkText          // out
 	var _arg1 *C.AtkTextRectangle // out
@@ -720,6 +735,11 @@ func (text *Text) CaretOffset() int {
 }
 
 // CharacterAtOffset gets the specified text.
+//
+// The function takes the following parameters:
+//
+//    - offset: character offset within text.
+//
 func (text *Text) CharacterAtOffset(offset int) uint32 {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -761,6 +781,14 @@ func (text *Text) CharacterCount() int {
 //
 // Get the bounding box containing the glyph representing the character at a
 // particular text offset.
+//
+// The function takes the following parameters:
+//
+//    - offset of the text character for which bounding information is
+//    required.
+//    - coords: specify whether coordinates are relative to the screen or
+//    widget window.
+//
 func (text *Text) CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int) {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -812,6 +840,14 @@ func (text *Text) NSelections() int {
 // OffsetAtPoint gets the offset of the character located at coordinates x and
 // y. x and y are interpreted as being relative to the screen or this widget's
 // window depending on coords.
+//
+// The function takes the following parameters:
+//
+//    - x: screen x-position of character.
+//    - y: screen y-position of character.
+//    - coords: specify whether coordinates are relative to the screen or
+//    widget window.
+//
 func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -841,6 +877,16 @@ func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 //
 // If the extents can not be obtained (e.g. or missing support), the rectangle
 // fields are set to -1.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: offset of the first text character for which boundary
+//    information is required.
+//    - endOffset: offset of the text character after the last character for
+//    which boundary information is required.
+//    - coordType: specify whether coordinates are relative to the screen or
+//    widget window.
+//
 func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) TextRectangle {
 	var _arg0 *C.AtkText         // out
 	var _arg1 C.gint             // out
@@ -867,6 +913,15 @@ func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) 
 }
 
 // Selection gets the text from the specified selection.
+//
+// The function takes the following parameters:
+//
+//    - selectionNum: selection number. The selected regions are assigned
+//    numbers that correspond to how far the region is from the start of the
+//    text. The selected region closest to the beginning of the text region is
+//    assigned the number 0, etc. Note that adding, moving or deleting a
+//    selected region can change the numbering.
+//
 func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -921,6 +976,12 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 // If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is from
 // the start of the paragraph at or before the offset to the start of the
 // following paragraph after the offset.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - granularity: TextGranularity.
+//
 func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText           // out
 	var _arg1 C.gint               // out
@@ -953,6 +1014,13 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 }
 
 // Text gets the specified text.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: starting character offset within text.
+//    - endOffset: ending character offset within text, or -1 for the end of
+//    the string.
+//
 func (text *Text) Text(startOffset, endOffset int) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -979,6 +1047,12 @@ func (text *Text) Text(startOffset, endOffset int) string {
 // TextAfterOffset gets the specified text.
 //
 // Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
 func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -1035,6 +1109,12 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 //
 // Deprecated: This method is deprecated since ATK version 2.9.4. Please use
 // atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
 func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -1067,6 +1147,12 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 // TextBeforeOffset gets the specified text.
 //
 // Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
 func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -1097,6 +1183,15 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 }
 
 // RemoveSelection removes the specified selection.
+//
+// The function takes the following parameters:
+//
+//    - selectionNum: selection number. The selected regions are assigned
+//    numbers that correspond to how far the region is from the start of the
+//    text. The selected region closest to the beginning of the text region is
+//    assigned the number 0, etc. Note that adding, moving or deleting a
+//    selected region can change the numbering.
+//
 func (text *Text) RemoveSelection(selectionNum int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -1120,6 +1215,13 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 
 // ScrollSubstringTo makes a substring of text visible on the screen by
 // scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset in the text.
+//    - endOffset: end offset in the text, or -1 for the end of the text.
+//    - typ: specify where the object should be made visible.
+//
 func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
 	var _arg0 *C.AtkText      // out
 	var _arg1 C.gint          // out
@@ -1149,6 +1251,16 @@ func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) 
 
 // ScrollSubstringToPoint: move the top-left of a substring of text to a given
 // position of the screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset in the text.
+//    - endOffset: end offset in the text, or -1 for the end of the text.
+//    - coords: specify whether coordinates are relative to the screen or to
+//    the parent object.
+//    - x: x-position where to scroll to.
+//    - y: y-position where to scroll to.
+//
 func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -1199,6 +1311,11 @@ func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords Coor
 // method should not trigger one either. If the application does not have a
 // caret motion or focus navigation operation, this method should try to scroll
 // the new caret position into view while minimizing unnecessary scroll motion.
+//
+// The function takes the following parameters:
+//
+//    - offset: character offset of the new caret position.
+//
 func (text *Text) SetCaretOffset(offset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -1221,6 +1338,18 @@ func (text *Text) SetCaretOffset(offset int) bool {
 }
 
 // SetSelection changes the start and end offset of the specified selection.
+//
+// The function takes the following parameters:
+//
+//    - selectionNum: selection number. The selected regions are assigned
+//    numbers that correspond to how far the region is from the start of the
+//    text. The selected region closest to the beginning of the text region is
+//    assigned the number 0, etc. Note that adding, moving or deleting a
+//    selected region can change the numbering.
+//    - startOffset: new starting character offset of the selection.
+//    - endOffset: new end position of (e.g. offset immediately past) the
+//    selection.
+//
 func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out

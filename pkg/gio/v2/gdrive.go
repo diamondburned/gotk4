@@ -348,6 +348,13 @@ func (drive *Drive) CanStop() bool {
 // g_drive_eject_finish() to obtain the result of the operation.
 //
 // Deprecated: Use g_drive_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - callback or NULL.
+//
 func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg2 *C.GCancellable       // out
@@ -377,6 +384,11 @@ func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback
 // EjectFinish finishes ejecting a drive.
 //
 // Deprecated: Use g_drive_eject_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -401,6 +413,14 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 // EjectWithOperation ejects a drive. This is an asynchronous operation, and is
 // finished by calling g_drive_eject_with_operation_finish() with the drive and
 // Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -435,6 +455,11 @@ func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 // EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
 // during the operation, error will be set to contain the errors and FALSE will
 // be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -519,6 +544,11 @@ func (drive *Drive) Icon() Iconner {
 
 // Identifier gets the identifier of the given kind for drive. The only
 // identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+//
+// The function takes the following parameters:
+//
+//    - kind of identifier to return.
+//
 func (drive *Drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
@@ -767,6 +797,12 @@ func (drive *Drive) IsRemovable() bool {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_drive_poll_for_media_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - callback or NULL.
+//
 func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 *C.GCancellable       // out
@@ -792,6 +828,11 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 
 // PollForMediaFinish finishes an operation started with
 // g_drive_poll_for_media() on a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -817,6 +858,14 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the start operation.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -849,6 +898,11 @@ func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOpera
 }
 
 // StartFinish finishes starting a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -874,6 +928,14 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 //
 // When the operation is finished, callback will be called. You can then call
 // g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for stopping.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -906,6 +968,11 @@ func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOper
 }
 
 // StopFinish finishes stopping a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out

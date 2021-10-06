@@ -238,6 +238,11 @@ func marshalTabler(p uintptr) (interface{}, error) {
 }
 
 // AddColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
 func (table *Table) AddColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -260,6 +265,11 @@ func (table *Table) AddColumnSelection(column int) bool {
 }
 
 // AddRowSelection adds the specified row to the selection.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
 func (table *Table) AddRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -303,6 +313,11 @@ func (table *Table) Caption() *ObjectClass {
 // ColumnAtIndex gets a #gint representing the column at the specified index_.
 //
 // Deprecated: Since 2.12.
+//
+// The function takes the following parameters:
+//
+//    - index_ representing an index in table.
+//
 func (table *Table) ColumnAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -324,6 +339,11 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 
 // ColumnDescription gets the description text of the specified column in the
 // table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
 func (table *Table) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -345,6 +365,12 @@ func (table *Table) ColumnDescription(column int) string {
 
 // ColumnExtentAt gets the number of columns occupied by the accessible object
 // at the specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
 func (table *Table) ColumnExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -369,6 +395,11 @@ func (table *Table) ColumnExtentAt(row, column int) int {
 
 // ColumnHeader gets the column header of a specified column in an accessible
 // table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in the table.
+//
 func (table *Table) ColumnHeader(column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -394,6 +425,12 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 //
 // Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
 // that represents the cell at (row, column).
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
 func (table *Table) IndexAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -453,6 +490,11 @@ func (table *Table) NRows() int {
 // RowAtIndex gets a #gint representing the row at the specified index_.
 //
 // Deprecated: since 2.12.
+//
+// The function takes the following parameters:
+//
+//    - index_ representing an index in table.
+//
 func (table *Table) RowAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -473,6 +515,11 @@ func (table *Table) RowAtIndex(index_ int) int {
 }
 
 // RowDescription gets the description text of the specified row in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
 func (table *Table) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -496,6 +543,12 @@ func (table *Table) RowDescription(row int) string {
 
 // RowExtentAt gets the number of rows occupied by the accessible object at a
 // specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
 func (table *Table) RowExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -519,6 +572,11 @@ func (table *Table) RowExtentAt(row, column int) int {
 }
 
 // RowHeader gets the row header of a specified row in an accessible table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in the table.
+//
 func (table *Table) RowHeader(row int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -543,6 +601,11 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 // SelectedColumns gets the selected columns of the table by initializing
 // **selected with the selected column numbers. This array should be freed by
 // the caller.
+//
+// The function takes the following parameters:
+//
+//    - selected that is to contain the selected columns numbers.
+//
 func (table *Table) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
@@ -564,6 +627,11 @@ func (table *Table) SelectedColumns(selected **int) int {
 
 // SelectedRows gets the selected rows of the table by initializing **selected
 // with the selected row numbers. This array should be freed by the caller.
+//
+// The function takes the following parameters:
+//
+//    - selected that is to contain the selected row numbers.
+//
 func (table *Table) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
@@ -602,6 +670,11 @@ func (table *Table) Summary() *ObjectClass {
 
 // IsColumnSelected gets a boolean value indicating whether the specified column
 // is selected.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
 func (table *Table) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -625,6 +698,11 @@ func (table *Table) IsColumnSelected(column int) bool {
 
 // IsRowSelected gets a boolean value indicating whether the specified row is
 // selected.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
 func (table *Table) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -648,6 +726,12 @@ func (table *Table) IsRowSelected(row int) bool {
 
 // IsSelected gets a boolean value indicating whether the accessible object at
 // the specified row and column is selected.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
 func (table *Table) IsSelected(row, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -674,6 +758,12 @@ func (table *Table) IsSelected(row, column int) bool {
 
 // RefAt: get a reference to the table cell at row, column. This cell should
 // implement the interface TableCell.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
 func (table *Table) RefAt(row, column int) *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -697,6 +787,11 @@ func (table *Table) RefAt(row, column int) *ObjectClass {
 }
 
 // RemoveColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
 func (table *Table) RemoveColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -719,6 +814,11 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 }
 
 // RemoveRowSelection removes the specified row from the selection.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
 func (table *Table) RemoveRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -741,6 +841,11 @@ func (table *Table) RemoveRowSelection(row int) bool {
 }
 
 // SetCaption sets the caption for the table.
+//
+// The function takes the following parameters:
+//
+//    - caption representing the caption to set for table.
+//
 func (table *Table) SetCaption(caption *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
@@ -755,6 +860,13 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 
 // SetColumnDescription sets the description text for the specified column of
 // the table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//    - description representing the description text to set for the specified
+//    column of the table.
+//
 func (table *Table) SetColumnDescription(column int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -772,6 +884,12 @@ func (table *Table) SetColumnDescription(column int, description string) {
 }
 
 // SetColumnHeader sets the specified column header to header.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//    - header: Table.
+//
 func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -788,6 +906,13 @@ func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
 }
 
 // SetRowDescription sets the description text for the specified row of table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - description representing the description text to set for the specified
+//    row of table.
+//
 func (table *Table) SetRowDescription(row int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -805,6 +930,12 @@ func (table *Table) SetRowDescription(row int, description string) {
 }
 
 // SetRowHeader sets the specified row header to header.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - header: Table.
+//
 func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -821,6 +952,11 @@ func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 }
 
 // SetSummary sets the summary description of the table.
+//
+// The function takes the following parameters:
+//
+//    - accessible representing the summary description to set for table.
+//
 func (table *Table) SetSummary(accessible *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out

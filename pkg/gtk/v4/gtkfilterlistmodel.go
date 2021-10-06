@@ -178,6 +178,11 @@ func (self *FilterListModel) Pending() uint {
 }
 
 // SetFilter sets the filter used to filter items.
+//
+// The function takes the following parameters:
+//
+//    - filter to use or NULL to not filter items.
+//
 func (self *FilterListModel) SetFilter(filter *Filter) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GtkFilter          // out
@@ -208,6 +213,11 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 //
 // See gtk.FilterListModel.GetPending() for progress information about an
 // ongoing incremental filtering operation.
+//
+// The function takes the following parameters:
+//
+//    - incremental: TRUE to enable incremental filtering.
+//
 func (self *FilterListModel) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 C.gboolean            // out
@@ -227,6 +237,11 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 // Note that GTK makes no effort to ensure that model conforms to the item type
 // of self. It assumes that the caller knows what they are doing and have set up
 // an appropriate filter to ensure that item types match.
+//
+// The function takes the following parameters:
+//
+//    - model to be filtered.
+//
 func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GListModel         // out

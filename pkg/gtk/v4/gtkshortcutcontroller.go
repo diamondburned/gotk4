@@ -132,6 +132,11 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 //
 // If this controller uses an external shortcut list, this function does
 // nothing.
+//
+// The function takes the following parameters:
+//
+//    - shortcut: GtkShortcut.
+//
 func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
@@ -185,6 +190,11 @@ func (self *ShortcutController) Scope() ShortcutScope {
 //
 // If shortcut had not been added to controller or this controller uses an
 // external shortcut list, this function does nothing.
+//
+// The function takes the following parameters:
+//
+//    - shortcut: GtkShortcut.
+//
 func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
@@ -211,6 +221,11 @@ func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 // This value is only relevant for local shortcut controllers. Global and
 // managed shortcut controllers will have their shortcuts activated from other
 // places which have their own modifiers for activating mnemonics.
+//
+// The function takes the following parameters:
+//
+//    - modifiers: new mnemonics_modifiers to use.
+//
 func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GdkModifierType        // out
@@ -231,6 +246,11 @@ func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType
 //
 // With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
 // widget has focus.
+//
+// The function takes the following parameters:
+//
+//    - scope: new scope to use.
+//
 func (self *ShortcutController) SetScope(scope ShortcutScope) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GtkShortcutScope       // out

@@ -157,6 +157,12 @@ func marshalTreeDragDester(p uintptr) (interface{}, error) {
 // tree so that inserting before it is impossible, FALSE will be returned. Also,
 // FALSE may be returned if the new row is not created for some model-specific
 // reason. Should robustly handle a dest no longer found in the model!.
+//
+// The function takes the following parameters:
+//
+//    - dest: row to drop in front of.
+//    - selectionData: data to drop.
+//
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
@@ -186,6 +192,12 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *Se
 // selection_data at that location. dest_path does not have to exist; the return
 // value will almost certainly be FALSE if the parent of dest_path doesn’t
 // exist, though.
+//
+// The function takes the following parameters:
+//
+//    - destPath: destination row.
+//    - selectionData: data being dragged.
+//
 func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
@@ -268,6 +280,11 @@ func marshalTreeDragSourcer(p uintptr) (interface{}, error) {
 // was moved somewhere else via drag-and-drop. Returns FALSE if the deletion
 // fails because path no longer exists, or for some model-specific reason.
 // Should robustly handle a path no longer found in the model!.
+//
+// The function takes the following parameters:
+//
+//    - path: row that was being dragged.
+//
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
@@ -293,6 +310,12 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 // representation of the row at path. selection_data->target gives the required
 // type of the data. Should robustly handle a path no longer found in the
 // model!.
+//
+// The function takes the following parameters:
+//
+//    - path: row that was dragged.
+//    - selectionData to fill with data from the dragged row.
+//
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
@@ -320,6 +343,11 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *Sel
 // RowDraggable asks the TreeDragSource whether a particular row can be used as
 // the source of a DND operation. If the source doesn’t implement this
 // interface, the row is assumed draggable.
+//
+// The function takes the following parameters:
+//
+//    - path: row on which user is initiating a drag.
+//
 func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out

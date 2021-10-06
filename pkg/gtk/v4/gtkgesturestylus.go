@@ -66,6 +66,11 @@ func NewGestureStylus() *GestureStylus {
 // This function must be called from the handler of one of the
 // gtk.GestureStylus::down, gtk.GestureStylus::motion, gtk.GestureStylus::up or
 // gtk.GestureStylus::proximity signals.
+//
+// The function takes the following parameters:
+//
+//    - axis: requested device axis.
+//
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 C.GdkAxisUse        // out

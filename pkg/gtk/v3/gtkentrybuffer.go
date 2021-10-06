@@ -113,6 +113,12 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 // values.
 //
 // Note that the positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - position at which to delete text.
+//    - nChars: number of characters to delete.
+//
 func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
@@ -136,6 +142,12 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 }
 
 // EmitDeletedText: used when subclassing EntryBuffer.
+//
+// The function takes the following parameters:
+//
+//    - position at which text was deleted.
+//    - nChars: number of characters deleted.
+//
 func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
@@ -152,6 +164,13 @@ func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 }
 
 // EmitInsertedText: used when subclassing EntryBuffer.
+//
+// The function takes the following parameters:
+//
+//    - position at which text was inserted.
+//    - chars: text that was inserted.
+//    - nChars: number of characters inserted.
+//
 func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
@@ -252,6 +271,13 @@ func (buffer *EntryBuffer) Text() string {
 // maximum buffer text length is exceeded, then they are coerced to sane values.
 //
 // Note that the position and length are in characters, not in bytes.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert text.
+//    - chars: text to insert into the buffer.
+//    - nChars: length of the text in characters, or -1.
+//
 func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.guint           // out
@@ -281,6 +307,13 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 // SetMaxLength sets the maximum allowed length of the contents of the buffer.
 // If the current contents are longer than the given length, then they will be
 // truncated to fit.
+//
+// The function takes the following parameters:
+//
+//    - maxLength: maximum length of the entry buffer, or 0 for no maximum.
+//    (other than the maximum length of entries.) The value passed in will be
+//    clamped to the range 0-65536.
+//
 func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 C.gint            // out
@@ -299,6 +332,12 @@ func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 // gtk_entry_buffer_insert_text().
 //
 // Note that n_chars is in characters, not in bytes.
+//
+// The function takes the following parameters:
+//
+//    - chars: new text.
+//    - nChars: number of characters in text, or -1.
+//
 func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 *C.gchar          // out

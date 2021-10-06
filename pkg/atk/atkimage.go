@@ -134,6 +134,12 @@ func (image *Image) ImageLocale() string {
 //
 // If the position can not be obtained (e.g. missing support), x and y are set
 // to -1.
+//
+// The function takes the following parameters:
+//
+//    - coordType specifies whether the coordinates are relative to the screen
+//    or to the components top level window.
+//
 func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 	var _arg0 *C.AtkImage    // out
 	var _arg1 C.gint         // in
@@ -182,6 +188,11 @@ func (image *Image) ImageSize() (width int, height int) {
 }
 
 // SetImageDescription sets the textual description for this image.
+//
+// The function takes the following parameters:
+//
+//    - description: string description to set for image.
+//
 func (image *Image) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out
 	var _arg1 *C.gchar    // out

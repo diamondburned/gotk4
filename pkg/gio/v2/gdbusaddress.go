@@ -34,15 +34,15 @@ import "C"
 // For instance, if string is /run/bus-for-:0, this function would return
 // /run/bus-for-3A0, which could be used in a D-Bus address like
 // unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0.
-func DBusAddressEscapeValue(_string string) string {
+func DBusAddressEscapeValue(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_address_escape_value(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 
@@ -229,15 +229,15 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 //
 // This doesn't check if string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
-func DBusIsAddress(_string string) bool {
+func DBusIsAddress(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_address(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _ok bool // out
 
@@ -252,15 +252,15 @@ func DBusIsAddress(_string string) bool {
 // library supports the transports in string and that key/value pairs for each
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusIsSupportedAddress(_string string) error {
+func DBusIsSupportedAddress(str string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_is_supported_address(_arg1, &_cerr)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _goerr error // out
 

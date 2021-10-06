@@ -218,6 +218,11 @@ func (frame *Frame) LabelWidget() Widgetter {
 }
 
 // SetChild sets the child widget of frame.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (frame *Frame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
@@ -234,6 +239,11 @@ func (frame *Frame) SetChild(child Widgetter) {
 
 // SetLabel creates a new GtkLabel with the label and sets it as the frame's
 // label widget.
+//
+// The function takes the following parameters:
+//
+//    - label: text to use as the label of the frame.
+//
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 *C.char     // out
@@ -252,6 +262,12 @@ func (frame *Frame) SetLabel(label string) {
 // SetLabelAlign sets the X alignment of the frame widget’s label.
 //
 // The default value for a newly created frame is 0.0.
+//
+// The function takes the following parameters:
+//
+//    - xalign: position of the label along the top edge of the widget. A value
+//    of 0.0 represents left alignment; 1.0 represents right alignment.
+//
 func (frame *Frame) SetLabelAlign(xalign float32) {
 	var _arg0 *C.GtkFrame // out
 	var _arg1 C.float     // out
@@ -268,6 +284,11 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 //
 // This is the widget that will appear embedded in the top edge of the frame as
 // a title.
+//
+// The function takes the following parameters:
+//
+//    - labelWidget: new label widget.
+//
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out

@@ -109,6 +109,11 @@ func marshalRenderNoder(p uintptr) (interface{}, error) {
 //
 // For advanced nodes that cannot be supported using Cairo, in particular for
 // nodes doing 3D operations, this function may fail.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context to draw to.
+//
 func (node *RenderNode) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
@@ -195,6 +200,11 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 //
 // It is mostly intended for use inside a debugger to quickly dump a render node
 // to a file for later inspection.
+//
+// The function takes the following parameters:
+//
+//    - filename: file to save it to.
+//
 func (node *RenderNode) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out

@@ -233,6 +233,11 @@ func (other *PrintSettings) Copy() *PrintSettings {
 }
 
 // Foreach calls func for each key-value pair of settings.
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call.
+//
 func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 	var _arg0 *C.GtkPrintSettings    // out
 	var _arg1 C.GtkPrintSettingsFunc // out
@@ -249,6 +254,11 @@ func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 }
 
 // Get looks up the string value associated with key.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) Get(key string) string {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -273,6 +283,11 @@ func (settings *PrintSettings) Get(key string) string {
 // key.
 //
 // The string “true” represents TRUE, any other string FALSE.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) Bool(key string) bool {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -349,6 +364,11 @@ func (settings *PrintSettings) Dither() string {
 }
 
 // Double returns the double value associated with key, or 0.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) Double(key string) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -374,6 +394,12 @@ func (settings *PrintSettings) Double(key string) float64 {
 // floating point number.
 //
 // Floating point numbers are parsed with g_ascii_strtod().
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - def: default value.
+//
 func (settings *PrintSettings) DoubleWithDefault(key string, def float64) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -432,6 +458,11 @@ func (settings *PrintSettings) Finishings() string {
 }
 
 // Int returns the integer value of key, or 0.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) Int(key string) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -454,6 +485,12 @@ func (settings *PrintSettings) Int(key string) int {
 
 // IntWithDefault returns the value of key, interpreted as an integer, or the
 // default value.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - def: default value.
+//
 func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -480,6 +517,12 @@ func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 // Length returns the value associated with key, interpreted as a length.
 //
 // The returned value is converted to units.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - unit of the return value.
+//
 func (settings *PrintSettings) Length(key string, unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -647,6 +690,11 @@ func (settings *PrintSettings) PageSet() PageSet {
 
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted to
 // unit.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value.
+//
 func (settings *PrintSettings) PaperHeight(unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkUnit           // out
@@ -692,6 +740,11 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 // unit.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value.
+//
 func (settings *PrintSettings) PaperWidth(unit Unit) float64 {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkUnit           // out
@@ -887,6 +940,11 @@ func (settings *PrintSettings) UseColor() bool {
 }
 
 // HasKey returns TRUE, if a value is associated with key.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) HasKey(key string) bool {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -915,6 +973,11 @@ func (settings *PrintSettings) HasKey(key string) bool {
 // GKeyFileError.
 //
 // See gtk.PrintSettings.ToFile().
+//
+// The function takes the following parameters:
+//
+//    - fileName: filename to read the settings from.
+//
 func (settings *PrintSettings) LoadFile(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -941,6 +1004,13 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 //
 // If the file could not be loaded then error is set to either a GFileError or
 // GKeyFileError.
+//
+// The function takes the following parameters:
+//
+//    - keyFile: GKeyFile to retrieve the settings from.
+//    - groupName: name of the group to use, or NULL to use the default “Print
+//    Settings”.
+//
 func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GKeyFile         // out
@@ -969,6 +1039,12 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 }
 
 // Set associates value with key.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - value: string value, or NULL.
+//
 func (settings *PrintSettings) Set(key, value string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -989,6 +1065,12 @@ func (settings *PrintSettings) Set(key, value string) {
 }
 
 // SetBool sets key to a boolean value.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - value: boolean.
+//
 func (settings *PrintSettings) SetBool(key string, value bool) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1008,6 +1090,11 @@ func (settings *PrintSettings) SetBool(key string, value bool) {
 }
 
 // SetCollate sets the value of GTK_PRINT_SETTINGS_COLLATE.
+//
+// The function takes the following parameters:
+//
+//    - collate: whether to collate the output.
+//
 func (settings *PrintSettings) SetCollate(collate bool) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gboolean          // out
@@ -1023,6 +1110,11 @@ func (settings *PrintSettings) SetCollate(collate bool) {
 }
 
 // SetDefaultSource sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
+//
+// The function takes the following parameters:
+//
+//    - defaultSource: default source.
+//
 func (settings *PrintSettings) SetDefaultSource(defaultSource string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1037,6 +1129,11 @@ func (settings *PrintSettings) SetDefaultSource(defaultSource string) {
 }
 
 // SetDither sets the value of GTK_PRINT_SETTINGS_DITHER.
+//
+// The function takes the following parameters:
+//
+//    - dither: dithering that is used.
+//
 func (settings *PrintSettings) SetDither(dither string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1051,6 +1148,12 @@ func (settings *PrintSettings) SetDither(dither string) {
 }
 
 // SetDouble sets key to a double value.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - value: double value.
+//
 func (settings *PrintSettings) SetDouble(key string, value float64) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1068,6 +1171,11 @@ func (settings *PrintSettings) SetDouble(key string, value float64) {
 }
 
 // SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
+//
+// The function takes the following parameters:
+//
+//    - duplex: PrintDuplex value.
+//
 func (settings *PrintSettings) SetDuplex(duplex PrintDuplex) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkPrintDuplex    // out
@@ -1081,6 +1189,11 @@ func (settings *PrintSettings) SetDuplex(duplex PrintDuplex) {
 }
 
 // SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
+//
+// The function takes the following parameters:
+//
+//    - finishings: finishings.
+//
 func (settings *PrintSettings) SetFinishings(finishings string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1095,6 +1208,12 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 }
 
 // SetInt sets key to an integer value.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - value: integer.
+//
 func (settings *PrintSettings) SetInt(key string, value int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1112,6 +1231,13 @@ func (settings *PrintSettings) SetInt(key string, value int) {
 }
 
 // SetLength associates a length in units of unit with key.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//    - value: length.
+//    - unit of length.
+//
 func (settings *PrintSettings) SetLength(key string, value float64, unit Unit) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1134,6 +1260,11 @@ func (settings *PrintSettings) SetLength(key string, value float64, unit Unit) {
 // SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
+//
+// The function takes the following parameters:
+//
+//    - mediaType: media type.
+//
 func (settings *PrintSettings) SetMediaType(mediaType string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1148,6 +1279,11 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 }
 
 // SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
+//
+// The function takes the following parameters:
+//
+//    - numCopies: number of copies.
+//
 func (settings *PrintSettings) SetNCopies(numCopies int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
@@ -1161,6 +1297,11 @@ func (settings *PrintSettings) SetNCopies(numCopies int) {
 }
 
 // SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
+//
+// The function takes the following parameters:
+//
+//    - numberUp: number of pages per sheet.
+//
 func (settings *PrintSettings) SetNumberUp(numberUp int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
@@ -1174,6 +1315,11 @@ func (settings *PrintSettings) SetNumberUp(numberUp int) {
 }
 
 // SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
+//
+// The function takes the following parameters:
+//
+//    - numberUpLayout: NumberUpLayout value.
+//
 func (settings *PrintSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkNumberUpLayout // out
@@ -1187,6 +1333,11 @@ func (settings *PrintSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) 
 }
 
 // SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
+//
+// The function takes the following parameters:
+//
+//    - orientation: page orientation.
+//
 func (settings *PrintSettings) SetOrientation(orientation PageOrientation) {
 	var _arg0 *C.GtkPrintSettings  // out
 	var _arg1 C.GtkPageOrientation // out
@@ -1200,6 +1351,11 @@ func (settings *PrintSettings) SetOrientation(orientation PageOrientation) {
 }
 
 // SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
+//
+// The function takes the following parameters:
+//
+//    - outputBin: output bin.
+//
 func (settings *PrintSettings) SetOutputBin(outputBin string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1214,6 +1370,11 @@ func (settings *PrintSettings) SetOutputBin(outputBin string) {
 }
 
 // SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
+//
+// The function takes the following parameters:
+//
+//    - pageRanges: array of GtkPageRanges.
+//
 func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GtkPageRange     // out
@@ -1231,6 +1392,11 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 }
 
 // SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
+//
+// The function takes the following parameters:
+//
+//    - pageSet: PageSet value.
+//
 func (settings *PrintSettings) SetPageSet(pageSet PageSet) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkPageSet        // out
@@ -1244,6 +1410,12 @@ func (settings *PrintSettings) SetPageSet(pageSet PageSet) {
 }
 
 // SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+//
+// The function takes the following parameters:
+//
+//    - height: paper height.
+//    - unit units of height.
+//
 func (settings *PrintSettings) SetPaperHeight(height float64, unit Unit) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.double            // out
@@ -1261,6 +1433,11 @@ func (settings *PrintSettings) SetPaperHeight(height float64, unit Unit) {
 
 // SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 // GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+//
+// The function takes the following parameters:
+//
+//    - paperSize: paper size.
+//
 func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GtkPaperSize     // out
@@ -1274,6 +1451,12 @@ func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
 }
 
 // SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
+//
+// The function takes the following parameters:
+//
+//    - width: paper width.
+//    - unit units of width.
+//
 func (settings *PrintSettings) SetPaperWidth(width float64, unit Unit) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.double            // out
@@ -1290,6 +1473,11 @@ func (settings *PrintSettings) SetPaperWidth(width float64, unit Unit) {
 }
 
 // SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
+//
+// The function takes the following parameters:
+//
+//    - pages PrintPages value.
+//
 func (settings *PrintSettings) SetPrintPages(pages PrintPages) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkPrintPages     // out
@@ -1304,6 +1492,11 @@ func (settings *PrintSettings) SetPrintPages(pages PrintPages) {
 
 // SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
 // printer.
+//
+// The function takes the following parameters:
+//
+//    - printer name.
+//
 func (settings *PrintSettings) SetPrinter(printer string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1318,6 +1511,11 @@ func (settings *PrintSettings) SetPrinter(printer string) {
 }
 
 // SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
+//
+// The function takes the following parameters:
+//
+//    - lpi: resolution in lpi (lines per inch).
+//
 func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.double            // out
@@ -1331,6 +1529,11 @@ func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
 }
 
 // SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
+//
+// The function takes the following parameters:
+//
+//    - quality: PrintQuality value.
+//
 func (settings *PrintSettings) SetQuality(quality PrintQuality) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.GtkPrintQuality   // out
@@ -1345,6 +1548,11 @@ func (settings *PrintSettings) SetQuality(quality PrintQuality) {
 
 // SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
+//
+// The function takes the following parameters:
+//
+//    - resolution in dpi.
+//
 func (settings *PrintSettings) SetResolution(resolution int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
@@ -1359,6 +1567,12 @@ func (settings *PrintSettings) SetResolution(resolution int) {
 
 // SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
+//
+// The function takes the following parameters:
+//
+//    - resolutionX: horizontal resolution in dpi.
+//    - resolutionY: vertical resolution in dpi.
+//
 func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.int               // out
@@ -1375,6 +1589,11 @@ func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
 }
 
 // SetReverse sets the value of GTK_PRINT_SETTINGS_REVERSE.
+//
+// The function takes the following parameters:
+//
+//    - reverse: whether to reverse the output.
+//
 func (settings *PrintSettings) SetReverse(reverse bool) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gboolean          // out
@@ -1390,6 +1609,11 @@ func (settings *PrintSettings) SetReverse(reverse bool) {
 }
 
 // SetScale sets the value of GTK_PRINT_SETTINGS_SCALE.
+//
+// The function takes the following parameters:
+//
+//    - scale in percent.
+//
 func (settings *PrintSettings) SetScale(scale float64) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.double            // out
@@ -1403,6 +1627,11 @@ func (settings *PrintSettings) SetScale(scale float64) {
 }
 
 // SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
+//
+// The function takes the following parameters:
+//
+//    - useColor: whether to use color.
+//
 func (settings *PrintSettings) SetUseColor(useColor bool) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gboolean          // out
@@ -1421,6 +1650,11 @@ func (settings *PrintSettings) SetUseColor(useColor bool) {
 //
 // If the file could not be written then error is set to either a GFileError or
 // GKeyFileError.
+//
+// The function takes the following parameters:
+//
+//    - fileName: file to save to.
+//
 func (settings *PrintSettings) ToFile(fileName string) error {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out
@@ -1468,6 +1702,13 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 }
 
 // ToKeyFile: this function adds the print settings from settings to key_file.
+//
+// The function takes the following parameters:
+//
+//    - keyFile: GKeyFile to save the print settings to.
+//    - groupName: group to add the settings to in key_file, or NULL to use the
+//    default “Print Settings”.
+//
 func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GKeyFile         // out
@@ -1489,6 +1730,11 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 // Unset removes any value associated with key.
 //
 // This has the same effect as setting the value to NULL.
+//
+// The function takes the following parameters:
+//
+//    - key: key.
+//
 func (settings *PrintSettings) Unset(key string) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.char             // out

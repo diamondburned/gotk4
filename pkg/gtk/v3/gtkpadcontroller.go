@@ -157,6 +157,17 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 // The given label should be considered user-visible, so internationalization
 // rules apply. Some windowing systems may be able to use those for user
 // feedback.
+//
+// The function takes the following parameters:
+//
+//    - typ: type of pad feature that will trigger this action.
+//    - index: 0-indexed button/ring/strip number that will trigger this
+//    action.
+//    - mode that will trigger this action, or -1 for all modes.
+//    - label: human readable description of this action, this string should be
+//    deemed user-visible.
+//    - actionName: action name that will be activated in the Group.
+//
 func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
@@ -186,6 +197,11 @@ func (controller *PadController) SetAction(typ PadActionType, index, mode int, l
 // SetActionEntries: this is a convenience function to add a group of action
 // entries on controller. See PadActionEntry and
 // gtk_pad_controller_set_action().
+//
+// The function takes the following parameters:
+//
+//    - entries: action entries to set on controller.
+//
 func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController  // out
 	var _arg1 *C.GtkPadActionEntry // out

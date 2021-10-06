@@ -79,6 +79,11 @@ func NewIMContextSimple() *IMContextSimple {
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.
+//
+// The function takes the following parameters:
+//
+//    - composeFile: path of compose file.
+//
 func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out

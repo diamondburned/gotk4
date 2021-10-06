@@ -887,6 +887,11 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 }
 
 // Child gets one of the children of container.
+//
+// The function takes the following parameters:
+//
+//    - idx: position of the child to get.
+//
 func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
@@ -1238,6 +1243,11 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 }
 
 // Child gets one of the children.
+//
+// The function takes the following parameters:
+//
+//    - idx: position of the child to get.
+//
 func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
@@ -2389,6 +2399,11 @@ func (node *ShadowNode) NShadows() uint {
 }
 
 // Shadow retrieves the shadow data at the given index i.
+//
+// The function takes the following parameters:
+//
+//    - i: given index.
+//
 func (node *ShadowNode) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.gsize          // out

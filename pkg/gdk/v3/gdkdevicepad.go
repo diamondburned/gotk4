@@ -106,6 +106,12 @@ func marshalDevicePadder(p uintptr) (interface{}, error) {
 
 // FeatureGroup returns the group the given feature and idx belong to, or -1 if
 // feature/index do not exist in pad.
+//
+// The function takes the following parameters:
+//
+//    - feature type to get the group from.
+//    - featureIdx: index of the feature to get the group from.
+//
 func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out
@@ -129,6 +135,11 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int
 }
 
 // GroupNModes returns the number of modes that group may have.
+//
+// The function takes the following parameters:
+//
+//    - groupIdx: group to get the number of available modes from.
+//
 func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
 	var _arg1 C.gint          // out
@@ -149,6 +160,11 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 }
 
 // NFeatures returns the number of features a tablet pad has.
+//
+// The function takes the following parameters:
+//
+//    - feature: pad feature.
+//
 func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg0 *C.GdkDevicePad       // out
 	var _arg1 C.GdkDevicePadFeature // out

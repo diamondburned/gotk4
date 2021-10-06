@@ -147,6 +147,13 @@ func (hsv *HSV) IsAdjusting() bool {
 
 // SetColor sets the current color in an HSV color selector. Color component
 // values must be in the [0.0, 1.0] range.
+//
+// The function takes the following parameters:
+//
+//    - h: hue.
+//    - s: saturation.
+//    - v: value.
+//
 func (hsv *HSV) SetColor(h, s, v float64) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.double  // out
@@ -166,6 +173,12 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 }
 
 // SetMetrics sets the size and ring width of an HSV color selector.
+//
+// The function takes the following parameters:
+//
+//    - size: diameter for the hue ring.
+//    - ringWidth: width of the hue ring.
+//
 func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // out

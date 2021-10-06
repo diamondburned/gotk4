@@ -318,6 +318,11 @@ func marshalDatagramBasedder(p uintptr) (interface{}, error) {
 // these flags, the output is guaranteed to be masked by condition.
 //
 // This call never blocks.
+//
+// The function takes the following parameters:
+//
+//    - condition mask to check.
+//
 func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
@@ -343,6 +348,14 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 // If cancellable is cancelled before the condition is met, or if timeout is
 // reached before the condition is met, then FALSE is returned and error is set
 // appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - condition mask to wait for.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
+//    to block indefinitely.
+//
 func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
 	var _arg0 *C.GDatagramBased // out
 	var _arg3 *C.GCancellable   // out
@@ -387,6 +400,12 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 // the source to trigger, reporting the current condition (which is likely 0
 // unless cancellation happened at the same time as a condition change). You can
 // check for this in the callback using g_cancellable_is_cancelled().
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - condition mask to monitor.
+//
 func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
 	var _arg0 *C.GDatagramBased // out
 	var _arg2 *C.GCancellable   // out
@@ -466,6 +485,15 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags for the overall operation.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
+//    to block indefinitely.
+//
 func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
@@ -551,6 +579,15 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1
+//    to block indefinitely.
+//
 func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out

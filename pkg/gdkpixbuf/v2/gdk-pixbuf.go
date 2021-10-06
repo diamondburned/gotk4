@@ -715,6 +715,14 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 // for the substitute color, all white pixels will become fully transparent.
 //
 // If substitute_color is FALSE, then the (r, g, b) arguments will be ignored.
+//
+// The function takes the following parameters:
+//
+//    - substituteColor: whether to set a color to zero opacity.
+//    - r: red value to substitute.
+//    - g: green value to substitute.
+//    - b: blue value to substitute.
+//
 func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
@@ -783,6 +791,21 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 // data at the edges of the source image is replicated to infinity.
 //
 // ! (composite.png).
+//
+// The function takes the following parameters:
+//
+//    - dest into which to render the results.
+//    - destX: left coordinate for region to render.
+//    - destY: top coordinate for region to render.
+//    - destWidth: width of the region to render.
+//    - destHeight: height of the region to render.
+//    - offsetX: offset in the X direction (currently rounded to an integer).
+//    - offsetY: offset in the Y direction (currently rounded to an integer).
+//    - scaleX: scale factor in the X direction.
+//    - scaleY: scale factor in the Y direction.
+//    - interpType: interpolation type for the transformation.
+//    - overallAlpha: overall alpha for source image (0..255).
+//
 func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -836,6 +859,27 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 //
 // See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 // function suitable for many tasks.
+//
+// The function takes the following parameters:
+//
+//    - dest into which to render the results.
+//    - destX: left coordinate for region to render.
+//    - destY: top coordinate for region to render.
+//    - destWidth: width of the region to render.
+//    - destHeight: height of the region to render.
+//    - offsetX: offset in the X direction (currently rounded to an integer).
+//    - offsetY: offset in the Y direction (currently rounded to an integer).
+//    - scaleX: scale factor in the X direction.
+//    - scaleY: scale factor in the Y direction.
+//    - interpType: interpolation type for the transformation.
+//    - overallAlpha: overall alpha for source image (0..255).
+//    - checkX: x offset for the checkboard (origin of checkboard is at
+//    -check_x, -check_y).
+//    - checkY: y offset for the checkboard.
+//    - checkSize: size of checks in the checkboard (must be a power of two).
+//    - color1: color of check at upper left.
+//    - color2: color of the other check.
+//
 func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha, checkX, checkY, checkSize int, color1, color2 uint32) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -896,6 +940,17 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 // CompositeColorSimple creates a new pixbuf by scaling src to dest_width x
 // dest_height and alpha blending the result with a checkboard of colors color1
 // and color2.
+//
+// The function takes the following parameters:
+//
+//    - destWidth: width of destination image.
+//    - destHeight: height of destination image.
+//    - interpType: interpolation type for the transformation.
+//    - overallAlpha: overall alpha for source image (0..255).
+//    - checkSize: size of checks in the checkboard (must be a power of two).
+//    - color1: color of check at upper left.
+//    - color2: color of the other check.
+//
 func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType InterpType, overallAlpha, checkSize int, color1, color2 uint32) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
@@ -965,6 +1020,17 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 // If the source rectangle overlaps the destination rectangle on the same
 // pixbuf, it will be overwritten during the copy operation. Therefore, you can
 // not use this function to scroll a pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - srcX: source X coordinate within src_pixbuf.
+//    - srcY: source Y coordinate within src_pixbuf.
+//    - width: width of the area to copy.
+//    - height: height of the area to copy.
+//    - destPixbuf: destination pixbuf.
+//    - destX: x coordinate within dest_pixbuf.
+//    - destY: y coordinate within dest_pixbuf.
+//
 func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pixbuf, destX, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
@@ -1001,6 +1067,11 @@ func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pix
 // This is useful to keep original metadata after having manipulated a file.
 // However be careful to remove metadata which you've already applied, such as
 // the "orientation" option after rotating the image.
+//
+// The function takes the following parameters:
+//
+//    - destPixbuf: destination pixbuf.
+//
 func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
@@ -1027,6 +1098,12 @@ func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 //
 // The alpha component will be ignored if the pixbuf doesn't have an alpha
 // channel.
+//
+// The function takes the following parameters:
+//
+//    - pixel: RGBA pixel to used to clear (0xffffffff is opaque white,
+//    0x00000000 transparent black).
+//
 func (pixbuf *Pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.guint32    // out
@@ -1041,6 +1118,11 @@ func (pixbuf *Pixbuf) Fill(pixel uint32) {
 
 // Flip flips a pixbuf horizontally or vertically and returns the result in a
 // new pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - horizontal: TRUE to flip horizontally, FALSE to flip vertically.
+//
 func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
@@ -1182,6 +1264,11 @@ func (pixbuf *Pixbuf) NChannels() int {
 // set "x-dpi" and "y-dpi" if the file contains image density information in
 // dots per inch. Since 2.36.6, the JPEG loader sets the "comment" option with
 // the comment EXIF tag.
+//
+// The function takes the following parameters:
+//
+//    - key: nul-terminated string.
+//
 func (pixbuf *Pixbuf) Option(key string) string {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
@@ -1301,6 +1388,14 @@ func (pixbuf *Pixbuf) Width() int {
 //
 // Note that if src_pixbuf is read-only, this function will force it to be
 // mutable.
+//
+// The function takes the following parameters:
+//
+//    - srcX: x coord in src_pixbuf.
+//    - srcY: y coord in src_pixbuf.
+//    - width of region in src_pixbuf.
+//    - height of region in src_pixbuf.
+//
 func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
@@ -1377,6 +1472,11 @@ func (pixbuf *Pixbuf) ReadPixels() *byte {
 }
 
 // RemoveOption removes the key/value pair option attached to a GdkPixbuf.
+//
+// The function takes the following parameters:
+//
+//    - key: nul-terminated string representing the key to remove.
+//
 func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
@@ -1403,6 +1503,11 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 // result in a new pixbuf.
 //
 // If angle is 0, this function will return a copy of src.
+//
+// The function takes the following parameters:
+//
+//    - angle to rotate by.
+//
 func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufRotation // out
@@ -1438,6 +1543,13 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 //
 // If pixelate is TRUE, then pixels are faded in a checkerboard pattern to
 // create a pixelated image.
+//
+// The function takes the following parameters:
+//
+//    - dest: place to write modified version of src.
+//    - saturation factor.
+//    - pixelate: whether to pixelate.
+//
 func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
@@ -1464,6 +1576,13 @@ func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelat
 // "tiff", "png", "ico" or "bmp".
 //
 // See gdkpixbuf.Pixbuf.SaveToBuffer() for more details.
+//
+// The function takes the following parameters:
+//
+//    - typ: name of file format.
+//    - optionKeys: name of options to set.
+//    - optionValues values for named options.
+//
 func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // in
@@ -1530,6 +1649,15 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []strin
 // If error is set, FALSE will be returned.
 //
 // See gdkpixbuf.Pixbuf.SaveToCallback() for more details.
+//
+// The function takes the following parameters:
+//
+//    - saveFunc: function that is called to save each block of data that the
+//    save routine generates.
+//    - typ: name of file format.
+//    - optionKeys: name of options to set.
+//    - optionValues values for named options.
+//
 func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
@@ -1593,6 +1721,15 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 // Supported file formats are currently "jpeg", "tiff", "png", "ico" or "bmp".
 //
 // See gdkpixbuf.Pixbuf.SaveToStream() for more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GOutputStream to save the pixbuf to.
+//    - typ: name of file format.
+//    - optionKeys: name of options to set.
+//    - optionValues values for named options.
+//
 func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg5 *C.GCancellable  // out
@@ -1664,6 +1801,16 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 //
 // You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the
 // operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - stream: GOutputStream to which to save the pixbuf.
+//    - typ: name of file format.
+//    - optionKeys: name of options to set.
+//    - optionValues values for named options.
+//    - callback: GAsyncReadyCallback to call when the pixbuf is saved.
+//
 func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkPixbuf          // out
 	var _arg5 *C.GCancellable       // out
@@ -1732,6 +1879,14 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 // If error is set, FALSE will be returned.
 //
 // See gdkpixbuf.Pixbuf.Save() for more details.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to save.
+//    - typ: name of file format.
+//    - optionKeys: name of options to set.
+//    - optionValues values for named options.
+//
 func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
@@ -1800,6 +1955,20 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 // If the source rectangle overlaps the destination rectangle on the same
 // pixbuf, it will be overwritten during the scaling which results in rendering
 // artifacts.
+//
+// The function takes the following parameters:
+//
+//    - dest into which to render the results.
+//    - destX: left coordinate for region to render.
+//    - destY: top coordinate for region to render.
+//    - destWidth: width of the region to render.
+//    - destHeight: height of the region to render.
+//    - offsetX: offset in the X direction (currently rounded to an integer).
+//    - offsetY: offset in the Y direction (currently rounded to an integer).
+//    - scaleX: scale factor in the X direction.
+//    - scaleY: scale factor in the Y direction.
+//    - interpType: interpolation type for the transformation.
+//
 func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -1857,6 +2026,13 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, 
 //
 // For more complicated scaling/alpha blending see gdkpixbuf.Pixbuf.Scale() and
 // gdkpixbuf.Pixbuf.Composite().
+//
+// The function takes the following parameters:
+//
+//    - destWidth: width of destination image.
+//    - destHeight: height of destination image.
+//    - interpType: interpolation type for the transformation.
+//
 func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
@@ -1888,6 +2064,12 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 //
 // If key already exists in the list of options attached to the pixbuf, the new
 // value is ignored and FALSE is returned.
+//
+// The function takes the following parameters:
+//
+//    - key: nul-terminated string.
+//    - value: nul-terminated string.
+//
 func (pixbuf *Pixbuf) SetOption(key, value string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out

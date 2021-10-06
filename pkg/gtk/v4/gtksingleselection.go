@@ -184,6 +184,11 @@ func (self *SingleSelection) SelectedItem() *externglib.Object {
 // If autoselect is TRUE, self will enforce that an item is always selected. It
 // will select a new item when the currently selected item is deleted and it
 // will disallow unselecting the current item.
+//
+// The function takes the following parameters:
+//
+//    - autoselect: TRUE to always select an item.
+//
 func (self *SingleSelection) SetAutoselect(autoselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
@@ -204,6 +209,11 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 // Note that setting gtk.SingleSelection:autoselect will cause unselecting to
 // not work, so it practically makes no sense to set both at the same time the
 // same time.
+//
+// The function takes the following parameters:
+//
+//    - canUnselect: TRUE to allow unselecting.
+//
 func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
@@ -221,6 +231,11 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 // SetModel sets the model that self should wrap.
 //
 // If model is NULL, self will be empty.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to wrap.
+//
 func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 *C.GListModel         // out
@@ -242,6 +257,11 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 // gtk.SingleSelection:autoselect property: If it is set, no change will occur
 // and the old item will stay selected. If it is unset, the selection will be
 // unset and no item will be selected.
+//
+// The function takes the following parameters:
+//
+//    - position: item to select or GTK_INVALID_LIST_POSITION.
+//
 func (self *SingleSelection) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out

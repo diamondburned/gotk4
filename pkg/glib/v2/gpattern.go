@@ -16,19 +16,19 @@ import "C"
 // this function is to be called in a loop, it's more efficient to compile the
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
-func PatternMatchSimple(pattern, _string string) bool {
+func PatternMatchSimple(pattern, str string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_pattern_match_simple(_arg1, _arg2)
 	runtime.KeepAlive(pattern)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _ok bool // out
 

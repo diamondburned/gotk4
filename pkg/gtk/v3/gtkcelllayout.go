@@ -275,6 +275,13 @@ func marshalCellLayouter(p uintptr) (interface{}, error) {
 // is the parameter on cell to be set from the value. So for example if column 2
 // of the model contains strings, you could have the “text” attribute of a
 // CellRendererText get its values from column 2.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - attribute on the renderer.
+//    - column position on the model to get the attribute from.
+//
 func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -307,6 +314,11 @@ func (cellLayout *CellLayout) Clear() {
 
 // ClearAttributes clears all existing attributes previously set with
 // gtk_cell_layout_set_attributes().
+//
+// The function takes the following parameters:
+//
+//    - cell to clear the attribute mapping on.
+//
 func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -388,6 +400,13 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 // evenly between cells for which expand is TRUE.
 //
 // Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to
+//    cell_layout.
+//
 func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -410,6 +429,13 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 // space is divided evenly between cells for which expand is TRUE.
 //
 // Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to
+//    cell_layout.
+//
 func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -431,6 +457,12 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //
 // Note that cell has already to be packed into cell_layout for this to function
 // properly.
+//
+// The function takes the following parameters:
+//
+//    - cell to reorder.
+//    - position: new position to insert cell at.
+//
 func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -453,6 +485,12 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 // as appropriate.
 //
 // func may be NULL to remove a previously set function.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - fn to use, or NULL.
+//
 func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
 	var _arg0 *C.GtkCellLayout        // out
 	var _arg1 *C.GtkCellRenderer      // out

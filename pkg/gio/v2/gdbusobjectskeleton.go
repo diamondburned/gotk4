@@ -89,6 +89,11 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 //
 // Note that object takes its own reference on interface_ and holds it until
 // removed.
+//
+// The function takes the following parameters:
+//
+//    - interface_: BusInterfaceSkeleton.
+//
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -113,6 +118,11 @@ func (object *DBusObjectSkeleton) Flush() {
 }
 
 // RemoveInterface removes interface_ from object.
+//
+// The function takes the following parameters:
+//
+//    - interface_: BusInterfaceSkeleton.
+//
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -130,6 +140,11 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 //
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
+//
+// The function takes the following parameters:
+//
+//    - interfaceName d-Bus interface name.
+//
 func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
@@ -144,6 +159,11 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 }
 
 // SetObjectPath sets the object path for object.
+//
+// The function takes the following parameters:
+//
+//    - objectPath: valid D-Bus object path.
+//
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out

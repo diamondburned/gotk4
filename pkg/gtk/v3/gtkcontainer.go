@@ -373,6 +373,11 @@ func marshalContainerer(p uintptr) (interface{}, error) {
 //
 // Note that some containers, such as ScrolledWindow or ListBox, may add
 // intermediate children between the added widget and the container.
+//
+// The function takes the following parameters:
+//
+//    - widget to be placed inside container.
+//
 func (container *Container) Add(widget Widgetter) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -395,6 +400,13 @@ func (container *Container) CheckResize() {
 }
 
 // ChildGetProperty gets the value of a child property for child and container.
+//
+// The function takes the following parameters:
+//
+//    - child: widget which is a child of container.
+//    - propertyName: name of the property to get.
+//    - value: location to return the value.
+//
 func (container *Container) ChildGetProperty(child Widgetter, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -420,6 +432,13 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 // This is an analogue of g_object_notify() for child properties.
 //
 // Also see gtk_widget_child_notify().
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//    - childProperty: name of a child property installed on the class of
+//    container.
+//
 func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -437,6 +456,13 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 }
 
 // ChildSetProperty sets a child property for child and container.
+//
+// The function takes the following parameters:
+//
+//    - child: widget which is a child of container.
+//    - propertyName: name of the property to set.
+//    - value to set the property to.
+//
 func (container *Container) ChildSetProperty(child Widgetter, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -483,6 +509,11 @@ func (container *Container) ChildType() externglib.Type {
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
+//
+// The function takes the following parameters:
+//
+//    - callback: callback.
+//
 func (container *Container) Forall(callback Callback) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.GtkCallback   // out
@@ -508,6 +539,11 @@ func (container *Container) Forall(callback Callback) {
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
+//
+// The function takes the following parameters:
+//
+//    - callback: callback.
+//
 func (container *Container) Foreach(callback Callback) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.GtkCallback   // out
@@ -695,6 +731,11 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 
 // PathForChild returns a newly created widget path representing all the widget
 // hierarchy from the toplevel down to and including child.
+//
+// The function takes the following parameters:
+//
+//    - child of container.
+//
 func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkWidget     // out
@@ -756,6 +797,14 @@ func (container *Container) ResizeMode() ResizeMode {
 // In most cases, a container can simply either inherit the Widget::draw
 // implementation from Container, or do some drawing and then chain to the
 // ::draw implementation from Container.
+//
+// The function takes the following parameters:
+//
+//    - child of container.
+//    - cr: cairo context as passed to the container. If you want to use cr in
+//    container’s draw function, consider using cairo_save() and
+//    cairo_restore() before calling this function.
+//
 func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -779,6 +828,11 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 // to use widget again it’s usually more efficient to simply destroy it directly
 // using gtk_widget_destroy() since this will remove it from the container and
 // help break any circular reference count cycles.
+//
+// The function takes the following parameters:
+//
+//    - widget: current child of container.
+//
 func (container *Container) Remove(widget Widgetter) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -809,6 +863,12 @@ func (container *Container) ResizeChildren() {
 // border is added on all sides of the container. To add space to only one side,
 // use a specific Widget:margin property on the child widget, for example
 // Widget:margin-top.
+//
+// The function takes the following parameters:
+//
+//    - borderWidth: amount of blank space to leave outside the container.
+//    Valid values are in the range 0-65535 pixels.
+//
 func (container *Container) SetBorderWidth(borderWidth uint) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.guint         // out
@@ -832,6 +892,11 @@ func (container *Container) SetBorderWidth(borderWidth uint) {
 //
 // Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
 // signal.
+//
+// The function takes the following parameters:
+//
+//    - focusableWidgets: the new focus chain.
+//
 func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GList        // out
@@ -859,6 +924,11 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 //
 // This is function is mostly meant to be used by widgets. Applications can use
 // gtk_widget_grab_focus() to manually set the focus to a specific widget.
+//
+// The function takes the following parameters:
+//
+//    - child or NULL.
+//
 func (container *Container) SetFocusChild(child Widgetter) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -882,6 +952,12 @@ func (container *Container) SetFocusChild(child Widgetter) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//    descendents of container.
+//
 func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
@@ -903,6 +979,12 @@ func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//    descendents of container.
+//
 func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
@@ -922,6 +1004,11 @@ func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 // of their children changed allocation.
 //
 // Deprecated: Call gtk_widget_queue_draw() in your size_allocate handler.
+//
+// The function takes the following parameters:
+//
+//    - needsRedraws: new value for the container’s reallocate_redraws flag.
+//
 func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.gboolean      // out
@@ -944,6 +1031,11 @@ func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 //
 // Deprecated: Resize modes are deprecated. They aren’t necessary anymore since
 // frame clocks and might introduce obscure bugs if used.
+//
+// The function takes the following parameters:
+//
+//    - resizeMode: new resize mode.
+//
 func (container *Container) SetResizeMode(resizeMode ResizeMode) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.GtkResizeMode // out

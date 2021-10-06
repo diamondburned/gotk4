@@ -275,6 +275,11 @@ func (controller *EventController) Reset() {
 }
 
 // SetName sets a name on the controller that can be used for debugging.
+//
+// The function takes the following parameters:
+//
+//    - name for controller.
+//
 func (controller *EventController) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
@@ -292,6 +297,11 @@ func (controller *EventController) SetName(name string) {
 //
 // If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
 // events that are targeted at widgets on a different surface, such as popovers.
+//
+// The function takes the following parameters:
+//
+//    - limit: propagation limit.
+//
 func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationLimit // out
@@ -309,6 +319,11 @@ func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 //
 // If phase is GTK_PHASE_NONE, no automatic event handling will be performed,
 // but other additional gesture maintenance will.
+//
+// The function takes the following parameters:
+//
+//    - phase: propagation phase.
+//
 func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationPhase // out

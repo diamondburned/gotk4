@@ -168,6 +168,11 @@ func (link_ *Hyperlink) NAnchors() int {
 // hyperlink, Image if link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//    - i: (zero-index) integer specifying the desired anchor.
+//
 func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
@@ -208,6 +213,11 @@ func (link_ *Hyperlink) StartIndex() int {
 // URI: get a the URI associated with the anchor specified by i of link_.
 //
 // Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//    - i: (zero-index) integer specifying the desired anchor.
+//
 func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out

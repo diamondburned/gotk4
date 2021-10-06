@@ -70,6 +70,11 @@ func NewWindowGroup() *WindowGroup {
 }
 
 // AddWindow adds a window to a GtkWindowGroup.
+//
+// The function takes the following parameters:
+//
+//    - window: GtkWindow to add.
+//
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
@@ -106,6 +111,11 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 }
 
 // RemoveWindow removes a window from a GtkWindowGroup.
+//
+// The function takes the following parameters:
+//
+//    - window: GtkWindow to remove.
+//
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out

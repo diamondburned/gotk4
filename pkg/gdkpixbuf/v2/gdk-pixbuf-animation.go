@@ -294,6 +294,11 @@ func (animation *PixbufAnimation) Height() int {
 // should be reinstalled after any area_updated signal.
 //
 // A delay time of -1 is possible, indicating "infinite".
+//
+// The function takes the following parameters:
+//
+//    - startTime: time when the animation starts playing.
+//
 func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimationIter {
 	var _arg0 *C.GdkPixbufAnimation     // out
 	var _arg1 *C.GTimeVal               // out
@@ -511,6 +516,11 @@ func marshalPixbufAnimationIterer(p uintptr) (interface{}, error) {
 // display, assuming the display had been rendered prior to advancing; if TRUE,
 // you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update the
 // display with the new pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - currentTime: current time.
+//
 func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _arg1 *C.GTimeVal               // out

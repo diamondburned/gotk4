@@ -219,6 +219,11 @@ func (deviceManager *DeviceManager) Display() *Display {
 //
 // Deprecated: , use gdk_seat_get_pointer(), gdk_seat_get_keyboard() and
 // gdk_seat_get_slaves() instead.
+//
+// The function takes the following parameters:
+//
+//    - typ: device type to get.
+//
 func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	var _arg0 *C.GdkDeviceManager // out
 	var _arg1 C.GdkDeviceType     // out

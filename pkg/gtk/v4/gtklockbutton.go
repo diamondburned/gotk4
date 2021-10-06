@@ -156,6 +156,11 @@ func (button *LockButton) Permission() gio.Permissioner {
 }
 
 // SetPermission sets the GPermission object that controls button.
+//
+// The function takes the following parameters:
+//
+//    - permission: GPermission object, or NULL.
+//
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out

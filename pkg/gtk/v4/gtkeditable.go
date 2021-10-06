@@ -302,6 +302,12 @@ func (editable *Editable) DeleteSelection() {
 // characters deleted are those from start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
 func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -355,6 +361,12 @@ func (editable *Editable) Alignment() float32 {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of text.
+//    - endPos: end of text.
+//
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -576,6 +588,12 @@ func (editable *Editable) InitDelegate() {
 // text.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of region.
+//    - endPos: end of region.
+//
 func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -595,6 +613,12 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 //
 // This controls the horizontal positioning of the contents when the displayed
 // text is shorter than the width of the editable.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
+//    RTL layouts.
+//
 func (editable *Editable) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.float        // out
@@ -608,6 +632,11 @@ func (editable *Editable) SetAlignment(xalign float32) {
 }
 
 // SetEditable determines if the user can edit the text in the editable widget.
+//
+// The function takes the following parameters:
+//
+//    - isEditable: TRUE if the user is allowed to edit the text in the widget.
+//
 func (editable *Editable) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
@@ -628,6 +657,11 @@ func (editable *Editable) SetEditable(isEditable bool) {
 // This results in an additional copy of text changes and are not stored in
 // secure memory. As such, undo is forcefully disabled when gtk.Text:visibility
 // is set to FALSE.
+//
+// The function takes the following parameters:
+//
+//    - enableUndo: if undo/redo should be enabled.
+//
 func (editable *Editable) SetEnableUndo(enableUndo bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
@@ -643,6 +677,11 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of editable.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired maximum width, in characters.
+//
 func (editable *Editable) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -662,6 +701,11 @@ func (editable *Editable) SetMaxWidthChars(nChars int) {
 // number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
+//
+// The function takes the following parameters:
+//
+//    - position of the cursor.
+//
 func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
@@ -677,6 +721,11 @@ func (editable *Editable) SetPosition(position int) {
 // SetText sets the text in the editable to the given value.
 //
 // This is replacing the current contents.
+//
+// The function takes the following parameters:
+//
+//    - text to set.
+//
 func (editable *Editable) SetText(text string) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 *C.char        // out
@@ -696,6 +745,11 @@ func (editable *Editable) SetText(text string) {
 // Note that it changes the size request, the size can still be affected by how
 // you pack the widget into containers. If n_chars is -1, the size reverts to
 // the default size.
+//
+// The function takes the following parameters:
+//
+//    - nChars: width in chars.
+//
 func (editable *Editable) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out

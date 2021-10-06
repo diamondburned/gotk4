@@ -60,6 +60,11 @@ func NewRelationSet() *RelationSet {
 // This function ref's the AtkRelation so the caller of this function should
 // unref it to ensure that it will be destroyed when the AtkRelationSet is
 // destroyed.
+//
+// The function takes the following parameters:
+//
+//    - relation: Relation.
+//
 func (set *RelationSet) Add(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
@@ -76,6 +81,12 @@ func (set *RelationSet) Add(relation *Relation) {
 // specified target to the current relation set if the relation set does not
 // contain a relation of that type. If it is does contain a relation of that
 // typea the target is added to the relation.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//    - target: Object.
+//
 func (set *RelationSet) AddRelationByType(relationship RelationType, target *ObjectClass) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -93,6 +104,11 @@ func (set *RelationSet) AddRelationByType(relationship RelationType, target *Obj
 
 // Contains determines whether the relation set contains a relation that matches
 // the specified type.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//
 func (set *RelationSet) Contains(relationship RelationType) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -116,6 +132,12 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 
 // ContainsTarget determines whether the relation set contains a relation that
 // matches the specified pair formed by type relationship and object target.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//    - target: Object.
+//
 func (set *RelationSet) ContainsTarget(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -159,6 +181,11 @@ func (set *RelationSet) NRelations() int {
 
 // Relation determines the relation at the specified position in the relation
 // set.
+//
+// The function takes the following parameters:
+//
+//    - i: gint representing a position in the set, starting from 0.
+//
 func (set *RelationSet) Relation(i int) *Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
@@ -179,6 +206,11 @@ func (set *RelationSet) Relation(i int) *Relation {
 }
 
 // RelationByType finds a relation that matches the specified type.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//
 func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -200,6 +232,11 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 
 // Remove removes a relation from the relation set. This function unref's the
 // Relation so it will be deleted unless there is another reference to it.
+//
+// The function takes the following parameters:
+//
+//    - relation: Relation.
+//
 func (set *RelationSet) Remove(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out

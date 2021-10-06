@@ -69,6 +69,12 @@ func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 }
 
 // ConnectSocketConnection: connect connection to the specified remote address.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address specifying the remote address.
+//
 func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg2 *C.GCancellable      // out
@@ -104,6 +110,13 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 // it is currently set.
 //
 // Use g_socket_connection_connect_finish() to retrieve the result.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address specifying the remote address.
+//    - callback: ReadyCallback.
+//
 func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
 	var _arg2 *C.GCancellable       // out
@@ -131,6 +144,11 @@ func (connection *SocketConnection) ConnectAsync(ctx context.Context, address So
 }
 
 // ConnectFinish gets the result of a g_socket_connection_connect_async() call.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out

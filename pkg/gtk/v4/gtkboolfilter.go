@@ -113,6 +113,11 @@ func (self *BoolFilter) Invert() bool {
 // should be filtered.
 //
 // The expression must have a value type of G_TYPE_BOOLEAN.
+//
+// The function takes the following parameters:
+//
+//    - expression: GtkExpression.
+//
 func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
@@ -128,6 +133,11 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 }
 
 // SetInvert sets whether the filter should invert the expression.
+//
+// The function takes the following parameters:
+//
+//    - invert: TRUE to invert.
+//
 func (self *BoolFilter) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out

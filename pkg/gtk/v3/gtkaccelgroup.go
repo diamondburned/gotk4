@@ -433,6 +433,14 @@ func NewAccelGroup() *AccelGroup {
 
 // Activate finds the first accelerator in accel_group that matches accel_key
 // and accel_mods, and activates it.
+//
+// The function takes the following parameters:
+//
+//    - accelQuark: quark for the accelerator name.
+//    - acceleratable usually a Window, on which to activate the accelerator.
+//    - accelKey: accelerator keyval from a key event.
+//    - accelMods: keyboard state mask from a key event.
+//
 func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _arg1 C.GQuark          // out
@@ -465,6 +473,12 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 
 // DisconnectKey removes an accelerator previously installed through
 // gtk_accel_group_connect().
+//
+// The function takes the following parameters:
+//
+//    - accelKey: key value of the accelerator.
+//    - accelMods: modifier combination of the accelerator.
+//
 func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _arg1 C.guint           // out
@@ -546,6 +560,12 @@ func (accelGroup *AccelGroup) Lock() {
 
 // Query queries an accelerator group for all entries matching accel_key and
 // accel_mods.
+//
+// The function takes the following parameters:
+//
+//    - accelKey: key value of the accelerator.
+//    - accelMods: modifier combination of the accelerator.
+//
 func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) []AccelGroupEntry {
 	var _arg0 *C.GtkAccelGroup      // out
 	var _arg1 C.guint               // out

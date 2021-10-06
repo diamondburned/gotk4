@@ -111,6 +111,11 @@ func NewOverlay() *Overlay {
 //
 // The position at which widget is placed is determined from its Widget:halign
 // and Widget:valign properties.
+//
+// The function takes the following parameters:
+//
+//    - widget to be added to the container.
+//
 func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -125,6 +130,11 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 
 // OverlayPassThrough: convenience function to get the value of the
 // Overlay:pass-through child property for widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of Overlay.
+//
 func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -153,6 +163,13 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 // A widget’s index in the overlay children list determines which order the
 // children are drawn if they overlap. The first child is drawn at the bottom.
 // It also affects the default focus chain order.
+//
+// The function takes the following parameters:
+//
+//    - child: overlaid Widget to move.
+//    - index_: new index for child in the list of overlay children of overlay,
+//    starting from 0. If negative, indicates the end of the list.
+//
 func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -170,6 +187,12 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 
 // SetOverlayPassThrough: convenience function to set the value of the
 // Overlay:pass-through child property for widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of Overlay.
+//    - passThrough: whether the child should pass the input through.
+//
 func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out

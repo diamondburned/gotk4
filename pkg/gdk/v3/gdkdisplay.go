@@ -77,6 +77,11 @@ func (display *Display) Close() {
 
 // DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
 // display.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
@@ -279,6 +284,11 @@ func (display *Display) MaximalCursorSize() (width uint, height uint) {
 }
 
 // Monitor gets a monitor associated with this display.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor.
+//
 func (display *Display) Monitor(monitorNum int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
@@ -302,6 +312,12 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 
 // MonitorAtPoint gets the monitor in which the point (x, y) is located, or a
 // nearby monitor if the point is not in any monitor.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the point.
+//    - y coordinate of the point.
+//
 func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
@@ -326,6 +342,11 @@ func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 
 // MonitorAtWindow gets the monitor in which the largest area of window resides,
 // or a monitor close to window if it is outside of all monitors.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
@@ -460,6 +481,11 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 // Deprecated: There is only one screen; use gdk_display_get_default_screen() to
 // get it.
+//
+// The function takes the following parameters:
+//
+//    - screenNum: screen number.
+//
 func (display *Display) Screen(screenNum int) *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
@@ -560,6 +586,11 @@ func (display *Display) IsClosed() bool {
 // KeyboardUngrab: release any keyboard grab
 //
 // Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - time_: timestap (e.g K_CURRENT_TIME).
+//
 func (display *Display) KeyboardUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
@@ -651,6 +682,12 @@ func (display *Display) ListSeats() []Seater {
 // GTK+ will call this function automatically for Window with custom
 // startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
+//
+// The function takes the following parameters:
+//
+//    - startupId: startup-notification identifier, for which notification
+//    process should be completed.
+//
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -688,6 +725,11 @@ func (display *Display) PointerIsGrabbed() bool {
 // PointerUngrab: release any pointer grab.
 //
 // Deprecated: Use gdk_device_ungrab(), together with gdk_device_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - time_: timestap (e.g. GDK_CURRENT_TIME).
+//
 func (display *Display) PointerUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
@@ -704,6 +746,11 @@ func (display *Display) PointerUngrab(time_ uint32) {
 // distance count as a double click and result in a K_2BUTTON_PRESS event). See
 // also gdk_display_set_double_click_time(). Applications should not set this,
 // it is a global user-configured setting.
+//
+// The function takes the following parameters:
+//
+//    - distance in pixels.
+//
 func (display *Display) SetDoubleClickDistance(distance uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
@@ -719,6 +766,11 @@ func (display *Display) SetDoubleClickDistance(distance uint) {
 // SetDoubleClickTime sets the double click time (two clicks within this time
 // interval count as a double click and result in a K_2BUTTON_PRESS event).
 // Applications should not set this, it is a global user-configured setting.
+//
+// The function takes the following parameters:
+//
+//    - msec: double click time in milliseconds (thousandths of a second).
+//
 func (display *Display) SetDoubleClickTime(msec uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
@@ -906,6 +958,13 @@ func (display *Display) Sync() {
 // support for the color picker in the ColorSelectionDialog.
 //
 // Deprecated: Use gdk_device_warp() instead.
+//
+// The function takes the following parameters:
+//
+//    - screen of display to warp the pointer to.
+//    - x coordinate of the destination.
+//    - y coordinate of the destination.
+//
 func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkScreen  // out

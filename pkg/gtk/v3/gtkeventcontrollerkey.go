@@ -62,6 +62,11 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	return _eventControllerKey
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
@@ -128,6 +133,11 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 	return _imContext
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out

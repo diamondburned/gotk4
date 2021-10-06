@@ -131,6 +131,11 @@ func (self *Accessible) AccessibleRole() AccessibleRole {
 }
 
 // ResetProperty resets the accessible property to its default value.
+//
+// The function takes the following parameters:
+//
+//    - property: GtkAccessibleProperty.
+//
 func (self *Accessible) ResetProperty(property AccessibleProperty) {
 	var _arg0 *C.GtkAccessible        // out
 	var _arg1 C.GtkAccessibleProperty // out
@@ -144,6 +149,11 @@ func (self *Accessible) ResetProperty(property AccessibleProperty) {
 }
 
 // ResetRelation resets the accessible relation to its default value.
+//
+// The function takes the following parameters:
+//
+//    - relation: GtkAccessibleRelation.
+//
 func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 	var _arg0 *C.GtkAccessible        // out
 	var _arg1 C.GtkAccessibleRelation // out
@@ -157,6 +167,11 @@ func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 }
 
 // ResetState resets the accessible state to its default value.
+//
+// The function takes the following parameters:
+//
+//    - state: GtkAccessibleState.
+//
 func (self *Accessible) ResetState(state AccessibleState) {
 	var _arg0 *C.GtkAccessible     // out
 	var _arg1 C.GtkAccessibleState // out
@@ -175,6 +190,12 @@ func (self *Accessible) ResetState(state AccessibleState) {
 // property change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - properties: array of GtkAccessibleProperty.
+//    - values: array of GValues, one for each property.
+//
 func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible         // out
 	var _arg2 *C.GtkAccessibleProperty // out
@@ -213,6 +234,12 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 // relation change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - relations: array of GtkAccessibleRelation.
+//    - values: array of GValues, one for each relation.
+//
 func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible         // out
 	var _arg2 *C.GtkAccessibleRelation // out
@@ -251,6 +278,12 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 // state change must be communicated to assistive technologies.
 //
 // This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - states: array of GtkAccessibleState.
+//    - values: array of GValues, one for each state.
+//
 func (self *Accessible) UpdateState(states []AccessibleState, values []externglib.Value) {
 	var _arg0 *C.GtkAccessible      // out
 	var _arg2 *C.GtkAccessibleState // out

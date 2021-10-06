@@ -101,6 +101,11 @@ func (plug *Plug) ID() string {
 // AtkPlug. In such a case, one can create, in addition to the standard
 // accessible object for the toplevel widget, an AtkPlug object, and make the
 // former the child of the latter by calling atk_plug_set_child().
+//
+// The function takes the following parameters:
+//
+//    - child to be set as accessible child of plug.
+//
 func (plug *Plug) SetChild(child *ObjectClass) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out

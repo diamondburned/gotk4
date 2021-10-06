@@ -133,6 +133,11 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to add.
+//
 func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
@@ -198,6 +203,11 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 }
 
 // RemoveWidget removes a widget from a GtkSizeGroup.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to remove.
+//
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
@@ -216,6 +226,11 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 // should all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL)
 // all have the same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should
 // all have the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
+//
+// The function takes the following parameters:
+//
+//    - mode to set for the size group.
+//
 func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 	var _arg0 *C.GtkSizeGroup    // out
 	var _arg1 C.GtkSizeGroupMode // out

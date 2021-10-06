@@ -124,6 +124,11 @@ func (toggle *CellRendererToggle) Radio() bool {
 }
 
 // SetActivatable makes the cell renderer activatable.
+//
+// The function takes the following parameters:
+//
+//    - setting: value to set.
+//
 func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out
@@ -139,6 +144,11 @@ func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 }
 
 // SetActive activates or deactivates a cell renderer.
+//
+// The function takes the following parameters:
+//
+//    - setting: value to set.
+//
 func (toggle *CellRendererToggle) SetActive(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out
@@ -159,6 +169,11 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 // cell renderer, or changed just before rendering each cell in the model (for
 // TreeView, you set up a per-row setting using TreeViewColumn to associate
 // model columns with cell renderer properties).
+//
+// The function takes the following parameters:
+//
+//    - radio: TRUE to make the toggle look like a radio button.
+//
 func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
 	var _arg1 C.gboolean               // out

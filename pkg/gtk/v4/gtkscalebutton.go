@@ -221,6 +221,11 @@ func (button *ScaleButton) Value() float64 {
 // GtkScaleButton’s scale.
 //
 // See gtk.Range.SetAdjustment() for details.
+//
+// The function takes the following parameters:
+//
+//    - adjustment: GtkAdjustment.
+//
 func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
@@ -234,6 +239,11 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 }
 
 // SetIcons sets the icons to be used by the scale button.
+//
+// The function takes the following parameters:
+//
+//    - icons: NULL-terminated array of icon names.
+//
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.char          // out
@@ -265,6 +275,11 @@ func (button *ScaleButton) SetIcons(icons []string) {
 //
 // The scale button emits the gtk.ScaleButton::value-changed signal if the value
 // changes.
+//
+// The function takes the following parameters:
+//
+//    - value: new value of the scale button.
+//
 func (button *ScaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.double          // out

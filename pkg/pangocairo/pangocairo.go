@@ -557,6 +557,12 @@ func (fontmap *FontMap) SetDefault() {
 // This is a scale factor between points specified in a PangoFontDescription and
 // Cairo units. The default value is 96, meaning that a 10 point font will be 13
 // units high. (10 * 96. / 72. = 13.3).
+//
+// The function takes the following parameters:
+//
+//    - dpi: resolution in "dots per inch". (Physical inches aren't actually
+//    involved; the terminology is conventional.).
+//
 func (fontmap *FontMap) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out

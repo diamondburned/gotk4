@@ -214,6 +214,11 @@ func (source *DragSource) Drag() gdk.Dragger {
 //
 // This function can be called before a drag is started, or in a handler for the
 // gtk.DragSource::prepare signal.
+//
+// The function takes the following parameters:
+//
+//    - actions to offer.
+//
 func (source *DragSource) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 C.GdkDragAction  // out
@@ -236,6 +241,11 @@ func (source *DragSource) SetActions(actions gdk.DragAction) {
 //
 // You may consider setting the content provider back to NULL in a
 // gtk.DragSource::drag-end signal handler.
+//
+// The function takes the following parameters:
+//
+//    - content: GdkContentProvider, or NULL.
+//
 func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
 	var _arg1 *C.GdkContentProvider // out
@@ -259,6 +269,13 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //
 // This function can be called before a drag is started, or in a
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin signal handler.
+//
+// The function takes the following parameters:
+//
+//    - paintable to use as icon, or NULL.
+//    - hotX: hotspot X coordinate on the icon.
+//    - hotY: hotspot Y coordinate on the icon.
+//
 func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 *C.GdkPaintable  // out

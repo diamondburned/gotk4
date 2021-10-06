@@ -164,6 +164,11 @@ func marshalInitabler(p uintptr) (interface{}, error) {
 // that sometimes returns an existing instance. In this pattern, a caller would
 // expect to be able to call g_initable_init() on the result of g_object_new(),
 // regardless of whether it is in fact a new instance.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (initable *Initable) Init(ctx context.Context) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out

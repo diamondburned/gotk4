@@ -293,6 +293,13 @@ func (mount *Mount) CanUnmount() bool {
 // callback.
 //
 // Deprecated: Use g_mount_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - callback or NULL.
+//
 func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -324,6 +331,11 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 // returned.
 //
 // Deprecated: Use g_mount_eject_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -348,6 +360,14 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 // EjectWithOperation ejects a mount. This is an asynchronous operation, and is
 // finished by calling g_mount_eject_with_operation_finish() with the mount and
 // Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -382,6 +402,11 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
 // during the operation, error will be set to contain the errors and FALSE will
 // be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -650,6 +675,14 @@ func (mount *Mount) Volume() Volumer {
 // the synchronous version), and is finished by calling
 // g_mount_guess_content_type_finish() with the mount and Result data returned
 // in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - forceRescan: whether to force a rescan of the content. Otherwise a
+//    cached result will be used if available.
+//    - callback: ReadyCallback.
+//
 func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -682,6 +715,11 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 // errors occurred during the operation, error will be set to contain the errors
 // and FALSE will be returned. In particular, you may get an
 // G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -729,6 +767,13 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 //
 // This is a synchronous operation and as such may block doing IO; see
 // g_mount_guess_content_type() for the asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - forceRescan: whether to force a rescan of the content. Otherwise a
+//    cached result will be used if available.
+//
 func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg2 *C.GCancellable // out
@@ -822,6 +867,14 @@ func (mount *Mount) IsShadowed() bool {
 // has been changed, as these may need a remount to take affect. While this is
 // semantically equivalent with unmounting and then remounting not all backends
 // might need to actually be unmounted.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -856,6 +909,11 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 // RemountFinish finishes remounting a mount. If any errors occurred during the
 // operation, error will be set to contain the errors and FALSE will be
 // returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -895,6 +953,13 @@ func (mount *Mount) Shadow() {
 // in the callback.
 //
 // Deprecated: Use g_mount_unmount_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback or NULL.
+//
 func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -926,6 +991,11 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 // returned.
 //
 // Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -950,6 +1020,14 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 // UnmountWithOperation unmounts a mount. This is an asynchronous operation, and
 // is finished by calling g_mount_unmount_with_operation_finish() with the mount
 // and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -984,6 +1062,11 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
 // occurred during the operation, error will be set to contain the errors and
 // FALSE will be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out

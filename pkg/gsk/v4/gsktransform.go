@@ -22,16 +22,16 @@ import "C"
 //
 // If string does not describe a valid transform, FALSE is returned and NULL is
 // put in out_transform.
-func TransformParse(_string string) (*Transform, bool) {
+func TransformParse(str string) (*Transform, bool) {
 	var _arg1 *C.char         // out
 	var _arg2 *C.GskTransform // in
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_transform_parse(_arg1, &_arg2)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _outTransform *Transform // out
 	var _ok bool                 // out

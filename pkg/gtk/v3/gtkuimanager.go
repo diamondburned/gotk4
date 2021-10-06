@@ -416,6 +416,17 @@ func NewUIManager() *UIManager {
 // before or after this item, depending on top.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - mergeId: merge id for the merged UI, see gtk_ui_manager_new_merge_id().
+//    - path: path.
+//    - name for the added UI element.
+//    - action: name of the action to be proxied, or NULL to add a separator.
+//    - typ: type of UI element to add.
+//    - top: if TRUE, the UI element is added before its siblings, otherwise it
+//    is added after its siblings.
+//
 func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.guint                // out
@@ -454,6 +465,11 @@ func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIM
 // it with the current contents of manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - filename: name of the file to parse.
+//
 func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -483,6 +499,11 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 // and merges it with the current contents of manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path of the file to parse.
+//
 func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -513,6 +534,12 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 // added if it is missing.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - buffer: string to parse.
+//    - length of buffer (may be -1 if buffer is nul-terminated).
+//
 func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -589,6 +616,11 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 // gtk_ui_manager_get_widget() for more information about paths.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - path: path.
+//
 func (manager *UIManager) Action(path string) *Action {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -660,6 +692,12 @@ func (manager *UIManager) AddTearoffs() bool {
 // Toplevels obtains a list of all toplevel widgets of the requested types.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - types specifies the types of toplevel widgets to include. Allowed types
+//    are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
+//
 func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 	var _arg0 *C.GtkUIManager        // out
 	var _arg1 C.GtkUIManagerItemType // out
@@ -732,6 +770,11 @@ func (manager *UIManager) Ui() string {
 // of the ui manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - path: path.
+//
 func (manager *UIManager) Widget(path string) Widgetter {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
@@ -772,6 +815,12 @@ func (manager *UIManager) Widget(path string) Widgetter {
 // action_group will be inserted at the end of the internal list.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - actionGroup: action group to be inserted.
+//    - pos: position at which the group will be inserted.
+//
 func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
@@ -811,6 +860,11 @@ func (manager *UIManager) NewMergeID() uint {
 // associated with manager.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - actionGroup: action group to be removed.
+//
 func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
@@ -826,6 +880,11 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 // RemoveUi unmerges the part of manager's content identified by merge_id.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
+//
 func (manager *UIManager) RemoveUi(mergeId uint) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.guint         // out
@@ -846,6 +905,11 @@ func (manager *UIManager) RemoveUi(mergeId uint) {
 //
 // Deprecated: Tearoff menus are deprecated and should not be used in newly
 // written code.
+//
+// The function takes the following parameters:
+//
+//    - addTearoffs: whether tearoff menu items are added.
+//
 func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.gboolean      // out

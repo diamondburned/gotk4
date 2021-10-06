@@ -123,6 +123,11 @@ func (screen *X11Screen) WindowManagerName() string {
 // window manager starts gdk_x11_screen_supports_net_wm_hint() will return FALSE
 // for every property. You can monitor the window_manager_changed signal on
 // X11Screen to detect a window manager change.
+//
+// The function takes the following parameters:
+//
+//    - propertyName: name of the WM property.
+//
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	var _arg0 *C.GdkX11Screen // out
 	var _arg1 *C.char         // out

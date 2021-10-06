@@ -265,6 +265,11 @@ func (self *NativeDialog) Run() int {
 // main application windows, use gtk_native_dialog_set_transient_for() to make
 // the dialog transient for the parent; most [window managers][gtk-X11-arch]
 // will then disallow lowering the dialog below the parent.
+//
+// The function takes the following parameters:
+//
+//    - modal: whether the window is modal.
+//
 func (self *NativeDialog) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 C.gboolean         // out
@@ -280,6 +285,11 @@ func (self *NativeDialog) SetModal(modal bool) {
 }
 
 // SetTitle sets the title of the NativeDialog.
+//
+// The function takes the following parameters:
+//
+//    - title of the dialog.
+//
 func (self *NativeDialog) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.char            // out
@@ -299,6 +309,11 @@ func (self *NativeDialog) SetTitle(title string) {
 // center the dialog over the main window.
 //
 // Passing NULL for parent unsets the current transient window.
+//
+// The function takes the following parameters:
+//
+//    - parent window, or NULL.
+//
 func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out

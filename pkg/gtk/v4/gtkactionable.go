@@ -186,6 +186,11 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 // Names are of the form “win.save” or “app.quit” for actions on the containing
 // GtkApplicationWindow or its associated GtkApplication, respectively. This is
 // the same form used for actions in the GMenu associated with the window.
+//
+// The function takes the following parameters:
+//
+//    - actionName: action name, or NULL.
+//
 func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out
@@ -218,6 +223,11 @@ func (actionable *Actionable) SetActionName(actionName string) {
 // change to that value. Since the action’s state is now equal to the target
 // value of the button, the button will now be rendered as active (and the other
 // buttons, with different targets, rendered inactive).
+//
+// The function takes the following parameters:
+//
+//    - targetValue to set as the target value, or NULL.
+//
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
@@ -237,6 +247,11 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 //
 // detailed_action_name is a string in the format accepted by
 // g_action_parse_detailed_name().
+//
+// The function takes the following parameters:
+//
+//    - detailedActionName: detailed action name.
+//
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.char          // out

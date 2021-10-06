@@ -92,6 +92,11 @@ func (window *X11Window) MoveToCurrentDesktop() {
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
+//
+// The function takes the following parameters:
+//
+//    - desktop: number of the workspace to move the window to.
+//
 func (window *X11Window) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -108,6 +113,14 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 // only works on GdkX11Window.
 //
 // Deprecated: Use gdk_window_set_shadow_width() instead.
+//
+// The function takes the following parameters:
+//
+//    - left extent.
+//    - right extent.
+//    - top extent.
+//    - bottom extent.
+//
 func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
@@ -135,6 +148,11 @@ func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 // synchronization, but if the window is not directly managed by the window
 // manager, then frame synchronziation may need to be disabled. This is the case
 // for a window embedded via the XEMBED protocol.
+//
+// The function takes the following parameters:
+//
+//    - frameSyncEnabled: whether frame-synchronization should be enabled.
+//
 func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -155,6 +173,11 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // Note that this property is automatically updated by GTK+, so this function
 // should only be used by applications which do not use GTK+ to create toplevel
 // windows.
+//
+// The function takes the following parameters:
+//
+//    - hideTitlebarWhenMaximized: whether to hide the titlebar when maximized.
+//
 func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -177,6 +200,11 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 // Note that this property is automatically updated by GTK+, so this function
 // should only be used by applications which do not use GTK+ to create toplevel
 // windows.
+//
+// The function takes the following parameters:
+//
+//    - variant: theme variant to export.
+//
 func (window *X11Window) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.char      // out
@@ -200,6 +228,11 @@ func (window *X11Window) SetThemeVariant(variant string) {
 //
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.
+//
+// The function takes the following parameters:
+//
+//    - timestamp: XServer timestamp to which the property should be set.
+//
 func (window *X11Window) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -215,6 +248,12 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given window is not a toplevel window,
 // it is ignored.
+//
+// The function takes the following parameters:
+//
+//    - name: property name, will be interned as an X atom.
+//    - value: property value, or NULL to delete.
+//
 func (window *X11Window) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out

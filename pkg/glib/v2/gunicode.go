@@ -1852,15 +1852,15 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 // UnicodeCanonicalOrdering computes the canonical ordering of a string
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
-func UnicodeCanonicalOrdering(_string *uint32, len uint) {
+func UnicodeCanonicalOrdering(str *uint32, len uint) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.gsize     // out
 
-	_arg1 = (*C.gunichar)(unsafe.Pointer(_string))
+	_arg1 = (*C.gunichar)(unsafe.Pointer(str))
 	_arg2 = C.gsize(len)
 
 	C.g_unicode_canonical_ordering(_arg1, _arg2)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(len)
 }
 

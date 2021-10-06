@@ -205,6 +205,13 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 // Presenting may fail, for example if the popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
 // gdk.Surface::layout signal will not me emitted.
+//
+// The function takes the following parameters:
+//
+//    - width: unconstrained popup width to layout.
+//    - height: unconstrained popup height to layout.
+//    - layout: GdkPopupLayout object used to layout.
+//
 func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out

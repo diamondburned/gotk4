@@ -309,6 +309,11 @@ func (button *Button) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of button.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (button *Button) SetChild(child Widgetter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
@@ -326,6 +331,11 @@ func (button *Button) SetChild(child Widgetter) {
 // SetHasFrame sets the style of the button.
 //
 // Buttons can has a flat appearance or have a frame drawn around them.
+//
+// The function takes the following parameters:
+//
+//    - hasFrame: whether the button should have a visible frame.
+//
 func (button *Button) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out
@@ -344,6 +354,11 @@ func (button *Button) SetHasFrame(hasFrame bool) {
 //
 // If button already contains a child widget, that child widget will be removed
 // and replaced with the image.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (button *Button) SetIconName(iconName string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
@@ -360,6 +375,11 @@ func (button *Button) SetIconName(iconName string) {
 // SetLabel sets the text of the label of the button to label.
 //
 // This will also clear any previously set labels.
+//
+// The function takes the following parameters:
+//
+//    - label: string.
+//
 func (button *Button) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.char      // out
@@ -377,6 +397,11 @@ func (button *Button) SetLabel(label string) {
 //
 // If true, an underline in the text of the button label indicates the next
 // character should be used for the mnemonic accelerator key.
+//
+// The function takes the following parameters:
+//
+//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//
 func (button *Button) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 C.gboolean   // out

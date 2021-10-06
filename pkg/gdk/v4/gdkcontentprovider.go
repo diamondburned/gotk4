@@ -199,6 +199,11 @@ func (provider *ContentProvider) ContentChanged() {
 // returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
 // not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
 // reported.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue to fill.
+//
 func (provider *ContentProvider) Value(value *externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
@@ -283,6 +288,15 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given stream will not be closed.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - mimeType: mime type to provide the data in.
+//    - stream: GOutputStream to write to.
+//    - ioPriority: i/O priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg4 *C.GCancellable       // out
@@ -319,6 +333,11 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 // WriteMIMETypeFinish finishes an asynchronous write operation.
 //
 // See gdk.ContentProvider.WriteMIMETypeAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GAsyncResult       // out

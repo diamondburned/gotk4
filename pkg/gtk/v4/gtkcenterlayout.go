@@ -179,6 +179,11 @@ func (self *CenterLayout) StartWidget() Widgetter {
 }
 
 // SetBaselinePosition sets the new baseline position of self.
+//
+// The function takes the following parameters:
+//
+//    - baselinePosition: new baseline position.
+//
 func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
 	var _arg0 *C.GtkCenterLayout    // out
 	var _arg1 C.GtkBaselinePosition // out
@@ -194,6 +199,11 @@ func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition)
 // SetCenterWidget sets the new center widget of self.
 //
 // To remove the existing center widget, pass NULL.
+//
+// The function takes the following parameters:
+//
+//    - widget: new center widget.
+//
 func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
@@ -211,6 +221,11 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 // SetEndWidget sets the new end widget of self.
 //
 // To remove the existing center widget, pass NULL.
+//
+// The function takes the following parameters:
+//
+//    - widget: new end widget.
+//
 func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out
@@ -226,6 +241,11 @@ func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 }
 
 // SetOrientation sets the orientation of self.
+//
+// The function takes the following parameters:
+//
+//    - orientation: new orientation.
+//
 func (self *CenterLayout) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 C.GtkOrientation   // out
@@ -241,6 +261,11 @@ func (self *CenterLayout) SetOrientation(orientation Orientation) {
 // SetStartWidget sets the new start widget of self.
 //
 // To remove the existing start widget, pass NULL.
+//
+// The function takes the following parameters:
+//
+//    - widget: new start widget.
+//
 func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	var _arg0 *C.GtkCenterLayout // out
 	var _arg1 *C.GtkWidget       // out

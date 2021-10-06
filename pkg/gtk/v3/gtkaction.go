@@ -223,6 +223,11 @@ func (action *Action) ConnectAccelerator() {
 //
 // Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
 // gtk_container_add() to add a Image to a Button.
+//
+// The function takes the following parameters:
+//
+//    - iconSize: size of the icon (IconSize) that should be created.
+//
 func (action *Action) CreateIcon(iconSize int) Widgetter {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
@@ -757,6 +762,11 @@ func (action *Action) IsVisible() bool {
 //
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - accelGroup or NULL.
+//
 func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkAction     // out
 	var _arg1 *C.GtkAccelGroup // out
@@ -781,6 +791,11 @@ func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 //
 // Deprecated: Use #GAction and the accelerator path on an associated Menu
 // instead.
+//
+// The function takes the following parameters:
+//
+//    - accelPath: accelerator path.
+//
 func (action *Action) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -802,6 +817,11 @@ func (action *Action) SetAccelPath(accelPath string) {
 //
 // Deprecated: Use g_menu_item_set_icon() on a Item instead, if the item should
 // have an image.
+//
+// The function takes the following parameters:
+//
+//    - alwaysShow: TRUE if menuitem proxies should always show their image.
+//
 func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
@@ -821,6 +841,11 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
+//
+// The function takes the following parameters:
+//
+//    - icon to set.
+//
 func (action *Action) SetGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
@@ -838,6 +863,11 @@ func (action *Action) SetGIcon(icon gio.Iconner) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name to set.
+//
 func (action *Action) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -856,6 +886,11 @@ func (action *Action) SetIconName(iconName string) {
 //
 // Deprecated: Use #GAction instead, and control and monitor whether labels are
 // shown directly.
+//
+// The function takes the following parameters:
+//
+//    - isImportant: TRUE to make the action important.
+//
 func (action *Action) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
@@ -875,6 +910,11 @@ func (action *Action) SetIsImportant(isImportant bool) {
 // Deprecated: Use #GAction instead, and set a label on a menu item with
 // g_menu_item_set_label(). For Actionable widgets, use the widget-specific API
 // to set a label.
+//
+// The function takes the following parameters:
+//
+//    - label text to set.
+//
 func (action *Action) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -893,6 +933,11 @@ func (action *Action) SetLabel(label string) {
 // gtk_action_is_sensitive() for that.
 //
 // Deprecated: Use g_simple_action_set_enabled() on a Action instead.
+//
+// The function takes the following parameters:
+//
+//    - sensitive: TRUE to make the action sensitive.
+//
 func (action *Action) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
@@ -910,6 +955,11 @@ func (action *Action) SetSensitive(sensitive bool) {
 // SetShortLabel sets a shorter label text on action.
 //
 // Deprecated: Use #GAction instead, which has no equivalent of short labels.
+//
+// The function takes the following parameters:
+//
+//    - shortLabel: label text to set.
+//
 func (action *Action) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -926,6 +976,11 @@ func (action *Action) SetShortLabel(shortLabel string) {
 // SetStockID sets the stock id on action
 //
 // Deprecated: Use #GAction instead, which has no equivalent of stock items.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock id.
+//
 func (action *Action) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -943,6 +998,11 @@ func (action *Action) SetStockID(stockId string) {
 //
 // Deprecated: Use #GAction instead, and set tooltips on associated Actionable
 // widgets with gtk_widget_set_tooltip_text().
+//
+// The function takes the following parameters:
+//
+//    - tooltip text.
+//
 func (action *Action) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.gchar     // out
@@ -962,6 +1022,11 @@ func (action *Action) SetTooltip(tooltip string) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the state of
 // Actionable widgets directly.
+//
+// The function takes the following parameters:
+//
+//    - visible: TRUE to make the action visible.
+//
 func (action *Action) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
@@ -980,6 +1045,11 @@ func (action *Action) SetVisible(visible bool) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
+//
+// The function takes the following parameters:
+//
+//    - visibleHorizontal: whether the action is visible horizontally.
+//
 func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out
@@ -998,6 +1068,11 @@ func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 //
 // Deprecated: Use #GAction instead, and control and monitor the visibility of
 // associated widgets and menu items directly.
+//
+// The function takes the following parameters:
+//
+//    - visibleVertical: whether the action is visible vertically.
+//
 func (action *Action) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 C.gboolean   // out

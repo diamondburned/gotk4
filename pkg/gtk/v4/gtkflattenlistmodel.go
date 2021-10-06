@@ -97,6 +97,11 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 }
 
 // ModelForItem returns the model containing the item at the given position.
+//
+// The function takes the following parameters:
+//
+//    - position: position.
+//
 func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
@@ -129,6 +134,11 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 }
 
 // SetModel sets a new model to be flattened.
+//
+// The function takes the following parameters:
+//
+//    - model: new model or NULL.
+//
 func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 *C.GListModel          // out

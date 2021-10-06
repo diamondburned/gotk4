@@ -150,6 +150,11 @@ func (stream *PollableInputStream) CanPoll() bool {
 // may not actually be readable even after the source triggers, so you should
 // use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
@@ -214,6 +219,12 @@ func (stream *PollableInputStream) IsReadable() bool {
 // to cancel it. However, it will return an error if cancellable has already
 // been cancelled when you call, which may happen if you call this method after
 // a source triggers due to having been cancelled.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - buffer to read data into (which should be at least count bytes long).
+//
 func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg3 *C.GCancellable         // out

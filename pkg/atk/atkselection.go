@@ -117,6 +117,11 @@ func marshalSelectioner(p uintptr) (interface{}, error) {
 
 // AddSelection adds the specified accessible child of the object to the
 // object's selection.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the child index.
+//
 func (selection *Selection) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -184,6 +189,11 @@ func (selection *Selection) SelectionCount() int {
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the child index.
+//
 func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -210,6 +220,12 @@ func (selection *Selection) IsChildSelected(i int) bool {
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the index in the selection set. (e.g. the ith selection as
+//    opposed to the ith child).
+//
 func (selection *Selection) RefSelection(i int) *ObjectClass {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -233,6 +249,12 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 
 // RemoveSelection removes the specified child of the object from the object's
 // selection.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the index in the selection set. (e.g. the ith selection as
+//    opposed to the ith child).
+//
 func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out

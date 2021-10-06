@@ -658,6 +658,13 @@ func marshalMenuModeller(p uintptr) (interface{}, error) {
 //
 // If the attribute does not exist, or does not match the expected type then
 // NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - itemIndex: index of the item.
+//    - attribute to query.
+//    - expectedType: expected type of the attribute, or NULL.
+//
 func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
@@ -699,6 +706,12 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 //
 // If the link exists, the linked Model is returned. If the link does not exist,
 // NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - itemIndex: index of the item.
+//    - link to query.
+//
 func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -787,6 +800,13 @@ func (model *MenuModel) IsMutable() bool {
 // not in response to calls -- particularly those from the Model API. Said
 // another way: the menu must not change while user code is running without
 // returning to the mainloop.
+//
+// The function takes the following parameters:
+//
+//    - position of the change.
+//    - removed: number of items removed.
+//    - added: number of items added.
+//
 func (model *MenuModel) ItemsChanged(position, removed, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -809,6 +829,11 @@ func (model *MenuModel) ItemsChanged(position, removed, added int) {
 // of the item at position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
+//
+// The function takes the following parameters:
+//
+//    - itemIndex: index of the item.
+//
 func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
@@ -844,6 +869,11 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 // position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
+//
+// The function takes the following parameters:
+//
+//    - itemIndex: index of the item.
+//
 func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out

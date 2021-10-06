@@ -109,6 +109,14 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // default color and gray palettes from the color chooser.
 //
 // If colors is NULL, removes all previously added palettes.
+//
+// The function takes the following parameters:
+//
+//    - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
+//    displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+//    - colorsPerLine: number of colors to show in each row/column.
+//    - colors of the palette, or NULL.
+//
 func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GtkOrientation   // out
@@ -168,6 +176,11 @@ func (chooser *ColorChooser) UseAlpha() bool {
 }
 
 // SetRGBA sets the color.
+//
+// The function takes the following parameters:
+//
+//    - color: new color.
+//
 func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
@@ -182,6 +195,11 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
+//
+// The function takes the following parameters:
+//
+//    - useAlpha: TRUE if color chooser should use alpha channel, FALSE if not.
+//
 func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out

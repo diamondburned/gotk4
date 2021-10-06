@@ -176,6 +176,11 @@ func (list *ListModel) NItems() uint {
 //
 // NULL is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
+//
+// The function takes the following parameters:
+//
+//    - position of the item to fetch.
+//
 func (list *ListModel) Item(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
@@ -215,6 +220,13 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 // accesses to the model via the API, without returning to the mainloop, and
 // without calling other code, will continue to view the same contents of the
 // model.
+//
+// The function takes the following parameters:
+//
+//    - position at which list changed.
+//    - removed: number of items removed.
+//    - added: number of items added.
+//
 func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out

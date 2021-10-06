@@ -138,6 +138,12 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 // still block for a brief period of time (eg, trying to do multicast DNS on the
 // local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connectable: Connectable.
+//
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
@@ -174,6 +180,13 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //
 // When the operation is finished, callback will be called. You can then call
 // g_network_monitor_can_reach_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - connectable: Connectable.
+//    - callback to call when the request is satisfied.
+//
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
@@ -202,6 +215,11 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 
 // CanReachFinish finishes an async network connectivity test. See
 // g_network_monitor_can_reach_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out

@@ -113,6 +113,11 @@ func marshalVFSer(p uintptr) (interface{}, error) {
 }
 
 // FileForPath gets a #GFile for path.
+//
+// The function takes the following parameters:
+//
+//    - path: string containing a VFS path.
+//
 func (vfs *VFS) FileForPath(path string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -149,6 +154,11 @@ func (vfs *VFS) FileForPath(path string) Filer {
 //
 // This operation never fails, but the returned object might not support any I/O
 // operation if the URI is malformed or if the URI scheme is not supported.
+//
+// The function takes the following parameters:
+//
+//    - uri: string containing a URI.
+//
 func (vfs *VFS) FileForURI(uri string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -232,6 +242,11 @@ func (vfs *VFS) IsActive() bool {
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the parse_name cannot be parsed by the #GVfs
 // module.
+//
+// The function takes the following parameters:
+//
+//    - parseName: string to be parsed by the VFS module.
+//
 func (vfs *VFS) ParseName(parseName string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -284,6 +299,13 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 //
 // It's an error to call this function twice with the same scheme. To unregister
 // a custom URI scheme, use g_vfs_unregister_uri_scheme().
+//
+// The function takes the following parameters:
+//
+//    - scheme: URI scheme, e.g. "http".
+//    - uriFunc: FileLookupFunc.
+//    - parseNameFunc: FileLookupFunc.
+//
 func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
 	var _arg0 *C.GVfs              // out
 	var _arg1 *C.char              // out
@@ -326,6 +348,11 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileL
 
 // UnregisterURIScheme unregisters the URI handler for scheme previously
 // registered with g_vfs_register_uri_scheme().
+//
+// The function takes the following parameters:
+//
+//    - scheme: URI scheme, e.g. "http".
+//
 func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out

@@ -71,6 +71,11 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 	return _containerCellAccessible
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
@@ -106,6 +111,11 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	return _list
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out

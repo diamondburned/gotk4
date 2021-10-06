@@ -128,6 +128,11 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: name of a MIME type.
+//
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
@@ -142,6 +147,11 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
+//
+// The function takes the following parameters:
+//
+//    - pattern: shell style glob.
+//
 func (filter *FileFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
@@ -227,6 +237,11 @@ func (filter *FileFilter) Name() string {
 //
 // This is the string that will be displayed in the file chooser if there is a
 // selectable list of filters.
+//
+// The function takes the following parameters:
+//
+//    - name for the filter, or NULL to remove any existing name.
+//
 func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out

@@ -195,6 +195,11 @@ func (stream *IOStream) ClearPending() {
 //
 // The default implementation of this method just calls close on the individual
 // input/output streams.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *IOStream) Close(ctx context.Context) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
@@ -229,6 +234,13 @@ func (stream *IOStream) Close(ctx context.Context) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional cancellable object.
+//    - ioPriority: io priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg2 *C.GCancellable       // out
@@ -256,6 +268,11 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 }
 
 // CloseFinish closes a stream.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
@@ -400,6 +417,15 @@ func (stream *IOStream) SetPending() error {
 //
 // When the operation is finished callback will be called. You can then call
 // g_io_stream_splice_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - stream2: OStream.
+//    - flags: set of OStreamSpliceFlags.
+//    - ioPriority: io priority of the request.
+//    - callback: ReadyCallback.
+//
 func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
 	var _arg4 *C.GCancellable        // out

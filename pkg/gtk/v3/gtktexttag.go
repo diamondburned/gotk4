@@ -79,6 +79,11 @@ func NewTextTag(name string) *TextTag {
 //
 // The signal is already emitted when setting a TextTag property. This function
 // is useful for a TextTag subclass.
+//
+// The function takes the following parameters:
+//
+//    - sizeChanged: whether the change affects the TextView layout.
+//
 func (tag *TextTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
@@ -120,6 +125,11 @@ func (tag *TextTag) Priority() int {
 // which they were added to the table, or created with
 // gtk_text_buffer_create_tag(), which adds the tag to the buffer’s table
 // automatically.
+//
+// The function takes the following parameters:
+//
+//    - priority: new priority.
+//
 func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gint        // out

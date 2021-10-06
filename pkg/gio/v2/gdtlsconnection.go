@@ -244,6 +244,11 @@ func marshalDTLSConnectioner(p uintptr) (interface{}, error) {
 // If cancellable is cancelled, the Connection may be left partially-closed and
 // any pending untransmitted data may be lost. Call g_dtls_connection_close()
 // again to complete closing the Connection.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (conn *DTLSConnection) Close(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -271,6 +276,13 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 
 // CloseAsync: asynchronously close the DTLS connection. See
 // g_dtls_connection_close() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the close operation is complete.
+//
 func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
@@ -299,6 +311,11 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, call
 
 // CloseFinish: finish an asynchronous TLS close operation. See
 // g_dtls_connection_close() for more information.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -322,6 +339,12 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 
 // EmitAcceptCertificate: used by Connection implementations to emit the
 // Connection::accept-certificate signal.
+//
+// The function takes the following parameters:
+//
+//    - peerCert peer's Certificate.
+//    - errors problems with peer_cert.
+//
 func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GDtlsConnection     // out
 	var _arg1 *C.GTlsCertificate     // out
@@ -388,6 +411,11 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 // backend). It does not guarantee that the data will be available though. That
 // could happen if TLS connection does not support type or the binding data is
 // not available yet due to additional negotiation or input required.
+//
+// The function takes the following parameters:
+//
+//    - typ type of data to fetch.
+//
 func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GDtlsConnection       // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -604,6 +632,11 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 // do anything.
 //
 // Connection::accept_certificate may be emitted during the handshake.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -631,6 +664,13 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 
 // HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 // g_dtls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the handshake is complete.
+//
 func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
@@ -659,6 +699,11 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, 
 
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_dtls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -691,6 +736,12 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 // See IANA TLS ALPN Protocol IDs
 // (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 // for a list of registered protocol IDs.
+//
+// The function takes the following parameters:
+//
+//    - protocols: NULL-terminated array of ALPN protocol names (eg,
+//    "http/1.1", "h2"), or NULL.
+//
 func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 **C.gchar          // out
@@ -730,6 +781,11 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 // a certificate; in that case, if you don't provide a certificate, you can tell
 // that the server requested one by the fact that
 // g_dtls_client_connection_get_accepted_cas() will return non-NULL.).
+//
+// The function takes the following parameters:
+//
+//    - certificate to use for conn.
+//
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out
@@ -749,6 +805,11 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 // Connection::accept-certificate will always be emitted on client-side
 // connections, unless that bit is not set in
 // ClientConnection:validation-flags).
+//
+// The function takes the following parameters:
+//
+//    - database: Database.
+//
 func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsDatabase    // out
@@ -769,6 +830,11 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 // The interaction argument will normally be a derived subclass of Interaction.
 // NULL can also be provided if no user interaction should occur for this
 // connection.
+//
+// The function takes the following parameters:
+//
+//    - interaction object, or NULL.
+//
 func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsInteraction // out
@@ -791,6 +857,11 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 // Deprecated: Changing the rehandshake mode is no longer required for
 // compatibility. Also, rehandshaking has been removed from the TLS protocol in
 // TLS 1.3.
+//
+// The function takes the following parameters:
+//
+//    - mode: rehandshaking mode.
+//
 func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.GTlsRehandshakeMode // out
@@ -824,6 +895,11 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // this will send a close notification regardless of the setting of this
 // property. If you explicitly want to do an unclean close, you can close conn's
 // Connection:base-socket rather than closing conn itself.
+//
+// The function takes the following parameters:
+//
+//    - requireCloseNotify: whether or not to require close notification.
+//
 func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
@@ -854,6 +930,13 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // If cancellable is cancelled, the Connection may be left partially-closed and
 // any pending untransmitted data may be lost. Call g_dtls_connection_shutdown()
 // again to complete closing the Connection.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - shutdownRead: TRUE to stop reception of incoming datagrams.
+//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//
 func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg3 *C.GCancellable    // out
@@ -891,6 +974,15 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 
 // ShutdownAsync: asynchronously shut down part or all of the DTLS connection.
 // See g_dtls_connection_shutdown() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - shutdownRead: TRUE to stop reception of incoming datagrams.
+//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the shutdown operation is complete.
+//
 func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg4 *C.GCancellable       // out
@@ -929,6 +1021,11 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shu
 
 // ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 // g_dtls_connection_shutdown() for more information.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out

@@ -132,6 +132,11 @@ func NewPaned(orientation Orientation) *Paned {
 
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to gtk_paned_pack1 (paned, child, FALSE, TRUE).
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//
 func (paned *Paned) Add1(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
@@ -146,6 +151,11 @@ func (paned *Paned) Add1(child Widgetter) {
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
 // is equivalent to gtk_paned_pack2 (paned, child, TRUE, TRUE).
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//
 func (paned *Paned) Add2(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
@@ -282,6 +292,13 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // Pack1 adds a child to the top or left pane.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//    - resize: should this child expand when the paned widget is resized.
+//    - shrink: can this child be made smaller than its requisition.
+//
 func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
@@ -305,6 +322,13 @@ func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//    - resize: should this child expand when the paned widget is resized.
+//    - shrink: can this child be made smaller than its requisition.
+//
 func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
@@ -328,6 +352,12 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 }
 
 // SetPosition sets the position of the divider between the two panes.
+//
+// The function takes the following parameters:
+//
+//    - position: pixel position of divider, a negative value means that the
+//    position is unset.
+//
 func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gint      // out
@@ -341,6 +371,11 @@ func (paned *Paned) SetPosition(position int) {
 }
 
 // SetWideHandle sets the Paned:wide-handle property.
+//
+// The function takes the following parameters:
+//
+//    - wide: new value for the Paned:wide-handle property.
+//
 func (paned *Paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out

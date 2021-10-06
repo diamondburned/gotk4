@@ -181,6 +181,12 @@ func NewRecentManager() *RecentManager {
 // viewing the item instead of the last component of the URI; a short
 // description of the item; whether the item should be considered private - that
 // is, should be displayed only by the applications that have registered it.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//    - recentData: metadata of the resource.
+//
 func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -215,6 +221,11 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 //
 // See gtk_recent_manager_add_full() if you want to explicitly define the
 // metadata for the resource pointed by uri.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//
 func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -268,6 +279,11 @@ func (manager *RecentManager) Items() []*RecentInfo {
 
 // HasItem checks whether there is a recently used resource registered with uri
 // inside the recent manager.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
 func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -293,6 +309,11 @@ func (manager *RecentManager) HasItem(uri string) bool {
 // LookupItem searches for a URI inside the recently used resources list, and
 // returns a RecentInfo-struct containing informations about the resource like
 // its MIME type, or its display name.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
 func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -331,6 +352,13 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 //
 // Please note that this function will not affect the resource pointed by the
 // URIs, but only the URI used in the recently used resources list.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI of a recently used resource.
+//    - newUri: new URI of the recently used resource, or NULL to remove the
+//    item pointed by uri in the list.
+//
 func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -383,6 +411,11 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 
 // RemoveItem removes a resource pointed by uri from the recently used resources
 // list handled by a recent manager.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI of the item you wish to remove.
+//
 func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out

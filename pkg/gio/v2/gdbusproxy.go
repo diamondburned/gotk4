@@ -317,6 +317,19 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
 // G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - methodName: name of method to invoke.
+//    - parameters tuple with parameters for the signal or NULL if not passing
+//    parameters.
+//    - flags flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
+//    or -1 to use the proxy default timeout.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result of the method invocation.
+//
 func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg5 *C.GCancellable       // out
@@ -356,6 +369,11 @@ func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters 
 }
 
 // CallFinish finishes an operation started with g_dbus_proxy_call().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to g_dbus_proxy_call().
+//
 func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
@@ -417,6 +435,17 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 // If proxy has an expected interface (see BusProxy:g-interface-info) and
 // method_name is referenced by it, then the return value is checked against the
 // return type.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - methodName: name of method to invoke.
+//    - parameters tuple with parameters for the signal or NULL if not passing
+//    parameters.
+//    - flags flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
+//    or -1 to use the proxy default timeout.
+//
 func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg5 *C.GCancellable  // out
@@ -469,6 +498,20 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 // CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList object.
 //
 // This method is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - methodName: name of method to invoke.
+//    - parameters tuple with parameters for the signal or NULL if not passing
+//    parameters.
+//    - flags flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
+//    or -1 to use the proxy default timeout.
+//    - fdList or NULL.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result of the method invocation.
+//
 func (proxy *DBusProxy) CallWithUnixFdList(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg6 *C.GCancellable       // out
@@ -514,6 +557,12 @@ func (proxy *DBusProxy) CallWithUnixFdList(ctx context.Context, methodName strin
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_proxy_call_with_unix_fd_list().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_proxy_call_with_unix_fd_list().
+//
 func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GUnixFDList  // in
@@ -553,6 +602,18 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 // returns FDList objects.
 //
 // This method is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - methodName: name of method to invoke.
+//    - parameters tuple with parameters for the signal or NULL if not passing
+//    parameters.
+//    - flags flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
+//    or -1 to use the proxy default timeout.
+//    - fdList or NULL.
+//
 func (proxy *DBusProxy) CallWithUnixFdListSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg7 *C.GCancellable  // out
@@ -618,6 +679,11 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(ctx context.Context, methodName s
 // If proxy has an expected interface (see BusProxy:g-interface-info) and
 // property_name is referenced by it, then value is checked against the type of
 // the property.
+//
+// The function takes the following parameters:
+//
+//    - propertyName: property name.
+//
 func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -865,6 +931,12 @@ func (proxy *DBusProxy) ObjectPath() string {
 // to only transmit the delta using e.g. signals
 // ChatroomParticipantJoined(String name) and ChatroomParticipantParted(String
 // name).
+//
+// The function takes the following parameters:
+//
+//    - propertyName: property name.
+//    - value: value for the property or NULL to remove it from the cache.
+//
 func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -888,6 +960,11 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 // g_dbus_proxy_call_sync() functions.
 //
 // See the BusProxy:g-default-timeout property for more details.
+//
+// The function takes the following parameters:
+//
+//    - timeoutMsec: timeout in milliseconds.
+//
 func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
@@ -902,6 +979,11 @@ func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 
 // SetInterfaceInfo: ensure that interactions with proxy conform to the given
 // interface. See the BusProxy:g-interface-info property for more details.
+//
+// The function takes the following parameters:
+//
+//    - info: minimum interface this proxy conforms to or NULL to unset.
+//
 func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out

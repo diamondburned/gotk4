@@ -251,6 +251,11 @@ func (colorsel *ColorSelection) IsAdjusting() bool {
 //
 // The first time this is called, it will also set the original opacity to be
 // alpha too.
+//
+// The function takes the following parameters:
+//
+//    - alpha: integer between 0 and 65535.
+//
 func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.guint16            // out
@@ -269,6 +274,11 @@ func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 // color too.
 //
 // Deprecated: Use gtk_color_selection_set_current_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - color to set the current color with.
+//
 func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
@@ -285,6 +295,11 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 //
 // The first time this is called, it will also set the original color to be rgba
 // too.
+//
+// The function takes the following parameters:
+//
+//    - rgba to set the current color with.
+//
 func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out
@@ -298,6 +313,11 @@ func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 }
 
 // SetHasOpacityControl sets the colorsel to use or not use opacity.
+//
+// The function takes the following parameters:
+//
+//    - hasOpacity: TRUE if colorsel can set the opacity, FALSE otherwise.
+//
 func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.gboolean           // out
@@ -314,6 +334,11 @@ func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 
 // SetHasPalette shows and hides the palette based upon the value of
 // has_palette.
+//
+// The function takes the following parameters:
+//
+//    - hasPalette: TRUE if palette is to be visible, FALSE otherwise.
+//
 func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.gboolean           // out
@@ -332,6 +357,11 @@ func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 //
 // This function should be called with some hesitations, as it might seem
 // confusing to have that alpha change.
+//
+// The function takes the following parameters:
+//
+//    - alpha: integer between 0 and 65535.
+//
 func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 C.guint16            // out
@@ -352,6 +382,11 @@ func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 // time it is called.
 //
 // Deprecated: Use gtk_color_selection_set_previous_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - color to set the previous color with.
+//
 func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkColor          // out
@@ -370,6 +405,11 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 // confusing to have that color change. Calling
 // gtk_color_selection_set_current_rgba() will also set this color the first
 // time it is called.
+//
+// The function takes the following parameters:
+//
+//    - rgba to set the previous color with.
+//
 func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkColorSelection // out
 	var _arg1 *C.GdkRGBA           // out

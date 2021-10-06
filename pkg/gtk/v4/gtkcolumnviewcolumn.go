@@ -271,6 +271,11 @@ func (self *ColumnViewColumn) Visible() bool {
 //
 // The extra space is shared equally amongst all columns that have the expand
 // set to TRUE.
+//
+// The function takes the following parameters:
+//
+//    - expand: TRUE if this column should expand to fill available sace.
+//
 func (self *ColumnViewColumn) SetExpand(expand bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
@@ -287,6 +292,11 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 
 // SetFactory sets the GtkListItemFactory to use for populating list items for
 // this column.
+//
+// The function takes the following parameters:
+//
+//    - factory to use or NULL for none.
+//
 func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkListItemFactory  // out
@@ -306,6 +316,11 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 //
 // Setting a fixed width overrides the automatically calculated width.
 // Interactive resizing also sets the “fixed-width” property.
+//
+// The function takes the following parameters:
+//
+//    - fixedWidth: new fixed width, or -1.
+//
 func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.int                  // out
@@ -320,6 +335,11 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for
 // the column header.
+//
+// The function takes the following parameters:
+//
+//    - menu: GMenuModel, or NULL.
+//
 func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GMenuModel          // out
@@ -335,6 +355,11 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 }
 
 // SetResizable sets whether this column should be resizable by dragging.
+//
+// The function takes the following parameters:
+//
+//    - resizable: whether this column should be resizable.
+//
 func (self *ColumnViewColumn) SetResizable(resizable bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
@@ -359,6 +384,11 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 //
 // See gtk.ColumnView.GetSorter() for the necessary steps for setting up
 // customizable sorting for gtk.ColumnView.
+//
+// The function takes the following parameters:
+//
+//    - sorter: GtkSorter to associate with column.
+//
 func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkSorter           // out
@@ -377,6 +407,11 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 //
 // The title is displayed in the header of a GtkColumnView for this column and
 // is therefore user-facing text that should be translated.
+//
+// The function takes the following parameters:
+//
+//    - title: title to use for this column.
+//
 func (self *ColumnViewColumn) SetTitle(title string) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.char                // out
@@ -393,6 +428,11 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 }
 
 // SetVisible sets whether this column should be visible in views.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether this column should be visible.
+//
 func (self *ColumnViewColumn) SetVisible(visible bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out

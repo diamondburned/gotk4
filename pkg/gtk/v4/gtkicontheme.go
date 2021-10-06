@@ -311,6 +311,11 @@ func NewIconTheme() *IconTheme {
 //
 // This function should be used to make application-specific icons available as
 // part of the icon theme.
+//
+// The function takes the following parameters:
+//
+//    - path: resource path.
+//
 func (self *IconTheme) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
@@ -327,6 +332,11 @@ func (self *IconTheme) AddResourcePath(path string) {
 // AddSearchPath appends a directory to the search path.
 //
 // See gtk.IconTheme.SetSearchPath().
+//
+// The function takes the following parameters:
+//
+//    - path: directory name to append to the icon path.
+//
 func (self *IconTheme) AddSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
@@ -400,6 +410,11 @@ func (self *IconTheme) IconNames() []string {
 //
 // A size of -1 means that the icon is available in a scalable format. The array
 // is zero-terminated.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of an icon.
+//
 func (self *IconTheme) IconSizes(iconName string) []int {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
@@ -525,6 +540,11 @@ func (self *IconTheme) ThemeName() string {
 
 // HasGIcon checks whether an icon theme includes an icon for a particular
 // GIcon.
+//
+// The function takes the following parameters:
+//
+//    - gicon: GIcon.
+//
 func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
@@ -547,6 +567,11 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 }
 
 // HasIcon checks whether an icon theme includes an icon for a particular name.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of an icon.
+//
 func (self *IconTheme) HasIcon(iconName string) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
@@ -573,6 +598,15 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
+//
+// The function takes the following parameters:
+//
+//    - icon: GIcon to look up.
+//    - size: desired icon size.
+//    - scale: desired scale.
+//    - direction: text direction the icon will be displayed in.
+//    - flags modifying the behavior of the icon lookup.
+//
 func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
@@ -620,6 +654,16 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, directio
 // Note that you probably want to listen for icon theme changes and update the
 // icon. This is usually done by overriding the GtkWidgetClass.css-changed()
 // function.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of the icon to lookup.
+
+//    - size: desired icon size.
+//    - scale: window scale this will be displayed on.
+//    - direction: text direction the icon will be displayed in.
+//    - flags modifying the behavior of the icon lookup.
+//
 func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.char              // out
@@ -681,6 +725,12 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, sca
 // icon name. (This is legacy feature, and new icons should be put into the
 // fallback icon theme, which is called hicolor, rather than directly on the
 // icon path.).
+//
+// The function takes the following parameters:
+//
+//    - path: NULL-terminated array of directories that are searched for icon
+//    themes.
+//
 func (self *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char        // out
@@ -710,6 +760,12 @@ func (self *IconTheme) SetSearchPath(path []string) {
 //
 // This function cannot be called on the icon theme objects returned from
 // gtk.IconTheme.GetForDisplay.
+//
+// The function takes the following parameters:
+//
+//    - themeName: name of icon theme to use instead of configured theme, or
+//    NULL to unset a previously set custom theme.
+//
 func (self *IconTheme) SetThemeName(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out

@@ -120,6 +120,11 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 // in with the length of the password value. (Note that the password value is
 // not nul-terminated, so you can only pass NULL for length in contexts where
 // you know the password will have a certain fixed length.).
+//
+// The function takes the following parameters:
+//
+//    - length: location to place the length of the password.
+//
 func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
@@ -162,6 +167,11 @@ func (password *TLSPassword) Warning() string {
 
 // SetDescription: set a description string about what the password will be used
 // for.
+//
+// The function takes the following parameters:
+//
+//    - description of the password.
+//
 func (password *TLSPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
@@ -176,6 +186,11 @@ func (password *TLSPassword) SetDescription(description string) {
 }
 
 // SetFlags: set flags about the password.
+//
+// The function takes the following parameters:
+//
+//    - flags about the password.
+//
 func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
@@ -195,6 +210,11 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 // using a nul-terminated password, and length will be calculated automatically.
 // (Note that the terminating nul is not considered part of the password in this
 // case.).
+//
+// The function takes the following parameters:
+//
+//    - value: new password value.
+//
 func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar       // out
@@ -214,6 +234,11 @@ func (password *TLSPassword) SetValue(value []byte) {
 // SetWarning: set a user readable translated warning. Usually this warning is a
 // representation of the password flags returned from
 // g_tls_password_get_flags().
+//
+// The function takes the following parameters:
+//
+//    - warning: user readable warning.
+//
 func (password *TLSPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out

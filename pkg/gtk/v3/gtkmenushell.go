@@ -145,6 +145,13 @@ func marshalMenuSheller(p uintptr) (interface{}, error) {
 }
 
 // ActivateItem activates the menu item within the menu shell.
+//
+// The function takes the following parameters:
+//
+//    - menuItem to activate.
+//    - forceDeactivate: if TRUE, force the deactivation of the menu shell
+//    after the menu item is activated.
+//
 func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -163,6 +170,11 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 }
 
 // Append adds a new MenuItem to the end of the menu shell's item list.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//
 func (menuShell *MenuShell) Append(child *MenuItem) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -203,6 +215,14 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 // For most cases you are probably better off using gtk_menu_new_from_model() or
 // gtk_menu_bar_new_from_model() or just directly passing the Model to
 // gtk_application_set_app_menu() or gtk_application_set_menubar().
+//
+// The function takes the following parameters:
+//
+//    - model to bind to or NULL to remove binding.
+//    - actionNamespace: namespace for actions in model.
+//    - withSeparators: TRUE if toplevel items in shell should have separators
+//    between them.
+//
 func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GMenuModel   // out
@@ -343,6 +363,13 @@ func (menuShell *MenuShell) TakeFocus() bool {
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position
 // indicated by position.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//    - position in the item list where child is added. Positions are numbered
+//    from 0 to n-1.
+//
 func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -359,6 +386,11 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 }
 
 // Prepend adds a new MenuItem to the beginning of the menu shell's item list.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//
 func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -373,6 +405,13 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 
 // SelectFirst: select the first visible or selectable child of the menu shell;
 // don’t select tearoff items unless the only item is a tearoff item.
+//
+// The function takes the following parameters:
+//
+//    - searchSensitive: if TRUE, search for the first selectable menu item,
+//    otherwise select nothing if the first item isn’t sensitive. This should
+//    be FALSE if the menu is being popped up initially.
+//
 func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 C.gboolean      // out
@@ -388,6 +427,11 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 }
 
 // SelectItem selects the menu item from the menu shell.
+//
+// The function takes the following parameters:
+//
+//    - menuItem to select.
+//
 func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -424,6 +468,12 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 // will work.
 //
 // See also gdk_keyboard_grab().
+//
+// The function takes the following parameters:
+//
+//    - takeFocus: TRUE if the menu shell should take the keyboard focus on
+//    popup.
+//
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 C.gboolean      // out

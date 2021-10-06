@@ -136,6 +136,11 @@ func NewCSSProvider() *CSSProvider {
 
 // LoadFromData loads data into css_provider, and by doing so clears any
 // previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - data: CSS data loaded in memory.
+//
 func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
@@ -163,6 +168,11 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 
 // LoadFromFile loads the data contained in file into css_provider, making it
 // clear any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - file pointing to a file to load.
+//
 func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.GFile          // out
@@ -186,6 +196,11 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 
 // LoadFromPath loads the data contained in path into css_provider, making it
 // clear any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - path of a filename to load, in the GLib filename encoding.
+//
 func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
@@ -213,6 +228,11 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 //
 // To track errors while loading CSS, connect to the CssProvider::parsing-error
 // signal.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath resource path.
+//
 func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out

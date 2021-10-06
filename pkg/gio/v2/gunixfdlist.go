@@ -113,6 +113,11 @@ func NewUnixFDListFromArray(fds []int) *UnixFDList {
 // The index of the file descriptor in the list is returned. If you use this
 // index with g_unix_fd_list_get() then you will receive back a duplicated copy
 // of the same file descriptor.
+//
+// The function takes the following parameters:
+//
+//    - fd: valid open file descriptor.
+//
 func (list *UnixFDList) Append(fd int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out
@@ -147,6 +152,11 @@ func (list *UnixFDList) Append(fd int) (int, error) {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
+//
+// The function takes the following parameters:
+//
+//    - index_: index into the list.
+//
 func (list *UnixFDList) Get(index_ int) (int, error) {
 	var _arg0 *C.GUnixFDList // out
 	var _arg1 C.gint         // out

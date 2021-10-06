@@ -331,6 +331,11 @@ func marshalActivatabler(p uintptr) (interface{}, error) {
 // retrieve the > previous action.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action to set.
+//
 func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
@@ -391,6 +396,11 @@ func (activatable *Activatable) UseActionAppearance() bool {
 // property and call gtk_activatable_do_set_related_action() when it changes.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action to set.
+//
 func (activatable *Activatable) SetRelatedAction(action *Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out
@@ -412,6 +422,11 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 // gtk_activatable_sync_action_properties() to update activatable > if needed.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - useAppearance: whether to use the actions appearance.
+//
 func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 C.gboolean        // out
@@ -432,6 +447,11 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 // changes.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - action: related Action or NULL.
+//
 func (activatable *Activatable) SyncActionProperties(action *Action) {
 	var _arg0 *C.GtkActivatable // out
 	var _arg1 *C.GtkAction      // out

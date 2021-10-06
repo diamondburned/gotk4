@@ -97,6 +97,11 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 //
 // This sorter will be passed the gtk.TreeListRow:item of the tree list rows
 // passed to self.
+//
+// The function takes the following parameters:
+//
+//    - sorter to use, or NULL.
+//
 func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out

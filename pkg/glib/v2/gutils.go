@@ -736,14 +736,14 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //
 // If string is equal to "help", all the available keys in keys are printed out
 // to standard error.
-func ParseDebugString(_string string, keys []DebugKey) uint {
+func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GDebugKey // out
 	var _arg3 C.guint
 	var _cret C.guint // in
 
-	if _string != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	if str != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	_arg3 = (C.guint)(len(keys))
@@ -757,7 +757,7 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	}
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(keys)
 
 	var _guint uint // out

@@ -327,6 +327,11 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 // are separated by the refresh interval, predicts a presentation time that is a
 // multiple of the refresh interval after the last presentation time, and later
 // than base_time.
+//
+// The function takes the following parameters:
+//
+//    - baseTime: base time for determining a presentaton time.
+//
 func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
 	var _arg1 C.gint64         // out
@@ -354,6 +359,11 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 //
 // The GdkFrameTimings object may not yet be complete: see
 // gdk.FrameTimings.GetComplete().
+//
+// The function takes the following parameters:
+//
+//    - frameCounter: frame counter value identifying the frame to be received.
+//
 func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _arg1 C.gint64           // out
@@ -391,6 +401,11 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 // GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period of time, you should use
 // gdk.FrameClock.BeginUpdating() instead, since this allows GTK to adjust
 // system parameters to get maximally smooth animations.
+//
+// The function takes the following parameters:
+//
+//    - phase that is requested.
+//
 func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	var _arg0 *C.GdkFrameClock     // out
 	var _arg1 C.GdkFrameClockPhase // out

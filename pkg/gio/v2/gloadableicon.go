@@ -89,6 +89,12 @@ func marshalLoadableIconner(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this function,
 // see g_loadable_icon_load_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - size: integer.
+//
 func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg3 *C.GCancellable  // out
@@ -141,6 +147,13 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of this
 // function, see g_loadable_icon_load().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - size: integer.
+//    - callback to call when the request is satisfied.
+//
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
 	var _arg2 *C.GCancellable       // out
@@ -169,6 +182,11 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 
 // LoadFinish finishes an asynchronous icon load started in
 // g_loadable_icon_load_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out

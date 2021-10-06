@@ -297,6 +297,12 @@ func marshalResolverer(p uintptr) (interface{}, error) {
 //
 // If cancellable is non-NULL, it can be used to cancel the operation, in which
 // case error (if non-NULL) will be set to G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address to reverse-resolve.
+//
 func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddress) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
@@ -332,6 +338,13 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 // LookupByAddressAsync begins asynchronously reverse-resolving address to
 // determine its associated hostname, and eventually calls callback, which must
 // call g_resolver_lookup_by_address_finish() to get the final result.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - address to reverse-resolve.
+//    - callback to call after resolution completes.
+//
 func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg2 *C.GCancellable       // out
@@ -364,6 +377,11 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 // If the DNS resolution failed, error (if non-NULL) will be set to a value from
 // Error. If the operation was cancelled, error will be set to
 // G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -409,6 +427,12 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 //
 // If you are planning to connect to a socket on the resolved IP address, it may
 // be easier to create a Address and use its Connectable interface.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - hostname to look up.
+//
 func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
@@ -451,6 +475,13 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 // associated IP address(es), and eventually calls callback, which must call
 // g_resolver_lookup_by_name_finish() to get the result. See
 // g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - hostname to look up the address of.
+//    - callback to call after resolution completes.
+//
 func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg2 *C.GCancellable       // out
@@ -484,6 +515,11 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 // If the DNS resolution failed, error (if non-NULL) will be set to a value from
 // Error. If the operation was cancelled, error will be set to
 // G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -517,6 +553,13 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 // LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in that
 // you can modify the lookup behavior with flags. For example this can be used
 // to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - hostname to look up.
+//    - flags: extra NameLookupFlags for the lookup.
+//
 func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
@@ -562,6 +605,14 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 // determine its associated IP address(es), and eventually calls callback, which
 // must call g_resolver_lookup_by_name_with_flags_finish() to get the result.
 // See g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - hostname to look up the address of.
+//    - flags: extra NameLookupFlags for the lookup.
+//    - callback to call after resolution completes.
+//
 func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
@@ -598,6 +649,11 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 // If the DNS resolution failed, error (if non-NULL) will be set to a value from
 // Error. If the operation was cancelled, error will be set to
 // G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -637,6 +693,13 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 //
 // If cancellable is non-NULL, it can be used to cancel the operation, in which
 // case error (if non-NULL) will be set to G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - rrname: DNS name to look up the record for.
+//    - recordType: type of DNS record to look up.
+//
 func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver          // out
 	var _arg3 *C.GCancellable       // out
@@ -688,6 +751,14 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 // given rrname, and eventually calls callback, which must call
 // g_resolver_lookup_records_finish() to get the final result. See
 // g_resolver_lookup_records() for more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - rrname: DNS name to look up the record for.
+//    - recordType: type of DNS record to look up.
+//    - callback to call after resolution completes.
+//
 func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg3 *C.GCancellable       // out
@@ -725,6 +796,11 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 // If the DNS resolution failed, error (if non-NULL) will be set to a value from
 // Error. If the operation was cancelled, error will be set to
 // G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -779,6 +855,14 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //
 // If you are planning to connect to the service, it is usually easier to create
 // a Service and use its Connectable interface.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - service type to look up (eg, "ldap").
+//    - protocol: networking protocol to use for service (eg, "tcp").
+//    - domain: DNS domain to look up the service in.
+//
 func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg4 *C.GCancellable // out
@@ -835,6 +919,15 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 // given service and protocol in the given domain, and eventually calls
 // callback, which must call g_resolver_lookup_service_finish() to get the final
 // result. See g_resolver_lookup_service() for more details.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - service type to look up (eg, "ldap").
+//    - protocol: networking protocol to use for service (eg, "tcp").
+//    - domain: DNS domain to look up the service in.
+//    - callback to call after resolution completes.
+//
 func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg4 *C.GCancellable       // out
@@ -876,6 +969,11 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 // If the DNS resolution failed, error (if non-NULL) will be set to a value from
 // Error. If the operation was cancelled, error will be set to
 // G_IO_ERROR_CANCELLED.
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out

@@ -375,15 +375,15 @@ func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
 // Note that you will have to escape the < and > characters when specifying
 // triggers in XML files, such as GtkBuilder ui files. Use &lt; instead of < and
 // &gt; instead of >.
-func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
+func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
@@ -398,6 +398,11 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 // of this function as a Func.
 //
 // They must each be a GtkShortcutTrigger.
+//
+// The function takes the following parameters:
+//
+//    - trigger2: GtkShortcutTrigger.
+//
 func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -421,6 +426,11 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 //
 // The types of one and two are #gconstpointer only to allow use of this
 // function with Table. They must each be a GtkShortcutTrigger.
+//
+// The function takes the following parameters:
+//
+//    - trigger2: GtkShortcutTrigger.
+//
 func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -477,6 +487,11 @@ func (trigger *ShortcutTrigger) Hash() uint {
 //
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay to print for.
+//
 func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkDisplay         // out
@@ -519,6 +534,14 @@ func (self *ShortcutTrigger) String() string {
 }
 
 // Trigger checks if the given event triggers self.
+//
+// The function takes the following parameters:
+//
+//    - event to check.
+//    - enableMnemonics: TRUE if mnemonics should trigger. Usually the value of
+//    this property is determined by checking that the passed in event is a Key
+//    event and has the right modifiers set.
+//
 func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkEvent           // out

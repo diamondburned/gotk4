@@ -198,6 +198,13 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of layout to a new position.
+//
+// The function takes the following parameters:
+//
+//    - childWidget: current child of layout.
+//    - x: x position to move to.
+//    - y: y position to move to.
+//
 func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
@@ -218,6 +225,13 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
 // parent container of child_widget.
+//
+// The function takes the following parameters:
+//
+//    - childWidget: child widget.
+//    - x: x position of child widget.
+//    - y: y position of child widget.
+//
 func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
@@ -241,6 +255,11 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
+//
+// The function takes the following parameters:
+//
+//    - adjustment: new scroll adjustment.
+//
 func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
@@ -256,6 +275,12 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 }
 
 // SetSize sets the size of the scrollable area of the layout.
+//
+// The function takes the following parameters:
+//
+//    - width of entire scrollable area.
+//    - height of entire scrollable area.
+//
 func (layout *Layout) SetSize(width, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
@@ -276,6 +301,11 @@ func (layout *Layout) SetSize(width, height uint) {
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
+//
+// The function takes the following parameters:
+//
+//    - adjustment: new scroll adjustment.
+//
 func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out

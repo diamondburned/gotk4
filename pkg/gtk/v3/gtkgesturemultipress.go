@@ -106,6 +106,11 @@ func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
 //
 // Note: The rectangle is only used to determine whether any non-first click
 // falls within the expected area. This is not akin to an input shape.
+//
+// The function takes the following parameters:
+//
+//    - rect: rectangle to receive coordinates on.
+//
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out

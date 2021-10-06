@@ -264,6 +264,13 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 // This function is used by an input method that wants to make subsitutions in
 // the existing text in response to new input. It is not useful for
 // applications.
+//
+// The function takes the following parameters:
+//
+//    - offset from cursor position in chars; a negative value means start
+//    before the cursor.
+//    - nChars: number of characters to delete.
+//
 func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.int           // out
@@ -290,6 +297,17 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 
 // FilterKey: allow an input method to forward key press and release events to
 // another input methodm without necessarily having a GdkEvent available.
+//
+// The function takes the following parameters:
+//
+//    - press: whether to forward a key press or release event.
+//    - surface the event is for.
+//    - device that the event is for.
+//    - time: timestamp for the event.
+//    - keycode for the event.
+//    - state: modifier state for the event.
+//    - group: active keyboard group for the event.
+//
 func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool {
 	var _arg0 *C.GtkIMContext   // out
 	var _arg1 C.gboolean        // out
@@ -336,6 +354,11 @@ func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk
 //
 // If this function returns TRUE, then no further processing should be done for
 // this key event.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
 func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkEvent     // out
@@ -520,6 +543,12 @@ func (context *IMContext) Reset() {
 // This is the GtkWidget holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
+//
+// The function takes the following parameters:
+//
+//    - widget: client widget. This may be NULL to indicate that the previous
+//    client widget no longer exists.
+//
 func (context *IMContext) SetClientWidget(widget Widgetter) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GtkWidget    // out
@@ -538,6 +567,11 @@ func (context *IMContext) SetClientWidget(widget Widgetter) {
 // has been made.
 //
 // The location is relative to the client window.
+//
+// The function takes the following parameters:
+//
+//    - area: new location.
+//
 func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
@@ -558,6 +592,14 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 // called at other times.
 //
 // Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string
+//    should not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//
 func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
@@ -581,6 +623,15 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 // point and preedit string. This function is expected to be called in response
 // to the GtkIMContext::retrieve_surrounding signal, and will likely have no
 // effect if called at other times.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string
+//    should not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//    - anchorIndex: byte index of the selection bound within text.
+//
 func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
@@ -609,6 +660,11 @@ func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIn
 // If use_preedit is FALSE (default is TRUE), then the IM context may use some
 // other method to display feedback, such as displaying it in a child of the
 // root window.
+//
+// The function takes the following parameters:
+//
+//    - usePreedit: whether the IM context should use the preedit string.
+//
 func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out

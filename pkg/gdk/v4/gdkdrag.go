@@ -143,6 +143,11 @@ func marshalDragger(p uintptr) (interface{}, error) {
 // The GdkDrag will only take the first gdk.Drag.DropDone() call as effective,
 // if this function is called multiple times, all subsequent calls will be
 // ignored.
+//
+// The function takes the following parameters:
+//
+//    - success: whether the drag was ultimatively successful.
+//
 func (drag *Drag) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
@@ -345,6 +350,12 @@ func (drag *Drag) Surface() Surfacer {
 // cursor hotspot.
 //
 // Initially, the hotspot is at the top left corner of the drag surface.
+//
+// The function takes the following parameters:
+//
+//    - hotX: x coordinate of the drag surface hotspot.
+//    - hotY: y coordinate of the drag surface hotspot.
+//
 func (drag *Drag) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out

@@ -181,6 +181,11 @@ func (texture *Texture) Width() int {
 // This is a utility function intended for debugging and testing. If you want
 // more control over formats, proper error handling or want to store to a GFile
 // or other location, you might want to look into using the gdk-pixbuf library.
+//
+// The function takes the following parameters:
+//
+//    - filename to store to.
+//
 func (texture *Texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out

@@ -143,6 +143,11 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
+//
+// The function takes the following parameters:
+//
+//    - drop of an ongoing drag operation.
+//
 func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
@@ -156,6 +161,11 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 }
 
 // SetActions sets the actions that this drop target supports.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions.
+//
 func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 C.GdkDragAction       // out
@@ -169,6 +179,11 @@ func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 }
 
 // SetFormats sets the data formats that this drop target will accept.
+//
+// The function takes the following parameters:
+//
+//    - formats: supported data formats or NULL for any format.
+//
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkContentFormats  // out

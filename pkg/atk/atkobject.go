@@ -1017,6 +1017,12 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 
 // AddRelationship adds a relationship of the specified type with the specified
 // target.
+//
+// The function takes the following parameters:
+//
+//    - relationship of the relation.
+//    - target which is to be the target of the relation.
+//
 func (object *ObjectClass) AddRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
@@ -1229,6 +1235,11 @@ func (accessible *ObjectClass) Role() Role {
 // It does initialization required for the new object. It is intended that this
 // function should called only in the ..._new() functions used to create an
 // instance of a subclass of Object.
+//
+// The function takes the following parameters:
+//
+//    - data which identifies the object for which the AtkObject was created.
+//
 func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
@@ -1245,6 +1256,13 @@ func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 //
 // Note that as a general rule when the state of an existing object changes,
 // emitting a notification is expected.
+//
+// The function takes the following parameters:
+//
+//    - state whose state is changed.
+//    - value: gboolean which indicates whether the state is being set on or
+//    off.
+//
 func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkState   // out
@@ -1288,6 +1306,11 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 // RefAccessibleChild gets a reference to the specified accessible child of the
 // object. The accessible children are 0-based so the first accessible child is
 // at index 0, the second at index 1 and so on.
+//
+// The function takes the following parameters:
+//
+//    - i: gint representing the position of the child, starting from 0.
+//
 func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
@@ -1345,6 +1368,11 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 // RemovePropertyChangeHandler removes a property change handler.
 //
 // Deprecated: See atk_object_connect_property_change_handler().
+//
+// The function takes the following parameters:
+//
+//    - handlerId: guint which identifies the handler to be removed.
+//
 func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
@@ -1359,6 +1387,12 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 
 // RemoveRelationship removes a relationship of the specified type with the
 // specified target.
+//
+// The function takes the following parameters:
+//
+//    - relationship of the relation.
+//    - target which is the target of the relation to be removed.
+//
 func (object *ObjectClass) RemoveRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
@@ -1388,6 +1422,11 @@ func (object *ObjectClass) RemoveRelationship(relationship RelationType, target 
 // development. Typically, this is the gtkbuilder ID. Such an ID will be
 // available for instance to identify a given well-known accessible object for
 // tailored screen reading, or for automatic regression testing.
+//
+// The function takes the following parameters:
+//
+//    - name: character string to be set as the accessible id.
+//
 func (accessible *ObjectClass) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -1405,6 +1444,11 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 // set the description to NULL. This is reserved for the initial value. In this
 // aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a
 // empty value you can use "".
+//
+// The function takes the following parameters:
+//
+//    - description: character string to be set as the accessible description.
+//
 func (accessible *ObjectClass) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -1422,6 +1466,11 @@ func (accessible *ObjectClass) SetDescription(description string) {
 // NULL. This is reserved for the initial value. In this aspect NULL is similar
 // to ATK_ROLE_UNKNOWN. If you want to set the name to a empty value you can use
 // "".
+//
+// The function takes the following parameters:
+//
+//    - name: character string to be set as the accessible name.
+//
 func (accessible *ObjectClass) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -1436,6 +1485,11 @@ func (accessible *ObjectClass) SetName(name string) {
 }
 
 // SetParent sets the accessible parent of the accessible. parent can be NULL.
+//
+// The function takes the following parameters:
+//
+//    - parent to be set as the accessible parent.
+//
 func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
@@ -1449,6 +1503,11 @@ func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
 }
 
 // SetRole sets the role of the accessible.
+//
+// The function takes the following parameters:
+//
+//    - role to be set as the role.
+//
 func (accessible *ObjectClass) SetRole(role Role) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkRole    // out

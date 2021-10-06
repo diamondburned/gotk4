@@ -133,6 +133,14 @@ func marshalLayoutManagerer(p uintptr) (interface{}, error) {
 // Allocate assigns the given width, height, and baseline to a widget, and
 // computes the position and sizes of the children of the widget using the
 // layout management policy of manager.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget using manager.
+//    - width: new width of the widget.
+//    - height: new height of the widget.
+//    - baseline position of the widget, or -1.
+//
 func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
@@ -162,6 +170,11 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline
 // The GtkLayoutChild instance is owned by the GtkLayoutManager, and is
 // guaranteed to exist as long as child is a child of the GtkWidget using the
 // given GtkLayoutManager.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget.
+//
 func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
@@ -255,6 +268,17 @@ func (manager *LayoutManager) LayoutChanged() {
 // orientation and size.
 //
 // See the gtk.Widget documentation on layout management for more details.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget using manager.
+//    - orientation to measure.
+//    - forSize: size for the opposite of orientation; for instance, if the
+//    orientation is GTK_ORIENTATION_HORIZONTAL, this is the height of the
+//    widget; if the orientation is GTK_ORIENTATION_VERTICAL, this is the width
+//    of the widget. This allows to measure the height for the given width, and
+//    the width for the given height. Use -1 if the size is not known.
+//
 func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out

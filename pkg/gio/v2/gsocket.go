@@ -190,6 +190,11 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 // If there are no outstanding connections then the operation will block or
 // return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be notified
 // of an incoming connection, wait for the G_IO_IN condition.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//
 func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GCancellable // out
@@ -240,6 +245,12 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 // receive all of the multicast and broadcast packets sent to that address. (The
 // behavior of unicast UDP packets to an address with multiple listeners is not
 // defined.).
+//
+// The function takes the following parameters:
+//
+//    - address specifying the local address.
+//    - allowReuse: whether to allow reusing this address.
+//
 func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -346,6 +357,11 @@ func (socket *Socket) Close() error {
 // conditions will always be set in the output if they are true.
 //
 // This call never blocks.
+//
+// The function takes the following parameters:
+//
+//    - condition mask to check.
+//
 func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GSocket     // out
 	var _arg1 C.GIOCondition // out
@@ -379,6 +395,13 @@ func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOConditio
 // Note that although timeout_us is in microseconds for consistency with other
 // GLib APIs, this function actually only has millisecond resolution, and the
 // behavior is undefined if timeout_us is not an exact number of milliseconds.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - condition mask to wait for.
+//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
+//
 func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOCondition, timeoutUs int64) error {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -419,6 +442,12 @@ func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOC
 // (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 //
 // See also g_socket_condition_timed_wait().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - condition mask to wait for.
+//
 func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondition) error {
 	var _arg0 *C.GSocket      // out
 	var _arg2 *C.GCancellable // out
@@ -463,6 +492,12 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 // can be notified of the connection finishing by waiting for the G_IO_OUT
 // condition. The result of the connection must then be checked with
 // g_socket_check_connect_result().
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address specifying the remote address.
+//
 func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocket        // out
 	var _arg2 *C.GCancellable   // out
@@ -781,6 +816,12 @@ func (socket *Socket) MulticastTTL() uint {
 // Note that even for socket options that are a single byte in size, value is
 // still a pointer to a #gint variable, not a #guchar; g_socket_get_option()
 // will handle the conversion internally.
+//
+// The function takes the following parameters:
+//
+//    - level: "API level" of the option (eg, SOL_SOCKET).
+//    - optname: "name" of the option (eg, SO_BROADCAST).
+//
 func (socket *Socket) Option(level, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -971,6 +1012,13 @@ func (socket *Socket) IsConnected() bool {
 //
 // To bind to a given source-specific multicast address, use
 // g_socket_join_multicast_group_ssm() instead.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to join.
+//    - sourceSpecific: TRUE if source-specific multicast should be used.
+//    - iface: name of the interface to use, or NULL.
+//
 func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -1017,6 +1065,14 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 // Note that this function can be called multiple times for the same group with
 // different source_specific in order to receive multicast packets from more
 // than one source.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to join.
+//    - sourceSpecific specifying the source-specific multicast address or NULL
+//    to ignore.
+//    - iface: name of the interface to use, or NULL.
+//
 func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -1058,6 +1114,13 @@ func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, 
 //
 // To unbind to a given source-specific multicast address, use
 // g_socket_leave_multicast_group_ssm() instead.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to leave.
+//    - sourceSpecific: TRUE if source-specific multicast was used.
+//    - iface: interface used.
+//
 func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -1096,6 +1159,14 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 //
 // socket remains bound to its address and port, and can still receive unicast
 // messages after calling this.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to leave.
+//    - sourceSpecific specifying the source-specific multicast address or NULL
+//    to ignore.
+//    - iface: name of the interface to use, or NULL.
+//
 func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -1175,6 +1246,13 @@ func (socket *Socket) Listen() error {
 // available, wait for the G_IO_IN condition.
 //
 // On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - buffer: a buffer to read data into (which should be at least size bytes
+//    long).
+//
 func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -1216,6 +1294,13 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 // of the received packet. address is owned by the caller.
 //
 // See g_socket_receive() for additional information.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - buffer: a buffer to read data into (which should be at least size bytes
+//    long).
+//
 func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAddresser, int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -1311,6 +1396,15 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 // On error -1 is returned and error is set accordingly. An error will only be
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags for the overall operation, which
+//    may additionally contain other platform specific flags
+//    (http://man7.org/linux/man-pages/man2/recv.2.html).
+//
 func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket       // out
 	var _arg4 *C.GCancellable  // out
@@ -1357,6 +1451,14 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 // ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 // except that the choice of blocking or non-blocking behavior is determined by
 // the blocking argument rather than by socket's properties.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - buffer: a buffer to read data into (which should be at least size bytes
+//    long).
+//    - blocking: whether to do blocking or non-blocking I/O.
+//
 func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
@@ -1411,6 +1513,12 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 // APIs work.)
 //
 // On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - buffer: buffer containing the data to send.
+//
 func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -1485,6 +1593,17 @@ func (socket *Socket) Send(ctx context.Context, buffer []byte) (int, error) {
 // use the g_socket_send_message_with_timeout() function.
 //
 // On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address or NULL.
+//    - vectors: array of Vector structs.
+//    - messages: pointer to an array of ControlMessages, or NULL.
+//    - flags: int containing MsgFlags flags, which may additionally contain
+//    other platform specific flags
+//    (http://man7.org/linux/man-pages/man2/recv.2.html).
+//
 func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg7 *C.GCancellable   // out
@@ -1554,6 +1673,18 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 // On error G_POLLABLE_RETURN_FAILED is returned and error is set accordingly,
 // or if the socket is currently not writable G_POLLABLE_RETURN_WOULD_BLOCK is
 // returned. bytes_written will contain 0 in both cases.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address or NULL.
+//    - vectors: array of Vector structs.
+//    - messages: pointer to an array of ControlMessages, or NULL.
+//    - flags: int containing MsgFlags flags, which may additionally contain
+//    other platform specific flags
+//    (http://man7.org/linux/man-pages/man2/recv.2.html).
+//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
+//
 func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64) (uint, PollableReturn, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg9 *C.GCancellable   // out
@@ -1655,6 +1786,15 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 // On error -1 is returned and error is set accordingly. An error will only be
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags, which may additionally contain
+//    other platform specific flags
+//    (http://man7.org/linux/man-pages/man2/recv.2.html).
+//
 func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -1702,6 +1842,13 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 // then the message is sent to the default receiver (set by g_socket_connect()).
 //
 // See g_socket_send() for additional information.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - address or NULL.
+//    - buffer: buffer containing the data to send.
+//
 func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffer []byte) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -1745,6 +1892,13 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 // SendWithBlocking: this behaves exactly the same as g_socket_send(), except
 // that the choice of blocking or non-blocking behavior is determined by the
 // blocking argument rather than by socket's properties.
+//
+// The function takes the following parameters:
+//
+//    - ctx: GCancellable or NULL.
+//    - buffer: buffer containing the data to send.
+//    - blocking: whether to do blocking or non-blocking I/O.
+//
 func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
@@ -1793,6 +1947,11 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer []byte, block
 // All sockets are created in blocking mode. However, note that the platform
 // level socket is always non-blocking, and blocking mode is a GSocket level
 // feature.
+//
+// The function takes the following parameters:
+//
+//    - blocking: whether to use blocking I/O or not.
+//
 func (socket *Socket) SetBlocking(blocking bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -1809,6 +1968,11 @@ func (socket *Socket) SetBlocking(blocking bool) {
 
 // SetBroadcast sets whether socket should allow sending to broadcast addresses.
 // This is FALSE by default.
+//
+// The function takes the following parameters:
+//
+//    - broadcast: whether socket should allow sending to broadcast addresses.
+//
 func (socket *Socket) SetBroadcast(broadcast bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -1837,6 +2001,11 @@ func (socket *Socket) SetBroadcast(broadcast bool) {
 // server socket if you want to allow clients to remain idle for long periods of
 // time, but also want to ensure that connections are eventually
 // garbage-collected if clients crash or become unreachable.
+//
+// The function takes the following parameters:
+//
+//    - keepalive: value for the keepalive flag.
+//
 func (socket *Socket) SetKeepalive(keepalive bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -1858,6 +2027,11 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 //
 // Note that this must be called before g_socket_listen() and has no effect if
 // called after that.
+//
+// The function takes the following parameters:
+//
+//    - backlog: maximum number of pending connections.
+//
 func (socket *Socket) SetListenBacklog(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -1873,6 +2047,12 @@ func (socket *Socket) SetListenBacklog(backlog int) {
 // SetMulticastLoopback sets whether outgoing multicast packets will be received
 // by sockets listening on that multicast address on the same host. This is TRUE
 // by default.
+//
+// The function takes the following parameters:
+//
+//    - loopback: whether socket should receive messages sent to its multicast
+//    groups from the local host.
+//
 func (socket *Socket) SetMulticastLoopback(loopback bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -1890,6 +2070,11 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 // SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
 // socket. By default, this is 1, meaning that multicast packets will not leave
 // the local network.
+//
+// The function takes the following parameters:
+//
+//    - ttl: time-to-live value for all multicast datagrams on socket.
+//
 func (socket *Socket) SetMulticastTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -1910,6 +2095,13 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 // that will define most of the standard/portable socket options. For unusual
 // socket protocols or platform-dependent options, you may need to include
 // additional headers.
+//
+// The function takes the following parameters:
+//
+//    - level: "API level" of the option (eg, SOL_SOCKET).
+//    - optname: "name" of the option (eg, SO_BROADCAST).
+//    - value to set the option to.
+//
 func (socket *Socket) SetOption(level, optname, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -1954,6 +2146,11 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 //
 // Note that if an I/O operation is interrupted by a signal, this may cause the
 // timeout to be reset.
+//
+// The function takes the following parameters:
+//
+//    - timeout for socket, in seconds, or 0 for none.
+//
 func (socket *Socket) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -1968,6 +2165,11 @@ func (socket *Socket) SetTimeout(timeout uint) {
 
 // SetTTL sets the time-to-live for outgoing unicast packets on socket. By
 // default the platform-specific default value is used.
+//
+// The function takes the following parameters:
+//
+//    - ttl: time-to-live value for all unicast packets on socket.
+//
 func (socket *Socket) SetTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -1994,6 +2196,12 @@ func (socket *Socket) SetTTL(ttl uint) {
 // graceful disconnect for TCP connections where you close the sending side,
 // then wait for the other side to close the connection, thus ensuring that the
 // other side saw all sent data.
+//
+// The function takes the following parameters:
+//
+//    - shutdownRead: whether to shut down the read side.
+//    - shutdownWrite: whether to shut down the write side.
+//
 func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out

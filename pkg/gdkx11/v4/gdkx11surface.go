@@ -121,6 +121,11 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
+//
+// The function takes the following parameters:
+//
+//    - desktop: number of the workspace to move the surface to.
+//
 func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
@@ -139,6 +144,11 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 // synchronization, but if the surface is not directly managed by the window
 // manager, then frame synchronziation may need to be disabled. This is the case
 // for a surface embedded via the XEMBED protocol.
+//
+// The function takes the following parameters:
+//
+//    - frameSyncEnabled: whether frame-synchronization should be enabled.
+//
 func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
@@ -155,6 +165,11 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 
 // SetGroup sets the group leader of surface to be leader. See the ICCCM for
 // details.
+//
+// The function takes the following parameters:
+//
+//    - leader: Surface.
+//
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out
@@ -169,6 +184,11 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 
 // SetSkipPagerHint sets a hint on surface that pagers should not display it.
 // See the EWMH for details.
+//
+// The function takes the following parameters:
+//
+//    - skipsPager: TRUE to skip pagers.
+//
 func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
@@ -185,6 +205,11 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 
 // SetSkipTaskbarHint sets a hint on surface that taskbars should not display
 // it. See the EWMH for details.
+//
+// The function takes the following parameters:
+//
+//    - skipsTaskbar: TRUE to skip taskbars.
+//
 func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
@@ -207,6 +232,11 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 // Note that this property is automatically updated by GTK, so this function
 // should only be used by applications which do not use GTK to create toplevel
 // surfaces.
+//
+// The function takes the following parameters:
+//
+//    - variant: theme variant to export.
+//
 func (surface *X11Surface) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
@@ -222,6 +252,11 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 
 // SetUrgencyHint sets a hint on surface that it needs user attention. See the
 // ICCCM for details.
+//
+// The function takes the following parameters:
+//
+//    - urgent: TRUE to indicate urgenct attention needed.
+//
 func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
@@ -246,6 +281,11 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 //
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.
+//
+// The function takes the following parameters:
+//
+//    - timestamp: XServer timestamp to which the property should be set.
+//
 func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
@@ -261,6 +301,12 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given surface is not a toplevel surface,
 // it is ignored.
+//
+// The function takes the following parameters:
+//
+//    - name: property name, will be interned as an X atom.
+//    - value: property value, or NULL to delete.
+//
 func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out

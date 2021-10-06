@@ -110,6 +110,11 @@ func marshalIconner(p uintptr) (interface{}, error) {
 }
 
 // Equal checks if two icons are equal.
+//
+// The function takes the following parameters:
+//
+//    - icon2: pointer to the second #GIcon.
+//
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out

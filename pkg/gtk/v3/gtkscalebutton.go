@@ -243,6 +243,11 @@ func (button *ScaleButton) Value() float64 {
 
 // SetAdjustment sets the Adjustment to be used as a model for the ScaleButton’s
 // scale. See gtk_range_set_adjustment() for details.
+//
+// The function takes the following parameters:
+//
+//    - adjustment: Adjustment.
+//
 func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
@@ -257,6 +262,11 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 
 // SetIcons sets the icons to be used by the scale button. For details, see the
 // ScaleButton:icons property.
+//
+// The function takes the following parameters:
+//
+//    - icons: NULL-terminated array of icon names.
+//
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.gchar         // out
@@ -285,6 +295,11 @@ func (button *ScaleButton) SetIcons(icons []string) {
 // minimum or maximum range values, it will be clamped to fit inside them. The
 // scale button emits the ScaleButton::value-changed signal if the value
 // changes.
+//
+// The function takes the following parameters:
+//
+//    - value: new value of the scale button.
+//
 func (button *ScaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.gdouble         // out

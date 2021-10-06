@@ -257,6 +257,14 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 // this function for each accelerator.
 //
 // Deprecated: Use gtk_application_set_accels_for_action() instead.
+//
+// The function takes the following parameters:
+//
+//    - accelerator string.
+//    - actionName: name of the action to activate.
+//    - parameter to pass when activating the action, or NULL if the action
+//    does not accept an activation parameter.
+//
 func (application *Application) AddAccelerator(accelerator, actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -293,6 +301,11 @@ func (application *Application) AddAccelerator(accelerator, actionName string, p
 // gtk_application_remove_window().
 //
 // GTK+ will keep the application running as long as it has any windows.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func (application *Application) AddWindow(window *Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
@@ -307,6 +320,12 @@ func (application *Application) AddWindow(window *Window) {
 
 // AccelsForAction gets the accelerators that are currently associated with the
 // given action.
+//
+// The function takes the following parameters:
+//
+//    - detailedActionName: detailed action name, specifying an action and
+//    target to obtain accelerators for.
+//
 func (application *Application) AccelsForAction(detailedActionName string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -355,6 +374,11 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 //
 // It is a programmer error to pass an invalid accelerator string. If you are
 // unsure, check it with gtk_accelerator_parse() first.
+//
+// The function takes the following parameters:
+//
+//    - accel: accelerator that can be parsed by gtk_accelerator_parse().
+//
 func (application *Application) ActionsForAccel(accel string) []string {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -444,6 +468,11 @@ func (application *Application) AppMenu() gio.MenuModeller {
 
 // MenuByID gets a menu from automatically loaded resources. See [Automatic
 // resources][automatic-resources] for more information.
+//
+// The function takes the following parameters:
+//
+//    - id of the menu to look up.
+//
 func (application *Application) MenuByID(id string) *gio.Menu {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -505,6 +534,11 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 // The ID of a ApplicationWindow can be retrieved with
 // gtk_application_window_get_id().
+//
+// The function takes the following parameters:
+//
+//    - id: identifier number.
+//
 func (application *Application) WindowByID(id uint) *Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
@@ -576,6 +610,14 @@ func (application *Application) Windows() []Window {
 //
 // If window is given, the session manager may point the user to this window to
 // find out more about why the action is inhibited.
+//
+// The function takes the following parameters:
+//
+//    - window or NULL.
+//    - flags: what types of actions should be inhibited.
+//    - reason: short, human-readable string that explains why these operations
+//    are inhibited.
+//
 func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 *C.GtkWindow                 // out
@@ -611,6 +653,11 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 //
 // Note that this information may not be available (for example when the
 // application is running in a sandbox).
+//
+// The function takes the following parameters:
+//
+//    - flags: what types of actions should be queried.
+//
 func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 C.GtkApplicationInhibitFlags // out
@@ -716,6 +763,13 @@ func (application *Application) PrefersAppMenu() bool {
 // gtk_application_add_accelerator().
 //
 // Deprecated: Use gtk_application_set_accels_for_action() instead.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to activate.
+//    - parameter to pass when activating the action, or NULL if the action
+//    does not accept an activation parameter.
+//
 func (application *Application) RemoveAccelerator(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -740,6 +794,11 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 // Window:application property of window to NULL.
 //
 // The application may stop running as a result of a call to this function.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//
 func (application *Application) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
@@ -761,6 +820,14 @@ func (application *Application) RemoveWindow(window *Window) {
 //
 // For the detailed_action_name, see g_action_parse_detailed_name() and
 // g_action_print_detailed_name().
+//
+// The function takes the following parameters:
+//
+//    - detailedActionName: detailed action name, specifying an action and
+//    target to associate accelerators with.
+//    - accels: list of accelerators in the format understood by
+//    gtk_accelerator_parse().
+//
 func (application *Application) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.gchar          // out
@@ -804,6 +871,11 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
+//
+// The function takes the following parameters:
+//
+//    - appMenu or NULL.
+//
 func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
@@ -835,6 +907,11 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
+//
+// The function takes the following parameters:
+//
+//    - menubar or NULL.
+//
 func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
@@ -852,6 +929,11 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 // Uninhibit removes an inhibitor that has been established with
 // gtk_application_inhibit(). Inhibitors are also cleared when the application
 // exits.
+//
+// The function takes the following parameters:
+//
+//    - cookie that was returned by gtk_application_inhibit().
+//
 func (application *Application) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out

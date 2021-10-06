@@ -110,6 +110,11 @@ func (self *WidgetPaintable) Widget() Widgetter {
 }
 
 // SetWidget sets the widget that should be observed.
+//
+// The function takes the following parameters:
+//
+//    - widget to observe or NULL.
+//
 func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out

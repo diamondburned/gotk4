@@ -98,6 +98,12 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 //
 // A gtk.Adjustment::value-changed signal will be emitted if the value is
 // changed.
+//
+// The function takes the following parameters:
+//
+//    - lower value.
+//    - upper value.
+//
 func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -118,6 +124,16 @@ func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 // Use this function to avoid multiple emissions of the gtk.Adjustment::changed
 // signal. See gtk.Adjustment.SetLower() for an alternative way of compressing
 // multiple emissions of gtk.Adjustment::changed into one.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//    - lower: new minimum value.
+//    - upper: new maximum value.
+//    - stepIncrement: new step increment.
+//    - pageIncrement: new page increment.
+//    - pageSize: new page size.
+//
 func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -275,6 +291,11 @@ func (adjustment *Adjustment) Value() float64 {
 //
 // Alternatively, using a single g_object_set() for all the properties to
 // change, or using gtk.Adjustment.Configure() has the same effect.
+//
+// The function takes the following parameters:
+//
+//    - lower: new minimum value.
+//
 func (adjustment *Adjustment) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -291,6 +312,11 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 //
 // See gtk.Adjustment.SetLower() about how to compress multiple emissions of the
 // gtk.Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - pageIncrement: new page increment.
+//
 func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -307,6 +333,11 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 //
 // See gtk.Adjustment.SetLower() about how to compress multiple emissions of the
 // gtk.Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - pageSize: new page size.
+//
 func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -323,6 +354,11 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 //
 // See gtk.Adjustment.SetLower() about how to compress multiple emissions of the
 // gtk.Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - stepIncrement: new step increment.
+//
 func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -342,6 +378,11 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 //
 // See gtk.Adjustment.SetLower() about how to compress multiple emissions of the
 // gtk.Adjustment::changed signal when setting multiple adjustment properties.
+//
+// The function takes the following parameters:
+//
+//    - upper: new maximum value.
+//
 func (adjustment *Adjustment) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out
@@ -362,6 +403,11 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 // Note that for adjustments which are used in a GtkScrollbar, the effective
 // range of allowed values goes from gtk.Adjustment:lower to
 // gtk.Adjustment:upper - gtk.Adjustment:page-size.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//
 func (adjustment *Adjustment) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment // out
 	var _arg1 C.double         // out

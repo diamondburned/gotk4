@@ -709,6 +709,12 @@ func (op *PrintOperation) IsFinished() bool {
 //
 // Note that gtk_print_operation_run() can only be called once on a given
 // GtkPrintOperation.
+//
+// The function takes the following parameters:
+//
+//    - action to start.
+//    - parent: transient parent of the dialog.
+//
 func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (PrintOperationResult, error) {
 	var _arg0 *C.GtkPrintOperation      // out
 	var _arg1 C.GtkPrintOperationAction // out
@@ -742,6 +748,11 @@ func (op *PrintOperation) Run(action PrintOperationAction, parent *Window) (Prin
 // print operation is completed.
 //
 // Note that some platforms may not allow asynchronous operation.
+//
+// The function takes the following parameters:
+//
+//    - allowAsync: TRUE to allow asynchronous operation.
+//
 func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -762,6 +773,11 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 // select to print only the current page.
 //
 // Note that this only makes sense for pre-paginated documents.
+//
+// The function takes the following parameters:
+//
+//    - currentPage: current page, 0-based.
+//
 func (op *PrintOperation) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
@@ -775,6 +791,11 @@ func (op *PrintOperation) SetCurrentPage(currentPage int) {
 }
 
 // SetCustomTabLabel sets the label for the tab holding custom widgets.
+//
+// The function takes the following parameters:
+//
+//    - label to use, or NULL to use the default label.
+//
 func (op *PrintOperation) SetCustomTabLabel(label string) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.char              // out
@@ -795,6 +816,11 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 // This page setup will be used by gtk.PrintOperation.Run(), but it can be
 // overridden on a per-page basis by connecting to the
 // gtk.PrintOperation::request-page-setup signal.
+//
+// The function takes the following parameters:
+//
+//    - defaultPageSetup: GtkPageSetup, or NULL.
+//
 func (op *PrintOperation) SetDefaultPageSetup(defaultPageSetup *PageSetup) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.GtkPageSetup      // out
@@ -829,6 +855,11 @@ func (op *PrintOperation) SetDeferDrawing() {
 // page setup page.
 //
 // Selected page setup is stored as default page setup in GtkPrintOperation.
+//
+// The function takes the following parameters:
+//
+//    - embed: TRUE to embed page setup selection in the GtkPrintUnixDialog.
+//
 func (op *PrintOperation) SetEmbedPageSetup(embed bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -851,6 +882,11 @@ func (op *PrintOperation) SetEmbedPageSetup(embed bool) {
 //
 // “Print to PDF” support is independent of this and is done by letting the user
 // pick the “Print to PDF” item from the list of printers in the print dialog.
+//
+// The function takes the following parameters:
+//
+//    - filename for the exported file.
+//
 func (op *PrintOperation) SetExportFilename(filename string) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.char              // out
@@ -869,6 +905,11 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 // Application has to set number of pages to which the selection will draw by
 // gtk.PrintOperation.SetNPages() in a handler for the
 // gtk.PrintOperation::begin-print signal.
+//
+// The function takes the following parameters:
+//
+//    - hasSelection: TRUE indicates that a selection exists.
+//
 func (op *PrintOperation) SetHasSelection(hasSelection bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -890,6 +931,11 @@ func (op *PrintOperation) SetHasSelection(hasSelection bool) {
 //
 // If you don’t set a job name, GTK picks a default one by numbering successive
 // print jobs.
+//
+// The function takes the following parameters:
+//
+//    - jobName: string that identifies the print job.
+//
 func (op *PrintOperation) SetJobName(jobName string) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.char              // out
@@ -912,6 +958,11 @@ func (op *PrintOperation) SetJobName(jobName string) {
 // gtk.PrintOperation::request-page-setup and gtk.PrintOperation::draw-page
 // signals are 0-based, i.e. if the user chooses to print all pages, the last
 // ::draw-page signal will be for page n_pages - 1.
+//
+// The function takes the following parameters:
+//
+//    - nPages: number of pages.
+//
 func (op *PrintOperation) SetNPages(nPages int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
@@ -928,6 +979,11 @@ func (op *PrintOperation) SetNPages(nPages int) {
 //
 // This is typically used to re-establish print settings from a previous print
 // operation, see gtk.PrintOperation.Run().
+//
+// The function takes the following parameters:
+//
+//    - printSettings: GtkPrintSettings.
+//
 func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 *C.GtkPrintSettings  // out
@@ -944,6 +1000,11 @@ func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 
 // SetShowProgress: if show_progress is TRUE, the print operation will show a
 // progress dialog during the print operation.
+//
+// The function takes the following parameters:
+//
+//    - showProgress: TRUE to show a progress dialog.
+//
 func (op *PrintOperation) SetShowProgress(showProgress bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -959,6 +1020,11 @@ func (op *PrintOperation) SetShowProgress(showProgress bool) {
 }
 
 // SetSupportSelection sets whether selection is supported by GtkPrintOperation.
+//
+// The function takes the following parameters:
+//
+//    - supportSelection: TRUE to support selection.
+//
 func (op *PrintOperation) SetSupportSelection(supportSelection bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -982,6 +1048,11 @@ func (op *PrintOperation) SetSupportSelection(supportSelection bool) {
 //
 // This function is often implemented using some form of polling, so it should
 // not be enabled unless needed.
+//
+// The function takes the following parameters:
+//
+//    - trackStatus: TRUE to track status after printing.
+//
 func (op *PrintOperation) SetTrackPrintStatus(trackStatus bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out
@@ -998,6 +1069,11 @@ func (op *PrintOperation) SetTrackPrintStatus(trackStatus bool) {
 
 // SetUnit sets up the transformation for the cairo context obtained from
 // GtkPrintContext in such a way that distances are measured in units of unit.
+//
+// The function takes the following parameters:
+//
+//    - unit to use.
+//
 func (op *PrintOperation) SetUnit(unit Unit) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.GtkUnit            // out
@@ -1017,6 +1093,11 @@ func (op *PrintOperation) SetUnit(unit Unit) {
 // This may not be the top left corner of the sheet, depending on page
 // orientation and the number of pages per sheet). Otherwise, the origin is at
 // the top left corner of the imageable area (i.e. inside the margins).
+//
+// The function takes the following parameters:
+//
+//    - fullPage: TRUE to set up the GtkPrintContext for the full page.
+//
 func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.gboolean           // out

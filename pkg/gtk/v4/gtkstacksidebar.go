@@ -102,6 +102,11 @@ func (self *StackSidebar) Stack() *Stack {
 //
 // The sidebar widget will automatically update according to the order and items
 // within the given GtkStack.
+//
+// The function takes the following parameters:
+//
+//    - stack: GtkStack.
+//
 func (self *StackSidebar) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out

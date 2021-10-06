@@ -129,6 +129,11 @@ func (actionBar *ActionBar) Revealed() bool {
 
 // PackEnd adds child to action_bar, packed with reference to the end of the
 // action_bar.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to be added to action_bar.
+//
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -143,6 +148,11 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 
 // PackStart adds child to action_bar, packed with reference to the start of the
 // action_bar.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to be added to action_bar.
+//
 func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -156,6 +166,11 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 }
 
 // Remove removes a child from action_bar.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to be removed.
+//
 func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -169,6 +184,11 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 }
 
 // SetCenterWidget sets the center widget for the GtkActionBar.
+//
+// The function takes the following parameters:
+//
+//    - centerWidget: widget to use for the center.
+//
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -187,6 +207,11 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 //
 // Note: this does not show or hide action_bar in the gtk.Widget:visible sense,
 // so revealing has no effect if the action bar is hidden.
+//
+// The function takes the following parameters:
+//
+//    - revealed: new value of the property.
+//
 func (actionBar *ActionBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 C.gboolean      // out

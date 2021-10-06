@@ -26,15 +26,15 @@ func init() {
 //
 // If string is not a valid mime type, NULL is returned instead. See RFC 2048
 // for the syntax if mime types.
-func InternMIMEType(_string string) string {
+func InternMIMEType(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_intern_mime_type(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 

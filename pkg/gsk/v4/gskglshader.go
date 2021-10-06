@@ -191,6 +191,11 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 // current GL context) and requires the renderer to be set up. This means that
 // the widget has to be realized. Commonly you want to call this from the
 // realize signal of a widget, or during widget snapshot.
+//
+// The function takes the following parameters:
+//
+//    - renderer: GskRenderer.
+//
 func (shader *GLShader) Compile(renderer Rendererer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
@@ -214,6 +219,11 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 
 // FindUniformByName looks for a uniform by the name name, and returns the index
 // of the uniform, or -1 if it was not found.
+//
+// The function takes the following parameters:
+//
+//    - name: uniform name.
+//
 func (shader *GLShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
@@ -237,6 +247,12 @@ func (shader *GLShader) FindUniformByName(name string) int {
 // ArgBool gets the value of the uniform idx in the args block.
 //
 // The uniform must be of bool type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -264,6 +280,12 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 // ArgFloat gets the value of the uniform idx in the args block.
 //
 // The uniform must be of float type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -289,6 +311,12 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 // ArgInt gets the value of the uniform idx in the args block.
 //
 // The uniform must be of int type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -314,6 +342,12 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 // ArgUint gets the value of the uniform idx in the args block.
 //
 // The uniform must be of uint type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -339,6 +373,13 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 // ArgVec2 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec2 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store the uniform value in.
+//
 func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -360,6 +401,13 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgVec3 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec3 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store the uniform value in.
+//
 func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -381,6 +429,13 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgVec4 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec4 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store set the uniform value in.
+//
 func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -499,6 +554,11 @@ func (shader *GLShader) Source() *glib.Bytes {
 
 // UniformName: get the name of the declared uniform for this shader at index
 // idx.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -520,6 +580,11 @@ func (shader *GLShader) UniformName(idx int) string {
 
 // UniformOffset: get the offset into the data block where data for this
 // uniforms is stored.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -541,6 +606,11 @@ func (shader *GLShader) UniformOffset(idx int) int {
 
 // UniformType: get the type of the declared uniform for this shader at index
 // idx.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//
 func (shader *GLShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out

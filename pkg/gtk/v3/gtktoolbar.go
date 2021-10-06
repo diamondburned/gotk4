@@ -157,6 +157,12 @@ func NewToolbar() *Toolbar {
 // returns the position a new item should be inserted.
 //
 // x and y are in toolbar coordinates.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of a point on the toolbar.
+//    - y coordinate of a point on the toolbar.
+//
 func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
@@ -199,6 +205,11 @@ func (toolbar *Toolbar) IconSize() IconSize {
 
 // ItemIndex returns the position of item on the toolbar, starting from 0. It is
 // an error if item is not a child of the toolbar.
+//
+// The function takes the following parameters:
+//
+//    - item that is a child of toolbar.
+//
 func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
@@ -237,6 +248,11 @@ func (toolbar *Toolbar) NItems() int {
 
 // NthItem returns the n'th item on toolbar, or NULL if the toolbar does not
 // contain an n'th item.
+//
+// The function takes the following parameters:
+//
+//    - n on the toolbar.
+//
 func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 C.gint         // out
@@ -317,6 +333,12 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 // Insert a ToolItem into the toolbar at position pos. If pos is 0 the item is
 // prepended to the start of the toolbar. If pos is negative, the item is
 // appended to the end of the toolbar.
+//
+// The function takes the following parameters:
+//
+//    - item: ToolItem.
+//    - pos: position of the new item.
+//
 func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
@@ -339,6 +361,12 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 // The tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to any
 // widget hierarchy or used as highlight item for another toolbar.
+//
+// The function takes the following parameters:
+//
+//    - toolItem or NULL to turn of highlighting.
+//    - index_: position on toolbar.
+//
 func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
@@ -362,6 +390,11 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 //
 // This should only be used for special-purpose toolbars, normal application
 // toolbars should respect the user preferences for the size of icons.
+//
+// The function takes the following parameters:
+//
+//    - iconSize that stock icons in the toolbar shall have.
+//
 func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.GtkIconSize // out
@@ -381,6 +414,11 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 // available in an overflow menu, which can be opened by an added arrow button.
 // If FALSE, toolbar will request enough size to fit all of its child items
 // without any overflow.
+//
+// The function takes the following parameters:
+//
+//    - showArrow: whether to show an overflow menu.
+//
 func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gboolean    // out
@@ -397,6 +435,11 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 
 // SetStyle alters the view of toolbar to display either icons only, text only,
 // or both.
+//
+// The function takes the following parameters:
+//
+//    - style: new style for toolbar.
+//
 func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolbar     // out
 	var _arg1 C.GtkToolbarStyle // out

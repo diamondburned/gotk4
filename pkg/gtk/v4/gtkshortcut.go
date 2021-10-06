@@ -163,6 +163,12 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 }
 
 // SetAction sets the new action for self to be action.
+//
+// The function takes the following parameters:
+//
+//    - action: new action. If the action is NULL, the nothing action will be
+//    used.
+//
 func (self *Shortcut) SetAction(action ShortcutActioner) {
 	var _arg0 *C.GtkShortcut       // out
 	var _arg1 *C.GtkShortcutAction // out
@@ -179,6 +185,11 @@ func (self *Shortcut) SetAction(action ShortcutActioner) {
 }
 
 // SetArguments sets the arguments to pass when activating the shortcut.
+//
+// The function takes the following parameters:
+//
+//    - args arguments to pass when activating self.
+//
 func (self *Shortcut) SetArguments(args *glib.Variant) {
 	var _arg0 *C.GtkShortcut // out
 	var _arg1 *C.GVariant    // out
@@ -194,6 +205,12 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 }
 
 // SetTrigger sets the new trigger for self to be trigger.
+//
+// The function takes the following parameters:
+//
+//    - trigger: new trigger. If the trigger is NULL, the never trigger will be
+//    used.
+//
 func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	var _arg0 *C.GtkShortcut        // out
 	var _arg1 *C.GtkShortcutTrigger // out

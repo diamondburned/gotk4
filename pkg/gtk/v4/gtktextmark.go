@@ -202,6 +202,11 @@ func (mark *TextMark) Visible() bool {
 	return _ok
 }
 
+//
+// The function takes the following parameters:
+//
+
+//
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out

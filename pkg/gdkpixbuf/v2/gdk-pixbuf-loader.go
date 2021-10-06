@@ -299,6 +299,12 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 //
 // Attempts to set the desired image size are ignored after the emission of the
 // ::size-prepared signal.
+//
+// The function takes the following parameters:
+//
+//    - width: desired width of the image being loaded.
+//    - height: desired height of the image being loaded.
+//
 func (loader *PixbufLoader) SetSize(width, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
@@ -315,6 +321,11 @@ func (loader *PixbufLoader) SetSize(width, height int) {
 }
 
 // Write parses the next count bytes in the given image buffer.
+//
+// The function takes the following parameters:
+//
+//    - buf: pointer to image data.
+//
 func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar          // out
@@ -341,6 +352,11 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 }
 
 // WriteBytes parses the next contents of the given image buffer.
+//
+// The function takes the following parameters:
+//
+//    - buffer: image data as a GBytes buffer.
+//
 func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.GBytes          // out

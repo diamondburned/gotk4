@@ -149,6 +149,11 @@ func (self *EditableLabel) StartEditing() {
 // If commit is TRUE, the resulting text is kept as the gtk.Editable:text
 // property value, otherwise the resulting text is discarded and the label will
 // keep its previous gtk.Editable:text property value.
+//
+// The function takes the following parameters:
+//
+//    - commit: whether to set the edited text on the label.
+//
 func (self *EditableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out

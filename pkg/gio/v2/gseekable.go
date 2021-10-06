@@ -173,6 +173,13 @@ func (seekable *Seekable) CanTruncate() bool {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - offset: #goffset.
+//    - typ: Type.
+//
 func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg3 *C.GCancellable // out
@@ -230,6 +237,12 @@ func (seekable *Seekable) Tell() int64 {
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - offset: new length for seekable, in bytes.
+//
 func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg2 *C.GCancellable // out

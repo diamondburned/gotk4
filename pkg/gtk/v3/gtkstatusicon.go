@@ -639,6 +639,11 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
+//
+// The function takes the following parameters:
+//
+//    - filename: filename.
+//
 func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -658,6 +663,11 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
+//
+// The function takes the following parameters:
+//
+//    - icon: GIcon.
+//
 func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
@@ -676,6 +686,11 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -695,6 +710,11 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf or NULL.
+//
 func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -713,6 +733,11 @@ func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 // See gtk_status_icon_new_from_stock() for details.
 //
 // Deprecated: Use gtk_status_icon_set_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock icon id.
+//
 func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -733,6 +758,11 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 // notifications; there is no direct replacement for this function, but
 // notifications can display an arbitrary amount of text using
 // g_notification_set_body().
+//
+// The function takes the following parameters:
+//
+//    - hasTooltip: whether or not status_icon has a tooltip.
+//
 func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 C.gboolean       // out
@@ -755,6 +785,11 @@ func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 // notifications; there is no direct replacement for this function, as
 // notifications are associated with a unique application identifier by
 // #GApplication.
+//
+// The function takes the following parameters:
+//
+//    - name: name.
+//
 func (statusIcon *StatusIcon) SetName(name string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -774,6 +809,11 @@ func (statusIcon *StatusIcon) SetName(name string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as GTK
 // typically only has one Screen and notifications are managed by the platform.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // out
@@ -793,6 +833,11 @@ func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you should use g_notification_set_title() and
 // g_notification_set_body() to present text inside your notification.
+//
+// The function takes the following parameters:
+//
+//    - title: title.
+//
 func (statusIcon *StatusIcon) SetTitle(title string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -816,6 +861,11 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function takes the following parameters:
+//
+//    - markup contents of the tooltip for status_icon, or NULL.
+//
 func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -840,6 +890,11 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
+//
+// The function takes the following parameters:
+//
+//    - text contents of the tooltip for status_icon.
+//
 func (statusIcon *StatusIcon) SetTooltipText(text string) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.gchar         // out
@@ -858,6 +913,11 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as
 // notifications are managed by the platform.
+//
+// The function takes the following parameters:
+//
+//    - visible: TRUE to show the status icon, FALSE to hide it.
+//
 func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 C.gboolean       // out

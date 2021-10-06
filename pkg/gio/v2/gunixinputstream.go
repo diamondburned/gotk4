@@ -133,6 +133,11 @@ func (stream *UnixInputStream) Fd() int {
 
 // SetCloseFd sets whether the file descriptor of stream shall be closed when
 // the stream is closed.
+//
+// The function takes the following parameters:
+//
+//    - closeFd: TRUE to close the file descriptor when done.
+//
 func (stream *UnixInputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out
 	var _arg1 C.gboolean          // out

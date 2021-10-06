@@ -64,6 +64,11 @@ func marshalSimpleProxyResolverer(p uintptr) (interface{}, error) {
 //
 // If default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
+//
+// The function takes the following parameters:
+//
+//    - defaultProxy: default proxy to use.
+//
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
@@ -84,6 +89,12 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 // As with ProxyResolver:default-proxy, if proxy starts with "socks://",
 // ProxyResolver will treat it as referring to all three of the socks5, socks4a,
 // and socks4 proxy types.
+//
+// The function takes the following parameters:
+//
+//    - uriScheme: URI scheme to add a proxy for.
+//    - proxy to use for uri_scheme.
+//
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out

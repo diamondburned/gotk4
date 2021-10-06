@@ -203,6 +203,12 @@ func (editable *Editable) DeleteSelection() {
 // start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
 func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
@@ -224,6 +230,12 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 // characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of text.
+//    - endPos: end of text.
+//
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
@@ -333,6 +345,12 @@ func (editable *Editable) PasteClipboard() {
 // characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of region.
+//    - endPos: end of region.
+//
 func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
@@ -350,6 +368,11 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 
 // SetEditable determines if the user can edit the text in the editable widget
 // or not.
+//
+// The function takes the following parameters:
+//
+//    - isEditable: TRUE if the user is allowed to edit the text in the widget.
+//
 func (editable *Editable) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
@@ -371,6 +394,11 @@ func (editable *Editable) SetEditable(isEditable bool) {
 // number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
+//
+// The function takes the following parameters:
+//
+//    - position of the cursor.
+//
 func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out

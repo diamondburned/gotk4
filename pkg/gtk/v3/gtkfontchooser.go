@@ -522,6 +522,11 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 
 // SetFilterFunc adds a filter function that decides which fonts to display in
 // the font chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter or NULL.
+//
 func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	var _arg0 *C.GtkFontChooser   // out
 	var _arg1 C.GtkFontFilterFunc // out
@@ -541,6 +546,11 @@ func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 }
 
 // SetFont sets the currently-selected font.
+//
+// The function takes the following parameters:
+//
+//    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
+//
 func (fontchooser *FontChooser) SetFont(fontname string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.gchar          // out
@@ -555,6 +565,11 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 }
 
 // SetFontDesc sets the currently-selected font from font_desc.
+//
+// The function takes the following parameters:
+//
+//    - fontDesc: FontDescription.
+//
 func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkFontChooser       // out
 	var _arg1 *C.PangoFontDescription // out
@@ -587,6 +602,11 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);.
+//
+// The function takes the following parameters:
+//
+//    - fontmap: FontMap.
+//
 func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
@@ -602,6 +622,11 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 }
 
 // SetLanguage sets the language to use for font features.
+//
+// The function takes the following parameters:
+//
+//    - language: language.
+//
 func (fontchooser *FontChooser) SetLanguage(language string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.char           // out
@@ -616,6 +641,11 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 }
 
 // SetLevel sets the desired level of granularity for selecting fonts.
+//
+// The function takes the following parameters:
+//
+//    - level: desired level of granularity.
+//
 func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
 	var _arg0 *C.GtkFontChooser     // out
 	var _arg1 C.GtkFontChooserLevel // out
@@ -630,6 +660,11 @@ func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
 
 // SetPreviewText sets the text displayed in the preview area. The text is used
 // to show how the selected font looks.
+//
+// The function takes the following parameters:
+//
+//    - text to display in the preview area.
+//
 func (fontchooser *FontChooser) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.gchar          // out
@@ -644,6 +679,11 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 }
 
 // SetShowPreviewEntry shows or hides the editable preview entry.
+//
+// The function takes the following parameters:
+//
+//    - showPreviewEntry: whether to show the editable preview entry or not.
+//
 func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 C.gboolean        // out

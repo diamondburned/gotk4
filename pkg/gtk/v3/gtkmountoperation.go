@@ -124,6 +124,11 @@ func (op *MountOperation) IsShowing() bool {
 }
 
 // SetParent sets the transient parent for windows shown by the MountOperation.
+//
+// The function takes the following parameters:
+//
+//    - parent: transient parent of the window, or NULL.
+//
 func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
@@ -139,6 +144,11 @@ func (op *MountOperation) SetParent(parent *Window) {
 }
 
 // SetScreen sets the screen to show windows of the MountOperation on.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
 func (op *MountOperation) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkScreen         // out

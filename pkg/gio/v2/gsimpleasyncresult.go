@@ -431,6 +431,11 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 // g_simple_async_result_set_handle_cancellation() function.
 //
 // Deprecated: Use #GTask instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx to check, or NULL to unset.
+//
 func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
@@ -450,6 +455,11 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 // SetFromError sets the result from a #GError.
 //
 // Deprecated: Use #GTask and g_task_return_error() instead.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func (simple *SimpleAsyncResult) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
@@ -470,6 +480,11 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 // #GCancellable passed to g_simple_async_result_run_in_thread().
 //
 // Deprecated: since version 2.46.
+//
+// The function takes the following parameters:
+//
+//    - handleCancellation: #gboolean.
+//
 func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -488,6 +503,11 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 // asynchronous result.
 //
 // Deprecated: Use #GTask and g_task_return_boolean() instead.
+//
+// The function takes the following parameters:
+//
+//    - opRes: #gboolean.
+//
 func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -506,6 +526,11 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 // the given op_res.
 //
 // Deprecated: Use #GTask and g_task_return_int() instead.
+//
+// The function takes the following parameters:
+//
+//    - opRes: #gssize.
+//
 func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out

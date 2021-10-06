@@ -109,6 +109,11 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 }
 
 // Equal tests if mask and mask2 are the same mask.
+//
+// The function takes the following parameters:
+//
+//    - mask2: another AddressMask.
+//
 func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
@@ -182,6 +187,11 @@ func (mask *InetAddressMask) Length() uint {
 }
 
 // Matches tests if address falls within the range described by mask.
+//
+// The function takes the following parameters:
+//
+//    - address: Address.
+//
 func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out

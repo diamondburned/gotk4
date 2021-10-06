@@ -83,6 +83,11 @@ func NewListStore(itemType externglib.Type) *ListStore {
 //
 // Use g_list_store_splice() to append multiple items at the same time
 // efficiently.
+//
+// The function takes the following parameters:
+//
+//    - item: new item.
+//
 func (store *ListStore) Append(item *externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -101,6 +106,11 @@ func (store *ListStore) Append(item *externglib.Object) {
 //
 // If you need to compare the two items with a custom comparison function, use
 // g_list_store_find_with_equal_func() with a custom Func instead.
+//
+// The function takes the following parameters:
+//
+//    - item: item.
+//
 func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -133,6 +143,12 @@ func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 //
 // Use g_list_store_splice() to insert multiple items at the same time
 // efficiently.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert the new item.
+//    - item: new item.
+//
 func (store *ListStore) Insert(position uint, item *externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -156,6 +172,12 @@ func (store *ListStore) Insert(position uint, item *externglib.Object) {
 // way of this function.
 //
 // This function takes a ref on item.
+//
+// The function takes the following parameters:
+//
+//    - item: new item.
+//    - compareFunc: pairwise comparison function for sorting.
+//
 func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
@@ -186,6 +208,11 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 //
 // Use g_list_store_splice() to remove multiple items at the same time
 // efficiently.
+//
+// The function takes the following parameters:
+//
+//    - position of the item that is to be removed.
+//
 func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -209,6 +236,11 @@ func (store *ListStore) RemoveAll() {
 }
 
 // Sort the items in store according to compare_func.
+//
+// The function takes the following parameters:
+//
+//    - compareFunc: pairwise comparison function for sorting.
+//
 func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.GCompareDataFunc // out
@@ -237,6 +269,13 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 // The parameters position and n_removals must be correct (ie: position +
 // n_removals must be less than or equal to the length of the list at the time
 // this function is called).
+//
+// The function takes the following parameters:
+//
+//    - position at which to make the change.
+//    - nRemovals: number of items to remove.
+//    - additions items to add.
+//
 func (store *ListStore) Splice(position, nRemovals uint, additions []*externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out

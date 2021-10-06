@@ -125,6 +125,11 @@ func (controller *EventController) Reset() {
 // If phase is GTK_PHASE_NONE, no automatic event handling will be performed,
 // but other additional gesture maintenance will. In that phase, the events can
 // be managed by calling gtk_event_controller_handle_event().
+//
+// The function takes the following parameters:
+//
+//    - phase: propagation phase.
+//
 func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationPhase // out

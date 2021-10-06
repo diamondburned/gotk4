@@ -221,6 +221,11 @@ func (filter *TreeModelFilter) ClearCache() {
 // ConvertChildIterToIter sets filter_iter to point to the row in filter that
 // corresponds to the row pointed at by child_iter. If filter_iter was not set,
 // FALSE is returned.
+//
+// The function takes the following parameters:
+//
+//    - childIter: valid TreeIter pointing to a row on the child model.
+//
 func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
@@ -250,6 +255,11 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (Tree
 // point to the same row in the filtered model. If child_path isn’t a valid path
 // on the child model or points to a row which is not visible in filter, then
 // NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - childPath to convert.
+//
 func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
@@ -279,6 +289,11 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 
 // ConvertIterToChildIter sets child_iter to point to the row pointed to by
 // filter_iter.
+//
+// The function takes the following parameters:
+//
+//    - filterIter: valid TreeIter pointing to a row on filter.
+//
 func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.GtkTreeIter         // in
@@ -303,6 +318,11 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) Tree
 // path will point to the same location in the model not being filtered. If
 // filter_path does not point to a location in the child model, NULL is
 // returned.
+//
+// The function takes the following parameters:
+//
+//    - filterPath to convert.
+//
 func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
@@ -379,6 +399,12 @@ func (filter *TreeModelFilter) Refilter() {
 //
 // Note that gtk_tree_model_filter_set_modify_func() can only be called once for
 // a given filter model.
+//
+// The function takes the following parameters:
+//
+//    - types of the columns.
+//    - fn: TreeModelFilterModifyFunc.
+//
 func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeModelFilterModifyFunc) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg2 *C.GType              // out
@@ -414,6 +440,11 @@ func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeMod
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
+//
+// The function takes the following parameters:
+//
+//    - column which is the column containing the visible information.
+//
 func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.int                 // out
@@ -459,6 +490,11 @@ func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
+//
+// The function takes the following parameters:
+//
+//    - fn the visible function.
+//
 func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	var _arg0 *C.GtkTreeModelFilter           // out
 	var _arg1 C.GtkTreeModelFilterVisibleFunc // out

@@ -171,6 +171,11 @@ func (action *RecentAction) ShowNumbers() bool {
 // first ten items get a number to avoid clashes.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - showNumbers: TRUE if the shown items should be numbered.
+//
 func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out

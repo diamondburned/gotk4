@@ -105,6 +105,11 @@ func NewFixed() *Fixed {
 // GtkWidget in the GtkFixed.
 //
 // See also: gtk.Fixed.GetChildTransform().
+//
+// The function takes the following parameters:
+//
+//    - widget: child of fixed.
+//
 func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
@@ -129,6 +134,11 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 
 // ChildTransform retrieves the transformation for widget set using
 // gtk_fixed_set_child_transform().
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget, child of fixed.
+//
 func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
@@ -159,6 +169,13 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 
 // Move sets a translation transformation to the given x and y coordinates to
 // the child widget of the GtkFixed.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget.
+//    - x: horizontal position to move the widget to.
+//    - y: vertical position to move the widget to.
+//
 func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
@@ -178,6 +195,13 @@ func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 }
 
 // Put adds a widget to a GtkFixed at the given position.
+//
+// The function takes the following parameters:
+//
+//    - widget to add.
+//    - x: horizontal position to place the widget at.
+//    - y: vertical position to place the widget at.
+//
 func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
@@ -197,6 +221,11 @@ func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 }
 
 // Remove removes a child from fixed.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget to remove.
+//
 func (fixed *Fixed) Remove(widget Widgetter) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
@@ -213,6 +242,13 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 //
 // This is a convenience function that retrieves the gtk.FixedLayoutChild
 // instance associated to widget and calls gtk.FixedLayoutChild.SetTransform().
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget, child of fixed.
+//    - transform: transformation assigned to widget or NULL to reset widget's
+//    transform.
+//
 func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out

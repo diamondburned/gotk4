@@ -136,6 +136,11 @@ func (boxLayout *BoxLayout) Spacing() uint {
 // baseline aligned child. If there is more vertical space available than
 // requested, and the baseline is not allocated by the parent then the given
 // position is used to allocate the baseline within the extra space available.
+//
+// The function takes the following parameters:
+//
+//    - position: GtkBaselinePosition.
+//
 func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _arg1 C.GtkBaselinePosition // out
@@ -150,6 +155,11 @@ func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 
 // SetHomogeneous sets whether the box layout will allocate the same size to all
 // children.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: TRUE to set the box layout as homogeneous.
+//
 func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
@@ -165,6 +175,11 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 }
 
 // SetSpacing sets how much spacing to put between children.
+//
+// The function takes the following parameters:
+//
+//    - spacing to apply between children.
+//
 func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out

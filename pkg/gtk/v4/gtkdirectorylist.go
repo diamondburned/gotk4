@@ -230,6 +230,11 @@ func (self *DirectoryList) IsLoading() bool {
 //
 // If attributes is NULL, no attributes will be queried, but a list of
 // GFileInfos will still be created.
+//
+// The function takes the following parameters:
+//
+//    - attributes to enumerate.
+//
 func (self *DirectoryList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.char             // out
@@ -248,6 +253,11 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 // SetFile sets the file to be enumerated and starts the enumeration.
 //
 // If file is NULL, the result will be an empty list.
+//
+// The function takes the following parameters:
+//
+//    - file to be enumerated.
+//
 func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.GFile            // out
@@ -271,6 +281,11 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 // redraw priority. If you are loading a lot of directories in parallel,
 // lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
 // responsiveness.
+//
+// The function takes the following parameters:
+//
+//    - ioPriority: IO priority to use.
+//
 func (self *DirectoryList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.int               // out
@@ -290,6 +305,11 @@ func (self *DirectoryList) SetIOPriority(ioPriority int) {
 // When monitoring is turned on after the initial creation of the directory
 // list, the directory is reloaded to avoid missing files that appeared between
 // the initial loading and when monitoring was turned on.
+//
+// The function takes the following parameters:
+//
+//    - monitored: TRUE to monitor the directory for changes.
+//
 func (self *DirectoryList) SetMonitored(monitored bool) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.gboolean          // out

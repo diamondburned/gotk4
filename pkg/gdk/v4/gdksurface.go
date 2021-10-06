@@ -249,6 +249,13 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 // This function always returns a valid pointer, but it will return a pointer to
 // a “nil” surface if other is already in an error state or any other error
 // occurs.
+//
+// The function takes the following parameters:
+//
+//    - content for the new surface.
+//    - width of the new surface.
+//    - height of the new surface.
+//
 func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
@@ -358,6 +365,11 @@ func (surface *Surface) Cursor() *Cursor {
 //
 // If the return value is NULL then there is no custom cursor set on the
 // specified surface, and it is using the cursor for its parent surface.
+//
+// The function takes the following parameters:
+//
+//    - device: pointer GdkDevice.
+//
 func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkDevice  // out
@@ -383,6 +395,11 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 //
 // The position is given in coordinates relative to the upper left corner of
 // surface.
+//
+// The function takes the following parameters:
+//
+//    - device: pointer GdkDevice to query to.
+//
 func (surface *Surface) DevicePosition(device Devicer) (x float64, y float64, mask ModifierType, ok bool) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.GdkDevice      // out
@@ -617,6 +634,11 @@ func (surface *Surface) RequestLayout() {
 //
 // Use gdk.Cursor.NewFromName or gdk.Cursor.NewFromTexture to create the cursor.
 // To make the cursor invisible, use GDK_BLANK_CURSOR.
+//
+// The function takes the following parameters:
+//
+//    - cursor: GdkCursor.
+//
 func (surface *Surface) SetCursor(cursor *Cursor) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkCursor  // out
@@ -639,6 +661,12 @@ func (surface *Surface) SetCursor(cursor *Cursor) {
 //
 // Use gdk.Cursor.NewFromName or gdk.Cursor.NewFromTexture to create the cursor.
 // To make the cursor invisible, use GDK_BLANK_CURSOR.
+//
+// The function takes the following parameters:
+//
+//    - device: pointer GdkDevice.
+//    - cursor: GdkCursor.
+//
 func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkDevice  // out
@@ -667,6 +695,11 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 //
 // Use gdk.Display.SupportsInputShapes() to find out if a particular backend
 // supports input regions.
+//
+// The function takes the following parameters:
+//
+//    - region of surface to be reactive.
+//
 func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
@@ -693,6 +726,11 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 // opaque, as we know where the opaque regions are. If your surface background
 // is not opaque, please update this property in your WidgetClass.css_changed()
 // handler.
+//
+// The function takes the following parameters:
+//
+//    - region: region, or NULL.
+//
 func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out

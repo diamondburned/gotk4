@@ -32,6 +32,8 @@ func NewGoTemplate(block string) *template.Template {
 		"Synopsis":         cmt.Synopsis,
 		"OverrideSelfName": cmt.OverrideSelfName,
 		"AdditionalString": cmt.AdditionalString,
+		"AdditionalPrefix": cmt.AdditionalPrefix,
+		"ParagraphIndent":  cmt.ParagraphIndent,
 		"TrailingNewLine":  cmt.TrailingNewLine,
 
 		"Quote": strconv.Quote,

@@ -143,6 +143,11 @@ func (action *ToggleAction) DrawAsRadio() bool {
 // SetActive sets the checked state on the toggle action.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - isActive: whether the action should be checked or not.
+//
 func (action *ToggleAction) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
@@ -161,6 +166,12 @@ func (action *ToggleAction) SetActive(isActive bool) {
 // action.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - drawAsRadio: whether the action should have proxies like a radio
+//    action.
+//
 func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out

@@ -95,6 +95,12 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 }
 
 // PutByte puts a byte into the output stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #guchar.
+//
 func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -124,6 +130,12 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 }
 
 // PutInt16 puts a signed 16-bit integer into the output stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #gint16.
+//
 func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -153,6 +165,12 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 }
 
 // PutInt32 puts a signed 32-bit integer into the output stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #gint32.
+//
 func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -182,6 +200,12 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 }
 
 // PutInt64 puts a signed 64-bit integer into the stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #gint64.
+//
 func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -211,6 +235,12 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 }
 
 // PutString puts a string into the output stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - str: string.
+//
 func (stream *DataOutputStream) PutString(ctx context.Context, str string) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -241,6 +271,12 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 }
 
 // PutUint16 puts an unsigned 16-bit integer into the output stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #guint16.
+//
 func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -270,6 +306,12 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 }
 
 // PutUint32 puts an unsigned 32-bit integer into the stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #guint32.
+//
 func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -299,6 +341,12 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 }
 
 // PutUint64 puts an unsigned 64-bit integer into the stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - data: #guint64.
+//
 func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -328,6 +376,11 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 }
 
 // SetByteOrder sets the byte order of the data output stream to order.
+//
+// The function takes the following parameters:
+//
+//    - order: GDataStreamByteOrder.
+//
 func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out
 	var _arg1 C.GDataStreamByteOrder // out

@@ -355,6 +355,11 @@ func (layout *Layout) Context() *Context {
 // to the base direction of the layout are inserted. The weak cursor location is
 // the location where characters of the directionality opposite to the base
 // direction of the layout are inserted.
+//
+// The function takes the following parameters:
+//
+//    - index_: byte index of the cursor.
+//
 func (layout *Layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -378,6 +383,11 @@ func (layout *Layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectan
 }
 
 // Direction gets the text direction at the given character position in layout.
+//
+// The function takes the following parameters:
+//
+//    - index: byte index of the char.
+//
 func (layout *Layout) Direction(index int) Direction {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -552,6 +562,12 @@ func (layout *Layout) Justify() bool {
 //
 // Use the faster pango.Layout.GetLineReadonly() if you do not plan to modify
 // the contents of the line (glyphs, glyph widths, etc.).
+//
+// The function takes the following parameters:
+//
+//    - line: index of a line, which must be between 0 and
+//    pango_layout_get_line_count(layout) - 1, inclusive.
+//
 func (layout *Layout) Line(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
@@ -601,6 +617,12 @@ func (layout *Layout) LineCount() int {
 //
 // This is a faster alternative to pango.Layout.GetLine(), but the user is not
 // expected to modify the contents of the line (glyphs, glyph widths, etc.).
+//
+// The function takes the following parameters:
+//
+//    - line: index of a line, which must be between 0 and
+//    pango_layout_get_line_count(layout) - 1, inclusive.
+//
 func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
@@ -1007,6 +1029,14 @@ func (layout *Layout) Wrap() WrapMode {
 // position.
 //
 // The X position is measured from the left edge of the line.
+//
+// The function takes the following parameters:
+//
+//    - index_: byte index of a grapheme within the layout.
+//    - trailing: integer indicating the edge of the grapheme to retrieve the
+//    position of. If > 0, the trailing edge of the grapheme, if 0, the leading
+//    of the grapheme.
+//
 func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -1041,6 +1071,11 @@ func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 // leading edge of the grapheme and pos->x + pos->width the trailing edge of the
 // grapheme. If the directionality of the grapheme is right-to-left, then
 // pos->width will be negative.
+//
+// The function takes the following parameters:
+//
+//    - index_: byte index within layout.
+//
 func (layout *Layout) IndexToPos(index_ int) Rectangle {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -1121,6 +1156,18 @@ func (layout *Layout) IsWrapped() bool {
 // Motion here is in cursor positions, not in characters, so a single call to
 // pango.Layout.MoveCursorVisually() may move the cursor over multiple
 // characters when multiple characters combine to form a single grapheme.
+//
+// The function takes the following parameters:
+//
+//    - strong: whether the moving cursor is the strong cursor or the weak
+//    cursor. The strong cursor is the cursor corresponding to text insertion
+//    in the base direction for the layout.
+//    - oldIndex: byte index of the grapheme for the old index.
+//    - oldTrailing: if 0, the cursor was at the leading edge of the grapheme
+//    indicated by old_index, if > 0, the cursor was at the trailing edge.
+//    - direction to move cursor. A negative value indicates motion to the
+//    left.
+//
 func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int) (newIndex int, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -1156,6 +1203,11 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 
 // SetAlignment sets the alignment for the layout: how partial lines are
 // positioned within the horizontal space available.
+//
+// The function takes the following parameters:
+//
+//    - alignment: alignment.
+//
 func (layout *Layout) SetAlignment(alignment Alignment) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoAlignment // out
@@ -1170,6 +1222,11 @@ func (layout *Layout) SetAlignment(alignment Alignment) {
 
 // SetAttributes sets the text attributes for a layout object. References attrs,
 // so the caller can unref its reference.
+//
+// The function takes the following parameters:
+//
+//    - attrs can be NULL.
+//
 func (layout *Layout) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
@@ -1200,6 +1257,12 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 // When the auto-computed direction of a paragraph differs from the base
 // direction of the context, the interpretation of PANGO_ALIGN_LEFT and
 // PANGO_ALIGN_RIGHT are swapped.
+//
+// The function takes the following parameters:
+//
+//    - autoDir: if TRUE, compute the bidirectional base direction from the
+//    layout's contents.
+//
 func (layout *Layout) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -1224,6 +1287,11 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 // out in multiple paragraphs, then whether each paragraph is ellipsized
 // separately or the entire layout is ellipsized as a whole depends on the set
 // height of the layout. See pango.Layout.SetHeight() for details.
+//
+// The function takes the following parameters:
+//
+//    - ellipsize: new ellipsization mode for layout.
+//
 func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
 	var _arg0 *C.PangoLayout       // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -1240,6 +1308,12 @@ func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
 //
 // If no font description is set on the layout, the font description from the
 // layout's context is used.
+//
+// The function takes the following parameters:
+//
+//    - desc: new PangoFontDescription, or NULL to unset the current font
+//    description.
+//
 func (layout *Layout) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
@@ -1277,6 +1351,12 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 // ellipsization mode of layout is not PANGO_ELLIPSIZE_NONE. The behavior is
 // undefined if a height other than -1 is set and ellipsization mode is set to
 // PANGO_ELLIPSIZE_NONE, and may change in the future.
+//
+// The function takes the following parameters:
+//
+//    - height: desired height of the layout in Pango units if positive, or
+//    desired number of lines if negative.
+//
 func (layout *Layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -1297,6 +1377,11 @@ func (layout *Layout) SetHeight(height int) {
 //
 // The indent setting is ignored if layout alignment is set to
 // PANGO_ALIGN_CENTER.
+//
+// The function takes the following parameters:
+//
+//    - indent: amount by which to indent.
+//
 func (layout *Layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -1318,6 +1403,11 @@ func (layout *Layout) SetIndent(indent int) {
 //
 // Note that this setting is not implemented and so is ignored in Pango older
 // than 1.18.
+//
+// The function takes the following parameters:
+//
+//    - justify: whether the lines in the layout should be justified.
+//
 func (layout *Layout) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -1345,6 +1435,11 @@ func (layout *Layout) SetJustify(justify bool) {
 // ignored.
 //
 // If factor is zero, spacing is applied as before.
+//
+// The function takes the following parameters:
+//
+//    - factor: new line spacing factor.
+//
 func (layout *Layout) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
@@ -1364,6 +1459,12 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 //
 // This is the Same as pango.Layout.SetMarkupWithAccel(), but the markup text
 // isn't scanned for accelerators.
+//
+// The function takes the following parameters:
+//
+//    - markup: marked-up text.
+//    - length of marked-up text in bytes, or -1 if markup is null-terminated.
+//
 func (layout *Layout) SetMarkup(markup string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -1392,6 +1493,13 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 // a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
 // returned in accel_char. Two accel_marker characters following each other
 // produce a single literal accel_marker character.
+//
+// The function takes the following parameters:
+//
+//    - markup: marked-up text (see Pango Markup (pango_markup.html)).
+//    - length of marked-up text in bytes, or -1 if markup is null-terminated.
+//    - accelMarker: marker for accelerators in the text.
+//
 func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -1424,6 +1532,11 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 // separators; instead, keep all text in a single paragraph, and display a glyph
 // for paragraph separator characters. Used when you want to allow editing of
 // newlines on a single text line.
+//
+// The function takes the following parameters:
+//
+//    - setting: new setting.
+//
 func (layout *Layout) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -1450,6 +1563,11 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 // the font) for placing lines. The spacing set with this function is only taken
 // into account when the line height factor is set to zero with
 // pango.Layout.SetLineSpacing().
+//
+// The function takes the following parameters:
+//
+//    - spacing: amount of spacing.
+//
 func (layout *Layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -1467,6 +1585,11 @@ func (layout *Layout) SetSpacing(spacing int) {
 // By default, tabs are every 8 spaces. If tabs is NULL, the default tabs are
 // reinstated. tabs is copied into the layout; you must free your copy of tabs
 // yourself.
+//
+// The function takes the following parameters:
+//
+//    - tabs: PangoTabArray, or NULL.
+//
 func (layout *Layout) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
@@ -1490,6 +1613,15 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 // pango.Layout.SetMarkupWithAccel() on layout before, you may want to call
 // pango.Layout.SetAttributes() to clear the attributes set on the layout from
 // the markup as this function does not clear attributes.
+//
+// The function takes the following parameters:
+//
+//    - text: text.
+//    - length: maximum length of text, in bytes. -1 indicates that the string
+//    is nul-terminated and the length should be calculated. The text will also
+//    be truncated on encountering a nul-termination even when length is
+//    positive.
+//
 func (layout *Layout) SetText(text string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -1510,6 +1642,12 @@ func (layout *Layout) SetText(text string, length int) {
 // ellipsized.
 //
 // The default value is -1: no width set.
+//
+// The function takes the following parameters:
+//
+//    - width: desired width in Pango units, or -1 to indicate that no wrapping
+//    or ellipsization should be performed.
+//
 func (layout *Layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -1526,6 +1664,11 @@ func (layout *Layout) SetWidth(width int) {
 //
 // The wrap mode only has effect if a width is set on the layout with
 // pango.Layout.SetWidth(). To turn off wrapping, set the width to -1.
+//
+// The function takes the following parameters:
+//
+//    - wrap mode.
+//
 func (layout *Layout) SetWrap(wrap WrapMode) {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 C.PangoWrapMode // out
@@ -1547,6 +1690,12 @@ func (layout *Layout) SetWrap(wrap WrapMode) {
 // described for pango.LayoutLine.XToIndex(). If either the X or Y positions
 // were not inside the layout, then the function returns FALSE; on an exact hit,
 // it returns TRUE.
+//
+// The function takes the following parameters:
+//
+//    - x: x offset (in Pango units) from the left edge of the layout.
+//    - y: y offset (in Pango units) from the top edge of the layout.
+//
 func (layout *Layout) XYToIndex(x, y int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out

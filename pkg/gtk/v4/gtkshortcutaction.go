@@ -414,15 +414,15 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 // - action(NAME), for a GtkNamedAction for the action named NAME
 //
 // - signal(NAME), for a GtkSignalAction for the signal NAME.
-func NewShortcutActionParseString(_string string) *ShortcutAction {
+func NewShortcutActionParseString(str string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _shortcutAction *ShortcutAction // out
 
@@ -440,6 +440,13 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 // Activation of an action can fail for various reasons. If the action is not
 // supported by the widget, if the args don't match the action or if the
 // activation otherwise had no effect, FALSE will be returned.
+//
+// The function takes the following parameters:
+//
+//    - flags to activate with.
+//    - widget: target of the activation.
+//    - args arguments to pass.
+//
 func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out

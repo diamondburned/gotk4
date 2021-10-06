@@ -119,6 +119,11 @@ func (stream *FilterInputStream) CloseBaseStream() bool {
 
 // SetCloseBaseStream sets whether the base stream will be closed when stream is
 // closed.
+//
+// The function takes the following parameters:
+//
+//    - closeBase: TRUE to close the base stream.
+//
 func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out

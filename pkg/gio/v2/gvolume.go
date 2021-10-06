@@ -296,6 +296,13 @@ func (volume *Volume) CanMount() bool {
 // callback.
 //
 // Deprecated: Use g_volume_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - callback or NULL.
+//
 func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg2 *C.GCancellable       // out
@@ -327,6 +334,11 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 // returned.
 //
 // Deprecated: Use g_volume_eject_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -351,6 +363,14 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 // EjectWithOperation ejects a volume. This is an asynchronous operation, and is
 // finished by calling g_volume_eject_with_operation_finish() with the volume
 // and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg3 *C.GCancellable       // out
@@ -385,6 +405,11 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 // EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
 // during the operation, error will be set to contain the errors and FALSE will
 // be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -539,6 +564,11 @@ func (volume *Volume) Icon() Iconner {
 // Identifier gets the identifier of the given kind for volume. See the
 // [introduction][volume-identifier] for more information about volume
 // identifiers.
+//
+// The function takes the following parameters:
+//
+//    - kind of identifier to return.
+//
 func (volume *Volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
@@ -681,6 +711,14 @@ func (volume *Volume) UUID() string {
 // Mount mounts a volume. This is an asynchronous operation, and is finished by
 // calling g_volume_mount_finish() with the volume and Result returned in the
 // callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation or NULL to avoid user interaction.
+//    - callback or NULL.
+//
 func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg3 *C.GCancellable       // out
@@ -719,6 +757,11 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 // If the mount operation succeeded, g_volume_get_mount() on volume is
 // guaranteed to return the mount right after calling this function; there's no
 // need to listen for the 'mount-added' signal on Monitor.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out

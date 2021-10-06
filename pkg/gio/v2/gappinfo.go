@@ -299,6 +299,11 @@ func marshalAppInfor(p uintptr) (interface{}, error) {
 // AddSupportsType adds a content type to the application information to
 // indicate the application is capable of opening files with the given content
 // type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: string.
+//
 func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -418,6 +423,11 @@ func (appinfo *AppInfo) Dup() AppInfor {
 // Note that the check *may not* compare each individual field, and only does an
 // identity check. In case detecting changes in the contents is needed, program
 // code must additionally compare relevant fields.
+//
+// The function takes the following parameters:
+//
+//    - appinfo2: second Info.
+//
 func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
@@ -640,6 +650,12 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 // can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be inherited by
 // further processes. The DISPLAY and DESKTOP_STARTUP_ID environment variables
 // are also set, based on information provided in context.
+//
+// The function takes the following parameters:
+//
+//    - files of #GFile objects.
+//    - context or NULL.
+//
 func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
 	var _arg1 *C.GList             // out
@@ -684,6 +700,12 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 // Note that even if the launch is successful the application launched can fail
 // to start if it runs into problems during startup. There is no way to detect
 // this.
+//
+// The function takes the following parameters:
+//
+//    - uris containing URIs to launch.
+//    - context or NULL.
+//
 func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
 	var _arg1 *C.GList             // out
@@ -725,6 +747,14 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 // waits for activation in case of D-Bus–activated applications and also
 // provides extended error information for sandboxed applications, see notes for
 // g_app_info_launch_default_for_uri_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - uris containing URIs to launch.
+//    - context or NULL.
+//    - callback to call when the request is done.
+//
 func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg0 *C.GAppInfo           // out
 	var _arg3 *C.GCancellable       // out
@@ -766,6 +796,11 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 }
 
 // LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
 func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
@@ -788,6 +823,11 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 }
 
 // RemoveSupportsType removes a supported type from an application, if possible.
+//
+// The function takes the following parameters:
+//
+//    - contentType: string.
+//
 func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -812,6 +852,11 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 
 // SetAsDefaultForExtension sets the application as the default handler for the
 // given file extension.
+//
+// The function takes the following parameters:
+//
+//    - extension: string containing the file extension (without the dot).
+//
 func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -836,6 +881,11 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 
 // SetAsDefaultForType sets the application as the default handler for a given
 // type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type.
+//
 func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -862,6 +912,11 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 // given type. This will make the application appear as first in the list
 // returned by g_app_info_get_recommended_for_type(), regardless of the default
 // application for that content type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type.
+//
 func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -1397,6 +1452,12 @@ func NewAppLaunchContext() *AppLaunchContext {
 // Display gets the display string for the context. This is used to ensure new
 // applications are started on the same display as the launching application, by
 // setting the DISPLAY environment variable.
+//
+// The function takes the following parameters:
+//
+//    - info: Info.
+//    - files of #GFile objects.
+//
 func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
@@ -1467,6 +1528,12 @@ func (context *AppLaunchContext) Environment() []string {
 // Startup notification IDs are defined in the FreeDesktop.Org Startup
 // Notifications standard
 // (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+//
+// The function takes the following parameters:
+//
+//    - info: Info.
+//    - files of of #GFile objects.
+//
 func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
@@ -1501,6 +1568,12 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 // LaunchFailed: called when an application has failed to launch, so that it can
 // cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
+//
+// The function takes the following parameters:
+//
+//    - startupNotifyId: startup notification id that was returned by
+//    g_app_launch_context_get_startup_notify_id().
+//
 func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -1516,6 +1589,12 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 
 // Setenv arranges for variable to be set to value in the child's environment
 // when context is used to launch an application.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to set.
+//    - value for to set the variable to.
+//
 func (context *AppLaunchContext) Setenv(variable, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -1535,6 +1614,11 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 
 // Unsetenv arranges for variable to be unset in the child's environment when
 // context is used to launch an application.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to remove.
+//
 func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out

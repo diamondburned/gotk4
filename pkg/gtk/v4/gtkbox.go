@@ -113,6 +113,11 @@ func NewBox(orientation Orientation, spacing int) *Box {
 }
 
 // Append adds child as the last child to box.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to append.
+//
 func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -183,6 +188,12 @@ func (box *Box) Spacing() int {
 // box children.
 //
 // If sibling is NULL, insert child at the first position.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to insert.
+//    - sibling after which to insert child.
+//
 func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -201,6 +212,11 @@ func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 }
 
 // Prepend adds child as the first child to box.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to prepend.
+//
 func (box *Box) Prepend(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -217,6 +233,11 @@ func (box *Box) Prepend(child Widgetter) {
 //
 // The child must have been added before with gtk.Box.Append(),
 // gtk.Box.Prepend(), or gtk.Box.InsertChildAfter().
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (box *Box) Remove(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -233,6 +254,12 @@ func (box *Box) Remove(child Widgetter) {
 // box children.
 //
 // If sibling is NULL, move child to the first position.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to move, must be a child of box.
+//    - sibling to move child after, or NULL.
+//
 func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -256,6 +283,11 @@ func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 // If there is more vertical space available than requested, and the baseline is
 // not allocated by the parent then position is used to allocate the baseline
 // with respect to the extra space available.
+//
+// The function takes the following parameters:
+//
+//    - position: GtkBaselinePosition.
+//
 func (box *Box) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBox             // out
 	var _arg1 C.GtkBaselinePosition // out
@@ -270,6 +302,12 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 
 // SetHomogeneous sets whether or not all children of box are given equal space
 // in the box.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: boolean value, TRUE to create equal allotments, FALSE for
+//    variable allotments.
+//
 func (box *Box) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
 	var _arg1 C.gboolean // out
@@ -285,6 +323,11 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 }
 
 // SetSpacing sets the number of pixels to place between children of box.
+//
+// The function takes the following parameters:
+//
+//    - spacing: number of pixels to put between children.
+//
 func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.int     // out

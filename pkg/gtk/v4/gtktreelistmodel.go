@@ -146,6 +146,11 @@ func (self *TreeListModel) Autoexpand() bool {
 // returned.
 //
 // Do not confuse this function with gtk.TreeListModel.GetRow().
+//
+// The function takes the following parameters:
+//
+//    - position of the child to get.
+//
 func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
@@ -237,6 +242,11 @@ func (self *TreeListModel) Passthrough() bool {
 // g_list_model_get_item().
 //
 // Do not confuse this function with gtk.TreeListModel.GetChildRow().
+//
+// The function takes the following parameters:
+//
+//    - position of the row to fetch.
+//
 func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
@@ -263,6 +273,11 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 // If set to TRUE, the model will recursively expand all rows that get added to
 // the model. This can be either rows added by changes to the underlying models
 // or via gtk.TreeListRow.SetExpanded().
+//
+// The function takes the following parameters:
+//
+//    - autoexpand: TRUE to make the model autoexpand its rows.
+//
 func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.gboolean          // out
@@ -306,6 +321,11 @@ func marshalTreeListRower(p uintptr) (interface{}, error) {
 
 // ChildRow: if self is not expanded or position is greater than the number of
 // children, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - position of the child to get.
+//
 func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.guint           // out
@@ -495,6 +515,11 @@ func (self *TreeListRow) IsExpandable() bool {
 // this row. If a row is collapsed, those items will be removed from the model.
 //
 // If the row is not expandable, this function does nothing.
+//
+// The function takes the following parameters:
+//
+//    - expanded: TRUE if the row should be expanded.
+//
 func (self *TreeListRow) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.gboolean        // out

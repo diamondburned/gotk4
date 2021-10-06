@@ -99,6 +99,11 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 // Note: it is an error to call this function while a compression is in
 // progress; it may only be called immediately after creation of compressor, or
 // after resetting it with g_converter_reset().
+//
+// The function takes the following parameters:
+//
+//    - fileInfo: Info.
+//
 func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out

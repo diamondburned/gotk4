@@ -141,6 +141,11 @@ func marshalTLSClientConnectioner(p uintptr) (interface{}, error) {
 // session resumption, since session ticket reuse would be a privacy weakness.
 // Using this function causes the ticket to be copied without regard for privacy
 // considerations.
+//
+// The function takes the following parameters:
+//
+//    - source: ClientConnection.
+//
 func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
@@ -224,6 +229,11 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 // tell servers on virtual hosts which certificate to present, and also to let
 // conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
+//
+// The function takes the following parameters:
+//
+//    - identity describing the expected server identity.
+//
 func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
@@ -247,6 +257,11 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 // Since GLib 2.64, this function does nothing.
 //
 // Deprecated: SSL 3.0 is insecure.
+//
+// The function takes the following parameters:
+//
+//    - useSsl3: #gboolean, ignored.
+//
 func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.gboolean              // out
@@ -264,6 +279,11 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 // SetValidationFlags sets conn's validation flags, to override the default set
 // of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+//
+// The function takes the following parameters:
+//
+//    - flags to use.
+//
 func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags  // out

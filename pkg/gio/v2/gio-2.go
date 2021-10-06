@@ -323,6 +323,11 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 }
 
 // AllowMechanism emits the BusAuthObserver::allow-mechanism signal on observer.
+//
+// The function takes the following parameters:
+//
+//    - mechanism: name of the mechanism, e.g. DBUS_COOKIE_SHA1.
+//
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.gchar             // out
@@ -347,6 +352,12 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 
 // AuthorizeAuthenticatedPeer emits the
 // BusAuthObserver::authorize-authenticated-peer signal on observer.
+//
+// The function takes the following parameters:
+//
+//    - stream for the BusConnection.
+//    - credentials credentials received from the peer or NULL.
+//
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.GIOStream         // out
@@ -639,6 +650,11 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 // after user_data is no longer needed. (It is not guaranteed to be called
 // synchronously when the filter is removed, and may be called after connection
 // has been destroyed.).
+//
+// The function takes the following parameters:
+//
+//    - filterFunction: filter function.
+//
 func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
 	var _arg0 *C.GDBusConnection           // out
 	var _arg1 C.GDBusMessageFilterFunction // out
@@ -703,6 +719,24 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
 // G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busName: unique or well-known bus name or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: path of remote object.
+//    - interfaceName d-Bus interface to invoke method on.
+//    - methodName: name of the method to invoke.
+//    - parameters tuple with parameters for the method or NULL if not passing
+//    parameters.
+//    - replyType: expected type of the reply (which will be a tuple), or NULL.
+//    - flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result of the method invocation.
+//
 func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg9 *C.GCancellable        // out
@@ -761,6 +795,11 @@ func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath,
 }
 
 // CallFinish finishes an operation started with g_dbus_connection_call().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to g_dbus_connection_call().
+//
 func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -822,6 +861,22 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busName: unique or well-known bus name or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: path of remote object.
+//    - interfaceName d-Bus interface to invoke method on.
+//    - methodName: name of the method to invoke.
+//    - parameters tuple with parameters for the method or NULL if not passing
+//    parameters.
+//    - replyType: expected type of the reply, or NULL.
+//    - flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//
 func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg9 *C.GCancellable    // out
@@ -906,6 +961,25 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 // G_VARIANT_TYPE_HANDLE in the body of the message.
 //
 // This method is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busName: unique or well-known bus name or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: path of remote object.
+//    - interfaceName d-Bus interface to invoke method on.
+//    - methodName: name of the method to invoke.
+//    - parameters tuple with parameters for the method or NULL if not passing
+//    parameters.
+//    - replyType: expected type of the reply, or NULL.
+//    - flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//    - fdList or NULL.
+//    - callback to call when the request is satisfied or NULL if you don't *
+//    care about the result of the method invocation.
+//
 func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg10 *C.GCancellable       // out
@@ -980,6 +1054,12 @@ func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busNam
 // that non-GDBus implementations of D-Bus can usually only access file
 // descriptors if they are referenced in this way by a value of type
 // G_VARIANT_TYPE_HANDLE in the body of the message.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_connection_call_with_unix_fd_list().
+//
 func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GUnixFDList     // in
@@ -1020,6 +1100,23 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 // g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - busName: unique or well-known bus name or NULL if connection is not a
+//    message bus connection.
+//    - objectPath: path of remote object.
+//    - interfaceName d-Bus interface to invoke method on.
+//    - methodName: name of the method to invoke.
+//    - parameters tuple with parameters for the method or NULL if not passing
+//    parameters.
+//    - replyType: expected type of the reply, or NULL.
+//    - flags from the BusCallFlags enumeration.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//    - fdList or NULL.
+//
 func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg11 *C.GCancellable   // out
@@ -1119,6 +1216,13 @@ func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, bu
 // this method from. You can then call g_dbus_connection_close_finish() to get
 // the result of the operation. See g_dbus_connection_close_sync() for the
 // synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result.
+//
 func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -1143,6 +1247,12 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 }
 
 // CloseFinish finishes an operation started with g_dbus_connection_close().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_connection_close().
+//
 func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -1167,6 +1277,11 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 // CloseSync: synchronously closes connection. The calling thread is blocked
 // until this is done. See g_dbus_connection_close() for the asynchronous
 // version of this method and more details about what it does.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -1199,6 +1314,17 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 // This can only fail if parameters is not compatible with the D-Bus protocol
 // (G_IO_ERROR_INVALID_ARGUMENT), or if connection has been closed
 // (G_IO_ERROR_CLOSED).
+//
+// The function takes the following parameters:
+//
+//    - destinationBusName: unique bus name for the destination for the signal
+//    or NULL to emit to all listeners.
+//    - objectPath: path of remote object.
+//    - interfaceName d-Bus interface to emit a signal on.
+//    - signalName: name of the signal to emit.
+//    - parameters tuple with parameters for the signal or NULL if not passing
+//    parameters.
+//
 func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -1260,6 +1386,12 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 // change requests are rather likely to cause changes on the action group, this
 // effectively limits a given action group to being exported from only one main
 // context.
+//
+// The function takes the following parameters:
+//
+//    - objectPath d-Bus object path.
+//    - actionGroup: Group.
+//
 func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -1299,6 +1431,12 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // You can unexport the menu model using g_dbus_connection_unexport_menu_model()
 // with the return value of this function.
+//
+// The function takes the following parameters:
+//
+//    - objectPath d-Bus object path.
+//    - menu: Model.
+//
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -1340,6 +1478,13 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 // this method from. You can then call g_dbus_connection_flush_finish() to get
 // the result of the operation. See g_dbus_connection_flush_sync() for the
 // synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result.
+//
 func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -1364,6 +1509,12 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 }
 
 // FlushFinish finishes an operation started with g_dbus_connection_flush().
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_connection_flush().
+//
 func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -1388,6 +1539,11 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 // FlushSync: synchronously flushes connection. The calling thread is blocked
 // until this is done. See g_dbus_connection_flush() for the asynchronous
 // version of this method and more details about what it does.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//
 func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -1612,6 +1768,11 @@ func (connection *DBusConnection) IsClosed() bool {
 // filter might be using. Instead, you should pass a Notify to
 // g_dbus_connection_add_filter(), which will be called when it is guaranteed
 // that the data is no longer needed.
+//
+// The function takes the following parameters:
+//
+//    - filterId: identifier obtained from g_dbus_connection_add_filter().
+//
 func (connection *DBusConnection) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -1644,6 +1805,12 @@ func (connection *DBusConnection) RemoveFilter(filterId uint) {
 //
 // Note that message must be unlocked, unless flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+//
+// The function takes the following parameters:
+//
+//    - message: BusMessage.
+//    - flags affecting how the message is sent.
+//
 func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
@@ -1700,6 +1867,17 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - message: BusMessage.
+//    - flags affecting how the message is sent.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//    - callback to call when the request is satisfied or NULL if you don't
+//    care about the result.
+//
 func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
@@ -1750,6 +1928,12 @@ func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, mess
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
+//
+// The function takes the following parameters:
+//
+//    - res obtained from the ReadyCallback passed to
+//    g_dbus_connection_send_message_with_reply().
+//
 func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -1802,6 +1986,15 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //
 // Note that message must be unlocked, unless flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - message: BusMessage.
+//    - flags affecting how the message is sent.
+//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//    G_MAXINT for no timeout.
+//
 func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
@@ -1851,6 +2044,12 @@ func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, 
 // user's applications to quit when their bus connection goes away. If you are
 // setting exit_on_close to FALSE for the shared session bus connection, you
 // should make sure that your application exits when the user session ends.
+//
+// The function takes the following parameters:
+//
+//    - exitOnClose: whether the process should be terminated when connection
+//    is closed by the remote peer.
+//
 func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.gboolean         // out
@@ -1911,6 +2110,21 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 // to never be zero.
 //
 // This function can never fail.
+//
+// The function takes the following parameters:
+//
+//    - sender name to match on (unique or well-known name) or NULL to listen
+//    from all senders.
+//    - interfaceName d-Bus interface name to match on or NULL to match on all
+//    interfaces.
+//    - member d-Bus signal name to match on or NULL to match on all signals.
+//    - objectPath: object path to match on or NULL to match on all object
+//    paths.
+//    - arg0 contents of first string argument to match on or NULL to match on
+//    all kinds of arguments.
+//    - flags describing how arg0 is used in subscribing to the signal.
+//    - callback to invoke when there is a signal matching the requested data.
+//
 func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
@@ -1975,6 +2189,12 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 // Notify function passed to g_dbus_connection_signal_subscribe() is called, in
 // order to avoid memory leaks through callbacks queued on the Context after
 // it’s stopped being iterated.
+//
+// The function takes the following parameters:
+//
+//    - subscriptionId: subscription id obtained from
+//    g_dbus_connection_signal_subscribe().
+//
 func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -2006,6 +2226,11 @@ func (connection *DBusConnection) StartMessageProcessing() {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_action_group() or to call it with the same ID more
 // than once.
+//
+// The function takes the following parameters:
+//
+//    - exportId: ID from g_dbus_connection_export_action_group().
+//
 func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -2024,6 +2249,11 @@ func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_menu_model() or to call it with the same ID more
 // than once.
+//
+// The function takes the following parameters:
+//
+//    - exportId: ID from g_dbus_connection_export_menu_model().
+//
 func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -2037,6 +2267,12 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 }
 
 // UnregisterObject unregisters an object.
+//
+// The function takes the following parameters:
+//
+//    - registrationId: registration id obtained from
+//    g_dbus_connection_register_object().
+//
 func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -2059,6 +2295,12 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 }
 
 // UnregisterSubtree unregisters a subtree.
+//
+// The function takes the following parameters:
+//
+//    - registrationId: subtree registration id obtained from
+//    g_dbus_connection_register_subtree().
+//
 func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -2377,6 +2619,12 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 //
 // The caller is responsible for checking the type of the returned #GVariant
 // matches what is expected.
+//
+// The function takes the following parameters:
+//
+//    - headerField: 8-bit unsigned integer (typically a value from the
+//    BusMessageHeaderField enumeration).
+//
 func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -2661,6 +2909,12 @@ func (message *DBusMessage) Lock() {
 
 // NewMethodErrorLiteral creates a new BusMessage that is an error reply to
 // method_call_message.
+//
+// The function takes the following parameters:
+//
+//    - errorName: valid D-Bus error name.
+//    - errorMessage d-Bus error message.
+//
 func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2734,6 +2988,11 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //    Body: ()
 //    UNIX File Descriptors:
 //      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635.
+//
+// The function takes the following parameters:
+//
+//    - indent: indentation level.
+//
 func (message *DBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
@@ -2759,6 +3018,11 @@ func (message *DBusMessage) Print(indent uint) string {
 // of body (or cleared if body is NULL).
 //
 // If body is floating, message assumes ownership of body.
+//
+// The function takes the following parameters:
+//
+//    - body: either NULL or a #GVariant that is a tuple.
+//
 func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
@@ -2772,6 +3036,11 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 }
 
 // SetByteOrder sets the byte order of message.
+//
+// The function takes the following parameters:
+//
+//    - byteOrder: byte order.
+//
 func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
@@ -2786,6 +3055,11 @@ func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 
 // SetDestination: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2803,6 +3077,11 @@ func (message *DBusMessage) SetDestination(value string) {
 
 // SetErrorName: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetErrorName(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2819,6 +3098,12 @@ func (message *DBusMessage) SetErrorName(value string) {
 }
 
 // SetFlags sets the flags to set on message.
+//
+// The function takes the following parameters:
+//
+//    - flags flags for message that are set (typically values from the
+//    BusMessageFlags enumeration bitwise ORed together).
+//
 func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
@@ -2834,6 +3119,13 @@ func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 // SetHeader sets a header field on message.
 //
 // If value is floating, message assumes ownership of value.
+//
+// The function takes the following parameters:
+//
+//    - headerField: 8-bit unsigned integer (typically a value from the
+//    BusMessageHeaderField enumeration).
+//    - value to set the header field or NULL to clear the header field.
+//
 func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -2853,6 +3145,11 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 
 // SetInterface: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2870,6 +3167,11 @@ func (message *DBusMessage) SetInterface(value string) {
 
 // SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 // header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2886,6 +3188,12 @@ func (message *DBusMessage) SetMember(value string) {
 }
 
 // SetMessageType sets message to be of type.
+//
+// The function takes the following parameters:
+//
+//    - typ: 8-bit unsigned integer (typically a value from the BusMessageType
+//    enumeration).
+//
 func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
@@ -2900,6 +3208,11 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 
 // SetNumUnixFds: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetNumUnixFds(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -2914,6 +3227,11 @@ func (message *DBusMessage) SetNumUnixFds(value uint32) {
 
 // SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 // field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2931,6 +3249,11 @@ func (message *DBusMessage) SetPath(value string) {
 
 // SetReplySerial: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -2945,6 +3268,11 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 
 // SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 // header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -2961,6 +3289,11 @@ func (message *DBusMessage) SetSender(value string) {
 }
 
 // SetSerial sets the serial for message.
+//
+// The function takes the following parameters:
+//
+//    - serial: #guint32.
+//
 func (message *DBusMessage) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -2975,6 +3308,11 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 
 // SetSignature: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
+//
+// The function takes the following parameters:
+//
+//    - value to set.
+//
 func (message *DBusMessage) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -3000,6 +3338,11 @@ func (message *DBusMessage) SetSignature(value string) {
 // that non-GDBus implementations of D-Bus can usually only access file
 // descriptors if they are referenced by a value of type G_VARIANT_TYPE_HANDLE
 // in the body of the message.
+//
+// The function takes the following parameters:
+//
+//    - fdList or NULL.
+//
 func (message *DBusMessage) SetUnixFdList(fdList *UnixFDList) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GUnixFDList  // out
@@ -3016,6 +3359,11 @@ func (message *DBusMessage) SetUnixFdList(fdList *UnixFDList) {
 
 // ToBlob serializes message to a blob. The byte order returned by
 // g_dbus_message_get_byte_order() will be used.
+//
+// The function takes the following parameters:
+//
+//    - capabilities describing what protocol features are supported.
+//
 func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, error) {
 	var _arg0 *C.GDBusMessage        // out
 	var _arg2 C.GDBusCapabilityFlags // out
@@ -3300,6 +3648,12 @@ func (invocation *DBusMethodInvocation) Sender() string {
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
+//
+// The function takes the following parameters:
+//
+//    - errorName: valid D-Bus error name.
+//    - errorMessage: valid D-Bus error message.
+//
 func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
@@ -3323,6 +3677,13 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
+//
+// The function takes the following parameters:
+//
+//    - domain for the #GError error domain.
+//    - code: error code.
+//    - message: error message.
+//
 func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 C.GQuark                 // out
@@ -3348,6 +3709,11 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
+//
+// The function takes the following parameters:
+//
+//    - err: #GError.
+//
 func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
@@ -3389,6 +3755,12 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 // Since 2.48, if the method call requested for a reply not to be sent then this
 // call will sink parameters and free invocation, but otherwise do nothing (as
 // per the recommendations of the D-Bus specification).
+//
+// The function takes the following parameters:
+//
+//    - parameters tuple with out parameters for the method or NULL if not
+//    passing any parameters.
+//
 func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
@@ -3411,6 +3783,13 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
+//
+// The function takes the following parameters:
+//
+//    - parameters tuple with out parameters for the method or NULL if not
+//    passing any parameters.
+//    - fdList or NULL.
+//
 func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList *UnixFDList) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
@@ -3690,6 +4069,12 @@ func NewMenu() *Menu {
 // Append: convenience function for appending a normal menu item to the end of
 // menu. Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - detailedAction: detailed action string, or NULL.
+//
 func (menu *Menu) Append(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -3714,6 +4099,11 @@ func (menu *Menu) Append(label, detailedAction string) {
 // AppendItem appends item to the end of menu.
 //
 // See g_menu_insert_item() for more information.
+//
+// The function takes the following parameters:
+//
+//    - item to append.
+//
 func (menu *Menu) AppendItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -3729,6 +4119,12 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 // AppendSection: convenience function for appending a section menu item to the
 // end of menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a
 // more flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - section with the items of the section.
+//
 func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -3750,6 +4146,12 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 // AppendSubmenu: convenience function for appending a submenu menu item to the
 // end of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
 // more flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - submenu with the items of the submenu.
+//
 func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -3787,6 +4189,13 @@ func (menu *Menu) Freeze() {
 // Insert: convenience function for inserting a normal menu item into menu.
 // Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert the item.
+//    - label: section label, or NULL.
+//    - detailedAction: detailed action string, or NULL.
+//
 func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -3827,6 +4236,12 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 // There are many convenience functions to take care of common cases. See
 // g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as well
 // as "prepend" and "append" variants of each of these functions.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert the item.
+//    - item to insert.
+//
 func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
@@ -3845,6 +4260,13 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 // InsertSection: convenience function for inserting a section menu item into
 // menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
 // flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert the item.
+//    - label: section label, or NULL.
+//    - section with the items of the section.
+//
 func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -3869,6 +4291,13 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 // InsertSubmenu: convenience function for inserting a submenu menu item into
 // menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
 // flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - position at which to insert the item.
+//    - label: section label, or NULL.
+//    - submenu with the items of the submenu.
+//
 func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -3893,6 +4322,12 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 // Prepend: convenience function for prepending a normal menu item to the start
 // of menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
 // flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - detailedAction: detailed action string, or NULL.
+//
 func (menu *Menu) Prepend(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -3917,6 +4352,11 @@ func (menu *Menu) Prepend(label, detailedAction string) {
 // PrependItem prepends item to the start of menu.
 //
 // See g_menu_insert_item() for more information.
+//
+// The function takes the following parameters:
+//
+//    - item to prepend.
+//
 func (menu *Menu) PrependItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -3932,6 +4372,12 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 // PrependSection: convenience function for prepending a section menu item to
 // the start of menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 // for a more flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - section with the items of the section.
+//
 func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -3953,6 +4399,12 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 // PrependSubmenu: convenience function for prepending a submenu menu item to
 // the start of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 // for a more flexible alternative.
+//
+// The function takes the following parameters:
+//
+//    - label: section label, or NULL.
+//    - submenu with the items of the submenu.
+//
 func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -3981,6 +4433,11 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 // It is not possible to remove items by identity since items are added to the
 // menu simply by copying their links and attributes (ie: identity of the item
 // itself is not preserved).
+//
+// The function takes the following parameters:
+//
+//    - position of the item to remove.
+//
 func (menu *Menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -4186,6 +4643,12 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 //
 // If expected_type is specified and the attribute does not have this type, NULL
 // is returned. NULL is also returned if the attribute simply does not exist.
+//
+// The function takes the following parameters:
+//
+//    - attribute name to query.
+//    - expectedType: expected type of the attribute.
+//
 func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuItem    // out
 	var _arg1 *C.gchar        // out
@@ -4220,6 +4683,11 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 }
 
 // Link queries the named link on menu_item.
+//
+// The function takes the following parameters:
+//
+//    - link name to query.
+//
 func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -4286,6 +4754,12 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 //
 // See g_menu_item_set_action_and_target() or g_menu_item_set_detailed_action()
 // for two equivalent calls that are probably more convenient for most uses.
+//
+// The function takes the following parameters:
+//
+//    - action: name of the action for this item.
+//    - targetValue to use as the action target.
+//
 func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -4323,6 +4797,12 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 //
 // See also g_menu_item_set_attribute() for a more convenient way to do the
 // same.
+//
+// The function takes the following parameters:
+//
+//    - attribute to set.
+//    - value to use as the value, or NULL.
+//
 func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -4353,6 +4833,11 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 //
 // See also g_menu_item_set_action_and_target_value() for a description of the
 // semantics of the action and target attributes.
+//
+// The function takes the following parameters:
+//
+//    - detailedAction: "detailed" action string.
+//
 func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -4376,6 +4861,11 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 // corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 //
 // If icon is NULL then the icon is unset.
+//
+// The function takes the following parameters:
+//
+//    - icon or NULL.
+//
 func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
@@ -4392,6 +4882,11 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 //
 // If label is non-NULL it is used as the label for the menu item. If it is NULL
 // then the label attribute is unset.
+//
+// The function takes the following parameters:
+//
+//    - label to set, or NULL to unset.
+//
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -4417,6 +4912,12 @@ func (menuItem *MenuItem) SetLabel(label string) {
 // lowercase characters, numbers and '-'. Furthermore, the names must begin with
 // a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
+//
+// The function takes the following parameters:
+//
+//    - link: type of link to establish or unset.
+//    - model to link to (or NULL to unset).
+//
 func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -4441,6 +4942,11 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 // sounds: the items from section become a direct part of the menu that
 // menu_item is added to. See g_menu_item_new_section() for more information
 // about what it means for a menu item to be a section.
+//
+// The function takes the following parameters:
+//
+//    - section or NULL.
+//
 func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -4462,6 +4968,11 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 //
 // The effect of having one menu appear as a submenu of another is exactly as it
 // sounds.
+//
+// The function takes the following parameters:
+//
+//    - submenu or NULL.
+//
 func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -4541,6 +5052,12 @@ func NewNotification(title string) *Notification {
 //
 // See g_action_parse_detailed_name() for a description of the format for
 // detailed_action.
+//
+// The function takes the following parameters:
+//
+//    - label of the button.
+//    - detailedAction: detailed action name.
+//
 func (notification *Notification) AddButton(label, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4563,6 +5080,13 @@ func (notification *Notification) AddButton(label, detailedAction string) {
 // "app.").
 //
 // If target is non-NULL, action will be activated with target as its parameter.
+//
+// The function takes the following parameters:
+//
+//    - label of the button.
+//    - action name.
+//    - target to use as action's parameter, or NULL.
+//
 func (notification *Notification) AddButtonWithTarget(label, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4586,6 +5110,11 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 }
 
 // SetBody sets the body of notification to body.
+//
+// The function takes the following parameters:
+//
+//    - body: new body for notification, or NULL.
+//
 func (notification *Notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4612,6 +5141,11 @@ func (notification *Notification) SetBody(body string) {
 //
 // When no default action is set, the application that the notification was sent
 // on is activated.
+//
+// The function takes the following parameters:
+//
+//    - detailedAction: detailed action name.
+//
 func (notification *Notification) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4633,6 +5167,12 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 //
 // When no default action is set, the application that the notification was sent
 // on is activated.
+//
+// The function takes the following parameters:
+//
+//    - action name.
+//    - target to use as action's parameter, or NULL.
+//
 func (notification *Notification) SetDefaultActionAndTarget(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4652,6 +5192,11 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 }
 
 // SetIcon sets the icon of notification to icon.
+//
+// The function takes the following parameters:
+//
+//    - icon to be shown in notification, as a #GIcon.
+//
 func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
@@ -4666,6 +5211,11 @@ func (notification *Notification) SetIcon(icon Iconner) {
 
 // SetPriority sets the priority of notification to priority. See Priority for
 // possible values.
+//
+// The function takes the following parameters:
+//
+//    - priority: Priority.
+//
 func (notification *Notification) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
@@ -4679,6 +5229,11 @@ func (notification *Notification) SetPriority(priority NotificationPriority) {
 }
 
 // SetTitle sets the title of notification to title.
+//
+// The function takes the following parameters:
+//
+//    - title: new title for notification.
+//
 func (notification *Notification) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -4696,6 +5251,11 @@ func (notification *Notification) SetTitle(title string) {
 //
 // Deprecated: Since 2.42, this has been deprecated in favour of
 // g_notification_set_priority().
+//
+// The function takes the following parameters:
+//
+//    - urgent: TRUE if notification is urgent.
+//
 func (notification *Notification) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
@@ -4902,6 +5462,11 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 //
 // This should only be called by the implementor of the action. Users of the
 // action should not attempt to modify its enabled flag.
+//
+// The function takes the following parameters:
+//
+//    - enabled: whether the action is enabled.
+//
 func (simple *SimpleAction) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
@@ -4925,6 +5490,11 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 // they should call g_action_change_state() to request the change.
 //
 // If the value GVariant is floating, it is consumed.
+//
+// The function takes the following parameters:
+//
+//    - value: new #GVariant for the state.
+//
 func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -4940,6 +5510,11 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 // SetStateHint sets the state hint for the action.
 //
 // See g_action_get_state_hint() for more information about action state hints.
+//
+// The function takes the following parameters:
+//
+//    - stateHint representing the state hint.
+//
 func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -5245,6 +5820,12 @@ func NewSubprocess(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 // cancelled. You should especially not attempt to interact with the pipes while
 // the operation is in progress (either from another thread or if using the
 // asynchronous version).
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - stdinBuf: data to send to the stdin of the subprocess, or NULL.
+//
 func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf *glib.Bytes) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg2 *C.GCancellable // out
@@ -5299,6 +5880,13 @@ func (subprocess *Subprocess) Communicate(ctx context.Context, stdinBuf *glib.By
 
 // CommunicateAsync asynchronous version of g_subprocess_communicate(). Complete
 // invocation with g_subprocess_communicate_finish().
+//
+// The function takes the following parameters:
+//
+//    - ctx: cancellable.
+//    - stdinBuf: input data, or NULL.
+//    - callback: callback.
+//
 func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf *glib.Bytes, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg2 *C.GCancellable       // out
@@ -5329,6 +5917,11 @@ func (subprocess *Subprocess) CommunicateAsync(ctx context.Context, stdinBuf *gl
 
 // CommunicateFinish: complete an invocation of
 // g_subprocess_communicate_async().
+//
+// The function takes the following parameters:
+//
+//    - result: result.
+//
 func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -5377,6 +5970,12 @@ func (subprocess *Subprocess) CommunicateFinish(result AsyncResulter) (stdoutBuf
 //
 // On error, stdout_buf and stderr_buf will be set to undefined values and
 // should not be used.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//    - stdinBuf: data to send to the stdin of the subprocess, or NULL.
+//
 func (subprocess *Subprocess) CommunicateUTF8(ctx context.Context, stdinBuf string) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg2 *C.GCancellable // out
@@ -5422,6 +6021,13 @@ func (subprocess *Subprocess) CommunicateUTF8(ctx context.Context, stdinBuf stri
 
 // CommunicateUTF8Async asynchronous version of g_subprocess_communicate_utf8().
 // Complete invocation with g_subprocess_communicate_utf8_finish().
+//
+// The function takes the following parameters:
+//
+//    - ctx: cancellable.
+//    - stdinBuf: input data, or NULL.
+//    - callback: callback.
+//
 func (subprocess *Subprocess) CommunicateUTF8Async(ctx context.Context, stdinBuf string, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg2 *C.GCancellable       // out
@@ -5453,6 +6059,11 @@ func (subprocess *Subprocess) CommunicateUTF8Async(ctx context.Context, stdinBuf
 
 // CommunicateUTF8Finish: complete an invocation of
 // g_subprocess_communicate_utf8_async().
+//
+// The function takes the following parameters:
+//
+//    - result: result.
+//
 func (subprocess *Subprocess) CommunicateUTF8Finish(result AsyncResulter) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -5769,6 +6380,11 @@ func (subprocess *Subprocess) TermSig() int {
 // signalled.
 //
 // This API is not available on Windows.
+//
+// The function takes the following parameters:
+//
+//    - signalNum: signal number to send.
+//
 func (subprocess *Subprocess) SendSignal(signalNum int) {
 	var _arg0 *C.GSubprocess // out
 	var _arg1 C.gint         // out
@@ -5791,6 +6407,11 @@ func (subprocess *Subprocess) SendSignal(signalNum int) {
 //
 // Cancelling cancellable doesn't kill the subprocess. Call
 // g_subprocess_force_exit() if it is desirable.
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//
 func (subprocess *Subprocess) Wait(ctx context.Context) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
@@ -5819,6 +6440,12 @@ func (subprocess *Subprocess) Wait(ctx context.Context) error {
 // WaitAsync: wait for the subprocess to terminate.
 //
 // This is the asynchronous version of g_subprocess_wait().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when the operation is complete.
+//
 func (subprocess *Subprocess) WaitAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
@@ -5843,6 +6470,11 @@ func (subprocess *Subprocess) WaitAsync(ctx context.Context, callback AsyncReady
 }
 
 // WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
+//
+// The function takes the following parameters:
+//
+//    - ctx: #GCancellable.
+//
 func (subprocess *Subprocess) WaitCheck(ctx context.Context) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
@@ -5872,6 +6504,12 @@ func (subprocess *Subprocess) WaitCheck(ctx context.Context) error {
 // g_spawn_check_exit_status().
 //
 // This is the asynchronous version of g_subprocess_wait_check().
+//
+// The function takes the following parameters:
+//
+//    - ctx or NULL.
+//    - callback to call when the operation is complete.
+//
 func (subprocess *Subprocess) WaitCheckAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
@@ -5897,6 +6535,11 @@ func (subprocess *Subprocess) WaitCheckAsync(ctx context.Context, callback Async
 
 // WaitCheckFinish collects the result of a previous call to
 // g_subprocess_wait_check_async().
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (subprocess *Subprocess) WaitCheckFinish(result AsyncResulter) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -5920,6 +6563,11 @@ func (subprocess *Subprocess) WaitCheckFinish(result AsyncResulter) error {
 
 // WaitFinish collects the result of a previous call to
 // g_subprocess_wait_async().
+//
+// The function takes the following parameters:
+//
+//    - result passed to your ReadyCallback.
+//
 func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GAsyncResult // out
@@ -6009,6 +6657,11 @@ func (self *SubprocessLauncher) Close() {
 //
 // On UNIX, the returned string can be an arbitrary byte string. On Windows, it
 // will be UTF-8.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to get.
+//
 func (self *SubprocessLauncher) env(variable string) string {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6036,6 +6689,11 @@ func (self *SubprocessLauncher) env(variable string) string {
 //
 // By default processes are launched with the current working directory of the
 // launching process at the time of launch.
+//
+// The function takes the following parameters:
+//
+//    - cwd for launched processes.
+//
 func (self *SubprocessLauncher) SetCwd(cwd string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6068,6 +6726,11 @@ func (self *SubprocessLauncher) SetCwd(cwd string) {
 //
 // On UNIX, all strings in this array can be arbitrary byte strings. On Windows,
 // they should be in UTF-8.
+//
+// The function takes the following parameters:
+//
+//    - env: the replacement environment.
+//
 func (self *SubprocessLauncher) SetEnviron(env []string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar              // out
@@ -6103,6 +6766,11 @@ func (self *SubprocessLauncher) SetEnviron(env []string) {
 // You may also not set a flag that conflicts with a previous call to a function
 // like g_subprocess_launcher_set_stdin_file_path() or
 // g_subprocess_launcher_take_stdout_fd().
+//
+// The function takes the following parameters:
+//
+//    - flags: Flags.
+//
 func (self *SubprocessLauncher) SetFlags(flags SubprocessFlags) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.GSubprocessFlags     // out
@@ -6130,6 +6798,11 @@ func (self *SubprocessLauncher) SetFlags(flags SubprocessFlags) {
 // launcher flags contain any flags directing stderr elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - path: filename or NULL.
+//
 func (self *SubprocessLauncher) SetStderrFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6156,6 +6829,11 @@ func (self *SubprocessLauncher) SetStderrFilePath(path string) {
 // launcher flags contain any flags directing stdin elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+
+//
 func (self *SubprocessLauncher) SetStdinFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6181,6 +6859,11 @@ func (self *SubprocessLauncher) SetStdinFilePath(path string) {
 // launcher flags contain any flags directing stdout elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - path: filename or NULL.
+//
 func (self *SubprocessLauncher) SetStdoutFilePath(path string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6202,6 +6885,13 @@ func (self *SubprocessLauncher) SetStdoutFilePath(path string) {
 // On UNIX, both the variable's name and value can be arbitrary byte strings,
 // except that the variable's name cannot contain '='. On Windows, they should
 // be in UTF-8.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to set, must not contain '='.
+//    - value: new value for the variable.
+//    - overwrite: whether to change the variable if it already exists.
+//
 func (self *SubprocessLauncher) Setenv(variable, value string, overwrite bool) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6225,6 +6915,11 @@ func (self *SubprocessLauncher) Setenv(variable, value string, overwrite bool) {
 }
 
 // Spawnv creates a #GSubprocess given a provided array of arguments.
+//
+// The function takes the following parameters:
+//
+//    - argv: command line arguments.
+//
 func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 **C.gchar              // out
@@ -6272,6 +6967,12 @@ func (self *SubprocessLauncher) Spawnv(argv []string) (*Subprocess, error) {
 // An example use case is GNUPG, which has a command line argument
 // --passphrase-fd providing a file descriptor number where it expects the
 // passphrase to be written.
+//
+// The function takes the following parameters:
+//
+//    - sourceFd: file descriptor in parent process.
+//    - targetFd: target descriptor for child process.
+//
 func (self *SubprocessLauncher) TakeFd(sourceFd, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -6303,6 +7004,11 @@ func (self *SubprocessLauncher) TakeFd(sourceFd, targetFd int) {
 // launcher flags contain any flags directing stderr elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - fd: file descriptor, or -1.
+//
 func (self *SubprocessLauncher) TakeStderrFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -6333,6 +7039,11 @@ func (self *SubprocessLauncher) TakeStderrFd(fd int) {
 // launcher flags contain any flags directing stdin elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - fd: file descriptor, or -1.
+//
 func (self *SubprocessLauncher) TakeStdinFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -6362,6 +7073,11 @@ func (self *SubprocessLauncher) TakeStdinFd(fd int) {
 // launcher flags contain any flags directing stdout elsewhere.
 //
 // This feature is only available on UNIX.
+//
+// The function takes the following parameters:
+//
+//    - fd: file descriptor, or -1.
+//
 func (self *SubprocessLauncher) TakeStdoutFd(fd int) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 C.gint                 // out
@@ -6379,6 +7095,11 @@ func (self *SubprocessLauncher) TakeStdoutFd(fd int) {
 //
 // On UNIX, the variable's name can be an arbitrary byte string not containing
 // '='. On Windows, it should be in UTF-8.
+//
+// The function takes the following parameters:
+//
+//    - variable: environment variable to unset, must not contain '='.
+//
 func (self *SubprocessLauncher) Unsetenv(variable string) {
 	var _arg0 *C.GSubprocessLauncher // out
 	var _arg1 *C.gchar               // out
@@ -6498,6 +7219,11 @@ func NewTestDBus(flags TestDBusFlags) *TestDBus {
 
 // AddServiceDir: add a path where dbus-daemon will look up .service files. This
 // can't be called after g_test_dbus_up().
+//
+// The function takes the following parameters:
+//
+//    - path to a directory containing .service files.
+//
 func (self *TestDBus) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out

@@ -265,6 +265,11 @@ func (op *MountOperation) Username() string {
 }
 
 // Reply emits the Operation::reply signal.
+//
+// The function takes the following parameters:
+//
+//    - result: OperationResult.
+//
 func (op *MountOperation) Reply(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
 	var _arg1 C.GMountOperationResult // out
@@ -279,6 +284,11 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 
 // SetAnonymous sets the mount operation to use an anonymous user if anonymous
 // is TRUE.
+//
+// The function takes the following parameters:
+//
+//    - anonymous: boolean value.
+//
 func (op *MountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -294,6 +304,11 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 }
 
 // SetChoice sets a default choice for the mount operation.
+//
+// The function takes the following parameters:
+//
+//    - choice: integer.
+//
 func (op *MountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
@@ -307,6 +322,11 @@ func (op *MountOperation) SetChoice(choice int) {
 }
 
 // SetDomain sets the mount operation's domain.
+//
+// The function takes the following parameters:
+//
+//    - domain to set.
+//
 func (op *MountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -324,6 +344,11 @@ func (op *MountOperation) SetDomain(domain string) {
 
 // SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume if
 // hidden_volume is TRUE.
+//
+// The function takes the following parameters:
+//
+//    - hiddenVolume: boolean value.
+//
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -340,6 +365,11 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 
 // SetIsTcryptSystemVolume sets the mount operation to use a system volume if
 // system_volume is TRUE.
+//
+// The function takes the following parameters:
+//
+//    - systemVolume: boolean value.
+//
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -355,6 +385,11 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 }
 
 // SetPassword sets the mount operation's password to password.
+//
+// The function takes the following parameters:
+//
+//    - password to set.
+//
 func (op *MountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -371,6 +406,11 @@ func (op *MountOperation) SetPassword(password string) {
 }
 
 // SetPasswordSave sets the state of saving passwords for the mount operation.
+//
+// The function takes the following parameters:
+//
+//    - save: set of Save flags.
+//
 func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.GPasswordSave    // out
@@ -384,6 +424,11 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 }
 
 // SetPim sets the mount operation's PIM to pim.
+//
+// The function takes the following parameters:
+//
+//    - pim: unsigned integer.
+//
 func (op *MountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
@@ -397,6 +442,11 @@ func (op *MountOperation) SetPim(pim uint) {
 }
 
 // SetUsername sets the user name within op to username.
+//
+// The function takes the following parameters:
+//
+//    - username: input username.
+//
 func (op *MountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out

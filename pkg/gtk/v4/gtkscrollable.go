@@ -202,6 +202,11 @@ func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
 }
 
 // SetHAdjustment sets the horizontal adjustment of the GtkScrollable.
+//
+// The function takes the following parameters:
+//
+//    - hadjustment: GtkAdjustment.
+//
 func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
@@ -220,6 +225,11 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 //
 // The policy determines whether horizontal scrolling should start below the
 // minimum width or below the natural width.
+//
+// The function takes the following parameters:
+//
+//    - policy: horizontal GtkScrollablePolicy.
+//
 func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out
@@ -233,6 +243,11 @@ func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 }
 
 // SetVAdjustment sets the vertical adjustment of the GtkScrollable.
+//
+// The function takes the following parameters:
+//
+//    - vadjustment: GtkAdjustment.
+//
 func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
@@ -251,6 +266,11 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 //
 // The policy determines whether vertical scrolling should start below the
 // minimum height or below the natural height.
+//
+// The function takes the following parameters:
+//
+//    - policy: vertical GtkScrollablePolicy.
+//
 func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
 	var _arg1 C.GtkScrollablePolicy // out

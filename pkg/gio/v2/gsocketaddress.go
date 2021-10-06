@@ -152,6 +152,14 @@ func (address *SocketAddress) NativeSize() int {
 // If not enough space is available, a G_IO_ERROR_NO_SPACE error is returned. If
 // the address type is not known on the system then a G_IO_ERROR_NOT_SUPPORTED
 // error is returned.
+//
+// The function takes the following parameters:
+//
+//    - dest: pointer to a memory location that will contain the native struct
+//    sockaddr.
+//    - destlen: size of dest. Must be at least as large as
+//    g_socket_address_get_native_size().
+//
 func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out

@@ -145,6 +145,11 @@ func NewPopoverMenu() *PopoverMenu {
 // ModelButton will open submenus automatically when the ModelButton:menu-name
 // property is set, so this function is only needed when you are using other
 // kinds of widgets to initiate menu changes.
+//
+// The function takes the following parameters:
+//
+//    - name of the menu to switch to.
+//
 func (popover *PopoverMenu) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.gchar          // out

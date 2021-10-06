@@ -132,6 +132,11 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 }
 
 // SetTransform sets the transformation of the child of a GtkFixedLayout.
+//
+// The function takes the following parameters:
+//
+//    - transform: GskTransform.
+//
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out

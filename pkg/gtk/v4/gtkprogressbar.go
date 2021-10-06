@@ -255,6 +255,11 @@ func (pbar *ProgressBar) Pulse() {
 //
 // The text is ellipsized if there is not enough space to render the entire
 // string.
+//
+// The function takes the following parameters:
+//
+//    - mode: PangoEllipsizeMode.
+//
 func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.GtkProgressBar    // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -271,6 +276,11 @@ func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 // bar.
 //
 // The fraction should be between 0.0 and 1.0, inclusive.
+//
+// The function takes the following parameters:
+//
+//    - fraction of the task that’s been completed.
+//
 func (pbar *ProgressBar) SetFraction(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.double          // out
@@ -287,6 +297,11 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 //
 // Progress bars normally grow from top to bottom or left to right. Inverted
 // progress bars grow in the opposite direction.
+//
+// The function takes the following parameters:
+//
+//    - inverted: TRUE to invert the progress bar.
+//
 func (pbar *ProgressBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
@@ -305,6 +320,11 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 // bouncing block.
 //
 // The bouncing block is moved when gtk.ProgressBar.Pulse() is called.
+//
+// The function takes the following parameters:
+//
+//    - fraction between 0.0 and 1.0.
+//
 func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.double          // out
@@ -325,6 +345,11 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 // To make a progress bar that is styled and sized suitably for containing text
 // (even if the actual text is blank), set gtk.ProgressBar:show-text to TRUE and
 // gtk.ProgressBar:text to the empty string (not NULL).
+//
+// The function takes the following parameters:
+//
+//    - showText: whether to show text.
+//
 func (pbar *ProgressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
@@ -348,6 +373,11 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 // displayed. In this case, it will not display the progress percentage. If text
 // is the empty string, the progress bar will still be styled and sized suitably
 // for containing text, as long as gtk.ProgressBar:show-text is TRUE.
+//
+// The function takes the following parameters:
+//
+//    - text: UTF-8 string, or NULL.
+//
 func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.char           // out

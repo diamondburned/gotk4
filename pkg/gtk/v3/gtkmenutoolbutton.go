@@ -185,6 +185,11 @@ func (button *MenuToolButton) Menu() Widgetter {
 // SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip for
 // the arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
 // for setting a tooltip on the whole MenuToolButton.
+//
+// The function takes the following parameters:
+//
+//    - markup text to be used as tooltip text for button’s arrow button.
+//
 func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
@@ -201,6 +206,11 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 // SetArrowTooltipText sets the tooltip text to be used as tooltip for the arrow
 // button which pops up the menu. See gtk_tool_item_set_tooltip_text() for
 // setting a tooltip on the whole MenuToolButton.
+//
+// The function takes the following parameters:
+//
+//    - text to be used as tooltip text for button’s arrow button.
+//
 func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
@@ -216,6 +226,11 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
 // menu is NULL, the arrow button becomes insensitive.
+//
+// The function takes the following parameters:
+//
+//    - menu associated with MenuToolButton.
+//
 func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out

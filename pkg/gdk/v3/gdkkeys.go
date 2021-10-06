@@ -257,6 +257,11 @@ func (keymap *Keymap) Direction() pango.Direction {
 // arrays with g_free(). When a keycode is pressed by the user, the keyval from
 // this list of entries is selected by considering the effective keyboard group
 // and level. See gdk_keymap_translate_keyboard_state().
+//
+// The function takes the following parameters:
+//
+//    - hardwareKeycode: keycode.
+//
 func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 C.guint         // out
@@ -307,6 +312,11 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 // modes, for example. EventKey contains a group field that indicates the active
 // keyboard group. The level is computed from the modifier mask. The returned
 // array should be freed with g_free().
+//
+// The function takes the following parameters:
+//
+//    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+//
 func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 C.guint         // out
@@ -342,6 +352,11 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 // maps MOD1 to META), so there are use cases where the return value of this
 // function has to be transformed by gdk_keymap_add_virtual_modifiers() in order
 // to contain the expected result.
+//
+// The function takes the following parameters:
+//
+//    - intent: use case for the modifier mask.
+//
 func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	var _arg0 *C.GdkKeymap        // out
 	var _arg1 C.GdkModifierIntent // out
@@ -440,6 +455,11 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 // keyval is bound to key, returns 0. For normal user input, you want to use
 // gdk_keymap_translate_keyboard_state() instead of this function, since the
 // effective group/level may not be the same as the current keyboard state.
+//
+// The function takes the following parameters:
+//
+//    - key with keycode, group, and level initialized.
+//
 func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
@@ -486,6 +506,13 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 // multi-modifier combinations are returned only when actually found in state.
 // When you store accelerators, you should always store them with consumed
 // modifiers removed. Store <Control>plus, not <Control><Shift>plus,.
+//
+// The function takes the following parameters:
+//
+//    - hardwareKeycode: keycode.
+//    - state: modifier state.
+//    - group: active keyboard group.
+//
 func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out

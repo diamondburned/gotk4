@@ -179,6 +179,12 @@ func (action *RadioAction) Group() []RadioAction {
 //       }
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - groupSource: radio action object whos group we are joining, or NULL to
+//    remove the radio action from its group.
+//
 func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
@@ -197,6 +203,11 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 // value property current_value.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - currentValue: new value.
+//
 func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
@@ -212,6 +223,11 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 // SetGroup sets the radio group for the radio action object.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - group: list representing a radio group, or NULL.
+//
 func (action *RadioAction) SetGroup(group []RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GSList         // out

@@ -250,6 +250,11 @@ func (fontButton *FontButton) UseSize() bool {
 // dialog.
 //
 // Deprecated: Use gtk_font_chooser_set_font() instead.
+//
+// The function takes the following parameters:
+//
+//    - fontname: name of font to display in font chooser dialog.
+//
 func (fontButton *FontButton) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
@@ -274,6 +279,11 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 
 // SetShowSize: if show_size is TRUE, the font size will be displayed along with
 // the name of the selected font.
+//
+// The function takes the following parameters:
+//
+//    - showSize: TRUE if font size should be displayed in dialog.
+//
 func (fontButton *FontButton) SetShowSize(showSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
@@ -290,6 +300,11 @@ func (fontButton *FontButton) SetShowSize(showSize bool) {
 
 // SetShowStyle: if show_style is TRUE, the font style will be displayed along
 // with name of the selected font.
+//
+// The function takes the following parameters:
+//
+//    - showStyle: TRUE if font style should be displayed in label.
+//
 func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
@@ -305,6 +320,11 @@ func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 }
 
 // SetTitle sets the title for the font chooser dialog.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing the font chooser dialog title.
+//
 func (fontButton *FontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 *C.gchar         // out
@@ -320,6 +340,11 @@ func (fontButton *FontButton) SetTitle(title string) {
 
 // SetUseFont: if use_font is TRUE, the font name will be written using the
 // selected font.
+//
+// The function takes the following parameters:
+//
+//    - useFont: if TRUE, font name will be written using font chosen.
+//
 func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out
@@ -336,6 +361,11 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 
 // SetUseSize: if use_size is TRUE, the font name will be written using the
 // selected size.
+//
+// The function takes the following parameters:
+//
+//    - useSize: if TRUE, font name will be written using the selected size.
+//
 func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out
 	var _arg1 C.gboolean       // out

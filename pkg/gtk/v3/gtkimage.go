@@ -652,6 +652,11 @@ func (image *Image) StorageType() ImageType {
 
 // SetFromAnimation causes the Image to display the given animation (or display
 // nothing, if you set the animation to NULL).
+//
+// The function takes the following parameters:
+//
+//    - animation: PixbufAnimation.
+//
 func (image *Image) SetFromAnimation(animation *gdkpixbuf.PixbufAnimation) {
 	var _arg0 *C.GtkImage           // out
 	var _arg1 *C.GdkPixbufAnimation // out
@@ -665,6 +670,11 @@ func (image *Image) SetFromAnimation(animation *gdkpixbuf.PixbufAnimation) {
 }
 
 // SetFromFile: see gtk_image_new_from_file() for details.
+//
+// The function takes the following parameters:
+//
+//    - filename or NULL.
+//
 func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
@@ -681,6 +691,12 @@ func (image *Image) SetFromFile(filename string) {
 }
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//    - size: icon size (IconSize).
+//
 func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
@@ -697,6 +713,12 @@ func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 }
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//    - size: icon size (IconSize).
+//
 func (image *Image) SetFromIconName(iconName string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
@@ -718,6 +740,12 @@ func (image *Image) SetFromIconName(iconName string, size int) {
 // SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 //
 // Deprecated: Use gtk_image_set_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - iconSet: IconSet.
+//    - size: stock icon size (IconSize).
+//
 func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GtkIconSet // out
@@ -734,6 +762,11 @@ func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 }
 
 // SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf or NULL.
+//
 func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
@@ -749,6 +782,11 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 }
 
 // SetFromResource: see gtk_image_new_from_resource() for details.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path or NULL.
+//
 func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.gchar    // out
@@ -767,6 +805,12 @@ func (image *Image) SetFromResource(resourcePath string) {
 // SetFromStock: see gtk_image_new_from_stock() for details.
 //
 // Deprecated: Use gtk_image_set_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock icon name.
+//    - size: stock icon size (IconSize).
+//
 func (image *Image) SetFromStock(stockId string, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.gchar      // out
@@ -784,6 +828,11 @@ func (image *Image) SetFromStock(stockId string, size int) {
 }
 
 // SetFromSurface: see gtk_image_new_from_surface() for details.
+//
+// The function takes the following parameters:
+//
+//    - surface: cairo_surface_t or NULL.
+//
 func (image *Image) SetFromSurface(surface *cairo.Surface) {
 	var _arg0 *C.GtkImage        // out
 	var _arg1 *C.cairo_surface_t // out
@@ -801,6 +850,11 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 // SetPixelSize sets the pixel size to use for named icons. If the pixel size is
 // set to a value != -1, it is used instead of the icon size set by
 // gtk_image_set_from_icon_name().
+//
+// The function takes the following parameters:
+//
+//    - pixelSize: new pixel size.
+//
 func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.gint      // out

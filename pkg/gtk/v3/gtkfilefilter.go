@@ -216,6 +216,14 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 // function. The bitfield needed which is passed in provides information about
 // what sorts of information that the filter function needs; this allows GTK+ to
 // avoid retrieving expensive information when it isn’t needed by the filter.
+//
+// The function takes the following parameters:
+//
+//    - needed: bitfield of flags indicating the information that the custom
+//    filter function needs.
+//    - fn: callback function; if the function returns TRUE, then the file will
+//    be displayed.
+//
 func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 C.GtkFileFilterFlags // out
@@ -236,6 +244,11 @@ func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: name of a MIME type.
+//
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
@@ -250,6 +263,11 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
+//
+// The function takes the following parameters:
+//
+//    - pattern: shell style glob.
+//
 func (filter *FileFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
@@ -280,6 +298,11 @@ func (filter *FileFilter) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
+//
+// The function takes the following parameters:
+//
+//    - filterInfo containing information about a file.
+//
 func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg0 *C.GtkFileFilter     // out
 	var _arg1 *C.GtkFileFilterInfo // out
@@ -345,6 +368,11 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the file selector user interface if there is a
 // selectable list of filters.
+//
+// The function takes the following parameters:
+//
+//    - name for the filter, or NULL to remove any existing name.
+//
 func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out

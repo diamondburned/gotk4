@@ -289,6 +289,11 @@ func (self *FileChooserNative) CancelLabel() string {
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
+//
+// The function takes the following parameters:
+//
+//    - acceptLabel: custom label or NULL for the default.
+//
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
@@ -311,6 +316,11 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
+//
+// The function takes the following parameters:
+//
+//    - cancelLabel: custom label or NULL for the default.
+//
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out

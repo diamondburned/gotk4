@@ -85,6 +85,11 @@ func (context *AppLaunchContext) Display() *Display {
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
+//
+// The function takes the following parameters:
+//
+//    - desktop: number of a workspace, or -1.
+//
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
@@ -103,6 +108,11 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // notification.
 //
 // See also gdk.AppLaunchContext.SetIconName().
+//
+// The function takes the following parameters:
+//
+//    - icon or NULL.
+//
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
@@ -127,6 +137,11 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 // icon or icon_name is set, the icon is taken from either the file that is
 // passed to launched application or from the GAppInfo for the launched
 // application itself.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name, or NULL.
+//
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
@@ -150,6 +165,11 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 // Window managers can use this information to avoid moving the focus to the
 // newly launched application when the user is busy typing in another window.
 // This is also known as 'focus stealing prevention'.
+//
+// The function takes the following parameters:
+//
+//    - timestamp: timestamp.
+//
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out

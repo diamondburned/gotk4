@@ -113,6 +113,14 @@ func marshalCellAreaContexter(p uintptr) (interface{}, error) {
 // TreeView:fixed-height-mode is enabled.
 //
 // Since 3.0.
+//
+// The function takes the following parameters:
+//
+//    - width: allocated width for all TreeModel rows rendered with context, or
+//    -1.
+//    - height: allocated height for all TreeModel rows rendered with context,
+//    or -1.
+//
 func (context *CellAreaContext) Allocate(width, height int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -218,6 +226,11 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHei
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting
 // the size of a CellArea, the returned values are -1.
+//
+// The function takes the following parameters:
+//
+//    - width: proposed width for allocation.
+//
 func (context *CellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -270,6 +283,11 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting
 // the size of a CellArea, the returned values are -1.
+//
+// The function takes the following parameters:
+//
+//    - height: proposed height for allocation.
+//
 func (context *CellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -298,6 +316,12 @@ func (context *CellAreaContext) PreferredWidthForHeight(height int) (minimumWidt
 // This is used by CellAreaContext implementations during the request process
 // over a series of TreeModel rows to progressively push the requested height
 // over a series of gtk_cell_area_get_preferred_height() requests.
+//
+// The function takes the following parameters:
+//
+//    - minimumHeight: proposed new minimum height for context.
+//    - naturalHeight: proposed new natural height for context.
+//
 func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out
@@ -319,6 +343,12 @@ func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight
 // This is used by CellAreaContext implementations during the request process
 // over a series of TreeModel rows to progressively push the requested width
 // over a series of gtk_cell_area_get_preferred_width() requests.
+//
+// The function takes the following parameters:
+//
+//    - minimumWidth: proposed new minimum width for context.
+//    - naturalWidth: proposed new natural width for context.
+//
 func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _arg1 C.gint                // out

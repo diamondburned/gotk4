@@ -98,6 +98,11 @@ func (preview *PrintOperationPreview) EndPreview() {
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
+//
+// The function takes the following parameters:
+//
+//    - pageNr: page number.
+//
 func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
@@ -129,6 +134,11 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 //
 // Note that this function requires a suitable cairo context to be associated
 // with the print context.
+//
+// The function takes the following parameters:
+//
+//    - pageNr: page to render.
+//
 func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out

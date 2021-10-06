@@ -245,6 +245,16 @@ func marshalFileChooserer(p uintptr) (interface{}, error) {
 // checkbutton. You can select a value using gtk.FileChooser.SetChoice() before
 // the dialog is shown, and you can obtain the user-selected value in the
 // gtk.Dialog::response signal handler using gtk.FileChooser.GetChoice().
+//
+// The function takes the following parameters:
+//
+//    - id for the added choice.
+//    - label: user-visible label for the added choice.
+//    - options ids for the options of the choice, or NULL for a boolean
+//    choice.
+//    - optionLabels: user-visible labels for the options, must be the same
+//    length as options.
+//
 func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -300,6 +310,11 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 //
 // Note that the chooser takes ownership of the filter if it is floating, so you
 // have to ref and sink it if you want to keep a reference.
+//
+// The function takes the following parameters:
+//
+//    - filter: GtkFileFilter.
+//
 func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
@@ -314,6 +329,11 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 
 // AddShortcutFolder adds a folder to be displayed with the shortcut folders in
 // a file chooser.
+//
+// The function takes the following parameters:
+//
+//    - folder: GFile for the folder to add.
+//
 func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -353,6 +373,11 @@ func (chooser *FileChooser) Action() FileChooserAction {
 }
 
 // Choice gets the currently selected option in the 'choice' with the given ID.
+//
+// The function takes the following parameters:
+//
+//    - id: ID of the choice to get.
+//
 func (chooser *FileChooser) Choice(id string) string {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -615,6 +640,11 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
+//
+// The function takes the following parameters:
+//
+//    - id: ID of the choice to remove.
+//
 func (chooser *FileChooser) RemoveChoice(id string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -630,6 +660,11 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 
 // RemoveFilter removes filter from the list of filters that the user can select
 // between.
+//
+// The function takes the following parameters:
+//
+//    - filter: GtkFileFilter.
+//
 func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
@@ -644,6 +679,11 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 
 // RemoveShortcutFolder removes a folder from the shortcut folders in a file
 // chooser.
+//
+// The function takes the following parameters:
+//
+//    - folder: GFile for the folder to remove.
+//
 func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -672,6 +712,11 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 // For example, an option to create a new folder might be shown if the action is
 // GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 // GTK_FILE_CHOOSER_ACTION_OPEN.
+//
+// The function takes the following parameters:
+//
+//    - action that the file selector is performing.
+//
 func (chooser *FileChooser) SetAction(action FileChooserAction) {
 	var _arg0 *C.GtkFileChooser      // out
 	var _arg1 C.GtkFileChooserAction // out
@@ -688,6 +733,12 @@ func (chooser *FileChooser) SetAction(action FileChooserAction) {
 // gtk_file_chooser_add_choice().
 //
 // For a boolean choice, the possible options are "true" and "false".
+//
+// The function takes the following parameters:
+//
+//    - id: ID of the choice to set.
+//    - option: ID of the option to select.
+//
 func (chooser *FileChooser) SetChoice(id, option string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -709,6 +760,11 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 //
 // This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
+//
+// The function takes the following parameters:
+//
+//    - createFolders: TRUE if the Create Folder button should be displayed.
+//
 func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out
@@ -724,6 +780,11 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 }
 
 // SetCurrentFolder sets the current folder for chooser from a #GFile.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile for the new folder.
+//
 func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -758,6 +819,11 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 //
 // Please see the documentation for those functions for an example of using
 // gtk.FileChooser.SetCurrentName() as well.
+//
+// The function takes the following parameters:
+//
+//    - name to use, as a UTF-8 string.
+//
 func (chooser *FileChooser) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -811,6 +877,11 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //          gtk_file_chooser_set_file (chooser, existing_file, NULL);
 //        }
 //    }.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile to set as current.
+//
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -841,6 +912,11 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 // Setting the current filter when the list of filters is empty is useful if you
 // want to restrict the displayed set of files without letting the user change
 // it.
+//
+// The function takes the following parameters:
+//
+//    - filter: GtkFileFilter.
+//
 func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
@@ -858,6 +934,11 @@ func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 //
 // This is only relevant if the action is set to be GTK_FILE_CHOOSER_ACTION_OPEN
 // or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+//
+// The function takes the following parameters:
+//
+//    - selectMultiple: TRUE if multiple files can be selected.
+//
 func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 C.gboolean        // out

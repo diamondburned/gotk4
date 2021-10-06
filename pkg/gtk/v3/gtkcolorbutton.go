@@ -234,6 +234,11 @@ func (button *ColorButton) UseAlpha() bool {
 // SetAlpha sets the current opacity to be alpha.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - alpha: integer between 0 and 65535.
+//
 func (button *ColorButton) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.guint16         // out
@@ -249,6 +254,11 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 // SetColor sets the current color to be color.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
+//
+// The function takes the following parameters:
+//
+//    - color to set the current color with.
+//
 func (button *ColorButton) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.GdkColor       // out
@@ -262,6 +272,11 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 }
 
 // SetTitle sets the title for the color selection dialog.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing new window title.
+//
 func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.gchar          // out
@@ -279,6 +294,11 @@ func (button *ColorButton) SetTitle(title string) {
 // channel.
 //
 // Deprecated: Use gtk_color_chooser_set_use_alpha() instead.
+//
+// The function takes the following parameters:
+//
+//    - useAlpha: TRUE if color button should use alpha channel, FALSE if not.
+//
 func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out

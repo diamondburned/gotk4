@@ -97,6 +97,11 @@ func marshalStreamableContenter(p uintptr) (interface{}, error) {
 
 // MIMEType gets the character string of the specified mime type. The first mime
 // type is at position 0, the second at position 1, and so on.
+//
+// The function takes the following parameters:
+//
+//    - i: gint representing the position of the mime type starting from 0.
+//
 func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
@@ -134,6 +139,11 @@ func (streamable *StreamableContent) NMIMETypes() int {
 }
 
 // Stream gets the content in the specified mime type.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: gchar* representing the mime type.
+//
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
@@ -167,6 +177,12 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //
 // Note that it is possible for get_uri to return NULL but for get_stream to
 // work nonetheless, since not all GIOChannels connect to URIs.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: gchar* representing the mime type, or NULL to request a URI
+//    for the default mime type.
+//
 func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out

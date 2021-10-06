@@ -300,6 +300,12 @@ func NewIconFactory() *IconFactory {
 // factory for stock_id, it is unreferenced and replaced with the new icon_set.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: icon name.
+//    - iconSet: icon set.
+//
 func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out
@@ -339,6 +345,11 @@ func (factory *IconFactory) AddDefault() {
 // account.
 //
 // Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: icon name.
+//
 func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	var _arg0 *C.GtkIconFactory // out
 	var _arg1 *C.gchar          // out

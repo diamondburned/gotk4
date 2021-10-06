@@ -102,6 +102,11 @@ func (self *NoSelection) Model() gio.ListModeller {
 // SetModel sets the model that self should wrap.
 //
 // If model is NULL, this model will be empty.
+//
+// The function takes the following parameters:
+//
+//    - model: GListModel to wrap.
+//
 func (self *NoSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkNoSelection // out
 	var _arg1 *C.GListModel     // out

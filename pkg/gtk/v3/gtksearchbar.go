@@ -97,6 +97,11 @@ func NewSearchBar() *SearchBar {
 // search bar. The entry should be a descendant of the search bar. This is only
 // required if the entry isn’t the direct child of the search bar (as in our
 // main example).
+//
+// The function takes the following parameters:
+//
+//    - entry: Entry.
+//
 func (bar *SearchBar) ConnectEntry(entry *Entry) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
@@ -148,6 +153,11 @@ func (bar *SearchBar) ShowCloseButton() bool {
 }
 
 // SetSearchMode switches the search mode on or off.
+//
+// The function takes the following parameters:
+//
+//    - searchMode: new state of the search mode.
+//
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
@@ -165,6 +175,11 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 // SetShowCloseButton shows or hides the close button. Applications that already
 // have a “search” toggle button should not show a close button in their search
 // bar, as it duplicates the role of the toggle button.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether the close button will be shown or not.
+//
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out

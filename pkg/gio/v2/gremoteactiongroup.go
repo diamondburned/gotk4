@@ -115,6 +115,13 @@ func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
 //
 // platform_data must be non-NULL and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to activate.
+//    - parameter: optional parameter to the activation.
+//    - platformData: platform data to send.
+//
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -145,6 +152,13 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 //
 // platform_data must be non-NULL and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action to change the state of.
+//    - value: new requested value for the state.
+//    - platformData: platform data to send.
+//
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out

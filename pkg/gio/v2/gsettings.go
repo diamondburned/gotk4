@@ -606,6 +606,14 @@ func (settings *Settings) Apply() {
 // Note that the lifecycle of the binding is tied to object, and that you can
 // have only one binding per object property. If you bind the same property
 // twice on the same object, the second binding overrides the first one.
+//
+// The function takes the following parameters:
+//
+//    - key to bind.
+//    - object: #GObject.
+//    - property: name of the property to bind.
+//    - flags for the binding.
+//
 func (settings *Settings) Bind(key string, object *externglib.Object, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
 	var _arg1 *C.gchar             // out
@@ -644,6 +652,14 @@ func (settings *Settings) Bind(key string, object *externglib.Object, property s
 // Note that the lifecycle of the binding is tied to object, and that you can
 // have only one binding per object property. If you bind the same property
 // twice on the same object, the second binding overrides the first one.
+//
+// The function takes the following parameters:
+//
+//    - key to bind.
+//    - object: #GObject.
+//    - property: name of a boolean property to bind.
+//    - inverted: whether to 'invert' the value.
+//
 func (settings *Settings) BindWritable(key string, object *externglib.Object, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -681,6 +697,11 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 // For boolean-valued keys, action activations take no parameter and result in
 // the toggling of the value. For all other types, activations take the new
 // value for the key (which must have the correct type).
+//
+// The function takes the following parameters:
+//
+//    - key: name of a key in settings.
+//
 func (settings *Settings) CreateAction(key string) Actioner {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -731,6 +752,11 @@ func (settings *Settings) Delay() {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // boolean type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -758,6 +784,11 @@ func (settings *Settings) Boolean(key string) bool {
 //
 // The schema for the child settings object must have been declared in the
 // schema of settings using a <child> element.
+//
+// The function takes the following parameters:
+//
+//    - name of the child schema.
+//
 func (settings *Settings) Child(name string) *Settings {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -798,6 +829,11 @@ func (settings *Settings) Child(name string) *Settings {
 //
 // It is a programmer error to give a key that isn't contained in the schema for
 // settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the default value for.
+//
 func (settings *Settings) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -832,6 +868,11 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // 'double' type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -863,6 +904,11 @@ func (settings *Settings) Double(key string) float64 {
 //
 // If the value stored in the configuration database is not a valid value for
 // the enumerated type then this function will return the default value.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -894,6 +940,11 @@ func (settings *Settings) Enum(key string) int {
 //
 // If the value stored in the configuration database is not a valid value for
 // the flags type then this function will return the default value.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -940,6 +991,11 @@ func (settings *Settings) HasUnapplied() bool {
 //
 // It is a programmer error to give a key that isn't specified as having a int32
 // type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -966,6 +1022,11 @@ func (settings *Settings) Int(key string) int {
 //
 // It is a programmer error to give a key that isn't specified as having a int64
 // type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1012,6 +1073,13 @@ func (settings *Settings) Int64(key string) int64 {
 // is initially set to NULL. The same pointer is given to each invocation of
 // mapping. The final value of that #gpointer is what is returned by this
 // function. NULL is valid; it is returned just as any other value would be.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//    - mapping: function to map the value in the settings database to the
+//    value used by the application.
+//
 func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Handle {
 	var _arg0 *C.GSettings          // out
 	var _arg1 *C.gchar              // out
@@ -1041,6 +1109,11 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 // Range queries the range of a key.
 //
 // Deprecated: Use g_settings_schema_key_get_range() instead.
+//
+// The function takes the following parameters:
+//
+//    - key to query the range of.
+//
 func (settings *Settings) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1073,6 +1146,11 @@ func (settings *Settings) Range(key string) *glib.Variant {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // string type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1098,6 +1176,11 @@ func (settings *Settings) String(key string) string {
 //
 // It is a programmer error to give a key that isn't specified as having an
 // array of strings type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1138,6 +1221,11 @@ func (settings *Settings) Strv(key string) []string {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint32 type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1164,6 +1252,11 @@ func (settings *Settings) Uint(key string) uint {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint64 type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1201,6 +1294,11 @@ func (settings *Settings) Uint64(key string) uint64 {
 //
 // It is a programmer error to give a key that isn't contained in the schema for
 // settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the user value for.
+//
 func (settings *Settings) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1233,6 +1331,11 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 //
 // It is a programmer error to give a key that isn't contained in the schema for
 // settings.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//
 func (settings *Settings) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1260,6 +1363,11 @@ func (settings *Settings) Value(key string) *glib.Variant {
 }
 
 // IsWritable finds out if a key can be written or not.
+//
+// The function takes the following parameters:
+//
+//    - name of a key.
+//
 func (settings *Settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1365,6 +1473,12 @@ func (settings *Settings) ListKeys() []string {
 // permitted range for key.
 //
 // Deprecated: Use g_settings_schema_key_range_check() instead.
+//
+// The function takes the following parameters:
+//
+//    - key to check.
+//    - value to check.
+//
 func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1395,6 +1509,11 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 // This call resets the key, as much as possible, to its default value. That
 // might be the value specified in the schema or the one set by the
 // administrator.
+//
+// The function takes the following parameters:
+//
+//    - key: name of a key.
+//
 func (settings *Settings) Reset(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1428,6 +1547,12 @@ func (settings *Settings) Revert() {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // boolean type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1461,6 +1586,12 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // 'double' type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1495,6 +1626,12 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //
 // After performing the write, accessing key directly with
 // g_settings_get_string() will return the 'nick' associated with value.
+//
+// The function takes the following parameters:
+//
+//    - key: key, within settings.
+//    - value: enumerated value.
+//
 func (settings *Settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1529,6 +1666,12 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 //
 // After performing the write, accessing key directly with g_settings_get_strv()
 // will return an array of 'nicks'; one for each bit in value.
+//
+// The function takes the following parameters:
+//
+//    - key: key, within settings.
+//    - value flags value.
+//
 func (settings *Settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1560,6 +1703,12 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a int32
 // type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1591,6 +1740,12 @@ func (settings *Settings) SetInt(key string, value int) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a int64
 // type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1622,6 +1777,12 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // string type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetString(key, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1655,6 +1816,12 @@ func (settings *Settings) SetString(key, value string) bool {
 //
 // It is a programmer error to give a key that isn't specified as having an
 // array of strings type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to, or NULL.
+//
 func (settings *Settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1698,6 +1865,12 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint32 type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1729,6 +1902,12 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 //
 // It is a programmer error to give a key that isn't specified as having a
 // uint64 type in the schema for settings.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value to set it to.
+//
 func (settings *Settings) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -1760,6 +1939,12 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 // settings or for value to have the incorrect type, per the schema.
 //
 // If value is floating then this function consumes the reference.
+//
+// The function takes the following parameters:
+//
+//    - key: name of the key to set.
+//    - value of the correct type.
+//
 func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out

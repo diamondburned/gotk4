@@ -99,6 +99,11 @@ func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
 // descriptor limit.
+//
+// The function takes the following parameters:
+//
+//    - fd: valid open file descriptor.
+//
 func (message *UnixFDMessage) AppendFd(fd int) error {
 	var _arg0 *C.GUnixFDMessage // out
 	var _arg1 C.gint            // out

@@ -152,6 +152,11 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 }
 
 // Devices returns the devices that match the given capabilities.
+//
+// The function takes the following parameters:
+//
+//    - capabilities to get devices for.
+//
 func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out

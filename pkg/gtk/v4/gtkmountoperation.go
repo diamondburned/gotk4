@@ -133,6 +133,11 @@ func (op *MountOperation) IsShowing() bool {
 }
 
 // SetDisplay sets the display to show windows of the GtkMountOperation on.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func (op *MountOperation) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkDisplay        // out
@@ -147,6 +152,11 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 
 // SetParent sets the transient parent for windows shown by the
 // GtkMountOperation.
+//
+// The function takes the following parameters:
+//
+//    - parent: transient parent of the window, or NULL.
+//
 func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out

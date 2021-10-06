@@ -82,15 +82,15 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 
 // NewInetAddressFromString parses string as an IP address and creates a new
 // Address.
-func NewInetAddressFromString(_string string) *InetAddress {
+func NewInetAddressFromString(str string) *InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _inetAddress *InetAddress // out
 
@@ -119,6 +119,11 @@ func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 }
 
 // Equal checks if two Address instances are equal, e.g. the same address.
+//
+// The function takes the following parameters:
+//
+//    - otherAddress: another Address.
+//
 func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out

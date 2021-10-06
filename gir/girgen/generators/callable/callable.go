@@ -357,6 +357,21 @@ func (g *Generator) renderBlock() bool {
 	return true
 }
 
+func (g *Generator) EachParamResult(f func(*typeconv.ValueConverted)) {
+	results := g.Results
+	if g.Parameters != nil && g.Parameters.InstanceParameter != nil {
+		results = results[1:]
+	}
+
+	for i, res := range results {
+		if res.Direction != typeconv.ConvertGoToC {
+			continue
+		}
+
+		f(&results[i])
+	}
+}
+
 // CoalesceTail calls CoalesceTail on the generator's tail.
 func (g *Generator) CoalesceTail() {
 	g.Tail = CoalesceTail(g.Tail)

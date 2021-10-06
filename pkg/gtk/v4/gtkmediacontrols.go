@@ -105,6 +105,11 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 }
 
 // SetMediaStream sets the stream that is controlled by controls.
+//
+// The function takes the following parameters:
+//
+//    - stream: GtkMediaStream, or NULL.
+//
 func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out

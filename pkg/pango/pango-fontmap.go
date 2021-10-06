@@ -145,6 +145,11 @@ func (fontmap *FontMap) CreateContext() *Context {
 }
 
 // Family gets a font family by name.
+//
+// The function takes the following parameters:
+//
+//    - name: family name.
+//
 func (fontmap *FontMap) Family(name string) FontFamilier {
 	var _arg0 *C.PangoFontMap    // out
 	var _arg1 *C.char            // out
@@ -243,6 +248,12 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 }
 
 // LoadFont: load the font in the fontmap that is the closest match for desc.
+//
+// The function takes the following parameters:
+//
+//    - context: PangoContext the font will be used with.
+//    - desc: PangoFontDescription describing the font to load.
+//
 func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -278,6 +289,13 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 
 // LoadFontset: load a set of fonts in the fontmap that can be used to render a
 // font matching desc.
+//
+// The function takes the following parameters:
+//
+//    - context: PangoContext the font will be used with.
+//    - desc: PangoFontDescription describing the font to load.
+//    - language: PangoLanguage the fonts will be used for.
+//
 func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out

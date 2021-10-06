@@ -207,6 +207,11 @@ func (bar *HeaderBar) Title() string {
 }
 
 // PackEnd adds child to bar, packed with reference to the end of the bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to bar.
+//
 func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -220,6 +225,11 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to bar.
+//
 func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -241,6 +251,11 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // You should set the custom title to NULL, for the header title label to be
 // visible again.
+//
+// The function takes the following parameters:
+//
+//    - titleWidget: custom widget to use for a title.
+//
 func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -270,6 +285,11 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 //
 // For example, “menu:minimize,maximize,close” specifies a menu on the left, and
 // minimize, maximize and close buttons on the right.
+//
+// The function takes the following parameters:
+//
+//    - layout: decoration layout, or NULL to unset the layout.
+//
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out
@@ -287,6 +307,11 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 
 // SetHasSubtitle sets whether the header bar should reserve space for a
 // subtitle, even if none is currently set.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to reserve space for a subtitle.
+//
 func (bar *HeaderBar) SetHasSubtitle(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -303,6 +328,11 @@ func (bar *HeaderBar) SetHasSubtitle(setting bool) {
 
 // SetShowCloseButton sets whether this header bar shows the standard window
 // decorations, including close, maximize, and minimize.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to show standard window decorations.
+//
 func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -323,6 +353,11 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 // Note that GtkHeaderBar by default reserves room for the subtitle, even if
 // none is currently set. If this is not desired, set the HeaderBar:has-subtitle
 // property to FALSE.
+//
+// The function takes the following parameters:
+//
+//    - subtitle: subtitle, or NULL.
+//
 func (bar *HeaderBar) SetSubtitle(subtitle string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out
@@ -341,6 +376,11 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 // SetTitle sets the title of the HeaderBar. The title should help a user
 // identify the current view. A good title should not include the application
 // name.
+//
+// The function takes the following parameters:
+//
+//    - title: title, or NULL.
+//
 func (bar *HeaderBar) SetTitle(title string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out

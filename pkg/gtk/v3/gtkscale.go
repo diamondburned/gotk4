@@ -208,6 +208,18 @@ func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 // If markup is not NULL, text is shown next to the tick mark.
 //
 // To remove marks from a scale, use gtk_scale_clear_marks().
+//
+// The function takes the following parameters:
+//
+//    - value at which the mark is placed, must be between the lower and upper
+//    limits of the scales’ adjustment.
+//    - position: where to draw the mark. For a horizontal scale, K_POS_TOP and
+//    GTK_POS_LEFT are drawn above the scale, anything else below. For a
+//    vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
+//    scale, anything else to the right.
+//    - markup: text to be shown at the mark, using [Pango
+//    markup][PangoMarkupFormat], or NULL.
+//
 func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
 	var _arg0 *C.GtkScale       // out
 	var _arg1 C.gdouble         // out
@@ -370,6 +382,12 @@ func (scale *Scale) ValuePos() PositionType {
 // Note that rounding to a small number of digits can interfere with the smooth
 // autoscrolling that is built into Scale. As an alternative, you can use the
 // Scale::format-value signal to format the displayed value yourself.
+//
+// The function takes the following parameters:
+//
+//    - digits: number of decimal places to display, e.g. use 1 to display 1.0,
+//    2 to display 1.00, etc.
+//
 func (scale *Scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // out
@@ -384,6 +402,11 @@ func (scale *Scale) SetDigits(digits int) {
 
 // SetDrawValue specifies whether the current value is displayed as a string
 // next to the slider.
+//
+// The function takes the following parameters:
+//
+//    - drawValue: TRUE to draw the value.
+//
 func (scale *Scale) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
@@ -401,6 +424,11 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 // SetHasOrigin: if Scale:has-origin is set to TRUE (the default), the scale
 // will highlight the part of the trough between the origin (bottom or left
 // side) and the current value.
+//
+// The function takes the following parameters:
+//
+//    - hasOrigin: TRUE if the scale has an origin.
+//
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out
@@ -416,6 +444,11 @@ func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 }
 
 // SetValuePos sets the position in which the current value is displayed.
+//
+// The function takes the following parameters:
+//
+//    - pos: position in which the current value is displayed.
+//
 func (scale *Scale) SetValuePos(pos PositionType) {
 	var _arg0 *C.GtkScale       // out
 	var _arg1 C.GtkPositionType // out

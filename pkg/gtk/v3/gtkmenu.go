@@ -164,6 +164,15 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
+//
+// The function takes the following parameters:
+//
+//    - child: MenuItem.
+//    - leftAttach: column number to attach the left side of the item to.
+//    - rightAttach: column number to attach the right side of the item to.
+//    - topAttach: row number to attach the top of the item to.
+//    - bottomAttach: row number to attach the bottom of the item to.
+//
 func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
@@ -373,6 +382,11 @@ func (menu *Menu) Title() string {
 }
 
 // PlaceOnMonitor places menu on the given monitor.
+//
+// The function takes the following parameters:
+//
+//    - monitor to place the menu on.
+//
 func (menu *Menu) PlaceOnMonitor(monitor *gdk.Monitor) {
 	var _arg0 *C.GtkMenu    // out
 	var _arg1 *C.GdkMonitor // out
@@ -396,6 +410,13 @@ func (menu *Menu) Popdown() {
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
+//
+// The function takes the following parameters:
+//
+//    - child to move.
+//    - position: new position to place child. Positions are numbered from 0 to
+//    n - 1.
+//
 func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
@@ -425,6 +446,11 @@ func (menu *Menu) Reposition() {
 // menu. This accelerator group needs to also be added to all windows that this
 // menu is being used in with gtk_window_add_accel_group(), in order for those
 // windows to support all the accelerators contained in this group.
+//
+// The function takes the following parameters:
+//
+//    - accelGroup to be associated with the menu.
+//
 func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkMenu       // out
 	var _arg1 *C.GtkAccelGroup // out
@@ -460,6 +486,11 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 // Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath: valid accelerator path, or NULL to unset the path.
+//
 func (menu *Menu) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 *C.gchar   // out
@@ -477,6 +508,11 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 
 // SetActive selects the specified menu item within the menu. This is used by
 // the ComboBox and should not be used by anyone else.
+//
+// The function takes the following parameters:
+//
+//    - index of the menu item to select. Index values are from 0 to n-1.
+//
 func (menu *Menu) SetActive(index uint) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.guint    // out
@@ -497,6 +533,12 @@ func (menu *Menu) SetActive(index uint) {
 // inferred from the coordinates returned by a MenuPositionFunc, since, for very
 // long menus, these coordinates may extend beyond the monitor boundaries or
 // even the screen boundaries.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor on which the menu should be popped
+//    up.
+//
 func (menu *Menu) SetMonitor(monitorNum int) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gint     // out
@@ -511,6 +553,11 @@ func (menu *Menu) SetMonitor(monitorNum int) {
 
 // SetReserveToggleSize sets whether the menu should reserve space for drawing
 // toggles or icons, regardless of their actual presence.
+//
+// The function takes the following parameters:
+//
+//    - reserveToggleSize: whether to reserve size for toggles.
+//
 func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gboolean // out
@@ -526,6 +573,12 @@ func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 }
 
 // SetScreen sets the Screen on which the menu will be displayed.
+//
+// The function takes the following parameters:
+//
+//    - screen or NULL if the screen should be determined by the widget the
+//    menu is attached to.
+//
 func (menu *Menu) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GdkScreen // out
@@ -546,6 +599,11 @@ func (menu *Menu) SetScreen(screen *gdk.Screen) {
 // reattached.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - tornOff: if TRUE, menu is displayed as a tearoff menu.
+//
 func (menu *Menu) SetTearoffState(tornOff bool) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gboolean // out
@@ -567,6 +625,12 @@ func (menu *Menu) SetTearoffState(tornOff bool) {
 // will try to use the same text as that menu item’s label.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - title: string containing the title for the menu, or NULL to inherit the
+//    title of the parent menu item, if any.
+//
 func (menu *Menu) SetTitle(title string) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 *C.gchar   // out

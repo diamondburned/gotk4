@@ -369,6 +369,12 @@ func (context *DragContext) SuggestedAction() DragAction {
 // - The DragContext::cancel signal if the drag and drop operation is finished
 // but doesn't happen over an accepting destination, or is cancelled through
 // other means.
+//
+// The function takes the following parameters:
+//
+//    - ipcWindow: window to use for IPC messaging/events.
+//    - actions supported by the drag source.
+//
 func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
@@ -395,6 +401,11 @@ func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bo
 
 // SetDevice associates a Device to context, so all Drag and Drop events for
 // context are emitted as if they came from this device.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
 func (context *DragContext) SetDevice(device Devicer) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
@@ -410,6 +421,12 @@ func (context *DragContext) SetDevice(device Devicer) {
 // SetHotspot sets the position of the drag window that will be kept under the
 // cursor hotspot. Initially, the hotspot is at the top left corner of the drag
 // window.
+//
+// The function takes the following parameters:
+//
+//    - hotX: x coordinate of the drag window hotspot.
+//    - hotY: y coordinate of the drag window hotspot.
+//
 func (context *DragContext) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out

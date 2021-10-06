@@ -178,6 +178,11 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - icon or NULL.
+//
 func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
@@ -203,6 +208,11 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 // gtk_numerable_icon_set_background_gicon() has always priority.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name, or NULL.
+//
 func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.gchar            // out
@@ -228,6 +238,11 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 // priority.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - count: number between -99 and 99.
+//
 func (self *NumerableIcon) SetCount(count int) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 C.gint              // out
@@ -254,6 +269,11 @@ func (self *NumerableIcon) SetCount(count int) {
 // gtk_numerable_icon_set_count() has always priority.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - label: short label, or NULL.
+//
 func (self *NumerableIcon) SetLabel(label string) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.gchar            // out
@@ -273,6 +293,11 @@ func (self *NumerableIcon) SetLabel(label string) {
 // StyleContext.
 //
 // Deprecated: since version 3.14.
+//
+// The function takes the following parameters:
+//
+//    - style: StyleContext.
+//
 func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GtkStyleContext  // out

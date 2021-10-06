@@ -122,6 +122,11 @@ func (self *StringSorter) IgnoreCase() bool {
 // items.
 //
 // The expression must have the type G_TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - expression: GtkExpression, or NULL.
+//
 func (self *StringSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 *C.GtkExpression   // out
@@ -137,6 +142,11 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 }
 
 // SetIgnoreCase sets whether the sorter will ignore case differences.
+//
+// The function takes the following parameters:
+//
+//    - ignoreCase: TRUE to ignore case differences.
+//
 func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 C.gboolean         // out

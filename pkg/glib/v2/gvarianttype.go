@@ -851,13 +851,13 @@ func VariantTypeStringIsValid(typeString string) bool {
 //
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
-func VariantTypeStringScan(_string, limit string) (string, bool) {
+func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
 	var _arg3 *C.gchar   // in
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if limit != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
@@ -865,7 +865,7 @@ func VariantTypeStringScan(_string, limit string) (string, bool) {
 	}
 
 	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 	runtime.KeepAlive(limit)
 
 	var _endptr string // out

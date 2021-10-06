@@ -389,6 +389,11 @@ func (popover *Popover) Present() {
 //
 // Called this function on an already showing popup with a new autohide value
 // different from the current one, will cause the popup to be hidden.
+//
+// The function takes the following parameters:
+//
+//    - autohide: TRUE to dismiss the popover on outside clicks.
+//
 func (popover *Popover) SetAutohide(autohide bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -407,6 +412,11 @@ func (popover *Popover) SetAutohide(autohide bool) {
 // when a child modal popover is closed.
 //
 // If FALSE, popover will stay visible.
+//
+// The function takes the following parameters:
+//
+//    - cascadePopdown: TRUE if the popover should follow a child closing.
+//
 func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -422,6 +432,11 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 }
 
 // SetChild sets the child widget of popover.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (popover *Popover) SetChild(child Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -441,6 +456,12 @@ func (popover *Popover) SetChild(child Widgetter) {
 // The default widget is the widget that’s activated when the user presses Enter
 // in a dialog (for example). This function sets or unsets the default widget
 // for a GtkPopover.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget of popover to set as the default, or NULL to unset
+//    the default widget for the popover.
+//
 func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -457,6 +478,11 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 
 // SetHasArrow sets whether this popover should draw an arrow pointing at the
 // widget it is relative to.
+//
+// The function takes the following parameters:
+//
+//    - hasArrow: TRUE to draw an arrow.
+//
 func (popover *Popover) SetHasArrow(hasArrow bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -472,6 +498,11 @@ func (popover *Popover) SetHasArrow(hasArrow bool) {
 }
 
 // SetMnemonicsVisible sets whether mnemonics should be visible.
+//
+// The function takes the following parameters:
+//
+//    - mnemonicsVisible: new value.
+//
 func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -491,6 +522,12 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 //
 // These values are used when preparing the gdk.PopupLayout for positioning the
 // popover.
+//
+// The function takes the following parameters:
+//
+//    - xOffset: x offset to adjust the position by.
+//    - yOffset: y offset to adjust the position by.
+//
 func (popover *Popover) SetOffset(xOffset, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
@@ -509,6 +546,11 @@ func (popover *Popover) SetOffset(xOffset, yOffset int) {
 // SetPointingTo sets the rectangle that popover points to.
 //
 // This is in the coordinate space of the popover parent.
+//
+// The function takes the following parameters:
+//
+//    - rect: rectangle to point to.
+//
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
@@ -528,6 +570,11 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 // This preference will be respected where possible, although on lack of space
 // (eg. if close to the window edges), the GtkPopover may choose to appear on
 // the opposite side.
+//
+// The function takes the following parameters:
+//
+//    - position: preferred popover position.
+//
 func (popover *Popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out
 	var _arg1 C.GtkPositionType // out

@@ -267,6 +267,11 @@ func (seat *Seat) Pointer() Devicer {
 }
 
 // Slaves returns the slave devices that match the given capabilities.
+//
+// The function takes the following parameters:
+//
+//    - capabilities to get devices for.
+//
 func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
 	var _arg1 C.GdkSeatCapabilities // out

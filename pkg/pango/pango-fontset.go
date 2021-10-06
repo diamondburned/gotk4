@@ -137,6 +137,11 @@ func marshalFontsetter(p uintptr) (interface{}, error) {
 // one.
 //
 // If func returns TRUE, that stops the iteration.
+//
+// The function takes the following parameters:
+//
+//    - fn: callback function.
+//
 func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
@@ -154,6 +159,11 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
+//
+// The function takes the following parameters:
+//
+//    - wc: unicode character.
+//
 func (fontset *Fontset) Font(wc uint) Fonter {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
@@ -249,6 +259,11 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 }
 
 // Append adds a font to the fontset.
+//
+// The function takes the following parameters:
+//
+//    - font: PangoFont.
+//
 func (fontset *FontsetSimple) Append(font Fonter) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out

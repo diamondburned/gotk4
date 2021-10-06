@@ -121,6 +121,11 @@ func (converter *CharsetConverter) UseFallback() bool {
 }
 
 // SetUseFallback sets the Converter:use-fallback property.
+//
+// The function takes the following parameters:
+//
+//    - useFallback: TRUE to use fallbacks.
+//
 func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out

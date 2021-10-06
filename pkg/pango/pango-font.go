@@ -429,6 +429,11 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 }
 
 // Coverage computes the coverage map for a given font and language tag.
+//
+// The function takes the following parameters:
+//
+//    - language tag.
+//
 func (font *Font) Coverage(language *Language) *Coverage {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 *C.PangoLanguage // out
@@ -527,6 +532,11 @@ func (font *Font) FontMap() FontMapper {
 //
 // If font is NULL, this function gracefully sets some sane values in the output
 // variables and returns.
+//
+// The function takes the following parameters:
+//
+//    - glyph index.
+//
 func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle) {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 C.PangoGlyph     // out
@@ -559,6 +569,12 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rect
 //
 // If font is NULL, this function gracefully sets some sane values in the output
 // variables and returns.
+//
+// The function takes the following parameters:
+//
+//    - language tag used to determine which script to get the metrics for, or
+//    NULL to indicate to get the metrics for the entire font.
+//
 func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _arg0 *C.PangoFont        // out
 	var _arg1 *C.PangoLanguage    // out
@@ -591,6 +607,11 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 // HasChar returns whether the font provides a glyph for this character.
 //
 // Returns TRUE if font can render wc.
+//
+// The function takes the following parameters:
+//
+//    - wc: unicode character.
+//
 func (font *Font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -884,6 +905,12 @@ func marshalFontFamilier(p uintptr) (interface{}, error) {
 }
 
 // Face gets the PangoFontFace of family with the given name.
+//
+// The function takes the following parameters:
+//
+//    - name of a face. If the name is NULL, the family's default face
+//    (fontconfig calls it "Regular") will be returned.
+//
 func (family *FontFamily) Face(name string) FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out

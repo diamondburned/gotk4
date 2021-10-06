@@ -539,17 +539,17 @@ func NewVariantByte(value byte) *Variant {
 }
 
 // NewVariantBytestring constructs a struct Variant.
-func NewVariantBytestring(_string []byte) *Variant {
+func NewVariantBytestring(str []byte) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_string = append(_string, 0)
-	if len(_string) > 0 {
-		_arg1 = (*C.gchar)(unsafe.Pointer(&_string[0]))
+	str = append(str, 0)
+	if len(str) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
 	}
 
 	_cret = C.g_variant_new_bytestring(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _variant *Variant // out
 
@@ -927,15 +927,15 @@ func NewVariantSignature(signature string) *Variant {
 }
 
 // NewVariantString constructs a struct Variant.
-func NewVariantString(_string string) *Variant {
+func NewVariantString(str string) *Variant {
 	var _arg1 *C.gchar    // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_new_string(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _variant *Variant // out
 
@@ -2368,15 +2368,15 @@ func (value *Variant) Store(data cgo.Handle) {
 // characters separated by / characters. Each sequence must contain only the
 // characters [A-Z][a-z][0-9]_. No sequence (including the one following the
 // final / character) may be empty.
-func VariantIsObjectPath(_string string) bool {
+func VariantIsObjectPath(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_is_object_path(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _ok bool // out
 
@@ -2393,15 +2393,15 @@ func VariantIsObjectPath(_string string) bool {
 //
 // D-Bus type signatures consist of zero or more definite Type strings in
 // sequence.
-func VariantIsSignature(_string string) bool {
+func VariantIsSignature(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_is_signature(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _ok bool // out
 

@@ -96,6 +96,12 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 // Set sets the direction and style of the Arrow, arrow.
 //
 // Deprecated: Use a Image with a suitable icon.
+//
+// The function takes the following parameters:
+//
+//    - arrowType: valid ArrowType.
+//    - shadowType: valid ShadowType.
+//
 func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	var _arg0 *C.GtkArrow     // out
 	var _arg1 C.GtkArrowType  // out

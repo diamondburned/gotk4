@@ -249,6 +249,11 @@ func (self *GridView) SingleClickActivate() bool {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
+//
+// The function takes the following parameters:
+//
+//    - enableRubberband: TRUE to enable rubberband selection.
+//
 func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out
@@ -264,6 +269,11 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
+//
+// The function takes the following parameters:
+//
+//    - factory to use or NULL for none.
+//
 func (self *GridView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkGridView        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -284,6 +294,11 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 //
 // If max_columns is smaller than the minimum set via
 // gtk.GridView.SetMinColumns(), that value is used instead.
+//
+// The function takes the following parameters:
+//
+//    - maxColumns: maximum number of columns.
+//
 func (self *GridView) SetMaxColumns(maxColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
@@ -302,6 +317,11 @@ func (self *GridView) SetMaxColumns(maxColumns uint) {
 //
 // If min_columns is smaller than the minimum set via
 // gtk.GridView.SetMaxColumns(), that value is ignored.
+//
+// The function takes the following parameters:
+//
+//    - minColumns: minimum number of columns.
+//
 func (self *GridView) SetMinColumns(minColumns uint) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.guint        // out
@@ -317,6 +337,11 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 // SetModel sets the imodel to use.
 //
 // This must be a gtk.SelectionModel.
+//
+// The function takes the following parameters:
+//
+//    - model to use or NULL for none.
+//
 func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkGridView       // out
 	var _arg1 *C.GtkSelectionModel // out
@@ -333,6 +358,11 @@ func (self *GridView) SetModel(model SelectionModeller) {
 
 // SetSingleClickActivate sets whether items should be activated on single click
 // and selected on hover.
+//
+// The function takes the following parameters:
+//
+//    - singleClickActivate: TRUE to activate items on single click.
+//
 func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkGridView // out
 	var _arg1 C.gboolean     // out

@@ -138,6 +138,11 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
+//
+// The function takes the following parameters:
+//
+//    - adjustment to set.
+//
 func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out

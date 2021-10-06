@@ -309,6 +309,11 @@ func (device *Device) Axes() AxisFlags {
 }
 
 // AxisUse returns the axis use for index_.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the axis.
+//
 func (device *Device) AxisUse(index_ uint) AxisUse {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
@@ -384,6 +389,11 @@ func (device *Device) HasCursor() bool {
 
 // Key: if index_ has a valid keyval, this function will return TRUE and fill in
 // keyval and modifiers with the keyval settings.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the macro button to get.
+//
 func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
@@ -780,6 +790,26 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_seat_grab() instead.
+//
+// The function takes the following parameters:
+//
+//    - window which will own the grab (the grab window).
+//    - grabOwnership specifies the grab ownership.
+//    - ownerEvents: if FALSE then all device events are reported with respect
+//    to window and are only reported if selected by event_mask. If TRUE then
+//    pointer events for this application are reported as normal, but pointer
+//    events outside this application are reported with respect to window and
+//    only if selected by event_mask. In either mode, unreported events are
+//    discarded.
+//    - eventMask specifies the event mask, which is used in accordance with
+//    owner_events.
+//    - cursor to display while the grab is active if the device is a pointer.
+//    If this is NULL then the normal cursors are used for window and its
+//    descendants, and the cursor for window is used elsewhere.
+//    - time_: timestamp of the event which led to this pointer grab. This
+//    usually comes from the Event struct, though GDK_CURRENT_TIME can be used
+//    if the time isn’t known.
+//
 func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
 	var _arg1 *C.GdkWindow       // out
@@ -858,6 +888,12 @@ func (device *Device) ListSlaveDevices() []Devicer {
 }
 
 // SetAxisUse specifies how an axis of a device is used.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the axis.
+//    - use specifies how the axis is used.
+//
 func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
@@ -875,6 +911,13 @@ func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 
 // SetKey specifies the X key event to generate when a macro button of a device
 // is pressed.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the macro button to set.
+//    - keyval to generate.
+//    - modifiers to set.
+//
 func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
@@ -900,6 +943,11 @@ func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 // Note: This is only meaningful for floating devices, master devices (and
 // slaves connected to these) drive the pointer cursor, which is not limited by
 // the input mode.
+//
+// The function takes the following parameters:
+//
+//    - mode: input mode.
+//
 func (device *Device) SetMode(mode InputMode) bool {
 	var _arg0 *C.GdkDevice   // out
 	var _arg1 C.GdkInputMode // out
@@ -924,6 +972,11 @@ func (device *Device) SetMode(mode InputMode) bool {
 // Ungrab: release any grab on device.
 //
 // Deprecated: Use gdk_seat_ungrab() instead.
+//
+// The function takes the following parameters:
+//
+//    - time_: timestap (e.g. GDK_CURRENT_TIME).
+//
 func (device *Device) Ungrab(time_ uint32) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint32    // out
@@ -944,6 +997,13 @@ func (device *Device) Ungrab(time_ uint32) {
 // Note that the pointer should normally be under the control of the user. This
 // function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
+//
+// The function takes the following parameters:
+//
+//    - screen to warp device to.
+//    - x: x coordinate of the destination.
+//    - y: y coordinate of the destination.
+//
 func (device *Device) Warp(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // out

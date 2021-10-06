@@ -1067,6 +1067,11 @@ func NewStyle() *Style {
 }
 
 // ApplyDefaultBackground: deprecated: Use StyleContext instead.
+//
+// The function takes the following parameters:
+//
+
+//
 func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windower, stateType StateType, x, y, width, height int) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.cairo_t     // out
@@ -1131,6 +1136,12 @@ func (style *Style) Detach() {
 
 // StyleProperty queries the value of a style property corresponding to a widget
 // class is in the given style.
+//
+// The function takes the following parameters:
+//
+//    - widgetType of a descendant of Widget.
+//    - propertyName: name of the style property to get.
+//
 func (style *Style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 C.GType     // out
@@ -1179,6 +1190,11 @@ func (style *Style) HasContext() bool {
 // when a theme switch occurs.
 //
 // Deprecated: Use gtk_style_context_lookup_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - colorName: name of the logical color to look up.
+//
 func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
@@ -1208,6 +1224,11 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 // and the default icon factory, returning an icon set if found, otherwise NULL.
 //
 // Deprecated: Use gtk_style_context_lookup_icon_set() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: icon name.
+//
 func (style *Style) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyle   // out
 	var _arg1 *C.gchar      // out
@@ -1239,6 +1260,17 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 // to the given parameters and returns the result in a pixbuf.
 //
 // Deprecated: Use gtk_render_icon_pixbuf() instead.
+//
+// The function takes the following parameters:
+//
+//    - source specifying the icon to render.
+//    - direction: text direction.
+//    - state: state.
+//    - size to render the icon at (IconSize). A size of (GtkIconSize)-1 means
+//    render at the size of the source and don’t scale.
+//    - widget: widget.
+//    - detail: style detail.
+//
 func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
 	var _arg1 *C.GtkIconSource   // out
@@ -1292,6 +1324,12 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 // specified by style for the given state.
 //
 // Deprecated: Use gtk_style_context_set_background() instead.
+//
+// The function takes the following parameters:
+//
+//    - window: Window.
+//    - stateType: state.
+//
 func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.GdkWindow   // out

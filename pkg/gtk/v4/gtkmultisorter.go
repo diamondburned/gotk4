@@ -76,6 +76,11 @@ func NewMultiSorter() *MultiSorter {
 //
 // self will consult all existing sorters before it will sort with the given
 // sorter.
+//
+// The function takes the following parameters:
+//
+//    - sorter to add.
+//
 func (self *MultiSorter) Append(sorter *Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
@@ -93,6 +98,11 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 // by self.
 //
 // If position is larger than the number of sorters, nothing happens.
+//
+// The function takes the following parameters:
+//
+//    - position of sorter to remove.
+//
 func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out

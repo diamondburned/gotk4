@@ -121,6 +121,11 @@ func (calendar *Calendar) ClearMarks() {
 }
 
 // DayIsMarked returns if the day of the calendar is already marked.
+//
+// The function takes the following parameters:
+//
+//    - day number between 1 and 31.
+//
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -207,6 +212,11 @@ func (self *Calendar) ShowWeekNumbers() bool {
 }
 
 // MarkDay places a visual marker on a particular day.
+//
+// The function takes the following parameters:
+//
+//    - day number to mark between 1 and 31.
+//
 func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -220,6 +230,11 @@ func (calendar *Calendar) MarkDay(day uint) {
 }
 
 // SetShowDayNames sets whether the calendar shows day names.
+//
+// The function takes the following parameters:
+//
+//    - value: whether to show day names above the day numbers.
+//
 func (self *Calendar) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
@@ -238,6 +253,11 @@ func (self *Calendar) SetShowDayNames(value bool) {
 //
 // The heading contains the current year and month as well as buttons for
 // changing both.
+//
+// The function takes the following parameters:
+//
+//    - value: whether to show the heading in the calendar.
+//
 func (self *Calendar) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
@@ -253,6 +273,11 @@ func (self *Calendar) SetShowHeading(value bool) {
 }
 
 // SetShowWeekNumbers sets whether week numbers are shown in the calendar.
+//
+// The function takes the following parameters:
+//
+//    - value: whether to show week numbers on the left of the days.
+//
 func (self *Calendar) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
@@ -268,6 +293,11 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 }
 
 // UnmarkDay removes the visual marker from a particular day.
+//
+// The function takes the following parameters:
+//
+//    - day number to unmark between 1 and 31.
+//
 func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out

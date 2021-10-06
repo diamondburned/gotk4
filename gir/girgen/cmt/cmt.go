@@ -124,6 +124,8 @@ type (
 	overrideSelfName string
 	originalTypeName string
 	additionalString string
+	additionalPrefix string
+	paragraphIndent  int
 	trailingNewLine  struct{}
 	synopsize        struct{}
 )
@@ -131,6 +133,8 @@ type (
 func (overrideSelfName) opts() {}
 func (originalTypeName) opts() {}
 func (additionalString) opts() {}
+func (additionalPrefix) opts() {}
+func (paragraphIndent) opts()  {}
 func (trailingNewLine) opts()  {}
 func (synopsize) opts()        {}
 
@@ -147,9 +151,15 @@ func searchOpts(opts []Option, f func(opt Option) bool) bool {
 // automatically by GoDoc.
 func OverrideSelfName(self string) Option { return overrideSelfName(self) }
 
-// AdditionalString adds the given string into the tail of the command as
+// AdditionalString adds the given string into the tail of the comment as
 // another paragraph.
 func AdditionalString(str string) Option { return additionalString(str) }
+
+// AdditionalPrefix adds the given prefix string into the head of the comment.
+func AdditionalPrefix(pfx string) Option { return additionalPrefix(pfx) }
+
+// ParagraphIndent indents the inner comment paragraphs.
+func ParagraphIndent(indent int) Option { return paragraphIndent(indent) }
 
 // TrailingNewLine adds a trailing new line during documentation generation.
 func TrailingNewLine() Option { return trailingNewLine{} }
@@ -202,7 +212,6 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		switch opt := opt.(type) {
 		case overrideSelfName:
 			self = string(opt)
-
 		case additionalString:
 			if docBuilder.Len() > 0 {
 				docBuilder.WriteString("\n\n")
@@ -305,6 +314,13 @@ func format(self, cmt string, opts []Option) string {
 			// correct.
 			cmt = strings.TrimPrefix(cmt, "this ")
 			cmt = self + ": " + lowerFirstLetter(cmt)
+		}
+	}
+
+	for _, opt := range opts {
+		switch opt := opt.(type) {
+		case additionalPrefix:
+			cmt = string(opt) + cmt
 		}
 	}
 
@@ -439,10 +455,23 @@ func format(self, cmt string, opts []Option) string {
 // ReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go comment
 // strings. It is automatically indented.
 func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
-	indent := strings.Repeat("\t", indentLvl)
+	var postIndentCount int
+	for _, opt := range opts {
+		if i, ok := opt.(paragraphIndent); ok {
+			postIndentCount = int(i)
+			break
+		}
+	}
+
+	preIndent := strings.Repeat("\t", indentLvl)
+
+	postIndent := " "
+	if postIndentCount > 0 {
+		postIndent = strings.Repeat(strings.Repeat(" ", CommentsTabWidth), postIndentCount)
+	}
 
 	// Account for the indentation in the column limit.
-	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
+	col := CommentsColumnLimit - (CommentsTabWidth * (indentLvl + postIndentCount))
 
 	cmt = docText(cmt, col)
 	cmt = strings.TrimSpace(cmt)
@@ -453,9 +482,8 @@ func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
 
 	if cmt != "" {
 		lines := strings.Split(cmt, "\n")
-
 		for i, line := range lines {
-			lines[i] = indent + "// " + line
+			lines[i] = preIndent + "//" + postIndent + line
 		}
 
 		cmt = strings.Join(lines, "\n")

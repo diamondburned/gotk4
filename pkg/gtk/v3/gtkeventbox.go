@@ -118,6 +118,11 @@ func (eventBox *EventBox) VisibleWindow() bool {
 // its parents.
 //
 // The default is to keep the window below the child.
+//
+// The function takes the following parameters:
+//
+//    - aboveChild: TRUE if the event box window is above its child.
+//
 func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out
@@ -160,6 +165,11 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 // This problem doesn’t occur for visible event boxes, because in that case, the
 // event box window is actually the ancestor of the descendant windows, not just
 // at the same place on the screen.
+//
+// The function takes the following parameters:
+//
+//    - visibleWindow: TRUE to make the event box have a visible window.
+//
 func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 	var _arg0 *C.GtkEventBox // out
 	var _arg1 C.gboolean     // out

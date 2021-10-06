@@ -190,6 +190,11 @@ func (self *ListItem) Selected() bool {
 // emitting the gtk.ListView::activate signal.
 //
 // By default, list items are activatable.
+//
+// The function takes the following parameters:
+//
+//    - activatable: if the item should be activatable.
+//
 func (self *ListItem) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
@@ -208,6 +213,11 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // This function is typically called by applications when setting up a listitem
 // so that the widget can be reused when binding it multiple times.
+//
+// The function takes the following parameters:
+//
+//    - child: list item's child or NULL to unset.
+//
 func (self *ListItem) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
@@ -233,6 +243,11 @@ func (self *ListItem) SetChild(child Widgetter) {
 //
 // By default, list items are selectable. When rebinding them to a new item,
 // they will also be reset to be selectable by GTK.
+//
+// The function takes the following parameters:
+//
+//    - selectable: if the item should be selectable.
+//
 func (self *ListItem) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out

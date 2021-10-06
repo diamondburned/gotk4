@@ -89,15 +89,15 @@ func marshalAccelLabeller(p uintptr) (interface{}, error) {
 }
 
 // NewAccelLabel creates a new AccelLabel.
-func NewAccelLabel(_string string) *AccelLabel {
+func NewAccelLabel(str string) *AccelLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_label_new(_arg1)
-	runtime.KeepAlive(_string)
+	runtime.KeepAlive(str)
 
 	var _accelLabel *AccelLabel // out
 
@@ -202,6 +202,12 @@ func (accelLabel *AccelLabel) Refetch() bool {
 // regardless of any associated accel closure or widget.
 //
 // Providing an accelerator_key of 0 removes the manual setting.
+//
+// The function takes the following parameters:
+//
+//    - acceleratorKey: keyval, or 0.
+//    - acceleratorMods: modifier mask for the accel.
+//
 func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // out
@@ -220,6 +226,11 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing NULL for accel_widget will dissociate accel_label from its current
 // widget, if any.
+//
+// The function takes the following parameters:
+//
+//    - accelWidget: widget to be monitored, or NULL.
+//
 func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out

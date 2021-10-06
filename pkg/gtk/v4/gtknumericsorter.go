@@ -119,6 +119,11 @@ func (self *NumericSorter) SortOrder() SortType {
 //
 // The expression must have a return type that can be compared numerically, such
 // as G_TYPE_INT or G_TYPE_DOUBLE.
+//
+// The function takes the following parameters:
+//
+//    - expression: GtkExpression, or NULL.
+//
 func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 *C.GtkExpression    // out
@@ -134,6 +139,11 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 }
 
 // SetSortOrder sets whether to sort smaller numbers before larger ones.
+//
+// The function takes the following parameters:
+//
+//    - sortOrder: whether to sort smaller numbers first.
+//
 func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
 	var _arg0 *C.GtkNumericSorter // out
 	var _arg1 C.GtkSortType       // out

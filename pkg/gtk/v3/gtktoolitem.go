@@ -221,6 +221,11 @@ func (toolItem *ToolItem) Orientation() Orientation {
 // item when the ToolItem changes. That the menu_item_ids must match ensures
 // that a ToolItem will not inadvertently change a menu item that they did not
 // create.
+//
+// The function takes the following parameters:
+//
+//    - menuItemId: string used to identify the menu item.
+//
 func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
@@ -471,6 +476,11 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 // room on the toolbar then needed for the items. The effect is that the item
 // gets bigger when the toolbar gets bigger and smaller when the toolbar gets
 // smaller.
+//
+// The function takes the following parameters:
+//
+//    - expand: whether tool_item is allocated extra space.
+//
 func (toolItem *ToolItem) SetExpand(expand bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
@@ -488,6 +498,12 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 // SetHomogeneous sets whether tool_item is to be allocated the same size as
 // other homogeneous items. The effect is that all homogeneous items will have
 // the same width as the widest of the items.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: whether tool_item is the same size as other homogeneous
+//    items.
+//
 func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
@@ -507,6 +523,11 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 // label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The result is that
 // only tool buttons with the “is_important” property set have labels, an effect
 // known as “priority text”.
+//
+// The function takes the following parameters:
+//
+//    - isImportant: whether the tool item should be considered important.
+//
 func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
@@ -526,6 +547,12 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 // be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
+//
+// The function takes the following parameters:
+//
+//    - menuItemId: string used to identify menu_item.
+//    - menuItem to use in the overflow menu, or NULL.
+//
 func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
@@ -546,6 +573,11 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 
 // SetTooltipMarkup sets the markup text to be displayed as tooltip on the item.
 // See gtk_widget_set_tooltip_markup().
+//
+// The function takes the following parameters:
+//
+//    - markup text to be used as tooltip for tool_item.
+//
 func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
@@ -561,6 +593,11 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 
 // SetTooltipText sets the text to be displayed as tooltip on the item. See
 // gtk_widget_set_tooltip_text().
+//
+// The function takes the following parameters:
+//
+//    - text to be used as tooltip for tool_item.
+//
 func (toolItem *ToolItem) SetTooltipText(text string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
@@ -578,6 +615,11 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 // toolitem can be used as a drag source through gtk_drag_source_set(). When
 // tool_item has a drag window it will intercept all events, even those that
 // would otherwise be sent to a child of tool_item.
+//
+// The function takes the following parameters:
+//
+//    - useDragWindow: whether tool_item has a drag window.
+//
 func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
@@ -594,6 +636,12 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 
 // SetVisibleHorizontal sets whether tool_item is visible when the toolbar is
 // docked horizontally.
+//
+// The function takes the following parameters:
+//
+//    - visibleHorizontal: whether tool_item is visible when in horizontal
+//    mode.
+//
 func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
@@ -612,6 +660,12 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 // docked vertically. Some tool items, such as text entries, are too wide to be
 // useful on a vertically docked toolbar. If visible_vertical is FALSE tool_item
 // will not appear on toolbars that are docked vertically.
+//
+// The function takes the following parameters:
+//
+//    - visibleVertical: whether tool_item is visible when the toolbar is in
+//    vertical mode.
+//
 func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out

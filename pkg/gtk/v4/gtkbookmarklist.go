@@ -156,6 +156,11 @@ func (self *BookmarkList) IsLoading() bool {
 //
 // If attributes is NULL, no attributes will be queried, but a list of Infos
 // will still be created.
+//
+// The function takes the following parameters:
+//
+//    - attributes to enumerate.
+//
 func (self *BookmarkList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 *C.char            // out
@@ -174,6 +179,11 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 // SetIOPriority sets the IO priority to use while loading files.
 //
 // The default IO priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//    - ioPriority: IO priority to use.
+//
 func (self *BookmarkList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkBookmarkList // out
 	var _arg1 C.int              // out

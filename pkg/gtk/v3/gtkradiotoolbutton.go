@@ -223,6 +223,11 @@ func (button *RadioToolButton) Group() []RadioButton {
 
 // SetGroup adds button to group, removing it from the group it belonged to
 // before.
+//
+// The function takes the following parameters:
+//
+//    - group: existing radio button group, or NULL.
+//
 func (button *RadioToolButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioToolButton // out
 	var _arg1 *C.GSList             // out

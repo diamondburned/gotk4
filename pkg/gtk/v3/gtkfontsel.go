@@ -369,6 +369,11 @@ func (fontsel *FontSelection) SizeList() Widgetter {
 // is inserted in a toplevel window before you call this function.
 //
 // Deprecated: Use FontChooser.
+//
+// The function takes the following parameters:
+//
+//    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
+//
 func (fontsel *FontSelection) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
@@ -395,6 +400,11 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 // to show how the selected font looks.
 //
 // Deprecated: Use FontChooser.
+//
+// The function takes the following parameters:
+//
+//    - text to display in the preview area.
+//
 func (fontsel *FontSelection) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelection // out
 	var _arg1 *C.gchar            // out
@@ -605,6 +615,11 @@ func (fsd *FontSelectionDialog) PreviewText() string {
 // SetFontName sets the currently selected font.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
+//
 func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out
@@ -630,6 +645,11 @@ func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 // SetPreviewText sets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - text to display in the preview area.
+//
 func (fsd *FontSelectionDialog) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _arg1 *C.gchar                  // out

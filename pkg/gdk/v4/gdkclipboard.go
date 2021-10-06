@@ -155,6 +155,14 @@ func (clipboard *Clipboard) IsLocal() bool {
 //
 // The clipboard will choose the most suitable mime type from the given list to
 // fulfill the request, preferring the ones listed first.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - mimeTypes: NULL-terminated array of mime types to choose from.
+//    - ioPriority: i/O priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
@@ -199,6 +207,11 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 // ReadFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -248,6 +261,12 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
 // the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GCancellable       // out
@@ -274,6 +293,11 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 // ReadTextFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -310,6 +334,12 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync directly if you need more control over
 // the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - callback to call when the request is satisfied.
+//
 func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GCancellable       // out
@@ -336,6 +366,11 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 // ReadTextureFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextureAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -380,6 +415,14 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 // For local clipboard contents that are available in the given GType, the value
 // will be copied directly. Otherwise, GDK will try to use
 // content_deserialize_async to convert the clipboard's data.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - typ: GType to read.
+//    - ioPriority: i/O priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
@@ -412,6 +455,11 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 // ReadValueFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadValueAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -447,6 +495,11 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 // If the contents are read by either an external application or the clipboard's
 // read functions, clipboard will select the best format to transfer the
 // contents and then request that format from provider.
+//
+// The function takes the following parameters:
+//
+//    - provider: new contents of clipboard or NULL to clear the clipboard.
+//
 func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GdkContentProvider // out
@@ -471,6 +524,11 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 }
 
 // Set sets the clipboard to contain the given value.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue to set.
+//
 func (clipboard *Clipboard) Set(value *externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
@@ -497,6 +555,13 @@ func (clipboard *Clipboard) Set(value *externglib.Value) {
 //
 // This function is called automatically when a gtk.Application is shut down, so
 // you likely don't need to call it.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional GCancellable object, NULL to ignore.
+//    - ioPriority: i/O priority of the request.
+//    - callback to call when the request is satisfied.
+//
 func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg2 *C.GCancellable       // out
@@ -526,6 +591,11 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, call
 // StoreFinish finishes an asynchronous clipboard store.
 //
 // See gdk.Clipboard.StoreAsync().
+//
+// The function takes the following parameters:
+//
+//    - result: GAsyncResult.
+//
 func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out

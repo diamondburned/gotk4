@@ -155,6 +155,11 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 // The numbers are shown to provide a unique character for a mnemonic to be used
 // inside ten menu item’s label. Only the first the items get a number to avoid
 // clashes.
+//
+// The function takes the following parameters:
+//
+//    - showNumbers: whether to show numbers.
+//
 func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out
 	var _arg1 C.gboolean              // out

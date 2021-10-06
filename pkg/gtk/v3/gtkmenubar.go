@@ -136,6 +136,11 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 
 // SetChildPackDirection sets how widgets should be packed inside the children
 // of a menubar.
+//
+// The function takes the following parameters:
+//
+//    - childPackDir: new PackDirection.
+//
 func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out
@@ -149,6 +154,11 @@ func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 }
 
 // SetPackDirection sets how items should be packed inside a menubar.
+//
+// The function takes the following parameters:
+//
+//    - packDir: new PackDirection.
+//
 func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out

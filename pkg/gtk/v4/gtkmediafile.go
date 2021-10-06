@@ -250,6 +250,11 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 // SetFile sets the GtkMediaFile to play the given file.
 //
 // If any file is still playing, stop playing it.
+//
+// The function takes the following parameters:
+//
+//    - file to play.
+//
 func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GFile        // out
@@ -268,6 +273,11 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 //
 // This is a utility function that converts the given filename to a GFile and
 // calls gtk.MediaFile.SetFile().
+//
+// The function takes the following parameters:
+//
+//    - filename: name of file to play.
+//
 func (self *MediaFile) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
@@ -289,6 +299,11 @@ func (self *MediaFile) SetFilename(filename string) {
 //
 // Full control about the stream is assumed for the duration of playback. The
 // stream will not be closed.
+//
+// The function takes the following parameters:
+//
+//    - stream to play from.
+//
 func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GInputStream // out
@@ -307,6 +322,11 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 //
 // This is a utility function that converts the given resource_path to a GFile
 // and calls gtk.MediaFile.SetFile().
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: path to resource to play.
+//
 func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out

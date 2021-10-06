@@ -107,6 +107,11 @@ func (self *WindowHandle) Child() Widgetter {
 }
 
 // SetChild sets the child widget of self.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out

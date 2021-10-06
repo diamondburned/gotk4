@@ -204,6 +204,11 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 }
 
 // PackEnd adds child to bar, packed with reference to the end of the bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to bar.
+//
 func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -217,6 +222,11 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
+//
+// The function takes the following parameters:
+//
+//    - child to be added to bar.
+//
 func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -233,6 +243,11 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // The child must have been added with gtk.HeaderBar.PackStart(),
 // gtk.HeaderBar.PackEnd() or gtk.HeaderBar.SetTitleWidget().
+//
+// The function takes the following parameters:
+//
+//    - child to remove.
+//
 func (bar *HeaderBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -261,6 +276,11 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 //
 // For example, “icon:minimize,maximize,close” specifies a icon on the left, and
 // minimize, maximize and close buttons on the right.
+//
+// The function takes the following parameters:
+//
+//    - layout: decoration layout, or NULL to unset the layout.
+//
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.char         // out
@@ -278,6 +298,11 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 
 // SetShowTitleButtons sets whether this header bar shows the standard window
 // title buttons.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE to show standard title buttons.
+//
 func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
@@ -302,6 +327,11 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //
 // You should set the title widget to NULL, for the window title label to be
 // visible again.
+//
+// The function takes the following parameters:
+//
+//    - titleWidget: widget to use for a title.
+//
 func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out

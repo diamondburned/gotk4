@@ -148,6 +148,11 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 // grow. If auto_grow is true, then each write will just make the buffer larger,
 // and you must manually flush the buffer to actually write out the data to the
 // underlying stream.
+//
+// The function takes the following parameters:
+//
+//    - autoGrow: #gboolean.
+//
 func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
@@ -163,6 +168,11 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 }
 
 // SetBufferSize sets the size of the internal buffer to size.
+//
+// The function takes the following parameters:
+//
+//    - size: #gsize.
+//
 func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out

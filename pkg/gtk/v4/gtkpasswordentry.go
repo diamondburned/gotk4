@@ -170,6 +170,11 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // entry.
+//
+// The function takes the following parameters:
+//
+//    - model: GMenuModel.
+//
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
@@ -188,6 +193,11 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 // the contents.
 //
 // Setting this to FALSE also hides the text again.
+//
+// The function takes the following parameters:
+//
+//    - showPeekIcon: whether to show the peek icon.
+//
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out

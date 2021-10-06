@@ -68,6 +68,11 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 // Axis returns the current value for the requested axis. This function must be
 // called from either the GestureStylus:down, GestureStylus:motion,
 // GestureStylus:up or GestureStylus:proximity signals.
+//
+// The function takes the following parameters:
+//
+//    - axis: requested device axis.
+//
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
 	var _arg1 C.GdkAxisUse        // out

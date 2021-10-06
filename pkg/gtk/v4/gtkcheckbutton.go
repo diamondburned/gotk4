@@ -264,6 +264,11 @@ func (self *CheckButton) UseUnderline() bool {
 }
 
 // SetActive changes the check buttons active state.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *CheckButton) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
@@ -292,6 +297,11 @@ func (self *CheckButton) SetActive(setting bool) {
 // Note that the same effect can be achieved via the gtk.Actionable API, by
 // using the same action with parameter type and state type 's' for all buttons
 // in the group, and giving each button its own target value.
+//
+// The function takes the following parameters:
+//
+//    - group: another GtkCheckButton to form a group with.
+//
 func (self *CheckButton) SetGroup(group *CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
@@ -310,6 +320,11 @@ func (self *CheckButton) SetGroup(group *CheckButton) {
 //
 // You shoud turn off the inconsistent state again if the user checks the check
 // button. This has to be done manually.
+//
+// The function takes the following parameters:
+//
+//    - inconsistent: TRUE if state is inconsistent.
+//
 func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
@@ -329,6 +344,11 @@ func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 // If gtk.CheckButton:use-underline is TRUE, an underscore in label is
 // interpreted as mnemonic indicator, see gtk.CheckButton.SetUseUnderline() for
 // details on this behavior.
+//
+// The function takes the following parameters:
+//
+//    - label: text shown next to the indicator, or NULL to show no text.
+//
 func (self *CheckButton) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
@@ -349,6 +369,11 @@ func (self *CheckButton) SetLabel(label string) {
 // If setting is TRUE, an underscore character in self's label indicates a
 // mnemonic accelerator key. This behavior is similar to
 // gtk.Label:use-underline.
+//
+// The function takes the following parameters:
+//
+//    - setting: new value to set.
+//
 func (self *CheckButton) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out

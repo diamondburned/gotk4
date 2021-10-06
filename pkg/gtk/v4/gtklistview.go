@@ -296,6 +296,11 @@ func (self *ListView) SingleClickActivate() bool {
 
 // SetEnableRubberband sets whether selections can be changed by dragging with
 // the mouse.
+//
+// The function takes the following parameters:
+//
+//    - enableRubberband: TRUE to enable rubberband selection.
+//
 func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
@@ -311,6 +316,11 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 }
 
 // SetFactory sets the GtkListItemFactory to use for populating list items.
+//
+// The function takes the following parameters:
+//
+//    - factory to use or NULL for none.
+//
 func (self *ListView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
@@ -328,6 +338,11 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 // SetModel sets the model to use.
 //
 // This must be a gtk.SelectionModel to use.
+//
+// The function takes the following parameters:
+//
+//    - model to use or NULL for none.
+//
 func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
@@ -344,6 +359,11 @@ func (self *ListView) SetModel(model SelectionModeller) {
 
 // SetShowSeparators sets whether the list box should show separators between
 // rows.
+//
+// The function takes the following parameters:
+//
+//    - showSeparators: TRUE to show separators.
+//
 func (self *ListView) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
@@ -360,6 +380,11 @@ func (self *ListView) SetShowSeparators(showSeparators bool) {
 
 // SetSingleClickActivate sets whether rows should be activated on single click
 // and selected on hover.
+//
+// The function takes the following parameters:
+//
+//    - singleClickActivate: TRUE to activate items on single click.
+//
 func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out

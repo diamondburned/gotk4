@@ -114,6 +114,11 @@ func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 }
 
 // ReadByte reads an unsigned 8-bit/1-byte value from stream.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -147,6 +152,11 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -184,6 +194,11 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -221,6 +236,11 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -256,6 +276,11 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -307,6 +332,13 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_line_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg2 *C.GCancellable       // out
@@ -336,6 +368,11 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 // ReadLineFinish: finish an asynchronous call started by
 // g_data_input_stream_read_line_async(). Note the warning about string encoding
 // in g_data_input_stream_read_line() applies here as well.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
 func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -380,6 +417,11 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 
 // ReadLineFinishUTF8: finish an asynchronous call started by
 // g_data_input_stream_read_line_async().
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
 func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -415,6 +457,11 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -454,6 +501,11 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -491,6 +543,11 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -527,6 +584,11 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//
 func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -568,6 +630,12 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 //
 // Deprecated: Use g_data_input_stream_read_upto() instead, which has more
 // consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//
 func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg3 *C.GCancellable     // out
@@ -620,6 +688,14 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //
 // Deprecated: Use g_data_input_stream_read_upto_async() instead, which has more
 // consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg3 *C.GCancellable       // out
@@ -655,6 +731,11 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 //
 // Deprecated: Use g_data_input_stream_read_upto_finish() instead, which has
 // more consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
 func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -693,6 +774,14 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 // Note that stop_chars may contain '\0' if stop_chars_len is specified.
 //
 // The returned string will always be nul-terminated on success.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//    nul-terminated.
+//
 func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, stopCharsLen int) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg4 *C.GCancellable     // out
@@ -743,6 +832,16 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_upto_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx: optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//    nul-terminated.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback to call when the request is satisfied.
+//
 func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg4 *C.GCancellable       // out
@@ -784,6 +883,11 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 // g_data_input_stream_read_upto_async() again.
 //
 // The returned string will always be nul-terminated on success.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
 func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -814,6 +918,11 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 
 // SetByteOrder: this function sets the byte order for the given stream. All
 // subsequent reads from the stream will be read in the given order.
+//
+// The function takes the following parameters:
+//
+//    - order to set.
+//
 func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
 	var _arg1 C.GDataStreamByteOrder // out
@@ -831,6 +940,11 @@ func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 // Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
 // chunk ends in "CR" we must read an additional byte to know if this is "CR" or
 // "CR LF", and this might block if there is no more data available.
+//
+// The function takes the following parameters:
+//
+//    - typ: type of new line return as StreamNewlineType.
+//
 func (stream *DataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out
 	var _arg1 C.GDataStreamNewlineType // out

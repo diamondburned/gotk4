@@ -199,6 +199,11 @@ func (self *MediaStream) Ended() {
 //
 // To unset an error, the stream must be reset via a call to
 // gtk.MediaStream.Unprepared().
+//
+// The function takes the following parameters:
+//
+//    - err: GError to set.
+//
 func (self *MediaStream) GError(err error) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GError         // out
@@ -515,6 +520,14 @@ func (self *MediaStream) Play() {
 //
 // This function may not be called again until the stream has been reset via
 // gtk.MediaStream.Unprepared().
+//
+// The function takes the following parameters:
+//
+//    - hasAudio: TRUE if the stream should advertise audio support.
+//    - hasVideo: TRUE if the stream should advertise video support.
+//    - seekable: TRUE if the stream should advertise seekability.
+//    - duration of the stream or 0 if unknown.
+//
 func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
@@ -558,6 +571,11 @@ func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration in
 // call to gtk.MediaStream.Unrealize().
 //
 // It is not required to call this function to make a media stream work.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface.
+//
 func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GdkSurface     // out
@@ -579,6 +597,11 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 //
 // When calling gtk_media_stream_seek() during an ongoing seek operation, the
 // new seek will override any pending seek.
+//
+// The function takes the following parameters:
+//
+//    - timestamp to seek to.
+//
 func (self *MediaStream) Seek(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gint64          // out
@@ -629,6 +652,11 @@ func (self *MediaStream) SeekSuccess() {
 //
 // Not all streams may support looping, in particular non-seekable streams.
 // Those streams will ignore the loop setting and just end.
+//
+// The function takes the following parameters:
+//
+//    - loop: TRUE if the stream should loop.
+//
 func (self *MediaStream) SetLoop(loop bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
@@ -651,6 +679,11 @@ func (self *MediaStream) SetLoop(loop bool) {
 //
 // If the stream has no audio, calling this function will still work but it will
 // not have an audible effect.
+//
+// The function takes the following parameters:
+//
+//    - muted: TRUE if the stream should be muted.
+//
 func (self *MediaStream) SetMuted(muted bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
@@ -666,6 +699,11 @@ func (self *MediaStream) SetMuted(muted bool) {
 }
 
 // SetPlaying starts or pauses playback of the stream.
+//
+// The function takes the following parameters:
+//
+//    - playing: whether to start or pause playback.
+//
 func (self *MediaStream) SetPlaying(playing bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
@@ -690,6 +728,11 @@ func (self *MediaStream) SetPlaying(playing bool) {
 // If the stream has no audio or is muted, calling this function will still work
 // but it will not have an immediate audible effect. When the stream is unmuted,
 // the new volume setting will take effect.
+//
+// The function takes the following parameters:
+//
+//    - volume: new volume of the stream from 0.0 to 1.0.
+//
 func (self *MediaStream) SetVolume(volume float64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.double          // out
@@ -720,6 +763,11 @@ func (self *MediaStream) Unprepared() {
 //
 // This causes the stream to release all resources it had allocated from
 // surface.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface the stream was realized with.
+//
 func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GdkSurface     // out
@@ -739,6 +787,11 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 // appropriate.
 //
 // The media stream must be prepared when this function is called.
+//
+// The function takes the following parameters:
+//
+//    - timestamp: new timestamp.
+//
 func (self *MediaStream) Update(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gint64          // out

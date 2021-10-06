@@ -226,6 +226,11 @@ func (self *DrawingArea) ContentWidth() int {
 // than the height set here. You can use gtk.Widget.SetVAlign() to avoid that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
+//
+// The function takes the following parameters:
+//
+//    - height of contents.
+//
 func (self *DrawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
@@ -245,6 +250,11 @@ func (self *DrawingArea) SetContentHeight(height int) {
 // than the width set here. You can use gtk.Widget.SetHAlign() to avoid that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
+//
+// The function takes the following parameters:
+//
+//    - width of contents.
+//
 func (self *DrawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
@@ -270,6 +280,11 @@ func (self *DrawingArea) SetContentWidth(width int) {
 //
 // If what you are drawing does change, call gtk.Widget.QueueDraw() on the
 // drawing area. This will cause a redraw and will call draw_func again.
+//
+// The function takes the following parameters:
+//
+//    - drawFunc: callback that lets you draw the drawing area's contents.
+//
 func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _arg0 *C.GtkDrawingArea        // out
 	var _arg1 C.GtkDrawingAreaDrawFunc // out

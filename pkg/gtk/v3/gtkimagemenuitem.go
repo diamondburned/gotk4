@@ -274,6 +274,11 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 // need this (see gtk_image_menu_item_new_from_stock()).
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - accelGroup: AccelGroup.
+//
 func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkAccelGroup    // out
@@ -293,6 +298,11 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 // image.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - alwaysShow: TRUE if the menuitem should always show the image.
+//
 func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out
@@ -312,6 +322,11 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 // or not.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - image: widget to set as the image for the menu item.
+//
 func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
@@ -330,6 +345,11 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 // select the stock item for the item.
 //
 // Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - useStock: TRUE if the menuitem should use a stock item.
+//
 func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 C.gboolean          // out

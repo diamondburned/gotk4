@@ -288,6 +288,15 @@ func marshalTopleveller(p uintptr) (interface{}, error) {
 // BeginMove begins an interactive move operation.
 //
 // You might use this function to implement draggable titlebars.
+//
+// The function takes the following parameters:
+//
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - x: surface X coordinate of mouse click that began the drag.
+//    - y: surface Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
+//
 func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkDevice   // out
@@ -315,6 +324,16 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, ti
 // BeginResize begins an interactive resize operation.
 //
 // You might use this function to implement a “window resize grip.”.
+//
+// The function takes the following parameters:
+//
+//    - edge or corner from which the drag is started.
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - x: surface X coordinate of mouse click that began the drag.
+//    - y: surface Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
+//
 func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel   // out
 	var _arg1 C.GdkSurfaceEdge // out
@@ -348,6 +367,11 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 //
 // In most cases, gtk.Window.PresentWithTime() should be used on a gtk.Window,
 // rather than calling this function.
+//
+// The function takes the following parameters:
+//
+//    - timestamp of the event triggering the surface focus.
+//
 func (toplevel *Toplevel) Focus(timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.guint32      // out
@@ -398,6 +422,12 @@ func (toplevel *Toplevel) State() ToplevelState {
 //
 // The caller can be notified whenever the request is granted or revoked by
 // listening to the gdk.Toplevel:shortcuts-inhibited property.
+//
+// The function takes the following parameters:
+//
+//    - event: GdkEvent that is triggering the inhibit request, or NULL if none
+//    is available.
+//
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
@@ -464,6 +494,11 @@ func (toplevel *Toplevel) Minimize() bool {
 //
 // Presenting is asynchronous and the specified layout parameters are not
 // guaranteed to be respected.
+//
+// The function takes the following parameters:
+//
+//    - layout: GdkToplevelLayout object used to layout.
+//
 func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 *C.GdkToplevelLayout // out
@@ -494,6 +529,11 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 // Setting decorated to FALSE hints the desktop environment that the surface has
 // its own, client-side decorations and does not need to have window decorations
 // added.
+//
+// The function takes the following parameters:
+//
+//    - decorated: TRUE to request decorations.
+//
 func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
@@ -512,6 +552,11 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 //
 // Setting deletable to TRUE hints the desktop environment that it should offer
 // the user a way to close the surface.
+//
+// The function takes the following parameters:
+//
+//    - deletable: TRUE to request a delete button.
+//
 func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
@@ -534,6 +579,11 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 // several size icons can give better image quality.
 //
 // Note that some platforms don't support surface icons.
+//
+// The function takes the following parameters:
+//
+//    - surfaces: A list of textures to use as icon, of different sizes.
+//
 func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GList       // out
@@ -560,6 +610,11 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 //
 // You should only use this on surfaces for which you have previously called
 // gdk.Toplevel.SetTransientFor().
+//
+// The function takes the following parameters:
+//
+//    - modal: TRUE if the surface is modal, FALSE otherwise.
+//
 func (toplevel *Toplevel) SetModal(modal bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
@@ -578,6 +633,11 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 //
 // When using GTK, typically you should use gtk.Window.SetStartupID() instead of
 // this low-level function.
+//
+// The function takes the following parameters:
+//
+//    - startupId: string with startup-notification identifier.
+//
 func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -594,6 +654,11 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 // SetTitle sets the title of a toplevel surface.
 //
 // The title maybe be displayed in the titlebar, in lists of windows, etc.
+//
+// The function takes the following parameters:
+//
+//    - title of surface.
+//
 func (toplevel *Toplevel) SetTitle(title string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -614,6 +679,11 @@ func (toplevel *Toplevel) SetTitle(title string) {
 // things like center surface on parent and keep surface above parent.
 //
 // See gtk.Window.SetTransientFor() if you’re using gtk.Window or gtk.Dialog.
+//
+// The function takes the following parameters:
+//
+//    - parent: another toplevel GdkSurface.
+//
 func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkSurface  // out
@@ -632,6 +702,11 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 // traditional windows managed by the window manager. This is useful for windows
 // using client-side decorations, activating it with a right-click on the window
 // decorations.
+//
+// The function takes the following parameters:
+//
+//    - event: GdkEvent to show the menu for.
+//
 func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out

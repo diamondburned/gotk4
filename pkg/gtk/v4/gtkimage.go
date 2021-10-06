@@ -464,6 +464,11 @@ func (image *Image) StorageType() ImageType {
 // SetFromFile sets a GtkImage to show a file.
 //
 // See gtk.Image.NewFromFile for details.
+//
+// The function takes the following parameters:
+//
+//    - filename or NULL.
+//
 func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -482,6 +487,11 @@ func (image *Image) SetFromFile(filename string) {
 // SetFromGIcon sets a GtkImage to show a GIcon.
 //
 // See gtk.Image.NewFromGIcon for details.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//
 func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
@@ -497,6 +507,11 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 // SetFromIconName sets a GtkImage to show a named icon.
 //
 // See gtk.Image.NewFromIconName for details.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name or NULL.
+//
 func (image *Image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -515,6 +530,11 @@ func (image *Image) SetFromIconName(iconName string) {
 // SetFromPaintable sets a GtkImage to show a GdkPaintable.
 //
 // See gtk.Image.NewFromPaintable for details.
+//
+// The function takes the following parameters:
+//
+//    - paintable: GdkPaintable or NULL.
+//
 func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkImage     // out
 	var _arg1 *C.GdkPaintable // out
@@ -535,6 +555,11 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 //
 // Note: This is a helper for gtk.Image.SetFromPaintable(), and you can't get
 // back the exact pixbuf once this is called, only a paintable.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: GdkPixbuf or NULL.
+//
 func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
@@ -552,6 +577,11 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 // SetFromResource sets a GtkImage to show a resource.
 //
 // See gtk.Image.NewFromResource for details.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path or NULL.
+//
 func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -568,6 +598,11 @@ func (image *Image) SetFromResource(resourcePath string) {
 }
 
 // SetIconSize suggests an icon size to the theme for named icons.
+//
+// The function takes the following parameters:
+//
+//    - iconSize: new icon size.
+//
 func (image *Image) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 C.GtkIconSize // out
@@ -584,6 +619,11 @@ func (image *Image) SetIconSize(iconSize IconSize) {
 //
 // If the pixel size is set to a value != -1, it is used instead of the icon
 // size set by gtk.Image.SetFromIconName().
+//
+// The function takes the following parameters:
+//
+//    - pixelSize: new pixel size.
+//
 func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out

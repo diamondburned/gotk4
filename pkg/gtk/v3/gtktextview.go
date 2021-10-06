@@ -268,6 +268,12 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
+//
+// The function takes the following parameters:
+//
+//    - child: Widget.
+//    - anchor in the TextBuffer for text_view.
+//
 func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
@@ -292,6 +298,14 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 // scrolling is irrelevant, the child floats above all scrollable areas. But
 // when placing a child in one of the scrollable windows (border windows or text
 // window) it will move with the scrolling as needed.
+//
+// The function takes the following parameters:
+//
+//    - child: Widget.
+//    - whichWindow: which window the child should appear in.
+//    - xpos: x position of child in window coordinates.
+//    - ypos: y position of child in window coordinates.
+//
 func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWindowType, xpos, ypos int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GtkWidget        // out
@@ -320,6 +334,11 @@ func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWind
 // lines and paragraphs will be the same. Display lines are divided differently
 // for each view, since they depend on the view’s width; paragraphs are the same
 // in all views, since they depend on the contents of the TextBuffer.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -348,6 +367,11 @@ func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 // lines and paragraphs will be the same. Display lines are divided differently
 // for each view, since they depend on the view’s width; paragraphs are the same
 // in all views, since they depend on the contents of the TextBuffer.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -374,6 +398,13 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 //
 // Note that you can’t convert coordinates for a nonexisting window (see
 // gtk_text_view_set_border_window_size()).
+//
+// The function takes the following parameters:
+//
+//    - win except GTK_TEXT_WINDOW_PRIVATE.
+//    - bufferX: buffer x coordinate.
+//    - bufferY: buffer y coordinate.
+//
 func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX, bufferY int) (windowX int, windowY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -409,6 +440,11 @@ func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX, buff
 // lines and paragraphs will be the same. Display lines are divided differently
 // for each view, since they depend on the view’s width; paragraphs are the same
 // in all views, since they depend on the contents of the TextBuffer.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -437,6 +473,11 @@ func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 // lines and paragraphs will be the same. Display lines are divided differently
 // for each view, since they depend on the view’s width; paragraphs are the same
 // in all views, since they depend on the contents of the TextBuffer.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -480,6 +521,11 @@ func (textView *TextView) AcceptsTab() bool {
 
 // BorderWindowSize gets the width of the specified border window. See
 // gtk_text_view_set_border_window_size().
+//
+// The function takes the following parameters:
+//
+//    - typ: window to return size from.
+//
 func (textView *TextView) BorderWindowSize(typ TextWindowType) int {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -553,6 +599,11 @@ func (textView *TextView) Buffer() *TextBuffer {
 // The rectangle position is in buffer coordinates; use
 // gtk_text_view_buffer_to_window_coords() to convert these coordinates to
 // coordinates for one of the windows in the text view.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -721,6 +772,12 @@ func (textView *TextView) InputPurpose() InputPurpose {
 // currently-displayed portion. If you have coordinates from an event, you have
 // to convert those to buffer coordinates with
 // gtk_text_view_window_to_buffer_coords().
+//
+// The function takes the following parameters:
+//
+//    - x position, in buffer coordinates.
+//    - y position, in buffer coordinates.
+//
 func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
@@ -756,6 +813,12 @@ func (textView *TextView) IterAtLocation(x, y int) (TextIter, bool) {
 //
 // Note that this is different from gtk_text_view_get_iter_at_location(), which
 // returns cursor locations, i.e. positions between characters.
+//
+// The function takes the following parameters:
+//
+//    - x position, in buffer coordinates.
+//    - y position, in buffer coordinates.
+//
 func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
@@ -790,6 +853,11 @@ func (textView *TextView) IterAtPosition(x, y int) (TextIter, int, bool) {
 // The rectangle position is in buffer coordinates; use
 // gtk_text_view_buffer_to_window_coords() to convert these coordinates to
 // coordinates for one of the windows in the text view.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) IterLocation(iter *TextIter) gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -849,6 +917,11 @@ func (textView *TextView) LeftMargin() int {
 // y. y is in buffer coordinates, convert from window coordinates with
 // gtk_text_view_window_to_buffer_coords(). If non-NULL, line_top will be filled
 // with the coordinate of the top edge of the line.
+//
+// The function takes the following parameters:
+//
+//    - y coordinate.
+//
 func (textView *TextView) LineAtY(y int) (TextIter, int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkTextIter  // in
@@ -874,6 +947,11 @@ func (textView *TextView) LineAtY(y int) (TextIter, int) {
 // LineYrange gets the y coordinate of the top of the line containing iter, and
 // the height of the line. The coordinate is a buffer coordinate; convert to
 // window coordinates with gtk_text_view_buffer_to_window_coords().
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) LineYrange(iter *TextIter) (y int, height int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -1097,6 +1175,11 @@ func (textView *TextView) VisibleRect() gdk.Rectangle {
 // left, right, top, bottom, and the window that displays the text buffer.
 // Windows are NULL and nonexistent if their width or height is 0, and are
 // nonexistent before the widget has been realized.
+//
+// The function takes the following parameters:
+//
+//    - win: window to get.
+//
 func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -1131,6 +1214,11 @@ func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 //
 // If you connect to an event signal on text_view, this function should be
 // called on event->window to see which window it was.
+//
+// The function takes the following parameters:
+//
+//    - window type.
+//
 func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GdkWindow        // out
@@ -1195,6 +1283,11 @@ func (textView *TextView) WrapMode() WrapMode {
 //
 //      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 //    }.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
 func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GdkEventKey // out
@@ -1218,6 +1311,13 @@ func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 
 // MoveChild updates the position of a child, as for
 // gtk_text_view_add_child_in_window().
+//
+// The function takes the following parameters:
+//
+//    - child widget already added to the text view.
+//    - xpos: new X position in window coordinates.
+//    - ypos: new Y position in window coordinates.
+//
 func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
@@ -1238,6 +1338,11 @@ func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int) {
 
 // MoveMarkOnscreen moves a mark within the buffer so that it's located within
 // the currently-visible text area.
+//
+// The function takes the following parameters:
+//
+//    - mark: TextMark.
+//
 func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
@@ -1268,6 +1373,13 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 // In the presence of bi-directional text, the correspondence between logical
 // and visual order will depend on the direction of the current run, and there
 // may be jumps when the cursor is moved off of the end of a run.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//    - count: number of characters to move (negative moves left, positive
+//    moves right).
+//
 func (textView *TextView) MoveVisually(iter *TextIter, count int) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -1342,6 +1454,11 @@ func (textView *TextView) ResetIMContext() {
 
 // ScrollMarkOnscreen scrolls text_view the minimum distance such that mark is
 // contained within the visible area of the widget.
+//
+// The function takes the following parameters:
+//
+//    - mark in the buffer for text_view.
+//
 func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
@@ -1366,6 +1483,16 @@ func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 // function may not have the desired effect if it’s called before the height
 // computations. To avoid oddness, consider using gtk_text_view_scroll_to_mark()
 // which saves a point to be scrolled to after line validation.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the
+//    mark onscreen).
+//    - xalign: horizontal alignment of mark within visible area.
+//    - yalign: vertical alignment of mark within visible area.
+//
 func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign, yalign float64) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -1407,6 +1534,16 @@ func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, use
 // text scrolls the minimal distance to get the mark onscreen, possibly not
 // scrolling at all. The effective screen for purposes of this function is
 // reduced by a margin of size within_margin.
+//
+// The function takes the following parameters:
+//
+//    - mark: TextMark.
+//    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the
+//    mark onscreen).
+//    - xalign: horizontal alignment of mark within visible area.
+//    - yalign: vertical alignment of mark within visible area.
+//
 func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, useAlign bool, xalign, yalign float64) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextMark // out
@@ -1436,6 +1573,12 @@ func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, use
 // SetAcceptsTab sets the behavior of the text widget when the Tab key is
 // pressed. If accepts_tab is TRUE, a tab character is inserted. If accepts_tab
 // is FALSE the keyboard focus is moved to the next widget in the focus chain.
+//
+// The function takes the following parameters:
+//
+//    - acceptsTab: TRUE if pressing the Tab key should insert a tab character,
+//    FALSE, if pressing the Tab key should move the keyboard focus.
+//
 func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
@@ -1457,6 +1600,12 @@ func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 // This function can only be used for the “border windows”, and it won’t work
 // with GTK_TEXT_WINDOW_WIDGET, GTK_TEXT_WINDOW_TEXT, or
 // GTK_TEXT_WINDOW_PRIVATE.
+//
+// The function takes the following parameters:
+//
+//    - typ: window to affect.
+//    - size: width or height of the window.
+//
 func (textView *TextView) SetBorderWindowSize(typ TextWindowType, size int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -1476,6 +1625,11 @@ func (textView *TextView) SetBorderWindowSize(typ TextWindowType, size int) {
 //
 // Note that this function is confusingly named. In CSS terms, the value set
 // here is padding.
+//
+// The function takes the following parameters:
+//
+//    - bottomMargin: bottom margin in pixels.
+//
 func (textView *TextView) SetBottomMargin(bottomMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1493,6 +1647,11 @@ func (textView *TextView) SetBottomMargin(bottomMargin int) {
 // is added to buffer. If you owned a reference to buffer before passing it to
 // this function, you must remove that reference yourself; TextView will not
 // “adopt” it.
+//
+// The function takes the following parameters:
+//
+//    - buffer: TextBuffer.
+//
 func (textView *TextView) SetBuffer(buffer *TextBuffer) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.GtkTextBuffer // out
@@ -1513,6 +1672,11 @@ func (textView *TextView) SetBuffer(buffer *TextBuffer) {
 //
 // Note that this property may be overridden by the
 // Settings:gtk-keynave-use-caret settings.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether to show the insertion cursor.
+//
 func (textView *TextView) SetCursorVisible(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
@@ -1530,6 +1694,11 @@ func (textView *TextView) SetCursorVisible(setting bool) {
 // SetEditable sets the default editability of the TextView. You can override
 // this default setting with tags in the buffer, using the “editable” attribute
 // of tags.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether it’s editable.
+//
 func (textView *TextView) SetEditable(setting bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
@@ -1546,6 +1715,11 @@ func (textView *TextView) SetEditable(setting bool) {
 
 // SetIndent sets the default indentation for paragraphs in text_view. Tags in
 // the buffer may override the default.
+//
+// The function takes the following parameters:
+//
+//    - indent: indentation in pixels.
+//
 func (textView *TextView) SetIndent(indent int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1560,6 +1734,11 @@ func (textView *TextView) SetIndent(indent int) {
 
 // SetInputHints sets the TextView:input-hints property, which allows input
 // methods to fine-tune their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
 func (textView *TextView) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkTextView  // out
 	var _arg1 C.GtkInputHints // out
@@ -1574,6 +1753,11 @@ func (textView *TextView) SetInputHints(hints InputHints) {
 
 // SetInputPurpose sets the TextView:input-purpose property which can be used by
 // on-screen keyboards and other input methods to adjust their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
 func (textView *TextView) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkTextView    // out
 	var _arg1 C.GtkInputPurpose // out
@@ -1588,6 +1772,11 @@ func (textView *TextView) SetInputPurpose(purpose InputPurpose) {
 
 // SetJustification sets the default justification of text in text_view. Tags in
 // the view’s buffer may override the default.
+//
+// The function takes the following parameters:
+//
+//    - justification: justification.
+//
 func (textView *TextView) SetJustification(justification Justification) {
 	var _arg0 *C.GtkTextView     // out
 	var _arg1 C.GtkJustification // out
@@ -1605,6 +1794,11 @@ func (textView *TextView) SetJustification(justification Justification) {
 //
 // Note that this function is confusingly named. In CSS terms, the value set
 // here is padding.
+//
+// The function takes the following parameters:
+//
+//    - leftMargin: left margin in pixels.
+//
 func (textView *TextView) SetLeftMargin(leftMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1619,6 +1813,11 @@ func (textView *TextView) SetLeftMargin(leftMargin int) {
 
 // SetMonospace sets the TextView:monospace property, which indicates that the
 // text view should use monospace fonts.
+//
+// The function takes the following parameters:
+//
+//    - monospace: TRUE to request monospace styling.
+//
 func (textView *TextView) SetMonospace(monospace bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
@@ -1634,6 +1833,11 @@ func (textView *TextView) SetMonospace(monospace bool) {
 }
 
 // SetOverwrite changes the TextView overwrite mode.
+//
+// The function takes the following parameters:
+//
+//    - overwrite: TRUE to turn on overwrite mode, FALSE to turn it off.
+//
 func (textView *TextView) SetOverwrite(overwrite bool) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gboolean     // out
@@ -1650,6 +1854,11 @@ func (textView *TextView) SetOverwrite(overwrite bool) {
 
 // SetPixelsAboveLines sets the default number of blank pixels above paragraphs
 // in text_view. Tags in the buffer for text_view may override the defaults.
+//
+// The function takes the following parameters:
+//
+//    - pixelsAboveLines pixels above paragraphs.
+//
 func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1665,6 +1874,11 @@ func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int) {
 // SetPixelsBelowLines sets the default number of pixels of blank space to put
 // below paragraphs in text_view. May be overridden by tags applied to
 // text_view’s buffer.
+//
+// The function takes the following parameters:
+//
+//    - pixelsBelowLines pixels below paragraphs.
+//
 func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1680,6 +1894,11 @@ func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int) {
 // SetPixelsInsideWrap sets the default number of pixels of blank space to leave
 // between display/wrapped lines within a paragraph. May be overridden by tags
 // in text_view’s buffer.
+//
+// The function takes the following parameters:
+//
+//    - pixelsInsideWrap: default number of pixels between wrapped lines.
+//
 func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1697,6 +1916,11 @@ func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int) {
 //
 // Note that this function is confusingly named. In CSS terms, the value set
 // here is padding.
+//
+// The function takes the following parameters:
+//
+//    - rightMargin: right margin in pixels.
+//
 func (textView *TextView) SetRightMargin(rightMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1711,6 +1935,11 @@ func (textView *TextView) SetRightMargin(rightMargin int) {
 
 // SetTabs sets the default tab stops for paragraphs in text_view. Tags in the
 // buffer may override the default.
+//
+// The function takes the following parameters:
+//
+//    - tabs as a TabArray.
+//
 func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkTextView   // out
 	var _arg1 *C.PangoTabArray // out
@@ -1727,6 +1956,11 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 //
 // Note that this function is confusingly named. In CSS terms, the value set
 // here is padding.
+//
+// The function takes the following parameters:
+//
+//    - topMargin: top margin in pixels.
+//
 func (textView *TextView) SetTopMargin(topMargin int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.gint         // out
@@ -1740,6 +1974,11 @@ func (textView *TextView) SetTopMargin(topMargin int) {
 }
 
 // SetWrapMode sets the line wrapping for the view.
+//
+// The function takes the following parameters:
+//
+//    - wrapMode: WrapMode.
+//
 func (textView *TextView) SetWrapMode(wrapMode WrapMode) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 C.GtkWrapMode  // out
@@ -1755,6 +1994,11 @@ func (textView *TextView) SetWrapMode(wrapMode WrapMode) {
 // StartsDisplayLine determines whether iter is at the start of a display line.
 // See gtk_text_view_forward_display_line() for an explanation of display lines
 // vs. paragraphs.
+//
+// The function takes the following parameters:
+//
+//    - iter: TextIter.
+//
 func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
@@ -1781,6 +2025,13 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 //
 // Note that you can’t convert coordinates for a nonexisting window (see
 // gtk_text_view_set_border_window_size()).
+//
+// The function takes the following parameters:
+//
+//    - win except GTK_TEXT_WINDOW_PRIVATE.
+//    - windowX: window x coordinate.
+//    - windowY: window y coordinate.
+//
 func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, windowY int) (bufferX int, bufferY int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
@@ -1857,7 +2108,7 @@ func (t *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection
 // cursor.
 //
 // This signal has no default bindings.
-func (t *TextView) ConnectInsertAtCursor(f func(_string string)) glib.SignalHandle {
+func (t *TextView) ConnectInsertAtCursor(f func(str string)) glib.SignalHandle {
 	return t.Connect("insert-at-cursor", f)
 }
 
@@ -1941,7 +2192,7 @@ func (t *TextView) ConnectPreeditChanged(f func(preedit string)) glib.SignalHand
 //
 // The default bindings for this signal are Ctrl-a and Ctrl-/ for selecting and
 // Shift-Ctrl-a and Ctrl-\ for unselecting.
-func (t *TextView) ConnectSelectAll(f func(_select bool)) glib.SignalHandle {
+func (t *TextView) ConnectSelectAll(f func(sel bool)) glib.SignalHandle {
 	return t.Connect("select-all", f)
 }
 

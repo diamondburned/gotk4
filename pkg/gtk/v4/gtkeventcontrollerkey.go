@@ -61,6 +61,11 @@ func NewEventControllerKey() *EventControllerKey {
 // This function can only be used in handlers for the
 // gtk.EventControllerKey::key-pressed, gtk.EventControllerKey::key-released or
 // gtk.EventControllerKey::modifiers signals.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget.
+//
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
@@ -131,6 +136,11 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 }
 
 // SetIMContext sets the input method context of the key controller.
+//
+// The function takes the following parameters:
+//
+//    - imContext: GtkIMContext.
+//
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out

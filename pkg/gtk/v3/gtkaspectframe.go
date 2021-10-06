@@ -102,6 +102,17 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 }
 
 // Set parameters for an existing AspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment of the child within the allocation of the
+//    AspectFrame. This ranges from 0.0 (left aligned) to 1.0 (right aligned).
+//    - yalign: vertical alignment of the child within the allocation of the
+//    AspectFrame. This ranges from 0.0 (top aligned) to 1.0 (bottom aligned).
+//    - ratio: desired aspect ratio.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken
+//    from the requistion of the child.
+//
 func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gfloat          // out

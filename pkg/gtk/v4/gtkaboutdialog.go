@@ -232,6 +232,12 @@ func NewAboutDialog() *AboutDialog {
 }
 
 // AddCreditSection creates a new section in the "Credits" page.
+//
+// The function takes the following parameters:
+//
+//    - sectionName: name of the section.
+//    - people who belong to that section.
+//
 func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -609,6 +615,11 @@ func (about *AboutDialog) WrapLicense() bool {
 
 // SetArtists sets the strings which are displayed in the "Artists" tab of the
 // secondary credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - artists authors of the artwork of the application.
+//
 func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
@@ -635,6 +646,11 @@ func (about *AboutDialog) SetArtists(artists []string) {
 
 // SetAuthors sets the strings which are displayed in the "Authors" tab of the
 // secondary credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - authors of the application.
+//
 func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
@@ -662,6 +678,11 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 // SetComments sets the comments string to display in the about dialog.
 //
 // This should be a short string of one or two lines.
+//
+// The function takes the following parameters:
+//
+//    - comments string.
+//
 func (about *AboutDialog) SetComments(comments string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -680,6 +701,11 @@ func (about *AboutDialog) SetComments(comments string) {
 // SetCopyright sets the copyright string to display in the about dialog.
 //
 // This should be a short string of one or two lines.
+//
+// The function takes the following parameters:
+//
+//    - copyright string.
+//
 func (about *AboutDialog) SetCopyright(copyright string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -697,6 +723,11 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 
 // SetDocumenters sets the strings which are displayed in the "Documenters" tab
 // of the credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - documenters authors of the documentation of the application.
+//
 func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
@@ -725,6 +756,11 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 // license dialog.
 //
 // If license is NULL, the license button is hidden.
+//
+// The function takes the following parameters:
+//
+//    - license information.
+//
 func (about *AboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -744,6 +780,11 @@ func (about *AboutDialog) SetLicense(license string) {
 // from a list of known licenses.
 //
 // This function overrides the license set using gtk.AboutDialog.SetLicense().
+//
+// The function takes the following parameters:
+//
+//    - licenseType: type of license.
+//
 func (about *AboutDialog) SetLicenseType(licenseType License) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.GtkLicense      // out
@@ -757,6 +798,11 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 }
 
 // SetLogo sets the logo in the about dialog.
+//
+// The function takes the following parameters:
+//
+//    - logo: GdkPaintable.
+//
 func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.GdkPaintable   // out
@@ -773,6 +819,11 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 
 // SetLogoIconName sets the icon name to be displayed as logo in the about
 // dialog.
+//
+// The function takes the following parameters:
+//
+//    - iconName: icon name.
+//
 func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -791,6 +842,11 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 // SetProgramName sets the name to display in the about dialog.
 //
 // If name is not set, it defaults to g_get_application_name().
+//
+// The function takes the following parameters:
+//
+//    - name: program name.
+//
 func (about *AboutDialog) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -812,6 +868,11 @@ func (about *AboutDialog) SetProgramName(name string) {
 // If system_information is NULL, the system information tab is hidden.
 //
 // See gtk.AboutDialog:system-information.
+//
+// The function takes the following parameters:
+//
+//    - systemInformation: system information.
+//
 func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -843,6 +904,11 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 // purpose, since translators will already know the purpose of that msgid, and
 // since GtkAboutDialog will detect if “translator-credits” is untranslated and
 // hide the tab.
+//
+// The function takes the following parameters:
+//
+//    - translatorCredits: translator credits.
+//
 func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -859,6 +925,11 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 }
 
 // SetVersion sets the version string to display in the about dialog.
+//
+// The function takes the following parameters:
+//
+//    - version string.
+//
 func (about *AboutDialog) SetVersion(version string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -875,6 +946,11 @@ func (about *AboutDialog) SetVersion(version string) {
 }
 
 // SetWebsite sets the URL to use for the website link.
+//
+// The function takes the following parameters:
+//
+//    - website: URL string starting with http://.
+//
 func (about *AboutDialog) SetWebsite(website string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -891,6 +967,11 @@ func (about *AboutDialog) SetWebsite(website string) {
 }
 
 // SetWebsiteLabel sets the label to be used for the website link.
+//
+// The function takes the following parameters:
+//
+//    - websiteLabel: label used for the website link.
+//
 func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -906,6 +987,11 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 
 // SetWrapLicense sets whether the license text in the about dialog should be
 // automatically wrapped.
+//
+// The function takes the following parameters:
+//
+//    - wrapLicense: whether to wrap the license.
+//
 func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.gboolean        // out

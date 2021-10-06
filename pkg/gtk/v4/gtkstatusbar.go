@@ -104,6 +104,12 @@ func NewStatusbar() *Statusbar {
 // context.
 //
 // Note that the description is not shown in the UI.
+//
+// The function takes the following parameters:
+//
+//    - contextDescription: textual description of what context the new message
+//    is being used in.
+//
 func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 *C.char         // out
@@ -129,6 +135,11 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 //
 // Note that this may not change the displayed message, if the message at the
 // top of the stack has a different context id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: context identifier.
+//
 func (statusbar *Statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
@@ -142,6 +153,13 @@ func (statusbar *Statusbar) Pop(contextId uint) {
 }
 
 // Push pushes a new message onto a statusbar’s stack.
+//
+// The function takes the following parameters:
+//
+//    - contextId message’s context id, as returned by
+//    gtk_statusbar_get_context_id().
+//    - text: message to add to the statusbar.
+//
 func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
@@ -167,6 +185,12 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
 // context_id and message_id must be specified.
+//
+// The function takes the following parameters:
+//
+//    - contextId: context identifier.
+//    - messageId: message identifier, as returned by gtk.Statusbar.Push().
+//
 func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
@@ -184,6 +208,11 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
 // the exact context_id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: context identifier.
+//
 func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out

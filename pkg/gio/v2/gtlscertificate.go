@@ -286,6 +286,11 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 // the effect that two certificates may compare equal even if their
 // Certificate:issuer, Certificate:private-key, or Certificate:private-key-pem
 // properties differ.
+//
+// The function takes the following parameters:
+//
+//    - certTwo: second certificate to compare.
+//
 func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
@@ -323,6 +328,12 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 //
 // (All other CertificateFlags values will always be set or unset as
 // appropriate.).
+//
+// The function takes the following parameters:
+//
+//    - identity: expected peer identity.
+//    - trustedCa: certificate of a trusted authority.
+//
 func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out

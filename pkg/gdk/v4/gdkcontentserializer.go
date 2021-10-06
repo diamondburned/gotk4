@@ -286,6 +286,11 @@ func (serializer *ContentSerializer) Value() *externglib.Value {
 // ReturnError: indicate that the serialization has ended with an error.
 //
 // This function consumes error.
+//
+// The function takes the following parameters:
+//
+//    - err: GError.
+//
 func (serializer *ContentSerializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
 	var _arg1 *C.GError               // out

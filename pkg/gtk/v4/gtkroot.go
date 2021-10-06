@@ -143,6 +143,12 @@ func (self *Root) Focus() Widgetter {
 //
 // To set the focus to a particular widget in the root, it is usually more
 // convenient to use gtk.Widget.GrabFocus() instead of this function.
+//
+// The function takes the following parameters:
+//
+//    - focus: widget to be the new focus widget, or NULL to unset the focus
+//    widget.
+//
 func (self *Root) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out

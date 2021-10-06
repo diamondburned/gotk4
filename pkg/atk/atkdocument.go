@@ -108,6 +108,12 @@ func marshalDocumenter(p uintptr) (interface{}, error) {
 
 // AttributeValue retrieves the value of the given attribute_name inside
 // document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//    whose value is being queried.
+//
 func (document *Document) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
@@ -230,6 +236,13 @@ func (document *Document) PageCount() int {
 
 // SetAttributeValue sets the value for the given attribute_name inside
 // document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//    whose value is being set.
+//    - attributeValue: string value to be associated with attribute_name.
+//
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out

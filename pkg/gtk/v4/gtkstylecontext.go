@@ -161,6 +161,11 @@ func marshalStyleContexter(p uintptr) (interface{}, error) {
 // While any widget defining a “search” class would be matched by:
 //
 //    .search { ... }.
+//
+// The function takes the following parameters:
+//
+//    - className class name to use in styling.
+//
 func (context *StyleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
@@ -184,6 +189,15 @@ func (context *StyleContext) AddClass(className string) {
 // Note: If both priorities are the same, a GtkStyleProvider added through this
 // function takes precedence over another added through
 // gtk.StyleContext().AddProviderForDisplay.
+//
+// The function takes the following parameters:
+//
+//    - provider: GtkStyleProvider.
+//    - priority of the style provider. The lower it is, the earlier it will be
+//    used in the style construction. Typically this will be in the range
+//    between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//    GTK_STYLE_PROVIDER_PRIORITY_USER.
+//
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
@@ -328,6 +342,11 @@ func (context *StyleContext) State() StateFlags {
 }
 
 // HasClass returns TRUE if context currently has defined the given class name.
+//
+// The function takes the following parameters:
+//
+//    - className class name.
+//
 func (context *StyleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
@@ -351,6 +370,11 @@ func (context *StyleContext) HasClass(className string) bool {
 }
 
 // LookupColor looks up and resolves a color name in the context color map.
+//
+// The function takes the following parameters:
+//
+//    - colorName: color name to lookup.
+//
 func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
@@ -377,6 +401,11 @@ func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 }
 
 // RemoveClass removes class_name from context.
+//
+// The function takes the following parameters:
+//
+//    - className class name to remove.
+//
 func (context *StyleContext) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
@@ -391,6 +420,11 @@ func (context *StyleContext) RemoveClass(className string) {
 }
 
 // RemoveProvider removes provider from the style providers list in context.
+//
+// The function takes the following parameters:
+//
+//    - provider: GtkStyleProvider.
+//
 func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
@@ -439,6 +473,11 @@ func (context *StyleContext) Save() {
 //
 // If you are using a GtkStyleContext returned from
 // gtk.Widget.GetStyleContext(), you do not need to call this yourself.
+//
+// The function takes the following parameters:
+//
+//    - display: GdkDisplay.
+//
 func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
@@ -452,6 +491,11 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 }
 
 // SetScale sets the scale to use when getting image assets for the style.
+//
+// The function takes the following parameters:
+//
+//    - scale: scale.
+//
 func (context *StyleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
@@ -465,6 +509,11 @@ func (context *StyleContext) SetScale(scale int) {
 }
 
 // SetState sets the state to be used for style matching.
+//
+// The function takes the following parameters:
+//
+//    - flags: state to represent.
+//
 func (context *StyleContext) SetState(flags StateFlags) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.GtkStateFlags    // out
@@ -486,6 +535,11 @@ func (context *StyleContext) SetState(flags StateFlags) {
 // This function is intended for testing and debugging of the CSS implementation
 // in GTK. There are no guarantees about the format of the returned string, it
 // may change.
+//
+// The function takes the following parameters:
+//
+//    - flags flags that determine what to print.
+//
 func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
 	var _arg1 C.GtkStyleContextPrintFlags // out

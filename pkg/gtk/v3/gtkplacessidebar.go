@@ -201,6 +201,11 @@ func NewPlacesSidebar() *PlacesSidebar {
 // applications, and they are not persistent. If this function is called
 // multiple times with different locations, then they are added to the sidebar’s
 // list in the same order as the function is called.
+//
+// The function takes the following parameters:
+//
+//    - location to add as an application-specific shortcut.
+//
 func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
@@ -273,6 +278,11 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 // places sidebar, and returns one of them. This function is used by FileChooser
 // to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which activate the
 // cooresponding bookmark.
+//
+// The function takes the following parameters:
+//
+//    - n: index of the bookmark to query.
+//
 func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
@@ -501,6 +511,11 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 // RemoveShortcut removes an application-specific shortcut that has been
 // previously been inserted with gtk_places_sidebar_add_shortcut(). If the
 // location is not a shortcut in the sidebar, then nothing is done.
+//
+// The function takes the following parameters:
+//
+//    - location to remove.
+//
 func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
@@ -522,6 +537,13 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 // might target the sidebar. The drop-targets-visible state will be unset
 // automatically if the drag finishes in the GtkPlacesSidebar. You only need to
 // unset the state when the drag ends on some other widget on your application.
+//
+// The function takes the following parameters:
+//
+//    - visible: whether to show the valid targets or not.
+//    - context: drag context used to ask the source about the action that
+//    wants to perform, so hints are more accurate.
+//
 func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.DragContext) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -540,6 +562,11 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.D
 }
 
 // SetLocalOnly sets whether the sidebar should only show local files.
+//
+// The function takes the following parameters:
+//
+//    - localOnly: whether to show only local files.
+//
 func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -559,6 +586,11 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 // sidebar will highlight that location if it is being shown in the list of
 // places, or it will unhighlight everything if the location is not among the
 // places in the list.
+//
+// The function takes the following parameters:
+//
+//    - location to select, or NULL for no current path.
+//
 func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
@@ -588,6 +620,12 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 //
 // Passing 0 for flags will cause K_PLACES_OPEN_NORMAL to always be sent to
 // callbacks for the “open-location” signal.
+//
+// The function takes the following parameters:
+//
+//    - flags: bitmask of modes in which the calling application can open
+//    locations.
+//
 func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
 	var _arg0 *C.GtkPlacesSidebar  // out
 	var _arg1 C.GtkPlacesOpenFlags // out
@@ -610,6 +648,12 @@ func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
 //
 // Deprecated: It is recommended to group this functionality with the drives and
 // network location under the new 'Other Location' item.
+//
+// The function takes the following parameters:
+//
+//    - showConnectToServer: whether to show an item for the Connect to Server
+//    command.
+//
 func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -628,6 +672,11 @@ func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 // folder. The default value for this option is determined by the desktop
 // environment and the user’s configuration, but this function can be used to
 // override it on a per-application basis.
+//
+// The function takes the following parameters:
+//
+//    - showDesktop: whether to show an item for the Desktop folder.
+//
 func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -648,6 +697,11 @@ func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-enter-location signal.
+//
+// The function takes the following parameters:
+//
+//    - showEnterLocation: whether to show an item to enter a location.
+//
 func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -671,6 +725,12 @@ func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 //
 // If you enable this, you should connect to the
 // PlacesSidebar::show-other-locations signal.
+//
+// The function takes the following parameters:
+//
+//    - showOtherLocations: whether to show an item for the Other Locations
+//    view.
+//
 func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -688,6 +748,11 @@ func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 // SetShowRecent sets whether the sidebar should show an item for recent files.
 // The default value for this option is determined by the desktop environment,
 // but this function can be used to override it on a per-application basis.
+//
+// The function takes the following parameters:
+//
+//    - showRecent: whether to show an item for recent files.
+//
 func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -704,6 +769,11 @@ func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 
 // SetShowStarredLocation: if you enable this, you should connect to the
 // PlacesSidebar::show-starred-location signal.
+//
+// The function takes the following parameters:
+//
+//    - showStarredLocation: whether to show an item for Starred files.
+//
 func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -720,6 +790,11 @@ func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 
 // SetShowTrash sets whether the sidebar should show an item for the Trash
 // location.
+//
+// The function takes the following parameters:
+//
+//    - showTrash: whether to show an item for the Trash location.
+//
 func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out

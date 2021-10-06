@@ -103,6 +103,11 @@ func NewSocket() *Socket {
 // function and pass the id for the plug as returned by atk_plug_get_id(). It is
 // the responsibility of the application to pass the plug id on to the process
 // implementing the Socket as needed.
+//
+// The function takes the following parameters:
+//
+//    - plugId: ID of an Plug.
+//
 func (obj *Socket) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out

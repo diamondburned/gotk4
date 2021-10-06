@@ -103,6 +103,11 @@ func NewOverlay() *Overlay {
 //
 // The position at which widget is placed is determined from its
 // gtk.Widget:halign and gtk.Widget:valign properties.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to be added to the container.
+//
 func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -144,6 +149,11 @@ func (overlay *Overlay) Child() Widgetter {
 }
 
 // ClipOverlay gets whether widget should be clipped within the parent.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of GtkOverlay.
+//
 func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -167,6 +177,11 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 
 // MeasureOverlay gets whether widget's size is included in the measurement of
 // overlay.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of GtkOverlay.
+//
 func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -190,6 +205,11 @@ func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 
 // RemoveOverlay removes an overlay that was added with
 // gtk_overlay_add_overlay().
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to be removed.
+//
 func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -203,6 +223,11 @@ func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 }
 
 // SetChild sets the child widget of overlay.
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//
 func (overlay *Overlay) SetChild(child Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -218,6 +243,12 @@ func (overlay *Overlay) SetChild(child Widgetter) {
 }
 
 // SetClipOverlay sets whether widget should be clipped within the parent.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of GtkOverlay.
+//    - clipOverlay: whether the child should be clipped.
+//
 func (overlay *Overlay) SetClipOverlay(widget Widgetter, clipOverlay bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -241,6 +272,12 @@ func (overlay *Overlay) SetClipOverlay(widget Widgetter, clipOverlay bool) {
 // The overlay will request the size of the largest child that has this property
 // set to TRUE. Children who are not included may be drawn outside of overlay's
 // allocation if they are too large.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of GtkOverlay.
+//    - measure: whether the child should be measured.
+//
 func (overlay *Overlay) SetMeasureOverlay(widget Widgetter, measure bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out

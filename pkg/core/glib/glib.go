@@ -15,6 +15,7 @@ import (
 	"log"
 	"reflect"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/closure"
@@ -878,62 +879,60 @@ type TypeMarshaler struct {
 	F GValueMarshaler
 }
 
-// RegisterGValueMarshalers adds marshalers for several types to the
-// internal marshalers map. Once registered, calling GoValue on any
-// Value with a registered type will return the data returned by the
-// marshaler.
-func RegisterGValueMarshalers(tm []TypeMarshaler) {
-	gValueMarshalers.register(tm)
+type marshalMap sync.Map
+
+var marshalers = new(marshalMap)
+
+// RegisterGValueMarshaler registers a single GValue marshaler. If the function
+// has already been called before on the same Type, then it does nothing, and
+// the new function is ignored.
+func RegisterGValueMarshaler(t Type, f GValueMarshaler) {
+	(*sync.Map)(marshalers).LoadOrStore(t, f)
 }
 
-type marshalMap map[Type]GValueMarshaler
-
-// gValueMarshalers is a map of Glib types to functions to marshal a
-// GValue to a native Go type.
-var gValueMarshalers = marshalMap{
-	TypeInvalid:   marshalInvalid,
-	TypeNone:      marshalNone,
-	TypeInterface: marshalInterface,
-	TypeChar:      marshalChar,
-	TypeUchar:     marshalUchar,
-	TypeBoolean:   marshalBoolean,
-	TypeInt:       marshalInt,
-	TypeLong:      marshalLong,
-	TypeEnum:      marshalEnum,
-	TypeInt64:     marshalInt64,
-	TypeUint:      marshalUint,
-	TypeUlong:     marshalUlong,
-	TypeFlags:     marshalFlags,
-	TypeUint64:    marshalUint64,
-	TypeFloat:     marshalFloat,
-	TypeDouble:    marshalDouble,
-	TypeString:    marshalString,
-	TypePointer:   marshalPointer,
-	TypeBoxed:     marshalBoxed,
-	TypeObject:    marshalObject,
-	TypeVariant:   marshalVariant,
-}
-
-func init() {
-	gValueMarshalers.register([]TypeMarshaler{
-		{Type(C.g_value_get_type()), marshalValue},
-	})
-}
-
-func (m marshalMap) register(tm []TypeMarshaler) {
-	for i := range tm {
-		m[tm[i].T] = tm[i].F
+// RegisterGValueMarshalers adds marshalers for several types to the internal
+// marshalers map. Once registered, calling GoValue on any Value with a
+// registered type will return the data returned by the marshaler.
+func RegisterGValueMarshalers(marshalers []TypeMarshaler) {
+	for _, m := range marshalers {
+		RegisterGValueMarshaler(m.T, m.F)
 	}
 }
 
-func (m marshalMap) lookupIfaces(t Type) GValueMarshaler {
+func init() {
+	RegisterGValueMarshaler(TypeInvalid, marshalInvalid)
+	RegisterGValueMarshaler(TypeNone, marshalNone)
+	RegisterGValueMarshaler(TypeInterface, marshalInterface)
+	RegisterGValueMarshaler(TypeChar, marshalChar)
+	RegisterGValueMarshaler(TypeUchar, marshalUchar)
+	RegisterGValueMarshaler(TypeBoolean, marshalBoolean)
+	RegisterGValueMarshaler(TypeInt, marshalInt)
+	RegisterGValueMarshaler(TypeLong, marshalLong)
+	RegisterGValueMarshaler(TypeEnum, marshalEnum)
+	RegisterGValueMarshaler(TypeInt64, marshalInt64)
+	RegisterGValueMarshaler(TypeUint, marshalUint)
+	RegisterGValueMarshaler(TypeUlong, marshalUlong)
+	RegisterGValueMarshaler(TypeFlags, marshalFlags)
+	RegisterGValueMarshaler(TypeUint64, marshalUint64)
+	RegisterGValueMarshaler(TypeFloat, marshalFloat)
+	RegisterGValueMarshaler(TypeDouble, marshalDouble)
+	RegisterGValueMarshaler(TypeString, marshalString)
+	RegisterGValueMarshaler(TypePointer, marshalPointer)
+	RegisterGValueMarshaler(TypeBoxed, marshalBoxed)
+	RegisterGValueMarshaler(TypeObject, marshalObject)
+	RegisterGValueMarshaler(TypeVariant, marshalVariant)
+	RegisterGValueMarshaler(Type(C.g_value_get_type()), marshalValue)
+}
+
+func (m *marshalMap) lookupIfaces(t Type) GValueMarshaler {
 	ifaces := t.interfaces()
 	if len(ifaces) > 0 {
 		defer C.free(unsafe.Pointer(&ifaces[0]))
 	}
 
 	for _, t := range ifaces {
-		if f, ok := m[t]; ok {
+		f, ok := m.lookupType(t)
+		if ok {
 			return f
 		}
 	}
@@ -941,13 +940,14 @@ func (m marshalMap) lookupIfaces(t Type) GValueMarshaler {
 	return nil
 }
 
-func (m marshalMap) lookup(v *Value) GValueMarshaler {
+func (m *marshalMap) lookup(v *Value) GValueMarshaler {
 	typ := v.Type()
 
 	// Check the inheritance tree.
 	for t := typ; t != 0; t = t.Parent() {
 		// Traverse the type inheritance tree.
-		if f, ok := m[t]; ok {
+		f, ok := m.lookupType(t)
+		if ok {
 			return f
 		}
 
@@ -958,7 +958,7 @@ func (m marshalMap) lookup(v *Value) GValueMarshaler {
 	}
 
 	fundamental := FundamentalType(typ)
-	if f, ok := m[fundamental]; ok {
+	if f, ok := m.lookupType(fundamental); ok {
 		return f
 	}
 
@@ -966,11 +966,12 @@ func (m marshalMap) lookup(v *Value) GValueMarshaler {
 	return nil
 }
 
-func (m marshalMap) lookupType(t Type) GValueMarshaler {
-	if f, ok := m[t]; ok {
-		return f
+func (m *marshalMap) lookupType(t Type) (GValueMarshaler, bool) {
+	v, ok := (*sync.Map)(m).Load(t)
+	if ok {
+		return v.(GValueMarshaler), true
 	}
-	return nil
+	return nil, false
 }
 
 func marshalInvalid(uintptr) (interface{}, error) {
@@ -1082,7 +1083,7 @@ func marshalVariant(p uintptr) (interface{}, error) {
 // Unlike the type getters, although this method is not type-safe, it can get
 // any concrete object type out, as long as there exists a marshaler for it.
 func (v *Value) GoValue() interface{} {
-	f := gValueMarshalers.lookup(v)
+	f := marshalers.lookup(v)
 	runtime.KeepAlive(v)
 	if f == nil {
 		return InvalidValue

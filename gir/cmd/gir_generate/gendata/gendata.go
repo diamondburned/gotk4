@@ -4,6 +4,7 @@ package gendata
 
 import (
 	"errors"
+	"log"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -162,8 +163,17 @@ var Preprocessors = []Preprocessor{
 }
 
 func modifyBufferInsert(name string) Preprocessor {
+	names := []string{"text", "markup"}
+
 	return ModifyCallable(name, func(c *gir.CallableAttrs) {
-		p := FindParameter(c, "text")
+		var p *gir.ParameterAttrs
+
+		for _, name := range names {
+			if p = FindParameter(c, name); p != nil {
+				break
+			}
+		}
+
 		if p == nil {
 			return
 		}
@@ -184,12 +194,13 @@ func modifyBufferInsert(name string) Preprocessor {
 }
 
 func findTextLenParam(params []gir.Parameter) int {
-	const doc = "length of text"
+	const doc = "length of"
 
 	for i, param := range params {
 		if param.Doc != nil && strings.Contains(param.Doc.String, doc) {
 			return i
 		}
+		log.Printf("doc %#v\n", param)
 	}
 
 	return -1

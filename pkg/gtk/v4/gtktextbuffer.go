@@ -1515,25 +1515,24 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 //
 //    - iter: location to insert the markup.
 //    - markup: nul-terminated UTF-8 string containing Pango markup.
-//    - len: length of markup in bytes, or -1.
 //
-func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
+func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.char          // out
-	var _arg3 C.int            // out
+	var _arg3 C.int
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(len)
+	_arg3 = (C.int)(len(markup))
+	if len(markup) > 0 {
+		_arg2 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&markup)).Data))
+	}
 
 	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(markup)
-	runtime.KeepAlive(len)
 }
 
 // InsertPaintable inserts an image into the text buffer at iter.
@@ -1989,22 +1988,21 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 // The function takes the following parameters:
 //
 //    - text: UTF-8 text to insert.
-//    - len: length of text in bytes.
 //
-func (buffer *TextBuffer) SetText(text string, len int) {
+func (buffer *TextBuffer) SetText(text string) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
+	var _arg2 C.int
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
+	_arg2 = (C.int)(len(text))
+	if len(text) > 0 {
+		_arg1 = (*C.char)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&text)).Data))
+	}
 
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
 }
 
 // Undo undoes the last undoable action on the buffer, if there is one.

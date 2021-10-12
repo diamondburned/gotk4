@@ -103,11 +103,21 @@ func (c *Cancellable) Err() error {
 	return nil
 }
 
+var nilCancellable = &Cancellable{
+	Object: nil,
+	ctx:    context.Background(),
+	done:   nil,
+}
+
 // CancellableFromContext gets the underlying Cancellable instance from the
-// given context. If ctx does not contain the Cancellable instance, then nil is
-// returned. It is mostly for internal use; users should use WithCancel instead.
+// given context. If ctx does not contain the Cancellable instance, then a
+// context with a nil Object field is returned. It is mostly for internal use;
+// users should use WithCancel instead.
 func GCancellableFromContext(ctx context.Context) *Cancellable {
-	return fromContext(ctx, false)
+	if obj := fromContext(ctx, false); obj != nil {
+		return obj
+	}
+	return nilCancellable
 }
 
 // WithCancel behaves similarly to context.WithCancel, except the created
@@ -154,12 +164,15 @@ func fromContext(ctx context.Context, create bool) *Cancellable {
 	cancellable.Connect("cancelled", func() { close(done) })
 	cancellable.done = done
 
-	go cancelOnDone(ctx, done, cancellable)
+	// Only need this if the parent context isn't Background.
+	if ctx != context.Background() && ctx != context.TODO() {
+		go cancelOnParent(ctx, done, cancellable)
+	}
 
 	return cancellable
 }
 
-func cancelOnDone(ctx context.Context, done chan struct{}, cancellable *Cancellable) {
+func cancelOnParent(ctx context.Context, done chan struct{}, cancellable *Cancellable) {
 	select {
 	case <-ctx.Done():
 		cancellable.Cancel()

@@ -1462,7 +1462,7 @@ func NewTimeZoneFromGo(loc *time.Location) *TimeZone {
 
 // NewDateTimeFromGo creates a new DateTime instance from Go's Time. The
 // TimeZone of the DateTime will be implicitly converted from the Time.
-func NewDateTimeFromGo(t *time.Time) *DateTime {
+func NewDateTimeFromGo(t time.Time) *DateTime {
 	tz := NewTimeZoneFromGo(t.Location())
 
 	Y, M, D := t.Date()
